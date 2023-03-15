@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
-import '../../widgets/crud.dart';
 
 class AwarenessGroups extends StatefulWidget {
   const AwarenessGroups({super.key});
@@ -21,10 +21,12 @@ class _AwarenessGroupsState extends State<AwarenessGroups> {
   Widget build(BuildContext context) {
     return BlocBuilder<AwarenessGroupsBloc, AwarenessGroupsState>(
       builder: (context, state) {
-        return Crud(
+        return MasterTable(
           description:
               'List of defined awareness groups. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
           entities: state.awarenessGroups,
+          title: 'Awareness Groups',
+          label: 'awareness group',
         );
       },
     );

@@ -1,6 +1,6 @@
-import 'package:animated_sidebar/data/model/entity.dart';
-import 'package:animated_sidebar/data/repository/repository.dart';
-import 'package:animated_sidebar/features/administration/masters/priority_levels/data/model/priority_level.dart';
+import 'package:safety_eta/data/model/entity.dart';
+import 'package:safety_eta/data/repository/repository.dart';
+import 'package:safety_eta/features/administration/masters/priority_levels/data/model/priority_level.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

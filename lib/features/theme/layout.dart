@@ -1,4 +1,4 @@
-import 'package:animated_sidebar/features/theme/view/widgets/topbar/topbar.dart';
+import 'package:safety_eta/features/theme/view/widgets/topbar/topbar.dart';
 import 'package:flutter/material.dart';
 import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 
@@ -80,8 +80,11 @@ class _LayoutState extends State<Layout> {
                           ),
                   ),
                   Expanded(
-                    child: widget.body,
-                  )
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: widget.body,
+                    ),
+                  ),
                 ],
               ),
             ],

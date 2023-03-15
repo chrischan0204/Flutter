@@ -1,11 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 import '/data/model/entity.dart';
 
-
 class Region extends Entity implements Equatable {
   final String regionName;
-  final String timezonesAssociated;
+  final List<String> timezonesAssociated;
   final bool active;
   Region({
     required this.regionName,
@@ -31,6 +33,29 @@ class Region extends Entity implements Equatable {
     };
   }
 
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        regionName,
+        timezonesAssociated,
+        active,
+      ];
+
+  @override
+  bool? get stringify => throw UnimplementedError();
+
+  Region copyWith({
+    String? regionName,
+    List<String>? timezonesAssociated,
+    bool? active,
+  }) {
+    return Region(
+      regionName: regionName ?? this.regionName,
+      timezonesAssociated: timezonesAssociated ?? this.timezonesAssociated,
+      active: active ?? this.active,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'regionName': regionName,
@@ -42,19 +67,9 @@ class Region extends Entity implements Equatable {
   factory Region.fromMap(Map<String, dynamic> map) {
     return Region(
       regionName: map['regionName'] as String,
-      timezonesAssociated: map['timezonesAssociated'] as String,
+      timezonesAssociated:
+          List<String>.from((map['timezonesAssociated'] as List<String>)),
       active: map['active'] as bool,
     );
   }
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [
-        regionName,
-        timezonesAssociated,
-        active,
-      ];
-
-  @override
-  bool? get stringify => throw UnimplementedError();
 }

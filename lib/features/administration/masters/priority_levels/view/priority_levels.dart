@@ -1,6 +1,6 @@
-import 'package:animated_sidebar/features/administration/masters/widgets/crud.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
 class PriorityLevels extends StatefulWidget {
@@ -21,10 +21,12 @@ class _PriorityLevelsState extends State<PriorityLevels> {
   Widget build(BuildContext context) {
     return BlocBuilder<PriorityLevelsBloc, PriorityLevelsState>(
       builder: (context, state) {
-        return Crud(
+        return MasterTable(
           description:
               'List of defined Priority Levels. Types can be added or current ones edited from this screen.',
           entities: state.priorityLevels,
+          title: 'Priority Levels',
+          label: 'priority level',
         );
       },
     );

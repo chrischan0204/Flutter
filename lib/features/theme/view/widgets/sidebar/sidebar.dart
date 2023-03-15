@@ -6,11 +6,11 @@ import '../../../data/model/model.dart';
 
 import '../../../data/repository/repository.dart';
 import 'sidebar_style.dart';
-import 'sidebar_widgets/collapse_button.dart';
+import 'widgets/collapse_button.dart';
 
-import 'sidebar_widgets/criteria.dart';
-import 'sidebar_widgets/header.dart';
-import 'sidebar_widgets/sidebar_item.dart';
+import 'widgets/criteria.dart';
+import 'widgets/header.dart';
+import 'widgets/sidebar_item.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({

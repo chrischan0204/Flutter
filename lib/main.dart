@@ -1,4 +1,4 @@
-import 'package:animated_sidebar/router.dart';
+import 'package:safety_eta/router.dart';
 import 'package:flutter/material.dart';
 
 import 'data/bloc/bloc.dart';

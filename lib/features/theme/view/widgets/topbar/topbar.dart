@@ -1,6 +1,6 @@
-import 'package:animated_sidebar/features/theme/view/widgets/sidebar/sidebar_style.dart';
-import 'package:animated_sidebar/features/theme/view/widgets/topbar/topbar_widgets/logo.dart';
-import 'package:animated_sidebar/features/theme/view/widgets/topbar/topbar_widgets/search_field.dart';
+import 'package:safety_eta/features/theme/view/widgets/sidebar/sidebar_style.dart';
+import 'package:safety_eta/features/theme/view/widgets/topbar/topbar_widgets/logo.dart';
+import 'package:safety_eta/features/theme/view/widgets/topbar/topbar_widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 

@@ -1,7 +1,7 @@
-import 'package:animated_sidebar/features/administration/masters/regions/bloc/regions_bloc.dart';
-import 'package:animated_sidebar/features/administration/masters/widgets/crud.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../widgets/widgets.dart';
+import '/data/bloc/bloc.dart';
 
 class Regions extends StatefulWidget {
   const Regions({super.key});
@@ -21,9 +21,11 @@ class _RegionsState extends State<Regions> {
   Widget build(BuildContext context) {
     return BlocBuilder<RegionsBloc, RegionsState>(
       builder: (context, state) {
-        return Crud(
+        return MasterTable(
           description: 'The following regions are available to create sites in',
           entities: state.regions,
+          title: 'Regions',
+          label: 'region',
         );
       },
     );
