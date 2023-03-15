@@ -62,8 +62,8 @@ class _CollapseButtonState extends State<CollapseButton> {
             child: Icon(
               MediaQuery.of(context).size.width < 1000
                   ? PhosphorIcons.x
-                  : PhosphorIcons.arrowsLeftRightLight,
-              size: 18,
+                  : PhosphorIcons.arrowsLeftRight,
+              size: 16,
               weight: 400,
               color: sidebarColor,
             ),
