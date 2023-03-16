@@ -4,6 +4,7 @@ import 'package:safety_eta/features/theme/view/widgets/sidebar/sidebar_style.dar
 
 enum NotifyType {
   success,
+  good,
   failture,
 }
 
@@ -35,6 +36,11 @@ class _NotifyState extends State<Notify> {
         backgroundColor = const Color(0xfffdecec);
         color = const Color(0xffa73030);
         borderColor = const Color(0xfff7a2a2);
+        break;
+      case NotifyType.good:
+        backgroundColor = const Color(0xffe6f5f7);
+        color = const Color(0xff036c79);
+        borderColor = const Color(0xff82cdd6);
         break;
     }
     return isClosed

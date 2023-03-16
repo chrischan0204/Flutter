@@ -163,6 +163,15 @@ class _CrudState extends State<MasterTable> {
               'There was an error while adding. Our team has been notified. Please wait a few minutes and try again....',
           type: NotifyType.failture,
         ),
+        const Notify(
+          content: 'Region has been successfully edited....',
+          type: NotifyType.good,
+        ),
+        const Notify(
+          content:
+              'There was an error while editing. Our team has been notified. Please wait a few minutes and try again....',
+          type: NotifyType.failture,
+        ),
         PageTitle(
           title: widget.title,
         ),
@@ -224,78 +233,48 @@ class _CrudState extends State<MasterTable> {
                       type: isEdit ? 'Edit/Remove' : 'Add new',
                     ),
                     const CustomDivider(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
+                    const CrudItem(
+                      leftChild: Text(
+                        'Region(*)',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'OpenSans',
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Flexible(
-                            flex: 3,
-                            child: Text(
-                              'Region(*)',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'OpenSans',
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 7,
-                            child: CustomSelect(
-                              items: [
-                                'Africa',
-                                'Central America',
-                                'Middle East',
-                                'North America - South East',
-                                'Oceania',
-                                'South America',
-                                'The Carribean',
-                              ],
-                              hint: 'Select Region',
-                            ),
-                          ),
+                      rightChild: CustomSelect(
+                        items: [
+                          'Africa',
+                          'Central America',
+                          'Middle East',
+                          'North America - South East',
+                          'Oceania',
+                          'South America',
+                          'The Carribean',
                         ],
+                        hint: 'Select Region',
                       ),
                     ),
                     const CustomDivider(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
+                    const CrudItem(
+                      leftChild: Text(
+                        'Timezone(*)',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'OpenSans',
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Flexible(
-                            flex: 3,
-                            child: Text(
-                              'Timezone(*)',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'OpenSans',
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 7,
-                            child: CustomMultiSelect(
-                              items: [
-                                'Eastern Standard Time | EST | UTC -5',
-                                'Central Standard Time | CST | UTC -6',
-                                'Mountain Standard Time | MST | UTC -7',
-                                'Pacific Standard Time | PST | UTC -8',
-                                'Alaska Standard Time | AST | UTC -9',
-                                'Hawaii Standard Time | HST | UTC -10',
-                              ],
-                              hint: 'Select Time Zone',
-                            ),
-                          ),
+                      rightChild: CustomMultiSelect(
+                        items: [
+                          'Eastern Standard Time | EST | UTC -5',
+                          'Central Standard Time | CST | UTC -6',
+                          'Mountain Standard Time | MST | UTC -7',
+                          'Pacific Standard Time | PST | UTC -8',
+                          'Alaska Standard Time | AST | UTC -9',
+                          'Hawaii Standard Time | HST | UTC -10',
                         ],
+                        hint: 'Select Time Zone',
                       ),
                     ),
                     const CustomDivider(),
@@ -313,71 +292,38 @@ class _CrudState extends State<MasterTable> {
                               ),
                             ),
                             const CustomDivider(),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0,
+                            const CrudItem(
+                              leftChild: Text(
+                                'Deactivate?',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'OpenSans',
+                                ),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Flexible(
-                                    flex: 3,
-                                    child: Text(
-                                      'Deactivate?',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'OpenSans',
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 7,
-                                    child: CustomSwitch(
-                                      label: 'region',
-                                    ),
-                                  ),
-                                ],
+                              rightChild: CustomSwitch(
+                                label: 'region',
                               ),
                             ),
                             const CustomDivider(),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0,
+                            const CrudItem(
+                              leftChild: Text(
+                                'Deactivated:',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'OpenSans',
+                                ),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Flexible(
-                                    flex: 3,
-                                    child: Text(
-                                      'Deactivated:',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'OpenSans',
-                                      ),
-                                    ),
+                              rightChild: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 30.0),
+                                child: Text(
+                                  'By: Andrew Sully on 12th Jan 2023',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'OpenSans',
                                   ),
-                                  Flexible(
-                                    flex: 7,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 30.0),
-                                      child: Text(
-                                        'By: Andrew Sully on 12th Jan 2023',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'OpenSans',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                             const CustomDivider(),
@@ -429,6 +375,39 @@ class _CrudState extends State<MasterTable> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class CrudItem extends StatelessWidget {
+  final Widget leftChild;
+  final Widget rightChild;
+  const CrudItem({
+    super.key,
+    required this.leftChild,
+    required this.rightChild,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 3,
+            child: leftChild,
+          ),
+          Flexible(
+            flex: 7,
+            child: rightChild,
+          ),
+        ],
+      ),
     );
   }
 }
