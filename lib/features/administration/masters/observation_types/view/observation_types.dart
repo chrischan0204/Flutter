@@ -33,6 +33,7 @@ class _ObservationTypesState extends State<ObservationTypes> {
           editEntity: () async {},
           deleteEntity: () async {},
           onRowClick: (value) {},
+          onActiveChanged: (value) {},
           crudItems: [
             CrudItem(
               label: 'Observation Type (*)',

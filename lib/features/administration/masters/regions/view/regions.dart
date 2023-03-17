@@ -32,6 +32,7 @@ class _RegionsState extends State<Regions> {
   Widget build(BuildContext context) {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
+        // print(state.selectedIsActive);
         if (state.regionAddedStatus == EntityStatus.succuess) {
           setState(() {
             notifyType = NotifyType.success;
@@ -92,14 +93,35 @@ class _RegionsState extends State<Regions> {
                   region: Region(
                     regionName: state.selectedRegionName,
                     timezonesAssociated: state.selectedTimezones,
-                    isActive: true,
+                    isActive: state.selectedIsActive,
+                    associatedSitesCount: state.selectedAssociatedSitesCount,
                   ),
                 ),
               );
             }
           },
-          deleteEntity: () {},
+          deleteEntity: () {
+            regionsBloc.add(
+              RegionDeleted(
+                region: Region(
+                  regionName: state.selectedRegionName,
+                  timezonesAssociated: state.selectedTimezones,
+                  isActive: state.selectedIsActive,
+                  associatedSitesCount: state.selectedAssociatedSitesCount,
+                ),
+              ),
+            );
+          },
+          isDeactive: !state.selectedIsActive,
+          onActiveChanged: (value) {
+            regionsBloc.add(
+              SelectedIsActiveChanged(
+                selectedIsActive: !value,
+              ),
+            );
+          },
           onRowClick: (map) {
+            print('object');
             regionsBloc.add(
               SelectedRegionNameChanged(
                 selectedRegionName: map['regionName'] as String,
@@ -114,10 +136,16 @@ class _RegionsState extends State<Regions> {
 
             regionsBloc.add(
               SelectedAssociatedSitesCountChanged(
-                selectedAssociatedSitesCount: map['associatedSitesCount'] as int,
+                selectedAssociatedSitesCount:
+                    map['associatedSitesCount'] as int,
               ),
             );
-            
+            print(map['isActive'] as bool);
+            regionsBloc.add(
+              SelectedIsActiveChanged(
+                selectedIsActive: map['isActive'] as bool,
+              ),
+            );
           },
           crudItems: [
             CrudItem(
@@ -135,7 +163,9 @@ class _RegionsState extends State<Regions> {
                     ),
                   );
                 },
-                isDisabled: context.read<MastersTemplateBloc>().state.crudType == CrudType.editOrDelete,
+                isDisabled:
+                    context.read<MastersTemplateBloc>().state.crudType ==
+                        CrudType.editOrDelete,
               ),
             ),
             CrudItem(

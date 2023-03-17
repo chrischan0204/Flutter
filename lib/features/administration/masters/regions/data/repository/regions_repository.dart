@@ -67,5 +67,7 @@ class RegionsRepository {
     return region;
   }
 
-  Future<void> deleteRegion(Region region) async {}
+  Future<Region> deleteRegion(Region region) async {
+    return region;
+  }
 }

@@ -33,6 +33,7 @@ class _AwarenessGroupsState extends State<AwarenessGroups> {
           editEntity: () {},
           deleteEntity: () {},
           onRowClick: (value) {},
+          onActiveChanged: (value) {},
           crudItems: [
             CrudItem(
               label: 'Awareness Group Name (*)',

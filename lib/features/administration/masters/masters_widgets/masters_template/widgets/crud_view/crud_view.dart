@@ -15,7 +15,8 @@ class CrudView extends StatefulWidget {
   final VoidCallback editEntity;
   final VoidCallback deleteEntity;
   final bool deletable;
-  final bool isActive;
+  final bool isDeactive;
+  final ValueChanged<bool> onActiveChanged;
 
   const CrudView({
     super.key,
@@ -27,7 +28,8 @@ class CrudView extends StatefulWidget {
     required this.editEntity,
     required this.deleteEntity,
     required this.deletable,
-    required this.isActive,
+    required this.isDeactive,
+    required this.onActiveChanged,
   });
 
   @override
@@ -77,8 +79,8 @@ class _CrudViewState extends State<CrudView> {
                   label: 'Deactivate?',
                   content: CustomSwitch(
                     label: 'region',
-                    switchValue: true,
-                    onChanged: (value) {},
+                    switchValue: widget.isDeactive,
+                    onChanged: (value) => widget.onActiveChanged(value),
                   ),
                 ),
                 const CustomDivider(),
@@ -137,7 +139,14 @@ class _CrudViewState extends State<CrudView> {
                         0xfff58686,
                       ),
                       iconData: PhosphorIcons.trashSimple,
-                      onClick: widget.deleteEntity,
+                      onClick: () {
+                        widget.deleteEntity();
+                        context.read<MastersTemplateBloc>().add(
+                              const MastersTemplateCrudTypeChanged(
+                                crudType: CrudType.add,
+                              ),
+                            );
+                      },
                       text: 'Delete',
                       isDisabled: !widget.deletable,
                     )

@@ -181,12 +181,15 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       ),
     );
     try {
-      await regionsRepository.editRegion(
+      Region deletedRegion = await regionsRepository.deleteRegion(
         event.region,
       );
+      List<Region> regions = List.from(state.regions);
+      regions.removeWhere((region) => region.regionName == deletedRegion.regionName);
       emit(
         state.copyWith(
           regionDeletedStatus: EntityStatus.succuess,
+          regions: regions,
         ),
       );
     } catch (e) {
@@ -252,6 +255,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       selectedTimezones: [],
       selectedAssociatedSitesCount: 0,
       selectedIsActive: true,
+      timeZones: [],
     ));
   }
 }

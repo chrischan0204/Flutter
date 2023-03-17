@@ -7,6 +7,21 @@ import '../../../../theme/view/widgets/sidebar/sidebar_style.dart';
 import 'widgets/widgets.dart';
 
 class MastersTemplate extends StatefulWidget {
+  final List<Entity> entities;
+  final String title;
+  final String description;
+  final String label;
+  final String note;
+  final List<CrudItem> crudItems;
+  final VoidCallback addEntity;
+  final VoidCallback editEntity;
+  final VoidCallback deleteEntity;
+  final ValueChanged<Map<String, dynamic>> onRowClick;
+  final String notifyContent;
+  final NotifyType notifyType;
+  final bool deletable;
+  final bool isDeactive;
+  final ValueChanged<bool> onActiveChanged;
   const MastersTemplate({
     super.key,
     this.entities = const [],
@@ -22,22 +37,9 @@ class MastersTemplate extends StatefulWidget {
     this.notifyContent = '',
     this.notifyType = NotifyType.initial,
     this.deletable = false,
-    this.isActive = true,
+    this.isDeactive = true,
+    required this.onActiveChanged,
   });
-  final List<Entity> entities;
-  final String title;
-  final String description;
-  final String label;
-  final String note;
-  final List<CrudItem> crudItems;
-  final VoidCallback addEntity;
-  final VoidCallback editEntity;
-  final VoidCallback deleteEntity;
-  final ValueChanged<Map<String, dynamic>> onRowClick;
-  final String notifyContent;
-  final NotifyType notifyType;
-  final bool deletable;
-  final bool isActive;
 
   @override
   State<MastersTemplate> createState() => _CrudState();
@@ -123,7 +125,8 @@ class _CrudState extends State<MastersTemplate> {
                       addEntity: widget.addEntity,
                       editEntity: widget.editEntity,
                       deleteEntity: widget.deleteEntity,
-                      isActive: widget.isActive,
+                      isDeactive: widget.isDeactive,
+                      onActiveChanged: (value) => widget.onActiveChanged(value),
                     ),
                   ),
                 ),

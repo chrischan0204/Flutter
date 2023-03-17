@@ -38,6 +38,7 @@ class _AwarenessCategoriesState extends State<AwarenessCategories> {
           editEntity: () {},
           deleteEntity: () {},
           onRowClick: (value) {},
+          onActiveChanged: (value) {},
           crudItems: [
             CrudItem(
               label: 'Awareness Group (*)',

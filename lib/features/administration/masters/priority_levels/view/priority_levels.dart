@@ -34,6 +34,7 @@ class _PriorityLevelsState extends State<PriorityLevels> {
           editEntity: () async {},
           deleteEntity: () async {},
           onRowClick: (value) {},
+          onActiveChanged: (value) {},
           crudItems: [
             CrudItem(
               label: 'Priority Level (*)',
