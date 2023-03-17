@@ -121,7 +121,6 @@ class _RegionsState extends State<Regions> {
             );
           },
           onRowClick: (map) {
-            print('object');
             regionsBloc.add(
               SelectedRegionNameChanged(
                 selectedRegionName: map['regionName'] as String,
@@ -140,7 +139,6 @@ class _RegionsState extends State<Regions> {
                     map['associatedSitesCount'] as int,
               ),
             );
-            print(map['isActive'] as bool);
             regionsBloc.add(
               SelectedIsActiveChanged(
                 selectedIsActive: map['isActive'] as bool,
@@ -163,9 +161,7 @@ class _RegionsState extends State<Regions> {
                     ),
                   );
                 },
-                isDisabled:
-                    context.read<MastersTemplateBloc>().state.crudType ==
-                        CrudType.editOrDelete,
+                isDisabled: state.selectedAssociatedSitesCount != 0,
               ),
             ),
             CrudItem(

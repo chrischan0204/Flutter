@@ -3,8 +3,7 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class Region extends Entity implements Equatable {
-  static List<String> regionsList = const [];
-  static List<String> timezonesList = const [];
+  final String? id;
   final String regionName;
   final List<String> timezonesAssociated;
   final bool isActive;
@@ -14,6 +13,7 @@ class Region extends Entity implements Equatable {
     required this.timezonesAssociated,
     required this.isActive,
     this.associatedSitesCount,
+    this.id,
   });
 
   @override

@@ -19,16 +19,17 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_colorpicker: ^1.0.3
-  flutter_hsvcolor_picker: ^1.2.3
   flutter_switch: ^0.3.2
   go_router: ^6.2.0
   google_fonts: ^4.0.3
   http: ^0.13.5
   hydrated_bloc: ^9.1.0
+  intl: ^0.17.0
   just_the_tooltip: ^0.0.12
   multiselect: ^0.1.0
   phosphor_flutter: ^1.4.0
   strings: ^0.2.2
+  uuid: ^3.0.7
   web_smooth_scroll: ^1.1.0
 
 dev_dependencies:

@@ -45,11 +45,13 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
 
                 return InkWell(
                   onTap: () {
-                    isSelected
-                        ? widget.selectedItems.remove(item)
-                        : widget.selectedItems.add(item);
                     menuSetState(() {});
                     widget.onChanged(widget.selectedItems);
+                    setState(() {
+                      isSelected
+                          ? widget.selectedItems.remove(item)
+                          : widget.selectedItems.add(item);
+                    });
                   },
                   child: Container(
                     height: double.infinity,

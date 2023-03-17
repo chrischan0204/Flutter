@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
@@ -84,20 +85,25 @@ class _CrudViewState extends State<CrudView> {
                   ),
                 ),
                 const CustomDivider(),
-                const CrudItem(
-                  label: 'Deactivated:',
-                  content: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Text(
-                      'By: Andrew Sully on 12th Jan 2023',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'OpenSans',
-                      ),
-                    ),
-                  ),
-                ),
-                const CustomDivider(),
+                ...(widget.isDeactive
+                    ? [
+                        CrudItem(
+                          label: 'Deactivated:',
+                          content: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 30.0),
+                            child: Text(
+                              'By: Carl Kent on ${DateFormat('d MMM yyyy').format(DateTime.now())}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'OpenSans',
+                              ),
+                            ),
+                          ),
+                        ),
+                        const CustomDivider()
+                      ]
+                    : []),
               ]
             : []),
         Padding(
