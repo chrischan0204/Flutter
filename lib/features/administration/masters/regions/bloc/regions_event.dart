@@ -86,6 +86,10 @@ class SelectedAssociatedSitesCountChanged extends RegionsEvent {
   const SelectedAssociatedSitesCountChanged({
     required this.selectedAssociatedSitesCount,
   });
+  @override
+  List<Object> get props => [
+        selectedAssociatedSitesCount,
+      ];
 }
 
 class SelectedIsActiveChanged extends RegionsEvent {
@@ -93,6 +97,10 @@ class SelectedIsActiveChanged extends RegionsEvent {
   const SelectedIsActiveChanged({
     required this.selectedIsActive,
   });
+  @override
+  List<Object> get props => [
+        selectedIsActive,
+      ];
 }
 
 class SelectedRegionIdChanged extends RegionsEvent {
@@ -100,6 +108,10 @@ class SelectedRegionIdChanged extends RegionsEvent {
   const SelectedRegionIdChanged({
     required this.selectedRegionId,
   });
+  @override
+  List<Object> get props => [
+        selectedRegionId,
+      ];
 }
 
 class RegionsStateInited extends RegionsEvent {}

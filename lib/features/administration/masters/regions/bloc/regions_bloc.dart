@@ -108,6 +108,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         ),
       );
     }
+    // add(const SelectedTimezonesChanged(selectedTimezones: []));
   }
 
   Future<void> _onRegionAdded(
@@ -153,8 +154,8 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         event.region,
       );
       List<Region> regions = List.from(state.regions);
-      int indexToDelete = regions
-          .indexWhere((region) => region.id == editedRegion.id);
+      int indexToDelete =
+          regions.indexWhere((region) => region.id == editedRegion.id);
       regions.removeAt(indexToDelete);
       regions.insert(indexToDelete, editedRegion);
 
@@ -188,8 +189,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         event.region,
       );
       List<Region> regions = List.from(state.regions);
-      regions.removeWhere(
-          (region) => region.id == deletedRegion.id);
+      regions.removeWhere((region) => region.id == deletedRegion.id);
       emit(
         state.copyWith(
           regionDeletedStatus: EntityStatus.succuess,

@@ -36,7 +36,7 @@ class _RegionsState extends State<Regions> {
         if (state.regionAddedStatus == EntityStatus.succuess) {
           setState(() {
             notifyType = NotifyType.success;
-            notifyContent = 'Region been successfully added....';
+            notifyContent = 'Region has been successfully added....';
           });
         } else if (state.regionAddedStatus == EntityStatus.failure) {
           setState(() {
@@ -142,6 +142,7 @@ class _RegionsState extends State<Regions> {
                     map['associatedSitesCount'] as int,
               ),
             );
+
             regionsBloc.add(
               SelectedIsActiveChanged(
                 selectedIsActive: map['isActive'] as bool,
