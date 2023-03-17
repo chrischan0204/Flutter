@@ -26,29 +26,26 @@ class _DataTableViewState extends State<DataTableView> {
             .keys
             .map(
               (key) => DataColumn(
-                label: Expanded(
-                  child: Text(
-                    key,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      // color: Color(0xff1f2937),
-                      fontFamily: 'OpenSans',
-                    ),
+                label: Text(
+                  key,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    fontFamily: 'OpenSans',
                   ),
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             )
             .toList(),
         const DataColumn(
-          label: Expanded(
-            child: Text(
-              'Action',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-                fontFamily: 'OpenSans',
-              ),
+          label: Text(
+            'Action',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              fontFamily: 'OpenSans',
             ),
           ),
         )
@@ -123,6 +120,7 @@ class _DataTableViewState extends State<DataTableView> {
         fontFamily: 'OpenSans',
       ),
       maxLines: 2,
+      softWrap: true,
       overflow: TextOverflow.ellipsis,
     );
   }
