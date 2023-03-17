@@ -70,15 +70,12 @@ class _LayoutState extends State<Layout> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MediaQuery.of(context).size.width < 1000
-                        ? null
-                        : Sidebar(
-                            selectedItemName: widget.selectedItemName,
-                            title: widget.title,
-                          ),
-                  ),
+                  MediaQuery.of(context).size.width < 1000
+                      ? Container()
+                      : Sidebar(
+                          selectedItemName: widget.selectedItemName,
+                          title: widget.title,
+                        ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(10),
