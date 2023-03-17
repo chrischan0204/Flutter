@@ -37,4 +37,16 @@ class AwarenessGroup extends Entity implements Equatable {
       awarnessGroup: awarnessGroup ?? this.awarnessGroup,
     );
   }
+  
+  @override
+  Map<String, EntityInputType> inputTypesToMap() {
+    // TODO: implement inputTypesToMap
+    throw UnimplementedError();
+  }
+  
+  @override
+  Map<String, dynamic> toMap() {
+    // TODO: implement toMap
+    throw UnimplementedError();
+  }
 }

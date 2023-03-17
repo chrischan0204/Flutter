@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import '/constants/color.dart';
 
 class CustomSwitch extends StatefulWidget {
   final String label;
+  final bool switchValue;
+  final ValueChanged<bool> onChanged;
 
   const CustomSwitch({
     super.key,
     required this.label,
+    required this.switchValue,
+    required this.onChanged,
   });
 
   @override
@@ -14,8 +19,6 @@ class CustomSwitch extends StatefulWidget {
 }
 
 class _CustomSwitchState extends State<CustomSwitch> {
-  bool switchValue = false;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -25,7 +28,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           width: 40,
           height: 20,
           toggleSize: 15.0,
-          value: switchValue,
+          value: widget.switchValue,
           borderRadius: 15.0,
           padding: 2.0,
           // toggleColor: Colors.transparent,
@@ -36,7 +39,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           // switchBorder: ,
           inactiveSwitchBorder: Border.all(
             width: 2,
-            color: const Color(0xffd1d5db),
+            color: grey,
           ),
           activeSwitchBorder: Border.all(
             width: 2,
@@ -44,15 +47,13 @@ class _CustomSwitchState extends State<CustomSwitch> {
           ),
           showOnOff: false,
           onToggle: (val) {
-            setState(() {
-              switchValue = val;
-            });
+            widget.onChanged(val);
           },
         ),
         const SizedBox(
           width: 10,
         ),
-        switchValue
+        widget.switchValue
             ? const Text(
                 'Deactivated',
                 style: TextStyle(

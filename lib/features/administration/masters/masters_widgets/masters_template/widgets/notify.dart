@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/features/theme/view/widgets/sidebar/sidebar_style.dart';
+import '/features/theme/view/widgets/sidebar/sidebar_style.dart';
 
 enum NotifyType {
+  initial,
   success,
   good,
   failture,
@@ -14,7 +15,7 @@ class Notify extends StatefulWidget {
   const Notify({
     super.key,
     required this.content,
-    this.type = NotifyType.success,
+    this.type = NotifyType.initial,
   });
 
   @override
@@ -41,6 +42,11 @@ class _NotifyState extends State<Notify> {
         backgroundColor = const Color(0xffe6f5f7);
         color = const Color(0xff036c79);
         borderColor = const Color(0xff82cdd6);
+        break;
+      case NotifyType.initial:
+        setState(() {
+          isClosed = true;
+        });
         break;
     }
     return isClosed

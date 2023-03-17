@@ -8,6 +8,7 @@ class CustomButton extends StatefulWidget {
   final double iconSize;
   final String text;
   final VoidCallback onClick;
+  final bool isDisabled;
   const CustomButton({
     Key? key,
     required this.backgroundColor,
@@ -22,6 +23,7 @@ class CustomButton extends StatefulWidget {
     required this.text,
     required this.onClick,
     this.iconSize = 20,
+    this.isDisabled = false,
   }) : super(key: key);
 
   @override
@@ -33,12 +35,19 @@ class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: widget.isDisabled ? MouseCursor.defer : SystemMouseCursors.click,
       onHover: (_) => setState(() {
-        isHover = true;
+        if (!widget.isDisabled) {
+          isHover = true;
+        }
+      }),
+      onExit: (_) => setState(() {
+        if (!widget.isDisabled) {
+          isHover = false;
+        }
       }),
       child: GestureDetector(
-        onTap: () => widget.onClick(),
+        onTap: () => widget.isDisabled ? null : widget.onClick(),
         child: FittedBox(
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -47,7 +56,9 @@ class _CustomButtonState extends State<CustomButton> {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: widget.backgroundColor,
+              color: isHover
+                  ? widget.backgroundColor.withAlpha(200)
+                  : widget.backgroundColor,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

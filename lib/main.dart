@@ -1,4 +1,4 @@
-import 'package:safety_eta/router.dart';
+import 'router.dart';
 import 'package:flutter/material.dart';
 
 import 'data/bloc/bloc.dart';
@@ -13,7 +13,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -29,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => AwarenessGroupsRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => AwarenessCategoriesRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -60,6 +62,15 @@ class MyApp extends StatelessWidget {
                   RepositoryProvider.of<AwarenessGroupsRepository>(context),
             ),
           ),
+          BlocProvider(
+            create: (context) => AwarenessCategoriesBloc(
+              awarenessCategoriesRepository:
+                  RepositoryProvider.of<AwarenessCategoriesRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => MastersTemplateBloc(),
+          )
         ],
         child: MaterialApp.router(
           title: 'Safety ETA',

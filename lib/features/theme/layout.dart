@@ -1,4 +1,4 @@
-import 'package:safety_eta/features/theme/view/widgets/topbar/topbar.dart';
+import '/features/theme/view/widgets/topbar/topbar.dart';
 import 'package:flutter/material.dart';
 import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 

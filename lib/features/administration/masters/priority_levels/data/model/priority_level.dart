@@ -8,12 +8,12 @@ class PriorityLevel extends Entity implements Equatable {
   final String priorityLevel;
   final Color colorAssociated;
   final String priorityType;
-  final bool active;
+  final bool isActive;
   PriorityLevel({
     required this.priorityLevel,
     required this.colorAssociated,
     required this.priorityType,
-    required this.active,
+    required this.isActive,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {
@@ -21,7 +21,7 @@ class PriorityLevel extends Entity implements Equatable {
       'Priority Level': priorityLevel,
       'Color associated': colorAssociated,
       'Priority Type': priorityType,
-      'Active': active,
+      'Active': isActive,
     };
   }
 
@@ -30,7 +30,7 @@ class PriorityLevel extends Entity implements Equatable {
         priorityLevel,
         colorAssociated,
         priorityType,
-        active,
+        isActive,
       ];
 
   @override
@@ -43,7 +43,7 @@ class PriorityLevel extends Entity implements Equatable {
       'Priority Level': priorityLevel,
       'Color associated': colorAssociated,
       'Priority Type': priorityType,
-      'Active': active,
+      'Active': isActive,
     };
   }
 
@@ -51,13 +51,27 @@ class PriorityLevel extends Entity implements Equatable {
     String? priorityLevel,
     Color? colorAssociated,
     String? priorityType,
-    bool? active,
+    bool? isActive,
   }) {
     return PriorityLevel(
       priorityLevel: priorityLevel ?? this.priorityLevel,
       colorAssociated: colorAssociated ?? this.colorAssociated,
       priorityType: priorityType ?? this.priorityType,
-      active: active ?? this.active,
+      isActive: isActive ?? this.isActive,
     );
+  }
+
+  @override
+  Map<String, EntityInputType> inputTypesToMap() {
+    return <String, EntityInputType>{
+      'Region': EntityInputType.singleSelect,
+      'Timezone': EntityInputType.multiSelect,
+    };
+  }
+  
+  @override
+  Map<String, dynamic> toMap() {
+    // TODO: implement toMap
+    throw UnimplementedError();
   }
 }

@@ -1,37 +1,86 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'regions_bloc.dart';
 
 class RegionsState extends Equatable {
   final List<Region> regions;
-  final List<String> worldRegions;
+  final List<String> regionNames;
   final List<String> timeZones;
-  final EntityStatus status;
+  final EntityStatus regionsRetrievedStatus;
+  final EntityStatus regionNamesRetrievedStatus;
+  final EntityStatus timezonesRetrievedStatus;
+  final String selectedRegionName;
+  final List<String> selectedTimezones;
+  final EntityStatus regionAddedStatus;
+  final EntityStatus regionEditedStatus;
+  final EntityStatus regionDeletedStatus;
+  final int selectedAssociatedSitesCount;
+  final bool selectedIsActive;
+
   const RegionsState({
     this.regions = const [],
-    this.status = EntityStatus.initial,
-    this.worldRegions = const [],
+    this.regionsRetrievedStatus = EntityStatus.initial,
+    this.regionNamesRetrievedStatus = EntityStatus.initial,
+    this.timezonesRetrievedStatus = EntityStatus.initial,
+    this.regionAddedStatus = EntityStatus.initial,
+    this.regionEditedStatus = EntityStatus.initial,
+    this.regionDeletedStatus = EntityStatus.initial,
+    this.selectedRegionName = '',
+    this.selectedTimezones = const [],
+    this.regionNames = const [],
     this.timeZones = const [],
+    this.selectedAssociatedSitesCount = 0,
+    this.selectedIsActive = true,
   });
 
   @override
   List<Object> get props => [
         regions,
-        status,
-        worldRegions,
+        regionsRetrievedStatus,
+        regionNamesRetrievedStatus,
+        timezonesRetrievedStatus,
+        regionNames,
+        selectedRegionName,
+        selectedTimezones,
         timeZones,
+        regionAddedStatus,
+        regionEditedStatus,
+        regionDeletedStatus,
+        selectedAssociatedSitesCount,
+        selectedIsActive,
       ];
 
   RegionsState copyWith({
     List<Region>? regions,
-    List<String>? worldRegions,
+    List<String>? regionNames,
     List<String>? timeZones,
-    EntityStatus? status,
+    EntityStatus? regionsRetrievedStatus,
+    EntityStatus? regionNamesRetrievedStatus,
+    EntityStatus? timezonesRetrievedStatus,
+    String? selectedRegionName,
+    List<String>? selectedTimezones,
+    EntityStatus? regionAddedStatus,
+    EntityStatus? regionEditedStatus,
+    EntityStatus? regionDeletedStatus,
+    int? selectedAssociatedSitesCount,
+    bool? selectedIsActive,
   }) {
     return RegionsState(
       regions: regions ?? this.regions,
-      worldRegions: worldRegions ?? this.worldRegions,
+      regionNames: regionNames ?? this.regionNames,
       timeZones: timeZones ?? this.timeZones,
-      status: status ?? this.status,
+      regionsRetrievedStatus:
+          regionsRetrievedStatus ?? this.regionsRetrievedStatus,
+      regionNamesRetrievedStatus:
+          regionNamesRetrievedStatus ?? this.regionNamesRetrievedStatus,
+      timezonesRetrievedStatus:
+          timezonesRetrievedStatus ?? this.timezonesRetrievedStatus,
+      selectedRegionName: selectedRegionName ?? this.selectedRegionName,
+      selectedTimezones: selectedTimezones ?? this.selectedTimezones,
+      regionAddedStatus: regionAddedStatus ?? this.regionAddedStatus,
+      regionEditedStatus: regionEditedStatus ?? this.regionEditedStatus,
+      regionDeletedStatus: regionDeletedStatus ?? this.regionDeletedStatus,
+      selectedAssociatedSitesCount:
+          selectedAssociatedSitesCount ?? this.selectedAssociatedSitesCount,
+      selectedIsActive: selectedIsActive ?? this.selectedIsActive,
     );
   }
 }

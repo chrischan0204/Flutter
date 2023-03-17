@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import '/constants/color.dart';
 
 class Criteria extends StatelessWidget {
   const Criteria({
@@ -22,20 +23,20 @@ class Criteria extends StatelessWidget {
             ),
             child: Text(
               label,
-              style: const TextStyle(
-                color: Color(0xff92959a),
+              style: TextStyle(
+                color: grey,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Roboto',
               ),
             ),
           )
-        : const Padding(
-            padding: EdgeInsets.only(left: 30),
+        : Padding(
+            padding: const EdgeInsets.only(left: 30),
             child: Icon(
               PhosphorIcons.dotsThree,
               size: 25,
-              color: Color(0xfff1f4f9),
+              color: lightTeal,
             ),
           );
   }

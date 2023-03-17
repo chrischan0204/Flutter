@@ -1,4 +1,4 @@
-import 'package:safety_eta/features/features.dart';
+import '/features/features.dart';
 import 'package:go_router/go_router.dart';
 
 import 'features/theme/data/repository/repository.dart';

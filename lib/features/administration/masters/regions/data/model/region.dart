@@ -1,18 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 import '/data/model/entity.dart';
 
 class Region extends Entity implements Equatable {
+  static List<String> regionsList = const [];
+  static List<String> timezonesList = const [];
   final String regionName;
   final List<String> timezonesAssociated;
-  final bool active;
+  final bool isActive;
+  final int? associatedSitesCount;
   Region({
     required this.regionName,
     required this.timezonesAssociated,
-    required this.active,
+    required this.isActive,
+    this.associatedSitesCount,
   });
 
   @override
@@ -20,7 +21,7 @@ class Region extends Entity implements Equatable {
     return <String, dynamic>{
       'Region Name': regionName,
       'Time Zones Associated': timezonesAssociated,
-      'Active': active,
+      'Active': isActive,
     };
   }
 
@@ -29,16 +30,16 @@ class Region extends Entity implements Equatable {
     return <String, dynamic>{
       'Region Name': regionName,
       'Time Zones Associated': timezonesAssociated,
-      'Active': active,
+      'Active': isActive,
     };
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         regionName,
         timezonesAssociated,
-        active,
+        isActive,
+        associatedSitesCount!,
       ];
 
   @override
@@ -47,20 +48,24 @@ class Region extends Entity implements Equatable {
   Region copyWith({
     String? regionName,
     List<String>? timezonesAssociated,
-    bool? active,
+    bool? isActive,
+    int? associatedSitesCount,
   }) {
     return Region(
       regionName: regionName ?? this.regionName,
       timezonesAssociated: timezonesAssociated ?? this.timezonesAssociated,
-      active: active ?? this.active,
+      isActive: isActive ?? this.isActive,
+      associatedSitesCount: associatedSitesCount ?? this.associatedSitesCount,
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'regionName': regionName,
       'timezonesAssociated': timezonesAssociated,
-      'active': active,
+      'isActive': isActive,
+      'associatedSitesCount': associatedSitesCount,
     };
   }
 
@@ -69,7 +74,16 @@ class Region extends Entity implements Equatable {
       regionName: map['regionName'] as String,
       timezonesAssociated:
           List<String>.from((map['timezonesAssociated'] as List<String>)),
-      active: map['active'] as bool,
+      isActive: map['isActive'] as bool,
+      associatedSitesCount: map['associatedSitesCount'] as int,
     );
+  }
+
+  @override
+  Map<String, EntityInputType> inputTypesToMap() {
+    return <String, EntityInputType>{
+      'Region': EntityInputType.singleSelect,
+      'Timezone': EntityInputType.multiSelect,
+    };
   }
 }

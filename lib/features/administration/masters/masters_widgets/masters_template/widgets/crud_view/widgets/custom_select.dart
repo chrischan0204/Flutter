@@ -1,43 +1,48 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:safety_eta/features/theme/view/widgets/sidebar/sidebar_style.dart';
+import '/constants/color.dart';
 
-class CustomSelect extends StatefulWidget {
+class CustomSingleSelect extends StatefulWidget {
   final List<String> items;
+  final String? selectedValue;
   final String hint;
+  final ValueChanged<String> onChanged;
+  final bool isDisabled;
 
-  const CustomSelect({
+  const CustomSingleSelect({
     super.key,
     required this.items,
+    this.selectedValue,
     required this.hint,
+    required this.onChanged,
+    this.isDisabled = false,
   });
 
   @override
-  State<CustomSelect> createState() => _CustomSelectState();
+  State<CustomSingleSelect> createState() => _CustomSingleSelectState();
 }
 
-class _CustomSelectState extends State<CustomSelect> {
-  String? selectedValue;
+class _CustomSingleSelectState extends State<CustomSingleSelect> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
         isExpanded: true,
         hint: Text(
-          widget.hint,
+          widget.isDisabled ? widget.selectedValue! : widget.hint,
           style: TextStyle(
             fontSize: 14,
-            color: sidebarColor,
+            color: darkTeal,
           ),
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
         ),
-        items: widget.items
+        items: (widget.isDisabled ? [] : widget.items)
             .map(
               (item) => DropdownMenuItem<String>(
                 value: item,
                 child: Text(
-                  item,
+                  item!,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -47,11 +52,9 @@ class _CustomSelectState extends State<CustomSelect> {
               ),
             )
             .toList(),
-        value: selectedValue,
+        value: widget.selectedValue,
         onChanged: (value) {
-          setState(() {
-            selectedValue = value as String;
-          });
+          widget.onChanged(value as String);
         },
         buttonStyleData: ButtonStyleData(
           height: 40,
@@ -59,8 +62,9 @@ class _CustomSelectState extends State<CustomSelect> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: const Color(0xffd1d5db),
+              color: grey,
             ),
+            color: widget.isDisabled ? lightTeal : Colors.transparent,
           ),
           // padding: const EdgeInsets.symmetric(
           //   horizontal: 16,

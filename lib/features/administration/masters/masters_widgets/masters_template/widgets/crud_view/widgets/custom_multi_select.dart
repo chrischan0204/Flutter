@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:safety_eta/features/theme/view/widgets/sidebar/sidebar_style.dart';
+import '/constants/color.dart';
 
 class CustomMultiSelect extends StatefulWidget {
   final List<String> items;
+  final List<String> selectedItems;
   final String hint;
+  final ValueChanged<List<String>> onChanged;
   const CustomMultiSelect({
     super.key,
     this.items = const [],
+    this.selectedItems = const [],
     required this.hint,
+    required this.onChanged,
   });
 
   @override
@@ -16,8 +20,6 @@ class CustomMultiSelect extends StatefulWidget {
 }
 
 class _CustomMultiSelectState extends State<CustomMultiSelect> {
-  List<String> selectedItems = [];
-
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
@@ -27,7 +29,7 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
           widget.hint,
           style: TextStyle(
             fontSize: 14,
-            color: sidebarColor,
+            color: darkTeal,
           ),
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
@@ -39,16 +41,15 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
             enabled: false,
             child: StatefulBuilder(
               builder: (context, menuSetState) {
-                final isSelected = selectedItems.contains(item);
+                final isSelected = widget.selectedItems.contains(item);
+
                 return InkWell(
                   onTap: () {
                     isSelected
-                        ? selectedItems.remove(item)
-                        : selectedItems.add(item);
-                    //This rebuilds the StatefulWidget to update the button's text
-                    setState(() {});
-                    //This rebuilds the dropdownMenu Widget to update the check mark
+                        ? widget.selectedItems.remove(item)
+                        : widget.selectedItems.add(item);
                     menuSetState(() {});
+                    widget.onChanged(widget.selectedItems);
                   },
                   child: Container(
                     height: double.infinity,
@@ -79,7 +80,7 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
           );
         }).toList(),
         //Use last selected item as the current value so if we've limited menu height, it scroll to last item.
-        value: selectedItems.isEmpty ? null : selectedItems.last,
+        value: widget.selectedItems.isEmpty ? null : widget.selectedItems.last,
         onChanged: (value) {},
         selectedItemBuilder: (context) {
           return widget.items.map(
@@ -87,7 +88,7 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
               return Container(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  selectedItems.join(', '),
+                  widget.selectedItems.join(', '),
                   style: const TextStyle(
                     fontSize: 14,
                     overflow: TextOverflow.ellipsis,
@@ -104,7 +105,7 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: const Color(0xffd1d5db),
+              color: grey,
             ),
           ),
           padding: const EdgeInsets.only(

@@ -7,12 +7,12 @@ class ObservationType extends Entity implements Equatable {
   final String observationType;
   final String severity;
   final String visibility;
-  final bool active;
+  final bool isActive;
   ObservationType({
     required this.observationType,
     required this.severity,
     required this.visibility,
-    required this.active,
+    required this.isActive,
   });
 
   @override
@@ -21,7 +21,7 @@ class ObservationType extends Entity implements Equatable {
       'Observation type': observationType,
       'Severity': severity,
       'Visibility': visibility,
-      'Active': active,
+      'Active': isActive,
     };
   }
 
@@ -30,7 +30,7 @@ class ObservationType extends Entity implements Equatable {
         observationType,
         severity,
         visibility,
-        active,
+        isActive,
       ];
 
   @override
@@ -42,7 +42,19 @@ class ObservationType extends Entity implements Equatable {
       'Observation type': observationType,
       'Severity': severity,
       'Visibility': visibility,
-      'Active': active,
+      'Active': isActive,
     };
+  }
+  
+  @override
+  Map<String, EntityInputType> inputTypesToMap() {
+    // TODO: implement inputTypesToMap
+    throw UnimplementedError();
+  }
+  
+  @override
+  Map<String, dynamic> toMap() {
+    // TODO: implement toMap
+    throw UnimplementedError();
   }
 }

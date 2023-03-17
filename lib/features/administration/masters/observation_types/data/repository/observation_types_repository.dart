@@ -7,25 +7,25 @@ class ObservationTypesRepository {
         observationType: 'Good Catch',
         severity: 'Good Catch',
         visibility: 'Everywhere	',
-        active: true,
+        isActive: true,
       ),
       ObservationType(
         observationType: 'Near Miss',
         severity: 'Near Miss',
         visibility: 'Everywhere	',
-        active: true,
+        isActive: true,
       ),
       ObservationType(
         observationType: 'Near Miss',
         severity: 'Unsafe',
         visibility: 'Everywhere	',
-        active: false,
+        isActive: false,
       ),
       ObservationType(
         observationType: 'Near Miss',
         severity: 'Unsafe',
         visibility: 'Everywhere	',
-        active: true,
+        isActive: true,
       ),
     ];
   }

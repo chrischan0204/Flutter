@@ -5,39 +5,39 @@ class AwarenessCategoriesRepository {
     return <AwarenessCategory>[
       AwarenessCategory(
         awarenessCategory: 'Electrical',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Environmental',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Equipment / Vehicle Use',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Excavation',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Fall Protection',
-        active: false,
+        isActive: false,
       ),
       AwarenessCategory(
         awarenessCategory: 'Fire prevention',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Health Hazards',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Housekeeping',
-        active: true,
+        isActive: true,
       ),
       AwarenessCategory(
         awarenessCategory: 'Manual Lifting',
-        active: true,
+        isActive: true,
       ),
 
     ];

@@ -9,25 +9,25 @@ class PriorityLevelsRepository {
         priorityLevel: 'Low',
         colorAssociated: Color(0xff3a7eb5),
         priorityType: 'Corrective',
-        active: true,
+        isActive: true,
       ),
       PriorityLevel(
         priorityLevel: 'Medium',
         colorAssociated: Color(0xfff5ce42),
         priorityType: 'Corrective',
-        active: true,
+        isActive: true,
       ),
       PriorityLevel(
         priorityLevel: 'High',
         colorAssociated: Color(0xffe8588f),
         priorityType: 'Corrective',
-        active: false,
+        isActive: false,
       ),
       PriorityLevel(
         priorityLevel: 'Positive',
         colorAssociated: Color(0xfff5e3df),
         priorityType: 'Positive',
-        active: true,
+        isActive: true,
       ),
     ];
   }
