@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '/data/model/entity.dart';
 import '../data/model/region.dart';
 import '/features/administration/masters/regions/data/repository/regions_repository.dart';
@@ -21,6 +23,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     on<SelectedAssociatedSitesCountChanged>(
         _onSelectedAssociatedSitesCountChanged);
     on<SelectedIsActiveChanged>(_onSelectedIsActiveChanged);
+    on<SelectedRegionIdChanged>(_onSelectedRegionIdChanged);
 
     on<RegionAdded>(_onRegionAdded);
     on<RegionEdited>(_onRegionEdited);
@@ -151,7 +154,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       );
       List<Region> regions = List.from(state.regions);
       int indexToDelete = regions
-          .indexWhere((region) => region.regionName == editedRegion.regionName);
+          .indexWhere((region) => region.id == editedRegion.id);
       regions.removeAt(indexToDelete);
       regions.insert(indexToDelete, editedRegion);
 
@@ -185,7 +188,8 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         event.region,
       );
       List<Region> regions = List.from(state.regions);
-      regions.removeWhere((region) => region.regionName == deletedRegion.regionName);
+      regions.removeWhere(
+          (region) => region.id == deletedRegion.id);
       emit(
         state.copyWith(
           regionDeletedStatus: EntityStatus.succuess,
@@ -244,6 +248,17 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     emit(
       state.copyWith(
         selectedIsActive: event.selectedIsActive,
+      ),
+    );
+  }
+
+  void _onSelectedRegionIdChanged(
+    SelectedRegionIdChanged event,
+    Emitter<RegionsState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        selectedRegionId: event.selectedRegionId,
       ),
     );
   }

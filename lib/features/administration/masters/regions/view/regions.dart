@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:safety_eta/data/model/entity.dart';
+import 'package:uuid/uuid.dart';
 import '../../masters_widgets/masters_template/masters_template.dart';
 import '../../masters_widgets/masters_template/widgets/crud_view/widgets/widgets.dart';
 import '../../masters_widgets/masters_template/widgets/notify.dart';
@@ -32,7 +33,6 @@ class _RegionsState extends State<Regions> {
   Widget build(BuildContext context) {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
-        // print(state.selectedIsActive);
         if (state.regionAddedStatus == EntityStatus.succuess) {
           setState(() {
             notifyType = NotifyType.success;
@@ -76,6 +76,7 @@ class _RegionsState extends State<Regions> {
               regionsBloc.add(
                 RegionAdded(
                   region: Region(
+                    id: const Uuid().v1(),
                     regionName: state.selectedRegionName,
                     timezonesAssociated: state.selectedTimezones,
                     isActive: true,
@@ -91,6 +92,7 @@ class _RegionsState extends State<Regions> {
               regionsBloc.add(
                 RegionEdited(
                   region: Region(
+                    id: state.selectedRegionId,
                     regionName: state.selectedRegionName,
                     timezonesAssociated: state.selectedTimezones,
                     isActive: state.selectedIsActive,
@@ -104,6 +106,7 @@ class _RegionsState extends State<Regions> {
             regionsBloc.add(
               RegionDeleted(
                 region: Region(
+                  id: state.selectedRegionId,
                   regionName: state.selectedRegionName,
                   timezonesAssociated: state.selectedTimezones,
                   isActive: state.selectedIsActive,
@@ -144,6 +147,12 @@ class _RegionsState extends State<Regions> {
                 selectedIsActive: map['isActive'] as bool,
               ),
             );
+
+            regionsBloc.add(
+              SelectedRegionIdChanged(
+                selectedRegionId: map['id'] as String,
+              ),
+            );
           },
           crudItems: [
             CrudItem(
@@ -171,7 +180,6 @@ class _RegionsState extends State<Regions> {
                 selectedItems: state.selectedTimezones,
                 hint: 'Select Time Zone',
                 onChanged: (value) {
-                  // print(value);
                   regionsBloc.add(
                     SelectedTimezonesChanged(
                       selectedTimezones: value,

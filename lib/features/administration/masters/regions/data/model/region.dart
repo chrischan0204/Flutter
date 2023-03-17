@@ -62,6 +62,7 @@ class Region extends Entity implements Equatable {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'regionName': regionName,
       'timezonesAssociated': timezonesAssociated,
       'isActive': isActive,

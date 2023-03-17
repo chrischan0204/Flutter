@@ -95,8 +95,13 @@ class SelectedIsActiveChanged extends RegionsEvent {
   });
 }
 
+class SelectedRegionIdChanged extends RegionsEvent {
+  final String selectedRegionId;
+  const SelectedRegionIdChanged({
+    required this.selectedRegionId,
+  });
+}
+
 class RegionsStateInited extends RegionsEvent {}
 
-class RegionsCrudStateInited extends RegionsEvent {
-  
-}
+class RegionsCrudStateInited extends RegionsEvent {}

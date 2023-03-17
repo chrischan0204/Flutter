@@ -7,13 +7,14 @@ class RegionsState extends Equatable {
   final EntityStatus regionsRetrievedStatus;
   final EntityStatus regionNamesRetrievedStatus;
   final EntityStatus timezonesRetrievedStatus;
+  final String selectedRegionId;
   final String selectedRegionName;
   final List<String> selectedTimezones;
+  final int selectedAssociatedSitesCount;
+  final bool selectedIsActive;
   final EntityStatus regionAddedStatus;
   final EntityStatus regionEditedStatus;
   final EntityStatus regionDeletedStatus;
-  final int selectedAssociatedSitesCount;
-  final bool selectedIsActive;
 
   const RegionsState({
     this.regions = const [],
@@ -29,6 +30,7 @@ class RegionsState extends Equatable {
     this.timeZones = const [],
     this.selectedAssociatedSitesCount = 0,
     this.selectedIsActive = true,
+    this.selectedRegionId = '',
   });
 
   @override
@@ -46,6 +48,7 @@ class RegionsState extends Equatable {
         regionDeletedStatus,
         selectedAssociatedSitesCount,
         selectedIsActive,
+        selectedRegionId,
       ];
 
   RegionsState copyWith({
@@ -62,6 +65,7 @@ class RegionsState extends Equatable {
     EntityStatus? regionDeletedStatus,
     int? selectedAssociatedSitesCount,
     bool? selectedIsActive,
+    String? selectedRegionId,
   }) {
     return RegionsState(
       regions: regions ?? this.regions,
@@ -81,6 +85,7 @@ class RegionsState extends Equatable {
       selectedAssociatedSitesCount:
           selectedAssociatedSitesCount ?? this.selectedAssociatedSitesCount,
       selectedIsActive: selectedIsActive ?? this.selectedIsActive,
+      selectedRegionId: selectedRegionId ?? this.selectedRegionId,
     );
   }
 }
