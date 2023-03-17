@@ -24,7 +24,7 @@ class _CollapseButtonState extends State<CollapseButton> {
     return AnimatedPositioned(
       left: widget.isSidebarExtended
           ? sidebarWidth - 50
-          : shrinkSidebarWidth - 50,
+          : shrinkSidebarWidth - 45,
       top: 20,
       duration: const Duration(milliseconds: 200),
       curve: Curves.fastOutSlowIn,

@@ -56,6 +56,9 @@ class _SidebarState extends State<Sidebar> {
         return Stack(
           children: [
             Container(
+              // constraints: BoxConstraints(
+              //   minHeight: MediaQuery.of(context).size.height,
+              // ),
               decoration: BoxDecoration(
                 color: sidebarColor,
               ),

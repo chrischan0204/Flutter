@@ -32,7 +32,7 @@ class Criteria extends StatelessWidget {
             ),
           )
         : Padding(
-            padding: const EdgeInsets.only(left: 30),
+            padding: const EdgeInsets.only(left: 17),
             child: Icon(
               PhosphorIcons.dotsThree,
               size: 25,

@@ -145,6 +145,7 @@ class _SidebarItemState extends State<SidebarItem>
             });
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomPopupMenu(
                 controller: customPopupMenuController,
@@ -334,9 +335,11 @@ class _SidebarItemState extends State<SidebarItem>
                 color: isHover ? darkGrey : Colors.transparent,
                 height: sidebarItemHeight,
                 width: sidebarWidth,
+                alignment: Alignment.center,
                 child: Container(
                   padding: EdgeInsets.only(
-                    left: 30 + (widget.isSubItem ? 15 : 0),
+                    left: (state.isSidebarExtended ? 30 : 17) +
+                        (widget.isSubItem ? 15 : 0),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
