@@ -132,67 +132,67 @@ class _SidebarItemState extends State<SidebarItem>
         }
       },
       builder: (context, state) {
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          onEnter: (event) {
-            setState(() {
-              isHover = true;
-            });
-          },
-          onExit: (event) {
-            setState(() {
-              isHover = false;
-            });
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomPopupMenu(
-                controller: customPopupMenuController,
-                menuBuilder: () => MouseRegion(
-                  onExit: (event) {
-                    _hidePopupMenu(state);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: sidebarColor,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          child: Text(
-                            widget.label,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Roboto',
-                              color: Colors.white,
-                            ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomPopupMenu(
+              controller: customPopupMenuController,
+              menuBuilder: () => MouseRegion(
+                onExit: (event) {
+                  _hidePopupMenu(state);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: sidebarColor,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 30.0,
+                        ),
+                        child: Text(
+                          widget.label,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Roboto',
+                            color: Colors.white,
                           ),
                         ),
-                        ..._buildSubItemsMenu(),
-                      ],
-                    ),
+                      ),
+                      ..._buildSubItemsMenu(),
+                    ],
                   ),
                 ),
-                barrierColor: Colors.transparent,
-                pressType: PressType.longPress,
-                showArrow: false,
-                horizontalMargin: shrinkSidebarWidth + 5,
-                verticalMargin: -sidebarItemHeight - 30,
+              ),
+              barrierColor: Colors.transparent,
+              pressType: PressType.longPress,
+              showArrow: false,
+              horizontalMargin: shrinkSidebarWidth + 5,
+              verticalMargin: -sidebarItemHeight - 30,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                onEnter: (event) {
+                  setState(() {
+                    isHover = true;
+                  });
+                },
+                onExit: (event) {
+                  setState(() {
+                    isHover = false;
+                  });
+                },
                 child: _buildItemBody(state),
               ),
-              ...(state.isSidebarExtended && isSidebarItemExtended
-                  ? _buildSubItemsMenu()
-                  : []),
-            ],
-          ),
+            ),
+            ...(state.isSidebarExtended && isSidebarItemExtended
+                ? _buildSubItemsMenu()
+                : []),
+          ],
         );
       },
     );
