@@ -25,23 +25,33 @@ class Notify extends StatefulWidget {
 class _NotifyState extends State<Notify> {
   bool isHover = false;
   bool isClosed = false;
+  Color borderColor = const Color(0xff82cbb4);
+  Color backgroundColor = const Color(0xffe6f5f0);
+  Color color = const Color(0xff04694a);
+
+  @override
+  void didUpdateWidget(covariant Notify oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Color borderColor = const Color(0xff82cbb4);
-    Color backgroundColor = const Color(0xffe6f5f0);
-    Color color = const Color(0xff04694a);
     switch (widget.type) {
       case NotifyType.success:
         break;
       case NotifyType.failture:
-        backgroundColor = const Color(0xfffdecec);
-        color = const Color(0xffa73030);
-        borderColor = const Color(0xfff7a2a2);
+        setState(() {
+          backgroundColor = const Color(0xfffdecec);
+          color = const Color(0xffa73030);
+          borderColor = const Color(0xfff7a2a2);
+        });
         break;
       case NotifyType.good:
-        backgroundColor = const Color(0xffe6f5f7);
-        color = const Color(0xff036c79);
-        borderColor = const Color(0xff82cdd6);
+        setState(() {
+          backgroundColor = const Color(0xffe6f5f7);
+          color = const Color(0xff036c79);
+          borderColor = const Color(0xff82cdd6);
+        });
         break;
       case NotifyType.initial:
         setState(() {
@@ -54,7 +64,13 @@ class _NotifyState extends State<Notify> {
         : Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: backgroundColor,
+              color: Color(
+                widget.type == NotifyType.success
+                    ? 0xffe6f5f0
+                    : widget.type == NotifyType.good
+                        ? 0xffe6f5f7
+                        : 0xfffdecec,
+              ),
               border: Border.all(
                 color: borderColor,
               ),

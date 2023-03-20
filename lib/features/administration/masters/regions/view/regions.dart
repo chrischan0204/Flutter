@@ -34,6 +34,7 @@ class _RegionsState extends State<Regions> {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
         if (state.regionAddedStatus == EntityStatus.succuess) {
+          print('changed');
           setState(() {
             notifyType = NotifyType.success;
             notifyContent = 'Region has been successfully added....';

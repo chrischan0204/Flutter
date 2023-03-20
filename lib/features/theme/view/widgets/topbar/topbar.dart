@@ -17,6 +17,7 @@ class Topbar extends StatelessWidget {
       decoration: BoxDecoration(
         color: sidebarColor,
       ),
+      padding: const EdgeInsets.only(right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
