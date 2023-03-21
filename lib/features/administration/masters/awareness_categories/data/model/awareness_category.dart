@@ -63,7 +63,7 @@ class AwarenessCategory extends Entity implements Equatable {
     // TODO: implement inputTypesToMap
     throw UnimplementedError();
   }
-
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,

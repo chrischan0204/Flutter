@@ -42,7 +42,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/.env
+    - env.development
   fonts:
     - family: Roboto
       fonts:

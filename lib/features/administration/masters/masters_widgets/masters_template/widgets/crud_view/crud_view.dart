@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:strings/strings.dart';
 
 import '/global_widgets/global_widget.dart';
 import 'widgets/widgets.dart';
@@ -111,7 +109,7 @@ class _CrudViewState extends State<CrudView> {
             horizontal: 20,
           ),
           child: Row(
-            children: [
+            children: const [
               // widget.crudType == CrudType.editOrDelete
               //     ? CustomButton(
               //         backgroundColor: const Color(

@@ -15,7 +15,7 @@ class CustomColorPicker extends StatefulWidget {
 }
 
 class _CustomColorPickerState extends State<CustomColorPicker> {
-  Color pickerColor = Color(0xff443a49);
+  Color pickerColor = const Color(0xff443a49);
   void changeColor(Color color) {
     setState(() => pickerColor = color);
   }

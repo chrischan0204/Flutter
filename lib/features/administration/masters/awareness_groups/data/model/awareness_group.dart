@@ -51,7 +51,6 @@ class AwarenessGroup extends Entity implements Equatable {
 
   @override
   Map<String, EntityInputType> inputTypesToMap() {
-    // TODO: implement inputTypesToMap
     throw UnimplementedError();
   }
 

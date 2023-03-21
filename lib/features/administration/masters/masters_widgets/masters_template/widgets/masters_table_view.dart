@@ -134,8 +134,13 @@ class _DataTableViewState extends State<DataTableView> {
             columns: _buildColumns(),
             rows: _buildRows(),
           )
-        : const Center(
-            child: CircularProgressIndicator(),
+        : Container(
+            margin: const EdgeInsets.only(
+              top: 200,
+            ),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
           );
   }
 }

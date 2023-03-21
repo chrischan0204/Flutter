@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safety_eta/features/administration/masters/masters_widgets/masters_template/widgets/crud_view/widgets/custom_select.dart';
 import 'package:safety_eta/features/administration/masters/masters_widgets/masters_template/widgets/crud_view/widgets/custom_textfield.dart';
 
 import '../../masters_widgets/masters_template/widgets/crud_view/widgets/crud_item.dart';

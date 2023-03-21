@@ -96,8 +96,7 @@ setupHydratedLocalStorage() async {
 }
 
 loadEnv() async {
-  await dotenv
-      .load(fileName: kReleaseMode ? "assets/.env" : ".env", mergeWith: {
+  await dotenv.load(fileName: kReleaseMode ? 'env.development' : '../env.development',mergeWith: {
     'TEST_VAR': '5',
   });
 }
