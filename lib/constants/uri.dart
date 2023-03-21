@@ -21,8 +21,15 @@ class ApiUri {
       host: host,
       path: '/api/Timezones/GetTimeZonesForRegion');
 
-  static Uri getPriorityUri = Uri(
-      scheme: 'https',
-      host: host,
-      path: '/api/PriorityLevels');
+  static Uri getPrioritiesUri = Uri(
+    scheme: 'https',
+    host: host,
+    path: '/api/PriorityLevels',
+  );
+
+  static Uri getObservationTypesUri = Uri(
+    scheme: 'https',
+    host: host,
+    path: '/api/ObservationType',
+  );
 }
