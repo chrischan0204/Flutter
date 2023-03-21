@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
@@ -46,9 +47,11 @@ class MastersTemplate extends StatefulWidget {
 }
 
 class _CrudState extends State<MastersTemplate> {
+  late double positionRight;
   @override
   void initState() {
     super.initState();
+
     context.read<MastersTemplateBloc>().add(
           const MastersTemplateCrudTypeChanged(
             crudType: CrudType.add,
@@ -57,80 +60,111 @@ class _CrudState extends State<MastersTemplate> {
   }
 
   @override
+  void didChangeDependencies() {
+    positionRight = -MediaQuery.of(context).size.width / 4;
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<MastersTemplateBloc, MastersTemplateState>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        return Stack(
           children: [
-            Notify(
-              content: widget.notifyContent,
-              type: widget.notifyType,
-            ),
-            PageTitle(
-              title: widget.title,
-            ),
-            const CustomDivider(),
-            Row(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Description(
-                          description: widget.description,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                width: 1,
-                                color: sidebarColor,
-                              ),
+                Notify(
+                  content: widget.notifyContent,
+                  type: widget.notifyType,
+                ),
+                PageTitle(
+                  title: widget.title,
+                ),
+                const CustomDivider(),
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Description(
+                        description: widget.description,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              width: 1,
+                              color: sidebarColor,
                             ),
                           ),
-                          child: DataTableView(
-                            entities: widget.entities,
-                            onRowClick: widget.onRowClick,
-                          ),
-                        )
-                      ],
-                    ),
+                        ),
+                        child: DataTableView(
+                          entities: widget.entities,
+                          onRowClick: (_) {
+                            widget.onRowClick(_);
+                            setState(() {
+                              positionRight = 0;
+                            });
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 5 / 6,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: CrudView(
-                      crudType: state.crudType,
-                      label: widget.label,
-                      note: widget.note,
-                      crudItems: widget.crudItems,
-                      deletable: widget.deletable,
-                      addEntity: widget.addEntity,
-                      editEntity: widget.editEntity,
-                      deleteEntity: widget.deleteEntity,
-                      isDeactive: widget.isDeactive,
-                      onActiveChanged: (value) => widget.onActiveChanged(value),
-                    ),
-                  ),
-                ),
+                )
               ],
+            ),
+            AnimatedPositioned(
+              top: 0,
+              right: positionRight,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 4,
+                height: 1000,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 30,
+                ),
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'North America',
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                positionRight =
+                                    -MediaQuery.of(context).size.width / 4;
+                              });
+                            },
+                            icon: const Icon(
+                              PhosphorIcons.arrowCircleRight,
+                              size: 20,
+                              color: Color(0xffef4444),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         );
