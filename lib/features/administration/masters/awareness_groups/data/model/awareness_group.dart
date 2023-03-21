@@ -7,6 +7,7 @@ class AwarenessGroup extends Entity implements Equatable {
   final String awarnessGroup;
   AwarenessGroup({
     required this.awarnessGroup,
+    required super.id,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {
@@ -32,18 +33,20 @@ class AwarenessGroup extends Entity implements Equatable {
 
   AwarenessGroup copyWith({
     String? awarnessGroup,
+    String? id,
   }) {
     return AwarenessGroup(
       awarnessGroup: awarnessGroup ?? this.awarnessGroup,
+      id: id ?? this.id,
     );
   }
-  
+
   @override
   Map<String, EntityInputType> inputTypesToMap() {
     // TODO: implement inputTypesToMap
     throw UnimplementedError();
   }
-  
+
   @override
   Map<String, dynamic> toMap() {
     // TODO: implement toMap

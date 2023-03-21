@@ -42,29 +42,29 @@ class _ObservationTypesState extends State<ObservationTypes> {
                 onChanged: (value) {},
               ),
             ),
-            CrudItem(
-              label: 'Severity (*)',
-              content: CustomSingleSelect(
-                items: const [
-                  'Good Catch',
-                  'Near Miss',
-                  'Positive',
-                ],
-                hint: 'Select Severity',
-                onChanged: (value) {},
-              ),
-            ),
-            CrudItem(
-              label: 'Severity (*)',
-              content: CustomSingleSelect(
-                items: const [
-                  'Everywhere',
-                  'Assessment only',
-                ],
-                hint: 'Select Visibility',
-                onChanged: (value) {},
-              ),
-            ),
+            // CrudItem(
+            //   label: 'Severity (*)',
+            //   content: CustomSingleSelect(
+            //     items: const [
+            //       'Good Catch',
+            //       'Near Miss',
+            //       'Positive',
+            //     ],
+            //     hint: 'Select Severity',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
+            // CrudItem(
+            //   label: 'Severity (*)',
+            //   content: CustomSingleSelect(
+            //     items: const [
+            //       'Everywhere',
+            //       'Assessment only',
+            //     ],
+            //     hint: 'Select Visibility',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
           ],
         );
       },

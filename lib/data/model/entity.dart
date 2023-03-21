@@ -1,8 +1,13 @@
 abstract class Entity {
+  final String id;
+
+  Entity({
+    required this.id,
+  });
   Map<String, dynamic> toMap();
   Map<String, dynamic> tableItemsToMap();
   Map<String, dynamic> detailItemsToMap();
-  Map<String, EntityInputType> inputTypesToMap(); 
+  Map<String, EntityInputType> inputTypesToMap();
 }
 
 enum EntityInputType {

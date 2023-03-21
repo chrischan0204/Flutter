@@ -5,7 +5,7 @@ import '/data/bloc/bloc.dart';
 import '/data/model/entity.dart';
 
 class DataTableView extends StatefulWidget {
-  final ValueChanged<Map<String, dynamic>> onRowClick;
+  final ValueChanged<Entity> onRowClick;
   const DataTableView({
     super.key,
     this.entities = const [],
@@ -82,7 +82,7 @@ class _DataTableViewState extends State<DataTableView> {
                               crudType: CrudType.editOrDelete,
                             ),
                           );
-                      widget.onRowClick(entity.toMap());
+                      widget.onRowClick(entity);
                     },
                     child: const Icon(
                       PhosphorIcons.caretDoubleRight,

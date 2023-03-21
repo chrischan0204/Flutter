@@ -5,24 +5,25 @@ import '/data/model/entity.dart';
 
 class AwarenessCategory extends Entity implements Equatable {
   final String awarenessCategory;
-  final bool isActive;
+  final bool active;
   AwarenessCategory({
     required this.awarenessCategory,
-    required this.isActive,
+    required this.active,
+    required super.id,
   });
 
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
       'Awareness Category': awarenessCategory,
-      'Active': isActive,
+      'Active': active,
     };
   }
 
   @override
   List<Object?> get props => [
         awarenessCategory,
-        isActive,
+        active,
       ];
 
   @override
@@ -32,26 +33,28 @@ class AwarenessCategory extends Entity implements Equatable {
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
       'Awareness Category': awarenessCategory,
-      'Active': isActive,
+      'Active': active,
     };
   }
 
   AwarenessCategory copyWith({
+    String? id,
     String? awarenessCategory,
-    bool? isActive,
+    bool? active,
   }) {
     return AwarenessCategory(
+      id: id ?? this.id,
       awarenessCategory: awarenessCategory ?? this.awarenessCategory,
-      isActive: isActive ?? this.isActive,
+      active: active ?? this.active,
     );
   }
-  
+
   @override
   Map<String, EntityInputType> inputTypesToMap() {
     // TODO: implement inputTypesToMap
     throw UnimplementedError();
   }
-  
+
   @override
   Map<String, dynamic> toMap() {
     // TODO: implement toMap

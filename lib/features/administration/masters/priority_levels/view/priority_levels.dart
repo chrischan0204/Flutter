@@ -43,17 +43,17 @@ class _PriorityLevelsState extends State<PriorityLevels> {
                 onChanged: (value) {},
               ),
             ),
-            CrudItem(
-              label: 'Priority Type (*)',
-              content: CustomSingleSelect(
-                items: [
-                  'Corrective',
-                  'Positive',
-                ],
-                hint: 'Select Type',
-                onChanged: (value) {},
-              ),
-            ),
+            // CrudItem(
+            //   label: 'Priority Type (*)',
+            //   content: CustomSingleSelect(
+            //     items: [
+            //       'Corrective',
+            //       'Positive',
+            //     ],
+            //     hint: 'Select Type',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
             CrudItem(
               label: 'Color (*)',
               content: CustomColorPicker(

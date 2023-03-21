@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'router.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +8,7 @@ import 'data/repository/repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await loadEnv();
   await setupHydratedLocalStorage();
   runApp(const MyApp());
 }
@@ -89,4 +92,10 @@ setupHydratedLocalStorage() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: HydratedStorage.webStorageDirectory,
   );
+}
+
+loadEnv() async {
+  await dotenv.load(fileName: ".env", mergeWith: {
+    'TEST_VAR': '5',
+  });
 }

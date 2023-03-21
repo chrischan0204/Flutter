@@ -7,12 +7,13 @@ class ObservationType extends Entity implements Equatable {
   final String observationType;
   final String severity;
   final String visibility;
-  final bool isActive;
+  final bool active;
   ObservationType({
+    required super.id,
     required this.observationType,
     required this.severity,
     required this.visibility,
-    required this.isActive,
+    required this.active,
   });
 
   @override
@@ -21,7 +22,7 @@ class ObservationType extends Entity implements Equatable {
       'Observation type': observationType,
       'Severity': severity,
       'Visibility': visibility,
-      'Active': isActive,
+      'Active': active,
     };
   }
 
@@ -30,7 +31,7 @@ class ObservationType extends Entity implements Equatable {
         observationType,
         severity,
         visibility,
-        isActive,
+        active,
       ];
 
   @override
@@ -42,7 +43,7 @@ class ObservationType extends Entity implements Equatable {
       'Observation type': observationType,
       'Severity': severity,
       'Visibility': visibility,
-      'Active': isActive,
+      'Active': active,
     };
   }
   

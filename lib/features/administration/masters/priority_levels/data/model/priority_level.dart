@@ -8,12 +8,13 @@ class PriorityLevel extends Entity implements Equatable {
   final String priorityLevel;
   final Color colorAssociated;
   final String priorityType;
-  final bool isActive;
+  final bool active;
   PriorityLevel({
+    required super.id,
     required this.priorityLevel,
     required this.colorAssociated,
     required this.priorityType,
-    required this.isActive,
+    required this.active,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {
@@ -21,7 +22,7 @@ class PriorityLevel extends Entity implements Equatable {
       'Priority Level': priorityLevel,
       'Color associated': colorAssociated,
       'Priority Type': priorityType,
-      'Active': isActive,
+      'Active': active,
     };
   }
 
@@ -30,7 +31,7 @@ class PriorityLevel extends Entity implements Equatable {
         priorityLevel,
         colorAssociated,
         priorityType,
-        isActive,
+        active,
       ];
 
   @override
@@ -43,21 +44,23 @@ class PriorityLevel extends Entity implements Equatable {
       'Priority Level': priorityLevel,
       'Color associated': colorAssociated,
       'Priority Type': priorityType,
-      'Active': isActive,
+      'Active': active,
     };
   }
 
   PriorityLevel copyWith({
+    String? id,
     String? priorityLevel,
     Color? colorAssociated,
     String? priorityType,
-    bool? isActive,
+    bool? active,
   }) {
     return PriorityLevel(
+      id: id ?? this.id,
       priorityLevel: priorityLevel ?? this.priorityLevel,
       colorAssociated: colorAssociated ?? this.colorAssociated,
       priorityType: priorityType ?? this.priorityType,
-      isActive: isActive ?? this.isActive,
+      active: active ?? this.active,
     );
   }
 

@@ -16,7 +16,7 @@ class MastersTemplate extends StatefulWidget {
   final VoidCallback addEntity;
   final VoidCallback editEntity;
   final VoidCallback deleteEntity;
-  final ValueChanged<Map<String, dynamic>> onRowClick;
+  final ValueChanged<Entity> onRowClick;
   final String notifyContent;
   final NotifyType notifyType;
   final bool deletable;

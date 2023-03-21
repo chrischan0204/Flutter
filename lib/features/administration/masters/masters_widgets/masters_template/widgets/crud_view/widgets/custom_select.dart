@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/constants/color.dart';
 
 class CustomSingleSelect extends StatefulWidget {
-  final List<String> items;
+  final Map<String, String> items;
   final String? selectedValue;
   final String hint;
   final ValueChanged<String> onChanged;
@@ -37,12 +37,14 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
         ),
-        items: (widget.isDisabled ? [] : widget.items)
+        items: (widget.isDisabled
+                ? <String>[]
+                : widget.items.keys.map((entry) => entry).toList())
             .map(
               (item) => DropdownMenuItem<String>(
                 value: item,
                 child: Text(
-                  item!,
+                  item,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -54,7 +56,7 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
             .toList(),
         value: widget.selectedValue,
         onChanged: (value) {
-          widget.onChanged(value as String);
+          widget.onChanged(widget.items[value] as String);
         },
         buttonStyleData: ButtonStyleData(
           height: 40,
@@ -66,9 +68,6 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
             ),
             color: widget.isDisabled ? lightTeal : Colors.transparent,
           ),
-          // padding: const EdgeInsets.symmetric(
-          //   horizontal: 16,
-          // ),
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,

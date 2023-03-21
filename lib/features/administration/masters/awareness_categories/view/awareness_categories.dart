@@ -40,14 +40,14 @@ class _AwarenessCategoriesState extends State<AwarenessCategories> {
           onRowClick: (value) {},
           onActiveChanged: (value) {},
           crudItems: [
-            CrudItem(
-              label: 'Awareness Group (*)',
-              content: CustomSingleSelect(
-                items: state.awarenessGroups,
-                hint: 'Select Awareness Group',
-                onChanged: (value) {},
-              ),
-            ),
+            // CrudItem(
+            //   label: 'Awareness Group (*)',
+            //   content: CustomSingleSelect(
+            //     items: state.awarenessGroups,
+            //     hint: 'Select Awareness Group',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
             CrudItem(
               label: 'Awareness Group (*)',
               content: CustomTextField(

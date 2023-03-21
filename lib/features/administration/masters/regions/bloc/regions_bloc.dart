@@ -1,8 +1,5 @@
-import 'package:uuid/uuid.dart';
-
-import '/data/model/entity.dart';
-import '../data/model/region.dart';
-import '/features/administration/masters/regions/data/repository/regions_repository.dart';
+import '/data/repository/repository.dart';
+import '/data/model/model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,16 +11,17 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   RegionsBloc({
     required this.regionsRepository,
   }) : super(const RegionsState()) {
-    on<RegionsRetrieved>(_onRegionsRetrieved);
-    on<RegionNamesRetrieved>(_onRegionNamesRetrieved);
-    on<TimeZonesRetrievedByRegion>(_onTimeZonesRetrievedByRegion);
+    on<AssignedRegionsRetrieved>(_onAssignedRegionsRetrieved);
+    on<UnassignedRegionsRetrieved>(_onUnassignedRegionsRetrieved);
+    on<TimeZonesRetrievedForRegion>(_onTimeZonesRetrievedForRegion);
 
-    on<SelectedRegionNameChanged>(_onSelectedRegionNameChanged);
-    on<SelectedTimezonesChanged>(_onSelectedTimezonesChanged);
-    on<SelectedAssociatedSitesCountChanged>(
-        _onSelectedAssociatedSitesCountChanged);
-    on<SelectedIsActiveChanged>(_onSelectedIsActiveChanged);
-    on<SelectedRegionIdChanged>(_onSelectedRegionIdChanged);
+    on<SelectedRegionChanged>(_onSelectedRegionChanged);
+    // on<SelectedRegionNameChanged>(_onSelectedRegionNameChanged);
+    // on<SelectedTimezonesChanged>(_onSelectedTimezonesChanged);
+    // on<SelectedAssociatedSitesCountChanged>(
+    //     _onSelectedAssociatedSitesCountChanged);
+    // on<SelectedActiveChanged>(_onSelectedActiveChanged);
+    // on<SelectedRegionIdChanged>(_onSelectedRegionIdChanged);
 
     on<RegionAdded>(_onRegionAdded);
     on<RegionEdited>(_onRegionEdited);
@@ -32,58 +30,61 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     on<RegionsStateInited>(_onRegionsStateInited);
   }
 
-  Future<void> _onRegionsRetrieved(
-      RegionsRetrieved event, Emitter<RegionsState> emit) async {
+  Future<void> _onAssignedRegionsRetrieved(
+      AssignedRegionsRetrieved event, Emitter<RegionsState> emit) async {
     emit(
       state.copyWith(
-        regionsRetrievedStatus: EntityStatus.loading,
+        unassignedRegionsRetrievedStatus: EntityStatus.loading,
       ),
     );
     try {
-      List<Region> regions = await regionsRepository.getRegions();
+      List<Region> assignedRegions =
+          await regionsRepository.getAssignedRegions();
       emit(
         state.copyWith(
-          regions: regions,
-          regionsRetrievedStatus: EntityStatus.succuess,
+          assignedRegions: assignedRegions,
+          unassignedRegionsRetrievedStatus: EntityStatus.succuess,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          regionsRetrievedStatus: EntityStatus.failure,
+          unassignedRegionsRetrievedStatus: EntityStatus.failure,
         ),
       );
     }
   }
 
-  Future<void> _onRegionNamesRetrieved(
-    RegionNamesRetrieved event,
+  Future<void> _onUnassignedRegionsRetrieved(
+    UnassignedRegionsRetrieved event,
     Emitter<RegionsState> emit,
   ) async {
     emit(
       state.copyWith(
-        regionNamesRetrievedStatus: EntityStatus.loading,
+        assignedRegionsRetrievedStatus: EntityStatus.loading,
       ),
     );
     try {
-      List<String> regionNames = await regionsRepository.getRegionNames();
+      List<Region> unassignedRegions =
+          await regionsRepository.getUnassignedRegions();
       emit(
         state.copyWith(
-          regionNames: regionNames,
-          regionNamesRetrievedStatus: EntityStatus.succuess,
+          unassignedRegions: unassignedRegions,
+          assignedRegionsRetrievedStatus: EntityStatus.succuess,
         ),
       );
     } catch (e) {
+      print(e.toString());
       emit(
         state.copyWith(
-          regionNamesRetrievedStatus: EntityStatus.failure,
+          assignedRegionsRetrievedStatus: EntityStatus.failure,
         ),
       );
     }
   }
 
-  Future<void> _onTimeZonesRetrievedByRegion(
-    TimeZonesRetrievedByRegion event,
+  Future<void> _onTimeZonesRetrievedForRegion(
+    TimeZonesRetrievedForRegion event,
     Emitter<RegionsState> emit,
   ) async {
     emit(
@@ -92,8 +93,8 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       ),
     );
     try {
-      List<String> timezones = await regionsRepository.getTimezonesByRegion(
-        event.region,
+      List<TimeZone> timezones = await regionsRepository.getTimeZonesForRegion(
+        event.regionId,
       );
       emit(
         state.copyWith(
@@ -127,7 +128,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           regionAddedStatus: EntityStatus.succuess,
-          regions: [...state.regions, addedRegion],
+          assignedRegions: [...state.assignedRegions, addedRegion],
         ),
       );
     } catch (e) {
@@ -153,16 +154,16 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       Region editedRegion = await regionsRepository.editRegion(
         event.region,
       );
-      List<Region> regions = List.from(state.regions);
+      List<Region> assignedRegions = List.from(state.assignedRegions);
       int indexToDelete =
-          regions.indexWhere((region) => region.id == editedRegion.id);
-      regions.removeAt(indexToDelete);
-      regions.insert(indexToDelete, editedRegion);
+          assignedRegions.indexWhere((region) => region.id == editedRegion.id);
+      assignedRegions.removeAt(indexToDelete);
+      assignedRegions.insert(indexToDelete, editedRegion);
 
       emit(
         state.copyWith(
           regionEditedStatus: EntityStatus.succuess,
-          regions: regions,
+          assignedRegions: assignedRegions,
         ),
       );
     } catch (e) {
@@ -188,12 +189,12 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       Region deletedRegion = await regionsRepository.deleteRegion(
         event.region,
       );
-      List<Region> regions = List.from(state.regions);
-      regions.removeWhere((region) => region.id == deletedRegion.id);
+      List<Region> assignedRegions = List.from(state.assignedRegions);
+      assignedRegions.removeWhere((region) => region.id == deletedRegion.id);
       emit(
         state.copyWith(
           regionDeletedStatus: EntityStatus.succuess,
-          regions: regions,
+          assignedRegions: assignedRegions,
         ),
       );
     } catch (e) {
@@ -206,62 +207,68 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     add(RegionsStateInited());
   }
 
-  void _onSelectedRegionNameChanged(
-    SelectedRegionNameChanged event,
+  void _onSelectedRegionChanged(
+    SelectedRegionChanged event,
     Emitter<RegionsState> emit,
   ) {
-    emit(
-      state.copyWith(
-        selectedRegionName: event.selectedRegionName,
-        selectedTimezones: [],
-      ),
-    );
-    add(
-      TimeZonesRetrievedByRegion(
-        region: event.selectedRegionName,
-      ),
-    );
-  }
 
-  void _onSelectedTimezonesChanged(
-    SelectedTimezonesChanged event,
-    Emitter<RegionsState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        selectedTimezones: event.selectedTimezones,
-      ),
-    );
   }
+  // void _onSelectedRegionNameChanged(
+  //   SelectedRegionNameChanged event,
+  //   Emitter<RegionsState> emit,
+  // ) {
+  //   emit(
+  //     state.copyWith(
+  //       selectedRegionName: event.selectedRegionName,
+  //       selectedTimezones: [],
+  //     ),
+  //   );
+  //   add(
+  //     TimeZonesRetrievedForRegion(
+  //       region: event.selectedRegionName,
+  //     ),
+  //   );
+  // }
 
-  void _onSelectedAssociatedSitesCountChanged(
-      SelectedAssociatedSitesCountChanged event, Emitter<RegionsState> emit) {
-    emit(
-      state.copyWith(
-        selectedAssociatedSitesCount: event.selectedAssociatedSitesCount,
-      ),
-    );
-  }
+  // void _onSelectedTimezonesChanged(
+  //   SelectedTimezonesChanged event,
+  //   Emitter<RegionsState> emit,
+  // ) {
+  //   emit(
+  //     state.copyWith(
+  //       selectedTimezones: event.selectedTimezones,
+  //     ),
+  //   );
+  // }
 
-  void _onSelectedIsActiveChanged(
-      SelectedIsActiveChanged event, Emitter<RegionsState> emit) {
-    emit(
-      state.copyWith(
-        selectedIsActive: event.selectedIsActive,
-      ),
-    );
-  }
+  // void _onSelectedAssociatedSitesCountChanged(
+  //     SelectedAssociatedSitesCountChanged event, Emitter<RegionsState> emit) {
+  //   emit(
+  //     state.copyWith(
+  //       selectedAssociatedSitesCount: event.selectedAssociatedSitesCount,
+  //     ),
+  //   );
+  // }
 
-  void _onSelectedRegionIdChanged(
-    SelectedRegionIdChanged event,
-    Emitter<RegionsState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        selectedRegionId: event.selectedRegionId,
-      ),
-    );
-  }
+  // void _onSelectedActiveChanged(
+  //     SelectedActiveChanged event, Emitter<RegionsState> emit) {
+  //   emit(
+  //     state.copyWith(
+  //       selectedActive: event.selectedActive,
+  //     ),
+  //   );
+  // }
+
+  // void _onSelectedRegionIdChanged(
+  //   SelectedRegionIdChanged event,
+  //   Emitter<RegionsState> emit,
+  // ) {
+  //   emit(
+  //     state.copyWith(
+  //       selectedRegionId: event.selectedRegionId,
+  //     ),
+  //   );
+  // }
 
   void _onRegionsStateInited(
       RegionsStateInited event, Emitter<RegionsState> emit) {
@@ -269,7 +276,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       selectedRegionName: '',
       selectedTimezones: [],
       selectedAssociatedSitesCount: 0,
-      selectedIsActive: true,
+      selectedActive: true,
       timeZones: [],
     ));
   }
