@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'router.dart';
@@ -95,7 +96,8 @@ setupHydratedLocalStorage() async {
 }
 
 loadEnv() async {
-  await dotenv.load(fileName: ".env", mergeWith: {
+  await dotenv
+      .load(fileName: kReleaseMode ? "assets/.env" : ".env", mergeWith: {
     'TEST_VAR': '5',
   });
 }
