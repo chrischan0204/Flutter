@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatefulWidget {
   final Color backgroundColor;
+  final Color hoverBackgroundColor;
   final TextStyle textStyle;
   final IconData iconData;
   final Color iconColor;
@@ -12,6 +13,7 @@ class CustomButton extends StatefulWidget {
   const CustomButton({
     Key? key,
     required this.backgroundColor,
+    required this.hoverBackgroundColor,
     this.textStyle = const TextStyle(
       color: Colors.white,
       fontFamily: 'OpenSans',
@@ -57,7 +59,7 @@ class _CustomButtonState extends State<CustomButton> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: isHover
-                  ? widget.backgroundColor.withAlpha(200)
+                  ? widget.hoverBackgroundColor
                   : widget.backgroundColor,
             ),
             child: Row(

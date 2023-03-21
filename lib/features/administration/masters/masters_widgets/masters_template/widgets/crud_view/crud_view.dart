@@ -112,51 +112,51 @@ class _CrudViewState extends State<CrudView> {
           ),
           child: Row(
             children: [
-              widget.crudType == CrudType.editOrDelete
-                  ? CustomButton(
-                      backgroundColor: const Color(
-                        0xfff58646,
-                      ),
-                      iconData: PhosphorIcons.pencilLine,
-                      onClick: () {
-                        widget.editEntity();
-                        context.read<MastersTemplateBloc>().add(
-                              const MastersTemplateCrudTypeChanged(
-                                crudType: CrudType.add,
-                              ),
-                            );
-                      },
-                      text: 'Edit ${camelize(widget.label)}',
-                    )
-                  : CustomButton(
-                      backgroundColor: const Color(
-                        0xff059669,
-                      ),
-                      iconData: PhosphorIcons.plus,
-                      onClick: widget.addEntity,
-                      text: 'Add ${camelize(widget.label)}',
-                    ),
-              const SizedBox(
-                width: 30,
-              ),
-              widget.crudType == CrudType.editOrDelete
-                  ? CustomButton(
-                      backgroundColor: const Color(
-                        0xfff58686,
-                      ),
-                      iconData: PhosphorIcons.trashSimple,
-                      onClick: () {
-                        widget.deleteEntity();
-                        context.read<MastersTemplateBloc>().add(
-                              const MastersTemplateCrudTypeChanged(
-                                crudType: CrudType.add,
-                              ),
-                            );
-                      },
-                      text: 'Delete',
-                      isDisabled: !widget.deletable,
-                    )
-                  : Container()
+              // widget.crudType == CrudType.editOrDelete
+              //     ? CustomButton(
+              //         backgroundColor: const Color(
+              //           0xfff58646,
+              //         ),
+              //         iconData: PhosphorIcons.pencilLine,
+              //         onClick: () {
+              //           widget.editEntity();
+              //           context.read<MastersTemplateBloc>().add(
+              //                 const MastersTemplateCrudTypeChanged(
+              //                   crudType: CrudType.add,
+              //                 ),
+              //               );
+              //         },
+              //         text: 'Edit ${camelize(widget.label)}',
+              //       )
+              //     : CustomButton(
+              //         backgroundColor: const Color(
+              //           0xff059669,
+              //         ),
+              //         iconData: PhosphorIcons.plus,
+              //         onClick: widget.addEntity,
+              //         text: 'Add ${camelize(widget.label)}',
+              //       ),
+              // const SizedBox(
+              //   width: 30,
+              // ),
+              // widget.crudType == CrudType.editOrDelete
+              //     ? CustomButton(
+              //         backgroundColor: const Color(
+              //           0xfff58686,
+              //         ),
+              //         iconData: PhosphorIcons.trashSimple,
+              //         onClick: () {
+              //           widget.deleteEntity();
+              //           context.read<MastersTemplateBloc>().add(
+              //                 const MastersTemplateCrudTypeChanged(
+              //                   crudType: CrudType.add,
+              //                 ),
+              //               );
+              //         },
+              //         text: 'Delete',
+              //         isDisabled: !widget.deletable,
+              //       )
+              //     : Container()
             ],
           ),
         ),

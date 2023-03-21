@@ -41,7 +41,7 @@ class _DataTableViewState extends State<DataTableView> {
             .toList(),
         const DataColumn(
           label: Text(
-            'Action',
+            'Details',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14,
@@ -114,7 +114,7 @@ class _DataTableViewState extends State<DataTableView> {
     return Text(
       content,
       style: const TextStyle(
-        fontSize: 14,
+        fontSize: 12,
         color: Color(0xff1f2937),
         fontWeight: FontWeight.w400,
         fontFamily: 'OpenSans',
@@ -129,8 +129,8 @@ class _DataTableViewState extends State<DataTableView> {
   Widget build(BuildContext context) {
     return widget.entities.isNotEmpty
         ? DataTable(
-            headingRowHeight: 46,
-            dataRowHeight: 46,
+            headingRowHeight: 54.5,
+            dataRowHeight: 53.35,
             columns: _buildColumns(),
             rows: _buildRows(),
           )

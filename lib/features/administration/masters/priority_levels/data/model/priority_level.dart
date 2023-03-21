@@ -35,7 +35,6 @@ class PriorityLevel extends Entity implements Equatable {
       ];
 
   @override
-  // TODO: implement stringify
   bool? get stringify => throw UnimplementedError();
 
   @override
