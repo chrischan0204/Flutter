@@ -1,45 +1,22 @@
+import 'dart:convert';
+
+import 'package:http/http.dart';
+import 'package:safety_eta/constants/uri.dart';
+
 import '../model/awareness_category.dart';
 
 class AwarenessCategoriesRepository {
   Future<List<AwarenessCategory>> getAwarenessCategories() async {
-    return <AwarenessCategory>[
-      // AwarenessCategory(
-      //   awarenessCategory: 'Electrical',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Environmental',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Equipment / Vehicle Use',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Excavation',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Fall Protection',
-      //   active: false,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Fire prevention',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Health Hazards',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Housekeeping',
-      //   active: true,
-      // ),
-      // AwarenessCategory(
-      //   awarenessCategory: 'Manual Lifting',
-      //   active: true,
-      // ),
+    Response response = await get(ApiUri.getAwarenessCategoriesUri);
 
-    ];
+    if (response.statusCode == 200) {
+      List<AwarenessCategory> awarenessCategories =
+          List.from(jsonDecode(response.body))
+              .map((awarenessCategoryJson) =>
+                  AwarenessCategory.fromMap(awarenessCategoryJson))
+              .toList();
+      return awarenessCategories;
+    }
+    return <AwarenessCategory>[];
   }
 }

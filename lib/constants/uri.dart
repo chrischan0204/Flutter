@@ -38,4 +38,10 @@ class ApiUri {
     host: host,
     path: '/api/AwarenessGroups',
   );
+
+  static Uri getAwarenessCategoriesUri = Uri(
+    scheme: 'https',
+    host: host,
+    path: '/api/AwarenessCategory',
+  );
 }
