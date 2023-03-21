@@ -32,4 +32,10 @@ class ApiUri {
     host: host,
     path: '/api/ObservationType',
   );
+
+  static Uri getAwarenessGroupsUri = Uri(
+    scheme: 'https',
+    host: host,
+    path: '/api/AwarenessGroups',
+  );
 }
