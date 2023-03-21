@@ -1,26 +1,38 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '/data/model/entity.dart';
 
+extension ColorExtension on String {
+  toColor() {
+    var hexString = this;
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+}
+
 class PriorityLevel extends Entity implements Equatable {
-  final String priorityLevel;
-  final Color colorAssociated;
+  final String name;
+  final Color colorCode;
   final String priorityType;
   final bool active;
   PriorityLevel({
     required super.id,
-    required this.priorityLevel,
-    required this.colorAssociated,
+    required this.name,
+    required this.colorCode,
     required this.priorityType,
     required this.active,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
-      'Priority Level': priorityLevel,
-      'Color associated': colorAssociated,
+      'Priority Level': name,
+      'Color associated': colorCode,
       'Priority Type': priorityType,
       'Active': active,
     };
@@ -28,8 +40,8 @@ class PriorityLevel extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
-        priorityLevel,
-        colorAssociated,
+        name,
+        colorCode,
         priorityType,
         active,
       ];
@@ -40,8 +52,8 @@ class PriorityLevel extends Entity implements Equatable {
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
-      'Priority Level': priorityLevel,
-      'Color associated': colorAssociated,
+      'Priority Level': name,
+      'Color associated': colorCode,
       'Priority Type': priorityType,
       'Active': active,
     };
@@ -49,15 +61,15 @@ class PriorityLevel extends Entity implements Equatable {
 
   PriorityLevel copyWith({
     String? id,
-    String? priorityLevel,
-    Color? colorAssociated,
+    String? name,
+    Color? colorCode,
     String? priorityType,
     bool? active,
   }) {
     return PriorityLevel(
       id: id ?? this.id,
-      priorityLevel: priorityLevel ?? this.priorityLevel,
-      colorAssociated: colorAssociated ?? this.colorAssociated,
+      name: name ?? this.name,
+      colorCode: colorCode ?? this.colorCode,
       priorityType: priorityType ?? this.priorityType,
       active: active ?? this.active,
     );
@@ -70,10 +82,30 @@ class PriorityLevel extends Entity implements Equatable {
       'Timezone': EntityInputType.multiSelect,
     };
   }
-  
+
   @override
   Map<String, dynamic> toMap() {
-    // TODO: implement toMap
-    throw UnimplementedError();
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'colorCode': colorCode,
+      'priorityType': priorityType,
+      'active': active,
+    };
   }
+
+  factory PriorityLevel.fromMap(Map<String, dynamic> map) {
+    return PriorityLevel(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      colorCode: ('#${map['colorCode']}').toColor(),
+      priorityType: map['priorityType'] as String,
+      active: map['active'] as bool,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PriorityLevel.fromJson(String source) =>
+      PriorityLevel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

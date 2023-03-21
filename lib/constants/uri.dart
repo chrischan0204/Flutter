@@ -20,4 +20,9 @@ class ApiUri {
       scheme: 'https',
       host: host,
       path: '/api/Timezones/GetTimeZonesForRegion');
+
+  static Uri getPriorityUri = Uri(
+      scheme: 'https',
+      host: host,
+      path: '/api/PriorityLevels');
 }

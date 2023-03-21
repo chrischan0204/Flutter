@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:strings/strings.dart';
 
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
@@ -117,7 +118,7 @@ class _CrudState extends State<MastersTemplate> {
             backgroundColor: const Color(0xfff58646),
             hoverBackgroundColor: const Color(0xffdd793f),
             iconData: PhosphorIcons.plus,
-            text: 'New ${widget.label}',
+            text: 'New ${camelize(widget.label)}',
             onClick: () {},
           )
         ],
