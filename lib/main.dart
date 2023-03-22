@@ -72,9 +72,6 @@ class MyApp extends StatelessWidget {
                   RepositoryProvider.of<AwarenessCategoriesRepository>(context),
             ),
           ),
-          BlocProvider(
-            create: (context) => MastersTemplateBloc(),
-          )
         ],
         child: MaterialApp.router(
           title: 'Safety ETA',

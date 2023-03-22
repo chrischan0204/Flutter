@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../masters_widgets/masters_template/masters_template.dart';
-import '../../masters_widgets/masters_template/widgets/crud_view/widgets/widgets.dart';
+import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
 class ObservationTypes extends StatefulWidget {
@@ -21,7 +20,7 @@ class _ObservationTypesState extends State<ObservationTypes> {
   Widget build(BuildContext context) {
     return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
       builder: (context, state) {
-        return MastersTemplate(
+        return MastersListTemplate(
           description:
               'List of defined observation types. Types can be added or current ones edited from this screen.',
           entities: state.observationTypes,
@@ -35,13 +34,13 @@ class _ObservationTypesState extends State<ObservationTypes> {
           onRowClick: (value) {},
           onActiveChanged: (value) {},
           crudItems: [
-            CrudItem(
-              label: 'Observation Type (*)',
-              content: CustomTextField(
-                hintText: 'e.g. Good Catch',
-                onChanged: (value) {},
-              ),
-            ),
+            // CrudItem(
+            //   label: 'Observation Type (*)',
+            //   content: CustomTextField(
+            //     hintText: 'e.g. Good Catch',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
             // CrudItem(
             //   label: 'Severity (*)',
             //   content: CustomSingleSelect(

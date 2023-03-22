@@ -1,2 +1,2 @@
-export 'masters_template/masters_template.dart';
+export 'masters_list_template/masters_list_template.dart';
 

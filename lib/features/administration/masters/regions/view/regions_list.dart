@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../masters_widgets/masters_template/masters_template.dart';
-import '../../masters_widgets/masters_template/widgets/crud_view/widgets/widgets.dart';
-import '../../masters_widgets/masters_template/widgets/notify.dart';
+import '../../masters_widgets/widgets.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
-class Regions extends StatefulWidget {
-  const Regions({super.key});
+class RegionsListView extends StatefulWidget {
+  const RegionsListView({super.key});
 
   @override
-  State<Regions> createState() => _RegionsState();
+  State<RegionsListView> createState() => _RegionsState();
 }
 
-class _RegionsState extends State<Regions> {
+class _RegionsState extends State<RegionsListView> {
   late RegionsBloc regionsBloc;
-  NotifyType notifyType = NotifyType.initial;
   String notifyContent = '';
 
   @override
@@ -25,34 +22,34 @@ class _RegionsState extends State<Regions> {
     regionsBloc.add(UnassignedRegionsRetrieved());
   }
 
-  CrudItem _buildRegionSingleSelectDropDown(RegionsState state) {
-    Map<String, String> regionNameAndIdMap = <String, String>{};
+  // CrudItem _buildRegionSingleSelectDropDown(RegionsState state) {
+  //   Map<String, String> regionNameAndIdMap = <String, String>{};
 
-    for (var unassignedRegion in state.unassignedRegions) {
-      regionNameAndIdMap.putIfAbsent(
-          unassignedRegion.name!, () => unassignedRegion.id);
-    }
-    return CrudItem(
-      label: 'Region(*)',
-      content: CustomSingleSelect(
-        items: regionNameAndIdMap,
-        selectedValue:
-            state.selectedRegion != null ? null : state.selectedRegion?.name,
-        hint: 'Select Region',
-        onChanged: (regionId) {
-          regionsBloc.add(
-            TimeZonesRetrievedForRegion(regionId: regionId),
-          );
-          // regionsBloc.add(
-          //   SelectedRegionChanged(
-          //     selectedRegion: state.selectedRegion!.copyWith(name: regionName),
-          //   ),
-          // );
-        },
-        // isDisabled: state.selectedAssociatedSitesCount != 0,
-      ),
-    );
-  }
+  //   for (var unassignedRegion in state.unassignedRegions) {
+  //     regionNameAndIdMap.putIfAbsent(
+  //         unassignedRegion.name!, () => unassignedRegion.id);
+  //   }
+  //   return CrudItem(
+  //     label: 'Region(*)',
+  //     content: CustomSingleSelect(
+  //       items: regionNameAndIdMap,
+  //       selectedValue:
+  //           state.selectedRegion != null ? null : state.selectedRegion?.name,
+  //       hint: 'Select Region',
+  //       onChanged: (regionId) {
+  //         regionsBloc.add(
+  //           TimeZonesRetrievedForRegion(regionId: regionId),
+  //         );
+  //         // regionsBloc.add(
+  //         //   SelectedRegionChanged(
+  //         //     selectedRegion: state.selectedRegion!.copyWith(name: regionName),
+  //         //   ),
+  //         // );
+  //       },
+  //       // isDisabled: state.selectedAssociatedSitesCount != 0,
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -85,15 +82,14 @@ class _RegionsState extends State<Regions> {
         // }
       },
       builder: (context, state) {
-        return MastersTemplate(
+        return MastersListTemplate(
           description: 'The following regions are available to create sites in',
           entities: state.assignedRegions,
-          title: 'Regions',
+          title: 'RegionsListView',
           label: 'region',
           note:
               'This region has 2 sites associated & cannot be deleted. Only time zone can be changed or this region can be deactivated. After deactivation it wont be available for any further site allocations. The current sites will be maintained as is.',
           deletable: true,
-          notifyType: notifyType,
           notifyContent: notifyContent,
           addEntity: () {
             // if (state.selectedRegionName.isNotEmpty &&
@@ -182,22 +178,22 @@ class _RegionsState extends State<Regions> {
             // );
           },
           crudItems: [
-            _buildRegionSingleSelectDropDown(state),
-            CrudItem(
-              label: 'Timezone(*)',
-              content: CustomMultiSelect(
-                items: state.timeZones.map((e) => e.name!).toList(),
-                // selectedItems: state.,
-                hint: 'Select Time Zone',
-                onChanged: (value) {
-                  // regionsBloc.add(
-                  //   SelectedTimezonesChanged(
-                  //     selectedTimezones: value,
-                  //   ),
-                  // );
-                },
-              ),
-            ),
+            // _buildRegionSingleSelectDropDown(state),
+            // CrudItem(
+            //   label: 'Timezone(*)',
+            //   content: CustomMultiSelect(
+            //     items: state.timeZones.map((e) => e.name!).toList(),
+            //     // selectedItems: state.,
+            //     hint: 'Select Time Zone',
+            //     onChanged: (value) {
+            //       // regionsBloc.add(
+            //       //   SelectedTimezonesChanged(
+            //       //     selectedTimezones: value,
+            //       //   ),
+            //       // );
+            //     },
+            //   ),
+            // ),
           ],
         );
       },

@@ -77,11 +77,6 @@ class _DataTableViewState extends State<DataTableView> {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      context.read<MastersTemplateBloc>().add(
-                            const MastersTemplateCrudTypeChanged(
-                              crudType: CrudType.editOrDelete,
-                            ),
-                          );
                       widget.onRowClick(entity);
                     },
                     child: const Icon(

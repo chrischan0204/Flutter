@@ -6,4 +6,3 @@ export '../../features/administration/masters/priority_levels/bloc/priority_leve
 export '../../features/administration/masters/observation_types/bloc/observation_types_bloc.dart';
 export '../../features/administration/masters/awareness_groups/bloc/awareness_groups_bloc.dart';
 export '../../features/administration/masters/awareness_categories/bloc/awareness_categories_bloc.dart';
-export '../../features/administration/masters/masters_widgets/masters_template/bloc/masters_template_bloc.dart';

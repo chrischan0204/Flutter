@@ -3,13 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
-import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/entity.dart';
 import '../../../../theme/view/widgets/sidebar/sidebar_style.dart';
 import 'widgets/widgets.dart';
 
-class MastersTemplate extends StatefulWidget {
+class MastersListTemplate extends StatefulWidget {
   final List<Entity> entities;
   final String title;
   final String description;
@@ -25,7 +24,7 @@ class MastersTemplate extends StatefulWidget {
   final bool deletable;
   final bool isDeactive;
   final ValueChanged<bool> onActiveChanged;
-  const MastersTemplate({
+  const MastersListTemplate({
     super.key,
     this.entities = const [],
     required this.description,
@@ -45,22 +44,16 @@ class MastersTemplate extends StatefulWidget {
   });
 
   @override
-  State<MastersTemplate> createState() => _CrudState();
+  State<MastersListTemplate> createState() => _CrudState();
 }
 
-class _CrudState extends State<MastersTemplate> {
+class _CrudState extends State<MastersListTemplate> {
   late double positionRightForFiltersSlier;
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
   @override
   void initState() {
     super.initState();
-
-    context.read<MastersTemplateBloc>().add(
-          const MastersTemplateCrudTypeChanged(
-            crudType: CrudType.add,
-          ),
-        );
   }
 
   @override
@@ -72,33 +65,29 @@ class _CrudState extends State<MastersTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MastersTemplateBloc, MastersTemplateState>(
-      builder: (context, state) {
-        return Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Notify(
-                    content: widget.notifyContent,
-                    type: widget.notifyType,
-                  ),
-                  _buildHeader(),
-                  const CustomDivider(),
-                  _buildTableHeader(),
-                  const CustomDivider(),
-                  _buildTableView()
-                ],
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Notify(
+                content: widget.notifyContent,
+                type: widget.notifyType,
               ),
-            ),
-            _buildDetailsSlider(context),
-            _buildViewSettingsSlider(context),
-            _buildFiltersSlider(context),
-          ],
-        );
-      },
+              _buildHeader(),
+              const CustomDivider(),
+              _buildTableHeader(),
+              const CustomDivider(),
+              _buildTableView()
+            ],
+          ),
+        ),
+        _buildDetailsSlider(context),
+        _buildViewSettingsSlider(context),
+        _buildFiltersSlider(context),
+      ],
     );
   }
 
@@ -119,7 +108,9 @@ class _CrudState extends State<MastersTemplate> {
             hoverBackgroundColor: const Color(0xffdd793f),
             iconData: PhosphorIcons.plus,
             text: 'New ${camelize(widget.label)}',
-            onClick: () {},
+            onClick: () {
+              GoRouter.of(context).go('${GoRouter.of(context).location}/new');
+            },
           )
         ],
       ),
@@ -165,24 +156,24 @@ class _CrudState extends State<MastersTemplate> {
       ),
       child: Row(
         children: [
-          HeaderButton(
-            iconData: PhosphorIcons.funnel,
-            label: 'Filters',
-            color: const Color(0xff0c83ff),
-            onClick: () => _showFilterSlider(),
-          ),
-          const SizedBox(
-            width: 50,
-          ),
-          HeaderButton(
-            iconData: PhosphorIcons.slidersHorizontal,
-            label: 'View Settings',
-            color: const Color(0xfff58646),
-            onClick: () => _showViewSettingsSlider(),
-          ),
-          const SizedBox(
-            width: 50,
-          ),
+          // HeaderButton(
+          //   iconData: PhosphorIcons.funnel,
+          //   label: 'Filters',
+          //   color: const Color(0xff0c83ff),
+          //   onClick: () => _showFilterSlider(),
+          // ),
+          // const SizedBox(
+          //   width: 50,
+          // ),
+          // HeaderButton(
+          //   iconData: PhosphorIcons.slidersHorizontal,
+          //   label: 'View Settings',
+          //   color: const Color(0xfff58646),
+          //   onClick: () => _showViewSettingsSlider(),
+          // ),
+          // const SizedBox(
+          //   width: 50,
+          // ),
           HeaderButton(
             iconData: PhosphorIcons.chartBar,
             label: 'Dashboard',
@@ -333,7 +324,7 @@ class _CrudState extends State<MastersTemplate> {
                       size: 20,
                       color: Color(0xffef4444),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -409,19 +400,29 @@ class HeaderButton extends StatelessWidget {
         child: GestureDetector(
           onTap: () => onClick(),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
                 iconData,
                 color: color,
                 size: 20,
               ),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.w400,
-                  color: color,
+              const SizedBox(
+                width: 6,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 2.0,
+                ),
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.w400,
+                    color: color,
+                  ),
                 ),
               ),
             ],

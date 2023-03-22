@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safety_eta/features/administration/masters/masters_widgets/masters_template/widgets/crud_view/widgets/custom_textfield.dart';
-
-import '../../masters_widgets/masters_template/widgets/crud_view/widgets/crud_item.dart';
+import 'package:go_router/go_router.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
@@ -25,7 +23,7 @@ class _AwarenessCategoriesState extends State<AwarenessCategories> {
   Widget build(BuildContext context) {
     return BlocBuilder<AwarenessCategoriesBloc, AwarenessCategoriesState>(
       builder: (context, state) {
-        return MastersTemplate(
+        return MastersListTemplate(
           description:
               'List of defined awareness categories. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
           entities: state.awarenessCategories,
@@ -47,13 +45,13 @@ class _AwarenessCategoriesState extends State<AwarenessCategories> {
             //     onChanged: (value) {},
             //   ),
             // ),
-            CrudItem(
-              label: 'Awareness Group (*)',
-              content: CustomTextField(
-                hintText: 'e.g. Signage',
-                onChanged: (value) {},
-              ),
-            ),
+            // CrudItem(
+            //   label: 'Awareness Group (*)',
+            //   content: CustomTextField(
+            //     hintText: 'e.g. Signage',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
           ],
         );
       },

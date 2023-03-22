@@ -3,10 +3,8 @@ import 'package:intl/intl.dart';
 
 import '/global_widgets/global_widget.dart';
 import 'widgets/widgets.dart';
-import '/data/bloc/bloc.dart';
 
 class CrudView extends StatefulWidget {
-  final CrudType crudType;
   final String label;
   final String note;
   final List<CrudItem> crudItems;
@@ -19,7 +17,6 @@ class CrudView extends StatefulWidget {
 
   const CrudView({
     super.key,
-    this.crudType = CrudType.add,
     required this.label,
     required this.note,
     required this.crudItems,
@@ -41,12 +38,12 @@ class _CrudViewState extends State<CrudView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CrudTitle(
-          label: widget.label,
-          type: widget.crudType == CrudType.editOrDelete
-              ? 'Edit/Remove'
-              : 'Add new',
-        ),
+        // CrudTitle(
+        //   label: widget.label,
+        //   type: widget.crudType == CrudType.editOrDelete
+        //       ? 'Edit/Remove'
+        //       : 'Add new',
+        // ),
         const CustomDivider(),
         ...widget.crudItems.map(
           (e) => Column(
@@ -56,54 +53,54 @@ class _CrudViewState extends State<CrudView> {
             ],
           ),
         ),
-        ...(widget.crudType == CrudType.editOrDelete
-            ? [
-                ...(widget.deletable
-                    ? []
-                    : [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            widget.note,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        const CustomDivider(),
-                      ]),
-                CrudItem(
-                  label: 'Deactivate?',
-                  content: CustomSwitch(
-                    label: 'region',
-                    switchValue: widget.isDeactive,
-                    onChanged: (value) => widget.onActiveChanged(value),
-                  ),
-                ),
-                const CustomDivider(),
-                ...(widget.isDeactive
-                    ? [
-                        CrudItem(
-                          label: 'Deactivated:',
-                          content: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30.0),
-                            child: Text(
-                              'By: Carl Kent on ${DateFormat('d MMM yyyy').format(DateTime.now())}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'OpenSans',
-                              ),
-                            ),
-                          ),
-                        ),
-                        const CustomDivider()
-                      ]
-                    : []),
-              ]
-            : []),
+        // ...(widget.crudType == CrudType.editOrDelete
+        //     ? [
+        //         ...(widget.deletable
+        //             ? []
+        //             : [
+        //                 Padding(
+        //                   padding: const EdgeInsets.symmetric(horizontal: 20),
+        //                   child: Text(
+        //                     widget.note,
+        //                     style: const TextStyle(
+        //                       fontSize: 11,
+        //                       fontFamily: 'OpenSans',
+        //                       fontWeight: FontWeight.w400,
+        //                     ),
+        //                   ),
+        //                 ),
+        //                 const CustomDivider(),
+        //               ]),
+        //         CrudItem(
+        //           label: 'Deactivate?',
+        //           content: CustomSwitch(
+        //             label: 'region',
+        //             switchValue: widget.isDeactive,
+        //             onChanged: (value) => widget.onActiveChanged(value),
+        //           ),
+        //         ),
+        //         const CustomDivider(),
+        //         ...(widget.isDeactive
+        //             ? [
+        //                 CrudItem(
+        //                   label: 'Deactivated:',
+        //                   content: Padding(
+        //                     padding:
+        //                         const EdgeInsets.symmetric(horizontal: 30.0),
+        //                     child: Text(
+        //                       'By: Carl Kent on ${DateFormat('d MMM yyyy').format(DateTime.now())}',
+        //                       style: const TextStyle(
+        //                         fontSize: 14,
+        //                         fontFamily: 'OpenSans',
+        //                       ),
+        //                     ),
+        //                   ),
+        //                 ),
+        //                 const CustomDivider()
+        //               ]
+        //             : []),
+        //       ]
+        //     : []),
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
