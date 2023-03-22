@@ -3,25 +3,39 @@ part of 'observation_types_bloc.dart';
 
 class ObservationTypesState extends Equatable {
   final List<ObservationType> observationTypes;
-  final EntityStatus status;
+  final EntityStatus observationTypesRetrievedStatus;
+
+  final ObservationType? selectedObservationType;
+  final EntityStatus observationTypeSelectedStatus;
   const ObservationTypesState({
     this.observationTypes = const [],
-    this.status = EntityStatus.initial,
+    this.observationTypesRetrievedStatus = EntityStatus.initial,
+    this.selectedObservationType,
+    this.observationTypeSelectedStatus = EntityStatus.initial,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         observationTypes,
-        status,
+        observationTypesRetrievedStatus,
+        selectedObservationType,
+        observationTypeSelectedStatus
       ];
 
   ObservationTypesState copyWith({
     List<ObservationType>? observationTypes,
-    EntityStatus? status,
+    EntityStatus? observationTypesRetrievedStatus,
+    ObservationType? selectedObservationType,
+    EntityStatus? observationTypeSelectedStatus,
   }) {
     return ObservationTypesState(
       observationTypes: observationTypes ?? this.observationTypes,
-      status: status ?? this.status,
+      observationTypesRetrievedStatus: observationTypesRetrievedStatus ??
+          this.observationTypesRetrievedStatus,
+      selectedObservationType:
+          selectedObservationType ?? this.selectedObservationType,
+      observationTypeSelectedStatus:
+          observationTypeSelectedStatus ?? this.observationTypeSelectedStatus,
     );
   }
 }

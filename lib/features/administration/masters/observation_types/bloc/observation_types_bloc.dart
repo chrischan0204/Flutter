@@ -15,18 +15,40 @@ class ObservationTypesBloc
     required this.observationTypesRepository,
   }) : super(const ObservationTypesState()) {
     on<ObservationTypesRetrieved>(_onObservationTypesRetrieved);
+    on<ObservationTypeSelected>(_onObservationTypeSelected);
   }
 
-  void _onObservationTypesRetrieved(ObservationTypesRetrieved event,
+  Future<void> _onObservationTypesRetrieved(ObservationTypesRetrieved event,
       Emitter<ObservationTypesState> emit) async {
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(observationTypesRetrievedStatus: EntityStatus.loading));
     try {
       List<ObservationType> observationTypes =
           await observationTypesRepository.getObservationTypes();
       emit(state.copyWith(
-          observationTypes: observationTypes, status: EntityStatus.succuess));
+          observationTypes: observationTypes,
+          observationTypesRetrievedStatus: EntityStatus.succuess));
     } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      emit(state.copyWith(
+          observationTypesRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onObservationTypeSelected(
+    ObservationTypeSelected event,
+    Emitter<ObservationTypesState> emit,
+  ) async {
+    emit(state.copyWith(observationTypeSelectedStatus: EntityStatus.loading));
+    try {
+      ObservationType? selectedObservationType =
+          await observationTypesRepository
+              .getObervationTypeById(event.observationTypeId);
+      emit(
+        state.copyWith(
+            selectedObservationType: selectedObservationType,
+            observationTypeSelectedStatus: EntityStatus.succuess),
+      );
+    } catch (e) {
+      emit(state.copyWith(observationTypeSelectedStatus: EntityStatus.failure));
     }
   }
 }

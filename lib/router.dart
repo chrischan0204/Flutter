@@ -169,24 +169,20 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/observation-types',
-      redirect: (context, state) => '/observation-types/index',
-      routes: [
-        GoRoute(
-          path: 'index',
-          pageBuilder: (context, state) => const NoTransitionPage(
-            child: Layout(
-              body: ObservationTypes(),
-              title: 'Observations Types List',
-              selectedItemName: 'observation-types',
-            ),
-          ),
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: Layout(
+          body: ObservationTypes(),
+          title: 'Observations Types List',
+          selectedItemName: 'observation-types',
         ),
+      ),
+      routes: [
         GoRoute(
           path: 'new',
           pageBuilder: (context, state) => const NoTransitionPage(
             child: Layout(
-              body: AddEditRegionView(),
-              title: 'Observations',
+              body: AddEditObservationTypeView(),
+              title: 'New Observation Type',
               selectedItemName: 'observation-types',
             ),
           ),
@@ -195,10 +191,10 @@ final GoRouter router = GoRouter(
           path: 'show/:observationTypeId',
           pageBuilder: (context, state) => NoTransitionPage(
             child: Layout(
-              body: RegionDetailView(
-                regionId: state.params['observationTypeId']!,
+              body: ObservationTypeShowView(
+                observationTypeId: state.params['observationTypeId']!,
               ),
-              title: 'Regions',
+              title: 'Observation Type',
               selectedItemName: 'observation-types',
             ),
           ),
@@ -210,7 +206,7 @@ final GoRouter router = GoRouter(
               body: AddEditRegionView(
                 regionId: state.params['observationTypeId']!,
               ),
-              title: 'Regions',
+              title: 'Editing Observation Type',
               selectedItemName: 'observation-types',
             ),
           ),

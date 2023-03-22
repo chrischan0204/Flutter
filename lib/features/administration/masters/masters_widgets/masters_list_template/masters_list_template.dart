@@ -51,6 +51,7 @@ class _CrudState extends State<MastersListTemplate> {
   late double positionRightForFiltersSlier;
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
+  late String selectedId;
   @override
   void initState() {
     super.initState();
@@ -140,6 +141,9 @@ class _CrudState extends State<MastersListTemplate> {
               entities: widget.entities,
               onRowClick: (entity) {
                 _showDetailsSlider();
+                setState(() {
+                  selectedId = entity.id;
+                });
                 widget.onRowClick(entity);
               },
             ),
@@ -328,6 +332,16 @@ class _CrudState extends State<MastersListTemplate> {
                 ],
               ),
             ),
+            CustomButton(
+              backgroundColor: const Color(0xff0c83ff),
+              hoverBackgroundColor: const Color(0xff0b76e6),
+              iconData: PhosphorIcons.arrowRight,
+              text: '${camelize(widget.label)} Details',
+              onClick: () {
+                String location = GoRouter.of(context).location;
+                GoRouter.of(context).go('$location/show/$selectedId');
+              },
+            )
           ],
         ),
       ),
