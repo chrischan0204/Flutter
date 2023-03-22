@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
-import '../../widgets/crud.dart';
 
 class ObservationTypes extends StatefulWidget {
   const ObservationTypes({super.key});
@@ -21,10 +20,51 @@ class _ObservationTypesState extends State<ObservationTypes> {
   Widget build(BuildContext context) {
     return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
       builder: (context, state) {
-        return Crud(
+        return MastersListTemplate(
           description:
               'List of defined observation types. Types can be added or current ones edited from this screen.',
           entities: state.observationTypes,
+          title: 'Observation Types',
+          label: 'observation type',
+          note:
+              'This observation type is in use on 173 observations. An observation type can be removed from future use by deactivating. It will preserve all past data as is.',
+          addEntity: () async {},
+          editEntity: () async {},
+          deleteEntity: () async {},
+          onRowClick: (value) {},
+          onActiveChanged: (value) {},
+          crudItems: [
+            // CrudItem(
+            //   label: 'Observation Type (*)',
+            //   content: CustomTextField(
+            //     hintText: 'e.g. Good Catch',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
+            // CrudItem(
+            //   label: 'Severity (*)',
+            //   content: CustomSingleSelect(
+            //     items: const [
+            //       'Good Catch',
+            //       'Near Miss',
+            //       'Positive',
+            //     ],
+            //     hint: 'Select Severity',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
+            // CrudItem(
+            //   label: 'Severity (*)',
+            //   content: CustomSingleSelect(
+            //     items: const [
+            //       'Everywhere',
+            //       'Assessment only',
+            //     ],
+            //     hint: 'Select Visibility',
+            //     onChanged: (value) {},
+            //   ),
+            // ),
+          ],
         );
       },
     );

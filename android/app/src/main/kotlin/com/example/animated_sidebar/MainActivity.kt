@@ -1,4 +1,4 @@
-package com.example.animated_sidebar
+package com.example.safety_eta
 
 import io.flutter.embedding.android.FlutterActivity
 

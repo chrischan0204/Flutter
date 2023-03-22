@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import '/constants/color.dart';
 
 import '../../../../bloc/theme_bloc.dart';
 import '../../../../data/model/model.dart';
@@ -131,66 +132,67 @@ class _SidebarItemState extends State<SidebarItem>
         }
       },
       builder: (context, state) {
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          onEnter: (event) {
-            setState(() {
-              isHover = true;
-            });
-          },
-          onExit: (event) {
-            setState(() {
-              isHover = false;
-            });
-          },
-          child: Column(
-            children: [
-              CustomPopupMenu(
-                controller: customPopupMenuController,
-                menuBuilder: () => MouseRegion(
-                  onExit: (event) {
-                    _hidePopupMenu(state);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: sidebarColor,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          child: Text(
-                            widget.label,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Roboto',
-                              color: Colors.white,
-                            ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomPopupMenu(
+              controller: customPopupMenuController,
+              menuBuilder: () => MouseRegion(
+                onExit: (event) {
+                  _hidePopupMenu(state);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: sidebarColor,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 30.0,
+                        ),
+                        child: Text(
+                          widget.label,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Roboto',
+                            color: Colors.white,
                           ),
                         ),
-                        ..._buildSubItemsMenu(),
-                      ],
-                    ),
+                      ),
+                      ..._buildSubItemsMenu(),
+                    ],
                   ),
                 ),
-                barrierColor: Colors.transparent,
-                pressType: PressType.longPress,
-                showArrow: false,
-                horizontalMargin: shrinkSidebarWidth + 5,
-                verticalMargin: -sidebarItemHeight - 30,
+              ),
+              barrierColor: Colors.transparent,
+              pressType: PressType.longPress,
+              showArrow: false,
+              horizontalMargin: shrinkSidebarWidth + 5,
+              verticalMargin: -sidebarItemHeight - 30,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                onEnter: (event) {
+                  setState(() {
+                    isHover = true;
+                  });
+                },
+                onExit: (event) {
+                  setState(() {
+                    isHover = false;
+                  });
+                },
                 child: _buildItemBody(state),
               ),
-              ...(state.isSidebarExtended && isSidebarItemExtended
-                  ? _buildSubItemsMenu()
-                  : []),
-            ],
-          ),
+            ),
+            ...(state.isSidebarExtended && isSidebarItemExtended
+                ? _buildSubItemsMenu()
+                : []),
+          ],
         );
       },
     );
@@ -330,12 +332,14 @@ class _SidebarItemState extends State<SidebarItem>
                           ),
                         ),
               Container(
-                color: isHover ? const Color(0xff3b414a) : Colors.transparent,
+                color: isHover ? darkGrey : Colors.transparent,
                 height: sidebarItemHeight,
                 width: sidebarWidth,
+                alignment: Alignment.center,
                 child: Container(
                   padding: EdgeInsets.only(
-                    left: 30 + (widget.isSubItem ? 15 : 0),
+                    left: (state.isSidebarExtended ? 30 : 17) +
+                        (widget.isSubItem ? 15 : 0),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -378,7 +382,7 @@ class CurvePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Path path = Path();
     Paint paint = Paint();
-    paint.color = const Color(0xff3b414a);
+    paint.color = darkGrey;
     path.addRect(
       Rect.fromPoints(
         Offset(animValue, 0),

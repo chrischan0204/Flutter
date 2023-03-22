@@ -1,4 +1,7 @@
-import 'package:animated_sidebar/router.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'router.dart';
 import 'package:flutter/material.dart';
 
 import 'data/bloc/bloc.dart';
@@ -6,6 +9,7 @@ import 'data/repository/repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await loadEnv();
   await setupHydratedLocalStorage();
   runApp(const MyApp());
 }
@@ -13,7 +17,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -29,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => AwarenessGroupsRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => AwarenessCategoriesRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -60,6 +66,12 @@ class MyApp extends StatelessWidget {
                   RepositoryProvider.of<AwarenessGroupsRepository>(context),
             ),
           ),
+          BlocProvider(
+            create: (context) => AwarenessCategoriesBloc(
+              awarenessCategoriesRepository:
+                  RepositoryProvider.of<AwarenessCategoriesRepository>(context),
+            ),
+          ),
         ],
         child: MaterialApp.router(
           title: 'Safety ETA',
@@ -78,4 +90,10 @@ setupHydratedLocalStorage() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: HydratedStorage.webStorageDirectory,
   );
+}
+
+loadEnv() async {
+  await dotenv.load(fileName: kReleaseMode ? 'env.development' : '../env.development',mergeWith: {
+    'TEST_VAR': '5',
+  });
 }

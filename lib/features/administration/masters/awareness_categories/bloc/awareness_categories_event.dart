@@ -6,3 +6,5 @@ abstract class AwarenessCategoriesEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class AwarenessCategoriesRetrieved extends AwarenessCategoriesEvent {}

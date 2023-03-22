@@ -1,4 +1,4 @@
-import 'package:animated_sidebar/features/theme/view/widgets/sidebar/sidebar_style.dart';
+import '/features/theme/view/widgets/sidebar/sidebar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 

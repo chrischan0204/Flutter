@@ -1,4 +1,4 @@
-import 'package:animated_sidebar/features/theme/view/widgets/topbar/topbar.dart';
+import '/features/theme/view/widgets/topbar/topbar.dart';
 import 'package:flutter/material.dart';
 import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 
@@ -41,50 +41,52 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: backgroundColor,
-      drawerEnableOpenDragGesture: false,
-      drawerScrimColor: Colors.transparent,
-      drawer: MediaQuery.of(context).size.width < 1000
-          ? Drawer(
-              width: sidebarWidth,
-              backgroundColor: sidebarColor,
-              child: Sidebar(
-                selectedItemName: widget.selectedItemName,
-                title: widget.title,
-              ),
-            )
-          : null,
-      body: WebSmoothScroll(
-        controller: _scrollController,
-        scrollOffset: 100,
-        animationDuration: 600,
-        curve: Curves.easeInOutCirc,
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
+    return LayoutBuilder(
+      builder: (context, constraints) => Scaffold(
+        key: scaffoldKey,
+        backgroundColor: backgroundColor,
+        drawerEnableOpenDragGesture: false,
+        drawerScrimColor: Colors.transparent,
+        drawer: constraints.maxWidth < 1000
+            ? Drawer(
+                width: sidebarWidth,
+                backgroundColor: sidebarColor,
+                child: Sidebar(
+                  selectedItemName: widget.selectedItemName,
+                  title: widget.title,
+                ),
+              )
+            : null,
+        body: WebSmoothScroll(
           controller: _scrollController,
-          child: Column(
-            children: [
-              const Topbar(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MediaQuery.of(context).size.width < 1000
-                        ? null
+          scrollOffset: 30,
+          animationDuration: 600,
+          curve: Curves.easeInOutCirc,
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _scrollController,
+            child: Column(
+              children: [
+                const Topbar(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    constraints.maxWidth < 1000
+                        ? Container()
                         : Sidebar(
                             selectedItemName: widget.selectedItemName,
                             title: widget.title,
                           ),
-                  ),
-                  Expanded(
-                    child: widget.body,
-                  )
-                ],
-              ),
-            ],
+                    Expanded(
+                      child: SizedBox(
+                        height: constraints.maxHeight,
+                        child: widget.body,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

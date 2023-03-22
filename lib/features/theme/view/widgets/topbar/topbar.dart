@@ -1,6 +1,6 @@
-import 'package:animated_sidebar/features/theme/view/widgets/sidebar/sidebar_style.dart';
-import 'package:animated_sidebar/features/theme/view/widgets/topbar/topbar_widgets/logo.dart';
-import 'package:animated_sidebar/features/theme/view/widgets/topbar/topbar_widgets/search_field.dart';
+import '/features/theme/view/widgets/sidebar/sidebar_style.dart';
+import '/features/theme/view/widgets/topbar/topbar_widgets/logo.dart';
+import '/features/theme/view/widgets/topbar/topbar_widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -13,23 +13,20 @@ class Topbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 75,
-      padding: const EdgeInsets.all(10),
       width: double.infinity,
       decoration: BoxDecoration(
         color: sidebarColor,
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                MediaQuery.of(context).size.width < 1000
-                    ? Builder(
+      padding: const EdgeInsets.only(right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              ...(MediaQuery.of(context).size.width < 1000
+                  ? [
+                      Builder(
                         builder: (context) => // Ensure Scaffold is in context
                             IconButton(
                           icon: Icon(
@@ -39,17 +36,21 @@ class Topbar extends StatelessWidget {
                           ),
                           onPressed: () => Scaffold.of(context).openDrawer(),
                         ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                    ]
+                  : [
+                      const SizedBox(
+                        width: 20,
                       )
-                    : Container(),
-                const SizedBox(
-                  width: 15,
-                ),
-                const Logo()
-              ],
-            ),
-            const SearchField(),
-          ],
-        ),
+                    ]),
+              const Logo()
+            ],
+          ),
+          const SearchField(),
+        ],
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:animated_sidebar/data/model/entity.dart';
+import '/data/model/entity.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
