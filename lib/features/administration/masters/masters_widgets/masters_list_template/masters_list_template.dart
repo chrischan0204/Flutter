@@ -142,7 +142,7 @@ class _CrudState extends State<MastersListTemplate> {
               onRowClick: (entity) {
                 _showDetailsSlider();
                 setState(() {
-                  selectedId = entity.id;
+                  selectedId = entity.id!;
                 });
                 widget.onRowClick(entity);
               },

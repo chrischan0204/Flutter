@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:safety_eta/constants/uri.dart';
 
-import '../model/observation_type.dart';
+import '/data/model/model.dart';
 
 class ObservationTypesRepository {
   static String url = '/api/ObservationType';
@@ -22,14 +22,55 @@ class ObservationTypesRepository {
     return [];
   }
 
-  Future<ObservationType?> getObervationTypeById(
+  Future<ObservationType> getObervationTypeById(
       String observationTypeId) async {
     Response response =
         await get(Uri.https(ApiUri.host, '$url/$observationTypeId'));
 
     if (response.statusCode == 200) {
-      return ObservationType.fromMap(jsonDecode(response.body));
+      return ObservationType.fromJson(response.body);
     }
-    return null;
+    throw Exception('');
+  }
+
+  Future<EntityResponse> addObservationType(
+      ObservationType observationType) async {
+    Response response = await post(Uri.https(ApiUri.host, url),
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: observationType.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> editObservationType(
+      ObservationType observationType) async {
+    Response response = await put(Uri.https(ApiUri.host, url),
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: observationType.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> deleteObservationType(String observationTypeId) async {
+    Response response = await put(
+      Uri.https(ApiUri.host, '$url/$observationTypeId'),
+    );
+
+    if (response.statusCode == 200) {
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
   }
 }

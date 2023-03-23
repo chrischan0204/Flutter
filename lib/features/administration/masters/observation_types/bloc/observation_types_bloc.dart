@@ -16,20 +16,29 @@ class ObservationTypesBloc
   }) : super(const ObservationTypesState()) {
     on<ObservationTypesRetrieved>(_onObservationTypesRetrieved);
     on<ObservationTypeSelected>(_onObservationTypeSelected);
+    on<ObservationTypeAdded>(_onObservationTypeAdded);
+    on<ObservationTypeEdited>(_onObservationTypeEdited);
+    on<ObservationTypeDeleted>(_onObservationTypeDeleted);
   }
 
-  Future<void> _onObservationTypesRetrieved(ObservationTypesRetrieved event,
-      Emitter<ObservationTypesState> emit) async {
-    emit(state.copyWith(observationTypesRetrievedStatus: EntityStatus.loading));
+  Future<void> _onObservationTypesRetrieved(
+    ObservationTypesRetrieved event,
+    Emitter<ObservationTypesState> emit,
+  ) async {
+    emit(state.copyWith(
+      observationTypesRetrievedStatus: EntityStatus.loading,
+    ));
     try {
       List<ObservationType> observationTypes =
           await observationTypesRepository.getObservationTypes();
       emit(state.copyWith(
-          observationTypes: observationTypes,
-          observationTypesRetrievedStatus: EntityStatus.succuess));
+        observationTypes: observationTypes,
+        observationTypesRetrievedStatus: EntityStatus.succuess,
+      ));
     } catch (e) {
       emit(state.copyWith(
-          observationTypesRetrievedStatus: EntityStatus.failure));
+        observationTypesRetrievedStatus: EntityStatus.failure,
+      ));
     }
   }
 
@@ -37,18 +46,102 @@ class ObservationTypesBloc
     ObservationTypeSelected event,
     Emitter<ObservationTypesState> emit,
   ) async {
-    emit(state.copyWith(observationTypeSelectedStatus: EntityStatus.loading));
+    emit(state.copyWith(
+      observationTypeSelectedStatus: EntityStatus.loading,
+    ));
     try {
       ObservationType? selectedObservationType =
           await observationTypesRepository
               .getObervationTypeById(event.observationTypeId);
       emit(
         state.copyWith(
-            selectedObservationType: selectedObservationType,
-            observationTypeSelectedStatus: EntityStatus.succuess),
+          selectedObservationType: selectedObservationType,
+          observationTypeSelectedStatus: EntityStatus.succuess,
+        ),
       );
     } catch (e) {
-      emit(state.copyWith(observationTypeSelectedStatus: EntityStatus.failure));
+      emit(state.copyWith(
+        selectedObservationType: null,
+        observationTypeSelectedStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  Future<void> _onObservationTypeAdded(
+    ObservationTypeAdded event,
+    Emitter<ObservationTypesState> emit,
+  ) async {
+    emit(state.copyWith(
+      observationTypeAddedStatus: EntityStatus.loading,
+    ));
+    try {
+      EntityResponse response = await observationTypesRepository
+          .addObservationType(event.observationType);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          observationTypeAddedStatus: EntityStatus.succuess,
+        ));
+      } else {
+        emit(state.copyWith(
+          observationTypeAddedStatus: EntityStatus.failure,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        observationTypeAddedStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  Future<void> _onObservationTypeEdited(
+    ObservationTypeEdited event,
+    Emitter<ObservationTypesState> emit,
+  ) async {
+    emit(state.copyWith(
+      observationTypeEditedStatus: EntityStatus.loading,
+    ));
+    try {
+      EntityResponse response = await observationTypesRepository
+          .addObservationType(event.observationType);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          observationTypeEditedStatus: EntityStatus.succuess,
+        ));
+      } else {
+        emit(state.copyWith(
+          observationTypeEditedStatus: EntityStatus.failure,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        observationTypeEditedStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  Future<void> _onObservationTypeDeleted(
+    ObservationTypeDeleted event,
+    Emitter<ObservationTypesState> emit,
+  ) async {
+    emit(state.copyWith(
+      observationTypeDeletedStatus: EntityStatus.loading,
+    ));
+    try {
+      EntityResponse response = await observationTypesRepository
+          .deleteObservationType(event.observationTypeId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          observationTypeDeletedStatus: EntityStatus.succuess,
+        ));
+      } else {
+        emit(state.copyWith(
+          observationTypeDeletedStatus: EntityStatus.failure,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        observationTypeDeletedStatus: EntityStatus.failure,
+      ));
     }
   }
 }

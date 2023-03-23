@@ -20,3 +20,39 @@ class ObservationTypeSelected extends ObservationTypesEvent {
         observationTypeId,
       ];
 }
+
+class ObservationTypeAdded extends ObservationTypesEvent {
+  final ObservationType observationType;
+  const ObservationTypeAdded({
+    required this.observationType,
+  });
+
+  @override
+  List<Object> get props => [
+        observationType,
+      ];
+}
+
+class ObservationTypeEdited extends ObservationTypesEvent {
+  final ObservationType observationType;
+  const ObservationTypeEdited({
+    required this.observationType,
+  });
+
+  @override
+  List<Object> get props => [
+        observationType,
+      ];
+}
+
+class ObservationTypeDeleted extends ObservationTypesEvent {
+  final String observationTypeId;
+  const ObservationTypeDeleted({
+    required this.observationTypeId,
+  });
+
+  @override
+  List<Object> get props => [
+        observationTypeId,
+      ];
+}

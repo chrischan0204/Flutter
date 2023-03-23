@@ -30,6 +30,7 @@ class ObservationType extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         security,
         visibility,
@@ -50,12 +51,6 @@ class ObservationType extends Entity implements Equatable {
   }
 
   @override
-  Map<String, EntityInputType> inputTypesToMap() {
-    // TODO: implement inputTypesToMap
-    throw UnimplementedError();
-  }
-
-  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -66,6 +61,7 @@ class ObservationType extends Entity implements Equatable {
     };
   }
 
+  @override
   factory ObservationType.fromMap(Map<String, dynamic> map) {
     return ObservationType(
       id: map['id'] as String,
@@ -80,4 +76,20 @@ class ObservationType extends Entity implements Equatable {
 
   factory ObservationType.fromJson(String source) =>
       ObservationType.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  ObservationType copyWith({
+    String? id,
+    String? name,
+    String? security,
+    String? visibility,
+    bool? active,
+  }) {
+    return ObservationType(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      security: security ?? this.security,
+      visibility: visibility ?? this.visibility,
+      active: active ?? this.active,
+    );
+  }
 }
