@@ -17,7 +17,7 @@ class Description extends StatelessWidget {
         style: const TextStyle(
           fontFamily: 'OpenSans',
           fontWeight: FontWeight.w600,
-          fontSize: 14,
+          fontSize: 12,
         ),
       ),
     );

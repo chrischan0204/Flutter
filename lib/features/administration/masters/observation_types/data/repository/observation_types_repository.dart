@@ -35,12 +35,14 @@ class ObservationTypesRepository {
 
   Future<EntityResponse> addObservationType(
       ObservationType observationType) async {
-    Response response = await post(Uri.https(ApiUri.host, url),
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json',
-        },
-        body: observationType.toJson());
+    Response response = await post(
+      Uri.https(ApiUri.host, url),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'text/plain',
+      },
+      body: observationType.toJson(),
+    );
 
     if (response.statusCode == 200) {
       return EntityResponse.fromJson(response.body);
@@ -64,7 +66,7 @@ class ObservationTypesRepository {
   }
 
   Future<EntityResponse> deleteObservationType(String observationTypeId) async {
-    Response response = await put(
+    Response response = await delete(
       Uri.https(ApiUri.host, '$url/$observationTypeId'),
     );
 

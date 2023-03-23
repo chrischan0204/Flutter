@@ -20,6 +20,7 @@ class ObservationTypesBloc
     on<ObservationTypeAdded>(_onObservationTypeAdded);
     on<ObservationTypeEdited>(_onObservationTypeEdited);
     on<ObservationTypeDeleted>(_onObservationTypeDeleted);
+    on<ObservationTypesStatusInited>(_onObservationTypesStatusInited);
   }
 
   Future<void> _onObservationTypesRetrieved(
@@ -118,15 +119,18 @@ class ObservationTypesBloc
       if (response.isSuccess) {
         emit(state.copyWith(
           observationTypeEditedStatus: EntityStatus.succuess,
+          selectedObservationType: null,
         ));
       } else {
         emit(state.copyWith(
           observationTypeEditedStatus: EntityStatus.failure,
+          selectedObservationType: null,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         observationTypeEditedStatus: EntityStatus.failure,
+        selectedObservationType: null,
       ));
     }
   }
@@ -144,16 +148,31 @@ class ObservationTypesBloc
       if (response.isSuccess) {
         emit(state.copyWith(
           observationTypeDeletedStatus: EntityStatus.succuess,
+          selectedObservationType: null,
         ));
       } else {
         emit(state.copyWith(
-          observationTypeDeletedStatus: EntityStatus.failure,
-        ));
+            observationTypeDeletedStatus: EntityStatus.failure,
+            selectedObservationType: null));
       }
     } catch (e) {
       emit(state.copyWith(
         observationTypeDeletedStatus: EntityStatus.failure,
+        selectedObservationType: null,
       ));
     }
+  }
+
+  void _onObservationTypesStatusInited(
+      ObservationTypesStatusInited event, Emitter<ObservationTypesState> emit) {
+    emit(
+      state.copyWith(
+        observationTypeAddedStatus: EntityStatus.initial,
+        observationTypeEditedStatus: EntityStatus.initial,
+        observationTypeSelectedStatus: EntityStatus.initial,
+        observationTypeDeletedStatus: EntityStatus.initial,
+        observationTypesRetrievedStatus: EntityStatus.initial,
+      ),
+    );
   }
 }

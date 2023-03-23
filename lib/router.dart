@@ -39,7 +39,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/observations',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Observations(),
@@ -49,7 +49,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/audits1',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Audits1(),
@@ -59,7 +59,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/action-items',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: ActionItems(),
@@ -69,7 +69,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/sites',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Sites(),
@@ -79,7 +79,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/companies',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Companies(),
@@ -89,7 +89,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/templates',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Templates(),
@@ -99,7 +99,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/audits',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Audits(),
@@ -113,7 +113,7 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: 'index',
-          pageBuilder: (context, state) => NoTransitionPage(
+          pageBuilder: (context, state) => NoTransitionPage<void>(
             key: state.pageKey,
             child: Layout(
               body: RegionsListView(),
@@ -123,7 +123,7 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: 'new',
-          pageBuilder: (context, state) => NoTransitionPage(
+          pageBuilder: (context, state) => NoTransitionPage<void>(
             key: state.pageKey,
             child: Layout(
               body: AddEditRegionView(),
@@ -133,7 +133,7 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: 'show/:regionId',
-          pageBuilder: (context, state) => NoTransitionPage(
+          pageBuilder: (context, state) => NoTransitionPage<void>(
             child: Layout(
               body: RegionDetailView(
                 regionId: state.params['regionId']!,
@@ -144,7 +144,7 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: 'edit/:regionId',
-          pageBuilder: (context, state) => NoTransitionPage(
+          pageBuilder: (context, state) => NoTransitionPage<void>(
             child: Layout(
               body: AddEditRegionView(
                 regionId: state.params['regionId']!,
@@ -157,7 +157,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/priority-levels',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: PriorityLevels(),
@@ -167,53 +167,87 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/observation-types',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: ObservationTypes(),
+          body: ObservationTypesListView(),
           selectedItemName: 'observation-types',
         ),
       ),
-      routes: [
-        GoRoute(
-          path: 'new',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: Layout(
-              body: AddEditObservationTypeView(),
-              selectedItemName: 'observation-types',
-            ),
-          ),
+      // routes: [
+      //   GoRoute(
+      //     path: 'new',
+      //     pageBuilder: (context, state) => NoTransitionPage<void>(
+      //       key: state.pageKey,
+      //       child: Layout(
+      //         body: AddEditObservationTypeView(),
+      //         selectedItemName: 'observation-types',
+      //       ),
+      //     ),
+      //   ),
+      //   GoRoute(
+      //     path: 'show/:observationTypeId',
+      //     pageBuilder: (context, state) => NoTransitionPage<void>(
+      //       key: state.pageKey,
+      //       child: Layout(
+      //         body: ObservationTypeShowView(
+      //           observationTypeId: state.params['observationTypeId']!,
+      //         ),
+      //         selectedItemName: 'observation-types',
+      //       ),
+      //     ),
+      //   ),
+      //   GoRoute(
+      //     path: 'edit/:observationTypeId',
+      //     pageBuilder: (context, state) => NoTransitionPage<void>(
+      //       key: state.pageKey,
+      //       child: Layout(
+      //         body: AddEditObservationTypeView(
+      //           observationTypeId: state.params['observationTypeId']!,
+      //         ),
+      //         selectedItemName: 'observation-types',
+      //       ),
+      //     ),
+      //   ),
+      // ],
+    ),
+    GoRoute(
+      path: '/observation-types/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditObservationTypeView(),
+          selectedItemName: 'observation-types',
         ),
-        GoRoute(
-          path: 'show/:observationTypeId',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: Layout(
-              body: ObservationTypeShowView(
-                observationTypeId: state.params['observationTypeId']!,
-              ),
-              selectedItemName: 'observation-types',
-            ),
+      ),
+    ),
+    GoRoute(
+      path: '/observation-types/show/:observationTypeId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ObservationTypeShowView(
+            observationTypeId: state.params['observationTypeId']!,
           ),
+          selectedItemName: 'observation-types',
         ),
-        GoRoute(
-          path: 'edit/:observationTypeId',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: Layout(
-              body: AddEditObservationTypeView(
-                observationTypeId: state.params['observationTypeId']!,
-              ),
-              selectedItemName: 'observation-types',
-            ),
+      ),
+    ),
+    GoRoute(
+      path: '/observation-types/edit/:observationTypeId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditObservationTypeView(
+            observationTypeId: state.params['observationTypeId']!,
           ),
+          selectedItemName: 'observation-types',
         ),
-      ],
+      ),
     ),
     GoRoute(
       path: '/awareness-groups',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: AwarenessGroups(),
@@ -223,7 +257,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/awareness-categories',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: AwarenessCategories(),
@@ -233,7 +267,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/users',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Users(),
@@ -243,7 +277,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/my-page',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Sites(),
@@ -253,7 +287,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/logout',
-      pageBuilder: (context, state) => NoTransitionPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: Sites(),
@@ -265,7 +299,7 @@ final GoRouter router = GoRouter(
   // errorBuilder: (context, state) => Container(
   //   child: Text('Page not found.'),
   // ),
-  errorPageBuilder: (context, state) => NoTransitionPage(
+  errorPageBuilder: (context, state) => NoTransitionPage<void>(
     child: Container(
       child: Text('Page not found.'),
     ),

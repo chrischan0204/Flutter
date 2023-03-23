@@ -32,18 +32,18 @@ class Entity {
 class EntityResponse {
   final bool isSuccess;
   final String message;
-  final Entity data;
+  final Entity? data;
   EntityResponse({
     required this.isSuccess,
     required this.message,
-    required this.data,
+    this.data,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'isSuccess': isSuccess,
       'message': message,
-      'data': data.toMap(),
+      'data': data?.toMap(),
     };
   }
 
@@ -51,7 +51,7 @@ class EntityResponse {
     return EntityResponse(
       isSuccess: map['isSuccess'] as bool,
       message: map['message'] as String,
-      data: Entity.fromMap(map['data'] as Map<String, dynamic>),
+      // data: Entity.fromMap(map['data'] as Map<String, dynamic>),
     );
   }
 

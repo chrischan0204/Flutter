@@ -31,7 +31,7 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
         hint: Text(
           widget.isDisabled ? widget.selectedValue! : widget.hint,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: darkTeal,
           ),
           overflow: TextOverflow.ellipsis,
@@ -46,7 +46,7 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
                 child: Text(
                   item,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
@@ -59,14 +59,14 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
           widget.onChanged(widget.items[value] as String);
         },
         buttonStyleData: ButtonStyleData(
-          height: 40,
+          height: 36,
           // width: 300,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: grey,
             ),
-            color: widget.isDisabled ? lightTeal : Colors.transparent,
+            color: widget.isDisabled ? lightTeal : Colors.white,
           ),
         ),
         menuItemStyleData: const MenuItemStyleData(

@@ -12,14 +12,14 @@ import 'widgets/show_item.dart';
 class MasterShowTemplate extends StatefulWidget {
   final String title;
   final String label;
-  final VoidCallback onDelete;
+  final VoidCallback deleteEntity;
   final Entity? entity;
 
   const MasterShowTemplate({
     super.key,
     required this.title,
     required this.label,
-    required this.onDelete,
+    required this.deleteEntity,
     this.entity,
   });
 
@@ -44,65 +44,59 @@ class _MasterShowTemplateState extends State<MasterShowTemplate> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    flex: 55,
-                    child: Text(
-                      '${widget.title} - ${widget.entity?.name ?? ""}',
-                      style: TextStyle(
-                        color: darkTeal,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'OpenSans',
-                      ),
+                  Text(
+                    '${widget.title} - ${widget.entity?.name ?? ""}',
+                    style: TextStyle(
+                      color: darkTeal,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                   const SizedBox(
                     width: 15,
                   ),
-                  Flexible(
-                    flex: 45,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CustomButton(
-                          backgroundColor: const Color(0xff0c83ff),
-                          hoverBackgroundColor: const Color(0xff0b76e6),
-                          iconData: PhosphorIcons.listNumbers,
-                          text: '${camelize(widget.label)} List',
-                          onClick: () {
-                            String location = GoRouter.of(context).location;
-                            location = location.replaceRange(
-                                location.indexOf('show'), null, '');
-                            GoRouter.of(context).go(location);
-                          },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomButton(
+                        backgroundColor: const Color(0xff0c83ff),
+                        hoverBackgroundColor: const Color(0xff0b76e6),
+                        iconData: PhosphorIcons.listNumbers,
+                        text: '${camelize(widget.label)} List',
+                        onClick: () {
+                          String location = GoRouter.of(context).location;
+                          location = location.replaceRange(
+                              location.indexOf('show'), null, '');
+                          GoRouter.of(context).go(location);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      CustomButton(
+                        backgroundColor: const Color(0xfff58646),
+                        hoverBackgroundColor: const Color(0xffdd793f),
+                        iconData: PhosphorIcons.gear,
+                        text: 'Edit ${camelize(widget.label)}',
+                        onClick: () => GoRouter.of(context).go(
+                          GoRouter.of(context)
+                              .location
+                              .replaceAll('show', 'edit'),
                         ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        CustomButton(
-                          backgroundColor: const Color(0xfff58646),
-                          hoverBackgroundColor: const Color(0xffdd793f),
-                          iconData: PhosphorIcons.gear,
-                          text: 'Edit ${camelize(widget.label)}',
-                          onClick: () => GoRouter.of(context).go(
-                            GoRouter.of(context)
-                                .location
-                                .replaceAll('show', 'edit'),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        CustomButton(
-                          backgroundColor: const Color(0xffef4444),
-                          hoverBackgroundColor: const Color(0xffd73d3d),
-                          iconData: PhosphorIcons.gear,
-                          text: 'Delete ${camelize(widget.label)}',
-                          onClick: () => widget.onDelete(),
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      CustomButton(
+                        backgroundColor: const Color(0xffef4444),
+                        hoverBackgroundColor: const Color(0xffd73d3d),
+                        iconData: PhosphorIcons.gear,
+                        text: 'Delete ${camelize(widget.label)}',
+                        onClick: () => widget.deleteEntity(),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

@@ -10,8 +10,8 @@ class ObservationType extends Entity implements Equatable {
   final String visibility;
   final bool active;
   ObservationType({
-    required super.id,
-    required super.name,
+    super.id,
+    super.name,
     required this.security,
     required this.visibility,
     required this.active,
@@ -51,13 +51,22 @@ class ObservationType extends Entity implements Equatable {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'security': security,
-      'visibility': visibility,
-      'active': active,
-    };
+    if (id == null) {
+      return <String, dynamic>{
+        'name': name,
+        'security': security,
+        'visibility': visibility,
+        'active': active,
+      };
+    } else {
+      return <String, dynamic>{
+        'id': id,
+        'name': name,
+        'security': security,
+        'visibility': visibility,
+        'active': active,
+      };
+    }
   }
 
   @override

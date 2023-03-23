@@ -19,13 +19,7 @@ class MastersListTemplate extends StatefulWidget {
   final String description;
   final String label;
   final String note;
-  final List<CrudItem> crudItems;
   final ValueChanged<Entity> onRowClick;
-  final String notifyContent;
-  final NotifyType notifyType;
-  final bool deletable;
-  final bool isDeactive;
-  final ValueChanged<bool> onActiveChanged;
   final Entity? selectedEntity;
   const MastersListTemplate({
     super.key,
@@ -35,13 +29,7 @@ class MastersListTemplate extends StatefulWidget {
     required this.label,
     required this.note,
     this.selectedEntity,
-    this.crudItems = const [],
     required this.onRowClick,
-    this.notifyContent = '',
-    this.notifyType = NotifyType.initial,
-    this.deletable = false,
-    this.isDeactive = true,
-    required this.onActiveChanged,
   });
 
   @override
@@ -74,10 +62,6 @@ class _CrudState extends State<MastersListTemplate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Notify(
-                content: widget.notifyContent,
-                type: widget.notifyType,
-              ),
               _buildHeader(),
               const CustomDivider(),
               _buildTableHeader(),
@@ -101,6 +85,7 @@ class _CrudState extends State<MastersListTemplate> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           PageTitle(
             title: widget.title,
@@ -316,7 +301,7 @@ class _CrudState extends State<MastersListTemplate> {
                 children: [
                   Text(
                     widget.selectedEntity != null
-                        ? widget.selectedEntity!.name!
+                        ? widget.selectedEntity!.name ?? ''
                         : '',
                     style: TextStyle(
                       fontFamily: 'OpenSans',

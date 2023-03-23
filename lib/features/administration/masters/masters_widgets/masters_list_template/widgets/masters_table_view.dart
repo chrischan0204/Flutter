@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../custom_data_cell.dart';
-import '/data/bloc/bloc.dart';
 
 import '/data/model/entity.dart';
 
@@ -31,7 +30,7 @@ class _DataTableViewState extends State<DataTableView> {
                   key,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: 'OpenSans',
                   ),
                   softWrap: true,
@@ -45,7 +44,7 @@ class _DataTableViewState extends State<DataTableView> {
             'Details',
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 14,
+              fontSize: 12,
               fontFamily: 'OpenSans',
             ),
           ),

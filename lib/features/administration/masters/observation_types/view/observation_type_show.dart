@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:safety_eta/data/model/model.dart';
 
 import '/data/bloc/bloc.dart';
 import '../../masters_widgets/master_show_template/master_show_template.dart';
@@ -30,14 +32,24 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
+    return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
+      listener: (context, state) {
+        if (state.observationTypeDeletedStatus == EntityStatus.succuess) {
+          GoRouter.of(context).go('/observation-types');
+        }
+      },
       builder: (context, state) {
         return MasterShowTemplate(
-          title:
-              'Observation Type',
+          title: 'Observation Type',
           label: 'Observation Type',
           entity: state.selectedObservationType,
-          onDelete: () {},
+          deleteEntity: () {
+            observationTypesBloc.add(
+              ObservationTypeDeleted(
+                observationTypeId: state.selectedObservationType!.id!,
+              ),
+            );
+          },
         );
       },
     );

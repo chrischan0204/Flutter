@@ -29,33 +29,6 @@ class _PriorityLevelsState extends State<PriorityLevels> {
           note:
               'This Priority Level is in use on 21 observations. An priority level can be removed from future use by deactivating. It will preserve all past data as is.',
           onRowClick: (value) {},
-          onActiveChanged: (value) {},
-          crudItems: [
-            // CrudItem(
-            //   label: 'Priority Level (*)',
-            //   content: CustomTextField(
-            //     hintText: 'e.g. Medium-low',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-            // CrudItem(
-            //   label: 'Priority Type (*)',
-            //   content: CustomSingleSelect(
-            //     items: [
-            //       'Corrective',
-            //       'Positive',
-            //     ],
-            //     hint: 'Select Type',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-            // CrudItem(
-            //   label: 'Color (*)',
-            //   content: CustomColorPicker(
-            //     color: Colors.blue,
-            //   ),
-            // ),
-          ],
         );
       },
     );

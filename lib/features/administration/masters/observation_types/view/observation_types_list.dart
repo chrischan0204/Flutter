@@ -3,20 +3,21 @@ import '/data/model/model.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
-class ObservationTypes extends StatefulWidget {
-  const ObservationTypes({super.key});
+class ObservationTypesListView extends StatefulWidget {
+  const ObservationTypesListView({super.key});
 
   @override
-  State<ObservationTypes> createState() => _ObservationTypesState();
+  State<ObservationTypesListView> createState() => _ObservationTypesState();
 }
 
-class _ObservationTypesState extends State<ObservationTypes> {
+class _ObservationTypesState extends State<ObservationTypesListView> {
   late ObservationTypesBloc observationTypesBloc;
   @override
   void initState() {
     super.initState();
     observationTypesBloc = context.read<ObservationTypesBloc>();
     observationTypesBloc.add(ObservationTypesRetrieved());
+    observationTypesBloc.add(const ObservationTypesStatusInited());
   }
 
   @override
@@ -35,42 +36,8 @@ class _ObservationTypesState extends State<ObservationTypes> {
             observationTypesBloc.add(ObservationTypeSelected(
               observationType: observationType as ObservationType,
             ));
-            print(state.selectedObservationType);
           },
           selectedEntity: state.selectedObservationType,
-          onActiveChanged: (value) {},
-          crudItems: [
-            // CrudItem(
-            //   label: 'Observation Type (*)',
-            //   content: CustomTextField(
-            //     hintText: 'e.g. Good Catch',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-            // CrudItem(
-            //   label: 'Severity (*)',
-            //   content: CustomSingleSelect(
-            //     items: const [
-            //       'Good Catch',
-            //       'Near Miss',
-            //       'Positive',
-            //     ],
-            //     hint: 'Select Severity',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-            // CrudItem(
-            //   label: 'Severity (*)',
-            //   content: CustomSingleSelect(
-            //     items: const [
-            //       'Everywhere',
-            //       'Assessment only',
-            //     ],
-            //     hint: 'Select Visibility',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-          ],
         );
       },
     );

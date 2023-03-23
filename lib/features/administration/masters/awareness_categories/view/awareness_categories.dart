@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
@@ -32,24 +31,6 @@ class _AwarenessCategoriesState extends State<AwarenessCategories> {
           note:
               'This awareness category is in use on 41 assessments. An awareness category can be removed from future use by deactivating. It will preserve all past data as is.',
           onRowClick: (value) {},
-          onActiveChanged: (value) {},
-          crudItems: [
-            // CrudItem(
-            //   label: 'Awareness Group (*)',
-            //   content: CustomSingleSelect(
-            //     items: state.awarenessGroups,
-            //     hint: 'Select Awareness Group',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-            // CrudItem(
-            //   label: 'Awareness Group (*)',
-            //   content: CustomTextField(
-            //     hintText: 'e.g. Signage',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-          ],
         );
       },
     );
