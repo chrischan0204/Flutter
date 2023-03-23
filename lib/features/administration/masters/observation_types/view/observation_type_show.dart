@@ -23,10 +23,11 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   @override
   void initState() {
     observationTypesBloc = context.read<ObservationTypesBloc>();
-
+    observationTypesBloc.add(const ObservationTypesStatusInited());
     observationTypesBloc.add(ObservationTypeSelectedById(
       observationTypeId: widget.observationTypeId,
     ));
+
     super.initState();
   }
 
