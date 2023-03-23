@@ -6,10 +6,9 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class AwarenessGroup extends Entity implements Equatable {
-  final String name;
   final bool active;
   AwarenessGroup({
-    required this.name,
+    super.name,
     required this.active,
     required super.id,
   });
@@ -24,6 +23,7 @@ class AwarenessGroup extends Entity implements Equatable {
   @override
   List<Object?> get props => [
         name,
+        active,
       ];
 
   @override
@@ -50,16 +50,19 @@ class AwarenessGroup extends Entity implements Equatable {
   }
 
   @override
-  Map<String, EntityInputType> inputTypesToMap() {
-    throw UnimplementedError();
-  }
-
-  @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'name': name,
-      'active': active,
-    };
+    if (id == null) {
+      return <String, dynamic>{
+        'name': name,
+        'active': active,
+      };
+    } else {
+      return <String, dynamic>{
+        'id': id,
+        'name': name,
+        'active': active,
+      };
+    }
   }
 
   factory AwarenessGroup.fromMap(Map<String, dynamic> map) {
