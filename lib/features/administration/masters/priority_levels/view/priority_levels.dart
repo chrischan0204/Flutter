@@ -28,9 +28,6 @@ class _PriorityLevelsState extends State<PriorityLevels> {
           label: 'priority level',
           note:
               'This Priority Level is in use on 21 observations. An priority level can be removed from future use by deactivating. It will preserve all past data as is.',
-          addEntity: () async {},
-          editEntity: () async {},
-          deleteEntity: () async {},
           onRowClick: (value) {},
           onActiveChanged: (value) {},
           crudItems: [

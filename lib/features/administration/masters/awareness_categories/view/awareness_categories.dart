@@ -31,9 +31,6 @@ class _AwarenessCategoriesState extends State<AwarenessCategories> {
           label: 'awareness category',
           note:
               'This awareness category is in use on 41 assessments. An awareness category can be removed from future use by deactivating. It will preserve all past data as is.',
-          addEntity: () {},
-          editEntity: () {},
-          deleteEntity: () {},
           onRowClick: (value) {},
           onActiveChanged: (value) {},
           crudItems: [

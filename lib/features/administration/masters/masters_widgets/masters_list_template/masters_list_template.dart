@@ -15,9 +15,6 @@ class MastersListTemplate extends StatefulWidget {
   final String label;
   final String note;
   final List<CrudItem> crudItems;
-  final VoidCallback addEntity;
-  final VoidCallback editEntity;
-  final VoidCallback deleteEntity;
   final ValueChanged<Entity> onRowClick;
   final String notifyContent;
   final NotifyType notifyType;
@@ -32,9 +29,6 @@ class MastersListTemplate extends StatefulWidget {
     required this.label,
     required this.note,
     this.crudItems = const [],
-    required this.addEntity,
-    required this.editEntity,
-    required this.deleteEntity,
     required this.onRowClick,
     this.notifyContent = '',
     this.notifyType = NotifyType.initial,

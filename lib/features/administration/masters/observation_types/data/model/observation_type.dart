@@ -6,13 +6,12 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class ObservationType extends Entity implements Equatable {
-  final String name;
   final String security;
   final String visibility;
   final bool active;
   ObservationType({
     required super.id,
-    required this.name,
+    required super.name,
     required this.security,
     required this.visibility,
     required this.active,
@@ -21,7 +20,7 @@ class ObservationType extends Entity implements Equatable {
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
-      'Observation type': name,
+      'Name': name,
       'Severity': security,
       'Visibility': visibility,
       'Active': active,
@@ -43,7 +42,7 @@ class ObservationType extends Entity implements Equatable {
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
-      'Observation type': name,
+      'Name': name,
       'Severity': security,
       'Visibility': visibility,
       'Active': active,

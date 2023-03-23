@@ -10,10 +10,12 @@ class ObservationTypes extends StatefulWidget {
 }
 
 class _ObservationTypesState extends State<ObservationTypes> {
+  late ObservationTypesBloc observationTypesBloc;
   @override
   void initState() {
     super.initState();
-    context.read<ObservationTypesBloc>().add(ObservationTypesRetrieved());
+    observationTypesBloc = context.read<ObservationTypesBloc>();
+    observationTypesBloc.add(ObservationTypesRetrieved());
   }
 
   @override
@@ -28,10 +30,11 @@ class _ObservationTypesState extends State<ObservationTypes> {
           label: 'observation type',
           note:
               'This observation type is in use on 173 observations. An observation type can be removed from future use by deactivating. It will preserve all past data as is.',
-          addEntity: () async {},
-          editEntity: () async {},
-          deleteEntity: () async {},
-          onRowClick: (value) {},
+          onRowClick: (observationType) {
+            observationTypesBloc.add(ObservationTypeSelected(
+              observationTypeId: observationType.id!,
+            ));
+          },
           onActiveChanged: (value) {},
           crudItems: [
             // CrudItem(

@@ -2,21 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:safety_eta/constants/color.dart';
+import 'package:safety_eta/features/administration/masters/masters_widgets/custom_data_cell.dart';
 import 'package:safety_eta/global_widgets/global_widget.dart';
 import 'package:strings/strings.dart';
+
+import '/data/model/entity.dart';
+import 'widgets/show_item.dart';
 
 class MasterShowTemplate extends StatefulWidget {
   final String title;
   final String label;
   final VoidCallback onDelete;
-  final Widget child;
+  final Entity? entity;
 
   const MasterShowTemplate({
     super.key,
     required this.title,
     required this.label,
     required this.onDelete,
-    required this.child,
+    this.entity,
   });
 
   @override
@@ -43,7 +47,7 @@ class _MasterShowTemplateState extends State<MasterShowTemplate> {
                   Flexible(
                     flex: 55,
                     child: Text(
-                      widget.title,
+                      '${widget.title} - ${widget.entity?.name ?? ""}',
                       style: TextStyle(
                         color: darkTeal,
                         fontSize: 18,
@@ -107,7 +111,28 @@ class _MasterShowTemplateState extends State<MasterShowTemplate> {
               padding: const EdgeInsets.only(
                 top: 50,
               ),
-              child: widget.child,
+              child: widget.entity != null
+                  ? Builder(
+                      builder: (context) {
+                        Map<String, dynamic> detailsMap =
+                            widget.entity!.detailItemsToMap();
+                        return Column(
+                          children: detailsMap.entries
+                              .map(
+                                (detail) => ShowItem(
+                                  label: detail.key,
+                                  content: CustomDataCell(
+                                    data: detail.value,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    ),
             )
           ],
         ),

@@ -22,8 +22,9 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   void initState() {
     observationTypesBloc = context.read<ObservationTypesBloc>();
 
-    observationTypesBloc.add(
-        ObservationTypeSelected(observationTypeId: widget.observationTypeId));
+    observationTypesBloc.add(ObservationTypeSelected(
+      observationTypeId: widget.observationTypeId,
+    ));
     super.initState();
   }
 
@@ -32,9 +33,10 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
     return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
       builder: (context, state) {
         return MasterShowTemplate(
-          title: 'Observation Type - ${state.selectedObservationType?.name}',
+          title:
+              'Observation Type',
           label: 'Observation Type',
-          child: Container(),
+          entity: state.selectedObservationType,
           onDelete: () {},
         );
       },

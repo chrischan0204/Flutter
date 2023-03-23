@@ -91,51 +91,6 @@ class _RegionsState extends State<RegionsListView> {
               'This region has 2 sites associated & cannot be deleted. Only time zone can be changed or this region can be deactivated. After deactivation it wont be available for any further site allocations. The current sites will be maintained as is.',
           deletable: true,
           notifyContent: notifyContent,
-          addEntity: () {
-            // if (state.selectedRegionName.isNotEmpty &&
-            //     state.selectedTimezones.isNotEmpty) {
-            //   regionsBloc.add(
-            //     RegionAdded(
-            //       region: Region(
-            //         id: const Uuid().v1(),
-            //         regionName: state.selectedRegionName,
-            //         timezonesAssociated: state.selectedTimezones,
-            //         isActive: true,
-            //         associatedSitesCount: Random().nextInt(2),
-            //       ),
-            //     ),
-            //   );
-            // }
-          },
-          editEntity: () {
-            // if (state.selectedRegionName.isNotEmpty &&
-            //     state.selectedTimezones.isNotEmpty) {
-            //   regionsBloc.add(
-            //     RegionEdited(
-            //       region: Region(
-            //         id: state.selectedRegionId,
-            //         regionName: state.selectedRegionName,
-            //         timezonesAssociated: state.selectedTimezones,
-            //         isActive: state.selectedIsActive,
-            //         associatedSitesCount: state.selectedAssociatedSitesCount,
-            //       ),
-            //     ),
-            //   );
-            // }
-          },
-          deleteEntity: () {
-            // regionsBloc.add(
-            //   RegionDeleted(
-            //     region: Region(
-            //       id: state.selectedRegionId,
-            //       regionName: state.selectedRegionName,
-            //       timezonesAssociated: state.selectedTimezones,
-            //       isActive: state.selectedIsActive,
-            //       associatedSitesCount: state.selectedAssociatedSitesCount,
-            //     ),
-            //   ),
-            // );
-          },
           // isDeactive: !state.selectedRegion!.active,
           onActiveChanged: (value) {
             // regionsBloc.add(

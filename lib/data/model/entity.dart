@@ -3,13 +3,18 @@ import 'dart:convert';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Entity {
   final String? id;
+  final String? name;
 
   Entity({
-    required this.id,
+    this.id,
+    this.name,
   });
 
   factory Entity.fromMap(Map<String, dynamic> map) {
-    return Entity(id: map['id'] as String);
+    return Entity(
+      id: map['id'] as String,
+      name: map['name'] as String,
+    );
   }
   Map<String, dynamic> toMap() {
     return <String, dynamic>{};
