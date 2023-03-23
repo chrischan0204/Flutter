@@ -16,6 +16,7 @@ class ObservationTypesBloc
   }) : super(const ObservationTypesState()) {
     on<ObservationTypesRetrieved>(_onObservationTypesRetrieved);
     on<ObservationTypeSelected>(_onObservationTypeSelected);
+    on<ObservationTypeSelectedById>(_onObservationTypeSelectedById);
     on<ObservationTypeAdded>(_onObservationTypeAdded);
     on<ObservationTypeEdited>(_onObservationTypeEdited);
     on<ObservationTypeDeleted>(_onObservationTypeDeleted);
@@ -47,7 +48,18 @@ class ObservationTypesBloc
     Emitter<ObservationTypesState> emit,
   ) async {
     emit(state.copyWith(
+      observationTypeSelectedStatus: EntityStatus.succuess,
+      selectedObservationType: event.observationType,
+    ));
+  }
+
+  Future<void> _onObservationTypeSelectedById(
+    ObservationTypeSelectedById event,
+    Emitter<ObservationTypesState> emit,
+  ) async {
+    emit(state.copyWith(
       observationTypeSelectedStatus: EntityStatus.loading,
+      selectedObservationType: null,
     ));
     try {
       ObservationType? selectedObservationType =

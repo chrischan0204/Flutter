@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/data/model/model.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
@@ -32,9 +33,11 @@ class _ObservationTypesState extends State<ObservationTypes> {
               'This observation type is in use on 173 observations. An observation type can be removed from future use by deactivating. It will preserve all past data as is.',
           onRowClick: (observationType) {
             observationTypesBloc.add(ObservationTypeSelected(
-              observationTypeId: observationType.id!,
+              observationType: observationType as ObservationType,
             ));
+            print(state.selectedObservationType);
           },
+          selectedEntity: state.selectedObservationType,
           onActiveChanged: (value) {},
           crudItems: [
             // CrudItem(

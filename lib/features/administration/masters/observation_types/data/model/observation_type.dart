@@ -20,7 +20,7 @@ class ObservationType extends Entity implements Equatable {
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
-      'Name': name,
+      'Observation Type': name,
       'Severity': security,
       'Visibility': visibility,
       'Active': active,
@@ -42,7 +42,7 @@ class ObservationType extends Entity implements Equatable {
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
-      'Name': name,
+      'Observation Type': name,
       'Severity': security,
       'Visibility': visibility,
       'Active': active,

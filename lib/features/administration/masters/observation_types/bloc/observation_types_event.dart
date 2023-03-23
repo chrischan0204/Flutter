@@ -11,8 +11,19 @@ abstract class ObservationTypesEvent extends Equatable {
 class ObservationTypesRetrieved extends ObservationTypesEvent {}
 
 class ObservationTypeSelected extends ObservationTypesEvent {
-  final String observationTypeId;
+  final ObservationType observationType;
   const ObservationTypeSelected({
+    required this.observationType,
+  });
+  @override
+  List<Object> get props => [
+        observationType,
+      ];
+}
+
+class ObservationTypeSelectedById extends ObservationTypesEvent {
+  final String observationTypeId;
+  const ObservationTypeSelectedById({
     required this.observationTypeId,
   });
   @override

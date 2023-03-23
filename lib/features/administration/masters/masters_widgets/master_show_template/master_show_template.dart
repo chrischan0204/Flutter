@@ -97,7 +97,7 @@ class _MasterShowTemplateState extends State<MasterShowTemplate> {
                           backgroundColor: const Color(0xffef4444),
                           hoverBackgroundColor: const Color(0xffd73d3d),
                           iconData: PhosphorIcons.gear,
-                          text: '${camelize(widget.label)} List',
+                          text: 'Delete ${camelize(widget.label)}',
                           onClick: () => widget.onDelete(),
                         ),
                       ],

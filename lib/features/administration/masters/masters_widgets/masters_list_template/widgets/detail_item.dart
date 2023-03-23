@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/constants/color.dart';
 
-import '/constants/color.dart';
-
-class ShowItem extends StatelessWidget {
-  final String label;
-  final Widget content;
-  const ShowItem({
+class DetailItem extends StatelessWidget {
+  final String? label;
+  final Widget? content;
+  final bool isTwoLine;
+  const DetailItem({
     super.key,
-    required this.label,
-    required this.content,
+    this.label,
+    this.content,
+    this.isTwoLine = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    // if (isTwoLine) {
+    //   return Column(
+    //     children: [
+    //       DetailItem(
+    //         label: label,
+    //       ),
+    //       DetailItem(
+    //         content: content,
+    //       )
+    //     ],
+    //   );
+    // } else {
+
+    // }
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
+          top: BorderSide(
             color: grey,
             width: 1,
           ),
@@ -32,18 +47,18 @@ class ShowItem extends StatelessWidget {
           Flexible(
             fit: FlexFit.tight,
             child: Text(
-              '$label:',
+              label!,
               style: TextStyle(
-                fontSize: 12,
                 color: darkTeal,
                 fontWeight: FontWeight.w600,
+                fontSize: 12,
                 fontFamily: 'OpenSans',
               ),
             ),
           ),
           Flexible(
-            flex: 3,
-            child: content,
+            flex: 2,
+            child: content!,
           )
         ],
       ),

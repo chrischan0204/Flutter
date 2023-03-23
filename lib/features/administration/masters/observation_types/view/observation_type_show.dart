@@ -22,7 +22,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   void initState() {
     observationTypesBloc = context.read<ObservationTypesBloc>();
 
-    observationTypesBloc.add(ObservationTypeSelected(
+    observationTypesBloc.add(ObservationTypeSelectedById(
       observationTypeId: widget.observationTypeId,
     ));
     super.initState();
