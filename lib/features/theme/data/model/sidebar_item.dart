@@ -14,3 +14,21 @@ class SidebarItemModel {
     this.path = '',
   });
 }
+
+// enum SidebarItemName {
+//   dashboard,
+//   obervations,
+//   audits1,
+//   actionItems,
+//   sites,
+//   companies,
+//   projects,
+//   audits,
+//   regions,
+//   priorityLevels,
+//   observationTypes,
+//   awarenessGroups,
+//   awarenessCategories,
+//   users,
+//   myPage,
+// }

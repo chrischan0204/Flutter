@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../model/sidebar_item.dart';
-import '/features/features.dart';
 
 class SidebarRepsitory {
+  
   static List<SidebarItemModel> mainItems = <SidebarItemModel>[
     SidebarItemModel(
       iconData: PhosphorIcons.command,

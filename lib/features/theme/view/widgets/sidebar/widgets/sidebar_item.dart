@@ -40,7 +40,6 @@ class _SidebarItemState extends State<SidebarItem>
   late Animation<double> anim;
   late Animation<Color?> color;
   bool isHover = false;
-  bool isSelected = false;
   bool isSidebarItemExtended = false;
   CustomPopupMenuController customPopupMenuController =
       CustomPopupMenuController();
@@ -53,7 +52,6 @@ class _SidebarItemState extends State<SidebarItem>
       isSidebarItemExtended = widget.subItems.map((e) => e.path).contains(
             widget.selectedItemName,
           );
-      isSelected = widget.path == widget.selectedItemName;
     });
     animationController = AnimationController(
       vsync: this,
@@ -126,6 +124,11 @@ class _SidebarItemState extends State<SidebarItem>
               : shrinkSidebarWidth,
           end: 0.0,
         ).animate(animationController);
+        // if (widget.selectedItemName != widget.path) {
+        //   animationController.reverse();
+        // } else {
+        //   animationController.forward();
+        // }
 
         if (state.hoveredItemName != widget.label) {
           _hidePopupMenu(state);
