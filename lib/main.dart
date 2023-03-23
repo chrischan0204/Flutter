@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AwarenessGroupsBloc(
-              awarenessGroupRepository:
+              awarenessGroupsRepository:
                   RepositoryProvider.of<AwarenessGroupsRepository>(context),
             ),
           ),

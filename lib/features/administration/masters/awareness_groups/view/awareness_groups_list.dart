@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/data/model/model.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
@@ -10,15 +11,35 @@ class AwarenessGroupsListView extends StatefulWidget {
 }
 
 class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
+  late AwarenessGroupsBloc awarenessGroupsBloc;
+  late String successType = 'none';
   @override
   void initState() {
+    awarenessGroupsBloc = context.read<AwarenessGroupsBloc>()
+      ..add(AwarenessGroupsRetrieved());
     super.initState();
-    context.read<AwarenessGroupsBloc>().add(AwarenessGroupsRetrieved());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AwarenessGroupsBloc, AwarenessGroupsState>(
+    return BlocConsumer<AwarenessGroupsBloc, AwarenessGroupsState>(
+      listener: (context, state) {
+        if (state.awarenessGroupAddedStatus == EntityStatus.succuess) {
+          setState(() {
+            successType = 'add';
+          });
+        }
+        if (state.awarenessGroupEditedStatus == EntityStatus.succuess) {
+          setState(() {
+            successType = 'edit';
+          });
+        }
+        if (state.awarenessGroupDeletedStatus == EntityStatus.succuess) {
+          setState(() {
+            successType = 'delete';
+          });
+        }
+      },
       builder: (context, state) {
         return MastersListTemplate(
           description:
@@ -28,7 +49,13 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
           label: 'awareness group',
           note:
               'This awareness group has 7 awareness categories. Deletion is allowed for groups that have no awareness categories associated with them.',
-          onRowClick: (value) {},
+          onRowClick: (awarenessGroup) {
+            awarenessGroupsBloc.add(AwarenessGroupSelected(
+              awarenessGroup: awarenessGroup as AwarenessGroup,
+            ));
+          },
+          selectedEntity: state.selectedAwarenessGroup,
+          successType: successType,
         );
       },
     );
