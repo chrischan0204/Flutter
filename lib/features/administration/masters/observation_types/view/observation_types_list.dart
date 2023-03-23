@@ -12,17 +12,35 @@ class ObservationTypesListView extends StatefulWidget {
 
 class _ObservationTypesState extends State<ObservationTypesListView> {
   late ObservationTypesBloc observationTypesBloc;
+  String successType = 'none';
+
   @override
   void initState() {
     super.initState();
     observationTypesBloc = context.read<ObservationTypesBloc>();
     observationTypesBloc.add(ObservationTypesRetrieved());
-    observationTypesBloc.add(const ObservationTypesStatusInited());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
+    return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
+      listener: (context, state) {
+        if (state.observationTypeAddedStatus == EntityStatus.succuess) {
+          setState(() {
+            successType = 'add';
+          });
+        }
+        if (state.observationTypeEditedStatus == EntityStatus.succuess) {
+          setState(() {
+            successType = 'edit';
+          });
+        }
+        if (state.observationTypeDeletedStatus == EntityStatus.succuess) {
+          setState(() {
+            successType = 'delete';
+          });
+        }
+      },
       builder: (context, state) {
         return MastersListTemplate(
           description:
@@ -38,6 +56,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
             ));
           },
           selectedEntity: state.selectedObservationType,
+          successType: successType,
         );
       },
     );

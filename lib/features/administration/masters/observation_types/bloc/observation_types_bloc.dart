@@ -115,7 +115,7 @@ class ObservationTypesBloc
     ));
     try {
       EntityResponse response = await observationTypesRepository
-          .addObservationType(event.observationType);
+          .editObservationType(event.observationType);
       if (response.isSuccess) {
         emit(state.copyWith(
           observationTypeEditedStatus: EntityStatus.succuess,

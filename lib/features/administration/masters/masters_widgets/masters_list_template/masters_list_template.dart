@@ -21,16 +21,17 @@ class MastersListTemplate extends StatefulWidget {
   final String note;
   final ValueChanged<Entity> onRowClick;
   final Entity? selectedEntity;
-  const MastersListTemplate({
-    super.key,
-    this.entities = const [],
-    required this.description,
-    required this.title,
-    required this.label,
-    required this.note,
-    this.selectedEntity,
-    required this.onRowClick,
-  });
+  final String successType;
+  const MastersListTemplate(
+      {super.key,
+      this.entities = const [],
+      required this.description,
+      required this.title,
+      required this.label,
+      required this.note,
+      this.selectedEntity,
+      required this.onRowClick,
+      this.successType = ''});
 
   @override
   State<MastersListTemplate> createState() => _CrudState();
@@ -41,6 +42,7 @@ class _CrudState extends State<MastersListTemplate> {
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
   late String selectedId;
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +64,26 @@ class _CrudState extends State<MastersListTemplate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              widget.successType == 'add'
+                  ? Notify(
+                      content:
+                          '${camelize(widget.label)} Created Successfully!',
+                      type: NotifyType.success,
+                    )
+                  : Container(),
+              widget.successType == 'edit'
+                  ? Notify(
+                      content:
+                          '${camelize(widget.label)} Details Updated Successfully!',
+                      type: NotifyType.good,
+                    )
+                  : Container(),
+              widget.successType == 'delete'
+                  ? Notify(
+                      content: 'The ${widget.label} was deleted.',
+                      type: NotifyType.good,
+                    )
+                  : Container(),
               _buildHeader(),
               const CustomDivider(),
               _buildTableHeader(),

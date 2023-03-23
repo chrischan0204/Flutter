@@ -5,6 +5,7 @@ import 'package:safety_eta/constants/color.dart';
 import 'package:safety_eta/features/administration/masters/masters_widgets/custom_data_cell.dart';
 import 'package:safety_eta/global_widgets/global_widget.dart';
 import 'package:strings/strings.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 
 import '/data/model/entity.dart';
 import 'widgets/show_item.dart';
@@ -93,7 +94,20 @@ class _MasterShowTemplateState extends State<MasterShowTemplate> {
                         hoverBackgroundColor: const Color(0xffd73d3d),
                         iconData: PhosphorIcons.gear,
                         text: 'Delete ${camelize(widget.label)}',
-                        onClick: () => widget.deleteEntity(),
+                        onClick: () async {
+                          if (await confirm(
+                            context,
+                            title: const Text('Confirm'),
+                            content: Container(
+                              child: const Text(
+                                  'Deleting project..... Are you sure?'),
+                            ),
+                            textOK: const Text('Yes'),
+                            textCancel: const Text('No'),
+                          )) {
+                            widget.deleteEntity();
+                          }
+                        },
                       ),
                     ],
                   )
