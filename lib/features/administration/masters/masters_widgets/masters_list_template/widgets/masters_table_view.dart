@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import '/data/bloc/bloc.dart';
+import '../../custom_data_cell.dart';
 
 import '/data/model/entity.dart';
 
@@ -30,7 +30,7 @@ class _DataTableViewState extends State<DataTableView> {
                   key,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: 'OpenSans',
                   ),
                   softWrap: true,
@@ -44,7 +44,7 @@ class _DataTableViewState extends State<DataTableView> {
             'Details',
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 14,
+              fontSize: 12,
               fontFamily: 'OpenSans',
             ),
           ),
@@ -70,7 +70,9 @@ class _DataTableViewState extends State<DataTableView> {
               ...entity
                   .tableItemsToMap()
                   .values
-                  .map((value) => DataCell(_buildCell(value)))
+                  .map((value) => DataCell(CustomDataCell(
+                        data: value,
+                      )))
                   .toList(),
               DataCell(
                 MouseRegion(
@@ -91,33 +93,6 @@ class _DataTableViewState extends State<DataTableView> {
           ),
         )
         .toList();
-  }
-
-  Widget _buildCell(dynamic data) {
-    String content = data.toString();
-    if (data is bool) {
-      content = data ? 'Yes' : 'No';
-    } else if (data is Color) {
-      return Container(
-        width: double.infinity,
-        height: 25,
-        decoration: BoxDecoration(color: data),
-      );
-    } else if (data is List) {
-      content = data.join(', ');
-    }
-    return Text(
-      content,
-      style: const TextStyle(
-        fontSize: 12,
-        color: Color(0xff1f2937),
-        fontWeight: FontWeight.w400,
-        fontFamily: 'OpenSans',
-      ),
-      maxLines: 2,
-      softWrap: true,
-      overflow: TextOverflow.ellipsis,
-    );
   }
 
   @override

@@ -40,7 +40,6 @@ class _SidebarItemState extends State<SidebarItem>
   late Animation<double> anim;
   late Animation<Color?> color;
   bool isHover = false;
-  bool isSelected = false;
   bool isSidebarItemExtended = false;
   CustomPopupMenuController customPopupMenuController =
       CustomPopupMenuController();
@@ -53,7 +52,6 @@ class _SidebarItemState extends State<SidebarItem>
       isSidebarItemExtended = widget.subItems.map((e) => e.path).contains(
             widget.selectedItemName,
           );
-      isSelected = widget.path == widget.selectedItemName;
     });
     animationController = AnimationController(
       vsync: this,
@@ -91,17 +89,6 @@ class _SidebarItemState extends State<SidebarItem>
     tooltipController.dispose();
     super.dispose();
   }
-
-  // @override
-  // void didUpdateWidget(covariant SidebarItem oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-
-  //   if (widget.selectedItemName != widget.path) {
-  //     animationController.reverse();
-  //   } else {
-  //     animationController.forward();
-  //   }
-  // }
 
   void _showPopupMenu(ThemeState state) {
     if (widget.subItems.isNotEmpty && !state.isSidebarExtended) {
@@ -281,9 +268,9 @@ class _SidebarItemState extends State<SidebarItem>
                 color: widget.selectedItemName == widget.path
                     ? widget.color
                     : Colors.white,
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w500,
               ),
             ),
           )

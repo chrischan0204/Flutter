@@ -3,25 +3,57 @@ part of 'observation_types_bloc.dart';
 
 class ObservationTypesState extends Equatable {
   final List<ObservationType> observationTypes;
-  final EntityStatus status;
+  final ObservationType? selectedObservationType;
+
+  final EntityStatus observationTypesRetrievedStatus;
+  final EntityStatus observationTypeSelectedStatus;
+  final EntityStatus observationTypeAddedStatus;
+  final EntityStatus observationTypeEditedStatus;
+  final EntityStatus observationTypeDeletedStatus;
   const ObservationTypesState({
     this.observationTypes = const [],
-    this.status = EntityStatus.initial,
+    this.observationTypesRetrievedStatus = EntityStatus.initial,
+    this.selectedObservationType,
+    this.observationTypeSelectedStatus = EntityStatus.initial,
+    this.observationTypeAddedStatus = EntityStatus.initial,
+    this.observationTypeEditedStatus = EntityStatus.initial,
+    this.observationTypeDeletedStatus = EntityStatus.initial,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         observationTypes,
-        status,
+        observationTypesRetrievedStatus,
+        selectedObservationType,
+        observationTypeSelectedStatus,
+        observationTypeAddedStatus,
+        observationTypeEditedStatus,
+        observationTypeDeletedStatus,
       ];
 
   ObservationTypesState copyWith({
     List<ObservationType>? observationTypes,
-    EntityStatus? status,
+    ObservationType? selectedObservationType,
+    EntityStatus? observationTypesRetrievedStatus,
+    EntityStatus? observationTypeSelectedStatus,
+    EntityStatus? observationTypeAddedStatus,
+    EntityStatus? observationTypeEditedStatus,
+    EntityStatus? observationTypeDeletedStatus,
   }) {
     return ObservationTypesState(
       observationTypes: observationTypes ?? this.observationTypes,
-      status: status ?? this.status,
+      selectedObservationType:
+          selectedObservationType ?? this.selectedObservationType,
+      observationTypesRetrievedStatus: observationTypesRetrievedStatus ??
+          this.observationTypesRetrievedStatus,
+      observationTypeSelectedStatus:
+          observationTypeSelectedStatus ?? this.observationTypeSelectedStatus,
+      observationTypeAddedStatus:
+          observationTypeAddedStatus ?? this.observationTypeAddedStatus,
+      observationTypeEditedStatus:
+          observationTypeEditedStatus ?? this.observationTypeEditedStatus,
+      observationTypeDeletedStatus:
+          observationTypeDeletedStatus ?? this.observationTypeDeletedStatus,
     );
   }
 }

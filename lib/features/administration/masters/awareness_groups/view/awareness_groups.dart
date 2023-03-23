@@ -28,20 +28,7 @@ class _AwarenessGroupsState extends State<AwarenessGroups> {
           label: 'awareness group',
           note:
               'This awareness group has 7 awareness categories. Deletion is allowed for groups that have no awareness categories associated with them.',
-          addEntity: () {},
-          editEntity: () {},
-          deleteEntity: () {},
           onRowClick: (value) {},
-          onActiveChanged: (value) {},
-          crudItems: [
-            // CrudItem(
-            //   label: 'Awareness Group Name (*)',
-            //   content: CustomTextField(
-            //     hintText: 'e.g. Environmental',
-            //     onChanged: (value) {},
-            //   ),
-            // ),
-          ],
         );
       },
     );

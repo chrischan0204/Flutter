@@ -1,11 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:safety_eta/constants/color.dart';
 import 'package:strings/strings.dart';
 
+import '../custom_data_cell.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/entity.dart';
 import '../../../../theme/view/widgets/sidebar/sidebar_style.dart';
+import 'widgets/detail_item.dart';
 import 'widgets/widgets.dart';
 
 class MastersListTemplate extends StatefulWidget {
@@ -14,16 +19,8 @@ class MastersListTemplate extends StatefulWidget {
   final String description;
   final String label;
   final String note;
-  final List<CrudItem> crudItems;
-  final VoidCallback addEntity;
-  final VoidCallback editEntity;
-  final VoidCallback deleteEntity;
   final ValueChanged<Entity> onRowClick;
-  final String notifyContent;
-  final NotifyType notifyType;
-  final bool deletable;
-  final bool isDeactive;
-  final ValueChanged<bool> onActiveChanged;
+  final Entity? selectedEntity;
   const MastersListTemplate({
     super.key,
     this.entities = const [],
@@ -31,16 +28,8 @@ class MastersListTemplate extends StatefulWidget {
     required this.title,
     required this.label,
     required this.note,
-    this.crudItems = const [],
-    required this.addEntity,
-    required this.editEntity,
-    required this.deleteEntity,
+    this.selectedEntity,
     required this.onRowClick,
-    this.notifyContent = '',
-    this.notifyType = NotifyType.initial,
-    this.deletable = false,
-    this.isDeactive = true,
-    required this.onActiveChanged,
   });
 
   @override
@@ -51,6 +40,7 @@ class _CrudState extends State<MastersListTemplate> {
   late double positionRightForFiltersSlier;
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
+  late String selectedId;
   @override
   void initState() {
     super.initState();
@@ -72,10 +62,6 @@ class _CrudState extends State<MastersListTemplate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Notify(
-                content: widget.notifyContent,
-                type: widget.notifyType,
-              ),
               _buildHeader(),
               const CustomDivider(),
               _buildTableHeader(),
@@ -99,6 +85,7 @@ class _CrudState extends State<MastersListTemplate> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           PageTitle(
             title: widget.title,
@@ -140,6 +127,9 @@ class _CrudState extends State<MastersListTemplate> {
               entities: widget.entities,
               onRowClick: (entity) {
                 _showDetailsSlider();
+                setState(() {
+                  selectedId = entity.id!;
+                });
                 widget.onRowClick(entity);
               },
             ),
@@ -293,27 +283,30 @@ class _CrudState extends State<MastersListTemplate> {
       curve: Curves.easeInOut,
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
-        height: 1000,
+        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
         ),
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
-                vertical: 10,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'North America',
+                  Text(
+                    widget.selectedEntity != null
+                        ? widget.selectedEntity!.name ?? ''
+                        : '',
                     style: TextStyle(
                       fontFamily: 'OpenSans',
                       fontWeight: FontWeight.w600,
+                      color: darkTeal,
                       fontSize: 14,
                     ),
                   ),
@@ -326,6 +319,46 @@ class _CrudState extends State<MastersListTemplate> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            ...(widget.selectedEntity != null
+                ? widget.selectedEntity!
+                    .detailItemsToMap()
+                    .entries
+                    .map(
+                      (detail) => DetailItem(
+                        label: detail.key,
+                        content: CustomDataCell(
+                          data: detail.value,
+                        ),
+                      ),
+                    )
+                    .toList()
+                : []),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: grey,
+                    width: 1,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                top: 12,
+              ),
+              child: CustomButton(
+                backgroundColor: const Color(0xff0c83ff),
+                hoverBackgroundColor: const Color(0xff0b76e6),
+                iconData: PhosphorIcons.arrowRight,
+                text: '${camelize(widget.label)} Details',
+                onClick: () {
+                  String location = GoRouter.of(context).location;
+                  GoRouter.of(context).go('$location/show/$selectedId');
+                },
               ),
             ),
           ],

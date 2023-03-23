@@ -50,35 +50,34 @@ class _CustomButtonState extends State<CustomButton> {
       }),
       child: GestureDetector(
         onTap: () => widget.isDisabled ? null : widget.onClick(),
-        child: FittedBox(
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 12,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: isHover
-                  ? widget.hoverBackgroundColor
-                  : widget.backgroundColor,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  widget.iconData,
-                  size: widget.iconSize,
-                  color: widget.iconColor,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  widget.text,
-                  style: widget.textStyle,
-                ),
-              ],
-            ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 12,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+            color:
+                isHover ? widget.hoverBackgroundColor : widget.backgroundColor,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                widget.iconData,
+                size: widget.iconSize,
+                color: widget.iconColor,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                widget.text,
+                style: widget.textStyle,
+                softWrap: true,
+              ),
+            ],
           ),
         ),
       ),

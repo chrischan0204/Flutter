@@ -16,11 +16,9 @@ class Sidebar extends StatefulWidget {
   const Sidebar({
     super.key,
     required this.selectedItemName,
-    required this.title,
   });
 
   final String selectedItemName;
-  final String title;
 
   @override
   State<Sidebar> createState() => _SidebarState();
