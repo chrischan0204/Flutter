@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
-class AwarenessGroups extends StatefulWidget {
-  const AwarenessGroups({super.key});
+class AwarenessGroupsListView extends StatefulWidget {
+  const AwarenessGroupsListView({super.key});
 
   @override
-  State<AwarenessGroups> createState() => _AwarenessGroupsState();
+  State<AwarenessGroupsListView> createState() => _AwarenessGroupsState();
 }
 
-class _AwarenessGroupsState extends State<AwarenessGroups> {
+class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
   @override
   void initState() {
     super.initState();
