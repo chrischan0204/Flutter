@@ -32,6 +32,7 @@ class _AddEditObservationTypeViewState
   bool observationTypeDeactive = false;
 
   FocusNode observationTypeNameFocusNode = FocusNode();
+  bool isFirstInit = true;
 
   @override
   void initState() {
@@ -70,8 +71,11 @@ class _AddEditObservationTypeViewState
                   ? null
                   : state.selectedObservationType!.visibility;
           observationTypeDeactive = !state.selectedObservationType!.active;
-          // observationTypeNameController.text =
-          //     state.selectedObservationType!.name ?? '';
+          if (isFirstInit) {
+            observationTypeNameController.text =
+                state.selectedObservationType!.name ?? '';
+            isFirstInit = false;
+          }
         } else {
           observationTypeSeverity = null;
           observationTypeVisibility = null;
