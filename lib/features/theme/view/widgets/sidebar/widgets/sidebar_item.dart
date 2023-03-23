@@ -90,17 +90,6 @@ class _SidebarItemState extends State<SidebarItem>
     super.dispose();
   }
 
-  // @override
-  // void didUpdateWidget(covariant SidebarItem oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-
-  //   if (widget.selectedItemName != widget.path) {
-  //     animationController.reverse();
-  //   } else {
-  //     animationController.forward();
-  //   }
-  // }
-
   void _showPopupMenu(ThemeState state) {
     if (widget.subItems.isNotEmpty && !state.isSidebarExtended) {
       customPopupMenuController.showMenu();
@@ -124,11 +113,6 @@ class _SidebarItemState extends State<SidebarItem>
               : shrinkSidebarWidth,
           end: 0.0,
         ).animate(animationController);
-        // if (widget.selectedItemName != widget.path) {
-        //   animationController.reverse();
-        // } else {
-        //   animationController.forward();
-        // }
 
         if (state.hoveredItemName != widget.label) {
           _hidePopupMenu(state);
@@ -284,9 +268,9 @@ class _SidebarItemState extends State<SidebarItem>
                 color: widget.selectedItemName == widget.path
                     ? widget.color
                     : Colors.white,
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w500,
               ),
             ),
           )

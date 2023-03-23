@@ -33,7 +33,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const Layout(
           body: Dashboard(),
-          title: 'Dashboard',
           selectedItemName: 'dashboard',
         ),
       ),
@@ -44,7 +43,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Observations(),
-          title: 'Observations',
           selectedItemName: 'observations',
         ),
       ),
@@ -55,7 +53,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Audits1(),
-          title: 'Audits  ',
           selectedItemName: 'audits1',
         ),
       ),
@@ -66,7 +63,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: ActionItems(),
-          title: 'Action Items',
           selectedItemName: 'action-items',
         ),
       ),
@@ -77,7 +73,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Sites(),
-          title: 'Sites',
           selectedItemName: 'sites',
         ),
       ),
@@ -88,7 +83,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Companies(),
-          title: 'Companies',
           selectedItemName: 'companies',
         ),
       ),
@@ -99,7 +93,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Templates(),
-          title: 'Templates',
           selectedItemName: 'templates',
         ),
       ),
@@ -110,7 +103,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Audits(),
-          title: 'Audits',
           selectedItemName: 'audits',
         ),
       ),
@@ -125,7 +117,6 @@ final GoRouter router = GoRouter(
             key: state.pageKey,
             child: Layout(
               body: RegionsListView(),
-              title: 'Regions',
               selectedItemName: 'regions',
             ),
           ),
@@ -136,7 +127,6 @@ final GoRouter router = GoRouter(
             key: state.pageKey,
             child: Layout(
               body: AddEditRegionView(),
-              title: 'Regions',
               selectedItemName: 'regions',
             ),
           ),
@@ -148,7 +138,6 @@ final GoRouter router = GoRouter(
               body: RegionDetailView(
                 regionId: state.params['regionId']!,
               ),
-              title: 'Regions',
               selectedItemName: 'regions',
             ),
           ),
@@ -160,7 +149,6 @@ final GoRouter router = GoRouter(
               body: AddEditRegionView(
                 regionId: state.params['regionId']!,
               ),
-              title: 'Regions',
               selectedItemName: 'regions',
             ),
           ),
@@ -173,7 +161,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: PriorityLevels(),
-          title: 'Priority Levels',
           selectedItemName: 'priority-levels',
         ),
       ),
@@ -184,7 +171,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: ObservationTypes(),
-          title: 'Observations Types List',
           selectedItemName: 'observation-types',
         ),
       ),
@@ -195,7 +181,6 @@ final GoRouter router = GoRouter(
             key: state.pageKey,
             child: Layout(
               body: AddEditObservationTypeView(),
-              title: 'New Observation Type',
               selectedItemName: 'observation-types',
             ),
           ),
@@ -203,11 +188,11 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'show/:observationTypeId',
           pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
             child: Layout(
               body: ObservationTypeShowView(
                 observationTypeId: state.params['observationTypeId']!,
               ),
-              title: 'Observation Type',
               selectedItemName: 'observation-types',
             ),
           ),
@@ -215,11 +200,11 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'edit/:observationTypeId',
           pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
             child: Layout(
-              body: AddEditRegionView(
-                regionId: state.params['observationTypeId']!,
+              body: AddEditObservationTypeView(
+                observationTypeId: state.params['observationTypeId']!,
               ),
-              title: 'Editing Observation Type',
               selectedItemName: 'observation-types',
             ),
           ),
@@ -232,7 +217,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: AwarenessGroups(),
-          title: 'Awareness Groups',
           selectedItemName: 'awareness-groups',
         ),
       ),
@@ -243,7 +227,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: AwarenessCategories(),
-          title: 'Awareness Categories',
           selectedItemName: 'awareness-categories',
         ),
       ),
@@ -254,7 +237,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Users(),
-          title: 'Users',
           selectedItemName: 'users',
         ),
       ),
@@ -265,7 +247,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Sites(),
-          title: 'My Page',
           selectedItemName: 'my-page',
         ),
       ),
@@ -276,7 +257,6 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: Sites(),
-          title: 'Logout',
           selectedItemName: 'logout',
         ),
       ),

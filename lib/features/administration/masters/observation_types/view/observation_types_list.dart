@@ -27,7 +27,7 @@ class _ObservationTypesState extends State<ObservationTypes> {
           description:
               'List of defined observation types. Types can be added or current ones edited from this screen.',
           entities: state.observationTypes,
-          title: 'Observation Types',
+          title: 'Observation Types List',
           label: 'observation type',
           note:
               'This observation type is in use on 173 observations. An observation type can be removed from future use by deactivating. It will preserve all past data as is.',
