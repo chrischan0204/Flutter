@@ -24,23 +24,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
-      listener: (context, state) {
-        if (state.observationTypeAddedStatus == EntityStatus.succuess) {
-          setState(() {
-            successType = 'add';
-          });
-        }
-        if (state.observationTypeEditedStatus == EntityStatus.succuess) {
-          setState(() {
-            successType = 'edit';
-          });
-        }
-        if (state.observationTypeDeletedStatus == EntityStatus.succuess) {
-          setState(() {
-            successType = 'delete';
-          });
-        }
-      },
+      listener: (context, state) => _displayNofitication(state),
       builder: (context, state) {
         return MastersListTemplate(
           description:
@@ -60,5 +44,48 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
         );
       },
     );
+  }
+
+  void _displayNofitication(ObservationTypesState state) {
+    bool success = false, failed = false;
+    if (state.observationTypeAddedStatus == EntityStatus.succuess) {
+      setState(() {
+        successType = 'add';
+      });
+      success = true;
+    }
+    if (state.observationTypeEditedStatus == EntityStatus.succuess) {
+      setState(() {
+        successType = 'edit';
+      });
+      success = true;
+    }
+    if (state.observationTypeDeletedStatus == EntityStatus.succuess) {
+      setState(() {
+        successType = 'delete';
+      });
+      success = true;
+    }
+    if (state.observationTypeAddedStatus == EntityStatus.failure) {
+      setState(() {
+        successType = 'add-fail';
+      });
+      failed = true;
+    }
+    if (state.observationTypeEditedStatus == EntityStatus.failure) {
+      setState(() {
+        successType = 'edit-fail';
+      });
+      failed = true;
+    }
+    if (state.observationTypeDeletedStatus == EntityStatus.failure) {
+      setState(() {
+        successType = 'delete-fail';
+      });
+      failed = true;
+    }
+    if (success || failed) {
+      observationTypesBloc.add(const ObservationTypesStatusInited());
+    }
   }
 }

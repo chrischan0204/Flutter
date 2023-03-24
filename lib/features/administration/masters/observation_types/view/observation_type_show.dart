@@ -35,7 +35,8 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
       listener: (context, state) {
-        if (state.observationTypeDeletedStatus == EntityStatus.succuess) {
+        if (state.observationTypeDeletedStatus == EntityStatus.succuess ||
+            state.observationTypeDeletedStatus == EntityStatus.failure) {
           GoRouter.of(context).go('/observation-types');
         }
       },

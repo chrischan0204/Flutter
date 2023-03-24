@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/features/administration/masters/awareness_groups/view/add_edit_awareness_group.dart';
+import 'package:safety_eta/features/administration/masters/awareness_groups/view/awareness_group_show.dart';
 
 import '/features/features.dart';
 import 'package:go_router/go_router.dart';
@@ -159,7 +161,7 @@ final GoRouter router = GoRouter(
       path: '/priority-levels',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
+        child: const Layout(
           body: PriorityLevels(),
           selectedItemName: 'priority-levels',
         ),
@@ -169,53 +171,17 @@ final GoRouter router = GoRouter(
       path: '/observation-types',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
+        child: const Layout(
           body: ObservationTypesListView(),
           selectedItemName: 'observation-types',
         ),
       ),
-      // routes: [
-      //   GoRoute(
-      //     path: 'new',
-      //     pageBuilder: (context, state) => NoTransitionPage<void>(
-      //       key: state.pageKey,
-      //       child: Layout(
-      //         body: AddEditObservationTypeView(),
-      //         selectedItemName: 'observation-types',
-      //       ),
-      //     ),
-      //   ),
-      //   GoRoute(
-      //     path: 'show/:observationTypeId',
-      //     pageBuilder: (context, state) => NoTransitionPage<void>(
-      //       key: state.pageKey,
-      //       child: Layout(
-      //         body: ObservationTypeShowView(
-      //           observationTypeId: state.params['observationTypeId']!,
-      //         ),
-      //         selectedItemName: 'observation-types',
-      //       ),
-      //     ),
-      //   ),
-      //   GoRoute(
-      //     path: 'edit/:observationTypeId',
-      //     pageBuilder: (context, state) => NoTransitionPage<void>(
-      //       key: state.pageKey,
-      //       child: Layout(
-      //         body: AddEditObservationTypeView(
-      //           observationTypeId: state.params['observationTypeId']!,
-      //         ),
-      //         selectedItemName: 'observation-types',
-      //       ),
-      //     ),
-      //   ),
-      // ],
     ),
     GoRoute(
       path: '/observation-types/new',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
+        child: const Layout(
           body: AddEditObservationTypeView(),
           selectedItemName: 'observation-types',
         ),
@@ -249,17 +215,52 @@ final GoRouter router = GoRouter(
       path: '/awareness-groups',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
-          body: AwarenessGroups(),
+        child: const Layout(
+          body: AwarenessGroupsListView(),
           selectedItemName: 'awareness-groups',
         ),
       ),
     ),
     GoRoute(
-      path: '/awareness-categories',
+      path: '/awareness-groups/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditAwarenessGroupView(),
+          selectedItemName: 'awareness-groups',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-groups/edit/:awarenessGroupId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
+          body: AddEditAwarenessGroupView(
+            awarenessGroupId: state.params['awarenessGroupId']!,
+          ),
+          selectedItemName: 'awareness-groups',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-groups/show/:awarenessGroupId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AwarenessGroupShowView(
+            awarenessGroupId: state.params['awarenessGroupId']!,
+          ),
+          selectedItemName: 'awareness-groups',
+        ),
+      ),
+    ),
+
+    GoRoute(
+      path: '/awareness-categories',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
           body: AwarenessCategories(),
           selectedItemName: 'awareness-categories',
         ),
