@@ -34,7 +34,7 @@ class _AwarenessCategoriesListViewState
           description:
               'List of defined awareness categories. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
           entities: state.awarenessCategories,
-          title: 'Awareness Categories',
+          title: 'Awareness Categories List',
           label: 'awareness category',
           note:
               'This awareness category is in use on 41 assessments. An awareness category can be removed from future use by deactivating. It will preserve all past data as is.',
