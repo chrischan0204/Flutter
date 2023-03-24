@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../masters_widgets/add_edit_master_template/add_edit_master_template.dart';
 import '../../masters_widgets/add_edit_master_template/widgets/form_item.dart';
-import '../../masters_widgets/masters_list_template/widgets/crud_view/widgets/custom_switch.dart';
 import '../../masters_widgets/masters_list_template/widgets/crud_view/widgets/custom_textfield.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
@@ -125,31 +124,6 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
                 ),
                 message: '',
               ),
-              widget.awarenessGroupId != null
-                  ? FormItem(
-                      label: 'Deactivate?',
-                      content: CustomSwitch(
-                        label: 'This awareness group is deactivated',
-                        switchValue: awarenessGroupDeactive,
-                        onChanged: (active) {
-                          awarenessGroupsBloc.add(
-                            AwarenessGroupSelected(
-                              awarenessGroup:
-                                  state.selectedAwarenessGroup!.copyWith(
-                                active: !active,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      message: '',
-                    )
-                  : Container(),
-              // FormItem(
-              //   label: 'Deactivated:',
-              //   content: Text('By: Andrew Sully on 12th Jan 2023'),
-              //   message: '',
-              // ),
             ],
           ),
         );
