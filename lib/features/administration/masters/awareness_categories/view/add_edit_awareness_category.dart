@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../masters_widgets/add_edit_master_template/add_edit_master_template.dart';
 import '../../masters_widgets/add_edit_master_template/widgets/form_item.dart';
-import '../../masters_widgets/masters_list_template/widgets/crud_view/widgets/widgets.dart';
+import '../../masters_widgets/masters_list_template/widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 import '/data/model/model.dart';
 

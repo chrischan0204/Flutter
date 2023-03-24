@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/constants/color.dart';
 
 class CustomDataCell extends StatelessWidget {
   final dynamic data;
@@ -14,9 +15,18 @@ class CustomDataCell extends StatelessWidget {
       content = data ? 'Yes' : 'No';
     } else if (data is Color) {
       return Container(
+        constraints: const BoxConstraints(
+          maxWidth: 300,
+        ),
         width: double.infinity,
         height: 25,
-        decoration: BoxDecoration(color: data),
+        decoration: BoxDecoration(
+          color: data,
+          border: Border.all(
+            color: grey,
+            width: 1,
+          ),
+        ),
       );
     } else if (data is List) {
       content = data.join(', ');

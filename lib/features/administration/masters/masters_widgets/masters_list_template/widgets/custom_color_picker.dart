@@ -5,9 +5,11 @@ import 'package:safety_eta/constants/color.dart';
 
 class CustomColorPicker extends StatefulWidget {
   final Color color;
+  final ValueChanged<Color> onChanged;
   const CustomColorPicker({
     super.key,
-    required this.color,
+    this.color = const Color(0xffffffff),
+    required this.onChanged,
   });
 
   @override
@@ -17,7 +19,7 @@ class CustomColorPicker extends StatefulWidget {
 class _CustomColorPickerState extends State<CustomColorPicker> {
   Color pickerColor = const Color(0xff443a49);
   void changeColor(Color color) {
-    setState(() => pickerColor = color);
+    widget.onChanged(color);
   }
 
   @override

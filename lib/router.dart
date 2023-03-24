@@ -162,7 +162,41 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
-          body: PriorityLevels(),
+          body: PriorityLevelsListView(),
+          selectedItemName: 'priority-levels',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/priority-levels/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditPriorityLevelView(),
+          selectedItemName: 'priority-levels',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/priority-levels/show/:priorityLevelId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: PriorityLevelShowView(
+            priorityLevelId: state.params['priorityLevelId']!,
+          ),
+          selectedItemName: 'priority-levels',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/priority-levels/edit/:priorityLevelId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditPriorityLevelView(
+            priorityLevelId: state.params['priorityLevelId']!,
+          ),
           selectedItemName: 'priority-levels',
         ),
       ),
