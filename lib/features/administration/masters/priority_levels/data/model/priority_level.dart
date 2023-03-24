@@ -17,13 +17,12 @@ extension ColorExtension on String {
 }
 
 class PriorityLevel extends Entity implements Equatable {
-  final String name;
   final Color colorCode;
   final String priorityType;
   final bool active;
   PriorityLevel({
-    required super.id,
-    required this.name,
+    super.id,
+    super.name,
     required this.colorCode,
     required this.priorityType,
     required this.active,
@@ -40,6 +39,7 @@ class PriorityLevel extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         colorCode,
         priorityType,
@@ -76,22 +76,19 @@ class PriorityLevel extends Entity implements Equatable {
   }
 
   @override
-  Map<String, EntityInputType> inputTypesToMap() {
-    return <String, EntityInputType>{
-      'Region': EntityInputType.singleSelect,
-      'Timezone': EntityInputType.multiSelect,
-    };
-  }
-
-  @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
+    Map<String, dynamic> map = <String, dynamic>{
       'name': name,
       'colorCode': colorCode,
       'priorityType': priorityType,
       'active': active,
     };
+
+    if (id == null) {
+      return map;
+    } else {
+      return map..addEntries([MapEntry('id', id)]);
+    }
   }
 
   factory PriorityLevel.fromMap(Map<String, dynamic> map) {
