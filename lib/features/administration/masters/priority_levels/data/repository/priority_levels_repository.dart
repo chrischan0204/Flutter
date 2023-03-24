@@ -54,12 +54,14 @@ class PriorityLevelsRepository {
   Future<EntityResponse> editPriorityLevel(
     PriorityLevel priorityLevel,
   ) async {
-    Response response = await put(Uri.https(ApiUri.host, url),
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json',
-        },
-        body: priorityLevel.toJson());
+    Response response = await put(
+      Uri.https(ApiUri.host, url),
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: priorityLevel.toJson(),
+    );
 
     if (response.statusCode == 200) {
       return EntityResponse.fromJson(response.body);

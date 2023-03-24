@@ -33,7 +33,6 @@ class PriorityLevelsBloc
         priorityLevelsRetrievedStatus: EntityStatus.succuess,
       ));
     } catch (e) {
-      print(e.toString());
       emit(state.copyWith(priorityLevelsRetrievedStatus: EntityStatus.failure));
     }
   }
@@ -121,6 +120,7 @@ class PriorityLevelsBloc
         ));
       }
     } catch (e) {
+      print(e.toString());
       emit(state.copyWith(
         priorityLevelEditedStatus: EntityStatus.failure,
         selectedPriorityLevel: null,
