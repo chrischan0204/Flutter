@@ -19,11 +19,11 @@ class CustomDataCell extends StatelessWidget {
           maxWidth: 300,
         ),
         width: double.infinity,
-        height: 25,
+        height: 20,
         decoration: BoxDecoration(
           color: data,
           border: Border.all(
-            color: grey,
+            color: data == Colors.white ? grey : Colors.transparent,
             width: 1,
           ),
         ),
