@@ -18,7 +18,6 @@ class AwarenessGroup extends Entity implements Equatable {
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
       'Awareness Group': name,
-      'Active': active,
     };
   }
 
@@ -35,7 +34,6 @@ class AwarenessGroup extends Entity implements Equatable {
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
       'Awareness Group': name,
-      'Active': active,
     };
   }
 
