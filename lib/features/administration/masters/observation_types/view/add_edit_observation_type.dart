@@ -99,11 +99,13 @@ class _AddEditObservationTypeViewState
             isFirstInit = false;
           }
         }
-        if (state.observationTypeAddedStatus == EntityStatus.succuess) {
+        if (state.observationTypeAddedStatus == EntityStatus.succuess ||
+            state.observationTypeAddedStatus == EntityStatus.failure) {
           GoRouter.of(context).go('/observation-types');
         }
 
-        if (state.observationTypeEditedStatus == EntityStatus.succuess) {
+        if (state.observationTypeEditedStatus == EntityStatus.succuess ||
+            state.observationTypeEditedStatus == EntityStatus.failure) {
           GoRouter.of(context).go('/observation-types');
         }
       },

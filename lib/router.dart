@@ -261,7 +261,37 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
-          body: AwarenessCategories(),
+          body: AwarenessCategoriesListView(),
+          selectedItemName: 'awareness-categories',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-categories/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AwarenessCategoriesListView(),
+          selectedItemName: 'awareness-categories',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-categories/show/:awarenessCategoryId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AwarenessCategoriesListView(),
+          selectedItemName: 'awareness-categories',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-categories/edit/:awarenessCategoryId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AwarenessCategoriesListView(),
           selectedItemName: 'awareness-categories',
         ),
       ),
