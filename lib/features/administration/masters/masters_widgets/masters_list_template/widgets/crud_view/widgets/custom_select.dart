@@ -6,7 +6,7 @@ class CustomSingleSelect extends StatefulWidget {
   final Map<String, String> items;
   final String? selectedValue;
   final String hint;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<MapEntry> onChanged;
   final bool isDisabled;
 
   const CustomSingleSelect({
@@ -56,7 +56,8 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
             .toList(),
         value: widget.selectedValue,
         onChanged: (value) {
-          widget.onChanged(widget.items[value] as String);
+          MapEntry entry = MapEntry(value, widget.items[value]!);
+          widget.onChanged(entry);
         },
         buttonStyleData: ButtonStyleData(
           height: 36,

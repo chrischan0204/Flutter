@@ -17,8 +17,8 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
   @override
   void initState() {
     super.initState();
-    observationTypesBloc = context.read<ObservationTypesBloc>();
-    observationTypesBloc.add(ObservationTypesRetrieved());
+    observationTypesBloc = context.read<ObservationTypesBloc>()
+      ..add(ObservationTypesRetrieved());
   }
 
   @override

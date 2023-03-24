@@ -6,13 +6,14 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class AwarenessCategory extends Entity implements Equatable {
-  final String name;
+  final String groupId;
   final String groupName;
   final bool active;
   AwarenessCategory({
-    required super.id,
+    super.id,
+    required this.groupId,
     required this.groupName,
-    required this.name,
+    super.name,
     required this.active,
   });
 
@@ -44,38 +45,25 @@ class AwarenessCategory extends Entity implements Equatable {
     };
   }
 
-  AwarenessCategory copyWith({
-    String? id,
-    String? name,
-    String? groupName,
-    bool? active,
-  }) {
-    return AwarenessCategory(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      groupName: groupName ?? this.groupName,
-      active: active ?? this.active,
-    );
-  }
-
-  @override
-  Map<String, EntityInputType> inputTypesToMap() {
-    // TODO: implement inputTypesToMap
-    throw UnimplementedError();
-  }
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'name': name,
       'groupName': groupName,
+      'groupId': groupId,
       'active': active,
     };
+    if (id != null) {
+      return map..addEntries([MapEntry<String, dynamic>('id', id!)]);
+    }
+    return map;
   }
 
   factory AwarenessCategory.fromMap(Map<String, dynamic> map) {
     return AwarenessCategory(
       id: map['id'] as String,
       name: map['name'] as String,
+      groupId: map['groupId'] as String,
       groupName: map['groupName'] as String,
       active: map['active'] as bool,
     );
@@ -85,4 +73,20 @@ class AwarenessCategory extends Entity implements Equatable {
 
   factory AwarenessCategory.fromJson(String source) =>
       AwarenessCategory.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AwarenessCategory copyWith({
+    String? id,
+    String? name,
+    String? groupId,
+    String? groupName,
+    bool? active,
+  }) {
+    return AwarenessCategory(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      groupId: groupId ?? this.groupId,
+      groupName: groupName ?? this.groupName,
+      active: active ?? this.active,
+    );
+  }
 }

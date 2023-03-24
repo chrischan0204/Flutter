@@ -12,8 +12,8 @@ class ObservationTypesState extends Equatable {
   final EntityStatus observationTypeDeletedStatus;
   const ObservationTypesState({
     this.observationTypes = const [],
-    this.observationTypesRetrievedStatus = EntityStatus.initial,
     this.selectedObservationType,
+    this.observationTypesRetrievedStatus = EntityStatus.initial,
     this.observationTypeSelectedStatus = EntityStatus.initial,
     this.observationTypeAddedStatus = EntityStatus.initial,
     this.observationTypeEditedStatus = EntityStatus.initial,
