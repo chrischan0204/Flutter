@@ -9,6 +9,8 @@ abstract class AwarenessCategoriesEvent extends Equatable {
 
 class AwarenessCategoriesRetrieved extends AwarenessCategoriesEvent {}
 
+class AwarenessGroupsForAwarenessCategoriesRetrieved extends AwarenessCategoriesEvent {}
+
 class AwarenessCategorySelected extends AwarenessCategoriesEvent {
   final AwarenessCategory? awarenessCategory;
   const AwarenessCategorySelected({

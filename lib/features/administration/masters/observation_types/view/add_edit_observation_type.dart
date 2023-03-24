@@ -153,7 +153,7 @@ class _AddEditObservationTypeViewState
                       ObservationTypeSelected(
                         observationType:
                             state.selectedObservationType!.copyWith(
-                          security: severity,
+                          security: severity.key,
                         ),
                       ),
                     );
@@ -175,7 +175,7 @@ class _AddEditObservationTypeViewState
                       ObservationTypeSelected(
                         observationType:
                             state.selectedObservationType!.copyWith(
-                          visibility: visibility,
+                          visibility: visibility.key,
                         ),
                       ),
                     );

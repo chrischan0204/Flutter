@@ -11,7 +11,7 @@ class AwarenessCategoriesState extends Equatable {
   final EntityStatus awarenessCategoryEditedStatus;
   final EntityStatus awarenessCategoryDeletedStatus;
 
-  final List<String> awarenessGroups;
+  final List<AwarenessGroup> awarenessGroups;
   final EntityStatus awarenessGroupsRetrievedStatus;
 
   const AwarenessCategoriesState({
@@ -47,7 +47,7 @@ class AwarenessCategoriesState extends Equatable {
     EntityStatus? awarenessCategoryAddedStatus,
     EntityStatus? awarenessCategoryEditedStatus,
     EntityStatus? awarenessCategoryDeletedStatus,
-    List<String>? awarenessGroups,
+    List<AwarenessGroup>? awarenessGroups,
     EntityStatus? awarenessGroupsRetrievedStatus,
   }) {
     return AwarenessCategoriesState(

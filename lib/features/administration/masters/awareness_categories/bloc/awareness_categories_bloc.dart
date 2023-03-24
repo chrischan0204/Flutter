@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../../data/model/model.dart';
 import '/data/repository/repository.dart';
-import '/data/model/entity.dart';
-import '../data/model/awareness_category.dart';
+import '/data/model/model.dart';
 
 part 'awareness_categories_event.dart';
 part 'awareness_categories_state.dart';
@@ -11,16 +11,39 @@ part 'awareness_categories_state.dart';
 class AwarenessCategoriesBloc
     extends Bloc<AwarenessCategoriesEvent, AwarenessCategoriesState> {
   final AwarenessCategoriesRepository awarenessCategoriesRepository;
+  final AwarenessGroupsRepository awarenessGroupsRepository;
   AwarenessCategoriesBloc({
     required this.awarenessCategoriesRepository,
+    required this.awarenessGroupsRepository,
   }) : super(const AwarenessCategoriesState()) {
     on<AwarenessCategoriesRetrieved>(_onAwarenessCategoriesRetrieved);
+    on<AwarenessGroupsForAwarenessCategoriesRetrieved>(
+        _onAwarenessGroupsForAwarenessCategoriesRetrieved);
     on<AwarenessCategorySelected>(_onAwarenessCategorySelected);
     on<AwarenessCategorySelectedById>(_onAwarenessCategorySelectedById);
     on<AwarenessCategoryAdded>(_onAwarenessCategoryAdded);
     on<AwarenessCategoryEdited>(_onAwarenessCategoryEdited);
     on<AwarenessCategoryDeleted>(_onAwarenessCategoryDeleted);
     on<AwarenessCategoriesStatusInited>(_onAwarenessCategoriesStatusInited);
+  }
+
+  void _onAwarenessGroupsForAwarenessCategoriesRetrieved(
+      AwarenessGroupsForAwarenessCategoriesRetrieved event,
+      Emitter<AwarenessCategoriesState> emit) async {
+    emit(state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.loading));
+    try {
+      List<AwarenessGroup> awarenessGroups =
+          await awarenessGroupsRepository.getAwarenessGroups();
+      emit(
+        state.copyWith(
+          awarenessGroupsRetrievedStatus: EntityStatus.succuess,
+          awarenessGroups: awarenessGroups,
+        ),
+      );
+    } catch (e) {
+      emit(
+          state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.failure));
+    }
   }
 
   Future<void> _onAwarenessCategoriesRetrieved(
@@ -168,8 +191,8 @@ class AwarenessCategoriesBloc
     }
   }
 
-  void _onAwarenessCategoriesStatusInited(
-      AwarenessCategoriesStatusInited event, Emitter<AwarenessCategoriesState> emit) {
+  void _onAwarenessCategoriesStatusInited(AwarenessCategoriesStatusInited event,
+      Emitter<AwarenessCategoriesState> emit) {
     emit(
       state.copyWith(
         awarenessCategoryAddedStatus: EntityStatus.initial,

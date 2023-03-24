@@ -10,7 +10,7 @@ class AwarenessCategory extends Entity implements Equatable {
   final String groupName;
   final bool active;
   AwarenessCategory({
-    required super.id,
+    super.id,
     required this.groupId,
     required this.groupName,
     super.name,
@@ -45,14 +45,18 @@ class AwarenessCategory extends Entity implements Equatable {
     };
   }
 
-
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'name': name,
       'groupName': groupName,
+      'groupId': groupId,
       'active': active,
     };
+    if (id != null) {
+      return map..addEntries([MapEntry<String, dynamic>('id', id!)]);
+    }
+    return map;
   }
 
   factory AwarenessCategory.fromMap(Map<String, dynamic> map) {
@@ -69,4 +73,20 @@ class AwarenessCategory extends Entity implements Equatable {
 
   factory AwarenessCategory.fromJson(String source) =>
       AwarenessCategory.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AwarenessCategory copyWith({
+    String? id,
+    String? name,
+    String? groupId,
+    String? groupName,
+    bool? active,
+  }) {
+    return AwarenessCategory(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      groupId: groupId ?? this.groupId,
+      groupName: groupName ?? this.groupName,
+      active: active ?? this.active,
+    );
+  }
 }
