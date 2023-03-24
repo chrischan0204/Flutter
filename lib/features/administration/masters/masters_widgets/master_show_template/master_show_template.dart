@@ -14,6 +14,7 @@ class MasterShowTemplate extends StatefulWidget {
   final String title;
   final String label;
   final VoidCallback deleteEntity;
+  final bool deletable;
   final Entity? entity;
 
   const MasterShowTemplate({
@@ -21,6 +22,7 @@ class MasterShowTemplate extends StatefulWidget {
     required this.title,
     required this.label,
     required this.deleteEntity,
+    this.deletable = true,
     this.entity,
   });
 
@@ -94,6 +96,7 @@ class _MasterShowTemplateState extends State<MasterShowTemplate> {
                         hoverBackgroundColor: const Color(0xffd73d3d),
                         iconData: PhosphorIcons.gear,
                         text: 'Delete ${camelize(widget.label)}',
+                        disabled: !widget.deletable,
                         onClick: () async {
                           if (await confirm(
                             context,
