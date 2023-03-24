@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../../masters_widgets/widgets.dart';
 import '/data/bloc/bloc.dart';
 
-class PriorityLevels extends StatefulWidget {
-  const PriorityLevels({super.key});
+class PriorityLevelsListView extends StatefulWidget {
+  const PriorityLevelsListView({super.key});
 
   @override
-  State<PriorityLevels> createState() => _PriorityLevelsState();
+  State<PriorityLevelsListView> createState() => _PriorityLevelsListViewState();
 }
 
-class _PriorityLevelsState extends State<PriorityLevels> {
+class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
   @override
   void initState() {
     super.initState();
