@@ -15,6 +15,9 @@ class CustomDataCell extends StatelessWidget {
       content = data ? 'Yes' : 'No';
     } else if (data is Color) {
       return Container(
+        constraints: const BoxConstraints(
+          maxWidth: 300,
+        ),
         width: double.infinity,
         height: 25,
         decoration: BoxDecoration(
