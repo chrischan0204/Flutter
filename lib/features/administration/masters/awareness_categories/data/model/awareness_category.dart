@@ -6,13 +6,14 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class AwarenessCategory extends Entity implements Equatable {
-  final String name;
+  final String groupId;
   final String groupName;
   final bool active;
   AwarenessCategory({
     required super.id,
+    required this.groupId,
     required this.groupName,
-    required this.name,
+    super.name,
     required this.active,
   });
 
@@ -44,25 +45,7 @@ class AwarenessCategory extends Entity implements Equatable {
     };
   }
 
-  AwarenessCategory copyWith({
-    String? id,
-    String? name,
-    String? groupName,
-    bool? active,
-  }) {
-    return AwarenessCategory(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      groupName: groupName ?? this.groupName,
-      active: active ?? this.active,
-    );
-  }
 
-  @override
-  Map<String, EntityInputType> inputTypesToMap() {
-    // TODO: implement inputTypesToMap
-    throw UnimplementedError();
-  }
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -76,6 +59,7 @@ class AwarenessCategory extends Entity implements Equatable {
     return AwarenessCategory(
       id: map['id'] as String,
       name: map['name'] as String,
+      groupId: map['groupId'] as String,
       groupName: map['groupName'] as String,
       active: map['active'] as bool,
     );

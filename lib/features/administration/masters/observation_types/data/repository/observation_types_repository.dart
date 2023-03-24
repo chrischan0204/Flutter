@@ -22,7 +22,7 @@ class ObservationTypesRepository {
     return [];
   }
 
-  Future<ObservationType> getObervationTypeById(
+  Future<ObservationType> getObservationTypeById(
       String observationTypeId) async {
     Response response =
         await get(Uri.https(ApiUri.host, '$url/$observationTypeId'));

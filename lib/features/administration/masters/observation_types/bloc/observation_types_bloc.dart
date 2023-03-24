@@ -65,7 +65,7 @@ class ObservationTypesBloc
     try {
       ObservationType? selectedObservationType =
           await observationTypesRepository
-              .getObervationTypeById(event.observationTypeId);
+              .getObservationTypeById(event.observationTypeId);
       emit(
         state.copyWith(
           selectedObservationType: selectedObservationType,
