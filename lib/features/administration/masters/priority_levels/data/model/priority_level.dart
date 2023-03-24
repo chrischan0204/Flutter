@@ -95,7 +95,7 @@ class PriorityLevel extends Entity implements Equatable {
     return PriorityLevel(
       id: map['id'] as String,
       name: map['name'] as String,
-      colorCode: ('#${map['colorCode']}').toColor(),
+      colorCode: ('${map['colorCode']}').toColor(),
       priorityType: map['priorityType'] as String,
       active: map['active'] as bool,
     );
