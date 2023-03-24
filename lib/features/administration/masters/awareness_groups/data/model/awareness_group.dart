@@ -10,7 +10,7 @@ class AwarenessGroup extends Entity implements Equatable {
   AwarenessGroup({
     super.name,
     required this.active,
-    required super.id,
+    super.id,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {

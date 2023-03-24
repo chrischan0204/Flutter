@@ -84,6 +84,27 @@ class _CrudState extends State<MastersListTemplate> {
                       type: NotifyType.good,
                     )
                   : Container(),
+              widget.successType == 'add-fail'
+                  ? Notify(
+                      content:
+                          'There was an error while adding ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
+                      type: NotifyType.failture,
+                    )
+                  : Container(),
+              widget.successType == 'edit-fail'
+                  ? Notify(
+                      content:
+                          'There was an error while editing ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
+                      type: NotifyType.failture,
+                    )
+                  : Container(),
+              widget.successType == 'delete-fail'
+                  ? Notify(
+                      content:
+                          'There was an error while deleting ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
+                      type: NotifyType.failture,
+                    )
+                  : Container(),
               _buildHeader(),
               const CustomDivider(),
               _buildTableHeader(),
