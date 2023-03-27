@@ -53,22 +53,6 @@ class _NotifyState extends State<Notify> {
   }
 
   @override
-  void initState() {
-    if (widget.type != NotifyType.initial) {
-      Future.delayed(
-        const Duration(seconds: 3),
-        () => setState(() {
-          if (!isClosed) {
-            isClosed = true;
-          }
-        }),
-      );
-    }
-
-    super.initState();
-  }
-
-  @override
   void didUpdateWidget(covariant Notify oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
