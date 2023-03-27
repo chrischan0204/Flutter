@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '/features/theme/view/widgets/sidebar/sidebar_style.dart';
@@ -28,6 +30,27 @@ class _NotifyState extends State<Notify> {
   Color borderColor = const Color(0xff82cbb4);
   Color backgroundColor = const Color(0xffe6f5f0);
   Color color = const Color(0xff04694a);
+  late Timer timer = Timer(const Duration(seconds: 0), () {});
+  @override
+  void initState() {
+    if (widget.type != NotifyType.initial) {
+      timer = Timer(
+          const Duration(seconds: 3),
+          () => setState(() {
+                if (!isClosed) {
+                  isClosed = true;
+                }
+              }));
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 
   @override
   void didUpdateWidget(covariant Notify oldWidget) {

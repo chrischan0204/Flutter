@@ -1,1 +1,1 @@
-export 'view/awareness_groups.dart';
+export 'view/awareness_groups_list.dart';

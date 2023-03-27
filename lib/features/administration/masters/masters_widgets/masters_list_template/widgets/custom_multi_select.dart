@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import '/data/model/entity.dart';
 import '/constants/color.dart';
 
 class CustomMultiSelect extends StatefulWidget {
-  final List<String> items;
-  final List<String> selectedItems;
+  final Map<String, Entity> items;
+  final List<Entity> selectedItems;
   final String hint;
-  final ValueChanged<List<String>> onChanged;
+  final ValueChanged<List<Entity>> onChanged;
   const CustomMultiSelect({
     super.key,
-    this.items = const [],
+    this.items = const <String, Entity>{},
     this.selectedItems = const [],
     required this.hint,
     required this.onChanged,
@@ -28,30 +29,33 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
         hint: Text(
           widget.hint,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: darkTeal,
           ),
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
         ),
-        items: widget.items.map((item) {
+        items: widget.items.entries.map((entry) {
           return DropdownMenuItem<String>(
-            value: item,
+            value: entry.key,
             //disable default onTap to avoid closing menu when selecting an item
             enabled: false,
             child: StatefulBuilder(
               builder: (context, menuSetState) {
-                final isSelected = widget.selectedItems.contains(item);
-
+                final isSelected = widget.selectedItems.indexWhere(
+                        (selectedItem) => selectedItem.id == entry.value.id) !=
+                    -1;
                 return InkWell(
                   onTap: () {
                     menuSetState(() {});
-                    widget.onChanged(widget.selectedItems);
+
                     setState(() {
                       isSelected
-                          ? widget.selectedItems.remove(item)
-                          : widget.selectedItems.add(item);
+                          ? widget.selectedItems.removeWhere((selectedItem) =>
+                              entry.value.id == selectedItem.id)
+                          : widget.selectedItems.add(entry.value);
                     });
+                    widget.onChanged(widget.selectedItems);
                   },
                   child: Container(
                     height: double.infinity,
@@ -64,7 +68,7 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            item,
+                            entry.key,
                             style: const TextStyle(
                               fontSize: 12,
                               overflow: TextOverflow.ellipsis,
@@ -82,17 +86,21 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
           );
         }).toList(),
         //Use last selected item as the current value so if we've limited menu height, it scroll to last item.
-        value: widget.selectedItems.isEmpty ? null : widget.selectedItems.last,
+        value: widget.selectedItems.isEmpty
+            ? null
+            : widget.selectedItems.last.name,
         onChanged: (value) {},
         selectedItemBuilder: (context) {
-          return widget.items.map(
+          return widget.items.entries.map(
             (item) {
               return Container(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  widget.selectedItems.join(', '),
+                  widget.selectedItems
+                      .map((selectedItem) => selectedItem.name)
+                      .join(', '),
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
                   textAlign: TextAlign.left,
@@ -103,8 +111,9 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
           ).toList();
         },
         buttonStyleData: ButtonStyleData(
-          height: 40,
+          height: 36,
           decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: grey,

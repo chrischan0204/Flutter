@@ -14,27 +14,19 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     on<AssignedRegionsRetrieved>(_onAssignedRegionsRetrieved);
     on<UnassignedRegionsRetrieved>(_onUnassignedRegionsRetrieved);
     on<TimeZonesRetrievedForRegion>(_onTimeZonesRetrievedForRegion);
-
-    on<SelectedRegionChanged>(_onSelectedRegionChanged);
-    // on<SelectedRegionNameChanged>(_onSelectedRegionNameChanged);
-    // on<SelectedTimezonesChanged>(_onSelectedTimezonesChanged);
-    // on<SelectedAssociatedSitesCountChanged>(
-    //     _onSelectedAssociatedSitesCountChanged);
-    // on<SelectedActiveChanged>(_onSelectedActiveChanged);
-    // on<SelectedRegionIdChanged>(_onSelectedRegionIdChanged);
-
+    on<RegionSelected>(_onRegionSelected);
+    on<RegionSelectedById>(_onRegionSelectedById);
     on<RegionAdded>(_onRegionAdded);
     on<RegionEdited>(_onRegionEdited);
     on<RegionDeleted>(_onRegionDeleted);
-
-    on<RegionsStateInited>(_onRegionsStateInited);
+    on<RegionsStatusInited>(_onRegionsStatusInited);
   }
 
   Future<void> _onAssignedRegionsRetrieved(
       AssignedRegionsRetrieved event, Emitter<RegionsState> emit) async {
     emit(
       state.copyWith(
-        unassignedRegionsRetrievedStatus: EntityStatus.loading,
+        assignedRegionsRetrievedStatus: EntityStatus.loading,
       ),
     );
     try {
@@ -43,13 +35,13 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           assignedRegions: assignedRegions,
-          unassignedRegionsRetrievedStatus: EntityStatus.succuess,
+          assignedRegionsRetrievedStatus: EntityStatus.succuess,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          unassignedRegionsRetrievedStatus: EntityStatus.failure,
+          assignedRegionsRetrievedStatus: EntityStatus.failure,
         ),
       );
     }
@@ -74,7 +66,6 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         ),
       );
     } catch (e) {
-      print(e.toString());
       emit(
         state.copyWith(
           assignedRegionsRetrievedStatus: EntityStatus.failure,
@@ -89,7 +80,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   ) async {
     emit(
       state.copyWith(
-        timezonesRetrievedStatus: EntityStatus.loading,
+        timeZonesRetrievedStatus: EntityStatus.loading,
       ),
     );
     try {
@@ -99,185 +90,152 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           timeZones: timezones,
-          timezonesRetrievedStatus: EntityStatus.succuess,
+          timeZonesRetrievedStatus: EntityStatus.succuess,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          timezonesRetrievedStatus: EntityStatus.failure,
+          timeZonesRetrievedStatus: EntityStatus.failure,
         ),
       );
     }
-    // add(const SelectedTimezonesChanged(selectedTimezones: []));
+  }
+
+  Future<void> _onRegionSelected(
+    RegionSelected event,
+    Emitter<RegionsState> emit,
+  ) async {
+    emit(state.copyWith(
+      selectedRegion: event.region,
+    ));
+    if (event.region != null && event.region!.id != null) {
+      add(TimeZonesRetrievedForRegion(regionId: event.region!.id!));
+    }
+  }
+
+  Future<void> _onRegionSelectedById(
+    RegionSelectedById event,
+    Emitter<RegionsState> emit,
+  ) async {
+    emit(state.copyWith(
+      regionSelectedStatus: EntityStatus.loading,
+      selectedRegion: null,
+    ));
+    try {
+      Region? selectedRegion =
+          await regionsRepository.getRegionById(event.regionId);
+      emit(
+        state.copyWith(
+          selectedRegion: selectedRegion,
+          regionSelectedStatus: EntityStatus.succuess,
+        ),
+      );
+      add(TimeZonesRetrievedForRegion(regionId: event.regionId));
+    } catch (e) {
+      emit(state.copyWith(
+        selectedRegion: null,
+        regionSelectedStatus: EntityStatus.failure,
+      ));
+    }
   }
 
   Future<void> _onRegionAdded(
     RegionAdded event,
     Emitter<RegionsState> emit,
   ) async {
-    emit(
-      state.copyWith(
-        regionAddedStatus: EntityStatus.loading,
-      ),
-    );
+    emit(state.copyWith(
+      regionAddedStatus: EntityStatus.loading,
+    ));
     try {
-      Region addedRegion = await regionsRepository.addRegion(
-        event.region,
-      );
-      emit(
-        state.copyWith(
+      EntityResponse response =
+          await regionsRepository.editRegion(event.region);
+      if (response.isSuccess) {
+        emit(state.copyWith(
           regionAddedStatus: EntityStatus.succuess,
-          assignedRegions: [...state.assignedRegions, addedRegion],
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
+        ));
+      } else {
+        emit(state.copyWith(
           regionAddedStatus: EntityStatus.failure,
-        ),
-      );
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        regionAddedStatus: EntityStatus.failure,
+      ));
     }
-    add(RegionsStateInited());
   }
 
   Future<void> _onRegionEdited(
     RegionEdited event,
     Emitter<RegionsState> emit,
   ) async {
-    emit(
-      state.copyWith(
-        regionEditedStatus: EntityStatus.loading,
-      ),
-    );
+    emit(state.copyWith(
+      regionEditedStatus: EntityStatus.loading,
+    ));
     try {
-      Region editedRegion = await regionsRepository.editRegion(
-        event.region,
-      );
-      List<Region> assignedRegions = List.from(state.assignedRegions);
-      int indexToDelete =
-          assignedRegions.indexWhere((region) => region.id == editedRegion.id);
-      assignedRegions.removeAt(indexToDelete);
-      assignedRegions.insert(indexToDelete, editedRegion);
-
-      emit(
-        state.copyWith(
+      EntityResponse response =
+          await regionsRepository.editRegion(event.region);
+      if (response.isSuccess) {
+        emit(state.copyWith(
           regionEditedStatus: EntityStatus.succuess,
-          assignedRegions: assignedRegions,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
+          selectedRegion: null,
+        ));
+      } else {
+        emit(state.copyWith(
           regionEditedStatus: EntityStatus.failure,
-        ),
-      );
+          selectedRegion: null,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        regionEditedStatus: EntityStatus.failure,
+        selectedRegion: null,
+      ));
     }
-    add(RegionsStateInited());
   }
 
   Future<void> _onRegionDeleted(
     RegionDeleted event,
     Emitter<RegionsState> emit,
   ) async {
+    emit(state.copyWith(
+      regionDeletedStatus: EntityStatus.loading,
+    ));
+    try {
+      EntityResponse response =
+          await regionsRepository.deleteRegion(event.regionId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          regionDeletedStatus: EntityStatus.succuess,
+          selectedRegion: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          regionDeletedStatus: EntityStatus.failure,
+          selectedRegion: null,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        regionDeletedStatus: EntityStatus.failure,
+        selectedRegion: null,
+      ));
+    }
+  }
+
+  void _onRegionsStatusInited(
+      RegionsStatusInited event, Emitter<RegionsState> emit) {
     emit(
       state.copyWith(
-        regionDeletedStatus: EntityStatus.loading,
+        regionAddedStatus: EntityStatus.initial,
+        regionEditedStatus: EntityStatus.initial,
+        regionSelectedStatus: EntityStatus.initial,
+        regionDeletedStatus: EntityStatus.initial,
+        assignedRegionsRetrievedStatus: EntityStatus.initial,
+        unassignedRegionsRetrievedStatus: EntityStatus.initial,
+        timeZonesRetrievedStatus: EntityStatus.initial,
       ),
     );
-    try {
-      Region deletedRegion = await regionsRepository.deleteRegion(
-        event.region,
-      );
-      List<Region> assignedRegions = List.from(state.assignedRegions);
-      assignedRegions.removeWhere((region) => region.id == deletedRegion.id);
-      emit(
-        state.copyWith(
-          regionDeletedStatus: EntityStatus.succuess,
-          assignedRegions: assignedRegions,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          regionDeletedStatus: EntityStatus.failure,
-        ),
-      );
-    }
-    add(RegionsStateInited());
-  }
-
-  void _onSelectedRegionChanged(
-    SelectedRegionChanged event,
-    Emitter<RegionsState> emit,
-  ) {
-
-  }
-  // void _onSelectedRegionNameChanged(
-  //   SelectedRegionNameChanged event,
-  //   Emitter<RegionsState> emit,
-  // ) {
-  //   emit(
-  //     state.copyWith(
-  //       selectedRegionName: event.selectedRegionName,
-  //       selectedTimezones: [],
-  //     ),
-  //   );
-  //   add(
-  //     TimeZonesRetrievedForRegion(
-  //       region: event.selectedRegionName,
-  //     ),
-  //   );
-  // }
-
-  // void _onSelectedTimezonesChanged(
-  //   SelectedTimezonesChanged event,
-  //   Emitter<RegionsState> emit,
-  // ) {
-  //   emit(
-  //     state.copyWith(
-  //       selectedTimezones: event.selectedTimezones,
-  //     ),
-  //   );
-  // }
-
-  // void _onSelectedAssociatedSitesCountChanged(
-  //     SelectedAssociatedSitesCountChanged event, Emitter<RegionsState> emit) {
-  //   emit(
-  //     state.copyWith(
-  //       selectedAssociatedSitesCount: event.selectedAssociatedSitesCount,
-  //     ),
-  //   );
-  // }
-
-  // void _onSelectedActiveChanged(
-  //     SelectedActiveChanged event, Emitter<RegionsState> emit) {
-  //   emit(
-  //     state.copyWith(
-  //       selectedActive: event.selectedActive,
-  //     ),
-  //   );
-  // }
-
-  // void _onSelectedRegionIdChanged(
-  //   SelectedRegionIdChanged event,
-  //   Emitter<RegionsState> emit,
-  // ) {
-  //   emit(
-  //     state.copyWith(
-  //       selectedRegionId: event.selectedRegionId,
-  //     ),
-  //   );
-  // }
-
-  void _onRegionsStateInited(
-      RegionsStateInited event, Emitter<RegionsState> emit) {
-    emit(state.copyWith(
-      selectedRegionName: '',
-      selectedTimezones: [],
-      selectedAssociatedSitesCount: 0,
-      selectedActive: true,
-      timeZones: [],
-    ));
   }
 }

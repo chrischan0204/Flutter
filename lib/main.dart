@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AwarenessGroupsBloc(
-              awarenessGroupRepository:
+              awarenessGroupsRepository:
                   RepositoryProvider.of<AwarenessGroupsRepository>(context),
             ),
           ),
@@ -70,6 +70,8 @@ class MyApp extends StatelessWidget {
             create: (context) => AwarenessCategoriesBloc(
               awarenessCategoriesRepository:
                   RepositoryProvider.of<AwarenessCategoriesRepository>(context),
+              awarenessGroupsRepository:
+                  RepositoryProvider.of<AwarenessGroupsRepository>(context),
             ),
           ),
         ],
@@ -93,7 +95,9 @@ setupHydratedLocalStorage() async {
 }
 
 loadEnv() async {
-  await dotenv.load(fileName: kReleaseMode ? 'env.development' : '../env.development',mergeWith: {
-    'TEST_VAR': '5',
-  });
+  await dotenv.load(
+      fileName: kReleaseMode ? 'env.development' : '../env.development',
+      mergeWith: {
+        'TEST_VAR': '5',
+      });
 }

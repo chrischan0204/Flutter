@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '/constants/color.dart';
 
 class CustomSingleSelect extends StatefulWidget {
-  final Map<String, String> items;
+  final Map<String, dynamic> items;
   final String? selectedValue;
   final String hint;
-  final ValueChanged<String> onChanged;
-  final bool isDisabled;
+  final ValueChanged<MapEntry> onChanged;
+  final bool disabled;
 
   const CustomSingleSelect({
     super.key,
@@ -15,7 +15,7 @@ class CustomSingleSelect extends StatefulWidget {
     this.selectedValue,
     required this.hint,
     required this.onChanged,
-    this.isDisabled = false,
+    this.disabled = false,
   });
 
   @override
@@ -29,15 +29,15 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
       child: DropdownButton2(
         isExpanded: true,
         hint: Text(
-          widget.isDisabled ? widget.selectedValue! : widget.hint,
+          widget.disabled ? widget.selectedValue ?? '' : widget.hint,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: darkTeal,
           ),
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
         ),
-        items: (widget.isDisabled
+        items: (widget.disabled
                 ? <String>[]
                 : widget.items.keys.map((entry) => entry).toList())
             .map(
@@ -46,7 +46,7 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
                 child: Text(
                   item,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
@@ -56,17 +56,18 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
             .toList(),
         value: widget.selectedValue,
         onChanged: (value) {
-          widget.onChanged(widget.items[value] as String);
+          MapEntry entry = MapEntry(value, widget.items[value]!);
+          widget.onChanged(entry);
         },
         buttonStyleData: ButtonStyleData(
-          height: 40,
+          height: 36,
           // width: 300,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: grey,
             ),
-            color: widget.isDisabled ? lightTeal : Colors.transparent,
+            color: widget.disabled ? const Color(0xfff9fafb) : Colors.white,
           ),
         ),
         menuItemStyleData: const MenuItemStyleData(

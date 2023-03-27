@@ -10,12 +10,10 @@ class Layout extends StatefulWidget {
     super.key,
     required this.body,
     required this.selectedItemName,
-    required this.title,
   });
 
   final Widget body;
   final String selectedItemName;
-  final String title;
 
   @override
   State<Layout> createState() => _LayoutState();
@@ -53,7 +51,6 @@ class _LayoutState extends State<Layout> {
                 backgroundColor: sidebarColor,
                 child: Sidebar(
                   selectedItemName: widget.selectedItemName,
-                  title: widget.title,
                 ),
               )
             : null,
@@ -75,7 +72,6 @@ class _LayoutState extends State<Layout> {
                         ? Container()
                         : Sidebar(
                             selectedItemName: widget.selectedItemName,
-                            title: widget.title,
                           ),
                     Expanded(
                       child: SizedBox(

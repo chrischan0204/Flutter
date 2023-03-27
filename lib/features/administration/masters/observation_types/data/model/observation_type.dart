@@ -6,13 +6,12 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class ObservationType extends Entity implements Equatable {
-  final String name;
   final String security;
   final String visibility;
   final bool active;
   ObservationType({
-    required super.id,
-    required this.name,
+    super.id,
+    super.name,
     required this.security,
     required this.visibility,
     required this.active,
@@ -21,7 +20,7 @@ class ObservationType extends Entity implements Equatable {
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
-      'Observation type': name,
+      'Observation Type': name,
       'Severity': security,
       'Visibility': visibility,
       'Active': active,
@@ -30,6 +29,7 @@ class ObservationType extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         security,
         visibility,
@@ -42,7 +42,7 @@ class ObservationType extends Entity implements Equatable {
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
-      'Observation type': name,
+      'Observation Type': name,
       'Severity': security,
       'Visibility': visibility,
       'Active': active,
@@ -50,22 +50,26 @@ class ObservationType extends Entity implements Equatable {
   }
 
   @override
-  Map<String, EntityInputType> inputTypesToMap() {
-    // TODO: implement inputTypesToMap
-    throw UnimplementedError();
+  Map<String, dynamic> toMap() {
+    if (id == null) {
+      return <String, dynamic>{
+        'name': name,
+        'security': security,
+        'visibility': visibility,
+        'active': active,
+      };
+    } else {
+      return <String, dynamic>{
+        'id': id,
+        'name': name,
+        'security': security,
+        'visibility': visibility,
+        'active': active,
+      };
+    }
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'security': security,
-      'visibility': visibility,
-      'active': active,
-    };
-  }
-
   factory ObservationType.fromMap(Map<String, dynamic> map) {
     return ObservationType(
       id: map['id'] as String,
@@ -80,4 +84,20 @@ class ObservationType extends Entity implements Equatable {
 
   factory ObservationType.fromJson(String source) =>
       ObservationType.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  ObservationType copyWith({
+    String? id,
+    String? name,
+    String? security,
+    String? visibility,
+    bool? active,
+  }) {
+    return ObservationType(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      security: security ?? this.security,
+      visibility: visibility ?? this.visibility,
+      active: active ?? this.active,
+    );
+  }
 }

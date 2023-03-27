@@ -3,14 +3,14 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class TimeZone extends Equatable {
-  final String id;
-  final String? name;
+import '/data/model/entity.dart';
+
+class TimeZone extends Entity implements Equatable {
   final String? abbreviation;
   final bool assigned;
-  const TimeZone({
-    required this.id,
-    this.name,
+  TimeZone({
+    super.id,
+    super.name,
     this.abbreviation,
     required this.assigned,
   });
@@ -22,7 +22,7 @@ class TimeZone extends Equatable {
         abbreviation,
         assigned,
       ];
-
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -47,4 +47,21 @@ class TimeZone extends Equatable {
   factory TimeZone.fromJson(String source) => TimeZone.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
+
+  @override
+  bool? get stringify => throw UnimplementedError();
+
+  TimeZone copyWith({
+    String? id,
+    String? name,
+    String? abbreviation,
+    bool? assigned,
+  }) {
+    return TimeZone(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      abbreviation: abbreviation ?? this.abbreviation,
+      assigned: assigned ?? this.assigned,
+    );
+  }
 }

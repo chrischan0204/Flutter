@@ -5,7 +5,7 @@ abstract class RegionsEvent extends Equatable {
   const RegionsEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AssignedRegionsRetrieved extends RegionsEvent {}
@@ -15,6 +15,28 @@ class UnassignedRegionsRetrieved extends RegionsEvent {}
 class TimeZonesRetrievedForRegion extends RegionsEvent {
   final String regionId;
   const TimeZonesRetrievedForRegion({
+    required this.regionId,
+  });
+  @override
+  List<Object> get props => [
+        regionId,
+      ];
+}
+
+class RegionSelected extends RegionsEvent {
+  final Region? region;
+  const RegionSelected({
+    this.region,
+  });
+  @override
+  List<Object?> get props => [
+        region,
+      ];
+}
+
+class RegionSelectedById extends RegionsEvent {
+  final String regionId;
+  const RegionSelectedById({
     required this.regionId,
   });
   @override
@@ -48,79 +70,17 @@ class RegionEdited extends RegionsEvent {
 }
 
 class RegionDeleted extends RegionsEvent {
-  final Region region;
+  final String regionId;
   const RegionDeleted({
-    required this.region,
+    required this.regionId,
   });
 
   @override
   List<Object> get props => [
-        region,
+        regionId,
       ];
 }
 
-// class SelectedRegionNameChanged extends RegionsEvent {
-//   final String selectedRegionName;
-//   const SelectedRegionNameChanged({
-//     required this.selectedRegionName,
-//   });
-//   @override
-//   List<Object> get props => [
-//         selectedRegionName,
-//       ];
-// }
-
-// class SelectedTimezonesChanged extends RegionsEvent {
-//   final List<TimeZone> selectedTimezones;
-//   const SelectedTimezonesChanged({
-//     required this.selectedTimezones,
-//   });
-//   @override
-//   List<Object> get props => [
-//         selectedTimezones,
-//       ];
-// }
-
-// class SelectedAssociatedSitesCountChanged extends RegionsEvent {
-//   final int selectedAssociatedSitesCount;
-//   const SelectedAssociatedSitesCountChanged({
-//     required this.selectedAssociatedSitesCount,
-//   });
-//   @override
-//   List<Object> get props => [
-//         selectedAssociatedSitesCount,
-//       ];
-// }
-
-// class SelectedActiveChanged extends RegionsEvent {
-//   final bool selectedActive;
-//   const SelectedActiveChanged({
-//     required this.selectedActive,
-//   });
-//   @override
-//   List<Object> get props => [
-//         selectedActive,
-//       ];
-// }
-
-// class SelectedRegionIdChanged extends RegionsEvent {
-//   final String selectedRegionId;
-//   const SelectedRegionIdChanged({
-//     required this.selectedRegionId,
-//   });
-//   @override
-//   List<Object> get props => [
-//         selectedRegionId,
-//       ];
-// }
-
-class RegionsStateInited extends RegionsEvent {}
-
-class SelectedRegionChanged extends RegionsEvent {
-  final Region? selectedRegion;
-  const SelectedRegionChanged({
-    this.selectedRegion,
-  });
+class RegionsStatusInited extends RegionsEvent {
+  const RegionsStatusInited();
 }
-
-class RegionsCrudStateInited extends RegionsEvent {}

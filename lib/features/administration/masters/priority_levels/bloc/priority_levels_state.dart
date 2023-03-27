@@ -3,25 +3,57 @@ part of 'priority_levels_bloc.dart';
 
 class PriorityLevelsState extends Equatable {
   final List<PriorityLevel> priorityLevels;
-  final EntityStatus status;
+  final PriorityLevel? selectedPriorityLevel;
+
+  final EntityStatus priorityLevelsRetrievedStatus;
+  final EntityStatus priorityLevelSelectedStatus;
+  final EntityStatus priorityLevelAddedStatus;
+  final EntityStatus priorityLevelEditedStatus;
+  final EntityStatus priorityLevelDeletedStatus;
   const PriorityLevelsState({
     this.priorityLevels = const [],
-    this.status = EntityStatus.initial,
+    this.selectedPriorityLevel,
+    this.priorityLevelsRetrievedStatus = EntityStatus.initial,
+    this.priorityLevelSelectedStatus = EntityStatus.initial,
+    this.priorityLevelAddedStatus = EntityStatus.initial,
+    this.priorityLevelEditedStatus = EntityStatus.initial,
+    this.priorityLevelDeletedStatus = EntityStatus.initial,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         priorityLevels,
-        status,
+        priorityLevelsRetrievedStatus,
+        selectedPriorityLevel,
+        priorityLevelSelectedStatus,
+        priorityLevelAddedStatus,
+        priorityLevelEditedStatus,
+        priorityLevelDeletedStatus,
       ];
 
   PriorityLevelsState copyWith({
     List<PriorityLevel>? priorityLevels,
-    EntityStatus? status,
+    PriorityLevel? selectedPriorityLevel,
+    EntityStatus? priorityLevelsRetrievedStatus,
+    EntityStatus? priorityLevelSelectedStatus,
+    EntityStatus? priorityLevelAddedStatus,
+    EntityStatus? priorityLevelEditedStatus,
+    EntityStatus? priorityLevelDeletedStatus,
   }) {
     return PriorityLevelsState(
       priorityLevels: priorityLevels ?? this.priorityLevels,
-      status: status ?? this.status,
+      selectedPriorityLevel:
+          selectedPriorityLevel ?? this.selectedPriorityLevel,
+      priorityLevelsRetrievedStatus:
+          priorityLevelsRetrievedStatus ?? this.priorityLevelsRetrievedStatus,
+      priorityLevelSelectedStatus:
+          priorityLevelSelectedStatus ?? this.priorityLevelSelectedStatus,
+      priorityLevelAddedStatus:
+          priorityLevelAddedStatus ?? this.priorityLevelAddedStatus,
+      priorityLevelEditedStatus:
+          priorityLevelEditedStatus ?? this.priorityLevelEditedStatus,
+      priorityLevelDeletedStatus:
+          priorityLevelDeletedStatus ?? this.priorityLevelDeletedStatus,
     );
   }
 }

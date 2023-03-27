@@ -1,100 +1,76 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'regions_bloc.dart';
 
 class RegionsState extends Equatable {
   final List<Region> assignedRegions;
   final List<Region> unassignedRegions;
-
   final List<TimeZone> timeZones;
-
-  final EntityStatus unassignedRegionsRetrievedStatus;
-  final EntityStatus assignedRegionsRetrievedStatus;
-  final EntityStatus timezonesRetrievedStatus;
-
   final Region? selectedRegion;
 
-  // final String? selectedRegionId;
-  // final String selectedRegionName;
-  // final List<TimeZone> selectedTimezones;
-  // final int selectedAssociatedSitesCount;
-  // final bool selectedActive;
+  final EntityStatus assignedRegionsRetrievedStatus;
+  final EntityStatus unassignedRegionsRetrievedStatus;
+  final EntityStatus timeZonesRetrievedStatus;
+  final EntityStatus regionSelectedStatus;
   final EntityStatus regionAddedStatus;
   final EntityStatus regionEditedStatus;
   final EntityStatus regionDeletedStatus;
-
   const RegionsState({
     this.assignedRegions = const [],
-    this.unassignedRegionsRetrievedStatus = EntityStatus.initial,
+    this.unassignedRegions = const [],
+    this.timeZones = const [],
+    this.selectedRegion,
     this.assignedRegionsRetrievedStatus = EntityStatus.initial,
-    this.timezonesRetrievedStatus = EntityStatus.initial,
+    this.unassignedRegionsRetrievedStatus = EntityStatus.initial,
+    this.timeZonesRetrievedStatus = EntityStatus.initial,
+    this.regionSelectedStatus = EntityStatus.initial,
     this.regionAddedStatus = EntityStatus.initial,
     this.regionEditedStatus = EntityStatus.initial,
     this.regionDeletedStatus = EntityStatus.initial,
-    this.selectedRegion,
-    // this.selectedRegionName = '',
-    // this.selectedTimezones = const [],
-    this.unassignedRegions = const [],
-    this.timeZones = const [],
-    // this.selectedAssociatedSitesCount = 0,
-    // this.selectedActive = true,
-    // this.selectedRegionId,
   });
 
   @override
   List<Object?> get props => [
         assignedRegions,
-        unassignedRegionsRetrievedStatus,
-        assignedRegionsRetrievedStatus,
-        timezonesRetrievedStatus,
         unassignedRegions,
         timeZones,
+        selectedRegion,
+        assignedRegionsRetrievedStatus,
+        unassignedRegionsRetrievedStatus,
+        timeZonesRetrievedStatus,
+        regionSelectedStatus,
         regionAddedStatus,
         regionEditedStatus,
         regionDeletedStatus,
-        selectedRegion,
-        // selectedAssociatedSitesCount,
-        // selectedActive,
-        // selectedRegionId,
-        // selectedRegionName,
-        // selectedTimezones,
       ];
 
   RegionsState copyWith({
     List<Region>? assignedRegions,
     List<Region>? unassignedRegions,
     List<TimeZone>? timeZones,
-    EntityStatus? unassignedRegionsRetrievedStatus,
+    Region? selectedRegion,
     EntityStatus? assignedRegionsRetrievedStatus,
-    EntityStatus? timezonesRetrievedStatus,
-    String? selectedRegionName,
-    List<TimeZone>? selectedTimezones,
+    EntityStatus? unassignedRegionsRetrievedStatus,
+    EntityStatus? timeZonesRetrievedStatus,
+    EntityStatus? regionSelectedStatus,
     EntityStatus? regionAddedStatus,
     EntityStatus? regionEditedStatus,
     EntityStatus? regionDeletedStatus,
-    int? selectedAssociatedSitesCount,
-    bool? selectedActive,
-    String? selectedRegionId,
-    Region? selectedRegion,
   }) {
     return RegionsState(
       assignedRegions: assignedRegions ?? this.assignedRegions,
       unassignedRegions: unassignedRegions ?? this.unassignedRegions,
       timeZones: timeZones ?? this.timeZones,
-      unassignedRegionsRetrievedStatus: unassignedRegionsRetrievedStatus ??
-          this.unassignedRegionsRetrievedStatus,
+      selectedRegion: selectedRegion ?? this.selectedRegion,
       assignedRegionsRetrievedStatus:
           assignedRegionsRetrievedStatus ?? this.assignedRegionsRetrievedStatus,
-      timezonesRetrievedStatus:
-          timezonesRetrievedStatus ?? this.timezonesRetrievedStatus,
-      // selectedRegionName: selectedRegionName ?? this.selectedRegionName,
-      // selectedTimezones: selectedTimezones ?? this.selectedTimezones,
-      // selectedAssociatedSitesCount:
-      //     selectedAssociatedSitesCount ?? this.selectedAssociatedSitesCount,
-      // selectedActive: selectedActive ?? this.selectedActive,
-      // selectedRegionId: selectedRegionId ?? this.selectedRegionId,
+      unassignedRegionsRetrievedStatus: unassignedRegionsRetrievedStatus ??
+          this.unassignedRegionsRetrievedStatus,
+      timeZonesRetrievedStatus:
+          timeZonesRetrievedStatus ?? this.timeZonesRetrievedStatus,
+      regionSelectedStatus: regionSelectedStatus ?? this.regionSelectedStatus,
       regionAddedStatus: regionAddedStatus ?? this.regionAddedStatus,
       regionEditedStatus: regionEditedStatus ?? this.regionEditedStatus,
       regionDeletedStatus: regionDeletedStatus ?? this.regionDeletedStatus,
-      selectedRegion: selectedRegion ?? this.selectedRegion,
     );
   }
 }

@@ -1,35 +1,51 @@
 import 'package:flutter/material.dart';
 import '/constants/color.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String hintText;
   final ValueChanged<String> onChanged;
   final bool isDisabled;
+  final TextEditingController controller;
+  final FocusNode focusNode;
   const CustomTextField({
     super.key,
     required this.hintText,
     required this.onChanged,
     this.isDisabled = false,
+    required this.controller,
+    required this.focusNode,
   });
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 36,
       child: TextField(
-        enabled: !isDisabled,
+        focusNode: widget.focusNode,
+        controller: widget.controller,
+        enabled: !widget.isDisabled,
         onChanged: (value) {
-          onChanged(value);
+          widget.onChanged(value);
         },
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 12,
           fontFamily: 'OpenSans',
           fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
-          hintText: hintText,
+          hintText: widget.hintText,
           contentPadding: const EdgeInsets.symmetric(
-            vertical: 5,
+            vertical: 6,
             horizontal: 10,
           ),
           enabledBorder: OutlineInputBorder(
@@ -48,8 +64,13 @@ class CustomTextField extends StatelessWidget {
               color: Colors.blue,
             ),
           ),
-          
+          filled: true,
+          fillColor: Colors.white,
+          focusColor: Colors.white,
+          hoverColor: Colors.white,
         ),
+        cursorColor: darkTeal,
+        cursorWidth: 1,
       ),
     );
   }

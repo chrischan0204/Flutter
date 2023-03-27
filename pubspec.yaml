@@ -10,6 +10,7 @@ environment:
 dependencies:
   animate_icons: ^2.0.0
   bloc: ^8.1.1
+  confirm_dialog: ^1.0.1
   cupertino_icons: ^1.0.2
   custom_pop_up_menu: ^1.2.4
   dropdown_button2: ^2.0.0
