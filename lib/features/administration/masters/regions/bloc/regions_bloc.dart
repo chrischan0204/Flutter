@@ -149,7 +149,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     ));
     try {
       EntityResponse response =
-          await regionsRepository.editRegion(event.region);
+          await regionsRepository.addRegion(event.region);
       if (response.isSuccess) {
         emit(state.copyWith(
           regionAddedStatus: EntityStatus.succuess,

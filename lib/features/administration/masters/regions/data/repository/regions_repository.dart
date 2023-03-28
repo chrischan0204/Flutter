@@ -59,6 +59,20 @@ class RegionsRepository {
     return [];
   }
 
+  Future<EntityResponse> addRegion(Region region) async {
+    Response response = await post(Uri.https(ApiUri.host, url),
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: region.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
   Future<EntityResponse> editRegion(Region region) async {
     Response response = await put(Uri.https(ApiUri.host, url),
         headers: {
