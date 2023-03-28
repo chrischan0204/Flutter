@@ -114,6 +114,8 @@ class _AddEditObservationTypeViewState
           id: widget.observationTypeId,
           selectedEntity: state.selectedObservationType,
           addEntity: () => _addObservationType(state),
+          addedStatus: state.observationTypeAddedStatus,
+          editedStatus: state.observationTypeEditedStatus,
           editEntity: () => _editObservationType(state),
           child: Column(
             children: [

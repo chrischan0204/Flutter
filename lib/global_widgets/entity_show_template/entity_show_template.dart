@@ -200,7 +200,6 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
                   color: Colors.white,
                   size: 22,
                 ),
-                onClick: () {},
               )
             : CustomButton(
                 backgroundColor: const Color(0xffef4444),

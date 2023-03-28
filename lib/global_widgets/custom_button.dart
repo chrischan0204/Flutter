@@ -8,7 +8,7 @@ class CustomButton extends StatefulWidget {
   final Color iconColor;
   final double iconSize;
   final String text;
-  final VoidCallback onClick;
+  final VoidCallback? onClick;
   final bool disabled;
   final Widget? body;
   const CustomButton({
@@ -24,7 +24,7 @@ class CustomButton extends StatefulWidget {
     this.iconColor = Colors.white,
     this.iconData,
     this.text = '',
-    required this.onClick,
+    this.onClick,
     this.iconSize = 20,
     this.disabled = false,
     this.body,
@@ -51,7 +51,11 @@ class _CustomButtonState extends State<CustomButton> {
         }
       }),
       child: GestureDetector(
-        onTap: () => widget.disabled ? null : widget.onClick(),
+        onTap: () => widget.disabled
+            ? null
+            : widget.onClick == null
+                ? null
+                : widget.onClick!(),
         child: Container(
           padding: const EdgeInsets.symmetric(
             vertical: 8,

@@ -116,6 +116,8 @@ class _AddEditAwarenessCategoryViewState
           id: widget.awarenessCategoryId,
           selectedEntity: state.selectedAwarenessCategory,
           addEntity: () => _addAwarenessCategory(state),
+          addedStatus: state.awarenessCategoryAddedStatus,
+          editedStatus: state.awarenessCategoryEditedStatus,
           editEntity: () => _editAwarenessCategory(state),
           child: Column(
             children: [

@@ -109,7 +109,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
           id: widget.regionId,
           selectedEntity: state.selectedRegion,
           addEntity: () => _addRegion(state),
+          addedStatus: state.regionAddedStatus,
           editEntity: () => _editRegion(state),
+          editedStatus: state.regionEditedStatus,
           child: Column(
             children: [
               FormItem(

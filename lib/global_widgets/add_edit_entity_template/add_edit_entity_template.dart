@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
@@ -13,6 +14,8 @@ class AddEditEntityTemplate extends StatefulWidget {
   final Widget child;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
+  final EntityStatus addedStatus;
+  final EntityStatus editedStatus;
   const AddEditEntityTemplate({
     super.key,
     required this.label,
@@ -21,6 +24,8 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.child,
     required this.addEntity,
     required this.editEntity,
+    this.addedStatus = EntityStatus.initial,
+    this.editedStatus = EntityStatus.initial,
   });
 
   @override
@@ -84,19 +89,31 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         horizontal: 20,
         vertical: 12,
       ),
-      child: CustomButton(
-        backgroundColor: const Color(0xff059669),
-        hoverBackgroundColor: const Color(0xff05875f),
-        iconData: PhosphorIcons.arrowRight,
-        text: '${widget.id == null ? 'Add' : 'Edit'} ${camelize(widget.label)}',
-        onClick: () {
-          if (widget.id != null) {
-            widget.editEntity();
-          } else {
-            widget.addEntity();
-          }
-        },
-      ),
+      child: widget.addedStatus == EntityStatus.loading ||
+              widget.editedStatus == EntityStatus.loading
+          ? CustomButton(
+              backgroundColor: const Color(0xff059669),
+              hoverBackgroundColor: const Color(0xff05875f),
+              disabled: true,
+              body: LoadingAnimationWidget.prograssiveDots(
+                color: Colors.white,
+                size: 22,
+              ),
+            )
+          : CustomButton(
+              backgroundColor: const Color(0xff059669),
+              hoverBackgroundColor: const Color(0xff05875f),
+              iconData: PhosphorIcons.arrowRight,
+              text:
+                  '${widget.id == null ? 'Add' : 'Edit'} ${camelize(widget.label)}',
+              onClick: () {
+                if (widget.id != null) {
+                  widget.editEntity();
+                } else {
+                  widget.addEntity();
+                }
+              },
+            ),
     );
   }
 
