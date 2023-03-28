@@ -149,7 +149,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         ),
         widget.id != null
             ? SizedBox(
-                width: MediaQuery.of(context).size.width / 20,
+                width: MediaQuery.of(context).size.width / 35,
               )
             : Container(),
         widget.id != null
