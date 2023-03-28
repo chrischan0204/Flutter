@@ -11,10 +11,10 @@ class Region extends Entity implements Equatable {
   final String? deactivationDate;
   final String? deactivationUserName;
   final int? siteCount;
-  Region({
+  const Region({
     super.id,
     this.timeZones = const [],
-    required this.active,
+    this.active = true,
     super.name,
     this.siteCount,
     this.deactivationDate,

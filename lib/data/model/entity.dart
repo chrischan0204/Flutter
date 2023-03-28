@@ -7,7 +7,7 @@ class Entity extends Equatable {
   final String? id;
   final String? name;
 
-  Entity({
+  const Entity({
     this.id,
     this.name,
   });

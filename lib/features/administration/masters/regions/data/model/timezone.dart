@@ -8,11 +8,11 @@ import '/data/model/entity.dart';
 class TimeZone extends Entity implements Equatable {
   final String? abbreviation;
   final bool assigned;
-  TimeZone({
+  const TimeZone({
     super.id,
     super.name,
     this.abbreviation,
-    required this.assigned,
+    this.assigned = false,
   });
 
   @override

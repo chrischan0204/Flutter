@@ -6,5 +6,5 @@ export 'custom_color_picker.dart';
 export 'description.dart';
 export 'notify.dart';
 export 'page_title.dart';
-export 'masters_table_view.dart';
+export 'table_view.dart';
 
