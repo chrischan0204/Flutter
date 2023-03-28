@@ -34,6 +34,7 @@ class _SiteShowViewState extends State<SiteShowView> {
           title: 'Site',
           label: 'site',
           deleteEntity: () {},
+          tabItems: ['Site Details', 'Audit Templates', 'Site kiosks'],
           entity: state.selectedSite,
         );
       },
