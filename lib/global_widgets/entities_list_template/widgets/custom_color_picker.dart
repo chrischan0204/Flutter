@@ -1,7 +1,8 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter/material.dart';
-import 'package:safety_eta/constants/color.dart';
+import 'package:star_menu/star_menu.dart';
+import '/constants/color.dart';
 
 class CustomColorPicker extends StatefulWidget {
   final Color color;
@@ -24,39 +25,29 @@ class _CustomColorPickerState extends State<CustomColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPopupMenu(
-      barrierColor: Colors.transparent,
-      arrowColor: Colors.transparent,
-      menuBuilder: () => Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: grey,
-          ),
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(
-              color: grey,
-              offset: const Offset(1, 1),
-              blurRadius: 3,
+    return StarMenu(
+      params: StarMenuParameters.dropdown(context).copyWith(
+          centerOffset: Offset(MediaQuery.of(context).size.width / 3.5, 0)),
+      items: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width / 3,
+            child: FittedBox(
+              child: ColorPicker(
+                pickerAreaBorderRadius:
+                    const BorderRadius.all(Radius.circular(5)),
+                displayThumbColor: true,
+                hexInputBar: true,
+                labelTypes: const [ColorLabelType.rgb],
+                pickerColor: widget.color,
+                onColorChanged: changeColor,
+                pickerAreaHeightPercent: 0.8,
+              ),
             ),
-          ],
-          color: Colors.white,
-        ),
-        child: FittedBox(
-          child: ColorPicker(
-            pickerAreaBorderRadius: const BorderRadius.all(Radius.circular(5)),
-            displayThumbColor: true,
-            hexInputBar: true,
-            labelTypes: const [ColorLabelType.rgb],
-            pickerColor: widget.color,
-            onColorChanged: changeColor,
-            pickerAreaHeightPercent: 0.8,
           ),
         ),
-      ),
-      // horizontalMargin: 400,
-      position: PreferredPosition.bottom,
-      pressType: PressType.singleClick,
+      ],
       child: Container(
         width: double.infinity,
         height: 25,
