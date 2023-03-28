@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safety_eta/data/model/model.dart';
-import 'package:safety_eta/features/administration/masters/masters_widgets/masters_list_template/widgets/widgets.dart';
-import '../../masters_widgets/add_edit_master_template/add_edit_master_template.dart';
-import '../../masters_widgets/add_edit_master_template/widgets/form_item.dart';
+
+import '/data/model/model.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 
 class AddEditObservationTypeView extends StatefulWidget {
@@ -110,7 +109,7 @@ class _AddEditObservationTypeViewState
         }
       },
       builder: (context, state) {
-        return AddEditMasterTemplate(
+        return AddEditEntityTemplate(
           label: 'observation type',
           id: widget.observationTypeId,
           selectedEntity: state.selectedObservationType,

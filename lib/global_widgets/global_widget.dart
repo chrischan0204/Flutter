@@ -1,2 +1,9 @@
 export 'custom_divider.dart';
 export 'custom_button.dart';
+export 'entities_list_template/entities_list_template.dart';
+export 'add_edit_entity_template/add_edit_entity_template.dart';
+export 'entity_show_template/entity_show_template.dart';
+export 'custom_data_cell.dart';
+export 'add_edit_entity_template/widgets/widgets.dart';
+export 'entity_show_template/widgets/widgets.dart';
+export 'entities_list_template/widgets/widgets.dart';

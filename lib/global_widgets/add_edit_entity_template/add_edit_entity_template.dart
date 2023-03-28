@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/features/administration/masters/masters_widgets/masters_list_template/widgets/page_title.dart';
 import 'package:strings/strings.dart';
 
 import '/data/model/entity.dart';
 import '/global_widgets/global_widget.dart';
 
-class AddEditMasterTemplate extends StatefulWidget {
+class AddEditEntityTemplate extends StatefulWidget {
   final String label;
   final String? id;
   final Entity? selectedEntity;
   final Widget child;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
-  const AddEditMasterTemplate({
+  const AddEditEntityTemplate({
     super.key,
     required this.label,
     this.id,
@@ -25,10 +24,10 @@ class AddEditMasterTemplate extends StatefulWidget {
   });
 
   @override
-  State<AddEditMasterTemplate> createState() => _MyWidgetState();
+  State<AddEditEntityTemplate> createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<AddEditMasterTemplate> {
+class _MyWidgetState extends State<AddEditEntityTemplate> {
   @override
   Widget build(BuildContext context) {
     return Padding(

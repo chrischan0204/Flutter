@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/data/model/model.dart';
-import '../../masters_widgets/widgets.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 
 class ObservationTypesListView extends StatefulWidget {
@@ -26,7 +26,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
     return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
       listener: (context, state) => _displayNofitication(state),
       builder: (context, state) {
-        return MastersListTemplate(
+        return EntityListTemplate(
           description:
               'List of defined observation types. Types can be added or current ones edited from this screen.',
           entities: state.observationTypes,

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../masters_widgets/add_edit_master_template/add_edit_master_template.dart';
-import '../../masters_widgets/add_edit_master_template/widgets/form_item.dart';
-
-import '../../masters_widgets/masters_list_template/widgets/custom_textfield.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
@@ -99,7 +96,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
         }
       },
       builder: (context, state) {
-        return AddEditMasterTemplate(
+        return AddEditEntityTemplate(
           label: 'awareness group',
           id: widget.awarenessGroupId,
           selectedEntity: state.selectedAwarenessGroup,

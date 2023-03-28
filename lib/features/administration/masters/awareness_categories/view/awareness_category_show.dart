@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../masters_widgets/master_show_template/master_show_template.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
@@ -41,7 +41,7 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
         }
       },
       builder: (context, state) {
-        return MasterShowTemplate(
+        return EntityShowTemplate(
           title: 'Awareness Category',
           label: 'awareness category',
           entity: state.selectedAwarenessCategory,

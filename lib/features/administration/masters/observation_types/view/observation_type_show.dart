@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safety_eta/data/model/model.dart';
 
+import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
-import '../../masters_widgets/master_show_template/master_show_template.dart';
+import '/global_widgets/global_widget.dart';
 
 class ObservationTypeShowView extends StatefulWidget {
   final String observationTypeId;
@@ -41,7 +41,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
         }
       },
       builder: (context, state) {
-        return MasterShowTemplate(
+        return EntityShowTemplate(
           title: 'Observation Type',
           label: 'Observation Type',
           entity: state.selectedObservationType,

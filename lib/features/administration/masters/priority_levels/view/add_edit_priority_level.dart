@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/data/bloc/bloc.dart';
-import '../../masters_widgets/widgets.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 
 class AddEditPriorityLevelView extends StatefulWidget {
@@ -104,7 +104,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
         }
       },
       builder: (context, state) {
-        return AddEditMasterTemplate(
+        return AddEditEntityTemplate(
           label: 'priority level',
           id: widget.priorityLevelId,
           selectedEntity: state.selectedPriorityLevel,

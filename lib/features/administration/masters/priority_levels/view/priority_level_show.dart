@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../masters_widgets/master_show_template/master_show_template.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/model/entity.dart';
 import '/data/bloc/bloc.dart';
 
@@ -40,7 +40,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
         }
       },
       builder: (context, state) {
-        return MasterShowTemplate(
+        return EntityShowTemplate(
           title: 'Priority Level',
           label: 'priority level',
           entity: state.selectedPriorityLevel,

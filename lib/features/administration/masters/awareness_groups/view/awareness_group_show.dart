@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '/data/bloc/bloc.dart';
 import '/data/model/model.dart';
-import '../../masters_widgets/master_show_template/master_show_template.dart';
+import '/global_widgets/global_widget.dart';
 
 class AwarenessGroupShowView extends StatefulWidget {
   final String awarenessGroupId;
@@ -40,7 +40,7 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
         }
       },
       builder: (context, state) {
-        return MasterShowTemplate(
+        return EntityShowTemplate(
           title: 'Awareness Group',
           label: 'awareness group',
           entity: state.selectedAwarenessGroup,

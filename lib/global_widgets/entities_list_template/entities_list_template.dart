@@ -1,19 +1,16 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/constants/color.dart';
 import 'package:strings/strings.dart';
 
 import '../custom_data_cell.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/entity.dart';
-import '../../../../theme/view/widgets/sidebar/sidebar_style.dart';
+import '/constants/color.dart';
 import 'widgets/detail_item.dart';
 import 'widgets/widgets.dart';
 
-class MastersListTemplate extends StatefulWidget {
+class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
   final String title;
   final String description;
@@ -22,22 +19,25 @@ class MastersListTemplate extends StatefulWidget {
   final ValueChanged<Entity> onRowClick;
   final Entity? selectedEntity;
   final String successType;
-  const MastersListTemplate(
-      {super.key,
-      this.entities = const [],
-      required this.description,
-      required this.title,
-      required this.label,
-      required this.note,
-      this.selectedEntity,
-      required this.onRowClick,
-      this.successType = ''});
+  final bool showTableHeaderButtons;
+  const EntityListTemplate({
+    super.key,
+    required this.title,
+    required this.label,
+    required this.note,
+    required this.onRowClick,
+    this.entities = const [],
+    this.selectedEntity,
+    this.successType = '',
+    this.description = '',
+    this.showTableHeaderButtons = true,
+  });
 
   @override
-  State<MastersListTemplate> createState() => _CrudState();
+  State<EntityListTemplate> createState() => _CrudState();
 }
 
-class _CrudState extends State<MastersListTemplate> {
+class _CrudState extends State<EntityListTemplate> {
   late double positionRightForFiltersSlier;
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
@@ -57,6 +57,49 @@ class _CrudState extends State<MastersListTemplate> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> notifications = List.from([
+      widget.successType == 'add'
+          ? Notify(
+              content: '${camelize(widget.label)} Created Successfully!',
+              type: NotifyType.success,
+            )
+          : Container(),
+      widget.successType == 'edit'
+          ? Notify(
+              content:
+                  '${camelize(widget.label)} Details Updated Successfully!',
+              type: NotifyType.good,
+            )
+          : Container(),
+      widget.successType == 'delete'
+          ? Notify(
+              content: 'The ${widget.label} was deleted.',
+              type: NotifyType.good,
+            )
+          : Container(),
+      widget.successType == 'add-fail'
+          ? Notify(
+              content:
+                  'There was an error while adding ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
+              type: NotifyType.failture,
+            )
+          : Container(),
+      widget.successType == 'edit-fail'
+          ? Notify(
+              content:
+                  'There was an error while editing ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
+              type: NotifyType.failture,
+            )
+          : Container(),
+      widget.successType == 'delete-fail'
+          ? Notify(
+              content:
+                  'There was an error while deleting ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
+              type: NotifyType.failture,
+            )
+          : Container(),
+    ]);
+
     return Stack(
       children: [
         Padding(
@@ -64,50 +107,9 @@ class _CrudState extends State<MastersListTemplate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widget.successType == 'add'
-                  ? Notify(
-                      content:
-                          '${camelize(widget.label)} Created Successfully!',
-                      type: NotifyType.success,
-                    )
-                  : Container(),
-              widget.successType == 'edit'
-                  ? Notify(
-                      content:
-                          '${camelize(widget.label)} Details Updated Successfully!',
-                      type: NotifyType.good,
-                    )
-                  : Container(),
-              widget.successType == 'delete'
-                  ? Notify(
-                      content: 'The ${widget.label} was deleted.',
-                      type: NotifyType.good,
-                    )
-                  : Container(),
-              widget.successType == 'add-fail'
-                  ? Notify(
-                      content:
-                          'There was an error while adding ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
-                      type: NotifyType.failture,
-                    )
-                  : Container(),
-              widget.successType == 'edit-fail'
-                  ? Notify(
-                      content:
-                          'There was an error while editing ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
-                      type: NotifyType.failture,
-                    )
-                  : Container(),
-              widget.successType == 'delete-fail'
-                  ? Notify(
-                      content:
-                          'There was an error while deleting ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
-                      type: NotifyType.failture,
-                    )
-                  : Container(),
+              ...notifications,
               _buildHeader(),
-              const CustomDivider(),
-              _buildTableHeader(),
+              widget.showTableHeaderButtons ? _buildTableHeader() : Container(),
               const CustomDivider(),
               _buildTableView()
             ],
@@ -154,15 +156,17 @@ class _CrudState extends State<MastersListTemplate> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Description(
-            description: widget.description,
-          ),
+          widget.description.isNotEmpty
+              ? Description(
+                  description: widget.description,
+                )
+              : Container(),
           Container(
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
                   width: 1,
-                  color: sidebarColor,
+                  color: darkTeal,
                 ),
               ),
             ),
@@ -182,41 +186,46 @@ class _CrudState extends State<MastersListTemplate> {
     );
   }
 
-  Padding _buildTableHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-      ),
-      child: Row(
-        children: [
-          // HeaderButton(
-          //   iconData: PhosphorIcons.funnel,
-          //   label: 'Filters',
-          //   color: const Color(0xff0c83ff),
-          //   onClick: () => _showFilterSlider(),
-          // ),
-          // const SizedBox(
-          //   width: 50,
-          // ),
-          // HeaderButton(
-          //   iconData: PhosphorIcons.slidersHorizontal,
-          //   label: 'View Settings',
-          //   color: const Color(0xfff58646),
-          //   onClick: () => _showViewSettingsSlider(),
-          // ),
-          // const SizedBox(
-          //   width: 50,
-          // ),
-          HeaderButton(
-            iconData: PhosphorIcons.chartBar,
-            label: 'Dashboard',
-            color: const Color(0xff0c83ff),
-            onClick: () => GoRouter.of(context).go(
-              '/dashboard',
-            ),
+  Column _buildTableHeader() {
+    return Column(
+      children: [
+        const CustomDivider(),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15,
           ),
-        ],
-      ),
+          child: Row(
+            children: [
+              HeaderButton(
+                iconData: PhosphorIcons.funnel,
+                label: 'Filters',
+                color: const Color(0xff0c83ff),
+                onClick: () => _showFilterSlider(),
+              ),
+              const SizedBox(
+                width: 50,
+              ),
+              HeaderButton(
+                iconData: PhosphorIcons.slidersHorizontal,
+                label: 'View Settings',
+                color: const Color(0xfff58646),
+                onClick: () => _showViewSettingsSlider(),
+              ),
+              const SizedBox(
+                width: 50,
+              ),
+              HeaderButton(
+                iconData: PhosphorIcons.chartBar,
+                label: 'Dashboard',
+                color: const Color(0xff0c83ff),
+                onClick: () => GoRouter.of(context).go(
+                  '${GoRouter.of(context).location}/dashboard',
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

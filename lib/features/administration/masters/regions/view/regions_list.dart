@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../masters_widgets/widgets.dart';
+
+import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
@@ -26,7 +27,7 @@ class _RegionsState extends State<RegionsListView> {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) => _displayNofitication(state),
       builder: (context, state) {
-        return MastersListTemplate(
+        return EntityListTemplate(
           description: 'The following regions are available to create sites in',
           entities: state.assignedRegions,
           title: 'RegionsListView',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../masters_widgets/widgets.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
@@ -98,7 +98,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
               [MapEntry(state.selectedRegion!.name!, state.selectedRegion)]);
         }
 
-        return AddEditMasterTemplate(
+        return AddEditEntityTemplate(
           label: 'region',
           id: widget.regionId,
           selectedEntity: state.selectedRegion,

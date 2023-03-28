@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/data/model/model.dart';
-import '../../masters_widgets/widgets.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 
 class AwarenessCategoriesListView extends StatefulWidget {
@@ -30,7 +30,7 @@ class _AwarenessCategoriesListViewState
     return BlocConsumer<AwarenessCategoriesBloc, AwarenessCategoriesState>(
       listener: (context, state) => _displayNofitication(state),
       builder: (context, state) {
-        return MastersListTemplate(
+        return EntityListTemplate(
           description:
               'List of defined awareness categories. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
           entities: state.awarenessCategories,

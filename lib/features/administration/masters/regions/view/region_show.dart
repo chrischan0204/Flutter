@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../masters_widgets/widgets.dart';
+import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
@@ -40,7 +40,7 @@ class _RegionShowViewState extends State<RegionShowView> {
         }
       },
       builder: (context, state) {
-        return MasterShowTemplate(
+        return EntityShowTemplate(
           title: 'Region',
           label: 'region',
           entity: state.selectedRegion,

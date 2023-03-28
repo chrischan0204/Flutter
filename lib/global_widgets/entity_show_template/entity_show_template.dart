@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/constants/color.dart';
-import 'package:safety_eta/features/administration/masters/masters_widgets/custom_data_cell.dart';
-import 'package:safety_eta/global_widgets/global_widget.dart';
 import 'package:strings/strings.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
 import '/data/model/entity.dart';
-import 'widgets/show_item.dart';
+import '/constants/color.dart';
+import '/global_widgets/global_widget.dart';
 
-class MasterShowTemplate extends StatefulWidget {
+class EntityShowTemplate extends StatefulWidget {
   final String title;
   final String label;
   final VoidCallback deleteEntity;
   final bool deletable;
   final Entity? entity;
 
-  const MasterShowTemplate({
+  const EntityShowTemplate({
     super.key,
     required this.title,
     required this.label,
@@ -27,10 +25,10 @@ class MasterShowTemplate extends StatefulWidget {
   });
 
   @override
-  State<MasterShowTemplate> createState() => _MasterShowTemplateState();
+  State<EntityShowTemplate> createState() => _EntityShowTemplateState();
 }
 
-class _MasterShowTemplateState extends State<MasterShowTemplate> {
+class _EntityShowTemplateState extends State<EntityShowTemplate> {
   @override
   Widget build(BuildContext context) {
     return Padding(
