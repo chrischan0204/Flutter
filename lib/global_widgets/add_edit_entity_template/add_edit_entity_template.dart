@@ -149,7 +149,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         ),
         widget.id != null
             ? SizedBox(
-                width: MediaQuery.of(context).size.width / 35,
+                width: MediaQuery.of(context).size.width / 40,
               )
             : Container(),
         widget.id != null
@@ -164,7 +164,10 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                   GoRouter.of(context).go(location);
                 },
               )
-            : Container()
+            : Container(),
+        const SizedBox(
+          width: 50,
+        )
       ],
     );
   }
