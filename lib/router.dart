@@ -38,6 +38,7 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
+
     GoRoute(
       path: '/observations',
       pageBuilder: (context, state) => NoTransitionPage<void>(
@@ -131,6 +132,16 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/regions/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: RegionsListView(),
+          selectedItemName: 'regions',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/regions/new',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
@@ -164,6 +175,16 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/priority-levels',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: PriorityLevelsListView(),
+          selectedItemName: 'priority-levels',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/priority-levels/index',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
@@ -217,6 +238,16 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/observation-types/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ObservationTypesListView(),
+          selectedItemName: 'observation-types',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/observation-types/new',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
@@ -252,6 +283,16 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/awareness-groups',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AwarenessGroupsListView(),
+          selectedItemName: 'awareness-groups',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-groups/index',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
@@ -297,6 +338,16 @@ final GoRouter router = GoRouter(
 
     GoRoute(
       path: '/awareness-categories',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AwarenessCategoriesListView(),
+          selectedItemName: 'awareness-categories',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/awareness-categories/index',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
