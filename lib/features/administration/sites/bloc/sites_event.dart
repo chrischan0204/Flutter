@@ -6,3 +6,5 @@ abstract class SitesEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class SitesRetrieved extends SitesEvent {}

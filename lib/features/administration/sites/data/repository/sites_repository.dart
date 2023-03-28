@@ -3,7 +3,7 @@ import '/data/model/model.dart';
 class SitesRepository {
   static String url = '';
 
-  Future<List> getSites() async {
+  Future<List<Site>> getSites() async {
     return const <Site>[
       Site(
         name: 'Raleigh',

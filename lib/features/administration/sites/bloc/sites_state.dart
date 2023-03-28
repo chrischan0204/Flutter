@@ -1,10 +1,28 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'sites_bloc.dart';
 
-abstract class SitesState extends Equatable {
-  const SitesState();
-  
-  @override
-  List<Object> get props => [];
-}
+class SitesState extends Equatable {
+  final List<Site> sites;
+  final EntityStatus sitesRetrievedStatus;
 
-class SitesInitial extends SitesState {}
+  const SitesState({
+    this.sites = const [],
+    this.sitesRetrievedStatus = EntityStatus.initial,
+  });
+
+  @override
+  List<Object> get props => [
+        sites,
+        sitesRetrievedStatus,
+      ];
+
+  SitesState copyWith({
+    List<Site>? sites,
+    EntityStatus? sitesRetrievedStatus,
+  }) {
+    return SitesState(
+      sites: sites ?? this.sites,
+      sitesRetrievedStatus: sitesRetrievedStatus ?? this.sitesRetrievedStatus,
+    );
+  }
+}
