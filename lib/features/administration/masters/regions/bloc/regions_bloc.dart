@@ -54,6 +54,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     emit(
       state.copyWith(
         assignedRegionsRetrievedStatus: EntityStatus.loading,
+        timeZones: [],
       ),
     );
     try {
@@ -63,6 +64,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         state.copyWith(
           unassignedRegions: unassignedRegions,
           assignedRegionsRetrievedStatus: EntityStatus.succuess,
+          selectedRegion: null,
         ),
       );
     } catch (e) {
@@ -81,6 +83,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     emit(
       state.copyWith(
         timeZonesRetrievedStatus: EntityStatus.loading,
+        timeZones: [],
       ),
     );
     try {
@@ -97,6 +100,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           timeZonesRetrievedStatus: EntityStatus.failure,
+          timeZones: [],
         ),
       );
     }
@@ -148,11 +152,11 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       regionAddedStatus: EntityStatus.loading,
     ));
     try {
-      EntityResponse response =
-          await regionsRepository.addRegion(event.region);
+      EntityResponse response = await regionsRepository.addRegion(event.region);
       if (response.isSuccess) {
         emit(state.copyWith(
           regionAddedStatus: EntityStatus.succuess,
+          selectedRegion: null,
         ));
       } else {
         emit(state.copyWith(
@@ -184,13 +188,11 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       } else {
         emit(state.copyWith(
           regionEditedStatus: EntityStatus.failure,
-          selectedRegion: null,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         regionEditedStatus: EntityStatus.failure,
-        selectedRegion: null,
       ));
     }
   }
@@ -213,13 +215,11 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       } else {
         emit(state.copyWith(
           regionDeletedStatus: EntityStatus.failure,
-          selectedRegion: null,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         regionDeletedStatus: EntityStatus.failure,
-        selectedRegion: null,
       ));
     }
   }

@@ -96,7 +96,6 @@ class Region extends Entity implements Equatable {
       'id': id,
       'name': name,
       'timeZones': timeZones.map((x) => x.toMap()).toList(),
-      'siteCount': siteCount,
       'active': active,
     };
     return map;

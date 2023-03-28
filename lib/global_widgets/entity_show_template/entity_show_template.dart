@@ -11,7 +11,7 @@ import '/global_widgets/global_widget.dart';
 class EntityShowTemplate extends StatefulWidget {
   final String title;
   final String label;
-  final List<String> tabItems;
+  final Map<String, Widget> tabItems;
   final VoidCallback deleteEntity;
   final bool deletable;
   final Entity? entity;
@@ -20,7 +20,7 @@ class EntityShowTemplate extends StatefulWidget {
     super.key,
     required this.title,
     required this.label,
-    this.tabItems = const [],
+    this.tabItems = const <String, Widget>{},
     required this.deleteEntity,
     this.deletable = true,
     this.entity,
@@ -31,6 +31,8 @@ class EntityShowTemplate extends StatefulWidget {
 }
 
 class _EntityShowTemplateState extends State<EntityShowTemplate> {
+  int selectedTabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,11 +48,23 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               padding: const EdgeInsets.only(
                 top: 50,
               ),
-              // child:  _buildEntityDetails(),
               child: widget.tabItems.isNotEmpty
-                  ? _buildTab()
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTab(),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        selectedTabIndex != 0
+                            ? widget.tabItems.entries
+                                .toList()[selectedTabIndex]
+                                .value
+                            : _buildEntityDetails(),
+                      ],
+                    )
                   : _buildEntityDetails(),
-            )
+            ),
           ],
         ),
       ),
@@ -60,7 +74,9 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
   CustomTab _buildTab() {
     return CustomTab(
       initialIndex: 0,
-      onSelect: (int index) => setState(() {}),
+      onSelect: (int index) => setState(() {
+        selectedTabIndex = index;
+      }),
       containerBorderRadius: 6,
       containerColor: Colors.transparent,
       slidersBorder: Border.all(color: grey),
@@ -70,10 +86,10 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
       containerHeight: 42,
       containerWidth: 450,
       borderColor: grey,
-      children: widget.tabItems
+      children: widget.tabItems.entries
           .map(
             (tabItem) => Text(
-              tabItem,
+              tabItem.key,
               style: TextStyle(
                 fontSize: 14,
                 fontFamily: 'OpenSans',
@@ -106,8 +122,11 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               );
             },
           )
-        : const Center(
-            child: CircularProgressIndicator(),
+        : const Padding(
+            padding: EdgeInsets.only(top: 200.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
   }
 

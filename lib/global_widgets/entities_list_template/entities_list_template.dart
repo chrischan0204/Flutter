@@ -32,7 +32,7 @@ class EntityListTemplate extends StatefulWidget {
     this.successType = '',
     this.description = '',
     this.emptyMessage = '',
-    this.showTableHeaderButtons = true,
+    this.showTableHeaderButtons = false,
   });
 
   @override
