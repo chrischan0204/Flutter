@@ -73,8 +73,8 @@ final GoRouter router = GoRouter(
       path: '/sites',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
-          body: Sites(),
+        child: const Layout(
+          body: SitesListView(),
           selectedItemName: 'sites',
         ),
       ),
@@ -342,7 +342,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: Sites(),
+          body: Container(),
           selectedItemName: 'my-page',
         ),
       ),
@@ -352,7 +352,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: Sites(),
+          body: Container(),
           selectedItemName: 'logout',
         ),
       ),
