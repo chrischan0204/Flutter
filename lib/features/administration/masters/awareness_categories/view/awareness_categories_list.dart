@@ -38,11 +38,14 @@ class _AwarenessCategoriesListViewState
           label: 'awareness category',
           note:
               'This awareness category is in use on 41 assessments. An awareness category can be removed from future use by deactivating. It will preserve all past data as is.',
+          emptyMessage:
+              'There are no awareness categories. Please click on New Awareness Category to add new awareness category.',
           onRowClick: (awarenessCategory) {
             awarenessCategoriesBloc.add(AwarenessCategorySelected(
               awarenessCategory: awarenessCategory as AwarenessCategory,
             ));
           },
+          entityRetrievedStatus: state.awarenessCategoriesRetrievedStatus,
           selectedEntity: state.selectedAwarenessCategory,
           successType: successType,
         );

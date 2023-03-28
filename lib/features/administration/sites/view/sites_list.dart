@@ -29,8 +29,8 @@ class _SitesListViewState extends State<SitesListView> {
           label: 'site',
           note: '',
           entities: state.sites,
+          showTableHeaderButtons: true,
           onRowClick: (selectedSite) {
-            print('selectedSite');
             sitesBloc.add(SiteSelected(selectedSite: selectedSite as Site));
           },
           selectedEntity: state.selectedSite,

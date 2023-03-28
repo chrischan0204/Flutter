@@ -22,6 +22,8 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   String? regionName;
   List<TimeZone> selectedTimeZones = [];
   bool regionDeactive = false;
+  bool isFirst = true;
+  Region? firstSelectedRegion;
 
   @override
   void initState() {
@@ -35,7 +37,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
       );
     } else {
       regionsBloc.add(
-        RegionSelected(
+        const RegionSelected(
           region: Region(
             name: '',
             active: true,
@@ -74,6 +76,10 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
 
           selectedTimeZones = state.selectedRegion!.associatedTimeZones;
           regionDeactive = !state.selectedRegion!.active;
+          if (isFirst) {
+            firstSelectedRegion = state.selectedRegion!;
+            isFirst = false;
+          }
         }
         if (state.regionAddedStatus == EntityStatus.succuess ||
             state.regionAddedStatus == EntityStatus.failure) {
@@ -92,10 +98,10 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                   MapEntry(unassignedRegion.name!, unassignedRegion),
             ),
           );
-        if (state.selectedRegion != null &&
-            state.selectedRegion!.name!.isNotEmpty) {
+        if (firstSelectedRegion != null &&
+            firstSelectedRegion!.name!.isNotEmpty) {
           regionItems.addEntries(
-              [MapEntry(state.selectedRegion!.name!, state.selectedRegion)]);
+              [MapEntry(firstSelectedRegion!.name!, firstSelectedRegion!)]);
         }
 
         return AddEditEntityTemplate(
@@ -103,7 +109,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
           id: widget.regionId,
           selectedEntity: state.selectedRegion,
           addEntity: () => _addRegion(state),
+          addedStatus: state.regionAddedStatus,
           editEntity: () => _editRegion(state),
+          editedStatus: state.regionEditedStatus,
           child: Column(
             children: [
               FormItem(

@@ -53,6 +53,7 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
               ),
             );
           },
+          deletedStatus: state.awarenessGroupDeletedStatus,
         );
       },
     );

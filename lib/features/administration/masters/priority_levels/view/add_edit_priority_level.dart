@@ -109,7 +109,9 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
           id: widget.priorityLevelId,
           selectedEntity: state.selectedPriorityLevel,
           addEntity: () => _addPriorityLevel(state),
+          addedStatus: state.priorityLevelAddedStatus,
           editEntity: () => _editPriorityLevel(state),
+          editedStatus: state.priorityLevelEditedStatus,
           child: Column(
             children: [
               FormItem(

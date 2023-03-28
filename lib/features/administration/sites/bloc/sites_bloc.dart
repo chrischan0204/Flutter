@@ -14,6 +14,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
   }) : super(const SitesState()) {
     on<SitesRetrieved>(_onSitesRetrieved);
     on<SiteSelected>(_onSiteSelected);
+    on<SiteSelectedById>(_onSiteSelectedById);
   }
 
   Future<void> _onSitesRetrieved(
@@ -32,5 +33,27 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
 
   void _onSiteSelected(SiteSelected event, Emitter<SitesState> emit) {
     emit(state.copyWith(selectedSite: event.selectedSite));
+  }
+
+  Future<void> _onSiteSelectedById(
+    SiteSelectedById event,
+    Emitter<SitesState> emit,
+  ) async {
+    emit(state.copyWith(
+      siteSelectedStatus: EntityStatus.loading,
+      selectedSite: null,
+    ));
+    try {
+      Site selectedSite = await sitesRepository.getSiteById(event.siteId);
+      emit(state.copyWith(
+        siteSelectedStatus: EntityStatus.loading,
+        selectedSite: selectedSite,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        siteSelectedStatus: EntityStatus.failure,
+        selectedSite: null,
+      ));
+    }
   }
 }

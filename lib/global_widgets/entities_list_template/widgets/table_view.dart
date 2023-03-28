@@ -6,10 +6,12 @@ import '/data/model/entity.dart';
 
 class DataTableView extends StatefulWidget {
   final ValueChanged<Entity> onRowClick;
+  final String emptyMessage;
   const DataTableView({
     super.key,
     this.entities = const [],
     required this.onRowClick,
+    this.emptyMessage = '',
   });
   final List<Entity> entities;
 
@@ -108,8 +110,15 @@ class _DataTableViewState extends State<DataTableView> {
             margin: const EdgeInsets.only(
               top: 200,
             ),
-            child: const Center(
-              child: CircularProgressIndicator(),
+            child: Center(
+              child: Text(
+                widget.emptyMessage,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
             ),
           );
   }

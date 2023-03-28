@@ -10,6 +10,7 @@ import 'widgets/detail_item.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
+  final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
   final String label;
@@ -18,17 +19,20 @@ class EntityListTemplate extends StatefulWidget {
   final Entity? selectedEntity;
   final String successType;
   final bool showTableHeaderButtons;
+  final String emptyMessage;
   const EntityListTemplate({
     super.key,
     required this.title,
     required this.label,
     required this.note,
     required this.onRowClick,
+    this.entityRetrievedStatus = EntityStatus.initial,
     this.entities = const [],
     this.selectedEntity,
     this.successType = '',
     this.description = '',
-    this.showTableHeaderButtons = true,
+    this.emptyMessage = '',
+    this.showTableHeaderButtons = false,
   });
 
   @override
@@ -179,16 +183,24 @@ class _CrudState extends State<EntityListTemplate> {
                     ),
                   ),
                 ),
-                child: DataTableView(
-                  entities: widget.entities,
-                  onRowClick: (entity) {
-                    _showDetailsSlider();
-                    setState(() {
-                      selectedId = entity.id!;
-                    });
-                    widget.onRowClick(entity);
-                  },
-                ),
+                child: widget.entityRetrievedStatus == EntityStatus.loading
+                    ? const Padding(
+                        padding: EdgeInsets.only(top: 200.0),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : DataTableView(
+                        entities: widget.entities,
+                        emptyMessage: widget.emptyMessage,
+                        onRowClick: (entity) {
+                          _showDetailsSlider();
+                          setState(() {
+                            selectedId = entity.id!;
+                          });
+                          widget.onRowClick(entity);
+                        },
+                      ),
               )
             ],
           ),

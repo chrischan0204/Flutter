@@ -58,7 +58,7 @@ class _LayoutState extends State<Layout> {
           controller: _scrollController,
           scrollOffset: 30,
           animationDuration: 600,
-          curve: Curves.easeInOutCirc,
+          curve: Curves.linear,
           child: SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
             controller: _scrollController,

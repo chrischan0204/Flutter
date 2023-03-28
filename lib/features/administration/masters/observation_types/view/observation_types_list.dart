@@ -34,6 +34,9 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
           label: 'observation type',
           note:
               'This observation type is in use on 173 observations. An observation type can be removed from future use by deactivating. It will preserve all past data as is.',
+          emptyMessage:
+              'There are no observation types. Please click on New Observation Type to assign new observation type.',
+          entityRetrievedStatus: state.observationTypesRetrievedStatus,
           onRowClick: (observationType) {
             observationTypesBloc.add(ObservationTypeSelected(
               observationType: observationType as ObservationType,

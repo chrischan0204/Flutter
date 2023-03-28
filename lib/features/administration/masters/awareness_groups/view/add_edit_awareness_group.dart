@@ -101,7 +101,9 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
           id: widget.awarenessGroupId,
           selectedEntity: state.selectedAwarenessGroup,
           addEntity: () => _addAwarenessGroup(state),
+          addedStatus: state.awarenessGroupAddedStatus,
           editEntity: () => _editAwarenessGroup(state),
+          editedStatus: state.awarenessGroupEditedStatus,
           child: Column(
             children: [
               FormItem(

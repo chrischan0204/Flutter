@@ -18,8 +18,7 @@ class _RegionsState extends State<RegionsListView> {
   @override
   void initState() {
     super.initState();
-    regionsBloc = context.read<RegionsBloc>()
-      ..add(AssignedRegionsRetrieved());
+    regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
   }
 
   @override
@@ -30,15 +29,18 @@ class _RegionsState extends State<RegionsListView> {
         return EntityListTemplate(
           description: 'The following regions are available to create sites in',
           entities: state.assignedRegions,
-          title: 'RegionsListView',
+          title: 'Regions List',
           label: 'region',
           note:
               'This region has 2 sites associated & cannot be deleted. Only time zone can be changed or this region can be deactivated. After deactivation it wont be available for any further site allocations. The current sites will be maintained as is.',
+          emptyMessage:
+              'There are no regions assigned. Please click on New Region to assign new region.',
           onRowClick: (region) {
             regionsBloc.add(RegionSelected(
               region: region as Region,
             ));
           },
+          entityRetrievedStatus: state.assignedRegionsRetrievedStatus,
           selectedEntity: state.selectedRegion,
           successType: successType,
         );

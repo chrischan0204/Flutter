@@ -9,7 +9,7 @@ class AwarenessCategory extends Entity implements Equatable {
   final String groupId;
   final String groupName;
   final bool active;
-  AwarenessCategory({
+  const AwarenessCategory({
     super.id,
     required this.groupId,
     required this.groupName,

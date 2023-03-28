@@ -52,6 +52,7 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
               ),
             );
           },
+          deletedStatus: state.awarenessCategoryDeletedStatus,
         );
       },
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/features/administration/sites/view/site_show.dart';
 
 import '/features/features.dart';
 import 'package:go_router/go_router.dart';
@@ -73,6 +74,18 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const Layout(
           body: SitesListView(),
+          selectedItemName: 'sites',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/sites/show/:siteId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: SiteShowView(
+            siteId: state.params['siteId']!,
+          ),
           selectedItemName: 'sites',
         ),
       ),

@@ -33,6 +33,9 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
           label: 'awareness group',
           note:
               'This awareness group has 7 awareness categories. Deletion is allowed for groups that have no awareness categories associated with them.',
+          emptyMessage:
+              'There are no awareness groups. Please click on New Awareness Group to add new awareness group.',
+          entityRetrievedStatus: state.awarenessGroupsRetrievedStatus,
           onRowClick: (awarenessGroup) {
             awarenessGroupsBloc.add(AwarenessGroupSelected(
               awarenessGroup: awarenessGroup as AwarenessGroup,
