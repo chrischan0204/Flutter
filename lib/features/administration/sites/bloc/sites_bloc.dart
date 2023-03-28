@@ -13,6 +13,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     required this.sitesRepository,
   }) : super(const SitesState()) {
     on<SitesRetrieved>(_onSitesRetrieved);
+    on<SiteSelected>(_onSiteSelected);
   }
 
   Future<void> _onSitesRetrieved(
@@ -27,5 +28,9 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     } catch (e) {
       emit(state.copyWith(sitesRetrievedStatus: EntityStatus.failure));
     }
+  }
+
+  void _onSiteSelected(SiteSelected event, Emitter<SitesState> emit) {
+    emit(state.copyWith(selectedSite: event.selectedSite));
   }
 }

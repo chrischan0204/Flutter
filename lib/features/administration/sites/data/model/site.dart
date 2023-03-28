@@ -48,10 +48,18 @@ class Site extends Entity {
 
   @override
   Map<String, dynamic> detailItemsToMap() {
-    return {};
+    return {
+      'Name': name,
+      'Site Code': siteCode,
+      'Reference Code': referenceCode,
+      'Region': region.name,
+      'Timezone': timeZone.name,
+    };
   }
 
   Site copyWith({
+    String? id,
+    String? name,
     String? siteCode,
     String? referenceCode,
     Region? region,
@@ -61,6 +69,8 @@ class Site extends Entity {
     int? auditTemplates,
   }) {
     return Site(
+      id: id ?? this.id,
+      name: name ?? this.name,
       siteCode: siteCode ?? this.siteCode,
       referenceCode: referenceCode ?? this.referenceCode,
       region: region ?? this.region,

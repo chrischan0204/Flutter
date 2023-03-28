@@ -8,3 +8,10 @@ abstract class SitesEvent extends Equatable {
 }
 
 class SitesRetrieved extends SitesEvent {}
+
+class SiteSelected extends SitesEvent {
+  final Site? selectedSite;
+  const SiteSelected({
+    required this.selectedSite,
+  });
+}

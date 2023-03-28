@@ -1,11 +1,13 @@
 import '/data/model/model.dart';
+import 'package:uuid/uuid.dart';
 
 class SitesRepository {
   static String url = '';
 
   Future<List<Site>> getSites() async {
-    return const <Site>[
+    return <Site>[
       Site(
+        id: Uuid().v1(),
         name: 'Raleigh',
         siteCode: 'RALCODE',
         referenceCode: '01-98334',
@@ -16,6 +18,7 @@ class SitesRepository {
         auditTemplates: 6,
       ),
       Site(
+        id: Uuid().v1(),
         name: 'Durham',
         siteCode: 'DURSITE',
         referenceCode: '01-43552',
@@ -26,6 +29,7 @@ class SitesRepository {
         auditTemplates: 6,
       ),
       Site(
+        id: Uuid().v1(),
         name: 'Bronx',
         siteCode: 'BRONXNYC',
         referenceCode: '12-07556',
@@ -36,6 +40,7 @@ class SitesRepository {
         auditTemplates: 6,
       ),
       Site(
+        id: Uuid().v1(),
         name: 'Chicago',
         siteCode: 'CHILAKE',
         referenceCode: '92-73664',

@@ -3,12 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
-import '../custom_data_cell.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/entity.dart';
 import '/constants/color.dart';
 import 'widgets/detail_item.dart';
-import 'widgets/widgets.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
@@ -110,7 +108,6 @@ class _CrudState extends State<EntityListTemplate> {
               ...notifications,
               _buildHeader(),
               widget.showTableHeaderButtons ? _buildTableHeader() : Container(),
-              const CustomDivider(),
               _buildTableView()
             ],
           ),
@@ -122,67 +119,81 @@ class _CrudState extends State<EntityListTemplate> {
     );
   }
 
-  Padding _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          PageTitle(
-            title: widget.title,
+  Column _buildHeader() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 10,
           ),
-          CustomButton(
-            backgroundColor: const Color(0xfff58646),
-            hoverBackgroundColor: const Color(0xffdd793f),
-            iconData: PhosphorIcons.plus,
-            text: 'New ${camelize(widget.label)}',
-            onClick: () {
-              GoRouter.of(context).go('${GoRouter.of(context).location}/new');
-            },
-          )
-        ],
-      ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              PageTitle(
+                title: widget.title,
+              ),
+              CustomButton(
+                backgroundColor: const Color(0xfff58646),
+                hoverBackgroundColor: const Color(0xffdd793f),
+                iconData: PhosphorIcons.plus,
+                text: 'New ${camelize(widget.label)}',
+                onClick: () {
+                  GoRouter.of(context)
+                      .go('${GoRouter.of(context).location}/new');
+                },
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  Container _buildTableView() {
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.topLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          widget.description.isNotEmpty
-              ? Description(
-                  description: widget.description,
-                )
-              : Container(),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  width: 1,
-                  color: darkTeal,
-                ),
+  Column _buildTableView() {
+    return Column(
+      children: [
+        widget.description.isNotEmpty
+            ? const CustomDivider()
+            : const SizedBox(
+                height: 12,
               ),
-            ),
-            child: DataTableView(
-              entities: widget.entities,
-              onRowClick: (entity) {
-                _showDetailsSlider();
-                setState(() {
-                  selectedId = entity.id!;
-                });
-                widget.onRowClick(entity);
-              },
-            ),
-          )
-        ],
-      ),
+        Container(
+          width: double.infinity,
+          alignment: Alignment.topLeft,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              widget.description.isNotEmpty
+                  ? Description(
+                      description: widget.description,
+                    )
+                  : Container(),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      width: 1,
+                      color: darkTeal,
+                    ),
+                  ),
+                ),
+                child: DataTableView(
+                  entities: widget.entities,
+                  onRowClick: (entity) {
+                    _showDetailsSlider();
+                    setState(() {
+                      selectedId = entity.id!;
+                    });
+                    widget.onRowClick(entity);
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
