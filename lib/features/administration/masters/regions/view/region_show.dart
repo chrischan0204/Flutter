@@ -54,6 +54,7 @@ class _RegionShowViewState extends State<RegionShowView> {
               ),
             );
           },
+          deletedStatus: state.regionDeletedStatus,
         );
       },
     );

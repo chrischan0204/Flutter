@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -13,6 +14,7 @@ class EntityShowTemplate extends StatefulWidget {
   final String label;
   final Map<String, Widget> tabItems;
   final VoidCallback deleteEntity;
+  final EntityStatus deletedStatus;
   final bool deletable;
   final Entity? entity;
 
@@ -22,6 +24,7 @@ class EntityShowTemplate extends StatefulWidget {
     required this.label,
     this.tabItems = const <String, Widget>{},
     required this.deleteEntity,
+    this.deletedStatus = EntityStatus.initial,
     this.deletable = true,
     this.entity,
   });
@@ -188,26 +191,37 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
         const SizedBox(
           width: 15,
         ),
-        CustomButton(
-          backgroundColor: const Color(0xffef4444),
-          hoverBackgroundColor: const Color(0xffd73d3d),
-          iconData: PhosphorIcons.gear,
-          text: 'Delete ${camelize(widget.label)}',
-          disabled: !widget.deletable,
-          onClick: () async {
-            if (await confirm(
-              context,
-              title: const Text('Confirm'),
-              content: Container(
-                child: const Text('Deleting project..... Are you sure?'),
+        widget.deletedStatus == EntityStatus.loading
+            ? CustomButton(
+                backgroundColor: const Color(0xffef4444),
+                hoverBackgroundColor: const Color(0xffd73d3d),
+                disabled: true,
+                body: LoadingAnimationWidget.dotsTriangle(
+                  color: Colors.white,
+                  size: 22,
+                ),
+                onClick: () {},
+              )
+            : CustomButton(
+                backgroundColor: const Color(0xffef4444),
+                hoverBackgroundColor: const Color(0xffd73d3d),
+                iconData: PhosphorIcons.gear,
+                text: 'Delete ${camelize(widget.label)}',
+                disabled: !widget.deletable,
+                onClick: () async {
+                  if (await confirm(
+                    context,
+                    title: const Text('Confirm'),
+                    content: Container(
+                      child: const Text('Deleting project..... Are you sure?'),
+                    ),
+                    textOK: const Text('Yes'),
+                    textCancel: const Text('No'),
+                  )) {
+                    widget.deleteEntity();
+                  }
+                },
               ),
-              textOK: const Text('Yes'),
-              textCancel: const Text('No'),
-            )) {
-              widget.deleteEntity();
-            }
-          },
-        ),
       ],
     );
   }

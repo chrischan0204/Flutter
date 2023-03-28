@@ -51,6 +51,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
               ),
             );
           },
+          deletedStatus: state.priorityLevelDeletedStatus,
         );
       },
     );

@@ -4,12 +4,13 @@ class CustomButton extends StatefulWidget {
   final Color backgroundColor;
   final Color hoverBackgroundColor;
   final TextStyle textStyle;
-  final IconData iconData;
+  final IconData? iconData;
   final Color iconColor;
   final double iconSize;
   final String text;
   final VoidCallback onClick;
   final bool disabled;
+  final Widget? body;
   const CustomButton({
     Key? key,
     required this.backgroundColor,
@@ -21,11 +22,12 @@ class CustomButton extends StatefulWidget {
       fontWeight: FontWeight.w400,
     ),
     this.iconColor = Colors.white,
-    required this.iconData,
-    required this.text,
+    this.iconData,
+    this.text = '',
     required this.onClick,
     this.iconSize = 20,
     this.disabled = false,
+    this.body,
   }) : super(key: key);
 
   @override
@@ -60,25 +62,26 @@ class _CustomButtonState extends State<CustomButton> {
             color:
                 isHover ? widget.hoverBackgroundColor : widget.backgroundColor,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                widget.iconData,
-                size: widget.iconSize,
-                color: widget.iconColor,
+          child: widget.body ??
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    widget.iconData,
+                    size: widget.iconSize,
+                    color: widget.iconColor,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.text,
+                    style: widget.textStyle,
+                    softWrap: true,
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                widget.text,
-                style: widget.textStyle,
-                softWrap: true,
-              ),
-            ],
-          ),
         ),
       ),
     );

@@ -52,6 +52,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
               ),
             );
           },
+          deletedStatus: state.observationTypeDeletedStatus,
         );
       },
     );
