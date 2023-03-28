@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/global_widgets/global_widget.dart';
+
+import '/data/bloc/bloc.dart';
 
 class SiteShowView extends StatefulWidget {
   final String siteId;
@@ -12,8 +15,28 @@ class SiteShowView extends StatefulWidget {
 }
 
 class _SiteShowViewState extends State<SiteShowView> {
+  late SitesBloc sitesBloc;
+
+  @override
+  void initState() {
+    sitesBloc = context.read<SitesBloc>()
+      ..add(
+        SiteSelectedById(siteId: widget.siteId),
+      );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return BlocBuilder<SitesBloc, SitesState>(
+      builder: (context, state) {
+        return EntityShowTemplate(
+          title: 'Site',
+          label: 'site',
+          deleteEntity: () {},
+          entity: state.selectedSite,
+        );
+      },
+    );
   }
 }

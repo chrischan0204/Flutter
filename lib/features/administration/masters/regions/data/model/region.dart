@@ -36,7 +36,7 @@ class Region extends Entity implements Equatable {
           .toList(),
       'Active': active,
     };
-    if (deactivationDate != null && deactivationUserName != null) {
+    if (!active && deactivationDate != null && deactivationUserName != null) {
       return map
         ..addEntries([
           MapEntry('Deactivated',
@@ -99,14 +99,7 @@ class Region extends Entity implements Equatable {
       'siteCount': siteCount,
       'active': active,
     };
-    if (active) {
-      return map;
-    }
-    return map
-      ..addEntries([
-        MapEntry('deactivationDate', DateTime.now().toIso8601String()),
-        const MapEntry('deactivationUserName', 'Super Admin'),
-      ]);
+    return map;
   }
 
   factory Region.fromMap(Map<String, dynamic> map) {

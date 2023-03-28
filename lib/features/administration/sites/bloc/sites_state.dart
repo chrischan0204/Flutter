@@ -5,11 +5,13 @@ class SitesState extends Equatable {
   final List<Site> sites;
   final Site? selectedSite;
   final EntityStatus sitesRetrievedStatus;
+  final EntityStatus siteSelectedStatus;
 
   const SitesState({
     this.sites = const [],
     this.selectedSite,
     this.sitesRetrievedStatus = EntityStatus.initial,
+    this.siteSelectedStatus = EntityStatus.initial,
   });
 
   @override
@@ -17,17 +19,20 @@ class SitesState extends Equatable {
         sites,
         selectedSite,
         sitesRetrievedStatus,
+        siteSelectedStatus,
       ];
 
   SitesState copyWith({
     List<Site>? sites,
     Site? selectedSite,
     EntityStatus? sitesRetrievedStatus,
+    EntityStatus? siteSelectedStatus,
   }) {
     return SitesState(
       sites: sites ?? this.sites,
       selectedSite: selectedSite ?? this.selectedSite,
       sitesRetrievedStatus: sitesRetrievedStatus ?? this.sitesRetrievedStatus,
+      siteSelectedStatus: siteSelectedStatus ?? this.siteSelectedStatus,
     );
   }
 }

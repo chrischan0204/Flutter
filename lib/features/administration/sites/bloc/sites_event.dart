@@ -15,3 +15,10 @@ class SiteSelected extends SitesEvent {
     required this.selectedSite,
   });
 }
+
+class SiteSelectedById extends SitesEvent {
+  final String siteId;
+  const SiteSelectedById({
+    required this.siteId,
+  });
+}
