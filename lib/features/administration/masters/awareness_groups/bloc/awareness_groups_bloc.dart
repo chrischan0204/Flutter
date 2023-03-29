@@ -173,6 +173,7 @@ class AwarenessGroupsBloc
         awarenessGroupCrudStatus: EntityStatus.initial,
         awarenessGroupSelectedStatus: EntityStatus.initial,
         awarenessGroupsRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

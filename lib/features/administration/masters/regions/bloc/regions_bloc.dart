@@ -157,15 +157,19 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         emit(state.copyWith(
           regionCrudStatus: EntityStatus.succuess,
           selectedRegion: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
           regionCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         regionCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding region. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -184,15 +188,19 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         emit(state.copyWith(
           regionCrudStatus: EntityStatus.succuess,
           selectedRegion: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
           regionCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         regionCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while editing region. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -211,15 +219,19 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         emit(state.copyWith(
           regionCrudStatus: EntityStatus.succuess,
           selectedRegion: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
           regionCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         regionCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while deleting region. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -233,6 +245,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         assignedRegionsRetrievedStatus: EntityStatus.initial,
         unassignedRegionsRetrievedStatus: EntityStatus.initial,
         timeZonesRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

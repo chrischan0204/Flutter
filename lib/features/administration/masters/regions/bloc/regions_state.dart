@@ -12,6 +12,8 @@ class RegionsState extends Equatable {
   final EntityStatus timeZonesRetrievedStatus;
   final EntityStatus regionSelectedStatus;
   final EntityStatus regionCrudStatus;
+
+  final String message;
   const RegionsState({
     this.assignedRegions = const [],
     this.unassignedRegions = const [],
@@ -22,6 +24,7 @@ class RegionsState extends Equatable {
     this.timeZonesRetrievedStatus = EntityStatus.initial,
     this.regionSelectedStatus = EntityStatus.initial,
     this.regionCrudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -35,6 +38,7 @@ class RegionsState extends Equatable {
         timeZonesRetrievedStatus,
         regionSelectedStatus,
         regionCrudStatus,
+        message,
       ];
 
   RegionsState copyWith({
@@ -47,6 +51,7 @@ class RegionsState extends Equatable {
     EntityStatus? timeZonesRetrievedStatus,
     EntityStatus? regionSelectedStatus,
     EntityStatus? regionCrudStatus,
+    String? message,
   }) {
     return RegionsState(
       assignedRegions: assignedRegions ?? this.assignedRegions,
@@ -61,6 +66,7 @@ class RegionsState extends Equatable {
           timeZonesRetrievedStatus ?? this.timeZonesRetrievedStatus,
       regionSelectedStatus: regionSelectedStatus ?? this.regionSelectedStatus,
       regionCrudStatus: regionCrudStatus ?? this.regionCrudStatus,
+      message: message ?? this.message,
     );
   }
 }

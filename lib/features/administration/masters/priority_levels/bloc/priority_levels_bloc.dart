@@ -172,6 +172,7 @@ class PriorityLevelsBloc
         priorityLevelCrudStatus: EntityStatus.initial,
         priorityLevelSelectedStatus: EntityStatus.initial,
         priorityLevelsRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

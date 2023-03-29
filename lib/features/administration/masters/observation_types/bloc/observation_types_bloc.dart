@@ -180,6 +180,7 @@ class ObservationTypesBloc
         observationTypeSelectedStatus: EntityStatus.initial,
         observationTypesRetrievedStatus: EntityStatus.initial,
         observationTypeCrudStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }
