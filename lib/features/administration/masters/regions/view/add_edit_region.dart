@@ -90,8 +90,6 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-
-          GoRouter.of(context).go('/regions');
         }
         if (state.regionCrudStatus == EntityStatus.failure) {
           regionsBloc.add(const RegionsStatusInited());

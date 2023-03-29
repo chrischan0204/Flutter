@@ -108,8 +108,6 @@ class _AddEditAwarenessCategoryViewState
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-
-          GoRouter.of(context).go('/awareness-categories');
         }
         if (state.awarenessCategoryCrudStatus == EntityStatus.failure) {
           awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());

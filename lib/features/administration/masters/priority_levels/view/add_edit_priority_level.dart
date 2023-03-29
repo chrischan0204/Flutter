@@ -102,8 +102,6 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-
-          GoRouter.of(context).go('/priority-levels');
         }
         if (state.priorityLevelCrudStatus == EntityStatus.failure) {
           priorityLevelsBloc.add(const PriorityLevelsStatusInited());

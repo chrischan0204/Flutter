@@ -107,8 +107,6 @@ class _AddEditObservationTypeViewState
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-
-          GoRouter.of(context).go('/observation-types');
         }
         if (state.observationTypeCrudStatus == EntityStatus.failure) {
           observationTypesBloc.add(const ObservationTypesStatusInited());

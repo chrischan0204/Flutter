@@ -93,8 +93,6 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-
-          GoRouter.of(context).go('/awareness-groups');
         }
         if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
           awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
