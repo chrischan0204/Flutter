@@ -8,13 +8,14 @@ import '/data/model/entity.dart';
 class AwarenessCategory extends Entity implements Equatable {
   final String groupId;
   final String groupName;
-  final bool active;
   const AwarenessCategory({
-    super.id,
     required this.groupId,
     required this.groupName,
+    super.id,
     super.name,
-    required this.active,
+    super.active,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
 
   @override
@@ -23,14 +24,13 @@ class AwarenessCategory extends Entity implements Equatable {
       'Awareness Category': name,
       'Group Name': groupName,
       'Active': active,
-    };
+    }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
   List<Object?> get props => [
-        name,
-        active,
         groupName,
+        ...super.props,
       ];
 
   @override
@@ -60,12 +60,15 @@ class AwarenessCategory extends Entity implements Equatable {
   }
 
   factory AwarenessCategory.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return AwarenessCategory(
-      id: map['id'] as String,
-      name: map['name'] as String,
+      id: entity.id,
+      name: entity.name,
       groupId: map['groupId'] as String,
       groupName: map['groupName'] as String,
-      active: map['active'] as bool,
+      active: entity.active,
+      deactivationDate: entity.deactivationDate,
+      deactivationUserName: entity.deactivationUserName,
     );
   }
 
@@ -80,6 +83,8 @@ class AwarenessCategory extends Entity implements Equatable {
     String? groupId,
     String? groupName,
     bool? active,
+    String? deactivationDate,
+    String? deactivationUserName,
   }) {
     return AwarenessCategory(
       id: id ?? this.id,
@@ -87,6 +92,8 @@ class AwarenessCategory extends Entity implements Equatable {
       groupId: groupId ?? this.groupId,
       groupName: groupName ?? this.groupName,
       active: active ?? this.active,
+      deactivationDate: deactivationDate ?? this.deactivationDate,
+      deactivationUserName: deactivationUserName ?? this.deactivationUserName,
     );
   }
 }

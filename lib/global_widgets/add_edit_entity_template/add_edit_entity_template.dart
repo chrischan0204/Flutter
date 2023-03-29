@@ -76,6 +76,28 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             ),
             const CustomDivider(),
             widget.child,
+            widget.id != null &&
+                    widget.selectedEntity != null &&
+                    !widget.selectedEntity!.active &&
+                    widget.selectedEntity!.deactivationDate != null &&
+                    widget.selectedEntity!.deactivationUserName != null
+                ? StatefulBuilder(builder: (context, setState) {
+                    Map<String, dynamic> map =
+                        widget.selectedEntity!.detailItemsToMap();
+                    return FormItem(
+                      label: 'Deactivated',
+                      content: Text(
+                        map['Deactivated'] ?? '',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'OpenSans',
+                        ),
+                      ),
+                      message: '',
+                    );
+                  })
+                : Container(),
             _buildAddEditButton()
           ],
         ),

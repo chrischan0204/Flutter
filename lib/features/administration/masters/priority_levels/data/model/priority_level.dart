@@ -19,13 +19,14 @@ extension ColorExtension on String {
 class PriorityLevel extends Entity implements Equatable {
   final Color colorCode;
   final String priorityType;
-  final bool active;
-  PriorityLevel({
+  const PriorityLevel({
     super.id,
     super.name,
     required this.colorCode,
     required this.priorityType,
-    required this.active,
+    super.active,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {
@@ -33,17 +34,14 @@ class PriorityLevel extends Entity implements Equatable {
       'Priority Level': name,
       'Color associated': colorCode,
       'Priority Type': priorityType,
-      'Active': active,
-    };
+    }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
   List<Object?> get props => [
-        id,
-        name,
         colorCode,
         priorityType,
-        active,
+        ...super.props,
       ];
 
   @override
@@ -65,6 +63,8 @@ class PriorityLevel extends Entity implements Equatable {
     Color? colorCode,
     String? priorityType,
     bool? active,
+    String? deactivationDate,
+    String? deactivationUserName,
   }) {
     return PriorityLevel(
       id: id ?? this.id,
@@ -72,6 +72,8 @@ class PriorityLevel extends Entity implements Equatable {
       colorCode: colorCode ?? this.colorCode,
       priorityType: priorityType ?? this.priorityType,
       active: active ?? this.active,
+      deactivationDate: deactivationDate ?? this.deactivationDate,
+      deactivationUserName: deactivationUserName ?? this.deactivationUserName,
     );
   }
 
@@ -92,12 +94,15 @@ class PriorityLevel extends Entity implements Equatable {
   }
 
   factory PriorityLevel.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return PriorityLevel(
-      id: map['id'] as String,
-      name: map['name'] as String,
+      id: entity.id,
+      name: entity.name,
       colorCode: ('${map['colorCode']}').toColor(),
       priorityType: map['priorityType'] as String,
-      active: map['active'] as bool,
+      active: entity.active,
+      deactivationDate: entity.deactivationDate,
+      deactivationUserName: entity.deactivationUserName,
     );
   }
 

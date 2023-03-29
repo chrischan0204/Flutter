@@ -1,24 +1,21 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 import '/data/model/model.dart';
 
 class Region extends Entity implements Equatable {
   final List<TimeZone> timeZones;
-  final bool active;
-  final String? deactivationDate;
-  final String? deactivationUserName;
+
   final int? siteCount;
   const Region({
-    super.id,
     this.timeZones = const [],
-    this.active = true,
-    super.name,
     this.siteCount,
-    this.deactivationDate,
-    this.deactivationUserName,
+    super.active,
+    super.id,
+    super.name,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
 
   bool get deletable => siteCount == 0 || siteCount == null;
@@ -28,23 +25,13 @@ class Region extends Entity implements Equatable {
 
   @override
   Map<String, dynamic> detailItemsToMap() {
-    Map<String, dynamic> map = <String, dynamic>{
+    return {
       'Region Name': name,
       'Time Zones Associated': timeZones
           .where((timeZone) => timeZone.assigned)
           .map((timeZone) => timeZone.name)
           .toList(),
-      'Active': active,
-    };
-    if (!active && deactivationDate != null && deactivationUserName != null) {
-      return map
-        ..addEntries([
-          MapEntry('Deactivated',
-              'By: $deactivationUserName on ${DateFormat('d MMMM y', 'en_US').format(DateTime.parse(deactivationDate!))}')
-        ]);
-    }
-
-    return map;
+    }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
@@ -58,13 +45,9 @@ class Region extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
         timeZones,
-        active,
         siteCount,
-        deactivationDate,
-        deactivationUserName,
+        ...super.props,
       ];
 
   @override
@@ -102,9 +85,10 @@ class Region extends Entity implements Equatable {
   }
 
   factory Region.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return Region(
-      id: map['id'] as String,
-      name: map['name'] != null ? map['name'] as String : null,
+      id: entity.id,
+      name: entity.name,
       timeZones: List.from(map['timeZones'])
           .map(
             (e) => TimeZone.fromMap(
@@ -112,14 +96,10 @@ class Region extends Entity implements Equatable {
             ),
           )
           .toList(),
-      active: map['active'] as bool,
-      deactivationDate: map['deactivationDate'] != null
-          ? map['deactivationDate'] as String
-          : null,
-      deactivationUserName: map['deactivationUserName'] != null
-          ? map['deactivationUserName'] as String
-          : null,
       siteCount: map['siteCount'] != null ? map['siteCount'] as int : null,
+      active: entity.active,
+      deactivationDate: entity.deactivationDate,
+      deactivationUserName: entity.deactivationUserName,
     );
   }
 

@@ -187,11 +187,6 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                       message: '',
                     )
                   : Container(),
-              // FormItem(
-              //   label: 'Deactivated:',
-              //   content: Text('By: Andrew Sully on 12th Jan 2023'),
-              //   message: '',
-              // ),
             ],
           ),
         );
