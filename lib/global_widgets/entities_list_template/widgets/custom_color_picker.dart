@@ -1,8 +1,6 @@
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter/material.dart';
 import 'package:star_menu/star_menu.dart';
-import '/constants/color.dart';
 
 class CustomColorPicker extends StatefulWidget {
   final Color color;
@@ -18,7 +16,6 @@ class CustomColorPicker extends StatefulWidget {
 }
 
 class _CustomColorPickerState extends State<CustomColorPicker> {
-  Color pickerColor = const Color(0xff443a49);
   void changeColor(Color color) {
     widget.onChanged(color);
   }
@@ -34,16 +31,18 @@ class _CustomColorPickerState extends State<CustomColorPicker> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width / 3,
             child: FittedBox(
-              child: ColorPicker(
-                pickerAreaBorderRadius:
-                    const BorderRadius.all(Radius.circular(5)),
-                displayThumbColor: true,
-                hexInputBar: true,
-                labelTypes: const [ColorLabelType.rgb],
-                pickerColor: widget.color,
-                onColorChanged: changeColor,
-                pickerAreaHeightPercent: 0.8,
-              ),
+              child: StatefulBuilder(builder: (context, setState) {
+                return ColorPicker(
+                  pickerAreaBorderRadius:
+                      const BorderRadius.all(Radius.circular(5)),
+                  displayThumbColor: true,
+                  hexInputBar: true,
+                  labelTypes: const [ColorLabelType.rgb],
+                  pickerColor: widget.color,
+                  onColorChanged: changeColor,
+                  pickerAreaHeightPercent: 0.8,
+                );
+              }),
             ),
           ),
         ),

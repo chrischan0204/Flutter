@@ -156,7 +156,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
               FormItem(
                 label: 'Color (*)',
                 content: CustomColorPicker(
-                  color: colorCode ?? const Color(0xffffffff),
+                  color: colorCode ?? const Color(0xff1233ff),
                   onChanged: (colorCode) => priorityLevelsBloc.add(
                     PriorityLevelSelected(
                       priorityLevel: state.selectedPriorityLevel!.copyWith(
