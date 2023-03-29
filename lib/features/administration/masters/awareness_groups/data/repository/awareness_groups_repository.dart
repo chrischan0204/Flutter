@@ -39,7 +39,7 @@ class AwarenessGroupsRepository {
       body: awarenessGroup.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -60,7 +60,7 @@ class AwarenessGroupsRepository {
       body: awarenessGroup.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -70,7 +70,7 @@ class AwarenessGroupsRepository {
     Response response =
         await delete(Uri.https(ApiUri.host, '$url/$awarenessGroupId'));
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
@@ -34,9 +35,23 @@ class _RegionShowViewState extends State<RegionShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
-        if (state.regionDeletedStatus == EntityStatus.succuess ||
-            state.regionDeletedStatus == EntityStatus.failure) {
+        if (state.regionCrudStatus == EntityStatus.succuess) {
+          regionsBloc.add(const RegionsStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+
           GoRouter.of(context).go('/regions');
+        }
+        if (state.regionCrudStatus == EntityStatus.failure) {
+          regionsBloc.add(const RegionsStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -54,7 +69,7 @@ class _RegionShowViewState extends State<RegionShowView> {
               ),
             );
           },
-          deletedStatus: state.regionDeletedStatus,
+          crudStatus: state.regionCrudStatus,
         );
       },
     );

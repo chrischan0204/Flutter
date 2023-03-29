@@ -149,23 +149,27 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     Emitter<RegionsState> emit,
   ) async {
     emit(state.copyWith(
-      regionAddedStatus: EntityStatus.loading,
+      regionCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await regionsRepository.addRegion(event.region);
       if (response.isSuccess) {
         emit(state.copyWith(
-          regionAddedStatus: EntityStatus.succuess,
+          regionCrudStatus: EntityStatus.succuess,
           selectedRegion: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          regionAddedStatus: EntityStatus.failure,
+          regionCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        regionAddedStatus: EntityStatus.failure,
+        regionCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding region. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -175,24 +179,28 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     Emitter<RegionsState> emit,
   ) async {
     emit(state.copyWith(
-      regionEditedStatus: EntityStatus.loading,
+      regionCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response =
           await regionsRepository.editRegion(event.region);
       if (response.isSuccess) {
         emit(state.copyWith(
-          regionEditedStatus: EntityStatus.succuess,
+          regionCrudStatus: EntityStatus.succuess,
           selectedRegion: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          regionEditedStatus: EntityStatus.failure,
+          regionCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        regionEditedStatus: EntityStatus.failure,
+        regionCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while editing region. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -202,24 +210,28 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     Emitter<RegionsState> emit,
   ) async {
     emit(state.copyWith(
-      regionDeletedStatus: EntityStatus.loading,
+      regionCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response =
           await regionsRepository.deleteRegion(event.regionId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          regionDeletedStatus: EntityStatus.succuess,
+          regionCrudStatus: EntityStatus.succuess,
           selectedRegion: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          regionDeletedStatus: EntityStatus.failure,
+          regionCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        regionDeletedStatus: EntityStatus.failure,
+        regionCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while deleting region. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -228,13 +240,12 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       RegionsStatusInited event, Emitter<RegionsState> emit) {
     emit(
       state.copyWith(
-        regionAddedStatus: EntityStatus.initial,
-        regionEditedStatus: EntityStatus.initial,
+        regionCrudStatus: EntityStatus.initial,
         regionSelectedStatus: EntityStatus.initial,
-        regionDeletedStatus: EntityStatus.initial,
         assignedRegionsRetrievedStatus: EntityStatus.initial,
         unassignedRegionsRetrievedStatus: EntityStatus.initial,
         timeZonesRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

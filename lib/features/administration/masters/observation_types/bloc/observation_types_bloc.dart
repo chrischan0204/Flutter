@@ -85,23 +85,28 @@ class ObservationTypesBloc
     Emitter<ObservationTypesState> emit,
   ) async {
     emit(state.copyWith(
-      observationTypeAddedStatus: EntityStatus.loading,
+      observationTypeCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await observationTypesRepository
           .addObservationType(event.observationType);
       if (response.isSuccess) {
         emit(state.copyWith(
-          observationTypeAddedStatus: EntityStatus.succuess,
+          observationTypeCrudStatus: EntityStatus.succuess,
+          message: response.message,
+          selectedObservationType: null,
         ));
       } else {
         emit(state.copyWith(
-          observationTypeAddedStatus: EntityStatus.failure,
+          observationTypeCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        observationTypeAddedStatus: EntityStatus.failure,
+        observationTypeCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding observation type. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -111,26 +116,28 @@ class ObservationTypesBloc
     Emitter<ObservationTypesState> emit,
   ) async {
     emit(state.copyWith(
-      observationTypeEditedStatus: EntityStatus.loading,
+      observationTypeCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await observationTypesRepository
           .editObservationType(event.observationType);
       if (response.isSuccess) {
         emit(state.copyWith(
-          observationTypeEditedStatus: EntityStatus.succuess,
+          observationTypeCrudStatus: EntityStatus.succuess,
           selectedObservationType: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          observationTypeEditedStatus: EntityStatus.failure,
-          selectedObservationType: null,
+          observationTypeCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        observationTypeEditedStatus: EntityStatus.failure,
-        selectedObservationType: null,
+        observationTypeCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while editing observation type. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -140,25 +147,28 @@ class ObservationTypesBloc
     Emitter<ObservationTypesState> emit,
   ) async {
     emit(state.copyWith(
-      observationTypeDeletedStatus: EntityStatus.loading,
+      observationTypeCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await observationTypesRepository
           .deleteObservationType(event.observationTypeId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          observationTypeDeletedStatus: EntityStatus.succuess,
+          observationTypeCrudStatus: EntityStatus.succuess,
           selectedObservationType: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-            observationTypeDeletedStatus: EntityStatus.failure,
-            selectedObservationType: null));
+          observationTypeCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
-        observationTypeDeletedStatus: EntityStatus.failure,
-        selectedObservationType: null,
+        observationTypeCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while deleting observation type. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -167,11 +177,10 @@ class ObservationTypesBloc
       ObservationTypesStatusInited event, Emitter<ObservationTypesState> emit) {
     emit(
       state.copyWith(
-        observationTypeAddedStatus: EntityStatus.initial,
-        observationTypeEditedStatus: EntityStatus.initial,
         observationTypeSelectedStatus: EntityStatus.initial,
-        observationTypeDeletedStatus: EntityStatus.initial,
         observationTypesRetrievedStatus: EntityStatus.initial,
+        observationTypeCrudStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

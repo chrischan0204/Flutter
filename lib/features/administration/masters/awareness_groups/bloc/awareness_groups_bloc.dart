@@ -78,23 +78,28 @@ class AwarenessGroupsBloc
     Emitter<AwarenessGroupsState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessGroupAddedStatus: EntityStatus.loading,
+      awarenessGroupCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await awarenessGroupsRepository
           .addAwarenessGroup(event.awarenessGroup);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessGroupAddedStatus: EntityStatus.succuess,
+          awarenessGroupCrudStatus: EntityStatus.succuess,
+          message: response.message,
+          selectedAwarenessGroup: null,
         ));
       } else {
         emit(state.copyWith(
-          awarenessGroupAddedStatus: EntityStatus.failure,
+          awarenessGroupCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        awarenessGroupAddedStatus: EntityStatus.failure,
+        awarenessGroupCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding awareness group. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -104,26 +109,28 @@ class AwarenessGroupsBloc
     Emitter<AwarenessGroupsState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessGroupEditedStatus: EntityStatus.loading,
+      awarenessGroupCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await awarenessGroupsRepository
           .editAwarenessGroup(event.awarenessGroup);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessGroupEditedStatus: EntityStatus.succuess,
+          awarenessGroupCrudStatus: EntityStatus.succuess,
           selectedAwarenessGroup: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          awarenessGroupEditedStatus: EntityStatus.failure,
-          selectedAwarenessGroup: null,
+          awarenessGroupCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        awarenessGroupEditedStatus: EntityStatus.failure,
-        selectedAwarenessGroup: null,
+        awarenessGroupCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while editing awareness group. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -133,25 +140,28 @@ class AwarenessGroupsBloc
     Emitter<AwarenessGroupsState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessGroupDeletedStatus: EntityStatus.loading,
+      awarenessGroupCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await awarenessGroupsRepository
           .deleteAwarenessGroup(event.awarenessGroupId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessGroupDeletedStatus: EntityStatus.succuess,
+          awarenessGroupCrudStatus: EntityStatus.succuess,
           selectedAwarenessGroup: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-            awarenessGroupDeletedStatus: EntityStatus.failure,
-            selectedAwarenessGroup: null));
+          awarenessGroupCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
-        awarenessGroupDeletedStatus: EntityStatus.failure,
-        selectedAwarenessGroup: null,
+        awarenessGroupCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while deleting awareness group. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -160,11 +170,10 @@ class AwarenessGroupsBloc
       AwarenessGroupsStatusInited event, Emitter<AwarenessGroupsState> emit) {
     emit(
       state.copyWith(
-        awarenessGroupAddedStatus: EntityStatus.initial,
-        awarenessGroupEditedStatus: EntityStatus.initial,
+        awarenessGroupCrudStatus: EntityStatus.initial,
         awarenessGroupSelectedStatus: EntityStatus.initial,
-        awarenessGroupDeletedStatus: EntityStatus.initial,
         awarenessGroupsRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

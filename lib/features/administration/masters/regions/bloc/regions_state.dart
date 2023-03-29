@@ -11,9 +11,9 @@ class RegionsState extends Equatable {
   final EntityStatus unassignedRegionsRetrievedStatus;
   final EntityStatus timeZonesRetrievedStatus;
   final EntityStatus regionSelectedStatus;
-  final EntityStatus regionAddedStatus;
-  final EntityStatus regionEditedStatus;
-  final EntityStatus regionDeletedStatus;
+  final EntityStatus regionCrudStatus;
+
+  final String message;
   const RegionsState({
     this.assignedRegions = const [],
     this.unassignedRegions = const [],
@@ -23,9 +23,8 @@ class RegionsState extends Equatable {
     this.unassignedRegionsRetrievedStatus = EntityStatus.initial,
     this.timeZonesRetrievedStatus = EntityStatus.initial,
     this.regionSelectedStatus = EntityStatus.initial,
-    this.regionAddedStatus = EntityStatus.initial,
-    this.regionEditedStatus = EntityStatus.initial,
-    this.regionDeletedStatus = EntityStatus.initial,
+    this.regionCrudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -38,9 +37,8 @@ class RegionsState extends Equatable {
         unassignedRegionsRetrievedStatus,
         timeZonesRetrievedStatus,
         regionSelectedStatus,
-        regionAddedStatus,
-        regionEditedStatus,
-        regionDeletedStatus,
+        regionCrudStatus,
+        message,
       ];
 
   RegionsState copyWith({
@@ -52,9 +50,8 @@ class RegionsState extends Equatable {
     EntityStatus? unassignedRegionsRetrievedStatus,
     EntityStatus? timeZonesRetrievedStatus,
     EntityStatus? regionSelectedStatus,
-    EntityStatus? regionAddedStatus,
-    EntityStatus? regionEditedStatus,
-    EntityStatus? regionDeletedStatus,
+    EntityStatus? regionCrudStatus,
+    String? message,
   }) {
     return RegionsState(
       assignedRegions: assignedRegions ?? this.assignedRegions,
@@ -68,9 +65,8 @@ class RegionsState extends Equatable {
       timeZonesRetrievedStatus:
           timeZonesRetrievedStatus ?? this.timeZonesRetrievedStatus,
       regionSelectedStatus: regionSelectedStatus ?? this.regionSelectedStatus,
-      regionAddedStatus: regionAddedStatus ?? this.regionAddedStatus,
-      regionEditedStatus: regionEditedStatus ?? this.regionEditedStatus,
-      regionDeletedStatus: regionDeletedStatus ?? this.regionDeletedStatus,
+      regionCrudStatus: regionCrudStatus ?? this.regionCrudStatus,
+      message: message ?? this.message,
     );
   }
 }

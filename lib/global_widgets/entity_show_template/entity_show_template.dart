@@ -14,7 +14,7 @@ class EntityShowTemplate extends StatefulWidget {
   final String label;
   final Map<String, Widget> tabItems;
   final VoidCallback deleteEntity;
-  final EntityStatus deletedStatus;
+  final EntityStatus crudStatus;
   final bool deletable;
   final Entity? entity;
 
@@ -24,7 +24,7 @@ class EntityShowTemplate extends StatefulWidget {
     required this.label,
     this.tabItems = const <String, Widget>{},
     required this.deleteEntity,
-    this.deletedStatus = EntityStatus.initial,
+    this.crudStatus = EntityStatus.initial,
     this.deletable = true,
     this.entity,
   });
@@ -191,7 +191,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
         const SizedBox(
           width: 15,
         ),
-        widget.deletedStatus == EntityStatus.loading
+        widget.crudStatus == EntityStatus.loading
             ? CustomButton(
                 backgroundColor: const Color(0xffef4444),
                 hoverBackgroundColor: const Color(0xffd73d3d),

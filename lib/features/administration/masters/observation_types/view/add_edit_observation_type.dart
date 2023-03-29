@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
@@ -42,7 +43,7 @@ class _AddEditObservationTypeViewState
       );
     } else {
       observationTypesBloc.add(
-        ObservationTypeSelected(
+        const ObservationTypeSelected(
           observationType: ObservationType(
             name: '',
             security: '',
@@ -98,14 +99,22 @@ class _AddEditObservationTypeViewState
             isFirstInit = false;
           }
         }
-        if (state.observationTypeAddedStatus == EntityStatus.succuess ||
-            state.observationTypeAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/observation-types');
-        }
 
-        if (state.observationTypeEditedStatus == EntityStatus.succuess ||
-            state.observationTypeEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/observation-types');
+        if (state.observationTypeCrudStatus == EntityStatus.succuess) {
+          observationTypesBloc.add(const ObservationTypesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+        }
+        if (state.observationTypeCrudStatus == EntityStatus.failure) {
+          observationTypesBloc.add(const ObservationTypesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -114,8 +123,7 @@ class _AddEditObservationTypeViewState
           id: widget.observationTypeId,
           selectedEntity: state.selectedObservationType,
           addEntity: () => _addObservationType(state),
-          addedStatus: state.observationTypeAddedStatus,
-          editedStatus: state.observationTypeEditedStatus,
+          crudStatus: state.observationTypeCrudStatus,
           editEntity: () => _editObservationType(state),
           child: Column(
             children: [
@@ -204,11 +212,6 @@ class _AddEditObservationTypeViewState
                       message: '',
                     )
                   : Container(),
-              // FormItem(
-              //   label: 'Deactivated:',
-              //   content: Text('By: Andrew Sully on 12th Jan 2023'),
-              //   message: '',
-              // ),
             ],
           ),
         );

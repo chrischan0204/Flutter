@@ -44,7 +44,7 @@ class ObservationTypesRepository {
       body: observationType.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -59,7 +59,7 @@ class ObservationTypesRepository {
         },
         body: observationType.toJson());
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -70,7 +70,7 @@ class ObservationTypesRepository {
       Uri.https(ApiUri.host, '$url/$observationTypeId'),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();

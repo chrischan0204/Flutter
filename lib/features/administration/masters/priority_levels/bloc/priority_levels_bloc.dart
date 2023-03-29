@@ -77,23 +77,28 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelAddedStatus: EntityStatus.loading,
+      priorityLevelCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response =
           await priorityLevelsRepository.addPriorityLevel(event.priorityLevel);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelAddedStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.succuess,
+          selectedPriorityLevel: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          priorityLevelAddedStatus: EntityStatus.failure,
+          priorityLevelCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        priorityLevelAddedStatus: EntityStatus.failure,
+        priorityLevelCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding priority level. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -103,27 +108,28 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelEditedStatus: EntityStatus.loading,
+      priorityLevelCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response =
           await priorityLevelsRepository.editPriorityLevel(event.priorityLevel);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelEditedStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.succuess,
           selectedPriorityLevel: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          priorityLevelEditedStatus: EntityStatus.failure,
-          selectedPriorityLevel: null,
+          priorityLevelCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
-      print(e.toString());
       emit(state.copyWith(
-        priorityLevelEditedStatus: EntityStatus.failure,
-        selectedPriorityLevel: null,
+        priorityLevelCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while editing priority level. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -133,25 +139,28 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelDeletedStatus: EntityStatus.loading,
+      priorityLevelCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await priorityLevelsRepository
           .deletePriorityLevel(event.priorityLevelId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelDeletedStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.succuess,
           selectedPriorityLevel: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-            priorityLevelDeletedStatus: EntityStatus.failure,
-            selectedPriorityLevel: null));
+          priorityLevelCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
-        priorityLevelDeletedStatus: EntityStatus.failure,
-        selectedPriorityLevel: null,
+        priorityLevelCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while deleting priority level. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -160,11 +169,10 @@ class PriorityLevelsBloc
       PriorityLevelsStatusInited event, Emitter<PriorityLevelsState> emit) {
     emit(
       state.copyWith(
-        priorityLevelAddedStatus: EntityStatus.initial,
-        priorityLevelEditedStatus: EntityStatus.initial,
+        priorityLevelCrudStatus: EntityStatus.initial,
         priorityLevelSelectedStatus: EntityStatus.initial,
-        priorityLevelDeletedStatus: EntityStatus.initial,
         priorityLevelsRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

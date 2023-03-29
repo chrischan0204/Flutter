@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
@@ -40,11 +41,11 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
       );
     } else {
       priorityLevelsBloc.add(
-        PriorityLevelSelected(
+        const PriorityLevelSelected(
           priorityLevel: PriorityLevel(
             name: '',
             priorityType: '',
-            colorCode: const Color(0xffffffff),
+            colorCode: Color(0xffffffff),
             active: true,
           ),
         ),
@@ -93,14 +94,22 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
             isFirstInit = false;
           }
         }
-        if (state.priorityLevelAddedStatus == EntityStatus.succuess ||
-            state.priorityLevelAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/priority-levels');
-        }
 
-        if (state.priorityLevelEditedStatus == EntityStatus.succuess ||
-            state.priorityLevelEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/priority-levels');
+        if (state.priorityLevelCrudStatus == EntityStatus.succuess) {
+          priorityLevelsBloc.add(const PriorityLevelsStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+        }
+        if (state.priorityLevelCrudStatus == EntityStatus.failure) {
+          priorityLevelsBloc.add(const PriorityLevelsStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -109,9 +118,8 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
           id: widget.priorityLevelId,
           selectedEntity: state.selectedPriorityLevel,
           addEntity: () => _addPriorityLevel(state),
-          addedStatus: state.priorityLevelAddedStatus,
           editEntity: () => _editPriorityLevel(state),
-          editedStatus: state.priorityLevelEditedStatus,
+          crudStatus: state.priorityLevelCrudStatus,
           child: Column(
             children: [
               FormItem(

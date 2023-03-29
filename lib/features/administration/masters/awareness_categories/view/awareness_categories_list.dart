@@ -15,7 +15,6 @@ class AwarenessCategoriesListView extends StatefulWidget {
 class _AwarenessCategoriesListViewState
     extends State<AwarenessCategoriesListView> {
   late AwarenessCategoriesBloc awarenessCategoriesBloc;
-  late String successType = 'none';
   @override
   void initState() {
     super.initState();
@@ -27,8 +26,7 @@ class _AwarenessCategoriesListViewState
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AwarenessCategoriesBloc, AwarenessCategoriesState>(
-      listener: (context, state) => _displayNofitication(state),
+    return BlocBuilder<AwarenessCategoriesBloc, AwarenessCategoriesState>(
       builder: (context, state) {
         return EntityListTemplate(
           description:
@@ -36,8 +34,6 @@ class _AwarenessCategoriesListViewState
           entities: state.awarenessCategories,
           title: 'Awareness Categories List',
           label: 'awareness category',
-          note:
-              'This awareness category is in use on 41 assessments. An awareness category can be removed from future use by deactivating. It will preserve all past data as is.',
           emptyMessage:
               'There are no awareness categories. Please click on New Awareness Category to add new awareness category.',
           onRowClick: (awarenessCategory) {
@@ -47,52 +43,8 @@ class _AwarenessCategoriesListViewState
           },
           entityRetrievedStatus: state.awarenessCategoriesRetrievedStatus,
           selectedEntity: state.selectedAwarenessCategory,
-          successType: successType,
         );
       },
     );
-  }
-
-  void _displayNofitication(AwarenessCategoriesState state) {
-    bool success = false, failed = false;
-    if (state.awarenessCategoryAddedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'add';
-      });
-      success = true;
-    }
-    if (state.awarenessCategoryEditedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'edit';
-      });
-      success = true;
-    }
-    if (state.awarenessCategoryDeletedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'delete';
-      });
-      success = true;
-    }
-    if (state.awarenessCategoryAddedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'add-fail';
-      });
-      failed = true;
-    }
-    if (state.awarenessCategoryEditedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'edit-fail';
-      });
-      failed = true;
-    }
-    if (state.awarenessCategoryDeletedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'delete-fail';
-      });
-      failed = true;
-    }
-    if (success || failed) {
-      awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
-    }
   }
 }

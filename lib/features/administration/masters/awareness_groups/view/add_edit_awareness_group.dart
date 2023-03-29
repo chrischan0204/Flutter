@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
@@ -85,14 +86,21 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
             isFirstInit = false;
           }
         }
-        if (state.awarenessGroupAddedStatus == EntityStatus.succuess ||
-            state.awarenessGroupAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/awareness-groups');
+        if (state.awarenessGroupCrudStatus == EntityStatus.succuess) {
+          awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
         }
-
-        if (state.awarenessGroupEditedStatus == EntityStatus.succuess ||
-            state.awarenessGroupEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/awareness-groups');
+        if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
+          awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -101,9 +109,8 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
           id: widget.awarenessGroupId,
           selectedEntity: state.selectedAwarenessGroup,
           addEntity: () => _addAwarenessGroup(state),
-          addedStatus: state.awarenessGroupAddedStatus,
           editEntity: () => _editAwarenessGroup(state),
-          editedStatus: state.awarenessGroupEditedStatus,
+          crudStatus: state.awarenessGroupCrudStatus,
           child: Column(
             children: [
               FormItem(

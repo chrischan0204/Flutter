@@ -7,17 +7,16 @@ class ObservationTypesState extends Equatable {
 
   final EntityStatus observationTypesRetrievedStatus;
   final EntityStatus observationTypeSelectedStatus;
-  final EntityStatus observationTypeAddedStatus;
-  final EntityStatus observationTypeEditedStatus;
-  final EntityStatus observationTypeDeletedStatus;
+  final EntityStatus observationTypeCrudStatus;
+
+  final String message;
   const ObservationTypesState({
     this.observationTypes = const [],
     this.selectedObservationType,
     this.observationTypesRetrievedStatus = EntityStatus.initial,
     this.observationTypeSelectedStatus = EntityStatus.initial,
-    this.observationTypeAddedStatus = EntityStatus.initial,
-    this.observationTypeEditedStatus = EntityStatus.initial,
-    this.observationTypeDeletedStatus = EntityStatus.initial,
+    this.observationTypeCrudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -26,9 +25,8 @@ class ObservationTypesState extends Equatable {
         observationTypesRetrievedStatus,
         selectedObservationType,
         observationTypeSelectedStatus,
-        observationTypeAddedStatus,
-        observationTypeEditedStatus,
-        observationTypeDeletedStatus,
+        observationTypeCrudStatus,
+        message,
       ];
 
   ObservationTypesState copyWith({
@@ -36,9 +34,8 @@ class ObservationTypesState extends Equatable {
     ObservationType? selectedObservationType,
     EntityStatus? observationTypesRetrievedStatus,
     EntityStatus? observationTypeSelectedStatus,
-    EntityStatus? observationTypeAddedStatus,
-    EntityStatus? observationTypeEditedStatus,
-    EntityStatus? observationTypeDeletedStatus,
+    EntityStatus? observationTypeCrudStatus,
+    String? message,
   }) {
     return ObservationTypesState(
       observationTypes: observationTypes ?? this.observationTypes,
@@ -48,12 +45,9 @@ class ObservationTypesState extends Equatable {
           this.observationTypesRetrievedStatus,
       observationTypeSelectedStatus:
           observationTypeSelectedStatus ?? this.observationTypeSelectedStatus,
-      observationTypeAddedStatus:
-          observationTypeAddedStatus ?? this.observationTypeAddedStatus,
-      observationTypeEditedStatus:
-          observationTypeEditedStatus ?? this.observationTypeEditedStatus,
-      observationTypeDeletedStatus:
-          observationTypeDeletedStatus ?? this.observationTypeDeletedStatus,
+      observationTypeCrudStatus:
+          observationTypeCrudStatus ?? this.observationTypeCrudStatus,
+      message: message ?? this.message,
     );
   }
 }

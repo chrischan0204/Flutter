@@ -12,7 +12,6 @@ class PriorityLevelsListView extends StatefulWidget {
 
 class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
   late PriorityLevelsBloc priorityLevelsBloc;
-  late String successType = 'none';
   @override
   void initState() {
     super.initState();
@@ -22,8 +21,7 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PriorityLevelsBloc, PriorityLevelsState>(
-      listener: (context, state) => _displayNofitication(state),
+    return BlocBuilder<PriorityLevelsBloc, PriorityLevelsState>(
       builder: (context, state) {
         return EntityListTemplate(
           description:
@@ -31,60 +29,14 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
           entities: state.priorityLevels,
           title: 'Priority Levels List',
           label: 'priority level',
-          note:
-              'This Priority Level is in use on 21 observations. An priority level can be removed from future use by deactivating. It will preserve all past data as is.',
           onRowClick: (priorityLevel) {
             priorityLevelsBloc.add(PriorityLevelSelected(
               priorityLevel: priorityLevel as PriorityLevel,
             ));
           },
           selectedEntity: state.selectedPriorityLevel,
-          successType: successType,
         );
       },
     );
-  }
-
-  void _displayNofitication(PriorityLevelsState state) {
-    bool success = false, failed = false;
-    if (state.priorityLevelAddedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'add';
-      });
-      success = true;
-    }
-    if (state.priorityLevelEditedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'edit';
-      });
-      success = true;
-    }
-    if (state.priorityLevelDeletedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'delete';
-      });
-      success = true;
-    }
-    if (state.priorityLevelAddedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'add-fail';
-      });
-      failed = true;
-    }
-    if (state.priorityLevelEditedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'edit-fail';
-      });
-      failed = true;
-    }
-    if (state.priorityLevelDeletedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'delete-fail';
-      });
-      failed = true;
-    }
-    if (success || failed) {
-      priorityLevelsBloc.add(const PriorityLevelsStatusInited());
-    }
   }
 }

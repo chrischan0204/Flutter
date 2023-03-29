@@ -43,7 +43,7 @@ class AwarenessCategoriesRepository {
       body: awarenessCategory.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -59,7 +59,7 @@ class AwarenessCategoriesRepository {
         },
         body: awarenessCategory.toJson());
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -71,7 +71,7 @@ class AwarenessCategoriesRepository {
       Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();

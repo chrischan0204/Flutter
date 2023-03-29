@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 import '/data/model/model.dart';
@@ -44,7 +45,7 @@ class _AddEditAwarenessCategoryViewState
       );
     } else {
       awarenessCategoriesBloc.add(
-        AwarenessCategorySelected(
+        const AwarenessCategorySelected(
           awarenessCategory: AwarenessCategory(
             name: '',
             groupId: '',
@@ -100,14 +101,21 @@ class _AddEditAwarenessCategoryViewState
             isFirstInit = false;
           }
         }
-        if (state.awarenessCategoryAddedStatus == EntityStatus.succuess ||
-            state.awarenessCategoryAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/awareness-categories');
+        if (state.awarenessCategoryCrudStatus == EntityStatus.succuess) {
+          awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
         }
-
-        if (state.awarenessCategoryEditedStatus == EntityStatus.succuess ||
-            state.awarenessCategoryEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/awareness-categories');
+        if (state.awarenessCategoryCrudStatus == EntityStatus.failure) {
+          awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -116,8 +124,7 @@ class _AddEditAwarenessCategoryViewState
           id: widget.awarenessCategoryId,
           selectedEntity: state.selectedAwarenessCategory,
           addEntity: () => _addAwarenessCategory(state),
-          addedStatus: state.awarenessCategoryAddedStatus,
-          editedStatus: state.awarenessCategoryEditedStatus,
+          crudStatus: state.awarenessCategoryCrudStatus,
           editEntity: () => _editAwarenessCategory(state),
           child: Column(
             children: [
