@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
@@ -42,7 +43,7 @@ class _AddEditObservationTypeViewState
       );
     } else {
       observationTypesBloc.add(
-        ObservationTypeSelected(
+        const ObservationTypeSelected(
           observationType: ObservationType(
             name: '',
             security: '',
@@ -97,6 +98,25 @@ class _AddEditObservationTypeViewState
                     : state.selectedObservationType!.name ?? '';
             isFirstInit = false;
           }
+        }
+
+        if (state.observationTypeCrudStatus == EntityStatus.succuess) {
+          observationTypesBloc.add(const ObservationTypesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+
+          GoRouter.of(context).go('/observation-types');
+        }
+        if (state.observationTypeCrudStatus == EntityStatus.failure) {
+          observationTypesBloc.add(const ObservationTypesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -194,11 +214,6 @@ class _AddEditObservationTypeViewState
                       message: '',
                     )
                   : Container(),
-              // FormItem(
-              //   label: 'Deactivated:',
-              //   content: Text('By: Andrew Sully on 12th Jan 2023'),
-              //   message: '',
-              // ),
             ],
           ),
         );

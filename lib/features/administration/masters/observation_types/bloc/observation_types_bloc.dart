@@ -93,15 +93,20 @@ class ObservationTypesBloc
       if (response.isSuccess) {
         emit(state.copyWith(
           observationTypeCrudStatus: EntityStatus.succuess,
+          message: response.message,
+          selectedObservationType: null,
         ));
       } else {
         emit(state.copyWith(
           observationTypeCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         observationTypeCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding observation type. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -120,17 +125,19 @@ class ObservationTypesBloc
         emit(state.copyWith(
           observationTypeCrudStatus: EntityStatus.succuess,
           selectedObservationType: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
           observationTypeCrudStatus: EntityStatus.failure,
-          selectedObservationType: null,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         observationTypeCrudStatus: EntityStatus.failure,
-        selectedObservationType: null,
+        message:
+            'There was an error while editing observation type. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -149,16 +156,19 @@ class ObservationTypesBloc
         emit(state.copyWith(
           observationTypeCrudStatus: EntityStatus.succuess,
           selectedObservationType: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-            observationTypeCrudStatus: EntityStatus.failure,
-            selectedObservationType: null));
+          observationTypeCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
         observationTypeCrudStatus: EntityStatus.failure,
-        selectedObservationType: null,
+        message:
+            'There was an error while deleting observation type. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -169,6 +179,7 @@ class ObservationTypesBloc
       state.copyWith(
         observationTypeSelectedStatus: EntityStatus.initial,
         observationTypesRetrievedStatus: EntityStatus.initial,
+        observationTypeCrudStatus: EntityStatus.initial,
       ),
     );
   }

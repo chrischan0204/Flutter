@@ -8,12 +8,15 @@ class ObservationTypesState extends Equatable {
   final EntityStatus observationTypesRetrievedStatus;
   final EntityStatus observationTypeSelectedStatus;
   final EntityStatus observationTypeCrudStatus;
+
+  final String message;
   const ObservationTypesState({
     this.observationTypes = const [],
     this.selectedObservationType,
     this.observationTypesRetrievedStatus = EntityStatus.initial,
     this.observationTypeSelectedStatus = EntityStatus.initial,
     this.observationTypeCrudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -23,6 +26,7 @@ class ObservationTypesState extends Equatable {
         selectedObservationType,
         observationTypeSelectedStatus,
         observationTypeCrudStatus,
+        message,
       ];
 
   ObservationTypesState copyWith({
@@ -31,6 +35,7 @@ class ObservationTypesState extends Equatable {
     EntityStatus? observationTypesRetrievedStatus,
     EntityStatus? observationTypeSelectedStatus,
     EntityStatus? observationTypeCrudStatus,
+    String? message,
   }) {
     return ObservationTypesState(
       observationTypes: observationTypes ?? this.observationTypes,
@@ -42,6 +47,7 @@ class ObservationTypesState extends Equatable {
           observationTypeSelectedStatus ?? this.observationTypeSelectedStatus,
       observationTypeCrudStatus:
           observationTypeCrudStatus ?? this.observationTypeCrudStatus,
+      message: message ?? this.message,
     );
   }
 }
