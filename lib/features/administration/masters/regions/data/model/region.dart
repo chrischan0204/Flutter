@@ -9,11 +9,11 @@ class Region extends Entity implements Equatable {
 
   final int? siteCount;
   const Region({
-    super.id,
     this.timeZones = const [],
-    super.active,
-    super.name,
     this.siteCount,
+    super.active,
+    super.id,
+    super.name,
     super.deactivationDate,
     super.deactivationUserName,
   });
@@ -25,15 +25,13 @@ class Region extends Entity implements Equatable {
 
   @override
   Map<String, dynamic> detailItemsToMap() {
-    Map<String, dynamic> map = <String, dynamic>{
+    return {
       'Region Name': name,
       'Time Zones Associated': timeZones
           .where((timeZone) => timeZone.assigned)
           .map((timeZone) => timeZone.name)
           .toList(),
-    };
-
-    return map..addEntries(super.detailItemsToMap().entries);
+    }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
@@ -47,13 +45,9 @@ class Region extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
         timeZones,
-        active,
         siteCount,
-        deactivationDate,
-        deactivationUserName,
+        ...super.props,
       ];
 
   @override

@@ -39,11 +39,9 @@ class PriorityLevel extends Entity implements Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
         colorCode,
         priorityType,
-        active,
+        ...super.props,
       ];
 
   @override
@@ -65,6 +63,8 @@ class PriorityLevel extends Entity implements Equatable {
     Color? colorCode,
     String? priorityType,
     bool? active,
+    String? deactivationDate,
+    String? deactivationUserName,
   }) {
     return PriorityLevel(
       id: id ?? this.id,
@@ -72,6 +72,8 @@ class PriorityLevel extends Entity implements Equatable {
       colorCode: colorCode ?? this.colorCode,
       priorityType: priorityType ?? this.priorityType,
       active: active ?? this.active,
+      deactivationDate: deactivationDate ?? this.deactivationDate,
+      deactivationUserName: deactivationUserName ?? this.deactivationUserName,
     );
   }
 

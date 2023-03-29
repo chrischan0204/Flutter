@@ -179,28 +179,6 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                       message: '',
                     )
                   : Container(),
-              widget.regionId != null &&
-                      state.selectedRegion != null &&
-                      state.selectedRegion!.active == false &&
-                      state.selectedRegion!.deactivationDate != null &&
-                      state.selectedRegion!.deactivationUserName != null
-                  ? Builder(builder: (context) {
-                      Map<String, dynamic> map =
-                          state.selectedRegion!.detailItemsToMap();
-                      return FormItem(
-                        label: 'Deactivated',
-                        content: Text(
-                          map['Deactivated'] ?? '',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'OpenSans',
-                          ),
-                        ),
-                        message: '',
-                      );
-                    })
-                  : Container(),
             ],
           ),
         );

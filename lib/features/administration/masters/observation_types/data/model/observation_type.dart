@@ -8,13 +8,14 @@ import '/data/model/entity.dart';
 class ObservationType extends Entity implements Equatable {
   final String security;
   final String visibility;
-  final bool active;
-  ObservationType({
+  const ObservationType({
     super.id,
     super.name,
     required this.security,
     required this.visibility,
-    required this.active,
+    super.active,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
 
   @override
@@ -23,17 +24,14 @@ class ObservationType extends Entity implements Equatable {
       'Observation Type': name,
       'Severity': security,
       'Visibility': visibility,
-      'Active': active,
-    };
+    }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
   List<Object?> get props => [
-        id,
-        name,
         security,
         visibility,
-        active,
+        ...super.props,
       ];
 
   @override
@@ -71,12 +69,15 @@ class ObservationType extends Entity implements Equatable {
 
   @override
   factory ObservationType.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return ObservationType(
-      id: map['id'] as String,
-      name: map['name'] as String,
+      id: entity.id,
+      name: entity.name,
       security: map['security'] as String,
       visibility: map['visibility'] as String,
-      active: map['active'] as bool,
+      active: entity.active,
+      deactivationDate: entity.deactivationDate,
+      deactivationUserName: entity.deactivationUserName,
     );
   }
 
@@ -91,6 +92,8 @@ class ObservationType extends Entity implements Equatable {
     String? security,
     String? visibility,
     bool? active,
+    String? deactivationDate,
+    String? deactivationUserName,
   }) {
     return ObservationType(
       id: id ?? this.id,
@@ -98,6 +101,8 @@ class ObservationType extends Entity implements Equatable {
       security: security ?? this.security,
       visibility: visibility ?? this.visibility,
       active: active ?? this.active,
+      deactivationDate: deactivationDate ?? this.deactivationDate,
+      deactivationUserName: deactivationUserName ?? this.deactivationUserName,
     );
   }
 }
