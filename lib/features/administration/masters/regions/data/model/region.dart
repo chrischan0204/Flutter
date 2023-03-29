@@ -31,7 +31,6 @@ class Region extends Entity implements Equatable {
           .where((timeZone) => timeZone.assigned)
           .map((timeZone) => timeZone.name)
           .toList(),
-
     };
 
     return map..addEntries(super.detailItemsToMap().entries);
@@ -92,9 +91,10 @@ class Region extends Entity implements Equatable {
   }
 
   factory Region.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return Region(
-      id: map['id'] as String,
-      name: map['name'] != null ? map['name'] as String : null,
+      id: entity.id,
+      name: entity.name,
       timeZones: List.from(map['timeZones'])
           .map(
             (e) => TimeZone.fromMap(
@@ -102,14 +102,10 @@ class Region extends Entity implements Equatable {
             ),
           )
           .toList(),
-      active: map['active'] as bool,
-      deactivationDate: map['deactivationDate'] != null
-          ? map['deactivationDate'] as String
-          : null,
-      deactivationUserName: map['deactivationUserName'] != null
-          ? map['deactivationUserName'] as String
-          : null,
       siteCount: map['siteCount'] != null ? map['siteCount'] as int : null,
+      active: entity.active,
+      deactivationDate: entity.deactivationDate,
+      deactivationUserName: entity.deactivationUserName,
     );
   }
 

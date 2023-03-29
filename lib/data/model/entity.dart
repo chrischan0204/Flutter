@@ -22,14 +22,21 @@ class Entity extends Equatable {
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
       id: map['id'] as String,
-      name: map['name'] as String,
-      deactivationDate: map['deactivationDate'] as String,
-      deactivationUserName: map['deactivationUserName'] as String,
+      name: map['name'] != null ? map['name'] as String : null,
       active: map['active'] as bool,
+      deactivationDate: map['deactivationDate'] != null
+          ? map['deactivationDate'] as String
+          : null,
+      deactivationUserName: map['deactivationUserName'] != null
+          ? map['deactivationUserName'] as String
+          : null,
     );
   }
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{};
+    return <String, dynamic>{
+      'name': name,
+      'active': active,
+    };
   }
 
   Map<String, dynamic> tableItemsToMap() {

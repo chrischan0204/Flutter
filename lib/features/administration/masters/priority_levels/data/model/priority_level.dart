@@ -92,14 +92,15 @@ class PriorityLevel extends Entity implements Equatable {
   }
 
   factory PriorityLevel.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return PriorityLevel(
-      id: map['id'] as String,
-      name: map['name'] as String,
+      id: entity.id,
+      name: entity.name,
       colorCode: ('${map['colorCode']}').toColor(),
       priorityType: map['priorityType'] as String,
-      active: map['active'] as bool,
-      deactivationDate: map['deactivationDate'] as String,
-      deactivationUserName: map['deactivationUserName'] as String,
+      active: entity.active,
+      deactivationDate: entity.deactivationDate,
+      deactivationUserName: entity.deactivationUserName,
     );
   }
 
