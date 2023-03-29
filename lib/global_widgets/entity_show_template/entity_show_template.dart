@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '/data/model/entity.dart';
 import '/constants/color.dart';
@@ -207,18 +207,62 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
                 iconData: PhosphorIcons.gear,
                 text: 'Delete ${camelize(widget.label)}',
                 disabled: !widget.deletable,
-                onClick: () async {
-                  if (await confirm(
-                    context,
-                    title: const Text('Confirm'),
-                    content: Container(
-                      child: const Text('Deleting project..... Are you sure?'),
-                    ),
-                    textOK: const Text('Yes'),
-                    textCancel: const Text('No'),
-                  )) {
-                    widget.deleteEntity();
-                  }
+                onClick: () {
+                  AwesomeDialog(
+                    context: context,
+                    width: MediaQuery.of(context).size.width / 4,
+                    dialogType: DialogType.question,
+                    headerAnimationLoop: false,
+                    animType: AnimType.bottomSlide,
+                    title: 'Confirm',
+                    dialogBorderRadius: BorderRadius.circular(5),
+                    desc: 'Do you really want to delete this ${widget.label}?',
+                    buttonsTextStyle: const TextStyle(color: Colors.white),
+                    showCloseIcon: true,
+                    btnCancelOnPress: () {},
+                    btnOkOnPress: () {
+                      widget.deleteEntity();
+                    },
+                    // btnOkIcon: PhosphorIcons.thumbsUp,
+                    btnOkText: 'Delete',
+                    // btnCancelIcon: PhosphorIcons.thumbsDown,
+                    buttonsBorderRadius: BorderRadius.circular(3),
+                    padding: EdgeInsets.all(10),
+                    // btnCancel: Container(
+                    //   alignment: Alignment.center,
+                    //   decoration: BoxDecoration(
+                    //     color: Color(0xffef4444),
+                    //     borderRadius: BorderRadius.circular(3),
+                    //   ),
+                    //   padding: EdgeInsets.symmetric(
+                    //     vertical: 10,
+                    //     horizontal: 15,
+                    //   ),
+                    //   child: const Text(
+                    //     'Cancel',
+                    //     style: TextStyle(
+                    //       color: Colors.white,
+                    //     ),
+                    //   ),
+                    // ),
+                    // btnOk: Container(
+                    //   alignment: Alignment.center,
+                    //   decoration: BoxDecoration(
+                    //     color: Color(0xff0c83ff),
+                    //     borderRadius: BorderRadius.circular(3),
+                    //   ),
+                    //   padding: EdgeInsets.symmetric(
+                    //     vertical: 10,
+                    //     horizontal: 15,
+                    //   ),
+                    //   child: const Text(
+                    //     'Delete',
+                    //     style: TextStyle(
+                    //       color: Colors.white,
+                    //     ),
+                    //   ),
+                    // ),
+                  ).show();
                 },
               ),
       ],
