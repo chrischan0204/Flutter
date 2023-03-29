@@ -51,7 +51,9 @@ class Entity extends Equatable {
             'By: $deactivationUserName on ${DateFormat('d MMMM y', 'en_US').format(DateTime.parse(deactivationDate!))}',
       };
     }
-    return {};
+    return {
+      'Active': active,
+    };
   }
 
   @override
