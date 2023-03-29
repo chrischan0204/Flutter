@@ -113,23 +113,27 @@ class AwarenessCategoriesBloc
     Emitter<AwarenessCategoriesState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessCategoryAddedStatus: EntityStatus.loading,
+      awarenessCategoryCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await awarenessCategoriesRepository
           .addAwarenessCategory(event.awarenessCategory);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessCategoryAddedStatus: EntityStatus.succuess,
+          awarenessCategoryCrudStatus: EntityStatus.succuess,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          awarenessCategoryAddedStatus: EntityStatus.failure,
+          awarenessCategoryCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        awarenessCategoryAddedStatus: EntityStatus.failure,
+        awarenessCategoryCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while adding. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -139,26 +143,28 @@ class AwarenessCategoriesBloc
     Emitter<AwarenessCategoriesState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessCategoryEditedStatus: EntityStatus.loading,
+      awarenessCategoryCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await awarenessCategoriesRepository
           .editAwarenessCategory(event.awarenessCategory);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessCategoryEditedStatus: EntityStatus.succuess,
+          awarenessCategoryCrudStatus: EntityStatus.succuess,
           selectedAwarenessCategory: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          awarenessCategoryEditedStatus: EntityStatus.failure,
-          selectedAwarenessCategory: null,
+          awarenessCategoryCrudStatus: EntityStatus.failure,
+          message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        awarenessCategoryEditedStatus: EntityStatus.failure,
-        selectedAwarenessCategory: null,
+        awarenessCategoryCrudStatus: EntityStatus.failure,
+        message:
+            'There was an error while editing awareness category. Our team has been notified. Please wait a few minutes and try again.',
       ));
     }
   }
@@ -168,26 +174,28 @@ class AwarenessCategoriesBloc
     Emitter<AwarenessCategoriesState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessCategoryDeletedStatus: EntityStatus.loading,
+      awarenessCategoryCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await awarenessCategoriesRepository
           .deleteAwarenessCategory(event.awarenessCategoryId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessCategoryDeletedStatus: EntityStatus.succuess,
+          awarenessCategoryCrudStatus: EntityStatus.succuess,
           selectedAwarenessCategory: null,
+          message: response.message,
         ));
       } else {
         emit(state.copyWith(
-            awarenessCategoryDeletedStatus: EntityStatus.failure,
-            selectedAwarenessCategory: null));
+          awarenessCategoryCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
-        awarenessCategoryDeletedStatus: EntityStatus.failure,
-        selectedAwarenessCategory: null,
-      ));
+          awarenessCategoryCrudStatus: EntityStatus.failure,
+          message:
+              'There was an error while deleting. Our team has been notified. Please wait a few minutes and try again.'));
     }
   }
 
@@ -195,11 +203,9 @@ class AwarenessCategoriesBloc
       Emitter<AwarenessCategoriesState> emit) {
     emit(
       state.copyWith(
-        awarenessCategoryAddedStatus: EntityStatus.initial,
-        awarenessCategoryEditedStatus: EntityStatus.initial,
         awarenessCategorySelectedStatus: EntityStatus.initial,
-        awarenessCategoryDeletedStatus: EntityStatus.initial,
         awarenessCategoriesRetrievedStatus: EntityStatus.initial,
+        awarenessCategoryCrudStatus: EntityStatus.initial,
       ),
     );
   }

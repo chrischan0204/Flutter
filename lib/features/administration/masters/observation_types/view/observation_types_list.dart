@@ -23,8 +23,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
-      listener: (context, state) => _displayNofitication(state),
+    return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
       builder: (context, state) {
         return EntityListTemplate(
           description:
@@ -32,8 +31,6 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
           entities: state.observationTypes,
           title: 'Observation Types List',
           label: 'observation type',
-          note:
-              'This observation type is in use on 173 observations. An observation type can be removed from future use by deactivating. It will preserve all past data as is.',
           emptyMessage:
               'There are no observation types. Please click on New Observation Type to assign new observation type.',
           entityRetrievedStatus: state.observationTypesRetrievedStatus,
@@ -43,52 +40,8 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
             ));
           },
           selectedEntity: state.selectedObservationType,
-          successType: successType,
         );
       },
     );
-  }
-
-  void _displayNofitication(ObservationTypesState state) {
-    bool success = false, failed = false;
-    if (state.observationTypeAddedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'add';
-      });
-      success = true;
-    }
-    if (state.observationTypeEditedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'edit';
-      });
-      success = true;
-    }
-    if (state.observationTypeDeletedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'delete';
-      });
-      success = true;
-    }
-    if (state.observationTypeAddedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'add-fail';
-      });
-      failed = true;
-    }
-    if (state.observationTypeEditedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'edit-fail';
-      });
-      failed = true;
-    }
-    if (state.observationTypeDeletedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'delete-fail';
-      });
-      failed = true;
-    }
-    if (success || failed) {
-      observationTypesBloc.add(const ObservationTypesStatusInited());
-    }
   }
 }

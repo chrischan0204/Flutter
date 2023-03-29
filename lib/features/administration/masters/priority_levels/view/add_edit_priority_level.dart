@@ -93,15 +93,6 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
             isFirstInit = false;
           }
         }
-        if (state.priorityLevelAddedStatus == EntityStatus.succuess ||
-            state.priorityLevelAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/priority-levels');
-        }
-
-        if (state.priorityLevelEditedStatus == EntityStatus.succuess ||
-            state.priorityLevelEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/priority-levels');
-        }
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
@@ -109,9 +100,8 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
           id: widget.priorityLevelId,
           selectedEntity: state.selectedPriorityLevel,
           addEntity: () => _addPriorityLevel(state),
-          addedStatus: state.priorityLevelAddedStatus,
           editEntity: () => _editPriorityLevel(state),
-          editedStatus: state.priorityLevelEditedStatus,
+          crudStatus: state.priorityLevelCrudStatus,
           child: Column(
             children: [
               FormItem(

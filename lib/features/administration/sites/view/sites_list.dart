@@ -27,7 +27,6 @@ class _SitesListViewState extends State<SitesListView> {
         return EntityListTemplate(
           title: 'Sites List',
           label: 'site',
-          note: '',
           entities: state.sites,
           showTableHeaderButtons: true,
           onRowClick: (selectedSite) {

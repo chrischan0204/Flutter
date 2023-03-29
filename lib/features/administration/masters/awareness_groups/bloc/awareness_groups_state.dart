@@ -5,19 +5,18 @@ class AwarenessGroupsState extends Equatable {
   final List<AwarenessGroup> awarenessGroups;
   final AwarenessGroup? selectedAwarenessGroup;
 
+  final String message;
+
   final EntityStatus awarenessGroupsRetrievedStatus;
   final EntityStatus awarenessGroupSelectedStatus;
-  final EntityStatus awarenessGroupAddedStatus;
-  final EntityStatus awarenessGroupEditedStatus;
-  final EntityStatus awarenessGroupDeletedStatus;
+  final EntityStatus awarenessGroupCrudStatus;
   const AwarenessGroupsState({
     this.awarenessGroups = const [],
     this.selectedAwarenessGroup,
     this.awarenessGroupsRetrievedStatus = EntityStatus.initial,
     this.awarenessGroupSelectedStatus = EntityStatus.initial,
-    this.awarenessGroupAddedStatus = EntityStatus.initial,
-    this.awarenessGroupEditedStatus = EntityStatus.initial,
-    this.awarenessGroupDeletedStatus = EntityStatus.initial,
+    this.awarenessGroupCrudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -26,9 +25,8 @@ class AwarenessGroupsState extends Equatable {
         selectedAwarenessGroup,
         awarenessGroupsRetrievedStatus,
         awarenessGroupSelectedStatus,
-        awarenessGroupAddedStatus,
-        awarenessGroupEditedStatus,
-        awarenessGroupDeletedStatus,
+        awarenessGroupCrudStatus,
+        message,
       ];
 
   AwarenessGroupsState copyWith({
@@ -36,9 +34,8 @@ class AwarenessGroupsState extends Equatable {
     AwarenessGroup? selectedAwarenessGroup,
     EntityStatus? awarenessGroupsRetrievedStatus,
     EntityStatus? awarenessGroupSelectedStatus,
-    EntityStatus? awarenessGroupAddedStatus,
-    EntityStatus? awarenessGroupEditedStatus,
-    EntityStatus? awarenessGroupDeletedStatus,
+    EntityStatus? awarenessGroupCrudStatus,
+    String? message,
   }) {
     return AwarenessGroupsState(
       awarenessGroups: awarenessGroups ?? this.awarenessGroups,
@@ -48,12 +45,9 @@ class AwarenessGroupsState extends Equatable {
           awarenessGroupsRetrievedStatus ?? this.awarenessGroupsRetrievedStatus,
       awarenessGroupSelectedStatus:
           awarenessGroupSelectedStatus ?? this.awarenessGroupSelectedStatus,
-      awarenessGroupAddedStatus:
-          awarenessGroupAddedStatus ?? this.awarenessGroupAddedStatus,
-      awarenessGroupEditedStatus:
-          awarenessGroupEditedStatus ?? this.awarenessGroupEditedStatus,
-      awarenessGroupDeletedStatus:
-          awarenessGroupDeletedStatus ?? this.awarenessGroupDeletedStatus,
+      awarenessGroupCrudStatus:
+          awarenessGroupCrudStatus ?? this.awarenessGroupCrudStatus,
+      message: message ?? this.message,
     );
   }
 }

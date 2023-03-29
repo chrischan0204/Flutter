@@ -98,15 +98,6 @@ class _AddEditObservationTypeViewState
             isFirstInit = false;
           }
         }
-        if (state.observationTypeAddedStatus == EntityStatus.succuess ||
-            state.observationTypeAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/observation-types');
-        }
-
-        if (state.observationTypeEditedStatus == EntityStatus.succuess ||
-            state.observationTypeEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/observation-types');
-        }
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
@@ -114,8 +105,7 @@ class _AddEditObservationTypeViewState
           id: widget.observationTypeId,
           selectedEntity: state.selectedObservationType,
           addEntity: () => _addObservationType(state),
-          addedStatus: state.observationTypeAddedStatus,
-          editedStatus: state.observationTypeEditedStatus,
+          crudStatus: state.observationTypeCrudStatus,
           editEntity: () => _editObservationType(state),
           child: Column(
             children: [

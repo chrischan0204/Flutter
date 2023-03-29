@@ -7,17 +7,13 @@ class PriorityLevelsState extends Equatable {
 
   final EntityStatus priorityLevelsRetrievedStatus;
   final EntityStatus priorityLevelSelectedStatus;
-  final EntityStatus priorityLevelAddedStatus;
-  final EntityStatus priorityLevelEditedStatus;
-  final EntityStatus priorityLevelDeletedStatus;
+  final EntityStatus priorityLevelCrudStatus;
   const PriorityLevelsState({
     this.priorityLevels = const [],
     this.selectedPriorityLevel,
     this.priorityLevelsRetrievedStatus = EntityStatus.initial,
     this.priorityLevelSelectedStatus = EntityStatus.initial,
-    this.priorityLevelAddedStatus = EntityStatus.initial,
-    this.priorityLevelEditedStatus = EntityStatus.initial,
-    this.priorityLevelDeletedStatus = EntityStatus.initial,
+    this.priorityLevelCrudStatus = EntityStatus.initial,
   });
 
   @override
@@ -26,9 +22,7 @@ class PriorityLevelsState extends Equatable {
         priorityLevelsRetrievedStatus,
         selectedPriorityLevel,
         priorityLevelSelectedStatus,
-        priorityLevelAddedStatus,
-        priorityLevelEditedStatus,
-        priorityLevelDeletedStatus,
+        priorityLevelCrudStatus,
       ];
 
   PriorityLevelsState copyWith({
@@ -36,9 +30,7 @@ class PriorityLevelsState extends Equatable {
     PriorityLevel? selectedPriorityLevel,
     EntityStatus? priorityLevelsRetrievedStatus,
     EntityStatus? priorityLevelSelectedStatus,
-    EntityStatus? priorityLevelAddedStatus,
-    EntityStatus? priorityLevelEditedStatus,
-    EntityStatus? priorityLevelDeletedStatus,
+    EntityStatus? priorityLevelCrudStatus,
   }) {
     return PriorityLevelsState(
       priorityLevels: priorityLevels ?? this.priorityLevels,
@@ -48,12 +40,8 @@ class PriorityLevelsState extends Equatable {
           priorityLevelsRetrievedStatus ?? this.priorityLevelsRetrievedStatus,
       priorityLevelSelectedStatus:
           priorityLevelSelectedStatus ?? this.priorityLevelSelectedStatus,
-      priorityLevelAddedStatus:
-          priorityLevelAddedStatus ?? this.priorityLevelAddedStatus,
-      priorityLevelEditedStatus:
-          priorityLevelEditedStatus ?? this.priorityLevelEditedStatus,
-      priorityLevelDeletedStatus:
-          priorityLevelDeletedStatus ?? this.priorityLevelDeletedStatus,
+      priorityLevelCrudStatus:
+          priorityLevelCrudStatus ?? this.priorityLevelCrudStatus,
     );
   }
 }

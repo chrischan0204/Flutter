@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
@@ -35,9 +36,23 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<AwarenessCategoriesBloc, AwarenessCategoriesState>(
       listener: (context, state) {
-        if (state.awarenessCategoryDeletedStatus == EntityStatus.succuess ||
-            state.awarenessCategoryDeletedStatus == EntityStatus.failure) {
+        if (state.awarenessCategoryCrudStatus == EntityStatus.succuess) {
+          awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+
           GoRouter.of(context).go('/awareness-categories');
+        }
+        if (state.awarenessCategoryCrudStatus == EntityStatus.failure) {
+          awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
       builder: (context, state) {
@@ -52,7 +67,7 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
               ),
             );
           },
-          deletedStatus: state.awarenessCategoryDeletedStatus,
+          crudStatus: state.awarenessCategoryCrudStatus,
         );
       },
     );

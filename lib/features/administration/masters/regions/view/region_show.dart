@@ -34,10 +34,7 @@ class _RegionShowViewState extends State<RegionShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
-        if (state.regionDeletedStatus == EntityStatus.succuess ||
-            state.regionDeletedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/regions');
-        }
+
       },
       builder: (context, state) {
         return EntityShowTemplate(
@@ -54,7 +51,7 @@ class _RegionShowViewState extends State<RegionShowView> {
               ),
             );
           },
-          deletedStatus: state.regionDeletedStatus,
+          crudStatus: state.regionCrudStatus,
         );
       },
     );

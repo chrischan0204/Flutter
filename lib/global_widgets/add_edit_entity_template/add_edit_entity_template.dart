@@ -14,8 +14,7 @@ class AddEditEntityTemplate extends StatefulWidget {
   final Widget child;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
-  final EntityStatus addedStatus;
-  final EntityStatus editedStatus;
+  final EntityStatus crudStatus;
   const AddEditEntityTemplate({
     super.key,
     required this.label,
@@ -24,8 +23,7 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.child,
     required this.addEntity,
     required this.editEntity,
-    this.addedStatus = EntityStatus.initial,
-    this.editedStatus = EntityStatus.initial,
+    this.crudStatus = EntityStatus.initial,
   });
 
   @override
@@ -111,8 +109,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         horizontal: 20,
         vertical: 12,
       ),
-      child: widget.addedStatus == EntityStatus.loading ||
-              widget.editedStatus == EntityStatus.loading
+      child: widget.crudStatus == EntityStatus.loading
           ? CustomButton(
               backgroundColor: const Color(0xff059669),
               hoverBackgroundColor: const Color(0xff05875f),

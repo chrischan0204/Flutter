@@ -14,22 +14,18 @@ class EntityListTemplate extends StatefulWidget {
   final String title;
   final String description;
   final String label;
-  final String note;
   final ValueChanged<Entity> onRowClick;
   final Entity? selectedEntity;
-  final String successType;
   final bool showTableHeaderButtons;
   final String emptyMessage;
   const EntityListTemplate({
     super.key,
     required this.title,
     required this.label,
-    required this.note,
     required this.onRowClick,
     this.entityRetrievedStatus = EntityStatus.initial,
     this.entities = const [],
     this.selectedEntity,
-    this.successType = '',
     this.description = '',
     this.emptyMessage = '',
     this.showTableHeaderButtons = false,
@@ -59,49 +55,6 @@ class _CrudState extends State<EntityListTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> notifications = List.from([
-      widget.successType == 'add'
-          ? Notify(
-              content: '${camelize(widget.label)} Created Successfully!',
-              type: NotifyType.success,
-            )
-          : Container(),
-      widget.successType == 'edit'
-          ? Notify(
-              content:
-                  '${camelize(widget.label)} Details Updated Successfully!',
-              type: NotifyType.good,
-            )
-          : Container(),
-      widget.successType == 'delete'
-          ? Notify(
-              content: 'The ${widget.label} was deleted.',
-              type: NotifyType.good,
-            )
-          : Container(),
-      widget.successType == 'add-fail'
-          ? Notify(
-              content:
-                  'There was an error while adding ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
-              type: NotifyType.failture,
-            )
-          : Container(),
-      widget.successType == 'edit-fail'
-          ? Notify(
-              content:
-                  'There was an error while editing ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
-              type: NotifyType.failture,
-            )
-          : Container(),
-      widget.successType == 'delete-fail'
-          ? Notify(
-              content:
-                  'There was an error while deleting ${widget.label}. Our team has been notified. Please wait a few minutes and try again....',
-              type: NotifyType.failture,
-            )
-          : Container(),
-    ]);
-
     return Stack(
       children: [
         Padding(
@@ -109,7 +62,6 @@ class _CrudState extends State<EntityListTemplate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...notifications,
               _buildHeader(),
               widget.showTableHeaderButtons ? _buildTableHeader() : Container(),
               _buildTableView()

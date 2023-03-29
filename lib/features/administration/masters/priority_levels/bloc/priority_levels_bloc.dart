@@ -77,23 +77,23 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelAddedStatus: EntityStatus.loading,
+      priorityLevelCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response =
           await priorityLevelsRepository.addPriorityLevel(event.priorityLevel);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelAddedStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.succuess,
         ));
       } else {
         emit(state.copyWith(
-          priorityLevelAddedStatus: EntityStatus.failure,
+          priorityLevelCrudStatus: EntityStatus.failure,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        priorityLevelAddedStatus: EntityStatus.failure,
+        priorityLevelCrudStatus: EntityStatus.failure,
       ));
     }
   }
@@ -103,26 +103,26 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelEditedStatus: EntityStatus.loading,
+      priorityLevelCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response =
           await priorityLevelsRepository.editPriorityLevel(event.priorityLevel);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelEditedStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.succuess,
           selectedPriorityLevel: null,
         ));
       } else {
         emit(state.copyWith(
-          priorityLevelEditedStatus: EntityStatus.failure,
+          priorityLevelCrudStatus: EntityStatus.failure,
           selectedPriorityLevel: null,
         ));
       }
     } catch (e) {
       print(e.toString());
       emit(state.copyWith(
-        priorityLevelEditedStatus: EntityStatus.failure,
+        priorityLevelCrudStatus: EntityStatus.failure,
         selectedPriorityLevel: null,
       ));
     }
@@ -133,24 +133,24 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelDeletedStatus: EntityStatus.loading,
+      priorityLevelCrudStatus: EntityStatus.loading,
     ));
     try {
       EntityResponse response = await priorityLevelsRepository
           .deletePriorityLevel(event.priorityLevelId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelDeletedStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.succuess,
           selectedPriorityLevel: null,
         ));
       } else {
         emit(state.copyWith(
-            priorityLevelDeletedStatus: EntityStatus.failure,
+            priorityLevelCrudStatus: EntityStatus.failure,
             selectedPriorityLevel: null));
       }
     } catch (e) {
       emit(state.copyWith(
-        priorityLevelDeletedStatus: EntityStatus.failure,
+        priorityLevelCrudStatus: EntityStatus.failure,
         selectedPriorityLevel: null,
       ));
     }
@@ -160,10 +160,8 @@ class PriorityLevelsBloc
       PriorityLevelsStatusInited event, Emitter<PriorityLevelsState> emit) {
     emit(
       state.copyWith(
-        priorityLevelAddedStatus: EntityStatus.initial,
-        priorityLevelEditedStatus: EntityStatus.initial,
+        priorityLevelCrudStatus: EntityStatus.initial,
         priorityLevelSelectedStatus: EntityStatus.initial,
-        priorityLevelDeletedStatus: EntityStatus.initial,
         priorityLevelsRetrievedStatus: EntityStatus.initial,
       ),
     );

@@ -34,10 +34,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<PriorityLevelsBloc, PriorityLevelsState>(
       listener: (context, state) {
-        if (state.priorityLevelDeletedStatus == EntityStatus.succuess ||
-            state.priorityLevelDeletedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/priority-levels');
-        }
+        
       },
       builder: (context, state) {
         return EntityShowTemplate(
@@ -51,7 +48,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
               ),
             );
           },
-          deletedStatus: state.priorityLevelDeletedStatus,
+          crudStatus: state.priorityLevelCrudStatus,
         );
       },
     );

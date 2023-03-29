@@ -81,15 +81,6 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
             isFirst = false;
           }
         }
-        if (state.regionAddedStatus == EntityStatus.succuess ||
-            state.regionAddedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/regions');
-        }
-
-        if (state.regionEditedStatus == EntityStatus.succuess ||
-            state.regionEditedStatus == EntityStatus.failure) {
-          GoRouter.of(context).go('/regions');
-        }
       },
       builder: (context, state) {
         Map<String, dynamic> regionItems = <String, dynamic>{}..addEntries(
@@ -109,9 +100,8 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
           id: widget.regionId,
           selectedEntity: state.selectedRegion,
           addEntity: () => _addRegion(state),
-          addedStatus: state.regionAddedStatus,
           editEntity: () => _editRegion(state),
-          editedStatus: state.regionEditedStatus,
+          crudStatus: state.regionCrudStatus,
           child: Column(
             children: [
               FormItem(

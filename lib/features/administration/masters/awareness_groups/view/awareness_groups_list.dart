@@ -22,8 +22,7 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AwarenessGroupsBloc, AwarenessGroupsState>(
-      listener: (context, state) => _displayNofitication(state),
+    return BlocBuilder<AwarenessGroupsBloc, AwarenessGroupsState>(
       builder: (context, state) {
         return EntityListTemplate(
           description:
@@ -31,8 +30,6 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
           entities: state.awarenessGroups,
           title: 'Awareness Groups List',
           label: 'awareness group',
-          note:
-              'This awareness group has 7 awareness categories. Deletion is allowed for groups that have no awareness categories associated with them.',
           emptyMessage:
               'There are no awareness groups. Please click on New Awareness Group to add new awareness group.',
           entityRetrievedStatus: state.awarenessGroupsRetrievedStatus,
@@ -42,52 +39,8 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
             ));
           },
           selectedEntity: state.selectedAwarenessGroup,
-          successType: successType,
         );
       },
     );
-  }
-
-  void _displayNofitication(AwarenessGroupsState state) {
-    bool success = false, failed = false;
-    if (state.awarenessGroupAddedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'add';
-      });
-      success = true;
-    }
-    if (state.awarenessGroupEditedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'edit';
-      });
-      success = true;
-    }
-    if (state.awarenessGroupDeletedStatus == EntityStatus.succuess) {
-      setState(() {
-        successType = 'delete';
-      });
-      success = true;
-    }
-    if (state.awarenessGroupAddedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'add-fail';
-      });
-      failed = true;
-    }
-    if (state.awarenessGroupEditedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'edit-fail';
-      });
-      failed = true;
-    }
-    if (state.awarenessGroupDeletedStatus == EntityStatus.failure) {
-      setState(() {
-        successType = 'delete-fail';
-      });
-      failed = true;
-    }
-    if (success || failed) {
-      awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
-    }
   }
 }
