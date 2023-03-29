@@ -12,7 +12,6 @@ class AwarenessGroupsListView extends StatefulWidget {
 
 class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
   late AwarenessGroupsBloc awarenessGroupsBloc;
-  late String successType = 'none';
   @override
   void initState() {
     awarenessGroupsBloc = context.read<AwarenessGroupsBloc>()

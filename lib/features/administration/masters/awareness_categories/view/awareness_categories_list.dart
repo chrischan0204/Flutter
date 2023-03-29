@@ -15,7 +15,6 @@ class AwarenessCategoriesListView extends StatefulWidget {
 class _AwarenessCategoriesListViewState
     extends State<AwarenessCategoriesListView> {
   late AwarenessCategoriesBloc awarenessCategoriesBloc;
-  late String successType = 'none';
   @override
   void initState() {
     super.initState();

@@ -13,7 +13,7 @@ class RegionsListView extends StatefulWidget {
 
 class _RegionsState extends State<RegionsListView> {
   late RegionsBloc regionsBloc;
-  String successType = 'none';
+  
 
   @override
   void initState() {

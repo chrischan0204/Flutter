@@ -45,7 +45,7 @@ class PriorityLevelsRepository {
       body: priorityLevel.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -63,7 +63,7 @@ class PriorityLevelsRepository {
       body: priorityLevel.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();
@@ -74,7 +74,7 @@ class PriorityLevelsRepository {
       Uri.https(ApiUri.host, '$url/$priorityLevelId'),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
     }
     throw Exception();

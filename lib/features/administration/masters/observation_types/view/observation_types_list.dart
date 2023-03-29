@@ -12,7 +12,6 @@ class ObservationTypesListView extends StatefulWidget {
 
 class _ObservationTypesState extends State<ObservationTypesListView> {
   late ObservationTypesBloc observationTypesBloc;
-  String successType = 'none';
 
   @override
   void initState() {

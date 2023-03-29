@@ -12,7 +12,6 @@ class PriorityLevelsListView extends StatefulWidget {
 
 class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
   late PriorityLevelsBloc priorityLevelsBloc;
-  late String successType = 'none';
   @override
   void initState() {
     super.initState();

@@ -8,12 +8,15 @@ class PriorityLevelsState extends Equatable {
   final EntityStatus priorityLevelsRetrievedStatus;
   final EntityStatus priorityLevelSelectedStatus;
   final EntityStatus priorityLevelCrudStatus;
+
+  final String message;
   const PriorityLevelsState({
     this.priorityLevels = const [],
     this.selectedPriorityLevel,
     this.priorityLevelsRetrievedStatus = EntityStatus.initial,
     this.priorityLevelSelectedStatus = EntityStatus.initial,
     this.priorityLevelCrudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -23,6 +26,7 @@ class PriorityLevelsState extends Equatable {
         selectedPriorityLevel,
         priorityLevelSelectedStatus,
         priorityLevelCrudStatus,
+        message,
       ];
 
   PriorityLevelsState copyWith({
@@ -31,6 +35,7 @@ class PriorityLevelsState extends Equatable {
     EntityStatus? priorityLevelsRetrievedStatus,
     EntityStatus? priorityLevelSelectedStatus,
     EntityStatus? priorityLevelCrudStatus,
+    String? message,
   }) {
     return PriorityLevelsState(
       priorityLevels: priorityLevels ?? this.priorityLevels,
@@ -42,6 +47,7 @@ class PriorityLevelsState extends Equatable {
           priorityLevelSelectedStatus ?? this.priorityLevelSelectedStatus,
       priorityLevelCrudStatus:
           priorityLevelCrudStatus ?? this.priorityLevelCrudStatus,
+      message: message ?? this.message,
     );
   }
 }
