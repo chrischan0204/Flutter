@@ -1,24 +1,21 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 import '/data/model/model.dart';
 
 class Region extends Entity implements Equatable {
   final List<TimeZone> timeZones;
-  final bool active;
-  final String? deactivationDate;
-  final String? deactivationUserName;
+
   final int? siteCount;
   const Region({
     super.id,
     this.timeZones = const [],
-    this.active = true,
+    super.active,
     super.name,
     this.siteCount,
-    this.deactivationDate,
-    this.deactivationUserName,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
 
   bool get deletable => siteCount == 0 || siteCount == null;
@@ -34,17 +31,10 @@ class Region extends Entity implements Equatable {
           .where((timeZone) => timeZone.assigned)
           .map((timeZone) => timeZone.name)
           .toList(),
-      'Active': active,
-    };
-    if (!active && deactivationDate != null && deactivationUserName != null) {
-      return map
-        ..addEntries([
-          MapEntry('Deactivated',
-              'By: $deactivationUserName on ${DateFormat('d MMMM y', 'en_US').format(DateTime.parse(deactivationDate!))}')
-        ]);
-    }
 
-    return map;
+    };
+
+    return map..addEntries(super.detailItemsToMap().entries);
   }
 
   @override

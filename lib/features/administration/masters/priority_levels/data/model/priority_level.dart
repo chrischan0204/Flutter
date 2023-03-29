@@ -19,13 +19,14 @@ extension ColorExtension on String {
 class PriorityLevel extends Entity implements Equatable {
   final Color colorCode;
   final String priorityType;
-  final bool active;
-  PriorityLevel({
+  const PriorityLevel({
     super.id,
     super.name,
     required this.colorCode,
     required this.priorityType,
-    required this.active,
+    super.active,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
   @override
   Map<String, dynamic> detailItemsToMap() {
@@ -33,8 +34,7 @@ class PriorityLevel extends Entity implements Equatable {
       'Priority Level': name,
       'Color associated': colorCode,
       'Priority Type': priorityType,
-      'Active': active,
-    };
+    }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
@@ -98,6 +98,8 @@ class PriorityLevel extends Entity implements Equatable {
       colorCode: ('${map['colorCode']}').toColor(),
       priorityType: map['priorityType'] as String,
       active: map['active'] as bool,
+      deactivationDate: map['deactivationDate'] as String,
+      deactivationUserName: map['deactivationUserName'] as String,
     );
   }
 

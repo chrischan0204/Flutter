@@ -1,21 +1,31 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Entity extends Equatable {
   final String? id;
   final String? name;
+  final String? deactivationDate;
+  final String? deactivationUserName;
+  final bool active;
 
   const Entity({
     this.id,
     this.name,
+    this.deactivationDate,
+    this.deactivationUserName,
+    this.active = true,
   });
 
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
       id: map['id'] as String,
       name: map['name'] as String,
+      deactivationDate: map['deactivationDate'] as String,
+      deactivationUserName: map['deactivationUserName'] as String,
+      active: map['active'] as bool,
     );
   }
   Map<String, dynamic> toMap() {
@@ -27,13 +37,23 @@ class Entity extends Equatable {
   }
 
   Map<String, dynamic> detailItemsToMap() {
-    return <String, dynamic>{};
+    if (!active && deactivationDate != null && deactivationUserName != null) {
+      return <String, dynamic>{
+        'Active': active,
+        'Deactivated':
+            'By: $deactivationUserName on ${DateFormat('d MMMM y', 'en_US').format(DateTime.parse(deactivationDate!))}',
+      };
+    }
+    return {};
   }
 
   @override
   List<Object?> get props => [
         id,
         name,
+        deactivationDate,
+        deactivationUserName,
+        active,
       ];
 }
 

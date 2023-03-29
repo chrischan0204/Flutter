@@ -187,11 +187,28 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                       message: '',
                     )
                   : Container(),
-              // FormItem(
-              //   label: 'Deactivated:',
-              //   content: Text('By: Andrew Sully on 12th Jan 2023'),
-              //   message: '',
-              // ),
+              widget.priorityLevelId != null &&
+                      state.selectedPriorityLevel != null &&
+                      !state.selectedPriorityLevel!.active &&
+                      state.selectedPriorityLevel!.deactivationDate != null &&
+                      state.selectedPriorityLevel!.deactivationUserName != null
+                  ? Builder(builder: (context) {
+                      Map<String, dynamic> map =
+                          state.selectedPriorityLevel!.detailItemsToMap();
+                      return FormItem(
+                        label: 'Deactivated',
+                        content: Text(
+                          map['Deactivated'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                        message: '',
+                      );
+                    })
+                  : Container(),
             ],
           ),
         );
