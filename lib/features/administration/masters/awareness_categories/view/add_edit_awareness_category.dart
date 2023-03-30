@@ -98,7 +98,7 @@ class _AddEditAwarenessCategoryViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Awareness category name is a mandatory field',
+        content: 'Awareness category is a mandatory field.',
       ).showNotification();
       return false;
     }

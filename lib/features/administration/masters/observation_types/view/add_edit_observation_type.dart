@@ -85,7 +85,7 @@ class _AddEditObservationTypeViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Awareness group name is a mandatory field',
+        content: 'Awareness group name is a mandatory field.',
       ).showNotification();
       return false;
     }

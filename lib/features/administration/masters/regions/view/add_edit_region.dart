@@ -74,7 +74,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Region name is a mandatory field',
+        content: 'Region name is a mandatory field.',
       ).showNotification();
       return false;
     }
