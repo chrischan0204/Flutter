@@ -46,7 +46,7 @@ class _AddEditObservationTypeViewState
         const ObservationTypeSelected(
           observationType: ObservationType(
             name: '',
-            security: '',
+            severity: '',
             visibility: '',
             active: true,
           ),
@@ -123,9 +123,9 @@ class _AddEditObservationTypeViewState
       listener: (context, state) {
         if (state.selectedObservationType != null) {
           observationTypeSeverity =
-              state.selectedObservationType!.security.isEmpty
+              state.selectedObservationType!.severity.isEmpty
                   ? null
-                  : state.selectedObservationType!.security;
+                  : state.selectedObservationType!.severity;
           observationTypeVisibility =
               state.selectedObservationType!.visibility.isEmpty
                   ? null
@@ -202,7 +202,7 @@ class _AddEditObservationTypeViewState
                       ObservationTypeSelected(
                         observationType:
                             state.selectedObservationType!.copyWith(
-                          security: severity.key,
+                          severity: severity.key,
                         ),
                       ),
                     );
