@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
 import '/data/bloc/bloc.dart';
@@ -56,6 +55,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
   }
 
   void _addPriorityLevel(PriorityLevelsState state) {
+    if (!_validate()) return;
     priorityLevelsBloc.add(
       PriorityLevelAdded(
         priorityLevel: state.selectedPriorityLevel!.copyWith(
@@ -66,6 +66,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
   }
 
   void _editPriorityLevel(PriorityLevelsState state) {
+    if (!_validate()) return;
     priorityLevelsBloc.add(
       PriorityLevelEdited(
         priorityLevel: state.selectedPriorityLevel!.copyWith(
@@ -73,6 +74,29 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (priorityLevelNameController.text.isEmpty ||
+        priorityLevelNameController.text.trim().isEmpty) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Priority level is a mandatory field',
+      ).showNotification();
+      return false;
+    }
+    if (priorityType == null ||
+        (priorityType != null &&
+            (priorityType!.isEmpty || priorityType!.trim().isEmpty))) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Priority type is a mandatory field.',
+      ).showNotification();
+      return false;
+    }
+    return true;
   }
 
   @override

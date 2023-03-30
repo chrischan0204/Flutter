@@ -54,6 +54,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
   }
 
   void _addAwarenessGroup(AwarenessGroupsState state) {
+    if (!_validate()) return;
     awarenessGroupsBloc.add(
       AwarenessGroupAdded(
         awarenessGroup: state.selectedAwarenessGroup!.copyWith(
@@ -64,6 +65,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
   }
 
   void _editAwarenessGroup(AwarenessGroupsState state) {
+    if (!_validate()) return;
     awarenessGroupsBloc.add(
       AwarenessGroupEdited(
         awarenessGroup: state.selectedAwarenessGroup!.copyWith(
@@ -71,6 +73,19 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (awarenessGroupNameController.text.isEmpty ||
+        awarenessGroupNameController.text.trim().isEmpty) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Awareness group name is a mandatory field',
+      ).showNotification();
+      return false;
+    }
+    return true;
   }
 
   @override

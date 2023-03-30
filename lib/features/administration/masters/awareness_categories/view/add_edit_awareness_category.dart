@@ -60,6 +60,7 @@ class _AddEditAwarenessCategoryViewState
   }
 
   void _addAwarenessCategory(AwarenessCategoriesState state) {
+    if (!_validate()) return;
     awarenessCategoriesBloc.add(
       AwarenessCategoryAdded(
         awarenessCategory: state.selectedAwarenessCategory!.copyWith(
@@ -70,6 +71,7 @@ class _AddEditAwarenessCategoryViewState
   }
 
   void _editAwarenessCategory(AwarenessCategoriesState state) {
+    if (!_validate()) return;
     awarenessCategoriesBloc.add(
       AwarenessCategoryEdited(
         awarenessCategory: state.selectedAwarenessCategory!.copyWith(
@@ -77,6 +79,30 @@ class _AddEditAwarenessCategoryViewState
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (awarenessCategoryGroupName == null ||
+        (awarenessCategoryGroupName != null &&
+            (awarenessCategoryGroupName!.isEmpty ||
+                awarenessCategoryGroupName!.trim().isEmpty))) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Awareness group is a mandatory field.',
+      ).showNotification();
+      return false;
+    }
+    if (awarenessCategoryNameController.text.isEmpty ||
+        awarenessCategoryNameController.text.trim().isEmpty) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Awareness category name is a mandatory field',
+      ).showNotification();
+      return false;
+    }
+    return true;
   }
 
   @override
