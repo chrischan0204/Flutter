@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import '/data/model/model.dart';
+import 'audit_template.dart';
 
 class Site extends Entity {
   final String siteCode;
@@ -10,7 +11,7 @@ class Site extends Entity {
   final TimeZone timeZone;
   final int users;
   final int observations;
-  final int auditTemplates;
+  final List<AuditTemplate> auditTemplates;
   const Site({
     super.id,
     super.name,
@@ -50,10 +51,13 @@ class Site extends Entity {
   Map<String, dynamic> detailItemsToMap() {
     return {
       'Name': name,
-      'Site Code': siteCode,
-      'Reference Code': referenceCode,
       'Region': region.name,
-      'Timezone': timeZone.name,
+      'Time Zone': timeZone.name,
+      'Code': siteCode,
+      'Reference Code': referenceCode,
+      'Users': 5,
+      'Observations': observations,
+      'Audit Templates': auditTemplates.length,
     };
   }
 
@@ -66,7 +70,7 @@ class Site extends Entity {
     TimeZone? timeZone,
     int? users,
     int? observations,
-    int? auditTemplates,
+    List<AuditTemplate>? auditTemplates,
   }) {
     return Site(
       id: id ?? this.id,
@@ -111,7 +115,9 @@ class Site extends Entity {
       timeZone: TimeZone.fromMap(map['timeZone'] as Map<String, dynamic>),
       users: map['users'] as int,
       observations: map['observations'] as int,
-      auditTemplates: map['auditTemplates'] as int,
+      auditTemplates: List.from(map['auditTemplates'])
+          .map((auditTemplateMap) => AuditTemplate.fromMap(auditTemplateMap))
+          .toList(),
     );
   }
 
