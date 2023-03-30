@@ -25,6 +25,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   bool isFirst = true;
   Region? firstSelectedRegion;
 
+  String regionNameValidationMessage = '';
+  String timeZonesValidationMessage = '';
+
   @override
   void initState() {
     regionsBloc = context.read<RegionsBloc>();
@@ -68,25 +71,24 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   }
 
   bool _validate() {
+    bool validated = true;
     if (regionName == null ||
         (regionName != null &&
             (regionName!.isEmpty || regionName!.trim().isEmpty))) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Region name is required.',
-      ).showNotification();
-      return false;
+      setState(() {
+        regionNameValidationMessage = 'Region name is required.';
+      });
+
+      validated = false;
     }
     if (selectedTimeZones.isEmpty) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Time zone is required.',
-      ).showNotification();
-      return false;
+      setState(() {
+        timeZonesValidationMessage = 'Time zone is required.';
+      });
+
+      validated = false;
     }
-    return true;
+    return validated;
   }
 
   @override
@@ -116,11 +118,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
         }
         if (state.regionCrudStatus == EntityStatus.failure) {
           regionsBloc.add(const RegionsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
+          setState(() {
+            regionName = state.message;
+          });
         }
       },
       builder: (context, state) {
@@ -156,6 +156,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                       : true,
                   selectedValue: regionName,
                   onChanged: (region) {
+                    setState(() {
+                      regionNameValidationMessage = '';
+                    });
                     regionsBloc.add(
                       RegionSelected(
                         region: (region.value as Region).copyWith(
@@ -165,7 +168,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                     );
                   },
                 ),
-                message: '',
+                message: regionNameValidationMessage,
               ),
               FormItem(
                 label: 'Time Zone (*)',
@@ -178,6 +181,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                   hint: 'Select Time Zone',
                   selectedItems: selectedTimeZones,
                   onChanged: (timeZones) {
+                    setState(() {
+                      timeZonesValidationMessage = '';
+                    });
                     regionsBloc.add(
                       RegionSelected(
                         region: state.selectedRegion!.copyWith(
@@ -190,7 +196,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                     );
                   },
                 ),
-                message: '',
+                message: timeZonesValidationMessage,
               ),
               widget.regionId != null
                   ? FormItem(

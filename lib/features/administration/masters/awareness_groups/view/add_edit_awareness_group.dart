@@ -28,7 +28,6 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
   String? awarenessGroupVisibility;
   bool awarenessGroupDeactive = false;
 
-  FocusNode awarenessGroupNameFocusNode = FocusNode();
   bool isFirstInit = true;
   String awarenessGroupNameValidationMessage = '';
 
@@ -115,7 +114,6 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-          initMessages();
         }
         if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
           awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
@@ -137,7 +135,6 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
               FormItem(
                 label: 'Awareness Group Name (*)',
                 content: CustomTextField(
-                  focusNode: awarenessGroupNameFocusNode,
                   controller: awarenessGroupNameController,
                   hintText: 'Awareness Group Name',
                   onChanged: (awarenessGroupName) {

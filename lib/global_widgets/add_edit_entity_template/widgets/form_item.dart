@@ -52,7 +52,10 @@ class FormItem extends StatelessWidget {
           Flexible(
             flex: 7,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.only(
+                left: 50.0,
+                right: 20,
+              ),
               child: Text(
                 message,
                 style: const TextStyle(

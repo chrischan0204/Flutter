@@ -41,12 +41,7 @@ class _CollapseButtonState extends State<CollapseButton> {
           }
         },
         child: Container(
-          padding: const EdgeInsets.only(
-            top: 5,
-            left: 7,
-            right: 7,
-            bottom: 9,
-          ),
+          padding: const EdgeInsets.all(7),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
