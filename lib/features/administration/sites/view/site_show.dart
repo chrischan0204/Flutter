@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safety_eta/global_widgets/global_widget.dart';
+import '/data/model/model.dart';
+import '/global_widgets/global_widget.dart';
 
 import '/data/bloc/bloc.dart';
 
@@ -36,7 +37,55 @@ class _SiteShowViewState extends State<SiteShowView> {
           deleteEntity: () {},
           tabItems: {
             'Site Details': Container(),
-            'Audits Templates': Container(),
+            'Audits Templates': Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    'The following templates are associated with this site. Edit site to associate/ remove templates from this site',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                const CustomDivider(),
+                Container(
+                  child: DataTable(
+                    columns: const [
+                      DataColumn(
+                        label: Text(
+                          'Template Name',
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Created By',
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Last Revised on',
+                        ),
+                      ),
+                    ],
+                    rows: List<AuditTemplate>.from(state.selectedSite != null
+                            ? state.selectedSite!.auditTemplates
+                            : [])
+                        .map((auditTemplate) => DataRow(
+                            cells: List.from(
+                                    auditTemplate.toTableDetailMap().values)
+                                .map((detail) => DataCell(CustomDataCell(
+                                      data: detail,
+                                    )))
+                                .toList()))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
             'Site kiosks': Container(),
           },
           entity: state.selectedSite,

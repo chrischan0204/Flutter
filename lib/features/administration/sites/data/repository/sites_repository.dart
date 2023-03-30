@@ -1,3 +1,5 @@
+import 'package:safety_eta/features/administration/sites/data/model/audit_template.dart';
+
 import '/data/model/model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -9,23 +11,74 @@ class SitesRepository {
       name: 'Raleigh',
       siteCode: 'RALCODE',
       referenceCode: '01-98334',
-      region: Region(name: 'North America'),
-      timeZone: TimeZone(name: 'EST'),
+      region: const Region(name: 'North America'),
+      timeZone: const TimeZone(name: 'EST'),
       users: 17,
       observations: 67,
-      auditTemplates: 6,
+      auditTemplates: [
+        AuditTemplate(
+          name: 'Electric Wiring Audit',
+          createdBy: 'Adam Drobot',
+          lastRevisedOn: '3rd Oct 2022',
+        ),
+        AuditTemplate(
+          name: 'Kitchen floor inspection',
+          createdBy: 'Kenny Cross',
+          lastRevisedOn: '23rd Apr 2020',
+        ),
+        AuditTemplate(
+          name: 'Parking lot frozen',
+          createdBy: 'Carl Adams',
+          lastRevisedOn: '13th Feb 2022',
+        ),
+        AuditTemplate(
+          name: 'AC unit leakage',
+          createdBy: 'Peter Gittleman',
+          lastRevisedOn: '19th Sep 2021',
+        ),
+        AuditTemplate(
+          name: 'Cafeteria Gas Check',
+          createdBy: 'Prince Bogotey',
+          lastRevisedOn: '4th Oct 2021',
+        ),
+      ],
     ),
     Site(
-      id: Uuid().v1(),
-      name: 'Durham',
-      siteCode: 'DURSITE',
-      referenceCode: '01-43552',
-      region: Region(name: 'North America'),
-      timeZone: TimeZone(name: 'EST'),
-      users: 17,
-      observations: 67,
-      auditTemplates: 6,
-    ),
+        id: Uuid().v1(),
+        name: 'Durham',
+        siteCode: 'DURSITE',
+        referenceCode: '01-43552',
+        region: Region(name: 'North America'),
+        timeZone: TimeZone(name: 'EST'),
+        users: 17,
+        observations: 67,
+        auditTemplates: [
+          AuditTemplate(
+            name: 'Electric Wiring Audit',
+            createdBy: 'Adam Drobot',
+            lastRevisedOn: '3rd Oct 2022',
+          ),
+          AuditTemplate(
+            name: 'Kitchen floor inspection',
+            createdBy: 'Kenny Cross',
+            lastRevisedOn: '23rd Apr 2020',
+          ),
+          AuditTemplate(
+            name: 'Parking lot frozen',
+            createdBy: 'Carl Adams',
+            lastRevisedOn: '13th Feb 2022',
+          ),
+          AuditTemplate(
+            name: 'AC unit leakage',
+            createdBy: 'Peter Gittleman',
+            lastRevisedOn: '19th Sep 2021',
+          ),
+          AuditTemplate(
+            name: 'Cafeteria Gas Check',
+            createdBy: 'Prince Bogotey',
+            lastRevisedOn: '4th Oct 2021',
+          ),
+        ]),
     Site(
       id: Uuid().v1(),
       name: 'Bronx',
@@ -35,7 +88,33 @@ class SitesRepository {
       timeZone: TimeZone(name: 'EST'),
       users: 17,
       observations: 67,
-      auditTemplates: 6,
+      auditTemplates: [
+        AuditTemplate(
+          name: 'Electric Wiring Audit',
+          createdBy: 'Adam Drobot',
+          lastRevisedOn: '3rd Oct 2022',
+        ),
+        AuditTemplate(
+          name: 'Kitchen floor inspection',
+          createdBy: 'Kenny Cross',
+          lastRevisedOn: '23rd Apr 2020',
+        ),
+        AuditTemplate(
+          name: 'Parking lot frozen',
+          createdBy: 'Carl Adams',
+          lastRevisedOn: '13th Feb 2022',
+        ),
+        AuditTemplate(
+          name: 'AC unit leakage',
+          createdBy: 'Peter Gittleman',
+          lastRevisedOn: '19th Sep 2021',
+        ),
+        AuditTemplate(
+          name: 'Cafeteria Gas Check',
+          createdBy: 'Prince Bogotey',
+          lastRevisedOn: '4th Oct 2021',
+        ),
+      ],
     ),
     Site(
       id: Uuid().v1(),
@@ -46,7 +125,33 @@ class SitesRepository {
       timeZone: TimeZone(name: 'CST'),
       users: 17,
       observations: 67,
-      auditTemplates: 6,
+      auditTemplates: [
+        AuditTemplate(
+          name: 'Electric Wiring Audit',
+          createdBy: 'Adam Drobot',
+          lastRevisedOn: '3rd Oct 2022',
+        ),
+        AuditTemplate(
+          name: 'Kitchen floor inspection',
+          createdBy: 'Kenny Cross',
+          lastRevisedOn: '23rd Apr 2020',
+        ),
+        AuditTemplate(
+          name: 'Parking lot frozen',
+          createdBy: 'Carl Adams',
+          lastRevisedOn: '13th Feb 2022',
+        ),
+        AuditTemplate(
+          name: 'AC unit leakage',
+          createdBy: 'Peter Gittleman',
+          lastRevisedOn: '19th Sep 2021',
+        ),
+        AuditTemplate(
+          name: 'Cafeteria Gas Check',
+          createdBy: 'Prince Bogotey',
+          lastRevisedOn: '4th Oct 2021',
+        ),
+      ],
     ),
   ];
   Future<List<Site>> getSites() async {
