@@ -74,7 +74,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Region name is a mandatory field.',
+        content: 'Region name is required.',
       ).showNotification();
       return false;
     }
@@ -82,7 +82,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Time zone is a mandatory field.',
+        content: 'Time zone is required.',
       ).showNotification();
       return false;
     }

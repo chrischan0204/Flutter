@@ -85,7 +85,7 @@ class _AddEditObservationTypeViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Awareness group name is a mandatory field.',
+        content: 'Awareness group name is required.',
       ).showNotification();
       return false;
     }
@@ -97,7 +97,7 @@ class _AddEditObservationTypeViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Severity is a mandatory field.',
+        content: 'Severity is required.',
       ).showNotification();
       return false;
     }
@@ -109,7 +109,7 @@ class _AddEditObservationTypeViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Visibility is a mandatory field.',
+        content: 'Visibility is required.',
       ).showNotification();
       return false;
     }

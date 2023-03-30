@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
@@ -89,7 +88,7 @@ class _AddEditAwarenessCategoryViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Awareness group is a mandatory field.',
+        content: 'Awareness group is required.',
       ).showNotification();
       return false;
     }
@@ -98,7 +97,7 @@ class _AddEditAwarenessCategoryViewState
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Awareness category is a mandatory field.',
+        content: 'Awareness category is required.',
       ).showNotification();
       return false;
     }

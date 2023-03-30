@@ -82,7 +82,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Priority level is a mandatory field.',
+        content: 'Priority level is required.',
       ).showNotification();
       return false;
     }
@@ -92,7 +92,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,
-        content: 'Priority type is a mandatory field.',
+        content: 'Priority type is required.',
       ).showNotification();
       return false;
     }
