@@ -58,6 +58,7 @@ class _AddEditObservationTypeViewState
   }
 
   void _addObservationType(ObservationTypesState state) {
+    if (!_validate()) return;
     observationTypesBloc.add(
       ObservationTypeAdded(
         observationType: state.selectedObservationType!.copyWith(
@@ -68,6 +69,7 @@ class _AddEditObservationTypeViewState
   }
 
   void _editObservationType(ObservationTypesState state) {
+    if (!_validate()) return;
     observationTypesBloc.add(
       ObservationTypeEdited(
         observationType: state.selectedObservationType!.copyWith(
@@ -75,6 +77,44 @@ class _AddEditObservationTypeViewState
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (observationTypeNameController.text.isEmpty ||
+        observationTypeNameController.text.trim().isEmpty) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Awareness group name is a mandatory field',
+      ).showNotification();
+      return false;
+    }
+
+    if (observationTypeSeverity == null ||
+        (observationTypeSeverity != null &&
+            (observationTypeSeverity!.isEmpty ||
+                observationTypeSeverity!.trim().isEmpty))) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Severity is a mandatory field.',
+      ).showNotification();
+      return false;
+    }
+
+    if (observationTypeVisibility == null ||
+        (observationTypeVisibility != null &&
+            (observationTypeVisibility!.isEmpty ||
+                observationTypeVisibility!.trim().isEmpty))) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Visibility is a mandatory field.',
+      ).showNotification();
+      return false;
+    }
+
+    return true;
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
@@ -51,6 +50,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   }
 
   void _addRegion(RegionsState state) {
+    if (!_validate()) return;
     regionsBloc.add(
       RegionAdded(
         region: state.selectedRegion!,
@@ -59,11 +59,34 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   }
 
   void _editRegion(RegionsState state) {
+    if (!_validate()) return;
     regionsBloc.add(
       RegionEdited(
         region: state.selectedRegion!,
       ),
     );
+  }
+
+  bool _validate() {
+    if (regionName == null ||
+        (regionName != null &&
+            (regionName!.isEmpty || regionName!.trim().isEmpty))) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Region name is a mandatory field',
+      ).showNotification();
+      return false;
+    }
+    if (selectedTimeZones.isEmpty) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: 'Time zone is a mandatory field.',
+      ).showNotification();
+      return false;
+    }
+    return true;
   }
 
   @override
