@@ -96,10 +96,14 @@ class _CrudState extends State<EntityListTemplate> {
                 iconData: PhosphorIcons.plus,
                 text: 'New ${camelize(widget.label)}',
                 onClick: () {
-                  GoRouter.of(context)
-                      .go('${GoRouter.of(context).location}/new');
+                  String location = GoRouter.of(context).location;
+                  int index = location.indexOf('/index');
+                  if (index != -1) {
+                    location = location.replaceRange(index, null, '');
+                  }
+                  GoRouter.of(context).go('$location/new');
                 },
-              )
+              ),
             ],
           ),
         ),
@@ -384,6 +388,11 @@ class _CrudState extends State<EntityListTemplate> {
                 text: '${camelize(widget.label)} Details',
                 onClick: () {
                   String location = GoRouter.of(context).location;
+                  int index = location.indexOf('/index');
+                  if (index != -1) {
+                    location = location.replaceRange(index, null, '');
+                  }
+
                   GoRouter.of(context).go('$location/show/$selectedId');
                 },
               ),
