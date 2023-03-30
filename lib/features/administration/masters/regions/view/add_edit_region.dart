@@ -130,7 +130,8 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
                   MapEntry(unassignedRegion.name!, unassignedRegion),
             ),
           );
-        if (firstSelectedRegion != null &&
+        if (widget.regionId != null &&
+            firstSelectedRegion != null &&
             firstSelectedRegion!.name!.isNotEmpty) {
           regionItems.addEntries(
               [MapEntry(firstSelectedRegion!.name!, firstSelectedRegion!)]);

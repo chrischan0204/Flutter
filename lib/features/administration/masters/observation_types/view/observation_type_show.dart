@@ -58,7 +58,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
       builder: (context, state) {
         return EntityShowTemplate(
           title: 'Observation Type',
-          label: 'Observation Type',
+          label: 'observation type',
           entity: state.selectedObservationType,
           deleteEntity: () {
             observationTypesBloc.add(
