@@ -24,12 +24,14 @@ class _CustomColorPickerState extends State<CustomColorPicker> {
   Widget build(BuildContext context) {
     return StarMenu(
       params: StarMenuParameters.dropdown(context).copyWith(
-          centerOffset: Offset(MediaQuery.of(context).size.width / 3.5, 0)),
+          centerOffset: Offset(
+              MediaQuery.of(context).size.width > 1250 ? 300 : 240,
+              MediaQuery.of(context).size.width > 1250 ? 130 : 115)),
       items: [
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width / 3,
+            width: MediaQuery.of(context).size.width > 1250 ? 500 : 400,
             child: FittedBox(
               child: StatefulBuilder(builder: (context, setState) {
                 return ColorPicker(
