@@ -6,12 +6,12 @@ import 'package:equatable/equatable.dart';
 import '/data/model/entity.dart';
 
 class ObservationType extends Entity implements Equatable {
-  final String security;
+  final String severity;
   final String visibility;
   const ObservationType({
     super.id,
     super.name,
-    required this.security,
+    required this.severity,
     required this.visibility,
     super.active,
     super.deactivationDate,
@@ -22,14 +22,14 @@ class ObservationType extends Entity implements Equatable {
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
       'Observation Type': name,
-      'Severity': security,
+      'Severity': severity,
       'Visibility': visibility,
     }..addEntries(super.detailItemsToMap().entries);
   }
 
   @override
   List<Object?> get props => [
-        security,
+        severity,
         visibility,
         ...super.props,
       ];
@@ -41,7 +41,7 @@ class ObservationType extends Entity implements Equatable {
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
       'Observation Type': name,
-      'Severity': security,
+      'Severity': severity,
       'Visibility': visibility,
       'Active': active,
     };
@@ -52,7 +52,7 @@ class ObservationType extends Entity implements Equatable {
     if (id == null) {
       return <String, dynamic>{
         'name': name,
-        'security': security,
+        'severity': severity,
         'visibility': visibility,
         'active': active,
       };
@@ -60,7 +60,7 @@ class ObservationType extends Entity implements Equatable {
       return <String, dynamic>{
         'id': id,
         'name': name,
-        'security': security,
+        'severity': severity,
         'visibility': visibility,
         'active': active,
       };
@@ -73,7 +73,7 @@ class ObservationType extends Entity implements Equatable {
     return ObservationType(
       id: entity.id,
       name: entity.name,
-      security: map['security'] as String,
+      severity: map['severity'] as String,
       visibility: map['visibility'] as String,
       active: entity.active,
       deactivationDate: entity.deactivationDate,
@@ -89,7 +89,7 @@ class ObservationType extends Entity implements Equatable {
   ObservationType copyWith({
     String? id,
     String? name,
-    String? security,
+    String? severity,
     String? visibility,
     bool? active,
     String? deactivationDate,
@@ -98,7 +98,7 @@ class ObservationType extends Entity implements Equatable {
     return ObservationType(
       id: id ?? this.id,
       name: name ?? this.name,
-      security: security ?? this.security,
+      severity: severity ?? this.severity,
       visibility: visibility ?? this.visibility,
       active: active ?? this.active,
       deactivationDate: deactivationDate ?? this.deactivationDate,

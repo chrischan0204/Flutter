@@ -26,9 +26,10 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
   String? priorityType;
   Color? colorCode;
   bool priorityLevelDeactive = false;
-
-  FocusNode priorityLevelNameFocusNode = FocusNode();
   bool isFirstInit = true;
+
+  String priorityLevelValidationMessage = '';
+  String priorityTypeValidationMessage = '';
 
   @override
   void initState() {
@@ -77,26 +78,25 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
   }
 
   bool _validate() {
+    bool validated = true;
     if (priorityLevelNameController.text.isEmpty ||
         priorityLevelNameController.text.trim().isEmpty) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Priority level is a mandatory field',
-      ).showNotification();
-      return false;
+      setState(() {
+        priorityLevelValidationMessage = 'Priority level is required.';
+      });
+
+      validated = false;
     }
     if (priorityType == null ||
         (priorityType != null &&
             (priorityType!.isEmpty || priorityType!.trim().isEmpty))) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Priority type is a mandatory field.',
-      ).showNotification();
-      return false;
+      setState(() {
+        priorityTypeValidationMessage = 'Priority type is required.';
+      });
+
+      validated = false;
     }
-    return true;
+    return validated;
   }
 
   @override
@@ -129,11 +129,9 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
         }
         if (state.priorityLevelCrudStatus == EntityStatus.failure) {
           priorityLevelsBloc.add(const PriorityLevelsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
+          setState(() {
+            priorityLevelValidationMessage = state.message;
+          });
         }
       },
       builder: (context, state) {
@@ -149,10 +147,12 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
               FormItem(
                 label: 'Priority Level (*)',
                 content: CustomTextField(
-                  focusNode: priorityLevelNameFocusNode,
                   controller: priorityLevelNameController,
                   hintText: 'Priority Level Name',
                   onChanged: (priorityLevelName) {
+                    setState(() {
+                      priorityLevelValidationMessage = '';
+                    });
                     priorityLevelsBloc.add(
                       PriorityLevelSelected(
                         priorityLevel: state.selectedPriorityLevel!.copyWith(
@@ -162,7 +162,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                     );
                   },
                 ),
-                message: '',
+                message: priorityLevelValidationMessage,
               ),
               FormItem(
                 label: 'Priority Type (*)',
@@ -174,6 +174,9 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                   hint: 'Select Priority Type',
                   selectedValue: priorityType,
                   onChanged: (priorityType) {
+                    setState(() {
+                      priorityTypeValidationMessage = '';
+                    });
                     priorityLevelsBloc.add(
                       PriorityLevelSelected(
                         priorityLevel: state.selectedPriorityLevel!.copyWith(
@@ -183,7 +186,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                     );
                   },
                 ),
-                message: '',
+                message: priorityTypeValidationMessage,
               ),
               FormItem(
                 label: 'Color (*)',

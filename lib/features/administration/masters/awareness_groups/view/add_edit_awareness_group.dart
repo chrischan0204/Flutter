@@ -28,8 +28,8 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
   String? awarenessGroupVisibility;
   bool awarenessGroupDeactive = false;
 
-  FocusNode awarenessGroupNameFocusNode = FocusNode();
   bool isFirstInit = true;
+  String awarenessGroupNameValidationMessage = '';
 
   @override
   void initState() {
@@ -78,14 +78,20 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
   bool _validate() {
     if (awarenessGroupNameController.text.isEmpty ||
         awarenessGroupNameController.text.trim().isEmpty) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Awareness group name is a mandatory field',
-      ).showNotification();
+      setState(() {
+        awarenessGroupNameValidationMessage =
+            'Awareness group name is required.';
+      });
+
       return false;
     }
     return true;
+  }
+
+  void initMessages() {
+    setState(() {
+      awarenessGroupNameValidationMessage = '';
+    });
   }
 
   @override
@@ -111,11 +117,9 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
         }
         if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
           awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
+          setState(() {
+            awarenessGroupNameValidationMessage = state.message;
+          });
         }
       },
       builder: (context, state) {
@@ -131,10 +135,10 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
               FormItem(
                 label: 'Awareness Group Name (*)',
                 content: CustomTextField(
-                  focusNode: awarenessGroupNameFocusNode,
                   controller: awarenessGroupNameController,
                   hintText: 'Awareness Group Name',
                   onChanged: (awarenessGroupName) {
+                    initMessages();
                     awarenessGroupsBloc.add(
                       AwarenessGroupSelected(
                         awarenessGroup: state.selectedAwarenessGroup!.copyWith(
@@ -144,7 +148,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
                     );
                   },
                 ),
-                message: '',
+                message: awarenessGroupNameValidationMessage,
               ),
             ],
           ),

@@ -29,8 +29,11 @@ class _AddEditObservationTypeViewState
   String? observationTypeVisibility;
   bool observationTypeDeactive = false;
 
-  FocusNode observationTypeNameFocusNode = FocusNode();
   bool isFirstInit = true;
+
+  String observationTypeNameValidationMessage = '';
+  String severityValidationMessage = '';
+  String visibilityValidationMessage = '';
 
   @override
   void initState() {
@@ -46,7 +49,7 @@ class _AddEditObservationTypeViewState
         const ObservationTypeSelected(
           observationType: ObservationType(
             name: '',
-            security: '',
+            severity: '',
             visibility: '',
             active: true,
           ),
@@ -80,41 +83,37 @@ class _AddEditObservationTypeViewState
   }
 
   bool _validate() {
+    bool validated = true;
     if (observationTypeNameController.text.isEmpty ||
         observationTypeNameController.text.trim().isEmpty) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Awareness group name is a mandatory field',
-      ).showNotification();
-      return false;
+      setState(() {
+        observationTypeNameValidationMessage =
+            'Observation type name is required.';
+      });
+      validated = false;
     }
 
     if (observationTypeSeverity == null ||
         (observationTypeSeverity != null &&
             (observationTypeSeverity!.isEmpty ||
                 observationTypeSeverity!.trim().isEmpty))) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Severity is a mandatory field.',
-      ).showNotification();
-      return false;
+      setState(() {
+        severityValidationMessage = 'Severity is required.';
+      });
+      validated = false;
     }
 
     if (observationTypeVisibility == null ||
         (observationTypeVisibility != null &&
             (observationTypeVisibility!.isEmpty ||
                 observationTypeVisibility!.trim().isEmpty))) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Visibility is a mandatory field.',
-      ).showNotification();
-      return false;
+      setState(() {
+        visibilityValidationMessage = 'Visibility is required.';
+      });
+      validated = false;
     }
 
-    return true;
+    return validated;
   }
 
   @override
@@ -123,9 +122,9 @@ class _AddEditObservationTypeViewState
       listener: (context, state) {
         if (state.selectedObservationType != null) {
           observationTypeSeverity =
-              state.selectedObservationType!.security.isEmpty
+              state.selectedObservationType!.severity.isEmpty
                   ? null
-                  : state.selectedObservationType!.security;
+                  : state.selectedObservationType!.severity;
           observationTypeVisibility =
               state.selectedObservationType!.visibility.isEmpty
                   ? null
@@ -150,11 +149,9 @@ class _AddEditObservationTypeViewState
         }
         if (state.observationTypeCrudStatus == EntityStatus.failure) {
           observationTypesBloc.add(const ObservationTypesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
+          setState(() {
+            observationTypeNameValidationMessage = state.message;
+          });
         }
       },
       builder: (context, state) {
@@ -170,10 +167,12 @@ class _AddEditObservationTypeViewState
               FormItem(
                 label: 'Observation Type Name (*)',
                 content: CustomTextField(
-                  focusNode: observationTypeNameFocusNode,
                   controller: observationTypeNameController,
                   hintText: 'Observation Type Name',
                   onChanged: (observationTypeName) {
+                    setState(() {
+                      observationTypeNameValidationMessage = '';
+                    });
                     observationTypesBloc.add(
                       ObservationTypeSelected(
                         observationType:
@@ -184,7 +183,7 @@ class _AddEditObservationTypeViewState
                     );
                   },
                 ),
-                message: '',
+                message: observationTypeNameValidationMessage,
               ),
               FormItem(
                 label: 'Severity (*)',
@@ -198,17 +197,20 @@ class _AddEditObservationTypeViewState
                   hint: 'Select Severity',
                   selectedValue: observationTypeSeverity,
                   onChanged: (severity) {
+                    setState(() {
+                      severityValidationMessage = '';
+                    });
                     observationTypesBloc.add(
                       ObservationTypeSelected(
                         observationType:
                             state.selectedObservationType!.copyWith(
-                          security: severity.key,
+                          severity: severity.key,
                         ),
                       ),
                     );
                   },
                 ),
-                message: '',
+                message: severityValidationMessage,
               ),
               FormItem(
                 label: 'Visibility',
@@ -220,6 +222,9 @@ class _AddEditObservationTypeViewState
                   selectedValue: observationTypeVisibility,
                   hint: 'Select Visibility',
                   onChanged: (visibility) {
+                    setState(() {
+                      visibilityValidationMessage = '';
+                    });
                     observationTypesBloc.add(
                       ObservationTypeSelected(
                         observationType:
@@ -230,7 +235,7 @@ class _AddEditObservationTypeViewState
                     );
                   },
                 ),
-                message: '',
+                message: visibilityValidationMessage,
               ),
               widget.observationTypeId != null
                   ? FormItem(

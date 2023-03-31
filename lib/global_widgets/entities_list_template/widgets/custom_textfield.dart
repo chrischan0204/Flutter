@@ -6,14 +6,12 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final bool isDisabled;
   final TextEditingController controller;
-  final FocusNode focusNode;
   const CustomTextField({
     super.key,
     required this.hintText,
     required this.onChanged,
     this.isDisabled = false,
     required this.controller,
-    required this.focusNode,
   });
 
   @override
@@ -31,7 +29,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return SizedBox(
       height: 36,
       child: TextField(
-        focusNode: widget.focusNode,
         controller: widget.controller,
         enabled: !widget.isDisabled,
         onChanged: (value) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
@@ -29,8 +28,10 @@ class _AddEditAwarenessCategoryViewState
   String? awarenessCategoryGroupName;
   bool awarenessCategoryDeactive = false;
 
-  FocusNode awarenessCategoryNameFocusNode = FocusNode();
   bool isFirstInit = true;
+
+  String awarenessGroupValidationMessage = '';
+  String awarenessCategoryValidationMessage = '';
 
   @override
   void initState() {
@@ -82,27 +83,24 @@ class _AddEditAwarenessCategoryViewState
   }
 
   bool _validate() {
+    bool validated = true;
     if (awarenessCategoryGroupName == null ||
         (awarenessCategoryGroupName != null &&
             (awarenessCategoryGroupName!.isEmpty ||
                 awarenessCategoryGroupName!.trim().isEmpty))) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Awareness group is a mandatory field.',
-      ).showNotification();
-      return false;
+      setState(() {
+        awarenessGroupValidationMessage = 'Awareness group is required.';
+      });
+      validated = false;
     }
     if (awarenessCategoryNameController.text.isEmpty ||
         awarenessCategoryNameController.text.trim().isEmpty) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: 'Awareness category name is a mandatory field',
-      ).showNotification();
-      return false;
+      setState(() {
+        awarenessCategoryValidationMessage = 'Awareness category is required.';
+      });
+      validated = false;
     }
-    return true;
+    return validated;
   }
 
   @override
@@ -137,11 +135,9 @@ class _AddEditAwarenessCategoryViewState
         }
         if (state.awarenessCategoryCrudStatus == EntityStatus.failure) {
           awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
+          setState(() {
+            awarenessCategoryValidationMessage = state.message;
+          });
         }
       },
       builder: (context, state) {
@@ -172,6 +168,9 @@ class _AddEditAwarenessCategoryViewState
                     hint: 'Select Awareness Group',
                     selectedValue: awarenessCategoryGroupName,
                     onChanged: (awarenessGroup) {
+                      setState(() {
+                        awarenessGroupValidationMessage = '';
+                      });
                       awarenessCategoriesBloc.add(
                         AwarenessCategorySelected(
                           awarenessCategory:
@@ -184,15 +183,17 @@ class _AddEditAwarenessCategoryViewState
                     },
                   );
                 }),
-                message: '',
+                message: awarenessGroupValidationMessage,
               ),
               FormItem(
                 label: 'Awareness Category (*)',
                 content: CustomTextField(
-                  focusNode: awarenessCategoryNameFocusNode,
                   controller: awarenessCategoryNameController,
                   hintText: 'Awareness Category',
                   onChanged: (awarenessCategoryName) {
+                    setState(() {
+                      awarenessCategoryValidationMessage = '';
+                    });
                     awarenessCategoriesBloc.add(
                       AwarenessCategorySelected(
                         awarenessCategory:
@@ -203,7 +204,7 @@ class _AddEditAwarenessCategoryViewState
                     );
                   },
                 ),
-                message: '',
+                message: awarenessCategoryValidationMessage,
               ),
               widget.awarenessCategoryId != null
                   ? FormItem(
@@ -225,11 +226,6 @@ class _AddEditAwarenessCategoryViewState
                       message: '',
                     )
                   : Container(),
-              // FormItem(
-              //   label: 'Deactivated:',
-              //   content: Text('By: Andrew Sully on 12th Jan 2023'),
-              //   message: '',
-              // ),
             ],
           ),
         );

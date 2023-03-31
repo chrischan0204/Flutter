@@ -260,14 +260,12 @@ class _SidebarItemState extends State<SidebarItem>
     return widget.isSidebarExtended || widget.isSubItem
         ? Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.only(top: 5),
+            // margin: const EdgeInsets.only(top: 5),
             child: Text(
               widget.label,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: widget.selectedItemName == widget.path
-                    ? widget.color
-                    : Colors.white,
+              style: const TextStyle(
+                color: Colors.white,
                 fontSize: 12,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,

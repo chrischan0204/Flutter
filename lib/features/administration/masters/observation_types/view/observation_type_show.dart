@@ -44,7 +44,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
             content: state.message,
           ).showNotification();
 
-          GoRouter.of(context).go('/awareness-groups');
+          GoRouter.of(context).go('/observation-types');
         }
         if (state.observationTypeCrudStatus == EntityStatus.failure) {
           observationTypesBloc.add(const ObservationTypesStatusInited());
