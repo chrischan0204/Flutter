@@ -1,6 +1,6 @@
 import '/features/theme/view/widgets/topbar/topbar.dart';
 import 'package:flutter/material.dart';
-import 'package:web_smooth_scroll/web_smooth_scroll.dart';
+import 'package:flutter/gestures.dart';
 
 import 'view/widgets/sidebar/sidebar.dart';
 import 'view/widgets/sidebar/sidebar_style.dart';
@@ -54,29 +54,35 @@ class _LayoutState extends State<Layout> {
                 ),
               )
             : null,
-        body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _scrollController,
-          child: Column(
-            children: [
-              const Topbar(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  constraints.maxWidth < 1000
-                      ? Container()
-                      : Sidebar(
-                          selectedItemName: widget.selectedItemName,
-                        ),
-                  Expanded(
-                    child: SizedBox(
-                      height: constraints.maxHeight,
-                      child: widget.body,
+        body: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+          }),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            controller: _scrollController,
+            child: Column(
+              children: [
+                const Topbar(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    constraints.maxWidth < 1000
+                        ? Container()
+                        : Sidebar(
+                            selectedItemName: widget.selectedItemName,
+                          ),
+                    Expanded(
+                      child: SizedBox(
+                        height: constraints.maxHeight,
+                        child: widget.body,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
