@@ -54,35 +54,29 @@ class _LayoutState extends State<Layout> {
                 ),
               )
             : null,
-        body: WebSmoothScroll(
+        body: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: _scrollController,
-          scrollOffset: 30,
-          animationDuration: 600,
-          curve: Curves.linear,
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _scrollController,
-            child: Column(
-              children: [
-                const Topbar(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    constraints.maxWidth < 1000
-                        ? Container()
-                        : Sidebar(
-                            selectedItemName: widget.selectedItemName,
-                          ),
-                    Expanded(
-                      child: SizedBox(
-                        height: constraints.maxHeight,
-                        child: widget.body,
-                      ),
+          child: Column(
+            children: [
+              const Topbar(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  constraints.maxWidth < 1000
+                      ? Container()
+                      : Sidebar(
+                          selectedItemName: widget.selectedItemName,
+                        ),
+                  Expanded(
+                    child: SizedBox(
+                      height: constraints.maxHeight,
+                      child: widget.body,
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

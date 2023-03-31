@@ -27,7 +27,7 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
           description:
               'List of defined Priority Levels. Types can be added or current ones edited from this screen.',
           entities: state.priorityLevels,
-          title: 'Priority Levels List',
+          title: 'Priority Levels',
           label: 'priority level',
           onRowClick: (priorityLevel) {
             priorityLevelsBloc.add(PriorityLevelSelected(

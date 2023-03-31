@@ -28,7 +28,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
           description:
               'List of defined observation types. Types can be added or current ones edited from this screen.',
           entities: state.observationTypes,
-          title: 'Observation Types List',
+          title: 'Observation Types',
           label: 'observation type',
           emptyMessage:
               'There are no observation types. Please click on New Observation Type to assign new observation type.',

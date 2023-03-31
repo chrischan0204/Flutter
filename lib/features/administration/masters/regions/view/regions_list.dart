@@ -28,7 +28,7 @@ class _RegionsState extends State<RegionsListView> {
         return EntityListTemplate(
           description: 'The following regions are available to create sites in',
           entities: state.assignedRegions,
-          title: 'Regions List',
+          title: 'Regions',
           label: 'region',
           emptyMessage:
               'There are no regions assigned. Please click on New Region to assign new region.',

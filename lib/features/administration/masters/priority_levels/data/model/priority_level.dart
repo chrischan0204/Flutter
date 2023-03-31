@@ -32,7 +32,7 @@ class PriorityLevel extends Entity implements Equatable {
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
       'Priority Level': name,
-      'Color associated': colorCode,
+      'Color Associated': colorCode,
       'Priority Type': priorityType,
     }..addEntries(super.detailItemsToMap().entries);
   }
@@ -51,7 +51,7 @@ class PriorityLevel extends Entity implements Equatable {
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
       'Priority Level': name,
-      'Color associated': colorCode,
+      'Color Associated': colorCode,
       'Priority Type': priorityType,
       'Active': active,
     };

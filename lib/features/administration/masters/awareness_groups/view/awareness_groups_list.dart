@@ -27,7 +27,7 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
           description:
               'List of defined awareness groups. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
           entities: state.awarenessGroups,
-          title: 'Awareness Groups List',
+          title: 'Awareness Groups',
           label: 'awareness group',
           emptyMessage:
               'There are no awareness groups. Please click on New Awareness Group to add new awareness group.',

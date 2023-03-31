@@ -32,7 +32,7 @@ class _AwarenessCategoriesListViewState
           description:
               'List of defined awareness categories. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
           entities: state.awarenessCategories,
-          title: 'Awareness Categories List',
+          title: 'Awareness Categories',
           label: 'awareness category',
           emptyMessage:
               'There are no awareness categories. Please click on New Awareness Category to add new awareness category.',

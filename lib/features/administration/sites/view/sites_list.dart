@@ -25,7 +25,7 @@ class _SitesListViewState extends State<SitesListView> {
     return BlocBuilder<SitesBloc, SitesState>(
       builder: (context, state) {
         return EntityListTemplate(
-          title: 'Sites List',
+          title: 'Sites',
           label: 'site',
           entities: state.sites,
           showTableHeaderButtons: true,
