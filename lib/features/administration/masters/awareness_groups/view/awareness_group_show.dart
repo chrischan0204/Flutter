@@ -60,7 +60,7 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
           label: 'awareness group',
           entity: state.selectedAwarenessGroup,
           deletable: state.selectedAwarenessGroup != null &&
-              state.selectedAwarenessGroup!.categoryCount == 0,
+              state.selectedAwarenessGroup!.deletable,
           deleteEntity: () {
             awarenessGroupsBloc.add(
               AwarenessGroupDeleted(
