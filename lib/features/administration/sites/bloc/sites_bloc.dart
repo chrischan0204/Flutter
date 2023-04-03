@@ -25,7 +25,9 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     try {
       List<Site> sites = await sitesRepository.getSites();
       emit(state.copyWith(
-          sites: sites, sitesRetrievedStatus: EntityStatus.succuess));
+        sites: sites,
+        sitesRetrievedStatus: EntityStatus.succuess,
+      ));
     } catch (e) {
       emit(state.copyWith(sitesRetrievedStatus: EntityStatus.failure));
     }

@@ -2,13 +2,13 @@
 import 'dart:convert';
 
 import '/data/model/model.dart';
-import 'audit_template.dart';
 
 class Site extends Entity {
   final String siteCode;
+  final String siteType;
   final String referenceCode;
-  final Region region;
-  final TimeZone timeZone;
+  final String region;
+  final String timeZone;
   final int users;
   final int observations;
   final List<AuditTemplate> auditTemplates;
@@ -16,18 +16,23 @@ class Site extends Entity {
     super.id,
     super.name,
     required this.siteCode,
+    required this.siteType,
     required this.referenceCode,
     required this.region,
     required this.timeZone,
-    required this.users,
-    required this.observations,
-    required this.auditTemplates,
+    this.users = 0,
+    this.observations = 0,
+    this.auditTemplates = const [],
+    super.active,
+    super.deactivationDate,
+    super.deactivationUserName,
   });
 
   @override
   List<Object?> get props => [
         name,
         siteCode,
+        siteType,
         referenceCode,
         region,
         timeZone,
@@ -42,8 +47,8 @@ class Site extends Entity {
       'Name': name,
       'Site Code': siteCode,
       'Reference Code': referenceCode,
-      'Region': region.name,
-      'Timezone': timeZone.name,
+      'Region': region,
+      'Timezone': timeZone,
     };
   }
 
@@ -51,8 +56,8 @@ class Site extends Entity {
   Map<String, dynamic> detailItemsToMap() {
     return {
       'Name': name,
-      'Region': region.name,
-      'Time Zone': timeZone.name,
+      'Region': region,
+      'Time Zone': timeZone,
       'Code': siteCode,
       'Reference Code': referenceCode,
       'Users': 5,
@@ -65,23 +70,31 @@ class Site extends Entity {
     String? id,
     String? name,
     String? siteCode,
+    String? siteType,
     String? referenceCode,
-    Region? region,
-    TimeZone? timeZone,
+    String? region,
+    String? timeZone,
     int? users,
     int? observations,
     List<AuditTemplate>? auditTemplates,
+    bool? active,
+    String? deactivationDate,
+    String? deactivationUserName,
   }) {
     return Site(
       id: id ?? this.id,
       name: name ?? this.name,
       siteCode: siteCode ?? this.siteCode,
+      siteType: siteType ?? this.siteType,
       referenceCode: referenceCode ?? this.referenceCode,
       region: region ?? this.region,
       timeZone: timeZone ?? this.timeZone,
       users: users ?? this.users,
       observations: observations ?? this.observations,
       auditTemplates: auditTemplates ?? this.auditTemplates,
+      active: active ?? this.active,
+      deactivationDate: deactivationDate ?? deactivationDate,
+      deactivationUserName: deactivationUserName ?? deactivationUserName,
     );
   }
 
@@ -91,8 +104,8 @@ class Site extends Entity {
       'name': name,
       'siteCode': siteCode,
       'referenceCode': referenceCode,
-      'region': region.toMap(),
-      'timeZone': timeZone.toMap(),
+      'region': region,
+      'timeZone': timeZone,
       'users': users,
       'observations': observations,
       'auditTemplates': auditTemplates,
@@ -110,14 +123,15 @@ class Site extends Entity {
       id: map['id'] as String,
       name: map['name'] as String,
       siteCode: map['siteCode'] as String,
+      siteType: map['siteType'] as String,
       referenceCode: map['referenceCode'] as String,
-      region: Region.fromMap(map['region'] as Map<String, dynamic>),
-      timeZone: TimeZone.fromMap(map['timeZone'] as Map<String, dynamic>),
-      users: map['users'] as int,
-      observations: map['observations'] as int,
-      auditTemplates: List.from(map['auditTemplates'])
-          .map((auditTemplateMap) => AuditTemplate.fromMap(auditTemplateMap))
-          .toList(),
+      region: map['regionName'] as String,
+      timeZone: map['timeZoneName'] as String,
+      // users: map['users'] as int,
+      // observations: map['observations'] as int,
+      // auditTemplates: List.from(map['auditTemplates'])
+      //     .map((auditTemplateMap) => AuditTemplate.fromMap(auditTemplateMap))
+      //     .toList(),
     );
   }
 
