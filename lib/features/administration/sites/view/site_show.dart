@@ -61,6 +61,10 @@ class _SiteShowViewState extends State<SiteShowView> {
           title: 'Site',
           label: 'site',
           deleteEntity: () => _deleteSite(state),
+          deletable:
+              state.selectedSite == null ? true : state.selectedSite!.deletable,
+          descriptionForDelete:
+              'The site has users or observations associated to it',
           tabItems: {
             'Site Details': Container(),
             'Audits Templates': Column(
@@ -97,17 +101,18 @@ class _SiteShowViewState extends State<SiteShowView> {
                         ),
                       ),
                     ],
-                    rows: List<AuditTemplate>.from(state.selectedSite != null
-                            ? state.selectedSite!.auditTemplates
-                            : [])
-                        .map((auditTemplate) => DataRow(
-                            cells: List.from(
-                                    auditTemplate.toTableDetailMap().values)
-                                .map((detail) => DataCell(CustomDataCell(
-                                      data: detail,
-                                    )))
-                                .toList()))
-                        .toList(),
+                    rows: [],
+                    // rows: List<AuditTemplate>.from(state.selectedSite != null
+                    //         ? state.selectedSite!.auditTemplates
+                    //         : [])
+                    //     .map((auditTemplate) => DataRow(
+                    //         cells: List.from(
+                    //                 auditTemplate.toTableDetailMap().values)
+                    //             .map((detail) => DataCell(CustomDataCell(
+                    //                   data: detail,
+                    //                 )))
+                    //             .toList()))
+                    //     .toList(),
                   ),
                 ),
               ],

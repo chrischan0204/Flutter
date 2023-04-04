@@ -220,7 +220,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               } else {
                 AwesomeDialog(
                   context: context,
-                  width: MediaQuery.of(context).size.width / 5,
+                  width: MediaQuery.of(context).size.width / 4.5,
                   dialogType: DialogType.warning,
                   headerAnimationLoop: false,
                   animType: AnimType.bottomSlide,
