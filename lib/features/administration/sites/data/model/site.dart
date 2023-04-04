@@ -13,7 +13,7 @@ class Site extends Entity {
   final String timeZoneId;
   final int users;
   final int observations;
-  final List<AuditTemplate> auditTemplates;
+  final int auditTemplates;
   const Site({
     super.id,
     super.name,
@@ -24,9 +24,9 @@ class Site extends Entity {
     this.regionId = '',
     this.timeZone = '',
     this.timeZoneId = '',
-    this.users = 0,
+    this.users = 20,
     this.observations = 0,
-    this.auditTemplates = const [],
+    this.auditTemplates = 0,
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
@@ -45,6 +45,8 @@ class Site extends Entity {
         observations,
         auditTemplates,
       ];
+
+  bool get deletable => users == 0 && observations == 0 && auditTemplates == 0;
 
   @override
   Map<String, dynamic> tableItemsToMap() {
@@ -67,7 +69,7 @@ class Site extends Entity {
       'Reference Code': referenceCode,
       'Users': 5,
       'Observations': observations,
-      'Audit Templates': auditTemplates.length,
+      'Audit Templates': auditTemplates,
     };
   }
 
@@ -83,7 +85,7 @@ class Site extends Entity {
     String? timeZoneId,
     int? users,
     int? observations,
-    List<AuditTemplate>? auditTemplates,
+    int? auditTemplates,
     bool? active,
     String? deactivationDate,
     String? deactivationUserName,
@@ -127,18 +129,19 @@ class Site extends Entity {
   @override
   factory Site.fromMap(Map<String, dynamic> map) {
     return Site(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      siteCode: map['siteCode'] as String,
-      siteType: map['siteType'] as String,
-      referenceCode: map['referenceCode'] as String,
-      region: map['regionName'] as String,
-      timeZone: map['timeZoneName'] as String,
-      // users: map['users'] as int,
-      // observations: map['observations'] as int,
-      // auditTemplates: List.from(map['auditTemplates'])
-      //     .map((auditTemplateMap) => AuditTemplate.fromMap(auditTemplateMap))
-      //     .toList(),
+      id: map['id'] == null ? null : map['id'] as String,
+      name: map['name'],
+      siteCode: map['siteCode'],
+      siteType: map['siteType'] == null ? '' : map['siteType'] as String,
+      referenceCode: map['referenceCode'],
+      region: map['regionName'],
+      timeZone: map['timeZoneName'],
+      users: map['usreCount'] == null ? 0 : map['usreCount'] as int,
+      observations:
+          map['observationCount'] == null ? 0 : map['observationCount'] as int,
+      auditTemplates: map['auditTemplateCount'] == null
+          ? 0
+          : map['auditTemplateCount'] as int,
     );
   }
 

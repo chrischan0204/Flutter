@@ -53,7 +53,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
       Site selectedSite = await sitesRepository.getSiteById(event.siteId);
       emit(state.copyWith(
         siteSelectedStatus: EntityStatus.success,
-        selectedSite: selectedSite,
+        selectedSite: selectedSite.copyWith(id: event.siteId),
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -152,7 +152,6 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
         siteCrudStatus: EntityStatus.initial,
         siteSelectedStatus: EntityStatus.initial,
         sitesRetrievedStatus: EntityStatus.initial,
-        
       ),
     );
   }
