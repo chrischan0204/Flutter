@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safety_eta/features/administration/projects/view/show_project.dart';
 
 import '/features/features.dart';
 import 'package:go_router/go_router.dart';
@@ -168,8 +169,10 @@ final GoRouter router = GoRouter(
       path: '/projects/show/:projectId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: const Layout(
-          body: ProjectsListView(),
+        child: Layout(
+          body: ShowProjectView(
+            projectId: state.params['projectId']!,
+          ),
           selectedItemName: 'projects',
         ),
       ),
