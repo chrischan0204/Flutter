@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
-import 'package:safety_eta/constants/uri.dart';
 
+import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class SitesRepository {
