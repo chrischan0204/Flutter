@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:safety_eta/features/administration/projects/bloc/projects_bloc.dart';
 
 import 'router.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => SitesRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => ProjectsRepository(),
         )
       ],
       child: MultiBlocProvider(
@@ -82,6 +86,12 @@ class MyApp extends StatelessWidget {
               sitesRepository: RepositoryProvider.of<SitesRepository>(context),
             ),
           ),
+          BlocProvider(
+            create: (context) => ProjectsBloc(
+              projectsRepository:
+                  RepositoryProvider.of<ProjectsRepository>(context),
+            ),
+          )
         ],
         child: MaterialApp.router(
           title: 'Safety ETA',

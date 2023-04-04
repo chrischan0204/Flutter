@@ -79,6 +79,16 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/sites/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: SitesListView(),
+          selectedItemName: 'sites',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/sites/new',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

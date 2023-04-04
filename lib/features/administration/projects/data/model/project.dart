@@ -10,6 +10,11 @@ class Project extends Entity {
   final String referenceNumber;
   final String referneceName;
   final int companyCount;
+  final String? createdOn;
+  final String? createdByUserName;
+  final String? lastModifiedOn;
+  final String? updatedByUserName;
+  final List<String> contractors;
 
   const Project({
     super.id,
@@ -23,6 +28,15 @@ class Project extends Entity {
     super.deactivationDate,
     super.deactivationUserName,
     this.companyCount = 0,
+    this.createdOn,
+    this.createdByUserName,
+    this.lastModifiedOn,
+    this.updatedByUserName,
+    this.contractors = const [
+      'Garmont Pavers',
+      'Lionheart Painting Company',
+      'Greenline Signage',
+    ],
   });
 
   @override
@@ -35,16 +49,54 @@ class Project extends Entity {
     };
   }
 
+  @override
+  Map<String, dynamic> tableItemsToMap() {
+    return {
+      'Name': name,
+      'Region': regionName,
+      'Site': siteName,
+      'Contractors': contractors.length,
+    };
+  }
+
+  @override
+  Map<String, dynamic> detailItemsToMap() {
+    return {
+      'Name': name,
+      'Region': regionName,
+      'Site': siteName,
+      'Active': active,
+      'Reference Code': referenceNumber,
+      'Reference Name': referneceName,
+      'Created on': createdOn,
+      'Created By': createdByUserName,
+      'Last updated': lastModifiedOn,
+      'Updated By': updatedByUserName,
+      'Contractors': contractors.join(', '),
+    };
+  }
+
   factory Project.fromMap(Map<String, dynamic> map) {
     Entity entity = Entity.fromMap(map);
     return Project(
       id: entity.id,
       name: entity.name,
-      regionName: map['regionName'] as String,
+      regionName:
+          map['regionName'] == null ? '' : (map['regionName'] as String),
       siteName: map['siteName'] as String,
       referenceNumber: map['referenceNumber'] as String,
-      referneceName: map['referneceName'] as String,
+      referneceName: map['referenceName'] as String,
       companyCount: map['companyCount'] as int,
+      createdOn: map['createdOn'] == null ? '' : (map['createdOn'] as String),
+      createdByUserName: map['createdByUserName'] == null
+          ? ''
+          : (map['createdByUserName'] as String),
+      lastModifiedOn: map['lastModifiedOn'] == null
+          ? ''
+          : (map['lastModifiedOn'] as String),
+      updatedByUserName: map['updatedByUserName'] == null
+          ? ''
+          : (map['updatedByUserName'] as String),
       active: entity.active,
       deactivationDate: entity.deactivationDate,
       deactivationUserName: entity.deactivationUserName,
