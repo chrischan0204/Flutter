@@ -8,18 +8,22 @@ class Site extends Entity {
   final String siteType;
   final String referenceCode;
   final String region;
+  final String regionId;
   final String timeZone;
+  final String timeZoneId;
   final int users;
   final int observations;
   final List<AuditTemplate> auditTemplates;
   const Site({
     super.id,
     super.name,
-    required this.siteCode,
-    required this.siteType,
-    required this.referenceCode,
-    required this.region,
-    required this.timeZone,
+    this.siteCode = '',
+    this.siteType = '',
+    this.referenceCode = '',
+    this.region = '',
+    this.regionId = '',
+    this.timeZone = '',
+    this.timeZoneId = '',
     this.users = 0,
     this.observations = 0,
     this.auditTemplates = const [],
@@ -74,7 +78,9 @@ class Site extends Entity {
     String? siteType,
     String? referenceCode,
     String? region,
+    String? regionId,
     String? timeZone,
+    String? timeZoneId,
     int? users,
     int? observations,
     List<AuditTemplate>? auditTemplates,
@@ -89,7 +95,9 @@ class Site extends Entity {
       siteType: siteType ?? this.siteType,
       referenceCode: referenceCode ?? this.referenceCode,
       region: region ?? this.region,
+      regionId: regionId ?? this.regionId,
       timeZone: timeZone ?? this.timeZone,
+      timeZoneId: timeZoneId ?? this.timeZoneId,
       users: users ?? this.users,
       observations: observations ?? this.observations,
       auditTemplates: auditTemplates ?? this.auditTemplates,
@@ -105,11 +113,9 @@ class Site extends Entity {
       'name': name,
       'siteCode': siteCode,
       'referenceCode': referenceCode,
-      'region': region,
-      'timeZone': timeZone,
-      'users': users,
-      'observations': observations,
-      'auditTemplates': auditTemplates,
+      'regionId': regionId,
+      'timeZoneId': timeZoneId,
+      'siteType': siteType,
     };
 
     if (id != null) {

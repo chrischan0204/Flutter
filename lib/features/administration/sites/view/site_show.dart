@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
-
 import '/data/bloc/bloc.dart';
 
 class SiteShowView extends StatefulWidget {
@@ -27,14 +29,38 @@ class _SiteShowViewState extends State<SiteShowView> {
     super.initState();
   }
 
+  _deleteSite(SitesState state) {
+    sitesBloc.add(SiteDeleted(siteId: state.selectedSite!.id!));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SitesBloc, SitesState>(
+    return BlocConsumer<SitesBloc, SitesState>(
+      listener: (context, state) {
+        if (state.siteCrudStatus == EntityStatus.success) {
+          sitesBloc.add(SitesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+
+          GoRouter.of(context).go('/sites');
+        }
+        if (state.siteCrudStatus == EntityStatus.failure) {
+          sitesBloc.add(SitesStatusInited());
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
+        }
+      },
       builder: (context, state) {
         return EntityShowTemplate(
           title: 'Site',
           label: 'site',
-          deleteEntity: () {},
+          deleteEntity: () => _deleteSite(state),
           tabItems: {
             'Site Details': Container(),
             'Audits Templates': Column(

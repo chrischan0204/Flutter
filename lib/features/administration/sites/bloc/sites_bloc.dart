@@ -17,6 +17,9 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     on<SiteSelectedById>(_onSiteSelectedById);
     on<AuditTemplatesRetrieved>(_onAuditTemplatesRetrieved);
     on<AuditTemplateAssignedToSite>(_onAuditTemplateAssignedToSite);
+    on<SiteAdded>(_onSiteAdded);
+    on<SiteDeleted>(_onSiteDeleted);
+    on<SitesStatusInited>(_onSitesStatusInited);
   }
 
   Future<void> _onSitesRetrieved(
@@ -110,5 +113,47 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     templates.fillRange(index, index + 1,
         templates[index].copyWith(assigned: !templates[index].assigned));
     emit(state.copyWith(templates: templates));
+  }
+
+  void _onSiteAdded(SiteAdded event, Emitter<SitesState> emit) async {
+    emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
+    try {
+      String message = await sitesRepository.addSite(event.site);
+      emit(state.copyWith(
+        siteCrudStatus: EntityStatus.success,
+        message: message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        siteCrudStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  void _onSiteDeleted(SiteDeleted event, Emitter<SitesState> emit) async {
+    emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
+    try {
+      String message = await sitesRepository.deleteSite(event.siteId);
+      emit(state.copyWith(
+        siteCrudStatus: EntityStatus.success,
+        selectedSite: null,
+        message: message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        siteCrudStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  void _onSitesStatusInited(SitesStatusInited event, Emitter<SitesState> emit) {
+    emit(
+      state.copyWith(
+        siteCrudStatus: EntityStatus.initial,
+        siteSelectedStatus: EntityStatus.initial,
+        sitesRetrievedStatus: EntityStatus.initial,
+        message: '',
+      ),
+    );
   }
 }
