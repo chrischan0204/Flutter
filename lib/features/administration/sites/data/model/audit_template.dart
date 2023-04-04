@@ -1,15 +1,33 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class AuditTemplate {
+class AuditTemplate extends Equatable {
+  final String id;
   final String name;
   final String createdBy;
   final String lastRevisedOn;
-  AuditTemplate({
+  final String templateDescription;
+  final bool assigned;
+  const AuditTemplate({
+    required this.id,
     required this.name,
     required this.createdBy,
+    this.assigned = false,
+    required this.templateDescription,
     required this.lastRevisedOn,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        createdBy,
+        lastRevisedOn,
+        templateDescription,
+        assigned,
+      ];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -29,9 +47,11 @@ class AuditTemplate {
 
   factory AuditTemplate.fromMap(Map<String, dynamic> map) {
     return AuditTemplate(
+      id: map['id'] as String,
       name: map['name'] as String,
       createdBy: map['createdBy'] as String,
       lastRevisedOn: map['lastRevisedOn'] as String,
+      templateDescription: map['templateDescription'] as String,
     );
   }
 
@@ -39,4 +59,22 @@ class AuditTemplate {
 
   factory AuditTemplate.fromJson(String source) =>
       AuditTemplate.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AuditTemplate copyWith({
+    String? id,
+    String? name,
+    String? createdBy,
+    String? lastRevisedOn,
+    String? templateDescription,
+    bool? assigned,
+  }) {
+    return AuditTemplate(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      createdBy: createdBy ?? this.createdBy,
+      lastRevisedOn: lastRevisedOn ?? this.lastRevisedOn,
+      templateDescription: templateDescription ?? this.templateDescription,
+      assigned: assigned ?? this.assigned,
+    );
+  }
 }

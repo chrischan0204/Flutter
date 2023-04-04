@@ -6,12 +6,22 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final bool isDisabled;
   final TextEditingController controller;
+  final IconData? suffixIconData;
+  final Color suffixIconColor;
+  final Color suffixIconBackgroundColor;
+  final double iconSize;
+  final VoidCallback? onSuffixIconClick;
   const CustomTextField({
     super.key,
     required this.hintText,
     required this.onChanged,
     this.isDisabled = false,
     required this.controller,
+    this.suffixIconData,
+    this.suffixIconColor = const Color(0xff0c81ff),
+    this.suffixIconBackgroundColor = const Color(0xfff9fafb),
+    this.iconSize = 20,
+    this.onSuffixIconClick,
   });
 
   @override
@@ -65,6 +75,33 @@ class _CustomTextFieldState extends State<CustomTextField> {
           fillColor: Colors.white,
           focusColor: Colors.white,
           hoverColor: Colors.white,
+          suffixIcon: widget.suffixIconData == null
+              ? null
+              : GestureDetector(
+                  onTap: () => widget.onSuffixIconClick!(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(5),
+                        bottomRight: Radius.circular(5),
+                      ),
+                      border: Border.all(
+                        color: grey,
+                        width: 1,
+                      ),
+                      color: widget.suffixIconBackgroundColor,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    child: Icon(
+                      widget.suffixIconData,
+                      color: widget.suffixIconColor,
+                      size: widget.iconSize,
+                    ),
+                  ),
+                ),
         ),
         cursorColor: darkTeal,
         cursorWidth: 1,

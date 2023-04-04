@@ -125,7 +125,7 @@ class _AddEditAwarenessCategoryViewState
             isFirstInit = false;
           }
         }
-        if (state.awarenessCategoryCrudStatus == EntityStatus.succuess) {
+        if (state.awarenessCategoryCrudStatus == EntityStatus.success) {
           awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
           CustomNotification(
             context: context,

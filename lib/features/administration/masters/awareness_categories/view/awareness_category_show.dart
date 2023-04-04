@@ -36,7 +36,7 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<AwarenessCategoriesBloc, AwarenessCategoriesState>(
       listener: (context, state) {
-        if (state.awarenessCategoryCrudStatus == EntityStatus.succuess) {
+        if (state.awarenessCategoryCrudStatus == EntityStatus.success) {
           awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
           CustomNotification(
             context: context,

@@ -30,7 +30,7 @@ class PriorityLevelsBloc
           await priorityLevelsRepository.getPriorityLevels();
       emit(state.copyWith(
         priorityLevels: priorityLevels,
-        priorityLevelsRetrievedStatus: EntityStatus.succuess,
+        priorityLevelsRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(priorityLevelsRetrievedStatus: EntityStatus.failure));
@@ -42,7 +42,7 @@ class PriorityLevelsBloc
     Emitter<PriorityLevelsState> emit,
   ) async {
     emit(state.copyWith(
-      priorityLevelSelectedStatus: EntityStatus.succuess,
+      priorityLevelSelectedStatus: EntityStatus.success,
       selectedPriorityLevel: event.priorityLevel,
     ));
   }
@@ -61,7 +61,7 @@ class PriorityLevelsBloc
       emit(
         state.copyWith(
           selectedPriorityLevel: selectedPriorityLevel,
-          priorityLevelSelectedStatus: EntityStatus.succuess,
+          priorityLevelSelectedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
@@ -84,7 +84,7 @@ class PriorityLevelsBloc
           await priorityLevelsRepository.addPriorityLevel(event.priorityLevel);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.success,
           selectedPriorityLevel: null,
           message: response.message,
         ));
@@ -115,7 +115,7 @@ class PriorityLevelsBloc
           await priorityLevelsRepository.editPriorityLevel(event.priorityLevel);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.success,
           selectedPriorityLevel: null,
           message: response.message,
         ));
@@ -146,7 +146,7 @@ class PriorityLevelsBloc
           .deletePriorityLevel(event.priorityLevelId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.succuess,
+          priorityLevelCrudStatus: EntityStatus.success,
           selectedPriorityLevel: null,
           message: response.message,
         ));

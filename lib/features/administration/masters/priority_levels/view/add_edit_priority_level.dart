@@ -119,7 +119,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
           }
         }
 
-        if (state.priorityLevelCrudStatus == EntityStatus.succuess) {
+        if (state.priorityLevelCrudStatus == EntityStatus.success) {
           priorityLevelsBloc.add(const PriorityLevelsStatusInited());
           CustomNotification(
             context: context,

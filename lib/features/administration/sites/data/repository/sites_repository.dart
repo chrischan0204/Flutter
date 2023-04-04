@@ -169,6 +169,13 @@ class SitesRepository {
   }
 
   Future<Site> getSiteById(String siteId) async {
-    return sites.firstWhere((site) => site.id == siteId);
+    Response response = await get(Uri.https(ApiUri.host, url));
+    if (response.statusCode == 200) {
+      sites = List.from(jsonDecode(response.body))
+          .map((siteJson) => Site.fromMap(siteJson))
+          .toList();
+      return sites.firstWhere((site) => site.id == siteId);
+    }
+    throw Exception();
   }
 }

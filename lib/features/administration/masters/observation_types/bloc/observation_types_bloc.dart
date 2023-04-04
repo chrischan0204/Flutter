@@ -35,7 +35,7 @@ class ObservationTypesBloc
           await observationTypesRepository.getObservationTypes();
       emit(state.copyWith(
         observationTypes: observationTypes,
-        observationTypesRetrievedStatus: EntityStatus.succuess,
+        observationTypesRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -49,7 +49,7 @@ class ObservationTypesBloc
     Emitter<ObservationTypesState> emit,
   ) async {
     emit(state.copyWith(
-      observationTypeSelectedStatus: EntityStatus.succuess,
+      observationTypeSelectedStatus: EntityStatus.success,
       selectedObservationType: event.observationType,
     ));
   }
@@ -69,7 +69,7 @@ class ObservationTypesBloc
       emit(
         state.copyWith(
           selectedObservationType: selectedObservationType,
-          observationTypeSelectedStatus: EntityStatus.succuess,
+          observationTypeSelectedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
@@ -92,7 +92,7 @@ class ObservationTypesBloc
           .addObservationType(event.observationType);
       if (response.isSuccess) {
         emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.succuess,
+          observationTypeCrudStatus: EntityStatus.success,
           message: response.message,
           selectedObservationType: null,
         ));
@@ -123,7 +123,7 @@ class ObservationTypesBloc
           .editObservationType(event.observationType);
       if (response.isSuccess) {
         emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.succuess,
+          observationTypeCrudStatus: EntityStatus.success,
           selectedObservationType: null,
           message: response.message,
         ));
@@ -154,7 +154,7 @@ class ObservationTypesBloc
           .deleteObservationType(event.observationTypeId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.succuess,
+          observationTypeCrudStatus: EntityStatus.success,
           selectedObservationType: null,
           message: response.message,
         ));
