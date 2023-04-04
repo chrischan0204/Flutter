@@ -1,1 +1,1 @@
-export 'view/projects.dart';
+export 'view/projects_list.dart';
