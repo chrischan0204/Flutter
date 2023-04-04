@@ -40,6 +40,26 @@ class Project extends Entity {
   });
 
   @override
+  List<Object?> get props => [
+        id,
+        name,
+        regionName,
+        siteName,
+        siteId,
+        referenceNumber,
+        referneceName,
+        active,
+        deactivationDate,
+        deactivationUserName,
+        companyCount,
+        createdOn,
+        createdByUserName,
+        lastModifiedOn,
+        updatedByUserName,
+        contractors,
+      ];
+
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,

@@ -245,7 +245,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         assignedRegionsRetrievedStatus: EntityStatus.initial,
         unassignedRegionsRetrievedStatus: EntityStatus.initial,
         timeZonesRetrievedStatus: EntityStatus.initial,
-        message: '',
+        
       ),
     );
   }

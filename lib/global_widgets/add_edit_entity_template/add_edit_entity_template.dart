@@ -105,7 +105,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                   fontFamily: 'OpenSans',
                 ),
               ),
-              message: '',
+              
             );
           })
         : Container();

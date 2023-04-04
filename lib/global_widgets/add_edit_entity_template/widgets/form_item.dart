@@ -10,7 +10,7 @@ class FormItem extends StatelessWidget {
     super.key,
     required this.label,
     required this.content,
-    required this.message,
+    this.message = '',
   });
 
   @override

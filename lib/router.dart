@@ -145,6 +145,46 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/projects/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ProjectsListView(),
+          selectedItemName: 'projects',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/projects/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditProjectView(),
+          selectedItemName: 'projects',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/projects/show/:projectId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ProjectsListView(),
+          selectedItemName: 'projects',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/projects/edit/:projectId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditProjectView(projectId: state.params['projectId']!),
+          selectedItemName: 'projects',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/companies',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

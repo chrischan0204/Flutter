@@ -223,7 +223,7 @@ class _AddEditAwarenessCategoryViewState
                           );
                         },
                       ),
-                      message: '',
+                      
                     )
                   : Container(),
             ],

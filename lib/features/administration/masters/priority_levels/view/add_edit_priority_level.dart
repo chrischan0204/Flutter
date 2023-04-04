@@ -200,7 +200,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                     ),
                   ),
                 ),
-                message: '',
+                
               ),
               widget.priorityLevelId != null
                   ? FormItem(
@@ -219,7 +219,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                           );
                         },
                       ),
-                      message: '',
+                      
                     )
                   : Container(),
             ],

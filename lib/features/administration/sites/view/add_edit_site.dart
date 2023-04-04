@@ -29,9 +29,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   TextEditingController referenceCodeController = TextEditingController(
     text: '',
   );
-  TextEditingController filterController = TextEditingController(
-    text: '',
-  );
+
   String? siteName;
   String? siteCode;
   String? region;
@@ -80,7 +78,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           selectedEntity: state.selectedSite,
           addEntity: () => _addSite(state),
           editEntity: () => _editSite(state),
-          addButtonName: 'Attach Templates',
+          addButtonName: 'Assign Templates',
           crudStatus: state.siteCrudStatus,
           child: Column(
             children: [
@@ -237,7 +235,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           );
         },
       ),
-      message: '',
     );
   }
 
