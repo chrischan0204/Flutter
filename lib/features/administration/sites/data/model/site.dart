@@ -30,6 +30,7 @@ class Site extends Entity {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         siteCode,
         siteType,

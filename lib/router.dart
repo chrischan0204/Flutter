@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safety_eta/features/administration/sites/view/site_show.dart';
 
 import '/features/features.dart';
 import 'package:go_router/go_router.dart';
@@ -80,11 +79,45 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/sites/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditSiteView(),
+          selectedItemName: 'sites',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/sites/show/:siteId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: SiteShowView(
+            siteId: state.params['siteId']!,
+          ),
+          selectedItemName: 'sites',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/sites/edit/:siteId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditSiteView(
+            siteId: state.params['siteId']!,
+          ),
+          selectedItemName: 'sites',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/sites/:siteId/assign-templates',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AssignTemplatesToSiteView(
             siteId: state.params['siteId']!,
           ),
           selectedItemName: 'sites',

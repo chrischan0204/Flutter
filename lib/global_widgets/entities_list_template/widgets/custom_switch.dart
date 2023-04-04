@@ -5,13 +5,19 @@ import '/constants/color.dart';
 class CustomSwitch extends StatefulWidget {
   final String label;
   final bool switchValue;
+  final String trueString;
+  final String falseString;
+  final Color textColor;
   final ValueChanged<bool> onChanged;
 
   const CustomSwitch({
     super.key,
-    required this.label,
+    this.label = '',
     required this.switchValue,
     required this.onChanged,
+    this.trueString = 'Deactivated',
+    this.falseString = '',
+    this.textColor = Colors.red,
   });
 
   @override
@@ -36,7 +42,6 @@ class _CustomSwitchState extends State<CustomSwitch> {
           inactiveToggleColor: Colors.grey,
           activeColor: Colors.blue,
           inactiveColor: Colors.transparent,
-          // switchBorder: ,
           inactiveSwitchBorder: Border.all(
             width: 2,
             color: grey,
@@ -53,17 +58,15 @@ class _CustomSwitchState extends State<CustomSwitch> {
         const SizedBox(
           width: 10,
         ),
-        widget.switchValue
-            ? const Text(
-                'Deactivated',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 11,
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.w400,
-                ),
-              )
-            : Container(),
+        Text(
+          widget.switchValue ? widget.trueString : widget.falseString,
+          style: TextStyle(
+            color: widget.textColor,
+            fontSize: 11,
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.w400,
+          ),
+        )
       ],
     );
   }

@@ -108,6 +108,6 @@ enum EntityInputType {
 enum EntityStatus {
   initial,
   loading,
-  succuess,
+  success,
   failure,
 }

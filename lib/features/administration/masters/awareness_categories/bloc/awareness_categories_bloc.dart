@@ -36,7 +36,7 @@ class AwarenessCategoriesBloc
           await awarenessGroupsRepository.getAwarenessGroups();
       emit(
         state.copyWith(
-          awarenessGroupsRetrievedStatus: EntityStatus.succuess,
+          awarenessGroupsRetrievedStatus: EntityStatus.success,
           awarenessGroups: awarenessGroups,
         ),
       );
@@ -59,7 +59,7 @@ class AwarenessCategoriesBloc
           await awarenessCategoriesRepository.getAwarenessCategories();
       emit(
         state.copyWith(
-          awarenessCategoriesRetrievedStatus: EntityStatus.succuess,
+          awarenessCategoriesRetrievedStatus: EntityStatus.success,
           awarenessCategories: awarenessCategories,
         ),
       );
@@ -77,7 +77,7 @@ class AwarenessCategoriesBloc
     Emitter<AwarenessCategoriesState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessCategorySelectedStatus: EntityStatus.succuess,
+      awarenessCategorySelectedStatus: EntityStatus.success,
       selectedAwarenessCategory: event.awarenessCategory,
     ));
   }
@@ -97,7 +97,7 @@ class AwarenessCategoriesBloc
       emit(
         state.copyWith(
           selectedAwarenessCategory: selectedAwarenessCategory,
-          awarenessCategorySelectedStatus: EntityStatus.succuess,
+          awarenessCategorySelectedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
@@ -120,7 +120,7 @@ class AwarenessCategoriesBloc
           .addAwarenessCategory(event.awarenessCategory);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.succuess,
+          awarenessCategoryCrudStatus: EntityStatus.success,
           message: response.message,
         ));
       } else {
@@ -150,7 +150,7 @@ class AwarenessCategoriesBloc
           .editAwarenessCategory(event.awarenessCategory);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.succuess,
+          awarenessCategoryCrudStatus: EntityStatus.success,
           selectedAwarenessCategory: null,
           message: response.message,
         ));
@@ -181,7 +181,7 @@ class AwarenessCategoriesBloc
           .deleteAwarenessCategory(event.awarenessCategoryId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.succuess,
+          awarenessCategoryCrudStatus: EntityStatus.success,
           selectedAwarenessCategory: null,
           message: response.message,
         ));

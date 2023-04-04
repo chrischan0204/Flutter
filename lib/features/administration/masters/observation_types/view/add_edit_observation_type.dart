@@ -33,7 +33,6 @@ class _AddEditObservationTypeViewState
 
   String observationTypeNameValidationMessage = '';
   String severityValidationMessage = '';
-  String visibilityValidationMessage = '';
 
   @override
   void initState() {
@@ -103,16 +102,6 @@ class _AddEditObservationTypeViewState
       validated = false;
     }
 
-    if (observationTypeVisibility == null ||
-        (observationTypeVisibility != null &&
-            (observationTypeVisibility!.isEmpty ||
-                observationTypeVisibility!.trim().isEmpty))) {
-      setState(() {
-        visibilityValidationMessage = 'Visibility is required.';
-      });
-      validated = false;
-    }
-
     return validated;
   }
 
@@ -120,39 +109,8 @@ class _AddEditObservationTypeViewState
   Widget build(BuildContext context) {
     return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
       listener: (context, state) {
-        if (state.selectedObservationType != null) {
-          observationTypeSeverity =
-              state.selectedObservationType!.severity.isEmpty
-                  ? null
-                  : state.selectedObservationType!.severity;
-          observationTypeVisibility =
-              state.selectedObservationType!.visibility.isEmpty
-                  ? null
-                  : state.selectedObservationType!.visibility;
-          observationTypeDeactive = !state.selectedObservationType!.active;
-          if (isFirstInit) {
-            observationTypeNameController.text =
-                widget.observationTypeId == null
-                    ? ''
-                    : state.selectedObservationType!.name ?? '';
-            isFirstInit = false;
-          }
-        }
-
-        if (state.observationTypeCrudStatus == EntityStatus.succuess) {
-          observationTypesBloc.add(const ObservationTypesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-        }
-        if (state.observationTypeCrudStatus == EntityStatus.failure) {
-          observationTypesBloc.add(const ObservationTypesStatusInited());
-          setState(() {
-            observationTypeNameValidationMessage = state.message;
-          });
-        }
+        _changeFormData(state);
+        _checkCrudResult(state, context);
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
@@ -164,103 +122,148 @@ class _AddEditObservationTypeViewState
           editEntity: () => _editObservationType(state),
           child: Column(
             children: [
-              FormItem(
-                label: 'Observation Type Name (*)',
-                content: CustomTextField(
-                  controller: observationTypeNameController,
-                  hintText: 'Observation Type Name',
-                  onChanged: (observationTypeName) {
-                    setState(() {
-                      observationTypeNameValidationMessage = '';
-                    });
-                    observationTypesBloc.add(
-                      ObservationTypeSelected(
-                        observationType:
-                            state.selectedObservationType!.copyWith(
-                          name: observationTypeName,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                message: observationTypeNameValidationMessage,
-              ),
-              FormItem(
-                label: 'Severity (*)',
-                content: CustomSingleSelect(
-                  items: const <String, String>{
-                    'Good Catch': 'Good Catch',
-                    'Near Miss': 'Near Miss',
-                    'Unsafe': 'Unsafe',
-                    'Positive': 'Positive',
-                  },
-                  hint: 'Select Severity',
-                  selectedValue: observationTypeSeverity,
-                  onChanged: (severity) {
-                    setState(() {
-                      severityValidationMessage = '';
-                    });
-                    observationTypesBloc.add(
-                      ObservationTypeSelected(
-                        observationType:
-                            state.selectedObservationType!.copyWith(
-                          severity: severity.key,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                message: severityValidationMessage,
-              ),
-              FormItem(
-                label: 'Visibility',
-                content: CustomSingleSelect(
-                  items: const <String, String>{
-                    'Everywhere': 'Everywhere',
-                    'Assessment Only': 'Assessment Only',
-                  },
-                  selectedValue: observationTypeVisibility,
-                  hint: 'Select Visibility',
-                  onChanged: (visibility) {
-                    setState(() {
-                      visibilityValidationMessage = '';
-                    });
-                    observationTypesBloc.add(
-                      ObservationTypeSelected(
-                        observationType:
-                            state.selectedObservationType!.copyWith(
-                          visibility: visibility.key,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                message: visibilityValidationMessage,
-              ),
-              widget.observationTypeId != null
-                  ? FormItem(
-                      label: 'Deactivate?',
-                      content: CustomSwitch(
-                        label: 'This observation type is deactivated',
-                        switchValue: observationTypeDeactive,
-                        onChanged: (active) {
-                          observationTypesBloc.add(
-                            ObservationTypeSelected(
-                              observationType:
-                                  state.selectedObservationType!.copyWith(
-                                active: !active,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      message: '',
-                    )
-                  : Container(),
+              _buildObservationTypeNameField(state),
+              _buildSeveritySelectField(state),
+              _buildVisibilitySelectField(state),
+              _buildActiveSwitch(state),
             ],
           ),
         );
       },
+    );
+  }
+
+  void _changeFormData(ObservationTypesState state) {
+    if (state.selectedObservationType != null) {
+      observationTypeSeverity = state.selectedObservationType!.severity.isEmpty
+          ? null
+          : state.selectedObservationType!.severity;
+      observationTypeVisibility =
+          state.selectedObservationType!.visibility.isEmpty
+              ? null
+              : state.selectedObservationType!.visibility;
+      observationTypeDeactive = !state.selectedObservationType!.active;
+      if (isFirstInit) {
+        observationTypeNameController.text = widget.observationTypeId == null
+            ? ''
+            : state.selectedObservationType!.name ?? '';
+        isFirstInit = false;
+      }
+    }
+  }
+
+  void _checkCrudResult(ObservationTypesState state, BuildContext context) {
+    if (state.observationTypeCrudStatus == EntityStatus.success) {
+      observationTypesBloc.add(const ObservationTypesStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+    }
+    if (state.observationTypeCrudStatus == EntityStatus.failure) {
+      observationTypesBloc.add(const ObservationTypesStatusInited());
+      setState(() {
+        observationTypeNameValidationMessage = state.message;
+      });
+    }
+  }
+
+  StatelessWidget _buildActiveSwitch(ObservationTypesState state) {
+    return widget.observationTypeId != null
+        ? FormItem(
+            label: 'Deactivate?',
+            content: CustomSwitch(
+              label: 'This observation type is deactivated',
+              switchValue: observationTypeDeactive,
+              onChanged: (active) {
+                observationTypesBloc.add(
+                  ObservationTypeSelected(
+                    observationType: state.selectedObservationType!.copyWith(
+                      active: !active,
+                    ),
+                  ),
+                );
+              },
+            ),
+            message: '',
+          )
+        : Container();
+  }
+
+  FormItem _buildVisibilitySelectField(ObservationTypesState state) {
+    return FormItem(
+      label: 'Visibility',
+      content: CustomSingleSelect(
+        items: const <String, String>{
+          'Everywhere': 'Everywhere',
+          'Assessment Only': 'Assessment Only',
+        },
+        selectedValue: observationTypeVisibility,
+        hint: 'Select Visibility',
+        onChanged: (visibility) {
+          observationTypesBloc.add(
+            ObservationTypeSelected(
+              observationType: state.selectedObservationType!.copyWith(
+                visibility: visibility.key,
+              ),
+            ),
+          );
+        },
+      ),
+      message: '',
+    );
+  }
+
+  FormItem _buildSeveritySelectField(ObservationTypesState state) {
+    return FormItem(
+      label: 'Severity (*)',
+      content: CustomSingleSelect(
+        items: const <String, String>{
+          'Good Catch': 'Good Catch',
+          'Near Miss': 'Near Miss',
+          'Unsafe': 'Unsafe',
+          'Positive': 'Positive',
+        },
+        hint: 'Select Severity',
+        selectedValue: observationTypeSeverity,
+        onChanged: (severity) {
+          setState(() {
+            severityValidationMessage = '';
+          });
+          observationTypesBloc.add(
+            ObservationTypeSelected(
+              observationType: state.selectedObservationType!.copyWith(
+                severity: severity.key,
+              ),
+            ),
+          );
+        },
+      ),
+      message: severityValidationMessage,
+    );
+  }
+
+  FormItem _buildObservationTypeNameField(ObservationTypesState state) {
+    return FormItem(
+      label: 'Observation Type Name (*)',
+      content: CustomTextField(
+        controller: observationTypeNameController,
+        hintText: 'Observation Type Name',
+        onChanged: (observationTypeName) {
+          setState(() {
+            observationTypeNameValidationMessage = '';
+          });
+          observationTypesBloc.add(
+            ObservationTypeSelected(
+              observationType: state.selectedObservationType!.copyWith(
+                name: observationTypeName,
+              ),
+            ),
+          );
+        },
+      ),
+      message: observationTypeNameValidationMessage,
     );
   }
 }

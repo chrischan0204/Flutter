@@ -164,108 +164,83 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        CustomButton(
-          backgroundColor: const Color(0xff0c83ff),
-          hoverBackgroundColor: const Color(0xff0b76e6),
-          iconData: PhosphorIcons.listNumbers,
-          text: '${camelize(widget.label)} List',
-          onClick: () {
-            String location = GoRouter.of(context).location;
-            location =
-                location.replaceRange(location.indexOf('show'), null, '');
-            GoRouter.of(context).go(location);
-          },
-        ),
+        _buildGoToListButton(context),
         const SizedBox(
           width: 15,
         ),
-        CustomButton(
-          backgroundColor: const Color(0xfff58646),
-          hoverBackgroundColor: const Color(0xffdd793f),
-          iconData: PhosphorIcons.gear,
-          text: 'Edit ${camelize(widget.label)}',
-          onClick: () => GoRouter.of(context).go(
-            GoRouter.of(context).location.replaceAll('show', 'edit'),
-          ),
-        ),
+        _buildGoToEditButton(context),
         const SizedBox(
           width: 15,
         ),
-        widget.crudStatus == EntityStatus.loading
-            ? CustomButton(
-                backgroundColor: const Color(0xffef4444),
-                hoverBackgroundColor: const Color(0xffd73d3d),
-                disabled: true,
-                body: LoadingAnimationWidget.dotsTriangle(
-                  color: Colors.white,
-                  size: 22,
-                ),
-              )
-            : CustomButton(
-                backgroundColor: const Color(0xffef4444),
-                hoverBackgroundColor: const Color(0xffd73d3d),
-                iconData: PhosphorIcons.gear,
-                text: 'Delete ${camelize(widget.label)}',
-                disabled: !widget.deletable,
-                onClick: () {
-                  AwesomeDialog(
-                    context: context,
-                    width: MediaQuery.of(context).size.width / 4,
-                    dialogType: DialogType.question,
-                    headerAnimationLoop: false,
-                    animType: AnimType.bottomSlide,
-                    title: 'Confirm',
-                    dialogBorderRadius: BorderRadius.circular(5),
-                    desc: 'Do you really want to delete this ${widget.label}?',
-                    buttonsTextStyle: const TextStyle(color: Colors.white),
-                    showCloseIcon: true,
-                    btnCancelOnPress: () {},
-                    btnOkOnPress: () {
-                      widget.deleteEntity();
-                    },
-                    // btnOkIcon: PhosphorIcons.thumbsUp,
-                    btnOkText: 'Delete',
-                    // btnCancelIcon: PhosphorIcons.thumbsDown,
-                    buttonsBorderRadius: BorderRadius.circular(3),
-                    padding: EdgeInsets.all(10),
-                    // btnCancel: Container(
-                    //   alignment: Alignment.center,
-                    //   decoration: BoxDecoration(
-                    //     color: Color(0xffef4444),
-                    //     borderRadius: BorderRadius.circular(3),
-                    //   ),
-                    //   padding: EdgeInsets.symmetric(
-                    //     vertical: 10,
-                    //     horizontal: 15,
-                    //   ),
-                    //   child: const Text(
-                    //     'Cancel',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
-                    // btnOk: Container(
-                    //   alignment: Alignment.center,
-                    //   decoration: BoxDecoration(
-                    //     color: Color(0xff0c83ff),
-                    //     borderRadius: BorderRadius.circular(3),
-                    //   ),
-                    //   padding: EdgeInsets.symmetric(
-                    //     vertical: 10,
-                    //     horizontal: 15,
-                    //   ),
-                    //   child: const Text(
-                    //     'Delete',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
-                  ).show();
-                },
-              ),
+        _buildDeleteButton(context),
       ],
+    );
+  }
+
+  CustomButton _buildDeleteButton(BuildContext context) {
+    return widget.crudStatus == EntityStatus.loading
+        ? CustomButton(
+            backgroundColor: const Color(0xffef4444),
+            hoverBackgroundColor: const Color(0xffd73d3d),
+            disabled: true,
+            body: LoadingAnimationWidget.dotsTriangle(
+              color: Colors.white,
+              size: 22,
+            ),
+          )
+        : CustomButton(
+            backgroundColor: const Color(0xffef4444),
+            hoverBackgroundColor: const Color(0xffd73d3d),
+            iconData: PhosphorIcons.gear,
+            text: 'Delete ${camelize(widget.label)}',
+            disabled: !widget.deletable,
+            onClick: () {
+              AwesomeDialog(
+                context: context,
+                width: MediaQuery.of(context).size.width / 4,
+                dialogType: DialogType.question,
+                headerAnimationLoop: false,
+                animType: AnimType.bottomSlide,
+                title: 'Confirm',
+                dialogBorderRadius: BorderRadius.circular(5),
+                desc: 'Do you really want to delete this ${widget.label}?',
+                buttonsTextStyle: const TextStyle(color: Colors.white),
+                showCloseIcon: true,
+                btnCancelOnPress: () {},
+                btnOkOnPress: () {
+                  widget.deleteEntity();
+                },
+                btnOkText: 'Delete',
+                buttonsBorderRadius: BorderRadius.circular(3),
+                padding: const EdgeInsets.all(10),
+              ).show();
+            },
+          );
+  }
+
+  CustomButton _buildGoToEditButton(BuildContext context) {
+    return CustomButton(
+      backgroundColor: const Color(0xfff58646),
+      hoverBackgroundColor: const Color(0xffdd793f),
+      iconData: PhosphorIcons.gear,
+      text: 'Edit ${camelize(widget.label)}',
+      onClick: () => GoRouter.of(context).go(
+        GoRouter.of(context).location.replaceAll('show', 'edit'),
+      ),
+    );
+  }
+
+  CustomButton _buildGoToListButton(BuildContext context) {
+    return CustomButton(
+      backgroundColor: const Color(0xff0c83ff),
+      hoverBackgroundColor: const Color(0xff0b76e6),
+      iconData: PhosphorIcons.listNumbers,
+      text: '${camelize(widget.label)} List',
+      onClick: () {
+        String location = GoRouter.of(context).location;
+        location = location.replaceRange(location.indexOf('show'), null, '');
+        GoRouter.of(context).go(location);
+      },
     );
   }
 }

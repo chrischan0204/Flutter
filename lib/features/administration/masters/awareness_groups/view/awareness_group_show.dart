@@ -35,7 +35,7 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<AwarenessGroupsBloc, AwarenessGroupsState>(
       listener: (context, state) {
-        if (state.awarenessGroupCrudStatus == EntityStatus.succuess) {
+        if (state.awarenessGroupCrudStatus == EntityStatus.success) {
           awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
           CustomNotification(
             context: context,

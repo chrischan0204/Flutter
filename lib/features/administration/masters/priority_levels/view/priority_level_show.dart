@@ -35,7 +35,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<PriorityLevelsBloc, PriorityLevelsState>(
       listener: (context, state) {
-        if (state.priorityLevelCrudStatus == EntityStatus.succuess) {
+        if (state.priorityLevelCrudStatus == EntityStatus.success) {
           priorityLevelsBloc.add(const PriorityLevelsStatusInited());
           CustomNotification(
             context: context,

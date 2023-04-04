@@ -108,7 +108,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
           }
         }
 
-        if (state.regionCrudStatus == EntityStatus.succuess) {
+        if (state.regionCrudStatus == EntityStatus.success) {
           regionsBloc.add(const RegionsStatusInited());
           CustomNotification(
             context: context,

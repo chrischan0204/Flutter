@@ -30,7 +30,7 @@ class AwarenessGroupsBloc
       List<AwarenessGroup> awarenessGroups =
           await awarenessGroupsRepository.getAwarenessGroups();
       emit(state.copyWith(
-          awarenessGroupsRetrievedStatus: EntityStatus.succuess,
+          awarenessGroupsRetrievedStatus: EntityStatus.success,
           awarenessGroups: awarenessGroups));
     } catch (e) {
       emit(
@@ -43,7 +43,7 @@ class AwarenessGroupsBloc
     Emitter<AwarenessGroupsState> emit,
   ) async {
     emit(state.copyWith(
-      awarenessGroupSelectedStatus: EntityStatus.succuess,
+      awarenessGroupSelectedStatus: EntityStatus.success,
       selectedAwarenessGroup: event.awarenessGroup,
     ));
   }
@@ -62,7 +62,7 @@ class AwarenessGroupsBloc
       emit(
         state.copyWith(
           selectedAwarenessGroup: selectedAwarenessGroup,
-          awarenessGroupSelectedStatus: EntityStatus.succuess,
+          awarenessGroupSelectedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
@@ -85,7 +85,7 @@ class AwarenessGroupsBloc
           .addAwarenessGroup(event.awarenessGroup);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.succuess,
+          awarenessGroupCrudStatus: EntityStatus.success,
           message: response.message,
           selectedAwarenessGroup: null,
         ));
@@ -116,7 +116,7 @@ class AwarenessGroupsBloc
           .editAwarenessGroup(event.awarenessGroup);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.succuess,
+          awarenessGroupCrudStatus: EntityStatus.success,
           selectedAwarenessGroup: null,
           message: response.message,
         ));
@@ -147,7 +147,7 @@ class AwarenessGroupsBloc
           .deleteAwarenessGroup(event.awarenessGroupId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.succuess,
+          awarenessGroupCrudStatus: EntityStatus.success,
           selectedAwarenessGroup: null,
           message: response.message,
         ));

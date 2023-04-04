@@ -22,3 +22,14 @@ class SiteSelectedById extends SitesEvent {
     required this.siteId,
   });
 }
+
+class SitesStatusInited extends SitesEvent {}
+
+class AuditTemplatesRetrieved extends SitesEvent {}
+
+class AuditTemplateAssignedToSite extends SitesEvent {
+  final String auditTemplateId;
+  const AuditTemplateAssignedToSite({
+    required this.auditTemplateId,
+  });
+}

@@ -35,7 +35,7 @@ class _RegionShowViewState extends State<RegionShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
-        if (state.regionCrudStatus == EntityStatus.succuess) {
+        if (state.regionCrudStatus == EntityStatus.success) {
           regionsBloc.add(const RegionsStatusInited());
           CustomNotification(
             context: context,

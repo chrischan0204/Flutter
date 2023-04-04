@@ -107,7 +107,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
             isFirstInit = false;
           }
         }
-        if (state.awarenessGroupCrudStatus == EntityStatus.succuess) {
+        if (state.awarenessGroupCrudStatus == EntityStatus.success) {
           awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
           CustomNotification(
             context: context,

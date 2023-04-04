@@ -12,6 +12,8 @@ class AddEditEntityTemplate extends StatefulWidget {
   final String? id;
   final Entity? selectedEntity;
   final Widget child;
+  final String? addButtonName;
+  final String? editButtonName;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
   final EntityStatus crudStatus;
@@ -21,6 +23,8 @@ class AddEditEntityTemplate extends StatefulWidget {
     this.id,
     this.selectedEntity,
     required this.child,
+    this.addButtonName,
+    this.editButtonName,
     required this.addEntity,
     required this.editEntity,
     this.crudStatus = EntityStatus.initial,
@@ -74,28 +78,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             ),
             const CustomDivider(),
             widget.child,
-            widget.id != null &&
-                    widget.selectedEntity != null &&
-                    !widget.selectedEntity!.active &&
-                    widget.selectedEntity!.deactivationDate != null &&
-                    widget.selectedEntity!.deactivationUserName != null
-                ? StatefulBuilder(builder: (context, setState) {
-                    Map<String, dynamic> map =
-                        widget.selectedEntity!.detailItemsToMap();
-                    return FormItem(
-                      label: 'Deactivated',
-                      content: Text(
-                        map['Deactivated'] ?? '',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'OpenSans',
-                        ),
-                      ),
-                      message: '',
-                    );
-                  })
-                : Container(),
+            _buildDeactivationInfo(),
             _buildAddEditButton()
           ],
         ),
@@ -103,7 +86,32 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     );
   }
 
-  Padding _buildAddEditButton() {
+  Widget _buildDeactivationInfo() {
+    return widget.id != null &&
+            widget.selectedEntity != null &&
+            !widget.selectedEntity!.active &&
+            widget.selectedEntity!.deactivationDate != null &&
+            widget.selectedEntity!.deactivationUserName != null
+        ? StatefulBuilder(builder: (context, setState) {
+            Map<String, dynamic> map =
+                widget.selectedEntity!.detailItemsToMap();
+            return FormItem(
+              label: 'Deactivated',
+              content: Text(
+                map['Deactivated'] ?? '',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
+              message: '',
+            );
+          })
+        : Container();
+  }
+
+  Widget _buildAddEditButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
@@ -123,7 +131,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
               backgroundColor: const Color(0xff059669),
               hoverBackgroundColor: const Color(0xff05875f),
               iconData: PhosphorIcons.arrowRight,
-              text:
+              text: widget.addButtonName ??
+                  widget.editButtonName ??
                   '${widget.id == null ? 'Add' : 'Edit'} ${camelize(widget.label)}',
               onClick: () {
                 if (widget.id != null) {
@@ -138,11 +147,11 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   Widget _buildTitle() {
     return PageTitle(
-      title: widget.id == null
+      title: (widget.id == null
           ? 'New ${camelize(widget.label)}'
           : widget.selectedEntity != null
               ? 'Editing ${camelize(widget.label)} - ${widget.selectedEntity!.name ?? ''}'
-              : '',
+              : ''),
     );
   }
 
@@ -150,44 +159,49 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CustomButton(
-          backgroundColor: const Color(0xff0c83ff),
-          hoverBackgroundColor: const Color(0xff0b76e6),
-          iconData: PhosphorIcons.listNumbers,
-          text: '${camelize(widget.label)} List',
-          onClick: () {
-            String location = GoRouter.of(context).location;
-            if (widget.id == null) {
-              location = location.replaceAll('new', '');
-            } else {
-              location =
-                  location.replaceRange(location.indexOf('edit'), null, '');
-            }
-            GoRouter.of(context).go(location);
-          },
-        ),
+        _buildGoToListButton(context),
         widget.id != null
             ? SizedBox(
                 width: MediaQuery.of(context).size.width / 40,
               )
             : Container(),
-        widget.id != null
-            ? CustomButton(
-                backgroundColor: const Color(0xff8e70c1),
-                hoverBackgroundColor: const Color(0xff8065ae),
-                iconData: PhosphorIcons.notePencil,
-                text: 'Show ${camelize(widget.label)}',
-                onClick: () {
-                  String location = GoRouter.of(context).location;
-                  location = location.replaceAll('edit', 'show');
-                  GoRouter.of(context).go(location);
-                },
-              )
-            : Container(),
+        widget.id != null ? _buildShowButton(context) : Container(),
         const SizedBox(
           width: 50,
         )
       ],
+    );
+  }
+
+  CustomButton _buildShowButton(BuildContext context) {
+    return CustomButton(
+      backgroundColor: const Color(0xff8e70c1),
+      hoverBackgroundColor: const Color(0xff8065ae),
+      iconData: PhosphorIcons.notePencil,
+      text: 'Show ${camelize(widget.label)}',
+      onClick: () {
+        String location = GoRouter.of(context).location;
+        location = location.replaceAll('edit', 'show');
+        GoRouter.of(context).go(location);
+      },
+    );
+  }
+
+  CustomButton _buildGoToListButton(BuildContext context) {
+    return CustomButton(
+      backgroundColor: const Color(0xff0c83ff),
+      hoverBackgroundColor: const Color(0xff0b76e6),
+      iconData: PhosphorIcons.listNumbers,
+      text: '${camelize(widget.label)} List',
+      onClick: () {
+        String location = GoRouter.of(context).location;
+        if (widget.id == null) {
+          location = location.replaceAll('new', '');
+        } else {
+          location = location.replaceRange(location.indexOf('edit'), null, '');
+        }
+        GoRouter.of(context).go(location);
+      },
     );
   }
 }

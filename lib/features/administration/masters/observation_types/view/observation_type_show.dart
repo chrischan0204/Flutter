@@ -36,7 +36,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
       listener: (context, state) {
-        if (state.observationTypeCrudStatus == EntityStatus.succuess) {
+        if (state.observationTypeCrudStatus == EntityStatus.success) {
           observationTypesBloc.add(const ObservationTypesStatusInited());
           CustomNotification(
             context: context,

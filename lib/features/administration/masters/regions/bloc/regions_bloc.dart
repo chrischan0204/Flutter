@@ -35,7 +35,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           assignedRegions: assignedRegions,
-          assignedRegionsRetrievedStatus: EntityStatus.succuess,
+          assignedRegionsRetrievedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
@@ -63,7 +63,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           unassignedRegions: unassignedRegions,
-          assignedRegionsRetrievedStatus: EntityStatus.succuess,
+          assignedRegionsRetrievedStatus: EntityStatus.success,
           selectedRegion: null,
         ),
       );
@@ -93,7 +93,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           timeZones: timezones,
-          timeZonesRetrievedStatus: EntityStatus.succuess,
+          timeZonesRetrievedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
@@ -132,7 +132,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           selectedRegion: selectedRegion,
-          regionSelectedStatus: EntityStatus.succuess,
+          regionSelectedStatus: EntityStatus.success,
         ),
       );
       add(TimeZonesRetrievedForRegion(regionId: event.regionId));
@@ -155,7 +155,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       EntityResponse response = await regionsRepository.addRegion(event.region);
       if (response.isSuccess) {
         emit(state.copyWith(
-          regionCrudStatus: EntityStatus.succuess,
+          regionCrudStatus: EntityStatus.success,
           selectedRegion: null,
           message: response.message,
         ));
@@ -186,7 +186,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
           await regionsRepository.editRegion(event.region);
       if (response.isSuccess) {
         emit(state.copyWith(
-          regionCrudStatus: EntityStatus.succuess,
+          regionCrudStatus: EntityStatus.success,
           selectedRegion: null,
           message: response.message,
         ));
@@ -217,7 +217,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
           await regionsRepository.deleteRegion(event.regionId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          regionCrudStatus: EntityStatus.succuess,
+          regionCrudStatus: EntityStatus.success,
           selectedRegion: null,
           message: response.message,
         ));
