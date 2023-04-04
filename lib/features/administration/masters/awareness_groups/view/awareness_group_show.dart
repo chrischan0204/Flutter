@@ -68,6 +68,8 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
               ),
             );
           },
+          descriptionForDelete:
+              'It can\'t be deleted, it has awareness categories attached to it.',
           crudStatus: state.awarenessGroupCrudStatus,
         );
       },
