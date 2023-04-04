@@ -6,4 +6,4 @@ export 'custom_color_picker.dart';
 export 'description.dart';
 export 'page_title.dart';
 export 'table_view.dart';
-
+export 'detail_item.dart';

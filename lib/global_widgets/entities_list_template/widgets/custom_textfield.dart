@@ -5,7 +5,7 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final ValueChanged<String> onChanged;
   final bool isDisabled;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final IconData? suffixIconData;
   final Color suffixIconColor;
   final Color suffixIconBackgroundColor;
@@ -16,7 +16,7 @@ class CustomTextField extends StatefulWidget {
     required this.hintText,
     required this.onChanged,
     this.isDisabled = false,
-    required this.controller,
+    this.controller,
     this.suffixIconData,
     this.suffixIconColor = const Color(0xff0c81ff),
     this.suffixIconBackgroundColor = const Color(0xfff9fafb),

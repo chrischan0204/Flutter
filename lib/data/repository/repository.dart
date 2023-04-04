@@ -4,4 +4,6 @@ export '/features/administration/masters/observation_types/data/repository/obser
 export '/features/administration/masters/awareness_groups/data/repository/awareness_groups_repository.dart';
 export '/features/administration/masters/awareness_categories/data/repository/awareness_categories_repository.dart';
 
-export 'package:safety_eta/features/administration/sites/data/repository/sites_repository.dart';
+export '/features/administration/sites/data/repository/sites_repository.dart';
+
+export '/features/administration/projects/data/repository/projects_repository.dart';

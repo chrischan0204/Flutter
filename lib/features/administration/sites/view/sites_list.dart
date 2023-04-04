@@ -32,6 +32,7 @@ class _SitesListViewState extends State<SitesListView> {
           onRowClick: (selectedSite) {
             sitesBloc.add(SiteSelected(selectedSite: selectedSite as Site));
           },
+          entityRetrievedStatus: state.sitesRetrievedStatus,
           selectedEntity: state.selectedSite,
         );
       },
