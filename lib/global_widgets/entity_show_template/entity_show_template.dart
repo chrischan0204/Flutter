@@ -17,6 +17,7 @@ class EntityShowTemplate extends StatefulWidget {
   final EntityStatus crudStatus;
   final bool deletable;
   final Entity? entity;
+  final String descriptionForDelete;
 
   const EntityShowTemplate({
     super.key,
@@ -27,6 +28,7 @@ class EntityShowTemplate extends StatefulWidget {
     this.crudStatus = EntityStatus.initial,
     this.deletable = true,
     this.entity,
+    this.descriptionForDelete = '',
   });
 
   @override
@@ -193,27 +195,45 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
             hoverBackgroundColor: const Color(0xffd73d3d),
             iconData: PhosphorIcons.gear,
             text: 'Delete ${camelize(widget.label)}',
-            disabled: !widget.deletable,
+            // disabled: !widget.deletable,
             onClick: () {
-              AwesomeDialog(
-                context: context,
-                width: MediaQuery.of(context).size.width / 4,
-                dialogType: DialogType.question,
-                headerAnimationLoop: false,
-                animType: AnimType.bottomSlide,
-                title: 'Confirm',
-                dialogBorderRadius: BorderRadius.circular(5),
-                desc: 'Do you really want to delete this ${widget.label}?',
-                buttonsTextStyle: const TextStyle(color: Colors.white),
-                showCloseIcon: true,
-                btnCancelOnPress: () {},
-                btnOkOnPress: () {
-                  widget.deleteEntity();
-                },
-                btnOkText: 'Delete',
-                buttonsBorderRadius: BorderRadius.circular(3),
-                padding: const EdgeInsets.all(10),
-              ).show();
+              if (widget.deletable) {
+                AwesomeDialog(
+                  context: context,
+                  width: MediaQuery.of(context).size.width / 4,
+                  dialogType: DialogType.question,
+                  headerAnimationLoop: false,
+                  animType: AnimType.bottomSlide,
+                  title: 'Confirm',
+                  dialogBorderRadius: BorderRadius.circular(5),
+                  desc: 'Do you really want to delete this ${widget.label}?',
+                  buttonsTextStyle: const TextStyle(color: Colors.white),
+                  showCloseIcon: true,
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {
+                    widget.deleteEntity();
+                  },
+                  btnOkText: 'Delete',
+                  buttonsBorderRadius: BorderRadius.circular(3),
+                  padding: const EdgeInsets.all(10),
+                ).show();
+              } else {
+                AwesomeDialog(
+                  context: context,
+                  width: MediaQuery.of(context).size.width / 5,
+                  dialogType: DialogType.warning,
+                  headerAnimationLoop: false,
+                  animType: AnimType.bottomSlide,
+                  dialogBorderRadius: BorderRadius.circular(5),
+                  desc: widget.descriptionForDelete,
+                  buttonsTextStyle: const TextStyle(color: Colors.white),
+                  showCloseIcon: true,
+                  btnOkOnPress: () {},
+                  btnOkText: 'OK',
+                  buttonsBorderRadius: BorderRadius.circular(3),
+                  padding: const EdgeInsets.all(10),
+                ).show();
+              }
             },
           );
   }
