@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
-import 'package:safety_eta/constants/uri.dart';
 
+import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class SitesRepository {
@@ -21,12 +20,9 @@ class SitesRepository {
   }
 
   Future<Site> getSiteById(String siteId) async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response = await get(Uri.https(ApiUri.host, '$url/$siteId'));
     if (response.statusCode == 200) {
-      sites = List.from(jsonDecode(response.body))
-          .map((siteJson) => Site.fromMap(siteJson))
-          .toList();
-      return sites.firstWhere((site) => site.id == siteId);
+      return Site.fromJson(response.body);
     }
     throw Exception();
   }
@@ -48,11 +44,9 @@ class SitesRepository {
   }
 
   deleteSite(String siteId) async {
-    Response response =
-        await delete(Uri.https(ApiUri.host, '$url/$siteId/Site'));
+    Response response = await delete(Uri.https(ApiUri.host, '$url/$siteId'));
     if (response.statusCode == 200) {
-      print(response.body);
-      return;
+      return response.body;
     }
     throw Exception();
   }
