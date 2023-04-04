@@ -6,10 +6,11 @@ import 'package:strings/strings.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/entity.dart';
 import '/constants/color.dart';
-import 'widgets/detail_item.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
+  final Widget? filterBody;
+  final Widget? viewSettingBody;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
@@ -21,6 +22,8 @@ class EntityListTemplate extends StatefulWidget {
   const EntityListTemplate({
     super.key,
     required this.title,
+    this.filterBody,
+    this.viewSettingBody,
     required this.label,
     required this.onRowClick,
     this.entityRetrievedStatus = EntityStatus.initial,
@@ -223,6 +226,7 @@ class _CrudState extends State<EntityListTemplate> {
         ),
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -247,10 +251,28 @@ class _CrudState extends State<EntityListTemplate> {
                       size: 20,
                       color: Color(0xffef4444),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
+            widget.filterBody ?? Container(),
+            Divider(
+              color: grey,
+              height: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              child: CustomButton(
+                backgroundColor: const Color(0xff0c83ff),
+                hoverBackgroundColor: const Color(0xff0b76e6),
+                iconData: PhosphorIcons.arrowRight,
+                text: 'Apply Filters',
+                onClick: () {},
+              ),
+            )
           ],
         ),
       ),
