@@ -4,7 +4,7 @@ abstract class ProjectsEvent extends Equatable {
   const ProjectsEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ProjectsRetrieved extends ProjectsEvent {}
@@ -14,6 +14,10 @@ class ProjectSelected extends ProjectsEvent {
   const ProjectSelected({
     required this.selectedProject,
   });
+  @override
+  List<Object?> get props => [
+        selectedProject,
+      ];
 }
 
 class ProjectSelectedById extends ProjectsEvent {
@@ -21,6 +25,10 @@ class ProjectSelectedById extends ProjectsEvent {
   const ProjectSelectedById({
     required this.projectId,
   });
+  @override
+  List<Object?> get props => [
+        projectId,
+      ];
 }
 
 class ProjectAdded extends ProjectsEvent {
@@ -28,6 +36,10 @@ class ProjectAdded extends ProjectsEvent {
   const ProjectAdded({
     required this.project,
   });
+  @override
+  List<Object?> get props => [
+        project,
+      ];
 }
 
 class ProjectDeleted extends ProjectsEvent {
@@ -35,6 +47,10 @@ class ProjectDeleted extends ProjectsEvent {
   const ProjectDeleted({
     required this.projectId,
   });
+  @override
+  List<Object?> get props => [
+        projectId,
+      ];
 }
 
 class ProjectsStatusInited extends ProjectsEvent {}

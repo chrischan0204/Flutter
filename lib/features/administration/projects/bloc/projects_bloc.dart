@@ -34,7 +34,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         projectsRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      print(e);
       emit(state.copyWith(projectsRetrievedStatus: EntityStatus.failure));
     }
   }
@@ -64,58 +63,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       ));
     }
   }
-
-  // Future<void> _onAuditTemplatesRetrieved(
-  //   AuditTemplatesRetrieved event,
-  //   Emitter<ProjectsState> emit,
-  // ) async {
-  //   List<AuditTemplate> templates = <AuditTemplate>[
-  //     AuditTemplate(
-  //         id: '1',
-  //         name: 'Electric Wiring Audit',
-  //         createdBy: 'Adam Drobot',
-  //         lastRevisedOn: '3rd Oct 2022',
-  //         templateDescription: ''),
-  //     AuditTemplate(
-  //         id: '2',
-  //         name: 'Kitchen floor inspection',
-  //         createdBy: 'Kenny Cross',
-  //         lastRevisedOn: '23rd Apr 2020',
-  //         templateDescription: ''),
-  //     AuditTemplate(
-  //         id: '3',
-  //         name: 'Parking lot frozen',
-  //         createdBy: 'Carl Adams',
-  //         lastRevisedOn: '13th Feb 2022',
-  //         templateDescription: ''),
-  //     AuditTemplate(
-  //         id: '4',
-  //         name: 'AC unit leakage',
-  //         createdBy: 'Peter Gittleman',
-  //         lastRevisedOn: '19th Sep 2021',
-  //         templateDescription: ''),
-  //     AuditTemplate(
-  //         id: '5',
-  //         name: 'Cafeteria Gas Check',
-  //         createdBy: 'Prince Bogotey',
-  //         lastRevisedOn: '4th Oct 2021',
-  //         templateDescription: ''),
-  //   ];
-  //   emit(state.copyWith(templates: templates));
-  // }
-
-  // void _onAuditTemplateAssignedToProject(
-  //   AuditTemplateAssignedToProject event,
-  //   Emitter<ProjectsState> emit,
-  // ) {
-  //   List<AuditTemplate> templates = List.from(state.templates);
-
-  //   int index = templates
-  //       .indexWhere((template) => template.id == event.auditTemplateId);
-  //   templates.fillRange(index, index + 1,
-  //       templates[index].copyWith(assigned: !templates[index].assigned));
-  //   emit(state.copyWith(templates: templates));
-  // }
 
   void _onProjectAdded(ProjectAdded event, Emitter<ProjectsState> emit) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
@@ -156,7 +103,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         projectCrudStatus: EntityStatus.initial,
         projectSelectedStatus: EntityStatus.initial,
         projectsRetrievedStatus: EntityStatus.initial,
-        message: '',
       ),
     );
   }

@@ -206,7 +206,7 @@ class AwarenessCategoriesBloc
         awarenessCategorySelectedStatus: EntityStatus.initial,
         awarenessCategoriesRetrievedStatus: EntityStatus.initial,
         awarenessCategoryCrudStatus: EntityStatus.initial,
-        message: '',
+        
       ),
     );
   }

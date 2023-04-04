@@ -186,7 +186,7 @@ class _AddEditObservationTypeViewState
                 );
               },
             ),
-            message: '',
+            
           )
         : Container();
   }
@@ -211,7 +211,7 @@ class _AddEditObservationTypeViewState
           );
         },
       ),
-      message: '',
+      
     );
   }
 

@@ -22,29 +22,26 @@ class ProjectsRepository {
   Future<Project> getProjectById(
     String projectId,
   ) async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response = await get(Uri.https(ApiUri.host, '$url/$projectId'));
 
     if (response.statusCode == 200) {
-      return List.from(jsonDecode(response.body))
-          .map((projectMap) => Project.fromMap(projectMap))
-          .toList()
-          .firstWhere(
-            (project) => project.id == projectId,
-          );
+      return Project.fromJson(response.body);
     }
     throw Exception();
   }
 
   Future<String> addProject(Project project) async {
-    Response response = await post(Uri.https(ApiUri.host, url),
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': 'plain/text',
-        },
-        body: project.toJson());
+    Response response = await post(
+      Uri.https(ApiUri.host, url),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'plain/text',
+      },
+      body: project.toJson(),
+    );
 
-    if (response.statusCode == 200) {
-      return response.body;
+    if (response.statusCode != 500) {
+      return EntityResponse.fromJson(response.body).message;
     }
     throw Exception();
   }
