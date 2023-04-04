@@ -10,6 +10,10 @@ import '/constants/color.dart';
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
   final Widget? filterBody;
+  final Widget? filterResultBody;
+  final bool filterApplied;
+  final VoidCallback? applyFilter;
+  final VoidCallback? clearFilter;
   final Widget? viewSettingBody;
   final EntityStatus entityRetrievedStatus;
   final String title;
@@ -23,6 +27,10 @@ class EntityListTemplate extends StatefulWidget {
     super.key,
     required this.title,
     this.filterBody,
+    this.filterResultBody,
+    this.filterApplied = false,
+    this.applyFilter,
+    this.clearFilter,
     this.viewSettingBody,
     required this.label,
     required this.onRowClick,
@@ -66,6 +74,17 @@ class _CrudState extends State<EntityListTemplate> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(),
+              widget.filterApplied ? const CustomDivider() : Container(),
+              widget.filterApplied
+                  ? _buildFilterAppliedNotification()
+                  : Container(),
+              widget.filterApplied ? const CustomDivider() : Container(),
+              widget.filterApplied
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: widget.filterResultBody ?? Container(),
+                    )
+                  : Container(),
               widget.showTableHeaderButtons ? _buildTableHeader() : Container(),
               _buildTableView()
             ],
@@ -75,6 +94,32 @@ class _CrudState extends State<EntityListTemplate> {
         _buildViewSettingsSlider(context),
         _buildFiltersSlider(context),
       ],
+    );
+  }
+
+  Padding _buildFilterAppliedNotification() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Filter Applied',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          CustomButton(
+            backgroundColor: const Color(0xff049aad),
+            hoverBackgroundColor: const Color(0xff048b9c),
+            iconData: PhosphorIcons.arrowArcLeft,
+            text: 'Clear Filters',
+            onClick: () => widget.clearFilter!(),
+          )
+        ],
+      ),
     );
   }
 
@@ -270,7 +315,10 @@ class _CrudState extends State<EntityListTemplate> {
                 hoverBackgroundColor: const Color(0xff0b76e6),
                 iconData: PhosphorIcons.arrowRight,
                 text: 'Apply Filters',
-                onClick: () {},
+                onClick: () {
+                  widget.applyFilter!();
+                  _hideFilterSlider();
+                },
               ),
             )
           ],

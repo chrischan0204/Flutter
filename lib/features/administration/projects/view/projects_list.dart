@@ -4,6 +4,7 @@ import 'package:safety_eta/global_widgets/global_widget.dart';
 import '/constants/color.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
+import 'widgets/widgets.dart';
 
 class ProjectsListView extends StatefulWidget {
   const ProjectsListView({super.key});
@@ -17,7 +18,12 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   late SitesBloc sitesBloc;
   late RegionsBloc regionsBloc;
 
-  bool active = true;
+  bool filterApplied = false;
+
+  List<String> filterRegions = [];
+  List<String> filterSites = [];
+  List<String> filterContractors = [];
+  bool filterActive = true;
 
   TextEditingController filterNameHasController =
       TextEditingController(text: '');
@@ -50,6 +56,50 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           },
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
+          applyFilter: () {
+            setState(() {
+              filterApplied = true;
+            });
+          },
+          clearFilter: () {
+            setState(() {
+              filterApplied = false;
+            });
+          },
+          filterResultBody: Wrap(
+            children: [
+              FilterItem(
+                label: 'Region:',
+                content: filterRegions.join(', '),
+              ),
+              FilterItem(
+                label: 'Site:',
+                content: filterSites.join(', '),
+              ),
+              FilterItem(
+                label: 'Active:',
+                content: filterActive ? 'Yes' : 'No',
+              ),
+              FilterItem(
+                label: 'Name has:',
+                content: filterNameHasController.text,
+              ),
+              FilterItem(
+                label: 'Ref Code:',
+                content: filterRefCodeController.text,
+              ),
+              FilterItem(
+                label: 'Ref Name:',
+                content: filterRefNameController.text,
+              ),
+              FilterItem(
+                label: 'Contractors:',
+                content: filterContractors.join(', '),
+                last: true,
+              ),
+            ],
+          ),
+          filterApplied: filterApplied,
           filterBody: Column(
             children: [
               DetailItem(
@@ -65,7 +115,10 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         ),
                       hint: 'Select Regions',
                       selectedItems: [],
-                      onChanged: (regions) {},
+                      onChanged: (regions) {
+                        filterRegions =
+                            regions.map((region) => region.name ?? '').toList();
+                      },
                     );
                   },
                 ),
@@ -90,13 +143,13 @@ class _ProjectsListViewState extends State<ProjectsListView> {
               DetailItem(
                 label: 'Active',
                 content: CustomSwitch(
-                  switchValue: active,
+                  switchValue: filterActive,
                   trueString: 'Yes',
                   falseString: 'No',
                   textColor: darkTeal,
                   onChanged: (value) {
                     setState(() {
-                      active = value;
+                      filterActive = value;
                     });
                   },
                 ),
@@ -140,7 +193,11 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                   },
                   hint: 'Select Contractors',
                   selectedItems: [],
-                  onChanged: (contractors) {},
+                  onChanged: (contractors) {
+                    filterContractors = contractors
+                        .map((contractor) => contractor.name ?? '')
+                        .toList();
+                  },
                 ),
               ),
             ],
