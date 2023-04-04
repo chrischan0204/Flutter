@@ -20,7 +20,6 @@ class AddEditSiteView extends StatefulWidget {
 class _AddEditSiteViewState extends State<AddEditSiteView> {
   late SitesBloc sitesBloc;
   late RegionsBloc regionsBloc;
-  List<Region> assignedRegions = [];
   TextEditingController siteNameController = TextEditingController(
     text: '',
   );
@@ -59,13 +58,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     } else {
       sitesBloc.add(
         const SiteSelected(
-          selectedSite: Site(
-            referenceCode: '',
-            region: '',
-            siteType: '',
-            siteCode: '',
-            timeZone: '',
-          ),
+          selectedSite: Site(),
         ),
       );
     }
@@ -85,17 +78,17 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           label: 'site',
           id: widget.siteId,
           selectedEntity: state.selectedSite,
-          addEntity: () => _addSite(),
-          editEntity: () => _editSite(),
+          addEntity: () => _addSite(state),
+          editEntity: () => _editSite(state),
           addButtonName: 'Attach Templates',
           crudStatus: state.siteCrudStatus,
           child: Column(
             children: [
               _buildSiteNameField(state),
               widget.siteId == null
-                  ? _buildRegionField(state)
-                  : _buildRegionFieldForTimeZonesForEdit(state),
-              _buildTimeZoneSelector(state),
+                  ? _buildRegionSelectField(state)
+                  : _buildRegionSelectFieldForTimeZonesForEdit(state),
+              _buildTimeZoneSelectField(state),
               _buildSiteTypeField(state),
               _buildSiteCodeField(state),
               _buildReferenceCodeField(state),
@@ -106,25 +99,19 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     );
   }
 
-  BlocListener<SitesBloc, SitesState> _buildRegionFieldForTimeZonesForEdit(
-      SitesState state) {
+  BlocListener<SitesBloc, SitesState>
+      _buildRegionSelectFieldForTimeZonesForEdit(SitesState state) {
     return BlocListener<SitesBloc, SitesState>(
       listener: (context, sitesState) {
-        if (assignedRegions.isNotEmpty) {
-          String regionId = assignedRegions
-              .firstWhere((assignedRegion) =>
-                  assignedRegion.name == sitesState.selectedSite!.region)
-              .id!;
-          regionsBloc.add(TimeZonesRetrievedForRegion(
-            regionId: regionId,
-          ));
-        }
+        regionsBloc.add(TimeZonesRetrievedForRegion(
+          regionId: sitesState.selectedSite!.regionId,
+        ));
       },
       listenWhen: (previous, current) => previous.selectedSite == null
           ? true
           : (current.selectedSite != null &&
               previous.selectedSite!.region != current.selectedSite!.region),
-      child: _buildRegionField(state),
+      child: _buildRegionSelectField(state),
     );
   }
 
@@ -166,6 +153,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
+      GoRouter.of(context).go('/sites/abc/assign-templates');
     }
     if (state.siteCrudStatus == EntityStatus.failure) {
       sitesBloc.add(SitesStatusInited());
@@ -198,12 +186,9 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     );
   }
 
-  BlocConsumer<RegionsBloc, RegionsState> _buildRegionField(SitesState state) {
-    return BlocConsumer<RegionsBloc, RegionsState>(
-      listener: (context, state) {
-        assignedRegions = state.assignedRegions;
-      },
-      listenWhen: (previous, current) => current.assignedRegions.isNotEmpty,
+  BlocBuilder<RegionsBloc, RegionsState> _buildRegionSelectField(
+      SitesState state) {
+    return BlocBuilder<RegionsBloc, RegionsState>(
       builder: (context, regionsState) {
         Map<String, String> items = <String, String>{}..addEntries(
             regionsState.assignedRegions.map((assignedRegion) =>
@@ -223,7 +208,8 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
               sitesBloc.add(
                 SiteSelected(
                   selectedSite: state.selectedSite!.copyWith(
-                    region: region.value,
+                    region: region.key,
+                    regionId: region.value,
                   ),
                 ),
               );
@@ -308,15 +294,16 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     );
   }
 
-  BlocBuilder<RegionsBloc, RegionsState> _buildTimeZoneSelector(
+  BlocBuilder<RegionsBloc, RegionsState> _buildTimeZoneSelectField(
       SitesState state) {
     return BlocBuilder<RegionsBloc, RegionsState>(
       builder: (context, regionsState) {
         return FormItem(
           label: 'Time Zone (*)',
           content: CustomSingleSelect(
-            items: <String, dynamic>{}..addEntries(regionsState.timeZones
-                .map((timeZone) => MapEntry(timeZone.name ?? '', timeZone))),
+            items: <String, String>{}..addEntries(regionsState.timeZones.map(
+                (timeZone) =>
+                    MapEntry(timeZone.name ?? '', timeZone.id ?? ''))),
             hint: 'Select Time Zone',
             selectedValue: regionsState.timeZones.isEmpty ? null : timeZone,
             onChanged: (timeZone) {
@@ -327,6 +314,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
                 SiteSelected(
                   selectedSite: state.selectedSite!.copyWith(
                     timeZone: timeZone.key,
+                    timeZoneId: timeZone.value,
                   ),
                 ),
               );
@@ -389,12 +377,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     return validated;
   }
 
-  void _addSite() {
+  void _addSite(SitesState state) {
     if (!_validate()) return;
-    GoRouter.of(context).go('/sites/abc/assign-templates');
+    sitesBloc.add(
+      SiteAdded(site: state.selectedSite!),
+    );
   }
 
-  void _editSite() {
+  void _editSite(SitesState state) {
     if (!_validate()) return;
     GoRouter.of(context).go('/sites/abc/assign-templates');
   }

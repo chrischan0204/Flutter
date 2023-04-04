@@ -23,6 +23,20 @@ class SiteSelectedById extends SitesEvent {
   });
 }
 
+class SiteAdded extends SitesEvent {
+  final Site site;
+  const SiteAdded({
+    required this.site,
+  });
+}
+
+class SiteDeleted extends SitesEvent {
+  final String siteId;
+  const SiteDeleted({
+    required this.siteId,
+  });
+}
+
 class SitesStatusInited extends SitesEvent {}
 
 class AuditTemplatesRetrieved extends SitesEvent {}

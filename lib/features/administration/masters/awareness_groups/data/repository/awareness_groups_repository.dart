@@ -35,7 +35,10 @@ class AwarenessGroupsRepository {
   ) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
-      headers: {'Content-Type': 'application/json', 'accept': 'text/plain'},
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'text/plain',
+      },
       body: awarenessGroup.toJson(),
     );
 
