@@ -23,9 +23,7 @@ class _SiteShowViewState extends State<SiteShowView> {
   @override
   void initState() {
     sitesBloc = context.read<SitesBloc>()
-      ..add(
-        SiteSelectedById(siteId: widget.siteId),
-      );
+      ..add(SiteSelectedById(siteId: widget.siteId));
     super.initState();
   }
 
@@ -37,24 +35,7 @@ class _SiteShowViewState extends State<SiteShowView> {
   Widget build(BuildContext context) {
     return BlocConsumer<SitesBloc, SitesState>(
       listener: (context, state) {
-        if (state.siteCrudStatus == EntityStatus.success) {
-          sitesBloc.add(SitesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-
-          GoRouter.of(context).go('/sites');
-        }
-        if (state.siteCrudStatus == EntityStatus.failure) {
-          sitesBloc.add(SitesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
+        _checkDeleteResult(state, context);
       },
       builder: (context, state) {
         return EntityShowTemplate(
@@ -67,61 +48,86 @@ class _SiteShowViewState extends State<SiteShowView> {
               'The site has users or observations associated to it',
           tabItems: {
             'Site Details': Container(),
-            'Audits Templates': Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'The following templates are associated with this site. Edit site to associate/ remove templates from this site',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                const CustomDivider(),
-                Container(
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(
-                        label: Text(
-                          'Template Name',
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Created By',
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Last Revised on',
-                        ),
-                      ),
-                    ],
-                    rows: [],
-                    // rows: List<AuditTemplate>.from(state.selectedSite != null
-                    //         ? state.selectedSite!.auditTemplates
-                    //         : [])
-                    //     .map((auditTemplate) => DataRow(
-                    //         cells: List.from(
-                    //                 auditTemplate.toTableDetailMap().values)
-                    //             .map((detail) => DataCell(CustomDataCell(
-                    //                   data: detail,
-                    //                 )))
-                    //             .toList()))
-                    //     .toList(),
-                  ),
-                ),
-              ],
-            ),
+            'Audits Templates': _buildAuditTemplatesTableView(),
             'Site kiosks': Container(),
           },
           entity: state.selectedSite,
         );
       },
+    );
+  }
+
+  void _checkDeleteResult(SitesState state, BuildContext context) {
+    if (state.siteCrudStatus == EntityStatus.success) {
+      sitesBloc.add(SitesStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/sites');
+    }
+    if (state.siteCrudStatus == EntityStatus.failure) {
+      sitesBloc.add(SitesStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
+  }
+
+  Column _buildAuditTemplatesTableView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text(
+            'The following templates are associated with this site. Edit site to associate/ remove templates from this site',
+            style: TextStyle(
+              fontSize: 14,
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+        const CustomDivider(),
+        Container(
+          child: DataTable(
+            columns: const [
+              DataColumn(
+                label: Text(
+                  'Template Name',
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'Created By',
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'Last Revised on',
+                ),
+              ),
+            ],
+            rows: [],
+            // rows: List<AuditTemplate>.from(state.selectedSite != null
+            //         ? state.selectedSite!.auditTemplates
+            //         : [])
+            //     .map((auditTemplate) => DataRow(
+            //         cells: List.from(
+            //                 auditTemplate.toTableDetailMap().values)
+            //             .map((detail) => DataCell(CustomDataCell(
+            //                   data: detail,
+            //                 )))
+            //             .toList()))
+            //     .toList(),
+          ),
+        ),
+      ],
     );
   }
 }

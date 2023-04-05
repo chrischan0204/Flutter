@@ -18,6 +18,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     on<AuditTemplatesRetrieved>(_onAuditTemplatesRetrieved);
     on<AuditTemplateAssignedToSite>(_onAuditTemplateAssignedToSite);
     on<SiteAdded>(_onSiteAdded);
+    on<SiteEdited>(_onSiteEdited);
     on<SiteDeleted>(_onSiteDeleted);
     on<SitesStatusInited>(_onSitesStatusInited);
   }
@@ -119,6 +120,22 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
     try {
       String message = await sitesRepository.addSite(event.site);
+      emit(state.copyWith(
+        siteCrudStatus: EntityStatus.success,
+        message: message,
+        selectedSite: null,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        siteCrudStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  void _onSiteEdited(SiteEdited event, Emitter<SitesState> emit) async {
+    emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
+    try {
+      String message = await sitesRepository.editSite(event.site);
       emit(state.copyWith(
         siteCrudStatus: EntityStatus.success,
         message: message,
