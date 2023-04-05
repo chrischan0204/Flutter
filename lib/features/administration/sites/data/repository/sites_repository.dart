@@ -43,6 +43,22 @@ class SitesRepository {
     throw Exception();
   }
 
+  Future<String> editSite(Site site) async {
+    Response response = await put(
+      Uri.https(ApiUri.host, url),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'text/plain',
+      },
+      body: site.toJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+    throw Exception();
+  }
+
   deleteSite(String siteId) async {
     Response response = await delete(Uri.https(ApiUri.host, '$url/$siteId'));
     if (response.statusCode == 200) {

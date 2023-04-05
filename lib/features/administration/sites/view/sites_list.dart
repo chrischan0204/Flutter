@@ -32,6 +32,7 @@ class _SitesListViewState extends State<SitesListView> {
           onRowClick: (selectedSite) {
             sitesBloc.add(SiteSelected(selectedSite: selectedSite as Site));
           },
+          emptyMessage: 'There are no sites. Please click New Site to add new site.',
           entityRetrievedStatus: state.sitesRetrievedStatus,
           selectedEntity: state.selectedSite,
         );

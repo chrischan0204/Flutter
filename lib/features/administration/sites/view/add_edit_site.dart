@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
 import '/global_widgets/global_widget.dart';
 import '/utils/custom_notification.dart';
@@ -55,8 +56,8 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       );
     } else {
       sitesBloc.add(
-        const SiteSelected(
-          selectedSite: Site(),
+        SiteSelected(
+          selectedSite: Site(id: const Uuid().v1()),
         ),
       );
     }
@@ -123,9 +124,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           ? null
           : state.selectedSite!.siteType;
       referenceCode = state.selectedSite!.referenceCode;
-      timeZone = state.selectedSite!.timeZone.isEmpty
-          ? null
-          : state.selectedSite!.timeZone;
       region = state.selectedSite!.region.isEmpty
           ? null
           : state.selectedSite!.region;
@@ -156,7 +154,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     if (state.siteCrudStatus == EntityStatus.failure) {
       sitesBloc.add(SitesStatusInited());
       setState(() {
-        siteName = state.message;
+        siteNameValidationMessage = state.message;
       });
     }
   }
@@ -211,6 +209,9 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
                   ),
                 ),
               );
+              setState(() {
+                timeZone = null;
+              });
             },
           ),
           message: regionValidationMessage,
@@ -270,7 +271,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           'Manufacturing': 'Manufacturing',
           'Chemicals Plant': 'Chemicals Plant',
           'Other': 'Other',
-          'site type': 'site type',
         },
         hint: 'Select Type',
         selectedValue: siteType,
@@ -291,35 +291,45 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     );
   }
 
-  BlocBuilder<RegionsBloc, RegionsState> _buildTimeZoneSelectField(
+  BlocListener<SitesBloc, SitesState> _buildTimeZoneSelectField(
       SitesState state) {
-    return BlocBuilder<RegionsBloc, RegionsState>(
-      builder: (context, regionsState) {
-        return FormItem(
-          label: 'Time Zone (*)',
-          content: CustomSingleSelect(
-            items: <String, String>{}..addEntries(regionsState.timeZones.map(
-                (timeZone) =>
-                    MapEntry(timeZone.name ?? '', timeZone.id ?? ''))),
-            hint: 'Select Time Zone',
-            selectedValue: regionsState.timeZones.isEmpty ? null : timeZone,
-            onChanged: (timeZone) {
-              setState(() {
-                timeZoneValidationMessage = '';
-              });
-              sitesBloc.add(
-                SiteSelected(
-                  selectedSite: state.selectedSite!.copyWith(
-                    timeZone: timeZone.key,
-                    timeZoneId: timeZone.value,
-                  ),
-                ),
-              );
-            },
-          ),
-          message: timeZoneValidationMessage,
-        );
+    return BlocListener<SitesBloc, SitesState>(
+      listener: (context, state) {
+        timeZone = state.selectedSite!.timeZone.isEmpty
+            ? null
+            : state.selectedSite!.timeZone;
       },
+      listenWhen: (previous, current) => previous.selectedSite != null
+          ? previous.selectedSite!.timeZone != current.selectedSite!.timeZone
+          : true,
+      child: BlocBuilder<RegionsBloc, RegionsState>(
+        builder: (context, regionsState) {
+          return FormItem(
+            label: 'Time Zone (*)',
+            content: CustomSingleSelect(
+              items: <String, String>{}..addEntries(regionsState.timeZones.map(
+                  (timeZone) =>
+                      MapEntry(timeZone.name ?? '', timeZone.id ?? ''))),
+              hint: 'Select Time Zone',
+              selectedValue: regionsState.timeZones.isEmpty ? null : timeZone,
+              onChanged: (timeZone) {
+                setState(() {
+                  timeZoneValidationMessage = '';
+                });
+                sitesBloc.add(
+                  SiteSelected(
+                    selectedSite: state.selectedSite!.copyWith(
+                      timeZone: timeZone.key,
+                      timeZoneId: timeZone.value,
+                    ),
+                  ),
+                );
+              },
+            ),
+            message: timeZoneValidationMessage,
+          );
+        },
+      ),
     );
   }
 
@@ -376,13 +386,11 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
 
   void _addSite(SitesState state) {
     if (!_validate()) return;
-    sitesBloc.add(
-      SiteAdded(site: state.selectedSite!),
-    );
+    sitesBloc.add(SiteAdded(site: state.selectedSite!));
   }
 
   void _editSite(SitesState state) {
     if (!_validate()) return;
-    GoRouter.of(context).go('/sites/abc/assign-templates');
+    sitesBloc.add(SiteEdited(site: state.selectedSite!));
   }
 }

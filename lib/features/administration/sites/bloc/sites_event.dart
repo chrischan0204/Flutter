@@ -30,6 +30,13 @@ class SiteAdded extends SitesEvent {
   });
 }
 
+class SiteEdited extends SitesEvent {
+  final Site site;
+  const SiteEdited({
+    required this.site,
+  });
+}
+
 class SiteDeleted extends SitesEvent {
   final String siteId;
   const SiteDeleted({
