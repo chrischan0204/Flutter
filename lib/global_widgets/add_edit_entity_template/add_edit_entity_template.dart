@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -14,6 +15,7 @@ class AddEditEntityTemplate extends StatefulWidget {
   final Widget child;
   final String? addButtonName;
   final String? editButtonName;
+  final bool isCrudDataFill;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
   final EntityStatus crudStatus;
@@ -25,6 +27,7 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.child,
     this.addButtonName,
     this.editButtonName,
+    this.isCrudDataFill = false,
     required this.addEntity,
     required this.editEntity,
     this.crudStatus = EntityStatus.initial,
@@ -105,7 +108,6 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                   fontFamily: 'OpenSans',
                 ),
               ),
-              
             );
           })
         : Container();
@@ -194,14 +196,38 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       iconData: PhosphorIcons.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {
-        String location = GoRouter.of(context).location;
-        if (widget.id == null) {
-          location = location.replaceAll('new', '');
+        if (widget.isCrudDataFill) {
+          AwesomeDialog(
+            context: context,
+            width: MediaQuery.of(context).size.width / 4,
+            dialogType: DialogType.question,
+            headerAnimationLoop: false,
+            animType: AnimType.bottomSlide,
+            title: 'Confirm',
+            dialogBorderRadius: BorderRadius.circular(5),
+            desc: 'Data that was entered will be lost ..... Proceed?',
+            buttonsTextStyle: const TextStyle(color: Colors.white),
+            showCloseIcon: true,
+            btnCancelOnPress: () {},
+            btnOkOnPress: () => _goToList(),
+            btnOkText: 'Proceed',
+            buttonsBorderRadius: BorderRadius.circular(3),
+            padding: const EdgeInsets.all(10),
+          ).show();
         } else {
-          location = location.replaceRange(location.indexOf('edit'), null, '');
+          _goToList();
         }
-        GoRouter.of(context).go(location);
       },
     );
+  }
+
+  void _goToList() {
+    String location = GoRouter.of(context).location;
+    if (widget.id == null) {
+      location = location.replaceAll('new', '');
+    } else {
+      location = location.replaceRange(location.indexOf('edit'), null, '');
+    }
+    GoRouter.of(context).go(location);
   }
 }
