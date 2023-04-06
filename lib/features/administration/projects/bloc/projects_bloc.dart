@@ -20,6 +20,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     on<ProjectAdded>(_onProjectAdded);
     on<ProjectEdited>(_onProjectEdited);
     on<ProjectDeleted>(_onProjectDeleted);
+    on<ProjectsSorted>(_onProjectsSorted);
     on<ProjectsStatusInited>(_onProjectsStatusInited);
   }
 
@@ -80,7 +81,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onProjectEdited(ProjectEdited event, Emitter<ProjectsState> emit) async {
+  void _onProjectEdited(
+      ProjectEdited event, Emitter<ProjectsState> emit) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
       String message = await projectsRepository.editProject(event.project);
@@ -111,6 +113,22 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         projectCrudStatus: EntityStatus.failure,
       ));
     }
+  }
+
+  void _onProjectsSorted(
+    ProjectsSorted event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    List<Project> projects = List.from(state.projects);
+
+    projects.sort(
+      (a, b) {
+        return (event.sortType ? 1 : -1) *
+            (a.tableItemsToMap()[event.column].toString())
+                .compareTo(b.tableItemsToMap()[event.column].toString());
+      },
+    );
+    emit(state.copyWith(projects: projects));
   }
 
   void _onProjectsStatusInited(

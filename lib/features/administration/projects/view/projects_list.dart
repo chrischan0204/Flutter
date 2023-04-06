@@ -56,6 +56,10 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           },
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
+          onTableSort: (sortInfo) {
+            projectsBloc.add(
+                ProjectsSorted(column: sortInfo.key, sortType: sortInfo.value));
+          },
           applyFilter: () {
             setState(() {
               filterApplied = true;
@@ -114,7 +118,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                           ),
                         ),
                       hint: 'Select Regions',
-                      selectedItems: [],
                       onChanged: (regions) {
                         filterRegions =
                             regions.map((region) => region.name ?? '').toList();
@@ -134,7 +137,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                           ),
                         ),
                       hint: 'Select Sites',
-                      selectedItems: [],
                       onChanged: (sites) {},
                     );
                   },
@@ -192,7 +194,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         Entity(id: '5', name: 'Floyd Window repairs'),
                   },
                   hint: 'Select Contractors',
-                  selectedItems: [],
                   onChanged: (contractors) {
                     filterContractors = contractors
                         .map((contractor) => contractor.name ?? '')
