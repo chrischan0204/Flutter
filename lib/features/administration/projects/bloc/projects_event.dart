@@ -42,6 +42,17 @@ class ProjectAdded extends ProjectsEvent {
       ];
 }
 
+class ProjectEdited extends ProjectsEvent {
+  final Project project;
+  const ProjectEdited({
+    required this.project,
+  });
+  @override
+  List<Object?> get props => [
+        project,
+      ];
+}
+
 class ProjectDeleted extends ProjectsEvent {
   final String projectId;
   const ProjectDeleted({

@@ -102,9 +102,11 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       _buildRegionSelectFieldForTimeZonesForEdit(SitesState state) {
     return BlocListener<SitesBloc, SitesState>(
       listener: (context, sitesState) {
-        regionsBloc.add(TimeZonesRetrievedForRegion(
-          regionId: sitesState.selectedSite!.regionId,
-        ));
+        if (sitesState.selectedSite != null) {
+          regionsBloc.add(TimeZonesRetrievedForRegion(
+            regionId: sitesState.selectedSite!.regionId,
+          ));
+        }
       },
       listenWhen: (previous, current) => previous.selectedSite == null
           ? true
@@ -206,12 +208,10 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
                   selectedSite: state.selectedSite!.copyWith(
                     region: region.key,
                     regionId: region.value,
+                    timeZone: '',
                   ),
                 ),
               );
-              setState(() {
-                timeZone = null;
-              });
             },
           ),
           message: regionValidationMessage,
@@ -295,13 +295,15 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       SitesState state) {
     return BlocListener<SitesBloc, SitesState>(
       listener: (context, state) {
-        timeZone = state.selectedSite!.timeZone.isEmpty
-            ? null
-            : state.selectedSite!.timeZone;
+        if (state.selectedSite != null) {
+          timeZone = state.selectedSite!.timeZone.isEmpty
+              ? null
+              : state.selectedSite!.timeZone;
+        }
       },
-      listenWhen: (previous, current) => previous.selectedSite != null
-          ? previous.selectedSite!.timeZone != current.selectedSite!.timeZone
-          : true,
+      // listenWhen: (previous, current) => previous.selectedSite != null
+      //     ? previous.selectedSite!.timeZone != current.selectedSite!.timeZone
+      //     : true,
       child: BlocBuilder<RegionsBloc, RegionsState>(
         builder: (context, regionsState) {
           return FormItem(

@@ -135,6 +135,8 @@ class Site extends Entity {
       siteType: map['siteType'] == null ? '' : map['siteType'] as String,
       referenceCode: map['referenceCode'],
       region: map['regionName'],
+      regionId: map['regionId'] ?? '',
+      timeZoneId: map['timeZoneId'] ?? '',
       timeZone: map['timeZoneName'],
       users: map['usreCount'] == null ? 0 : map['usreCount'] as int,
       observations:

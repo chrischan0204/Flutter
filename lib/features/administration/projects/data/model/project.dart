@@ -61,12 +61,16 @@ class Project extends Entity {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'name': name,
       'siteId': siteId,
       'referenceNumber': referenceNumber,
       'referneceName': referneceName,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+    return map;
   }
 
   @override
