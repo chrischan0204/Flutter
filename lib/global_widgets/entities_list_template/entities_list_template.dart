@@ -23,6 +23,7 @@ class EntityListTemplate extends StatefulWidget {
   final Entity? selectedEntity;
   final bool showTableHeaderButtons;
   final String emptyMessage;
+  final ValueChanged<MapEntry<String, bool>>? onTableSort;
   const EntityListTemplate({
     super.key,
     required this.title,
@@ -40,6 +41,7 @@ class EntityListTemplate extends StatefulWidget {
     this.description = '',
     this.emptyMessage = '',
     this.showTableHeaderButtons = false,
+    this.onTableSort,
   });
 
   @override
@@ -197,6 +199,7 @@ class _CrudState extends State<EntityListTemplate> {
                     : DataTableView(
                         entities: widget.entities,
                         emptyMessage: widget.emptyMessage,
+                        onTableSort: widget.onTableSort,
                         onRowClick: (entity) {
                           _showDetailsSlider();
                           setState(() {

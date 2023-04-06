@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'projects_bloc.dart';
 
 abstract class ProjectsEvent extends Equatable {
@@ -61,6 +62,21 @@ class ProjectDeleted extends ProjectsEvent {
   @override
   List<Object?> get props => [
         projectId,
+      ];
+}
+
+class ProjectsSorted extends ProjectsEvent {
+  final String column;
+  final bool sortType;
+  const ProjectsSorted({
+    required this.column,
+    required this.sortType,
+  });
+
+  @override
+  List<Object?> get props => [
+        column,
+        sortType,
       ];
 }
 

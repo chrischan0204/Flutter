@@ -7,11 +7,13 @@ import '/data/model/entity.dart';
 class DataTableView extends StatefulWidget {
   final ValueChanged<Entity> onRowClick;
   final String emptyMessage;
+  final ValueChanged<MapEntry<String, bool>>? onTableSort;
   const DataTableView({
     super.key,
     this.entities = const [],
     required this.onRowClick,
     this.emptyMessage = '',
+    this.onTableSort,
   });
   final List<Entity> entities;
 
@@ -20,23 +22,67 @@ class DataTableView extends StatefulWidget {
 }
 
 class _DataTableViewState extends State<DataTableView> {
+  int? selectedColumnIndex;
+  bool sortType = true;
+
   List<DataColumn> _buildColumns() {
     if (widget.entities.isNotEmpty) {
+      List<String> columns = widget.entities[0].tableItemsToMap().keys.toList();
       return [
-        ...widget.entities[0]
-            .tableItemsToMap()
-            .keys
+        ...columns
             .map(
-              (key) => DataColumn(
-                label: Text(
-                  key,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    fontFamily: 'OpenSans',
-                  ),
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
+              (column) => DataColumn(
+                label: Builder(
+                  builder: (context) {
+                    int index = columns.indexOf(column);
+                    return GestureDetector(
+                      onTap: () {
+                        if (widget.onTableSort != null) {
+                          if (selectedColumnIndex == index) {
+                            setState(() {
+                              sortType = !sortType;
+                            });
+                          } else {
+                            setState(() {
+                              selectedColumnIndex = index;
+                              sortType = true;
+                            });
+                          }
+                          widget.onTableSort!(MapEntry(column, sortType));
+                        }
+                      },
+                      child: Expanded(
+                        child: Row(
+                          children: [
+                            Text(
+                              column,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                fontFamily: 'OpenSans',
+                              ),
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            index == selectedColumnIndex
+                                ? const SizedBox(
+                                    width: 10,
+                                  )
+                                : Container(),
+                            index == selectedColumnIndex
+                                ? Icon(
+                                    sortType
+                                        ? PhosphorIcons.arrowUp
+                                        : PhosphorIcons.arrowDown,
+                                    size: 20,
+                                    color: const Color(0xff0c83ff),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             )
