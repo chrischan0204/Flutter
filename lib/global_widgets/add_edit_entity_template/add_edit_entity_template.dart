@@ -196,7 +196,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       iconData: PhosphorIcons.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {
-        if (widget.isCrudDataFill) {
+        if (widget.isCrudDataFill && widget.id == null) {
           AwesomeDialog(
             context: context,
             width: MediaQuery.of(context).size.width / 4,

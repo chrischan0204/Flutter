@@ -387,7 +387,8 @@ class _CrudState extends State<EntityListTemplate> {
       curve: Curves.easeInOut,
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
-        height: MediaQuery.of(context).size.height,
+        // height: MediaQuery.of(context).size.height,
+        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
