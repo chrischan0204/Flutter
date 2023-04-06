@@ -81,6 +81,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           editEntity: () => _editSite(state),
           addButtonName: 'Assign Templates',
           crudStatus: state.siteCrudStatus,
+          isCrudDataFill: widget.siteId == null ? _checkFormDataFill() : true,
           child: Column(
             children: [
               _buildSiteNameField(state),
@@ -141,6 +142,15 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       }
       setState(() {});
     }
+  }
+
+  bool _checkFormDataFill() {
+    return siteNameController.text.trim().isNotEmpty ||
+        (region != null && region!.isNotEmpty) ||
+        (timeZone != null && timeZone!.isNotEmpty) ||
+        (siteType != null && siteType!.isNotEmpty) ||
+        siteCodeController.text.trim().isNotEmpty ||
+        referenceCodeController.text.trim().isNotEmpty;
   }
 
   void _checkCrudResult(SitesState state, BuildContext context) {

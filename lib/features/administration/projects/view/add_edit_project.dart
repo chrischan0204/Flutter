@@ -70,7 +70,8 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
           addEntity: () => _addProject(state),
           editEntity: () => _editProject(state),
           addButtonName: 'Assign Companies',
-          isCrudDataFill: _checkFormDataFill(),
+          isCrudDataFill:
+              widget.projectId == null ? _checkFormDataFill() : true,
           crudStatus: state.projectCrudStatus,
           child: Column(
             children: [
@@ -86,10 +87,6 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
   }
 
   bool _checkFormDataFill() {
-    print(projectNameController.text);
-    print(referenceNameController.text);
-    print(referenceNumberController.text);
-    print(site);
     return projectNameController.text.trim().isNotEmpty ||
         referenceNameController.text.trim().isNotEmpty ||
         referenceNumberController.text.trim().isNotEmpty ||

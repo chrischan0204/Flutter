@@ -74,8 +74,9 @@ class _LayoutState extends State<Layout> {
                             selectedItemName: widget.selectedItemName,
                           ),
                     Expanded(
-                      child: SizedBox(
-                        // height: constraints.maxHeight,
+                      child: Container(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
                         child: widget.body,
                       ),
                     ),
