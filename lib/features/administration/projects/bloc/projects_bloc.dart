@@ -18,6 +18,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     // on<AuditTemplatesRetrieved>(_onAuditTemplatesRetrieved);
     // on<AuditTemplateAssignedToProject>(_onAuditTemplateAssignedToProject);
     on<ProjectAdded>(_onProjectAdded);
+    on<ProjectEdited>(_onProjectEdited);
     on<ProjectDeleted>(_onProjectDeleted);
     on<ProjectsStatusInited>(_onProjectsStatusInited);
   }
@@ -75,6 +76,22 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,
+      ));
+    }
+  }
+
+  void _onProjectEdited(ProjectEdited event, Emitter<ProjectsState> emit) async {
+    emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
+    try {
+      String message = await projectsRepository.editProject(event.project);
+      emit(state.copyWith(
+        projectCrudStatus: EntityStatus.success,
+        message: message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        projectCrudStatus: EntityStatus.failure,
+        message: 'Something went wrong',
       ));
     }
   }

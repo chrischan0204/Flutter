@@ -239,13 +239,11 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
 
   void _addProject(ProjectsState state) {
     if (!_validate()) return;
-    projectsBloc.add(
-      ProjectAdded(project: state.selectedProject!),
-    );
+    projectsBloc.add(ProjectAdded(project: state.selectedProject!));
   }
 
   void _editProject(ProjectsState state) {
     if (!_validate()) return;
-    GoRouter.of(context).go('/projects/abc/assign-companies');
+    projectsBloc.add(ProjectEdited(project: state.selectedProject!));
   }
 }
