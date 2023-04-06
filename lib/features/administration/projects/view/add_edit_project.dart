@@ -87,10 +87,6 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
   }
 
   bool _checkFormDataFill() {
-    print(projectNameController.text);
-    print(referenceNameController.text);
-    print(referenceNumberController.text);
-    print(site);
     return projectNameController.text.trim().isNotEmpty ||
         referenceNameController.text.trim().isNotEmpty ||
         referenceNumberController.text.trim().isNotEmpty ||
