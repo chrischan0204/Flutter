@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../../data/model/model.dart';
 import '/data/repository/repository.dart';
 import '/data/model/model.dart';
 
@@ -12,10 +11,23 @@ class AwarenessCategoriesBloc
     extends Bloc<AwarenessCategoriesEvent, AwarenessCategoriesState> {
   final AwarenessCategoriesRepository awarenessCategoriesRepository;
   final AwarenessGroupsRepository awarenessGroupsRepository;
+
+  final String addErrorMessage =
+      'There was an error while adding awareness category. Our team has been notified. Please wait a few minutes and try again.';
+  final String editErrorMessage =
+      'There was an error while editing awareness category. Our team has been notified. Please wait a few minutes and try again.';
+  final String deleteErrorMessage =
+      'There was an error while deleting awareness category. Our team has been notified. Please wait a few minutes and try again.';
+
   AwarenessCategoriesBloc({
     required this.awarenessCategoriesRepository,
     required this.awarenessGroupsRepository,
   }) : super(const AwarenessCategoriesState()) {
+    _triggerEvents();
+  }
+
+  // trigger the event
+  void _triggerEvents() {
     on<AwarenessCategoriesRetrieved>(_onAwarenessCategoriesRetrieved);
     on<AwarenessGroupsForAwarenessCategoriesRetrieved>(
         _onAwarenessGroupsForAwarenessCategoriesRetrieved);
@@ -27,10 +39,15 @@ class AwarenessCategoriesBloc
     on<AwarenessCategoriesStatusInited>(_onAwarenessCategoriesStatusInited);
   }
 
+  // get awareness groups list
   void _onAwarenessGroupsForAwarenessCategoriesRetrieved(
       AwarenessGroupsForAwarenessCategoriesRetrieved event,
       Emitter<AwarenessCategoriesState> emit) async {
-    emit(state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.loading));
+    emit(
+      state.copyWith(
+        awarenessGroupsRetrievedStatus: EntityStatus.loading,
+      ),
+    );
     try {
       List<AwarenessGroup> awarenessGroups =
           await awarenessGroupsRepository.getAwarenessGroups();
@@ -42,10 +59,14 @@ class AwarenessCategoriesBloc
       );
     } catch (e) {
       emit(
-          state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.failure));
+        state.copyWith(
+          awarenessGroupsRetrievedStatus: EntityStatus.failure,
+        ),
+      );
     }
   }
 
+  // get awareness categories list
   Future<void> _onAwarenessCategoriesRetrieved(
       AwarenessCategoriesRetrieved event,
       Emitter<AwarenessCategoriesState> emit) async {
@@ -72,6 +93,7 @@ class AwarenessCategoriesBloc
     }
   }
 
+  // select awareness category
   Future<void> _onAwarenessCategorySelected(
     AwarenessCategorySelected event,
     Emitter<AwarenessCategoriesState> emit,
@@ -82,6 +104,7 @@ class AwarenessCategoriesBloc
     ));
   }
 
+  // get awareness category by id
   Future<void> _onAwarenessCategorySelectedById(
     AwarenessCategorySelectedById event,
     Emitter<AwarenessCategoriesState> emit,
@@ -108,6 +131,7 @@ class AwarenessCategoriesBloc
     }
   }
 
+  // add awareness category
   Future<void> _onAwarenessCategoryAdded(
     AwarenessCategoryAdded event,
     Emitter<AwarenessCategoriesState> emit,
@@ -132,12 +156,12 @@ class AwarenessCategoriesBloc
     } catch (e) {
       emit(state.copyWith(
         awarenessCategoryCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while adding. Our team has been notified. Please wait a few minutes and try again.',
+        message: addErrorMessage,
       ));
     }
   }
 
+  // edit awareness category
   Future<void> _onAwarenessCategoryEdited(
     AwarenessCategoryEdited event,
     Emitter<AwarenessCategoriesState> emit,
@@ -163,12 +187,12 @@ class AwarenessCategoriesBloc
     } catch (e) {
       emit(state.copyWith(
         awarenessCategoryCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while editing awareness category. Our team has been notified. Please wait a few minutes and try again.',
+        message: editErrorMessage,
       ));
     }
   }
 
+  // delete awareness category
   Future<void> _onAwarenessCategoryDeleted(
     AwarenessCategoryDeleted event,
     Emitter<AwarenessCategoriesState> emit,
@@ -193,12 +217,13 @@ class AwarenessCategoriesBloc
       }
     } catch (e) {
       emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.failure,
-          message:
-              'There was an error while deleting. Our team has been notified. Please wait a few minutes and try again.'));
+        awarenessCategoryCrudStatus: EntityStatus.failure,
+        message: deleteErrorMessage,
+      ));
     }
   }
 
+  // init status of bloc
   void _onAwarenessCategoriesStatusInited(AwarenessCategoriesStatusInited event,
       Emitter<AwarenessCategoriesState> emit) {
     emit(
@@ -206,7 +231,6 @@ class AwarenessCategoriesBloc
         awarenessCategorySelectedStatus: EntityStatus.initial,
         awarenessCategoriesRetrievedStatus: EntityStatus.initial,
         awarenessCategoryCrudStatus: EntityStatus.initial,
-        
       ),
     );
   }

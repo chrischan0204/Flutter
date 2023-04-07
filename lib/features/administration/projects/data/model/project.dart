@@ -107,6 +107,7 @@ class Project extends Entity {
       name: entity.name,
       regionName:
           map['regionName'] == null ? '' : (map['regionName'] as String),
+      siteId: map['siteId'] as String,
       siteName: map['siteName'] as String,
       referenceNumber: map['referenceNumber'] as String,
       referneceName: map['referenceName'] as String,

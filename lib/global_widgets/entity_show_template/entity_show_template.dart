@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:safety_eta/utils/custom_alert.dart';
 import 'package:strings/strings.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
@@ -195,43 +196,27 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
             hoverBackgroundColor: const Color(0xffd73d3d),
             iconData: PhosphorIcons.gear,
             text: 'Delete ${camelize(widget.label)}',
-            // disabled: !widget.deletable,
             onClick: () {
               if (widget.deletable) {
-                AwesomeDialog(
+                CustomAlert(
                   context: context,
-                  width: MediaQuery.of(context).size.width / 4,
-                  dialogType: DialogType.question,
-                  headerAnimationLoop: false,
-                  animType: AnimType.bottomSlide,
                   title: 'Confirm',
-                  dialogBorderRadius: BorderRadius.circular(5),
-                  desc: 'Do you really want to delete this ${widget.label}?',
-                  buttonsTextStyle: const TextStyle(color: Colors.white),
-                  showCloseIcon: true,
-                  btnCancelOnPress: () {},
-                  btnOkOnPress: () {
-                    widget.deleteEntity();
-                  },
+                  width: MediaQuery.of(context).size.width / 4,
+                  description:
+                      'Do you really want to delete this ${widget.label}?',
                   btnOkText: 'Delete',
-                  buttonsBorderRadius: BorderRadius.circular(3),
-                  padding: const EdgeInsets.all(10),
+                  btnOkOnPress: () => widget.deleteEntity(),
+                  btnCancelOnPress: () {},
+                  dialogType: DialogType.question,
                 ).show();
               } else {
-                AwesomeDialog(
+                CustomAlert(
                   context: context,
                   width: MediaQuery.of(context).size.width / 4.5,
-                  dialogType: DialogType.warning,
-                  headerAnimationLoop: false,
-                  animType: AnimType.bottomSlide,
-                  dialogBorderRadius: BorderRadius.circular(5),
-                  desc: widget.descriptionForDelete,
-                  buttonsTextStyle: const TextStyle(color: Colors.white),
-                  showCloseIcon: true,
-                  btnOkOnPress: () {},
+                  description: widget.descriptionForDelete,
                   btnOkText: 'OK',
-                  buttonsBorderRadius: BorderRadius.circular(3),
-                  padding: const EdgeInsets.all(10),
+                  btnOkOnPress: () {},
+                  dialogType: DialogType.warning,
                 ).show();
               }
             },
@@ -240,8 +225,8 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
 
   CustomButton _buildGoToEditButton(BuildContext context) {
     return CustomButton(
-      backgroundColor: const Color(0xfff58646),
-      hoverBackgroundColor: const Color(0xffdd793f),
+      backgroundColor: warnColor,
+      hoverBackgroundColor: warnHoverColor,
       iconData: PhosphorIcons.gear,
       text: 'Edit ${camelize(widget.label)}',
       onClick: () => GoRouter.of(context).go(
@@ -252,8 +237,8 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
 
   CustomButton _buildGoToListButton(BuildContext context) {
     return CustomButton(
-      backgroundColor: const Color(0xff0c83ff),
-      hoverBackgroundColor: const Color(0xff0b76e6),
+      backgroundColor: primaryColor,
+      hoverBackgroundColor: primarHoverColor,
       iconData: PhosphorIcons.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {

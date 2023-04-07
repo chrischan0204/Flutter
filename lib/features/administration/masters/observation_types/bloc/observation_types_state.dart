@@ -19,6 +19,7 @@ class ObservationTypesState extends Equatable {
     this.message = '',
   });
 
+  // set the field for equality of observation type
   @override
   List<Object?> get props => [
         observationTypes,
@@ -29,6 +30,7 @@ class ObservationTypesState extends Equatable {
         message,
       ];
 
+  // return new observation type with updated fields
   ObservationTypesState copyWith({
     List<ObservationType>? observationTypes,
     ObservationType? selectedObservationType,

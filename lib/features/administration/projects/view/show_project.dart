@@ -20,6 +20,9 @@ class ShowProjectView extends StatefulWidget {
 class _ShowProjectViewState extends State<ShowProjectView> {
   late ProjectsBloc projectsBloc;
 
+  static String pageTitle = 'Project';
+  static String pageLabel = 'project';
+
   @override
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()
@@ -36,81 +39,87 @@ class _ShowProjectViewState extends State<ShowProjectView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProjectsBloc, ProjectsState>(
-      listener: (context, state) {
-        if (state.projectCrudStatus == EntityStatus.success) {
-          projectsBloc.add(ProjectsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-
-          GoRouter.of(context).go('/projects');
-        }
-        if (state.projectCrudStatus == EntityStatus.failure) {
-          projectsBloc.add(ProjectsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
-      },
+      listener: (context, state) => _checkDeleteProjectStatus(state, context),
       builder: (context, state) {
         return EntityShowTemplate(
-          title: 'Project',
-          label: 'project',
+          title: pageTitle,
+          label: pageLabel,
           deleteEntity: () => _deleteProject(state),
-          tabItems: {
-            'Project Details': Container(),
-            'Associated Companies': Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                const CustomDivider(),
-                Container(
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(
-                        label: Text(
-                          'Company Name',
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Role',
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Added By',
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Added on',
-                        ),
-                      ),
-                    ],
-                    rows: [],
-                  ),
-                ),
-              ],
-            ),
-          },
+          tabItems: _buildTabs,
           entity: state.selectedProject,
         );
       },
     );
+  }
+
+  Map<String, Widget> get _buildTabs {
+    return {
+      'Project Details': Container(),
+      'Associated Companies': Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const CustomDivider(),
+          Container(
+            child: DataTable(
+              columns: const [
+                DataColumn(
+                  label: Text(
+                    'Company Name',
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Role',
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Added By',
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Added on',
+                  ),
+                ),
+              ],
+              rows: [],
+            ),
+          ),
+        ],
+      ),
+    };
+  }
+
+  void _checkDeleteProjectStatus(ProjectsState state, BuildContext context) {
+    if (state.projectCrudStatus == EntityStatus.success) {
+      projectsBloc.add(ProjectsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/projects');
+    }
+    if (state.projectCrudStatus == EntityStatus.failure) {
+      projectsBloc.add(ProjectsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
   }
 }

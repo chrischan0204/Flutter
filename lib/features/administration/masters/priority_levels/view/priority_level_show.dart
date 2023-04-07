@@ -20,6 +20,9 @@ class PriorityLevelShowView extends StatefulWidget {
 class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
   late PriorityLevelsBloc priorityLevelsBloc;
 
+  static String pageTitle = 'Priority Level';
+  static String pageLabel = 'priority level';
+
   @override
   void initState() {
     priorityLevelsBloc = context.read<PriorityLevelsBloc>();
@@ -34,41 +37,46 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PriorityLevelsBloc, PriorityLevelsState>(
-      listener: (context, state) {
-        if (state.priorityLevelCrudStatus == EntityStatus.success) {
-          priorityLevelsBloc.add(const PriorityLevelsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-
-          GoRouter.of(context).go('/priority-levels');
-        }
-        if (state.priorityLevelCrudStatus == EntityStatus.failure) {
-          priorityLevelsBloc.add(const PriorityLevelsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
-      },
+      listener: (context, state) => _checkDeletePriorityLevel(state, context),
       builder: (context, state) {
         return EntityShowTemplate(
-          title: 'Priority Level',
-          label: 'priority level',
+          title: pageTitle,
+          label: pageLabel,
           entity: state.selectedPriorityLevel,
-          deleteEntity: () {
-            priorityLevelsBloc.add(
-              PriorityLevelDeleted(
-                priorityLevelId: state.selectedPriorityLevel!.id!,
-              ),
-            );
-          },
+          deleteEntity: () => _deletePriorityLevel(state),
           crudStatus: state.priorityLevelCrudStatus,
         );
       },
     );
+  }
+
+  void _deletePriorityLevel(PriorityLevelsState state) {
+    priorityLevelsBloc.add(
+      PriorityLevelDeleted(
+        priorityLevelId: state.selectedPriorityLevel!.id!,
+      ),
+    );
+  }
+
+  void _checkDeletePriorityLevel(
+      PriorityLevelsState state, BuildContext context) {
+    if (state.priorityLevelCrudStatus == EntityStatus.success) {
+      priorityLevelsBloc.add(const PriorityLevelsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/priority-levels');
+    }
+    if (state.priorityLevelCrudStatus == EntityStatus.failure) {
+      priorityLevelsBloc.add(const PriorityLevelsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
   }
 }

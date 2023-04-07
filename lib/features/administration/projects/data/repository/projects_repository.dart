@@ -8,6 +8,7 @@ import '/data/model/model.dart';
 class ProjectsRepository {
   static String url = '/api/Projects';
 
+  // get projects list
   Future<List<Project>> getProjects() async {
     Response response = await get(Uri.https(ApiUri.host, url));
 
@@ -19,6 +20,7 @@ class ProjectsRepository {
     return [];
   }
 
+  // get project by id
   Future<Project> getProjectById(
     String projectId,
   ) async {
@@ -30,6 +32,7 @@ class ProjectsRepository {
     throw Exception();
   }
 
+  // add project
   Future<String> addProject(Project project) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
@@ -46,6 +49,7 @@ class ProjectsRepository {
     throw Exception();
   }
 
+  // edit project
   Future<String> editProject(Project project) async {
     Response response = await put(
       Uri.https(ApiUri.host, url),
@@ -57,7 +61,11 @@ class ProjectsRepository {
     );
 
     if (response.statusCode != 500) {
-      return EntityResponse.fromJson(response.body).message;
+      try {
+        return EntityResponse.fromJson(response.body).message;
+      } catch (e) {
+        return response.body;
+      }
     }
     throw Exception();
   }

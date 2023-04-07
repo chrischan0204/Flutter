@@ -48,7 +48,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           ),
           activeSwitchBorder: Border.all(
             width: 2,
-            color: Colors.blue,
+            color: primaryColor,
           ),
           showOnOff: false,
           onToggle: (val) {

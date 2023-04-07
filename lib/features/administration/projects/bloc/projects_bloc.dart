@@ -9,14 +9,23 @@ part 'projects_state.dart';
 
 class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ProjectsRepository projectsRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding project. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing project. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage =
+      'There was an error while deleting project. Our team has been notified. Please wait a few minutes and try again.';
   ProjectsBloc({
     required this.projectsRepository,
   }) : super(const ProjectsState()) {
+    _triggerEvents();
+  }
+
+  void _triggerEvents() {
     on<ProjectsRetrieved>(_onProjectsRetrieved);
     on<ProjectSelected>(_onProjectSelected);
     on<ProjectSelectedById>(_onProjectSelectedById);
-    // on<AuditTemplatesRetrieved>(_onAuditTemplatesRetrieved);
-    // on<AuditTemplateAssignedToProject>(_onAuditTemplateAssignedToProject);
     on<ProjectAdded>(_onProjectAdded);
     on<ProjectEdited>(_onProjectEdited);
     on<ProjectDeleted>(_onProjectDeleted);
@@ -77,6 +86,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,
+        message: addErrorMessage,
       ));
     }
   }
@@ -93,7 +103,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,
-        message: 'Something went wrong',
+        message: editErrorMessage,
       ));
     }
   }
@@ -111,6 +121,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,
+        message: deleteErrorMessage,
       ));
     }
   }

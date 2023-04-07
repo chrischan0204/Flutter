@@ -24,7 +24,7 @@ class Site extends Entity {
     this.regionId = '',
     this.timeZone = '',
     this.timeZoneId = '',
-    this.users = 20,
+    this.users = 0,
     this.observations = 0,
     this.auditTemplates = 0,
     super.active,

@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
-
 import '/data/model/model.dart';
 
-class Region extends Entity implements Equatable {
+class Region extends Entity {
   final List<TimeZone> timeZones;
 
   final int? siteCount;
@@ -18,11 +16,13 @@ class Region extends Entity implements Equatable {
     super.deactivationUserName,
   });
 
+  // check if the region can be deleted
   bool get deletable => siteCount == 0 || siteCount == null;
 
   List<TimeZone> get associatedTimeZones =>
       timeZones.where((timeZone) => timeZone.assigned).toList();
 
+  // return map of region details, which will be display on side slider and details page
   @override
   Map<String, dynamic> detailItemsToMap() {
     return {
@@ -34,6 +34,7 @@ class Region extends Entity implements Equatable {
     }..addEntries(super.detailItemsToMap().entries);
   }
 
+  // return map of region details, which will be displayed on table view
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
@@ -43,6 +44,7 @@ class Region extends Entity implements Equatable {
     };
   }
 
+  // set the field for equality of region
   @override
   List<Object?> get props => [
         timeZones,
@@ -50,9 +52,7 @@ class Region extends Entity implements Equatable {
         ...super.props,
       ];
 
-  @override
-  bool? get stringify => throw UnimplementedError();
-
+  // return new region with updated fields
   Region copyWith({
     String? id,
     String? name,
@@ -73,6 +73,7 @@ class Region extends Entity implements Equatable {
     );
   }
 
+  // return the map of region
   @override
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = <String, dynamic>{
@@ -84,6 +85,7 @@ class Region extends Entity implements Equatable {
     return map;
   }
 
+  // return new region from map
   factory Region.fromMap(Map<String, dynamic> map) {
     Entity entity = Entity.fromMap(map);
     return Region(
@@ -103,8 +105,10 @@ class Region extends Entity implements Equatable {
     );
   }
 
+  // return json of region for payload
   String toJson() => json.encode(toMap());
 
+  // return new region from json
   factory Region.fromJson(String source) => Region.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );

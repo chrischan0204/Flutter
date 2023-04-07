@@ -1,10 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import '/data/model/model.dart';
 
-class AwarenessGroup extends Entity implements Equatable {
+class AwarenessGroup extends Entity {
   final int categoryCount;
   final List<AwarenessCategory> awarenessCategories;
 
@@ -15,6 +13,8 @@ class AwarenessGroup extends Entity implements Equatable {
     super.id,
     this.awarenessCategories = const [],
   });
+
+  // return map of awareness group details, which will be displayed on side slider and details page
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
@@ -22,17 +22,10 @@ class AwarenessGroup extends Entity implements Equatable {
     };
   }
 
-  @override
-  List<Object?> get props => [
-        name,
-        active,
-      ];
-
+  // return possibility to delete the awareness group
   bool get deletable => categoryCount == 0 && awarenessCategories.isEmpty;
 
-  @override
-  bool? get stringify => throw UnimplementedError();
-
+  // return map of awareness category details for table view
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
@@ -40,6 +33,7 @@ class AwarenessGroup extends Entity implements Equatable {
     };
   }
 
+  // return new awareness group with updated fields
   AwarenessGroup copyWith({
     String? id,
     String? name,
@@ -56,36 +50,38 @@ class AwarenessGroup extends Entity implements Equatable {
     );
   }
 
+  // return map of awareness group
   @override
   Map<String, dynamic> toMap() {
-    if (id == null) {
-      return <String, dynamic>{
-        'name': name,
-        'active': active,
-      };
-    } else {
-      return <String, dynamic>{
-        'id': id,
-        'name': name,
-        'active': active,
-      };
+    Map<String, dynamic> map = {
+      'name': name,
+      'active': active,
+    };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
     }
+    return map;
   }
 
+  // return awareness group from map
   factory AwarenessGroup.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return AwarenessGroup(
-        id: map['id'] as String,
-        name: map['name'] as String,
-        active: map['active'] as bool,
-        categoryCount: map['categoryCount'] as int,
-        awarenessCategories: List.from(map['awarenessCategories'])
-            .map((awarenessCategoryMap) =>
-                AwarenessCategory.fromMap(awarenessCategoryMap))
-            .toList());
+      id: entity.id,
+      name: entity.name,
+      active: entity.active,
+      categoryCount: map['categoryCount'] as int,
+      awarenessCategories: List.from(map['awarenessCategories'])
+          .map((awarenessCategoryMap) =>
+              AwarenessCategory.fromMap(awarenessCategoryMap))
+          .toList(),
+    );
   }
 
+  // return json for awareness group
   String toJson() => json.encode(toMap());
 
+  // return new awareness group from json
   factory AwarenessGroup.fromJson(String source) =>
       AwarenessGroup.fromMap(json.decode(source) as Map<String, dynamic>);
 }

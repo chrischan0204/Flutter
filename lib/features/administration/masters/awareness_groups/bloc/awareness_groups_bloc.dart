@@ -11,9 +11,21 @@ part 'awareness_groups_state.dart';
 class AwarenessGroupsBloc
     extends Bloc<AwarenessGroupsEvent, AwarenessGroupsState> {
   final AwarenessGroupsRepository awarenessGroupsRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding awareness group. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing awareness group. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage =
+      'There was an error while deleting awareness group. Our team has been notified. Please wait a few minutes and try again.';
+
   AwarenessGroupsBloc({
     required this.awarenessGroupsRepository,
   }) : super(const AwarenessGroupsState()) {
+    _triggerEvents();
+  }
+
+  void _triggerEvents() {
     on<AwarenessGroupsRetrieved>(_onAwarenessGroupsRetrieved);
     on<AwarenessGroupSelected>(_onAwarenessGroupSelected);
     on<AwarenessGroupSelectedById>(_onAwarenessGroupSelectedById);
@@ -23,6 +35,7 @@ class AwarenessGroupsBloc
     on<AwarenessGroupsStatusInited>(_onAwarenessGroupsStatusInited);
   }
 
+  // get awareness groups list
   void _onAwarenessGroupsRetrieved(AwarenessGroupsRetrieved event,
       Emitter<AwarenessGroupsState> emit) async {
     emit(state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.loading));
@@ -30,14 +43,16 @@ class AwarenessGroupsBloc
       List<AwarenessGroup> awarenessGroups =
           await awarenessGroupsRepository.getAwarenessGroups();
       emit(state.copyWith(
-          awarenessGroupsRetrievedStatus: EntityStatus.success,
-          awarenessGroups: awarenessGroups));
+        awarenessGroupsRetrievedStatus: EntityStatus.success,
+        awarenessGroups: awarenessGroups,
+      ));
     } catch (e) {
       emit(
           state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.failure));
     }
   }
 
+  // select awareness group
   Future<void> _onAwarenessGroupSelected(
     AwarenessGroupSelected event,
     Emitter<AwarenessGroupsState> emit,
@@ -48,6 +63,7 @@ class AwarenessGroupsBloc
     ));
   }
 
+  // get awareness group by id
   Future<void> _onAwarenessGroupSelectedById(
     AwarenessGroupSelectedById event,
     Emitter<AwarenessGroupsState> emit,
@@ -73,6 +89,7 @@ class AwarenessGroupsBloc
     }
   }
 
+  // add awareness group
   Future<void> _onAwarenessGroupAdded(
     AwarenessGroupAdded event,
     Emitter<AwarenessGroupsState> emit,
@@ -98,12 +115,12 @@ class AwarenessGroupsBloc
     } catch (e) {
       emit(state.copyWith(
         awarenessGroupCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while adding awareness group. Our team has been notified. Please wait a few minutes and try again.',
+        message: addErrorMessage,
       ));
     }
   }
 
+  // edit awareness group
   Future<void> _onAwarenessGroupEdited(
     AwarenessGroupEdited event,
     Emitter<AwarenessGroupsState> emit,
@@ -129,12 +146,12 @@ class AwarenessGroupsBloc
     } catch (e) {
       emit(state.copyWith(
         awarenessGroupCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while editing awareness group. Our team has been notified. Please wait a few minutes and try again.',
+        message: editErrorMessage,
       ));
     }
   }
 
+  // delete awareness group by id
   Future<void> _onAwarenessGroupDeleted(
     AwarenessGroupDeleted event,
     Emitter<AwarenessGroupsState> emit,
@@ -160,12 +177,12 @@ class AwarenessGroupsBloc
     } catch (e) {
       emit(state.copyWith(
         awarenessGroupCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while deleting awareness group. Our team has been notified. Please wait a few minutes and try again.',
+        message: deleteErrorMessage,
       ));
     }
   }
 
+  // init awareness group status
   void _onAwarenessGroupsStatusInited(
       AwarenessGroupsStatusInited event, Emitter<AwarenessGroupsState> emit) {
     emit(
@@ -173,7 +190,6 @@ class AwarenessGroupsBloc
         awarenessGroupCrudStatus: EntityStatus.initial,
         awarenessGroupSelectedStatus: EntityStatus.initial,
         awarenessGroupsRetrievedStatus: EntityStatus.initial,
-        
       ),
     );
   }

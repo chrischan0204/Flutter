@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'awareness_categories_bloc.dart';
 
 class AwarenessCategoriesState extends Equatable {
@@ -25,6 +24,7 @@ class AwarenessCategoriesState extends Equatable {
     this.message = '',
   });
 
+  // set fields for equality of awareness category
   @override
   List<Object?> get props => [
         awarenessCategories,
@@ -37,6 +37,7 @@ class AwarenessCategoriesState extends Equatable {
         message,
       ];
 
+  // return new awareness category with update fields
   AwarenessCategoriesState copyWith({
     List<AwarenessCategory>? awarenessCategories,
     AwarenessCategory? selectedAwarenessCategory,

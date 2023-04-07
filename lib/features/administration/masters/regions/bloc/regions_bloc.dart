@@ -8,9 +8,21 @@ part 'regions_state.dart';
 
 class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   final RegionsRepository regionsRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding region. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing region. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage =
+      'There was an error while deleting region. Our team has been notified. Please wait a few minutes and try again.';
+
   RegionsBloc({
     required this.regionsRepository,
   }) : super(const RegionsState()) {
+    _triggerEvents();
+  }
+
+  void _triggerEvents() {
     on<AssignedRegionsRetrieved>(_onAssignedRegionsRetrieved);
     on<UnassignedRegionsRetrieved>(_onUnassignedRegionsRetrieved);
     on<TimeZonesRetrievedForRegion>(_onTimeZonesRetrievedForRegion);
@@ -23,6 +35,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     on<RegionsTimeZonesInited>(_onRegionsTimeZonesInited);
   }
 
+  // get assigned regions list
   Future<void> _onAssignedRegionsRetrieved(
       AssignedRegionsRetrieved event, Emitter<RegionsState> emit) async {
     emit(
@@ -48,6 +61,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     }
   }
 
+  // get unassigned regions list
   Future<void> _onUnassignedRegionsRetrieved(
     UnassignedRegionsRetrieved event,
     Emitter<RegionsState> emit,
@@ -77,6 +91,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     }
   }
 
+  // get time zones by region id
   Future<void> _onTimeZonesRetrievedForRegion(
     TimeZonesRetrievedForRegion event,
     Emitter<RegionsState> emit,
@@ -107,6 +122,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     }
   }
 
+  // select region
   Future<void> _onRegionSelected(
     RegionSelected event,
     Emitter<RegionsState> emit,
@@ -119,6 +135,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     }
   }
 
+  // select region by id
   Future<void> _onRegionSelectedById(
     RegionSelectedById event,
     Emitter<RegionsState> emit,
@@ -145,6 +162,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     }
   }
 
+  // add region
   Future<void> _onRegionAdded(
     RegionAdded event,
     Emitter<RegionsState> emit,
@@ -169,12 +187,12 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     } catch (e) {
       emit(state.copyWith(
         regionCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while adding region. Our team has been notified. Please wait a few minutes and try again.',
+        message: addErrorMessage,
       ));
     }
   }
 
+  // edit region
   Future<void> _onRegionEdited(
     RegionEdited event,
     Emitter<RegionsState> emit,
@@ -200,12 +218,12 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     } catch (e) {
       emit(state.copyWith(
         regionCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while editing region. Our team has been notified. Please wait a few minutes and try again.',
+        message: editErrorMessage,
       ));
     }
   }
 
+  // delete region
   Future<void> _onRegionDeleted(
     RegionDeleted event,
     Emitter<RegionsState> emit,
@@ -231,12 +249,12 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     } catch (e) {
       emit(state.copyWith(
         regionCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while deleting region. Our team has been notified. Please wait a few minutes and try again.',
+        message: deleteErrorMessage,
       ));
     }
   }
 
+  // init status of bloc
   void _onRegionsStatusInited(
       RegionsStatusInited event, Emitter<RegionsState> emit) {
     emit(

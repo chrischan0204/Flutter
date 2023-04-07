@@ -44,6 +44,9 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   String siteTypeValidationMessage = '';
   String siteCodeValidationMessage = '';
 
+  static String pageLabel = 'site';
+  static String addButtonName = 'Assign Templates';
+
   bool isFirstInit = true;
 
   @override
@@ -77,14 +80,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
-          label: 'site',
+          label: pageLabel,
           id: widget.siteId,
           selectedEntity: state.selectedSite,
           addEntity: () => _addSite(state),
           editEntity: () => _editSite(state),
-          addButtonName: 'Assign Templates',
+          addButtonName: addButtonName,
           crudStatus: state.siteCrudStatus,
-          isCrudDataFill: widget.siteId == null ? _checkFormDataFill() : true,
+          isCrudDataFill: _checkFormDataFill(),
           child: Column(
             children: [
               _buildSiteNameField(state),
@@ -133,12 +136,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   }
 
   bool _checkFormDataFill() {
-    return siteNameController.text.trim().isNotEmpty ||
-        (region != null && region!.isNotEmpty) ||
-        (timeZone != null && timeZone!.isNotEmpty) ||
-        (siteType != null && siteType!.isNotEmpty) ||
-        siteCodeController.text.trim().isNotEmpty ||
-        referenceCodeController.text.trim().isNotEmpty;
+    return widget.siteId == null
+        ? siteNameController.text.trim().isNotEmpty ||
+            (region != null && region!.isNotEmpty) ||
+            (timeZone != null && timeZone!.isNotEmpty) ||
+            (siteType != null && siteType!.isNotEmpty) ||
+            siteCodeController.text.trim().isNotEmpty ||
+            referenceCodeController.text.trim().isNotEmpty
+        : true;
   }
 
   void _checkCrudResult(SitesState state, BuildContext context) {
@@ -149,12 +154,17 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context).go('/sites/abc/assign-templates');
+      GoRouter.of(context)
+          .go('/sites/${state.selectedSite!.id ?? ''}/assign-templates');
     }
     if (state.siteCrudStatus == EntityStatus.failure) {
       sitesBloc.add(SitesStatusInited());
       setState(() {
-        siteNameValidationMessage = state.message;
+        if (state.message.contains('code')) {
+          siteCodeValidationMessage = state.message;
+        } else {
+          siteNameValidationMessage = state.message;
+        }
       });
     }
   }

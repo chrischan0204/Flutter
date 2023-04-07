@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:safety_eta/utils/custom_alert.dart';
 
 import '/constants/color.dart';
 import '/data/model/model.dart';
@@ -68,8 +69,8 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
 
   CustomButton _buildGoToListButton(BuildContext context) {
     return CustomButton(
-      backgroundColor: const Color(0xff0c83ff),
-      hoverBackgroundColor: const Color(0xff0b76e6),
+      backgroundColor: primaryColor,
+      hoverBackgroundColor: primarHoverColor,
       iconData: PhosphorIcons.listNumbers,
       text: 'Sites List',
       onClick: () {
@@ -171,25 +172,16 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                           falseString: 'No',
                                           textColor: darkTeal,
                                           onChanged: (value) {
-                                            AwesomeDialog(
+                                            CustomAlert(
                                               context: context,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
                                                   4,
-                                              dialogType: DialogType.question,
-                                              headerAnimationLoop: false,
-                                              animType: AnimType.bottomSlide,
                                               title: 'Confirm',
-                                              dialogBorderRadius:
-                                                  BorderRadius.circular(5),
-                                              desc:
+                                              description:
                                                   'Do you really want to remove this template from site?',
-                                              buttonsTextStyle: const TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                              showCloseIcon: true,
-                                              btnCancelOnPress: () {},
+                                              btnOkText: 'Remove',
                                               btnOkOnPress: () {
                                                 sitesBloc.add(
                                                   AuditTemplateAssignedToSite(
@@ -198,11 +190,8 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                                   ),
                                                 );
                                               },
-                                              btnOkText: 'Remove',
-                                              buttonsBorderRadius:
-                                                  BorderRadius.circular(3),
-                                              padding: const EdgeInsets.all(10),
-                                            ).show();
+                                              dialogType: DialogType.question,
+                                            );
                                           },
                                         ),
                                       ),

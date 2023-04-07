@@ -15,13 +15,19 @@ class AwarenessCategoriesListView extends StatefulWidget {
 class _AwarenessCategoriesListViewState
     extends State<AwarenessCategoriesListView> {
   late AwarenessCategoriesBloc awarenessCategoriesBloc;
+
+  static String pageDescription =
+      'List of defined awareness categories. These will show only while assessing an observation. Types can be added or current ones edited from this screen.';
+  static String pageTitle = 'Awareness Categories';
+  static String pageLabel = 'awareness category';
+  static String emtptyMessage =
+      'There are no awareness categories. Please click on New Awareness Category to add new awareness category.';
+
   @override
   void initState() {
     super.initState();
     awarenessCategoriesBloc = context.read<AwarenessCategoriesBloc>()
-      ..add(
-        AwarenessCategoriesRetrieved(),
-      );
+      ..add(AwarenessCategoriesRetrieved());
   }
 
   @override
@@ -29,22 +35,23 @@ class _AwarenessCategoriesListViewState
     return BlocBuilder<AwarenessCategoriesBloc, AwarenessCategoriesState>(
       builder: (context, state) {
         return EntityListTemplate(
-          description:
-              'List of defined awareness categories. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
+          description: pageDescription,
           entities: state.awarenessCategories,
-          title: 'Awareness Categories',
-          label: 'awareness category',
-          emptyMessage:
-              'There are no awareness categories. Please click on New Awareness Category to add new awareness category.',
-          onRowClick: (awarenessCategory) {
-            awarenessCategoriesBloc.add(AwarenessCategorySelected(
-              awarenessCategory: awarenessCategory as AwarenessCategory,
-            ));
-          },
+          title: pageTitle,
+          label: pageLabel,
+          emptyMessage: emtptyMessage,
+          onRowClick: (awarenessCategory) =>
+              _selectAwarenessCategory(awarenessCategory as AwarenessCategory),
           entityRetrievedStatus: state.awarenessCategoriesRetrievedStatus,
           selectedEntity: state.selectedAwarenessCategory,
         );
       },
     );
+  }
+
+  _selectAwarenessCategory(AwarenessCategory awarenessCategory) {
+    awarenessCategoriesBloc.add(AwarenessCategorySelected(
+      awarenessCategory: awarenessCategory,
+    ));
   }
 }

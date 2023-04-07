@@ -1,16 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
 
 import '/data/model/entity.dart';
 
-class AwarenessCategory extends Entity implements Equatable {
+class AwarenessCategory extends Entity {
   final String groupId;
   final String groupName;
   const AwarenessCategory({
-    required this.groupId,
-    required this.groupName,
+    this.groupId = '',
+    this.groupName = '',
     super.id,
     super.name,
     super.active,
@@ -18,6 +15,7 @@ class AwarenessCategory extends Entity implements Equatable {
     super.deactivationUserName,
   });
 
+  // return map of awareness category details, which will be details for side slider and details page
   @override
   Map<String, dynamic> detailItemsToMap() {
     return <String, dynamic>{
@@ -27,15 +25,14 @@ class AwarenessCategory extends Entity implements Equatable {
     }..addEntries(super.detailItemsToMap().entries);
   }
 
+  // set fields for equality of awareness category
   @override
   List<Object?> get props => [
         groupName,
         ...super.props,
       ];
 
-  @override
-  bool? get stringify => throw UnimplementedError();
-
+  // return map of awareness category table details, every key will be table header column
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
@@ -45,6 +42,7 @@ class AwarenessCategory extends Entity implements Equatable {
     };
   }
 
+  // return map of awarness category, which will be used to serialize the json
   @override
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = <String, dynamic>{
@@ -54,11 +52,12 @@ class AwarenessCategory extends Entity implements Equatable {
       'active': active,
     };
     if (id != null) {
-      return map..addEntries([MapEntry<String, dynamic>('id', id!)]);
+      map.addEntries([MapEntry<String, dynamic>('id', id!)]);
     }
     return map;
   }
 
+  // return new awareness category object from map
   factory AwarenessCategory.fromMap(Map<String, dynamic> map) {
     Entity entity = Entity.fromMap(map);
     return AwarenessCategory(
@@ -72,11 +71,14 @@ class AwarenessCategory extends Entity implements Equatable {
     );
   }
 
+  // return json of awareness category obeject
   String toJson() => json.encode(toMap());
 
+  // return awareness category object from json
   factory AwarenessCategory.fromJson(String source) =>
       AwarenessCategory.fromMap(json.decode(source) as Map<String, dynamic>);
 
+  // return new awareness category with updated fields
   AwarenessCategory copyWith({
     String? id,
     String? name,

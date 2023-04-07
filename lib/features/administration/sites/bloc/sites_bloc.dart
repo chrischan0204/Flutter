@@ -9,9 +9,20 @@ part 'sites_state.dart';
 
 class SitesBloc extends Bloc<SitesEvent, SitesState> {
   final SitesRepository sitesRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding site. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing site. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage =
+      'There was an error while deleting site. Our team has been notified. Please wait a few minutes and try again.';
   SitesBloc({
     required this.sitesRepository,
   }) : super(const SitesState()) {
+    _triggerEvents();
+  }
+
+  void _triggerEvents() {
     on<SitesRetrieved>(_onSitesRetrieved);
     on<SiteSelected>(_onSiteSelected);
     on<SiteSelectedById>(_onSiteSelectedById);
@@ -119,15 +130,23 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
   void _onSiteAdded(SiteAdded event, Emitter<SitesState> emit) async {
     emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
     try {
-      String message = await sitesRepository.addSite(event.site);
-      emit(state.copyWith(
-        siteCrudStatus: EntityStatus.success,
-        message: message,
-        selectedSite: null,
-      ));
+      EntityResponse response = await sitesRepository.addSite(event.site);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          siteCrudStatus: EntityStatus.success,
+          message: response.message,
+          selectedSite: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          siteCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
         siteCrudStatus: EntityStatus.failure,
+        message: addErrorMessage,
       ));
     }
   }
@@ -135,14 +154,23 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
   void _onSiteEdited(SiteEdited event, Emitter<SitesState> emit) async {
     emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
     try {
-      String message = await sitesRepository.editSite(event.site);
-      emit(state.copyWith(
-        siteCrudStatus: EntityStatus.success,
-        message: message,
-      ));
+      EntityResponse response = await sitesRepository.editSite(event.site);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          siteCrudStatus: EntityStatus.success,
+          message: response.message,
+          selectedSite: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          siteCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
         siteCrudStatus: EntityStatus.failure,
+        message: editErrorMessage,
       ));
     }
   }

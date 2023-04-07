@@ -7,6 +7,8 @@ import '../model/awareness_category.dart';
 
 class AwarenessCategoriesRepository {
   static String url = '/api/AwarenessCategory';
+
+  // get awareness categories list from api
   Future<List<AwarenessCategory>> getAwarenessCategories() async {
     Response response = await get(Uri.https(ApiUri.host, url));
 
@@ -21,8 +23,10 @@ class AwarenessCategoriesRepository {
     return <AwarenessCategory>[];
   }
 
+  // get awareness category by id from api
   Future<AwarenessCategory> getAwarenessCategoryById(
-      String awarenessCategoryId) async {
+    String awarenessCategoryId,
+  ) async {
     Response response =
         await get(Uri.https(ApiUri.host, '$url/$awarenessCategoryId'));
 
@@ -32,8 +36,10 @@ class AwarenessCategoriesRepository {
     throw Exception();
   }
 
+  // add awareness category using api
   Future<EntityResponse> addAwarenessCategory(
-      AwarenessCategory awarenessCategory) async {
+    AwarenessCategory awarenessCategory,
+  ) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
       headers: {
@@ -49,15 +55,18 @@ class AwarenessCategoriesRepository {
     throw Exception();
   }
 
+  // awareness category using api
   Future<EntityResponse> editAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
-    Response response = await put(Uri.https(ApiUri.host, url),
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json',
-        },
-        body: awarenessCategory.toJson());
+    Response response = await put(
+      Uri.https(ApiUri.host, url),
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: awarenessCategory.toJson(),
+    );
 
     if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
@@ -65,8 +74,10 @@ class AwarenessCategoriesRepository {
     throw Exception();
   }
 
+  // delete awarness category by id
   Future<EntityResponse> deleteAwarenessCategory(
-      String awarenessCategoryId) async {
+    String awarenessCategoryId,
+  ) async {
     Response response = await delete(
       Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
     );

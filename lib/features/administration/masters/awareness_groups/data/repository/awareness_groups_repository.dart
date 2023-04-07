@@ -6,6 +6,8 @@ import '/data/model/model.dart';
 
 class AwarenessGroupsRepository {
   static String url = '/api/AwarenessGroups';
+
+  // get awareness groups list
   Future<List<AwarenessGroup>> getAwarenessGroups() async {
     Response response = await get(Uri.https(ApiUri.host, url));
 
@@ -20,7 +22,10 @@ class AwarenessGroupsRepository {
     return [];
   }
 
-  Future<AwarenessGroup> getAwarenessGroupById(String awarenessGroupId) async {
+  // get awareness group by id
+  Future<AwarenessGroup> getAwarenessGroupById(
+    String awarenessGroupId,
+  ) async {
     Response response =
         await get(Uri.https(ApiUri.host, '$url/$awarenessGroupId'));
 
@@ -30,6 +35,7 @@ class AwarenessGroupsRepository {
     throw Exception();
   }
 
+  // add awareness group
   Future<EntityResponse> addAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
@@ -48,6 +54,7 @@ class AwarenessGroupsRepository {
     throw Exception();
   }
 
+  // edit awareness group
   Future<EntityResponse> editAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
@@ -69,6 +76,7 @@ class AwarenessGroupsRepository {
     throw Exception();
   }
 
+  // delete awareness group
   Future<EntityResponse> deleteAwarenessGroup(String awarenessGroupId) async {
     Response response =
         await delete(Uri.https(ApiUri.host, '$url/$awarenessGroupId'));

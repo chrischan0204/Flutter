@@ -5,6 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
+import '/constants/color.dart';
 import '/data/model/entity.dart';
 import '/global_widgets/global_widget.dart';
 
@@ -191,8 +192,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   CustomButton _buildGoToListButton(BuildContext context) {
     return CustomButton(
-      backgroundColor: const Color(0xff0c83ff),
-      hoverBackgroundColor: const Color(0xff0b76e6),
+      backgroundColor: primaryColor,
+      hoverBackgroundColor: primarHoverColor,
       iconData: PhosphorIcons.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {

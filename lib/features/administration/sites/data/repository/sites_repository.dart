@@ -27,42 +27,40 @@ class SitesRepository {
     throw Exception();
   }
 
-  Future<String> addSite(Site site) async {
+  Future<EntityResponse> addSite(Site site) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
       headers: {
         'Content-Type': 'application/json',
-        'accept': 'text/plain',
+        'accept': 'application/json',
       },
       body: site.toJson(),
     );
 
-    if (response.statusCode == 200) {
-      try {
-        return EntityResponse.fromJson(response.body).message;
-      } catch (e) {
-        return response.body;
-      }
+    if (response.statusCode != 500) {
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }
 
-  Future<String> editSite(Site site) async {
+  Future<EntityResponse> editSite(Site site) async {
     Response response = await put(
       Uri.https(ApiUri.host, url),
       headers: {
         'Content-Type': 'application/json',
-        'accept': 'text/plain',
+        'accept': 'application/json',
       },
       body: site.toJson(),
     );
 
-    if (response.statusCode == 200) {
-      try {
-        return EntityResponse.fromJson(response.body).message;
-      } catch (e) {
-        return response.body;
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
       }
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }

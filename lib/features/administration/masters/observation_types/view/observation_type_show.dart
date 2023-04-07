@@ -21,6 +21,9 @@ class ObservationTypeShowView extends StatefulWidget {
 class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   late ObservationTypesBloc observationTypesBloc;
 
+  static String pageTitle = 'Observation Type';
+  static String pageLabel = 'observation type';
+
   @override
   void initState() {
     observationTypesBloc = context.read<ObservationTypesBloc>();
@@ -35,41 +38,47 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ObservationTypesBloc, ObservationTypesState>(
-      listener: (context, state) {
-        if (state.observationTypeCrudStatus == EntityStatus.success) {
-          observationTypesBloc.add(const ObservationTypesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-
-          GoRouter.of(context).go('/observation-types');
-        }
-        if (state.observationTypeCrudStatus == EntityStatus.failure) {
-          observationTypesBloc.add(const ObservationTypesStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
-      },
+      listener: (context, state) =>
+          _checkDeleteObservationTypeStatus(state, context),
       builder: (context, state) {
         return EntityShowTemplate(
-          title: 'Observation Type',
-          label: 'observation type',
+          title: pageTitle,
+          label: pageLabel,
           entity: state.selectedObservationType,
-          deleteEntity: () {
-            observationTypesBloc.add(
-              ObservationTypeDeleted(
-                observationTypeId: state.selectedObservationType!.id!,
-              ),
-            );
-          },
+          deleteEntity: () => _deleteObservationType(state),
           crudStatus: state.observationTypeCrudStatus,
         );
       },
     );
+  }
+
+  void _deleteObservationType(ObservationTypesState state) {
+    observationTypesBloc.add(
+      ObservationTypeDeleted(
+        observationTypeId: state.selectedObservationType!.id!,
+      ),
+    );
+  }
+
+  void _checkDeleteObservationTypeStatus(
+      ObservationTypesState state, BuildContext context) {
+    if (state.observationTypeCrudStatus == EntityStatus.success) {
+      observationTypesBloc.add(const ObservationTypesStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/observation-types');
+    }
+    if (state.observationTypeCrudStatus == EntityStatus.failure) {
+      observationTypesBloc.add(const ObservationTypesStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
   }
 }

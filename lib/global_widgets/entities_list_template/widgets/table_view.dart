@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import '../../custom_data_cell.dart';
 
+import '/constants/color.dart';
+import '../../custom_data_cell.dart';
 import '/data/model/entity.dart';
 
 class DataTableView extends StatefulWidget {
@@ -74,7 +75,7 @@ class _DataTableViewState extends State<DataTableView> {
                                       ? PhosphorIcons.arrowUp
                                       : PhosphorIcons.arrowDown,
                                   size: 20,
-                                  color: const Color(0xff0c83ff),
+                                  color: primaryColor,
                                 )
                               : Container(),
                         ],
@@ -127,10 +128,10 @@ class _DataTableViewState extends State<DataTableView> {
                     onTap: () {
                       widget.onRowClick(entity);
                     },
-                    child: const Icon(
+                    child: Icon(
                       PhosphorIcons.caretDoubleRight,
                       size: 20,
-                      color: Color(0xff0c83ff),
+                      color: primaryColor,
                     ),
                   ),
                 ),

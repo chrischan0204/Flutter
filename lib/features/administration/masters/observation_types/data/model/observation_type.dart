@@ -46,27 +46,23 @@ class ObservationType extends Entity implements Equatable {
       'Active': active,
     };
   }
-
+  
+  // return map of observation type
   @override
   Map<String, dynamic> toMap() {
-    if (id == null) {
-      return <String, dynamic>{
-        'name': name,
-        'severity': severity,
-        'visibility': visibility,
-        'active': active,
-      };
-    } else {
-      return <String, dynamic>{
-        'id': id,
-        'name': name,
-        'severity': severity,
-        'visibility': visibility,
-        'active': active,
-      };
+    Map<String, dynamic> map = <String, dynamic>{
+      'name': name,
+      'severity': severity,
+      'visibility': visibility,
+      'active': active,
+    };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
     }
+    return map;
   }
 
+  // return new observation type from map
   @override
   factory ObservationType.fromMap(Map<String, dynamic> map) {
     Entity entity = Entity.fromMap(map);
@@ -81,8 +77,10 @@ class ObservationType extends Entity implements Equatable {
     );
   }
 
+  // return json of observation type
   String toJson() => json.encode(toMap());
 
+  // return new observation type from json
   factory ObservationType.fromJson(String source) =>
       ObservationType.fromMap(json.decode(source) as Map<String, dynamic>);
 

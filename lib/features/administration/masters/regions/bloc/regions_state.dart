@@ -27,6 +27,7 @@ class RegionsState extends Equatable {
     this.message = '',
   });
 
+  // set fields for equality of region
   @override
   List<Object?> get props => [
         assignedRegions,
@@ -41,6 +42,7 @@ class RegionsState extends Equatable {
         message,
       ];
 
+  // return new region with updated fields
   RegionsState copyWith({
     List<Region>? assignedRegions,
     List<Region>? unassignedRegions,

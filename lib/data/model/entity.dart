@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// standadized model, which other models inherit
 class Entity extends Equatable {
   final String? id;
   final String? name;
@@ -19,6 +19,7 @@ class Entity extends Equatable {
     this.active = true,
   });
 
+  // constructor to create entity from map
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
       id: map['id'] as String,
@@ -32,6 +33,8 @@ class Entity extends Equatable {
           : null,
     );
   }
+
+  // return the entity object as map
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
@@ -39,10 +42,12 @@ class Entity extends Equatable {
     };
   }
 
+  // return table details map
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{};
   }
 
+  // return side detail amp
   Map<String, dynamic> detailItemsToMap() {
     if (!active && deactivationDate != null && deactivationUserName != null) {
       return <String, dynamic>{
@@ -66,6 +71,7 @@ class Entity extends Equatable {
       ];
 }
 
+// response object to get the response from api, which others wil inherit it
 class EntityResponse {
   final bool isSuccess;
   final String message;
@@ -86,7 +92,11 @@ class EntityResponse {
 
   factory EntityResponse.fromMap(Map<String, dynamic> map) {
     return EntityResponse(
-      isSuccess: map['isSuccess'] as bool,
+      isSuccess: map['isSuccess'] == null
+          ? (map['message'] ?? (map['Message'] ?? ''))
+              .toString()
+              .contains('success')
+          : map['isSuccess'] as bool,
       message: map['message'] ?? (map['Message'] ?? ''),
       // data: Entity.fromMap(map['data'] as Map<String, dynamic>),
     );

@@ -20,6 +20,11 @@ class SiteShowView extends StatefulWidget {
 class _SiteShowViewState extends State<SiteShowView> {
   late SitesBloc sitesBloc;
 
+  static String pageTitle = 'Site';
+  static String pageLabel = 'site';
+  static String descriptionForDelete =
+      'The site has users or observations associated to it';
+
   @override
   void initState() {
     sitesBloc = context.read<SitesBloc>()
@@ -39,22 +44,25 @@ class _SiteShowViewState extends State<SiteShowView> {
       },
       builder: (context, state) {
         return EntityShowTemplate(
-          title: 'Site',
-          label: 'site',
+          title: pageTitle,
+          label: pageLabel,
           deleteEntity: () => _deleteSite(state),
           deletable:
               state.selectedSite == null ? true : state.selectedSite!.deletable,
-          descriptionForDelete:
-              'The site has users or observations associated to it',
-          tabItems: {
-            'Site Details': Container(),
-            'Audits Templates': _buildAuditTemplatesTableView(),
-            'Site kiosks': Container(),
-          },
+          descriptionForDelete: descriptionForDelete,
+          tabItems: _buildTabs,
           entity: state.selectedSite,
         );
       },
     );
+  }
+
+  Map<String, Widget> get _buildTabs {
+    return {
+      'Site Details': Container(),
+      'Audits Templates': _buildAuditTemplatesTableView(),
+      'Site kiosks': Container(),
+    };
   }
 
   void _checkDeleteResult(SitesState state, BuildContext context) {
@@ -94,7 +102,7 @@ class _SiteShowViewState extends State<SiteShowView> {
           ),
         ),
         const CustomDivider(),
-        Container(
+        SizedBox(
           child: DataTable(
             columns: const [
               DataColumn(

@@ -12,6 +12,13 @@ class AwarenessGroupsListView extends StatefulWidget {
 
 class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
   late AwarenessGroupsBloc awarenessGroupsBloc;
+
+  static String pageDescription =
+      'List of defined awareness groups. These will show only while assessing an observation. Types can be added or current ones edited from this screen.';
+  static String pageTitle = 'Awareness Groups';
+  static String pageLabel = 'awareness group';
+  static String emtptyMessage =
+      'There are no awareness groups. Please click on New Awareness Group to add new awareness group.';
   @override
   void initState() {
     awarenessGroupsBloc = context.read<AwarenessGroupsBloc>()
@@ -24,22 +31,23 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
     return BlocBuilder<AwarenessGroupsBloc, AwarenessGroupsState>(
       builder: (context, state) {
         return EntityListTemplate(
-          description:
-              'List of defined awareness groups. These will show only while assessing an observation. Types can be added or current ones edited from this screen.',
+          description: pageDescription,
           entities: state.awarenessGroups,
-          title: 'Awareness Groups',
-          label: 'awareness group',
-          emptyMessage:
-              'There are no awareness groups. Please click on New Awareness Group to add new awareness group.',
+          title: pageTitle,
+          label: pageLabel,
+          emptyMessage: emtptyMessage,
           entityRetrievedStatus: state.awarenessGroupsRetrievedStatus,
-          onRowClick: (awarenessGroup) {
-            awarenessGroupsBloc.add(AwarenessGroupSelected(
-              awarenessGroup: awarenessGroup as AwarenessGroup,
-            ));
-          },
+          onRowClick: (awarenessGroup) =>
+              _selectAwarenessGroup(awarenessGroup as AwarenessGroup),
           selectedEntity: state.selectedAwarenessGroup,
         );
       },
     );
+  }
+
+  void _selectAwarenessGroup(AwarenessGroup awarenessGroup) {
+    awarenessGroupsBloc.add(AwarenessGroupSelected(
+      awarenessGroup: awarenessGroup,
+    ));
   }
 }

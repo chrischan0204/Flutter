@@ -20,6 +20,11 @@ class AwarenessGroupShowView extends StatefulWidget {
 class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
   late AwarenessGroupsBloc awarenessGroupsBloc;
 
+  static String pageTitle = 'Awareness Group';
+  static String pageLabel = 'awareness group';
+  static String descriptionForDelete =
+      'This item can not be deleted as it has awareness categories attached to it.';
+
   @override
   void initState() {
     awarenessGroupsBloc = context.read<AwarenessGroupsBloc>();
@@ -34,45 +39,50 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AwarenessGroupsBloc, AwarenessGroupsState>(
-      listener: (context, state) {
-        if (state.awarenessGroupCrudStatus == EntityStatus.success) {
-          awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-
-          GoRouter.of(context).go('/awareness-groups');
-        }
-        if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
-          awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
-      },
+      listener: (context, state) =>
+          _checkDeleteAwarenessGroupStatus(state, context),
       builder: (context, state) {
         return EntityShowTemplate(
-          title: 'Awareness Group',
-          label: 'awareness group',
+          title: pageTitle,
+          label: pageLabel,
           entity: state.selectedAwarenessGroup,
           deletable: state.selectedAwarenessGroup != null &&
               state.selectedAwarenessGroup!.deletable,
-          deleteEntity: () {
-            awarenessGroupsBloc.add(
-              AwarenessGroupDeleted(
-                awarenessGroupId: state.selectedAwarenessGroup!.id!,
-              ),
-            );
-          },
-          descriptionForDelete:
-              'This item can not be deleted as it has awareness categories attached to it.',
+          deleteEntity: () => _deleteAwarenessGroup(state),
+          descriptionForDelete: descriptionForDelete,
           crudStatus: state.awarenessGroupCrudStatus,
         );
       },
     );
+  }
+
+  void _deleteAwarenessGroup(AwarenessGroupsState state) {
+    awarenessGroupsBloc.add(
+      AwarenessGroupDeleted(
+        awarenessGroupId: state.selectedAwarenessGroup!.id!,
+      ),
+    );
+  }
+
+  void _checkDeleteAwarenessGroupStatus(
+      AwarenessGroupsState state, BuildContext context) {
+    if (state.awarenessGroupCrudStatus == EntityStatus.success) {
+      awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/awareness-groups');
+    }
+    if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
+      awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
   }
 }

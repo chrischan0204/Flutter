@@ -20,6 +20,9 @@ class RegionShowView extends StatefulWidget {
 class _RegionShowViewState extends State<RegionShowView> {
   late RegionsBloc regionsBloc;
 
+  static String pageTitle = 'Region';
+  static String pageLabel = 'region';
+
   @override
   void initState() {
     regionsBloc = context.read<RegionsBloc>();
@@ -34,44 +37,48 @@ class _RegionShowViewState extends State<RegionShowView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegionsBloc, RegionsState>(
-      listener: (context, state) {
-        if (state.regionCrudStatus == EntityStatus.success) {
-          regionsBloc.add(const RegionsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-
-          GoRouter.of(context).go('/regions');
-        }
-        if (state.regionCrudStatus == EntityStatus.failure) {
-          regionsBloc.add(const RegionsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
-      },
+      listener: (context, state) => _checkDeleteRegionStatus(state, context),
       builder: (context, state) {
         return EntityShowTemplate(
-          title: 'Region',
-          label: 'region',
+          title: pageTitle,
+          label: pageLabel,
           entity: state.selectedRegion,
           deletable: state.selectedRegion == null
               ? true
               : state.selectedRegion!.deletable,
-          deleteEntity: () {
-            regionsBloc.add(
-              RegionDeleted(
-                regionId: state.selectedRegion!.id!,
-              ),
-            );
-          },
+          deleteEntity: () => _deleteRegion(state),
           crudStatus: state.regionCrudStatus,
         );
       },
     );
+  }
+
+  void _deleteRegion(RegionsState state) {
+    regionsBloc.add(
+      RegionDeleted(
+        regionId: state.selectedRegion!.id!,
+      ),
+    );
+  }
+
+  void _checkDeleteRegionStatus(RegionsState state, BuildContext context) {
+    if (state.regionCrudStatus == EntityStatus.success) {
+      regionsBloc.add(const RegionsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/regions');
+    }
+    if (state.regionCrudStatus == EntityStatus.failure) {
+      regionsBloc.add(const RegionsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
   }
 }

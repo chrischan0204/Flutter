@@ -32,6 +32,11 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   TextEditingController filterRefNameController =
       TextEditingController(text: '');
 
+  static String pageTitle = 'Projects';
+  static String pageLabel = 'project';
+  static String emptyMessage =
+      'There are no projects. Please click on New Project to add new project';
+
   @override
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()..add(ProjectsRetrieved());
@@ -46,165 +51,208 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     return BlocBuilder<ProjectsBloc, ProjectsState>(
       builder: (context, state) {
         return EntityListTemplate(
-          title: 'Projects',
-          label: 'project',
+          title: pageTitle,
+          label: pageLabel,
           entities: state.projects,
           showTableHeaderButtons: true,
-          onRowClick: (selectedProject) {
-            projectsBloc.add(
-                ProjectSelected(selectedProject: selectedProject as Project));
-          },
+          onRowClick: (selectedProject) => _selectProject(selectedProject),
+          emptyMessage: emptyMessage,
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
-          onTableSort: (sortInfo) {
-            projectsBloc.add(
-                ProjectsSorted(column: sortInfo.key, sortType: sortInfo.value));
-          },
-          applyFilter: () {
-            setState(() {
-              filterApplied = true;
-            });
-          },
-          clearFilter: () {
-            setState(() {
-              filterApplied = false;
-            });
-          },
-          filterResultBody: Wrap(
-            children: [
-              FilterItem(
-                label: 'Region:',
-                content: filterRegions.join(', '),
-              ),
-              FilterItem(
-                label: 'Site:',
-                content: filterSites.join(', '),
-              ),
-              FilterItem(
-                label: 'Active:',
-                content: filterActive ? 'Yes' : 'No',
-              ),
-              FilterItem(
-                label: 'Name has:',
-                content: filterNameHasController.text,
-              ),
-              FilterItem(
-                label: 'Ref Code:',
-                content: filterRefCodeController.text,
-              ),
-              FilterItem(
-                label: 'Ref Name:',
-                content: filterRefNameController.text,
-              ),
-              FilterItem(
-                label: 'Contractors:',
-                content: filterContractors.join(', '),
-                last: true,
-              ),
-            ],
-          ),
+          onTableSort: (sortInfo) => _sortProjects(sortInfo),
+          applyFilter: () => _applyFilter(),
+          clearFilter: () => _clearFilter(),
+          filterResultBody: _buildFilterResultBody(),
           filterApplied: filterApplied,
-          filterBody: Column(
-            children: [
-              DetailItem(
-                label: 'Region',
-                content: BlocBuilder<RegionsBloc, RegionsState>(
-                  builder: (context, state) {
-                    return CustomMultiSelect(
-                      items: <String, Region>{}..addEntries(
-                          state.assignedRegions.map(
-                            (assignedRegion) =>
-                                MapEntry(assignedRegion.name!, assignedRegion),
-                          ),
-                        ),
-                      hint: 'Select Regions',
-                      onChanged: (regions) {
-                        filterRegions =
-                            regions.map((region) => region.name ?? '').toList();
-                      },
-                    );
-                  },
-                ),
-              ),
-              DetailItem(
-                label: 'Site',
-                content: BlocBuilder<SitesBloc, SitesState>(
-                  builder: (context, state) {
-                    return CustomMultiSelect(
-                      items: <String, Site>{}..addEntries(
-                          state.sites.map(
-                            (site) => MapEntry(site.name!, site),
-                          ),
-                        ),
-                      hint: 'Select Sites',
-                      onChanged: (sites) {},
-                    );
-                  },
-                ),
-              ),
-              DetailItem(
-                label: 'Active',
-                content: CustomSwitch(
-                  switchValue: filterActive,
-                  trueString: 'Yes',
-                  falseString: 'No',
-                  textColor: darkTeal,
-                  onChanged: (value) {
-                    setState(() {
-                      filterActive = value;
-                    });
-                  },
-                ),
-              ),
-              DetailItem(
-                label: 'Name has',
-                content: CustomTextField(
-                  controller: filterNameHasController,
-                  hintText: 'Project Name contains',
-                  onChanged: (nameHas) {},
-                ),
-              ),
-              DetailItem(
-                label: 'Ref Code',
-                content: CustomTextField(
-                  controller: filterRefCodeController,
-                  hintText: 'Project Name contains',
-                  onChanged: (refCode) {},
-                ),
-              ),
-              DetailItem(
-                label: 'Ref Name',
-                content: CustomTextField(
-                  controller: filterRefNameController,
-                  hintText: 'Project Name contains',
-                  onChanged: (refName) {},
-                ),
-              ),
-              DetailItem(
-                label: 'Contractors',
-                content: CustomMultiSelect(
-                  items: const <String, Entity>{
-                    '3CMA Metal': Entity(id: '1', name: '3CMA Metal'),
-                    'Alington Cement Works':
-                        Entity(id: '2', name: 'Alington Cement Works'),
-                    'Burlingto Garden and Tree':
-                        Entity(id: '3', name: 'Burlingto Garden and Tree'),
-                    'Carter Concrete': Entity(id: '4', name: 'Carter Concrete'),
-                    'Floyd Window repairs':
-                        Entity(id: '5', name: 'Floyd Window repairs'),
-                  },
-                  hint: 'Select Contractors',
-                  onChanged: (contractors) {
-                    filterContractors = contractors
-                        .map((contractor) => contractor.name ?? '')
-                        .toList();
-                  },
-                ),
-              ),
-            ],
-          ),
+          filterBody: _buildFilterBody(),
         );
       },
+    );
+  }
+
+  void _clearFilter() {
+    setState(() {
+      filterApplied = false;
+    });
+  }
+
+  void _applyFilter() {
+    setState(() {
+      filterApplied = true;
+    });
+  }
+
+  Column _buildFilterBody() {
+    return Column(
+      children: [
+        _buildFilterRegionMultiSelectField(),
+        _buildFIlterSiteMultiSelectField(),
+        _buildFilterActiveSwitch(),
+        _buildFilterProjectNameTextField(),
+        _buildFilterRefCodeTextField(),
+        _buildFilterRefNameTextField(),
+        _buildFilterContractorsMultiSelectField(),
+      ],
+    );
+  }
+
+  DetailItem _buildFilterContractorsMultiSelectField() {
+    return DetailItem(
+      label: 'Contractors',
+      content: CustomMultiSelect(
+        items: const <String, Entity>{
+          '3CMA Metal': Entity(id: '1', name: '3CMA Metal'),
+          'Alington Cement Works':
+              Entity(id: '2', name: 'Alington Cement Works'),
+          'Burlingto Garden and Tree':
+              Entity(id: '3', name: 'Burlingto Garden and Tree'),
+          'Carter Concrete': Entity(id: '4', name: 'Carter Concrete'),
+          'Floyd Window repairs': Entity(id: '5', name: 'Floyd Window repairs'),
+        },
+        hint: 'Select Contractors',
+        onChanged: (contractors) {
+          filterContractors =
+              contractors.map((contractor) => contractor.name ?? '').toList();
+        },
+      ),
+    );
+  }
+
+  DetailItem _buildFilterRefNameTextField() {
+    return DetailItem(
+      label: 'Ref Name',
+      content: CustomTextField(
+        controller: filterRefNameController,
+        hintText: 'Project Name contains',
+        onChanged: (refName) {},
+      ),
+    );
+  }
+
+  DetailItem _buildFilterRefCodeTextField() {
+    return DetailItem(
+      label: 'Ref Code',
+      content: CustomTextField(
+        controller: filterRefCodeController,
+        hintText: 'Project Name contains',
+        onChanged: (refCode) {},
+      ),
+    );
+  }
+
+  DetailItem _buildFilterProjectNameTextField() {
+    return DetailItem(
+      label: 'Name has',
+      content: CustomTextField(
+        controller: filterNameHasController,
+        hintText: 'Project Name contains',
+        onChanged: (nameHas) {},
+      ),
+    );
+  }
+
+  DetailItem _buildFilterActiveSwitch() {
+    return DetailItem(
+      label: 'Active',
+      content: CustomSwitch(
+        switchValue: filterActive,
+        trueString: 'Yes',
+        falseString: 'No',
+        textColor: darkTeal,
+        onChanged: (value) {
+          setState(() {
+            filterActive = value;
+          });
+        },
+      ),
+    );
+  }
+
+  DetailItem _buildFIlterSiteMultiSelectField() {
+    return DetailItem(
+      label: 'Site',
+      content: BlocBuilder<SitesBloc, SitesState>(
+        builder: (context, state) {
+          return CustomMultiSelect(
+            items: <String, Site>{}..addEntries(
+                state.sites.map(
+                  (site) => MapEntry(site.name!, site),
+                ),
+              ),
+            hint: 'Select Sites',
+            onChanged: (sites) {},
+          );
+        },
+      ),
+    );
+  }
+
+  DetailItem _buildFilterRegionMultiSelectField() {
+    return DetailItem(
+      label: 'Region',
+      content: BlocBuilder<RegionsBloc, RegionsState>(
+        builder: (context, state) {
+          return CustomMultiSelect(
+            items: <String, Region>{}..addEntries(
+                state.assignedRegions.map(
+                  (assignedRegion) =>
+                      MapEntry(assignedRegion.name!, assignedRegion),
+                ),
+              ),
+            hint: 'Select Regions',
+            onChanged: (regions) {
+              filterRegions =
+                  regions.map((region) => region.name ?? '').toList();
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  void _sortProjects(MapEntry<String, bool> sortInfo) {
+    projectsBloc
+        .add(ProjectsSorted(column: sortInfo.key, sortType: sortInfo.value));
+  }
+
+  void _selectProject(Entity selectedProject) {
+    projectsBloc
+        .add(ProjectSelected(selectedProject: selectedProject as Project));
+  }
+
+  Wrap _buildFilterResultBody() {
+    return Wrap(
+      children: [
+        FilterItem(
+          label: 'Region:',
+          content: filterRegions.join(', '),
+        ),
+        FilterItem(
+          label: 'Site:',
+          content: filterSites.join(', '),
+        ),
+        FilterItem(
+          label: 'Active:',
+          content: filterActive ? 'Yes' : 'No',
+        ),
+        FilterItem(
+          label: 'Name has:',
+          content: filterNameHasController.text,
+        ),
+        FilterItem(
+          label: 'Ref Code:',
+          content: filterRefCodeController.text,
+        ),
+        FilterItem(
+          label: 'Ref Name:',
+          content: filterRefNameController.text,
+        ),
+        FilterItem(
+          label: 'Contractors:',
+          content: filterContractors.join(', '),
+          last: true,
+        ),
+      ],
     );
   }
 }

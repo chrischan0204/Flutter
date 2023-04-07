@@ -141,8 +141,8 @@ class _CrudState extends State<EntityListTemplate> {
                 title: widget.title,
               ),
               CustomButton(
-                backgroundColor: const Color(0xfff58646),
-                hoverBackgroundColor: const Color(0xffdd793f),
+                backgroundColor: warnColor,
+                hoverBackgroundColor: warnHoverColor,
                 iconData: PhosphorIcons.plus,
                 text: 'New ${camelize(widget.label)}',
                 onClick: () {
@@ -238,7 +238,7 @@ class _CrudState extends State<EntityListTemplate> {
               HeaderButton(
                 iconData: PhosphorIcons.slidersHorizontal,
                 label: 'View Settings',
-                color: const Color(0xfff58646),
+                color: warnColor,
                 onClick: () => _showViewSettingsSlider(),
               ),
               const SizedBox(

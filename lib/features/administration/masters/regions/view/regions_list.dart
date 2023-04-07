@@ -13,7 +13,13 @@ class RegionsListView extends StatefulWidget {
 
 class _RegionsState extends State<RegionsListView> {
   late RegionsBloc regionsBloc;
-  
+
+  static String pageTitle = 'Regions';
+  static String pageLabel = 'region';
+  static String emptyMessage =
+      'There are no regions assigned. Please click on New Region to assign new region.';
+  static String pageDescription =
+      'The following regions are available to create sites in';
 
   @override
   void initState() {
@@ -26,21 +32,22 @@ class _RegionsState extends State<RegionsListView> {
     return BlocBuilder<RegionsBloc, RegionsState>(
       builder: (context, state) {
         return EntityListTemplate(
-          description: 'The following regions are available to create sites in',
+          description: pageDescription,
           entities: state.assignedRegions,
-          title: 'Regions',
-          label: 'region',
-          emptyMessage:
-              'There are no regions assigned. Please click on New Region to assign new region.',
-          onRowClick: (region) {
-            regionsBloc.add(RegionSelected(
-              region: region as Region,
-            ));
-          },
+          title: pageTitle,
+          label: pageLabel,
+          emptyMessage: emptyMessage,
+          onRowClick: (region) => _selectRegion(region),
           entityRetrievedStatus: state.assignedRegionsRetrievedStatus,
           selectedEntity: state.selectedRegion,
         );
       },
     );
+  }
+
+  void _selectRegion(Entity region) {
+    regionsBloc.add(RegionSelected(
+      region: region as Region,
+    ));
   }
 }

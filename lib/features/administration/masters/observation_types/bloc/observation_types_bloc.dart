@@ -11,9 +11,21 @@ part 'observation_types_state.dart';
 class ObservationTypesBloc
     extends Bloc<ObservationTypesEvent, ObservationTypesState> {
   final ObservationTypesRepository observationTypesRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding observation type. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing observation type. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage =
+      'There was an error while deleting observation type. Our team has been notified. Please wait a few minutes and try again.';
   ObservationTypesBloc({
     required this.observationTypesRepository,
   }) : super(const ObservationTypesState()) {
+    _triggerEvents();
+  }
+
+  // trigger events
+  void _triggerEvents() {
     on<ObservationTypesRetrieved>(_onObservationTypesRetrieved);
     on<ObservationTypeSelected>(_onObservationTypeSelected);
     on<ObservationTypeSelectedById>(_onObservationTypeSelectedById);
@@ -23,6 +35,7 @@ class ObservationTypesBloc
     on<ObservationTypesStatusInited>(_onObservationTypesStatusInited);
   }
 
+  // get observation types list
   Future<void> _onObservationTypesRetrieved(
     ObservationTypesRetrieved event,
     Emitter<ObservationTypesState> emit,
@@ -44,6 +57,7 @@ class ObservationTypesBloc
     }
   }
 
+  // select observation type
   Future<void> _onObservationTypeSelected(
     ObservationTypeSelected event,
     Emitter<ObservationTypesState> emit,
@@ -54,6 +68,7 @@ class ObservationTypesBloc
     ));
   }
 
+  // select observation type by id
   Future<void> _onObservationTypeSelectedById(
     ObservationTypeSelectedById event,
     Emitter<ObservationTypesState> emit,
@@ -80,6 +95,7 @@ class ObservationTypesBloc
     }
   }
 
+  // add observation type
   Future<void> _onObservationTypeAdded(
     ObservationTypeAdded event,
     Emitter<ObservationTypesState> emit,
@@ -105,12 +121,12 @@ class ObservationTypesBloc
     } catch (e) {
       emit(state.copyWith(
         observationTypeCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while adding observation type. Our team has been notified. Please wait a few minutes and try again.',
+        message: addErrorMessage,
       ));
     }
   }
 
+  // edit observation type
   Future<void> _onObservationTypeEdited(
     ObservationTypeEdited event,
     Emitter<ObservationTypesState> emit,
@@ -136,12 +152,12 @@ class ObservationTypesBloc
     } catch (e) {
       emit(state.copyWith(
         observationTypeCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while editing observation type. Our team has been notified. Please wait a few minutes and try again.',
+        message: editErrorMessage,
       ));
     }
   }
 
+  // delete observation type
   Future<void> _onObservationTypeDeleted(
     ObservationTypeDeleted event,
     Emitter<ObservationTypesState> emit,
@@ -167,12 +183,12 @@ class ObservationTypesBloc
     } catch (e) {
       emit(state.copyWith(
         observationTypeCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while deleting observation type. Our team has been notified. Please wait a few minutes and try again.',
+        message: deleteErrorMessage,
       ));
     }
   }
 
+  // init status of bloc
   void _onObservationTypesStatusInited(
       ObservationTypesStatusInited event, Emitter<ObservationTypesState> emit) {
     emit(
@@ -180,7 +196,6 @@ class ObservationTypesBloc
         observationTypeSelectedStatus: EntityStatus.initial,
         observationTypesRetrievedStatus: EntityStatus.initial,
         observationTypeCrudStatus: EntityStatus.initial,
-        
       ),
     );
   }

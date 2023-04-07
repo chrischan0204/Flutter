@@ -10,9 +10,21 @@ part 'priority_levels_state.dart';
 class PriorityLevelsBloc
     extends Bloc<PriorityLevelsEvent, PriorityLevelsState> {
   final PriorityLevelsRepository priorityLevelsRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding priority level. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing priority level. Our team has been notified. Please wait a few minutes and try again.';
+
+  static String deleteErrorMessage =
+      'There was an error while deleting priority level. Our team has been notified. Please wait a few minutes and try again.';
   PriorityLevelsBloc({
     required this.priorityLevelsRepository,
   }) : super(const PriorityLevelsState()) {
+    _triggerEvents();
+  }
+
+  void _triggerEvents() {
     on<PriorityLevelsRetrieved>(_onPriorityLevelsRetrieved);
     on<PriorityLevelSelected>(_onPriorityLevelSelected);
     on<PriorityLevelSelectedById>(_onPriorityLevelSelectedById);
@@ -97,8 +109,7 @@ class PriorityLevelsBloc
     } catch (e) {
       emit(state.copyWith(
         priorityLevelCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while adding priority level. Our team has been notified. Please wait a few minutes and try again.',
+        message: addErrorMessage,
       ));
     }
   }
@@ -128,8 +139,7 @@ class PriorityLevelsBloc
     } catch (e) {
       emit(state.copyWith(
         priorityLevelCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while editing priority level. Our team has been notified. Please wait a few minutes and try again.',
+        message: editErrorMessage,
       ));
     }
   }
@@ -159,8 +169,7 @@ class PriorityLevelsBloc
     } catch (e) {
       emit(state.copyWith(
         priorityLevelCrudStatus: EntityStatus.failure,
-        message:
-            'There was an error while deleting priority level. Our team has been notified. Please wait a few minutes and try again.',
+        message: deleteErrorMessage,
       ));
     }
   }
@@ -172,7 +181,6 @@ class PriorityLevelsBloc
         priorityLevelCrudStatus: EntityStatus.initial,
         priorityLevelSelectedStatus: EntityStatus.initial,
         priorityLevelsRetrievedStatus: EntityStatus.initial,
-        
       ),
     );
   }

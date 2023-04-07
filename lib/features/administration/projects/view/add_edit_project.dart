@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
@@ -21,21 +20,20 @@ class AddEditProjectView extends StatefulWidget {
 class _AddEditProjectViewState extends State<AddEditProjectView> {
   late ProjectsBloc projectsBloc;
   late SitesBloc sitesBloc;
-  TextEditingController projectNameController = TextEditingController(
-    text: '',
-  );
-  TextEditingController referenceNumberController = TextEditingController(
-    text: '',
-  );
-  TextEditingController referenceNameController = TextEditingController(
-    text: '',
-  );
+  TextEditingController projectNameController = TextEditingController(text: '');
+  TextEditingController referenceNumberController =
+      TextEditingController(text: '');
+  TextEditingController referenceNameController =
+      TextEditingController(text: '');
   String? site;
 
   String projectNameValidationMessage = '';
   String siteValidationMessage = '';
 
   bool isFirstInit = true;
+
+  static String pageLabel = 'project';
+  static String addButtonName = 'Assign Companies';
 
   @override
   void initState() {
@@ -46,13 +44,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         ProjectSelectedById(projectId: widget.projectId!),
       );
     } else {
-      projectsBloc.add(
-        ProjectSelected(
-          selectedProject: Project(
-            // id: const Uuid().v1(),
-          ),
-        ),
-      );
+      projectsBloc.add(const ProjectSelected(selectedProject: Project()));
     }
 
     super.initState();
@@ -67,14 +59,13 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
-          label: 'project',
+          label: pageLabel,
           id: widget.projectId,
           selectedEntity: state.selectedProject,
           addEntity: () => _addProject(state),
           editEntity: () => _editProject(state),
-          addButtonName: 'Assign Companies',
-          isCrudDataFill:
-              widget.projectId == null ? _checkFormDataFill() : true,
+          addButtonName: addButtonName,
+          isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.projectCrudStatus,
           child: Column(
             children: [
@@ -89,13 +80,17 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     );
   }
 
+  // check if some of fields are filled
   bool _checkFormDataFill() {
-    return projectNameController.text.trim().isNotEmpty ||
-        referenceNameController.text.trim().isNotEmpty ||
-        referenceNumberController.text.trim().isNotEmpty ||
-        (site != null && site!.isNotEmpty);
+    return widget.projectId == null
+        ? projectNameController.text.trim().isNotEmpty ||
+            referenceNameController.text.trim().isNotEmpty ||
+            referenceNumberController.text.trim().isNotEmpty ||
+            (site != null && site!.isNotEmpty)
+        : true;
   }
 
+  // change form data whenever the state changes
   void _changeFormData(ProjectsState state) {
     if (state.selectedProject != null) {
       site = state.selectedProject!.siteName.isEmpty
@@ -116,6 +111,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     }
   }
 
+  // check if the crud result is success or failure
   void _checkCrudResult(ProjectsState state, BuildContext context) {
     if (state.projectCrudStatus == EntityStatus.success) {
       projectsBloc.add(ProjectsStatusInited());
@@ -131,6 +127,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     }
   }
 
+  // return text field for project name
   FormItem _buildProjectNameField(ProjectsState state) {
     return FormItem(
       label: 'Project Name (*)',
@@ -154,6 +151,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     );
   }
 
+  // return select field for site
   BlocBuilder<SitesBloc, SitesState> _buildSiteSelectField(
       ProjectsState state) {
     return BlocBuilder<SitesBloc, SitesState>(
@@ -187,12 +185,14 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     );
   }
 
+  // return text field for reference number
   FormItem _buildReferenceNumberField(ProjectsState state) {
+    String label = 'Reference Number', hintText = 'Internal reference number';
     return FormItem(
-      label: 'Reference Number',
+      label: label,
       content: CustomTextField(
         controller: referenceNumberController,
-        hintText: 'Internal reference number',
+        hintText: hintText,
         onChanged: (referenceNumber) {
           projectsBloc.add(
             ProjectSelected(
@@ -206,12 +206,14 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     );
   }
 
+  // return text field for reference name
   FormItem _buildReferenceNameField(ProjectsState state) {
+    String label = 'Reference Name', hintText = 'Internal reference name';
     return FormItem(
-      label: 'Reference Name',
+      label: label,
       content: CustomTextField(
         controller: referenceNameController,
-        hintText: 'Internal reference name',
+        hintText: hintText,
         onChanged: (referenceName) {
           projectsBloc.add(
             ProjectSelected(
@@ -225,6 +227,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     );
   }
 
+  // check if field are empty
   bool _validate() {
     bool validated = true;
     if (projectNameController.text.isEmpty ||
@@ -249,11 +252,13 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     return validated;
   }
 
+  // call event to add project
   void _addProject(ProjectsState state) {
     if (!_validate()) return;
     projectsBloc.add(ProjectAdded(project: state.selectedProject!));
   }
 
+  // call even to edit project
   void _editProject(ProjectsState state) {
     if (!_validate()) return;
     projectsBloc.add(ProjectEdited(project: state.selectedProject!));

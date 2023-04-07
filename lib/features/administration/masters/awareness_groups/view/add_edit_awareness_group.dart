@@ -41,11 +41,8 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
       );
     } else {
       awarenessGroupsBloc.add(
-        AwarenessGroupSelected(
-          awarenessGroup: AwarenessGroup(
-            name: '',
-            active: true,
-          ),
+        const AwarenessGroupSelected(
+          awarenessGroup: AwarenessGroup(),
         ),
       );
     }
@@ -53,8 +50,88 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AwarenessGroupsBloc, AwarenessGroupsState>(
+      listener: (context, state) {
+        _changeFormData(state);
+        _checkCrudStatus(state, context);
+      },
+      builder: (context, state) {
+        return AddEditEntityTemplate(
+          label: 'awareness group',
+          id: widget.awarenessGroupId,
+          selectedEntity: state.selectedAwarenessGroup,
+          addEntity: () => _addAwarenessGroup(state),
+          editEntity: () => _editAwarenessGroup(state),
+          crudStatus: state.awarenessGroupCrudStatus,
+          child: Column(
+            children: [
+              _buildAwarenessGroupNameTextField(state),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // change the form data whenever the state changes
+  void _changeFormData(AwarenessGroupsState state) {
+    if (state.selectedAwarenessGroup != null) {
+      awarenessGroupDeactive = !state.selectedAwarenessGroup!.active;
+      if (isFirstInit) {
+        awarenessGroupNameController.text = widget.awarenessGroupId == null
+            ? ''
+            : state.selectedAwarenessGroup!.name ?? '';
+        isFirstInit = false;
+      }
+    }
+  }
+
+  // check if the crud status is success or failure
+  void _checkCrudStatus(AwarenessGroupsState state, BuildContext context) {
+    if (state.awarenessGroupCrudStatus == EntityStatus.success) {
+      awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+    }
+    if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
+      awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+      setState(() {
+        awarenessGroupNameValidationMessage = state.message;
+      });
+    }
+  }
+
+  // return the textfield for awareness group name
+  FormItem _buildAwarenessGroupNameTextField(AwarenessGroupsState state) {
+    return FormItem(
+      label: 'Awareness Group Name (*)',
+      content: CustomTextField(
+        controller: awarenessGroupNameController,
+        hintText: 'Awareness Group Name',
+        onChanged: (awarenessGroupName) {
+          initMessages();
+          awarenessGroupsBloc.add(
+            AwarenessGroupSelected(
+              awarenessGroup: state.selectedAwarenessGroup!.copyWith(
+                name: awarenessGroupName,
+              ),
+            ),
+          );
+        },
+      ),
+      message: awarenessGroupNameValidationMessage,
+    );
+  }
+
+  // add awareness group
   void _addAwarenessGroup(AwarenessGroupsState state) {
     if (!_validate()) return;
+    // call the event to add awareness group
     awarenessGroupsBloc.add(
       AwarenessGroupAdded(
         awarenessGroup: state.selectedAwarenessGroup!.copyWith(
@@ -66,6 +143,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
 
   void _editAwarenessGroup(AwarenessGroupsState state) {
     if (!_validate()) return;
+    // call the event to edit awareness group
     awarenessGroupsBloc.add(
       AwarenessGroupEdited(
         awarenessGroup: state.selectedAwarenessGroup!.copyWith(
@@ -75,6 +153,7 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
     );
   }
 
+  // check if form field are empty
   bool _validate() {
     if (awarenessGroupNameController.text.isEmpty ||
         awarenessGroupNameController.text.trim().isEmpty) {
@@ -92,68 +171,5 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
     setState(() {
       awarenessGroupNameValidationMessage = '';
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<AwarenessGroupsBloc, AwarenessGroupsState>(
-      listener: (context, state) {
-        if (state.selectedAwarenessGroup != null) {
-          awarenessGroupDeactive = !state.selectedAwarenessGroup!.active;
-          if (isFirstInit) {
-            awarenessGroupNameController.text = widget.awarenessGroupId == null
-                ? ''
-                : state.selectedAwarenessGroup!.name ?? '';
-            isFirstInit = false;
-          }
-        }
-        if (state.awarenessGroupCrudStatus == EntityStatus.success) {
-          awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-        }
-        if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
-          awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
-          setState(() {
-            awarenessGroupNameValidationMessage = state.message;
-          });
-        }
-      },
-      builder: (context, state) {
-        return AddEditEntityTemplate(
-          label: 'awareness group',
-          id: widget.awarenessGroupId,
-          selectedEntity: state.selectedAwarenessGroup,
-          addEntity: () => _addAwarenessGroup(state),
-          editEntity: () => _editAwarenessGroup(state),
-          crudStatus: state.awarenessGroupCrudStatus,
-          child: Column(
-            children: [
-              FormItem(
-                label: 'Awareness Group Name (*)',
-                content: CustomTextField(
-                  controller: awarenessGroupNameController,
-                  hintText: 'Awareness Group Name',
-                  onChanged: (awarenessGroupName) {
-                    initMessages();
-                    awarenessGroupsBloc.add(
-                      AwarenessGroupSelected(
-                        awarenessGroup: state.selectedAwarenessGroup!.copyWith(
-                          name: awarenessGroupName,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                message: awarenessGroupNameValidationMessage,
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 }
