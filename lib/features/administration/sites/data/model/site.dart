@@ -67,7 +67,7 @@ class Site extends Entity {
       'Time Zone': timeZone,
       'Code': siteCode,
       'Reference Code': referenceCode,
-      'Users': 5,
+      'Users': users,
       'Observations': observations,
       'Audit Templates': auditTemplates,
     };
@@ -138,7 +138,7 @@ class Site extends Entity {
       regionId: map['regionId'] ?? '',
       timeZoneId: map['timeZoneId'] ?? '',
       timeZone: map['timeZoneName'],
-      users: map['usreCount'] == null ? 0 : map['usreCount'] as int,
+      users: map['userCount'] == null ? 0 : map['userCount'] as int,
       observations:
           map['observationCount'] == null ? 0 : map['observationCount'] as int,
       auditTemplates: map['auditTemplateCount'] == null

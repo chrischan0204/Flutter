@@ -299,9 +299,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
               : state.selectedSite!.timeZone;
         }
       },
-      // listenWhen: (previous, current) => previous.selectedSite != null
-      //     ? previous.selectedSite!.timeZone != current.selectedSite!.timeZone
-      //     : true,
       child: BlocBuilder<RegionsBloc, RegionsState>(
         builder: (context, regionsState) {
           return FormItem(
