@@ -26,14 +26,16 @@ class _ShowProjectViewState extends State<ShowProjectView> {
   @override
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()
-      ..add(
-        ProjectSelectedById(projectId: widget.projectId),
-      );
+      ..add(ProjectSelectedById(projectId: widget.projectId))
+      ..add(ProjectCompanyRetrieved(
+        projectId: widget.projectId,
+        assigned: true,
+      ));
     super.initState();
   }
 
   _deleteProject(ProjectsState state) {
-    projectsBloc.add(ProjectDeleted(projectId: state.selectedProject!.id!));
+    projectsBloc.add(ProjectDeleted(projectId: widget.projectId));
   }
 
   @override
@@ -45,61 +47,114 @@ class _ShowProjectViewState extends State<ShowProjectView> {
           title: pageTitle,
           label: pageLabel,
           deleteEntity: () => _deleteProject(state),
-          tabItems: _buildTabs,
+          tabItems: _buildTabs(state),
           entity: state.selectedProject,
+          crudStatus: state.projectCrudStatus,
         );
       },
     );
   }
 
-  Map<String, Widget> get _buildTabs {
+  Map<String, Widget> _buildTabs(ProjectsState state) {
     return {
       'Project Details': Container(),
-      'Associated Companies': Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
-              'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const CustomDivider(),
-          Container(
-            child: DataTable(
-              columns: const [
-                DataColumn(
-                  label: Text(
-                    'Company Name',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Role',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Added By',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Added on',
-                  ),
-                ),
-              ],
-              rows: [],
-            ),
-          ),
-        ],
-      ),
+      'Associated Companies': _buildAssociatedCompanies(state),
     };
+  }
+
+  Column _buildAssociatedCompanies(ProjectsState state) {
+    var rows = state.projectCompanies
+        .map(
+          (projectCompany) => DataRow(
+            cells: projectCompany
+                .toTableDetailMap()
+                .values
+                .map(
+                  (detail) => DataCell(
+                    CustomDataCell(data: detail),
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList();
+    var columns = const [
+      DataColumn(
+        label: Text(
+          'Company Name',
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Role',
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Added By',
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Added on',
+        ),
+      ),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        state.projectCompanies.isNotEmpty
+            ? const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              )
+            : Container(),
+        state.projectCompanies.isNotEmpty ? const CustomDivider() : Container(),
+        Container(
+          child: state.projectCompanies.isNotEmpty
+              ? DataTable(
+                  columns: columns,
+                  rows: rows,
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'This project has no companies assigned to it yet.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    CustomDivider(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'Companies can be assigned by editing the project and going to the companies tab to select from available companies',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    CustomDivider(),
+                  ],
+                ),
+        ),
+      ],
+    );
   }
 
   void _checkDeleteProjectStatus(ProjectsState state, BuildContext context) {

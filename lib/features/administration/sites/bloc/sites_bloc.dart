@@ -178,15 +178,23 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
   void _onSiteDeleted(SiteDeleted event, Emitter<SitesState> emit) async {
     emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
     try {
-      String message = await sitesRepository.deleteSite(event.siteId);
-      emit(state.copyWith(
-        siteCrudStatus: EntityStatus.success,
-        selectedSite: null,
-        message: message,
-      ));
+      EntityResponse response = await sitesRepository.deleteSite(event.siteId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          siteCrudStatus: EntityStatus.success,
+          selectedSite: null,
+          message: response.message,
+        ));
+      } else {
+        emit(state.copyWith(
+          siteCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
         siteCrudStatus: EntityStatus.failure,
+        message: deleteErrorMessage,
       ));
     }
   }

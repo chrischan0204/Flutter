@@ -65,10 +65,16 @@ class SitesRepository {
     throw Exception();
   }
 
-  deleteSite(String siteId) async {
+  Future<EntityResponse> deleteSite(String siteId) async {
     Response response = await delete(Uri.https(ApiUri.host, '$url/$siteId'));
-    if (response.statusCode == 200) {
-      return response.body;
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse.fromMap({
+          'isSuccess': true,
+          'message': response.body,
+        });
+      }
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }

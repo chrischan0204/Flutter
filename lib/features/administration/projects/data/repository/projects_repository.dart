@@ -77,10 +77,10 @@ class ProjectsRepository {
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
-        return EntityResponse(
-          isSuccess: true,
-          message: response.body,
-        );
+        return EntityResponse.fromMap({
+          'isSuccess': true,
+          'message': response.body,
+        });
       }
       return EntityResponse.fromJson(response.body);
     }
@@ -88,14 +88,24 @@ class ProjectsRepository {
     throw Exception();
   }
 
-  Future<List<ProjectCompany>> getCompaniesForProject(String projectId) async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/$projectId/companies'));
+  Future<List<ProjectCompany>> getCompaniesForProject(String projectId,
+      [bool? assigned, String? name]) async {
+    Map<String, dynamic> map = {};
+    if (assigned != null) {
+      map.addEntries([MapEntry('assigned', assigned.toString())]);
+    }
+    if (name != null) {
+      map.addEntries([MapEntry('name', name)]);
+    }
+    Response response = await get(Uri.https(
+      ApiUri.host,
+      '$url/$projectId/companies',
+      map,
+    ));
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
-          .map((projectCompanyJson) =>
-              ProjectCompany.fromJson(projectCompanyJson))
+          .map((projectMap) => ProjectCompany.fromMap(projectMap))
           .toList();
     }
     return [];

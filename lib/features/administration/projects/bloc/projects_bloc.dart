@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:http/http.dart';
 
 import '/data/repository/repository.dart';
 import '/data/model/model.dart';
@@ -31,6 +30,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     on<ProjectEdited>(_onProjectEdited);
     on<ProjectDeleted>(_onProjectDeleted);
     on<ProjectsSorted>(_onProjectsSorted);
+    on<ProjectCompanyRetrieved>(_onProjectCompaniesRetrieved);
     on<ProjectsStatusInited>(_onProjectsStatusInited);
   }
 
@@ -50,7 +50,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onProjectSelected(ProjectSelected event, Emitter<ProjectsState> emit) {
+  void _onProjectSelected(
+    ProjectSelected event,
+    Emitter<ProjectsState> emit,
+  ) {
     emit(state.copyWith(selectedProject: event.selectedProject));
   }
 
@@ -76,7 +79,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onProjectAdded(ProjectAdded event, Emitter<ProjectsState> emit) async {
+  Future<void> _onProjectAdded(
+    ProjectAdded event,
+    Emitter<ProjectsState> emit,
+  ) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
       EntityResponse response =
@@ -101,8 +107,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onProjectEdited(
-      ProjectEdited event, Emitter<ProjectsState> emit) async {
+  Future<void> _onProjectEdited(
+    ProjectEdited event,
+    Emitter<ProjectsState> emit,
+  ) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
       EntityResponse response =
@@ -127,8 +135,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onProjectDeleted(
-      ProjectDeleted event, Emitter<ProjectsState> emit) async {
+  Future<void> _onProjectDeleted(
+    ProjectDeleted event,
+    Emitter<ProjectsState> emit,
+  ) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
       EntityResponse response =
@@ -153,10 +163,29 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
+  void _onProjectCompaniesRetrieved(
+    ProjectCompanyRetrieved event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(projectCompaniesRetrievedStatus: EntityStatus.loading));
+    try {
+      List<ProjectCompany> projectCompanies = await projectsRepository
+          .getCompaniesForProject(event.projectId, event.assigned, event.name);
+      emit(state.copyWith(
+        projectCompanies: projectCompanies,
+        projectCompaniesRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      print(e);
+      emit(state.copyWith(
+          projectCompaniesRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
   void _onProjectsSorted(
     ProjectsSorted event,
     Emitter<ProjectsState> emit,
-  ) async {
+  ) {
     List<Project> projects = List.from(state.projects);
 
     projects.sort(

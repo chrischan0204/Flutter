@@ -14,6 +14,11 @@ class SitesListView extends StatefulWidget {
 class _SitesListViewState extends State<SitesListView> {
   late SitesBloc sitesBloc;
 
+  static String pageTitle = 'Sites';
+  static String pageLabel = 'site';
+  static String emptyMessage =
+      'There are no sites. Please click New Site to add new site.';
+
   @override
   void initState() {
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
@@ -25,14 +30,13 @@ class _SitesListViewState extends State<SitesListView> {
     return BlocBuilder<SitesBloc, SitesState>(
       builder: (context, state) {
         return EntityListTemplate(
-          title: 'Sites',
-          label: 'site',
+          title: pageTitle,
+          label: pageLabel,
           entities: state.sites,
           showTableHeaderButtons: true,
-          onRowClick: (selectedSite) {
-            sitesBloc.add(SiteSelected(selectedSite: selectedSite as Site));
-          },
-          emptyMessage: 'There are no sites. Please click New Site to add new site.',
+          onRowClick: (selectedSite) =>
+              sitesBloc.add(SiteSelected(selectedSite: selectedSite as Site)),
+          emptyMessage: emptyMessage,
           entityRetrievedStatus: state.sitesRetrievedStatus,
           selectedEntity: state.selectedSite,
         );

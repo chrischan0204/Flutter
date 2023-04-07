@@ -52,6 +52,7 @@ class _SiteShowViewState extends State<SiteShowView> {
           descriptionForDelete: descriptionForDelete,
           tabItems: _buildTabs,
           entity: state.selectedSite,
+          crudStatus: state.siteCrudStatus,
         );
       },
     );

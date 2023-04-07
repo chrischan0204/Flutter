@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'projects_bloc.dart';
 
 abstract class ProjectsEvent extends Equatable {
@@ -78,6 +77,17 @@ class ProjectsSorted extends ProjectsEvent {
         column,
         sortType,
       ];
+}
+
+class ProjectCompanyRetrieved extends ProjectsEvent {
+  final String projectId;
+  final String? name;
+  final bool? assigned;
+  const ProjectCompanyRetrieved({
+    required this.projectId,
+    this.name,
+    this.assigned,
+  });
 }
 
 class ProjectsStatusInited extends ProjectsEvent {}

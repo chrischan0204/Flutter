@@ -18,6 +18,15 @@ class ProjectCompany {
     this.roleName,
   });
 
+  Map<String, dynamic> toTableDetailMap() {
+    return <String, dynamic>{
+      'Company Name': companyName,
+      'Role': roleName,
+      'Added By': 'Adam Drobot',
+      'Added on': '3rd Oct 2022',
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -38,7 +47,7 @@ class ProjectCompany {
       companyId: map['companyId'] as String,
       companyName: map['companyName'],
       roleId: map['roleId'] as String,
-      roleName: map['roleName'],
+      roleName: map['roleName'] as String,
     );
   }
 
