@@ -91,13 +91,15 @@ class EntityResponse {
   }
 
   factory EntityResponse.fromMap(Map<String, dynamic> map) {
+    String message = (map['message'] ?? (map['Message'] ?? '')).toString();
+    message = message.replaceAll('"', '');
     return EntityResponse(
       isSuccess: map['isSuccess'] == null
           ? (map['message'] ?? (map['Message'] ?? ''))
               .toString()
               .contains('success')
           : map['isSuccess'] as bool,
-      message: map['message'] ?? (map['Message'] ?? ''),
+      message: message,
       // data: Entity.fromMap(map['data'] as Map<String, dynamic>),
     );
   }

@@ -55,10 +55,10 @@ class SitesRepository {
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
-        return EntityResponse(
-          isSuccess: true,
-          message: response.body,
-        );
+        return EntityResponse.fromMap({
+          'isSuccess': true,
+          'message': response.body,
+        });
       }
       return EntityResponse.fromJson(response.body);
     }

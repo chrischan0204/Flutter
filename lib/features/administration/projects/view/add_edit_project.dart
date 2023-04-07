@@ -124,6 +124,9 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     }
     if (state.projectCrudStatus == EntityStatus.failure) {
       projectsBloc.add(ProjectsStatusInited());
+      setState(() {
+        projectNameValidationMessage = state.message;
+      });
     }
   }
 

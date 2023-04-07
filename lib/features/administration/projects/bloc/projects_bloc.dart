@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:http/http.dart';
 
 import '/data/repository/repository.dart';
 import '/data/model/model.dart';
@@ -78,11 +79,20 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   void _onProjectAdded(ProjectAdded event, Emitter<ProjectsState> emit) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
-      String message = await projectsRepository.addProject(event.project);
-      emit(state.copyWith(
-        projectCrudStatus: EntityStatus.success,
-        message: message,
-      ));
+      EntityResponse response =
+          await projectsRepository.addProject(event.project);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          projectCrudStatus: EntityStatus.success,
+          message: response.message,
+          selectedProject: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          projectCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,
@@ -95,15 +105,24 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       ProjectEdited event, Emitter<ProjectsState> emit) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
-      String message = await projectsRepository.editProject(event.project);
-      emit(state.copyWith(
-        projectCrudStatus: EntityStatus.success,
-        message: message,
-      ));
+      EntityResponse response =
+          await projectsRepository.editProject(event.project);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          projectCrudStatus: EntityStatus.success,
+          message: response.message,
+          selectedProject: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          projectCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,
-        message: editErrorMessage,
+        message: addErrorMessage,
       ));
     }
   }
@@ -112,12 +131,20 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       ProjectDeleted event, Emitter<ProjectsState> emit) async {
     emit(state.copyWith(projectCrudStatus: EntityStatus.loading));
     try {
-      String message = await projectsRepository.deleteProject(event.projectId);
-      emit(state.copyWith(
-        projectCrudStatus: EntityStatus.success,
-        selectedProject: null,
-        message: message,
-      ));
+      EntityResponse response =
+          await projectsRepository.deleteProject(event.projectId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          projectCrudStatus: EntityStatus.success,
+          selectedProject: null,
+          message: response.message,
+        ));
+      } else {
+        emit(state.copyWith(
+          projectCrudStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
         projectCrudStatus: EntityStatus.failure,

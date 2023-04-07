@@ -33,24 +33,24 @@ class ProjectsRepository {
   }
 
   // add project
-  Future<String> addProject(Project project) async {
+  Future<EntityResponse> addProject(Project project) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
       headers: {
         'Content-Type': 'application/json',
-        'accept': 'plain/text',
+        'accept': 'application/json',
       },
       body: project.toJson(),
     );
 
     if (response.statusCode != 500) {
-      return EntityResponse.fromJson(response.body).message;
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }
 
   // edit project
-  Future<String> editProject(Project project) async {
+  Future<EntityResponse> editProject(Project project) async {
     Response response = await put(
       Uri.https(ApiUri.host, url),
       headers: {
@@ -61,21 +61,30 @@ class ProjectsRepository {
     );
 
     if (response.statusCode != 500) {
-      try {
-        return EntityResponse.fromJson(response.body).message;
-      } catch (e) {
-        return response.body;
+      if (response.statusCode == 200) {
+        return EntityResponse.fromMap({
+          'isSuccess': true,
+          'message': response.body,
+        });
       }
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }
 
-  deleteProject(String projectId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/company'));
+  Future<EntityResponse> deleteProject(String projectId) async {
+    Response response = await delete(Uri.https(ApiUri.host, '$url/$projectId'));
 
-    if (response.statusCode == 200) {
-      return;
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
     }
+
     throw Exception();
   }
 
