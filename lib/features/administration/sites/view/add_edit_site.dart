@@ -48,8 +48,11 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
 
   @override
   void initState() {
-    sitesBloc = context.read<SitesBloc>();
-    regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
+    sitesBloc = context.read<SitesBloc>()..add(SitesStatusInited());
+    regionsBloc = context.read<RegionsBloc>()
+      ..add(RegionsTimeZonesInited())
+      ..add(AssignedRegionsRetrieved());
+    sitesBloc.add(const SiteSelected(selectedSite: null));
     if (widget.siteId != null) {
       sitesBloc.add(
         SiteSelectedById(siteId: widget.siteId!),
@@ -85,9 +88,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           child: Column(
             children: [
               _buildSiteNameField(state),
-              widget.siteId == null
-                  ? _buildRegionSelectField(state)
-                  : _buildRegionSelectFieldForTimeZonesForEdit(state),
+              _buildRegionSelectField(state),
               _buildTimeZoneSelectField(state),
               _buildSiteTypeField(state),
               _buildSiteCodeField(state),
@@ -96,24 +97,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           ),
         );
       },
-    );
-  }
-
-  BlocListener<SitesBloc, SitesState>
-      _buildRegionSelectFieldForTimeZonesForEdit(SitesState state) {
-    return BlocListener<SitesBloc, SitesState>(
-      listener: (context, sitesState) {
-        if (sitesState.selectedSite != null) {
-          regionsBloc.add(TimeZonesRetrievedForRegion(
-            regionId: sitesState.selectedSite!.regionId,
-          ));
-        }
-      },
-      listenWhen: (previous, current) => previous.selectedSite == null
-          ? true
-          : (current.selectedSite != null &&
-              previous.selectedSite!.region != current.selectedSite!.region),
-      child: _buildRegionSelectField(state),
     );
   }
 
@@ -138,6 +121,11 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
             widget.siteId == null ? '' : state.selectedSite!.siteCode;
         referenceCodeController.text =
             widget.siteId == null ? '' : state.selectedSite!.referenceCode;
+        if (state.selectedSite!.regionId.isNotEmpty) {
+          regionsBloc.add(TimeZonesRetrievedForRegion(
+            regionId: state.selectedSite!.regionId,
+          ));
+        }
         isFirstInit = false;
       }
       setState(() {});

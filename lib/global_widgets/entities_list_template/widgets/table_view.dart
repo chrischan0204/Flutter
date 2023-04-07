@@ -51,35 +51,33 @@ class _DataTableViewState extends State<DataTableView> {
                           widget.onTableSort!(MapEntry(column, sortType));
                         }
                       },
-                      child: Expanded(
-                        child: Row(
-                          children: [
-                            Text(
-                              column,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                fontFamily: 'OpenSans',
-                              ),
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
+                      child: Row(
+                        children: [
+                          Text(
+                            column,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              fontFamily: 'OpenSans',
                             ),
-                            index == selectedColumnIndex
-                                ? const SizedBox(
-                                    width: 10,
-                                  )
-                                : Container(),
-                            index == selectedColumnIndex
-                                ? Icon(
-                                    sortType
-                                        ? PhosphorIcons.arrowUp
-                                        : PhosphorIcons.arrowDown,
-                                    size: 20,
-                                    color: const Color(0xff0c83ff),
-                                  )
-                                : Container(),
-                          ],
-                        ),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          index == selectedColumnIndex
+                              ? const SizedBox(
+                                  width: 10,
+                                )
+                              : Container(),
+                          index == selectedColumnIndex
+                              ? Icon(
+                                  sortType
+                                      ? PhosphorIcons.arrowUp
+                                      : PhosphorIcons.arrowDown,
+                                  size: 20,
+                                  color: const Color(0xff0c83ff),
+                                )
+                              : Container(),
+                        ],
                       ),
                     );
                   },

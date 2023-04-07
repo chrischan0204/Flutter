@@ -169,6 +169,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
         siteCrudStatus: EntityStatus.initial,
         siteSelectedStatus: EntityStatus.initial,
         sitesRetrievedStatus: EntityStatus.initial,
+        message: '',
       ),
     );
   }

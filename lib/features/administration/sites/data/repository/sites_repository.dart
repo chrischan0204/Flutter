@@ -38,7 +38,11 @@ class SitesRepository {
     );
 
     if (response.statusCode == 200) {
-      return response.body;
+      try {
+        return EntityResponse.fromJson(response.body).message;
+      } catch (e) {
+        return response.body;
+      }
     }
     throw Exception();
   }
@@ -54,7 +58,11 @@ class SitesRepository {
     );
 
     if (response.statusCode == 200) {
-      return response.body;
+      try {
+        return EntityResponse.fromJson(response.body).message;
+      } catch (e) {
+        return response.body;
+      }
     }
     throw Exception();
   }

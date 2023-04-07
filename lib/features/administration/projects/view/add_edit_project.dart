@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
@@ -46,8 +47,10 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       );
     } else {
       projectsBloc.add(
-        const ProjectSelected(
-          selectedProject: Project(),
+        ProjectSelected(
+          selectedProject: Project(
+            // id: const Uuid().v1(),
+          ),
         ),
       );
     }

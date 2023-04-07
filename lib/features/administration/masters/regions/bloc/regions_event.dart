@@ -84,3 +84,5 @@ class RegionDeleted extends RegionsEvent {
 class RegionsStatusInited extends RegionsEvent {
   const RegionsStatusInited();
 }
+
+class RegionsTimeZonesInited extends RegionsEvent {}

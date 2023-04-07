@@ -20,6 +20,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     on<RegionEdited>(_onRegionEdited);
     on<RegionDeleted>(_onRegionDeleted);
     on<RegionsStatusInited>(_onRegionsStatusInited);
+    on<RegionsTimeZonesInited>(_onRegionsTimeZonesInited);
   }
 
   Future<void> _onAssignedRegionsRetrieved(
@@ -245,8 +246,14 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
         assignedRegionsRetrievedStatus: EntityStatus.initial,
         unassignedRegionsRetrievedStatus: EntityStatus.initial,
         timeZonesRetrievedStatus: EntityStatus.initial,
-        
       ),
     );
+  }
+
+  void _onRegionsTimeZonesInited(
+    RegionsTimeZonesInited event,
+    Emitter<RegionsState> emit,
+  ) async {
+    emit(state.copyWith(timeZones: []));
   }
 }

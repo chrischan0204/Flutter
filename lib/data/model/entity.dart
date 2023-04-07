@@ -87,7 +87,7 @@ class EntityResponse {
   factory EntityResponse.fromMap(Map<String, dynamic> map) {
     return EntityResponse(
       isSuccess: map['isSuccess'] as bool,
-      message: map['message'] as String,
+      message: map['message'] ?? (map['Message'] ?? ''),
       // data: Entity.fromMap(map['data'] as Map<String, dynamic>),
     );
   }
