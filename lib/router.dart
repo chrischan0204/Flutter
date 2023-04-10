@@ -202,8 +202,18 @@ final GoRouter router = GoRouter(
       path: '/companies',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
-          body: Companies(),
+        child: const Layout(
+          body: CompaniesListView(),
+          selectedItemName: 'companies',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/companies/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: CompaniesListView(),
           selectedItemName: 'companies',
         ),
       ),

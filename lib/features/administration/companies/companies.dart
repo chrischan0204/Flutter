@@ -1,1 +1,1 @@
-export 'view/companies.dart';
+export 'view/companies_list.dart';
