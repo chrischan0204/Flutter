@@ -95,6 +95,11 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     }
   }
 
+  bool _checkEinNumber(String einNumber) {
+    final numericSpecialReg = RegExp(r'^[0-9. /\\]+$');
+    return numericSpecialReg.hasMatch(einNumber);
+  }
+
   // check if the crud result is success or failure
   void _checkCrudResult(CompaniesState state, BuildContext context) {
     if (state.companyCrudStatus == EntityStatus.success) {
@@ -155,6 +160,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           setState(() {
             einNumberValidationMessage = '';
           });
+
           companiesBloc.add(
             CompanySelected(
               selectedCompany: state.selectedCompany!.copyWith(
@@ -178,6 +184,14 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
             'Company name is required and cannot be blank.';
       });
 
+      validated = false;
+    }
+
+    if (!_checkEinNumber(einNumberController.text)) {
+      setState(() {
+        einNumberValidationMessage =
+            'EIN Field should allow only numbers, white space, dots and dashes in it. No alphabets and no other special characters.';
+      });
       validated = false;
     }
 
