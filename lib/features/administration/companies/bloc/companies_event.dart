@@ -78,3 +78,5 @@ class CompaniesSorted extends CompaniesEvent {
         sortType,
       ];
 }
+
+class CompaniesStatusInited extends CompaniesEvent {}

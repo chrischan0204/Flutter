@@ -10,13 +10,19 @@ class Company extends Entity {
   const Company({
     super.id,
     super.name,
-    required this.einNumber,
+    this.einNumber = '',
     this.projects = const [],
     this.sites = const [],
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
   });
+
+  @override
+  List<Object?> get props => [
+        ...super.props,
+        einNumber,
+      ];
 
   Company copyWith({
     String? id,
@@ -38,12 +44,15 @@ class Company extends Entity {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
+    Map<String, dynamic> map = {
       'name': name,
       'einNumber': einNumber,
       'active': active,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+    return map;
   }
 
   @override
@@ -66,8 +75,7 @@ class Company extends Entity {
     return {
       'Name': name,
       'EIN #': einNumber,
-      'Sites'
-          'Created By': 'Gary Verb',
+      'Created By': 'Gary Verb',
       'Created On': '3/11/2020',
     };
   }
