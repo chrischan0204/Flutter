@@ -219,6 +219,28 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/companies/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditCompanyView(),
+          selectedItemName: 'companies',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/companies/edit/:companyId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditCompanyView(
+            companyId: state.params['companyId']!,
+          ),
+          selectedItemName: 'companies',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/templates',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

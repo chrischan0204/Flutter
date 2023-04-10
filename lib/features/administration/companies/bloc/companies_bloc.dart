@@ -30,6 +30,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<CompanyEdited>(_onCompanyEdited);
     on<CompanyDeleted>(_onCompanyDeleted);
     on<CompaniesSorted>(_onCompaniesSorted);
+    on<CompaniesStatusInited>(_onCompaniesStatusInited);
   }
 
   Future<void> _onCompaniesRetrieved(
@@ -175,5 +176,17 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       },
     );
     emit(state.copyWith(companies: companies));
+  }
+
+  void _onCompaniesStatusInited(
+    CompaniesStatusInited event,
+    Emitter<CompaniesState> emit,
+  ) {
+    emit(state.copyWith(
+      companyCrudStatus: EntityStatus.initial,
+      companySelectedStatus: EntityStatus.initial,
+      companiesRetrievedStatus: EntityStatus.initial,
+      companyCompaniesRetrievedStatus: EntityStatus.initial,
+    ));
   }
 }
