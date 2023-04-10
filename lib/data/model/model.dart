@@ -13,3 +13,5 @@ export '/features/administration/sites/data/model/audit_template.dart';
 export '/features/administration/projects/data/model/project.dart';
 export '/features/administration/projects/data/model/project_company.dart';
 export '/features/administration/projects/data/model/project_company_assignment.dart';
+
+export '/features/administration/companies/data/model/company.dart';

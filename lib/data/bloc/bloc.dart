@@ -11,3 +11,4 @@ export '/features/administration/masters/awareness_categories/bloc/awareness_cat
 
 export '/features/administration/sites/bloc/sites_bloc.dart';
 export '/features/administration/projects/bloc/projects_bloc.dart';
+export '/features/administration/companies/bloc/companies_bloc.dart';

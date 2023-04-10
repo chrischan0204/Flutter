@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'projects_bloc.dart';
 
 class ProjectsState extends Equatable {
@@ -52,7 +51,8 @@ class ProjectsState extends Equatable {
       projectSelectedStatus:
           projectSelectedStatus ?? this.projectSelectedStatus,
       projectCrudStatus: projectCrudStatus ?? this.projectCrudStatus,
-      projectCompaniesRetrievedStatus: projectCompaniesRetrievedStatus ?? this.projectCompaniesRetrievedStatus,
+      projectCompaniesRetrievedStatus: projectCompaniesRetrievedStatus ??
+          this.projectCompaniesRetrievedStatus,
       message: message ?? this.message,
     );
   }

@@ -86,7 +86,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     return Column(
       children: [
         _buildFilterRegionMultiSelectField(),
-        _buildFIlterSiteMultiSelectField(),
+        _buildFilterSiteMultiSelectField(),
         _buildFilterActiveSwitch(),
         _buildFilterProjectNameTextField(),
         _buildFilterRefCodeTextField(),
@@ -168,7 +168,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     );
   }
 
-  DetailItem _buildFIlterSiteMultiSelectField() {
+  DetailItem _buildFilterSiteMultiSelectField() {
     return DetailItem(
       label: 'Site',
       content: BlocBuilder<SitesBloc, SitesState>(
@@ -179,6 +179,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                   (site) => MapEntry(site.name!, site),
                 ),
               ),
+            selectedItems: [],
             hint: 'Select Sites',
             onChanged: (sites) {},
           );
@@ -199,6 +200,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                       MapEntry(assignedRegion.name!, assignedRegion),
                 ),
               ),
+            selectedItems: [],
             hint: 'Select Regions',
             onChanged: (regions) {
               filterRegions =

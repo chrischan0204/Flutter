@@ -7,3 +7,5 @@ export '/features/administration/masters/awareness_categories/data/repository/aw
 export '/features/administration/sites/data/repository/sites_repository.dart';
 
 export '/features/administration/projects/data/repository/projects_repository.dart';
+
+export '/features/administration/companies/data/repository/companies_repository.dart';
