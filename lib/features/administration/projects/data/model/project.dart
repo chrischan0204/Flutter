@@ -1,5 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:safety_eta/utils/utils.dart';
 
 import '/data/model/model.dart';
 
@@ -14,13 +15,15 @@ class Project extends Entity {
   final String? createdByUserName;
   final String? lastModifiedOn;
   final String? updatedByUserName;
-  final List<String> contractors;
+  final String timeZoneName;
+  final String contractors;
 
   const Project({
     super.id,
     super.name,
     this.regionName = '',
     this.siteName = '',
+    this.timeZoneName = '',
     this.siteId = '',
     this.referenceNumber = '',
     this.referneceName = '',
@@ -32,11 +35,7 @@ class Project extends Entity {
     this.createdByUserName,
     this.lastModifiedOn,
     this.updatedByUserName,
-    this.contractors = const [
-      'Garmont Pavers',
-      'Lionheart Painting Company',
-      'Greenline Signage',
-    ],
+    this.contractors = '',
   });
 
   @override
@@ -46,6 +45,7 @@ class Project extends Entity {
         regionName,
         siteName,
         siteId,
+        timeZoneName,
         referenceNumber,
         referneceName,
         active,
@@ -65,7 +65,7 @@ class Project extends Entity {
       'name': name,
       'siteId': siteId,
       'referenceNumber': referenceNumber,
-      'referneceName': referneceName,
+      'referenceName': referneceName,
     };
     if (id != null) {
       map.addEntries([MapEntry('id', id)]);
@@ -84,7 +84,7 @@ class Project extends Entity {
   }
 
   @override
-  Map<String, dynamic> detailItemsToMap() {
+  Map<String, dynamic> sideDetailItemsToMap() {
     return {
       'Name': name,
       'Region': regionName,
@@ -96,7 +96,22 @@ class Project extends Entity {
       'Created By': createdByUserName,
       'Last updated': lastModifiedOn,
       'Updated By': updatedByUserName,
-      'Contractors': contractors.join(', '),
+      'Contractors': contractors,
+    };
+  }
+
+  @override
+  Map<String, dynamic> detailItemsToMap() {
+    return {
+      'Name': name,
+      'Site': siteName,
+      'Region': regionName,
+      'Time Zone': active,
+      'Reference Code': referenceNumber,
+      'Reference Name': referneceName,
+      'Companies': companyCount,
+      'Created By': createdByUserName,
+      'Created On': createdOn,
     };
   }
 
@@ -112,13 +127,20 @@ class Project extends Entity {
       referenceNumber: map['referenceNumber'] as String,
       referneceName: map['referenceName'] as String,
       companyCount: map['companyCount'] as int,
-      createdOn: map['createdOn'] == null ? '' : (map['createdOn'] as String),
+      createdOn: map['createdOn'] == null
+          ? ''
+          : FormatDate(
+                  dateString: map['createdOn'] as String, format: 'd MMMM y')
+              .formatDate,
       createdByUserName: map['createdByUserName'] == null
           ? ''
           : (map['createdByUserName'] as String),
       lastModifiedOn: map['lastModifiedOn'] == null
           ? ''
-          : (map['lastModifiedOn'] as String),
+          : FormatDate(
+                  dateString: map['lastModifiedOn'] as String,
+                  format: 'd MMMM y')
+              .formatDate,
       updatedByUserName: map['updatedByUserName'] == null
           ? ''
           : (map['updatedByUserName'] as String),

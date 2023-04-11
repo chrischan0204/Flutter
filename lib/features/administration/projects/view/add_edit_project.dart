@@ -120,7 +120,8 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context).go('/projects/abc/assign-companies');
+      GoRouter.of(context).go(
+          '/projects/assign-companies?projectId=${state.selectedProject!.id}&projectName=${state.selectedProject!.name}');
     }
     if (state.projectCrudStatus == EntityStatus.failure) {
       projectsBloc.add(ProjectsStatusInited());

@@ -47,6 +47,11 @@ class Entity extends Equatable {
     return <String, dynamic>{};
   }
 
+  // return table details map
+  Map<String, dynamic> sideDetailItemsToMap() {
+    return tableItemsToMap();
+  }
+
   // return side detail amp
   Map<String, dynamic> detailItemsToMap() {
     if (!active && deactivationDate != null && deactivationUserName != null) {

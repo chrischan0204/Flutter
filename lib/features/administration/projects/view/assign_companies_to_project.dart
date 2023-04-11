@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -10,9 +9,11 @@ import '/global_widgets/global_widget.dart';
 
 class AssignCompaniesToProjectView extends StatefulWidget {
   final String projectId;
+  final String projectName;
   const AssignCompaniesToProjectView({
     super.key,
     required this.projectId,
+    required this.projectName,
   });
 
   @override

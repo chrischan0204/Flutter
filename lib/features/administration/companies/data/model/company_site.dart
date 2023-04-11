@@ -30,6 +30,15 @@ class CompanySite {
     };
   }
 
+  Map<String, dynamic> toTableDetailMap() {
+    return {
+      'siteName': siteName,
+      'roleName': roleName,
+      'addedBy': 'Adam Drobot',
+      'addedOn': '3rd Oct 2022',
+    };
+  }
+
   factory CompanySite.fromMap(Map<String, dynamic> map) {
     return CompanySite(
       id: map['id'] as String,

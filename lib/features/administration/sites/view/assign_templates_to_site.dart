@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -11,9 +10,11 @@ import '/global_widgets/global_widget.dart';
 
 class AssignTemplatesToSiteView extends StatefulWidget {
   final String siteId;
+  final String siteName;
   const AssignTemplatesToSiteView({
     super.key,
     required this.siteId,
+    required this.siteName,
   });
 
   @override
@@ -23,9 +24,7 @@ class AssignTemplatesToSiteView extends StatefulWidget {
 
 class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
   late SitesBloc sitesBloc;
-  TextEditingController filterController = TextEditingController(
-    text: '',
-  );
+  TextEditingController filterController = TextEditingController(text: '');
 
   @override
   void initState() {
@@ -126,7 +125,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      'The site \' ${widget.siteId} \' has been created.',
+                                      'The site \' ${widget.siteName} \' has been created.',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                   ),

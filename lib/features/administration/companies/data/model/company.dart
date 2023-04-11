@@ -58,6 +58,16 @@ class Company extends Entity {
   @override
   Map<String, dynamic> detailItemsToMap() {
     return {
+      'Name': name,
+      'EIN Number': einNumber,
+      'Created By': 'Gary Verb',
+      'Created On': '3/11/2020',
+    };
+  }
+
+  @override
+  Map<String, dynamic> sideDetailItemsToMap() {
+    return {
       'EIN #': einNumber,
       'Sites': sites.map((site) => site.name ?? '').join(', '),
       'Projects (last 10)':

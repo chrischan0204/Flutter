@@ -135,7 +135,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
         emit(state.copyWith(
           siteCrudStatus: EntityStatus.success,
           message: response.message,
-          selectedSite: null,
+          selectedSite: state.selectedSite!.copyWith(id: response.data!.id),
         ));
       } else {
         emit(state.copyWith(
@@ -159,7 +159,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
         emit(state.copyWith(
           siteCrudStatus: EntityStatus.success,
           message: response.message,
-          selectedSite: null,
+          selectedSite: state.selectedSite!.copyWith(id: response.data!.id),
         ));
       } else {
         emit(state.copyWith(

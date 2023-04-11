@@ -154,8 +154,8 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context)
-          .go('/sites/${state.selectedSite!.id ?? ''}/assign-templates');
+      GoRouter.of(context).go(
+          '/sites/assign-templates?siteId=${state.selectedSite!.id}&siteName=${state.selectedSite!.name}');
     }
     if (state.siteCrudStatus == EntityStatus.failure) {
       sitesBloc.add(SitesStatusInited());
