@@ -24,12 +24,14 @@ class CompaniesRepository {
   Future<Company> getCompanyById(
     String companyId,
   ) async {
-    Response response = await get(Uri.https(ApiUri.host, '$url/$companyId'));
+    List<Company> companies = await getCompanies();
 
-    if (response.statusCode == 200) {
-      return Company.fromJson(response.body);
-    }
-    throw Exception();
+    return companies.firstWhere(
+      (company) => company.id == companyId,
+      orElse: () {
+        throw Exception();
+      },
+    );
   }
 
   // add company
@@ -86,5 +88,112 @@ class CompaniesRepository {
     }
 
     throw Exception();
+  }
+
+  Future<EntityResponse> assignSiteToCompany(
+      CompanySiteUpdation companySiteUpdation) async {
+    Response response = await post(
+      Uri.https(ApiUri.host, '$url/assign/site'),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: companySiteUpdation.toJson(),
+    );
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: 'message',
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> unassignSiteFromCompany(String companySiteId) async {
+    Response response = await post(
+      Uri.https(
+        ApiUri.host,
+        '$url/unassign/$companySiteId/site',
+      ),
+    );
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: 'message',
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> assignProjectToCompany(
+      ProjectCompanyAssignment projectCompanyAssignment) async {
+    Response response = await post(
+      Uri.https(ApiUri.host, '$url/assign/project'),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: projectCompanyAssignment.toJson(),
+    );
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: 'message',
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> unassignProjectFromCompany(
+      String projectCompanyId) async {
+    Response response = await post(
+      Uri.https(
+        ApiUri.host,
+        '$url/unassign/$projectCompanyId/project',
+      ),
+    );
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: 'message',
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<List<CompanySite>> getCompanySites(String companyId) async {
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/$companyId/sites'));
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
+          .map((companySiteMap) => CompanySite.fromMap(companySiteMap))
+          .toList();
+    }
+    return [];
+  }
+
+  Future<List<ProjectCompany>> getProjectCompanies(String companyId) async {
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/$companyId/projects'));
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
+          .map((projectCompanyMap) => ProjectCompany.fromMap(projectCompanyMap))
+          .toList();
+    }
+    return [];
   }
 }

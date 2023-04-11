@@ -105,6 +105,7 @@ class MyApp extends StatelessWidget {
           title: 'Safety ETA',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            fontFamily: 'OpenSans',
           ),
           debugShowCheckedModeBanner: false,
           routerConfig: router,

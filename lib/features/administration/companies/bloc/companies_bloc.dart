@@ -24,7 +24,11 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
 
   void _triggerEvents() {
     on<CompaniesRetrieved>(_onCompaniesRetrieved);
+    on<CompanySitesRetrieved>(_onCompanySitesRetrieved);
+    on<ProjectCompaniesRetrieved>(_onProjectCompaniesRetrieved);
     on<CompanySelected>(_onCompanySelected);
+    on<SiteToCompanyAssigned>(_onSiteToCompanyAssigned);
+    on<ProjectToCompanyAssigned>(_onProjectToCompanyAssigned);
     on<CompanySelectedById>(_onCompanySelectedById);
     on<CompanyAdded>(_onCompanyAdded);
     on<CompanyEdited>(_onCompanyEdited);
@@ -46,6 +50,41 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       ));
     } catch (e) {
       emit(state.copyWith(companiesRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onCompanySitesRetrieved(
+    CompanySitesRetrieved event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(companySitesRetrievedStatus: EntityStatus.loading));
+    try {
+      List<CompanySite> companySites =
+          await companiesRepository.getCompanySites(event.companyId);
+      emit(state.copyWith(
+        companySites: companySites,
+        companySitesRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(companySitesRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onProjectCompaniesRetrieved(
+    ProjectCompaniesRetrieved event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(projectCompaniesRetrievedStatus: EntityStatus.loading));
+    try {
+      List<ProjectCompany> projectCompanies =
+          await companiesRepository.getProjectCompanies(event.companyId);
+      emit(state.copyWith(
+        projectCompanies: projectCompanies,
+        projectCompaniesRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          projectCompaniesRetrievedStatus: EntityStatus.failure));
     }
   }
 
@@ -78,6 +117,42 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     }
   }
 
+  Future<void> _onSiteToCompanyAssigned(
+    SiteToCompanyAssigned event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(siteToCompanyAssignedStatus: EntityStatus.loading));
+    try {
+      EntityResponse response = await companiesRepository
+          .assignSiteToCompany(event.companySiteUpdation);
+      if (response.isSuccess) {
+        emit(state.copyWith(siteToCompanyAssignedStatus: EntityStatus.success));
+      } else {
+        emit(state.copyWith(siteToCompanyAssignedStatus: EntityStatus.failure));
+      }
+    } catch (e) {
+      emit(state.copyWith(siteToCompanyAssignedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onProjectToCompanyAssigned(
+    ProjectToCompanyAssigned event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(projectToCompanyAssignedStatus: EntityStatus.loading));
+    try {
+      EntityResponse response = await companiesRepository
+          .assignProjectToCompany(event.projectCompanyAssignment);
+      if (response.isSuccess) {
+        emit(state.copyWith(projectToCompanyAssignedStatus: EntityStatus.success));
+      } else {
+        emit(state.copyWith(projectToCompanyAssignedStatus: EntityStatus.failure));
+      }
+    } catch (e) {
+      emit(state.copyWith(projectToCompanyAssignedStatus: EntityStatus.failure));
+    }
+  }
+
   Future<void> _onCompanyAdded(
     CompanyAdded event,
     Emitter<CompaniesState> emit,
@@ -90,7 +165,8 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
         emit(state.copyWith(
           companyCrudStatus: EntityStatus.success,
           message: response.message,
-          selectedCompany: null,
+          selectedCompany:
+              state.selectedCompany!.copyWith(id: response.data!.id),
         ));
       } else {
         emit(state.copyWith(
@@ -186,7 +262,6 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       companyCrudStatus: EntityStatus.initial,
       companySelectedStatus: EntityStatus.initial,
       companiesRetrievedStatus: EntityStatus.initial,
-      companyCompaniesRetrievedStatus: EntityStatus.initial,
     ));
   }
 }

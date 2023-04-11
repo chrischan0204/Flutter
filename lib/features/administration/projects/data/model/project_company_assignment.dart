@@ -37,7 +37,7 @@ class ProjectCompanyAssignment {
       roleId: map['roleId'] as String,
     );
   }
-  
+
   String toJson() => json.encode(toMap());
 
   factory ProjectCompanyAssignment.fromJson(String source) =>

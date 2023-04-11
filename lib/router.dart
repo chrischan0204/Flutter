@@ -241,6 +241,18 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/companies/:companyId/assign-sites',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AssignSitesToCompanyView(
+            companyId: state.params['companyId']!,
+          ),
+          selectedItemName: 'companies',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/templates',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

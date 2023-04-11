@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'companies_bloc.dart';
 
 abstract class CompaniesEvent extends Equatable {
@@ -80,3 +81,47 @@ class CompaniesSorted extends CompaniesEvent {
 }
 
 class CompaniesStatusInited extends CompaniesEvent {}
+
+class CompanySitesRetrieved extends CompaniesEvent {
+  final String companyId;
+  const CompanySitesRetrieved({
+    required this.companyId,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+      ];
+}
+
+class ProjectCompaniesRetrieved extends CompaniesEvent {
+  final String companyId;
+  const ProjectCompaniesRetrieved({
+    required this.companyId,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+      ];
+}
+
+class SiteToCompanyAssigned extends CompaniesEvent {
+  final CompanySiteUpdation companySiteUpdation;
+  const SiteToCompanyAssigned({
+    required this.companySiteUpdation,
+  });
+  @override
+  List<Object?> get props => [
+        companySiteUpdation,
+      ];
+}
+
+class ProjectToCompanyAssigned extends CompaniesEvent {
+  final ProjectCompanyAssignment projectCompanyAssignment;
+  const ProjectToCompanyAssigned({
+    required this.projectCompanyAssignment,
+  });
+  @override
+  List<Object?> get props => [
+        projectCompanyAssignment,
+      ];
+}

@@ -2,40 +2,41 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/utils/custom_alert.dart';
 
-import '/constants/color.dart';
 import '/data/model/model.dart';
-import '/data/bloc/bloc.dart';
+import '/utils/utils.dart';
+import '/constants/color.dart';
 import '/global_widgets/global_widget.dart';
+import '/data/bloc/bloc.dart';
 
-class AssignTemplatesToSiteView extends StatefulWidget {
-  final String siteId;
-  const AssignTemplatesToSiteView({
+class AssignSitesToCompanyView extends StatefulWidget {
+  final String companyId;
+  const AssignSitesToCompanyView({
     super.key,
-    required this.siteId,
+    required this.companyId,
   });
 
   @override
-  State<AssignTemplatesToSiteView> createState() =>
-      _AssignTemplatesToSiteViewState();
+  State<AssignSitesToCompanyView> createState() =>
+      _AssignSitesToCompanyViewState();
 }
 
-class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
-  late SitesBloc sitesBloc;
+class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
+  late CompaniesBloc sitesBloc;
   TextEditingController filterController = TextEditingController(
     text: '',
   );
 
   @override
   void initState() {
-    sitesBloc = context.read<SitesBloc>()..add(AuditTemplatesRetrieved());
+    sitesBloc = context.read<CompaniesBloc>()
+      ..add(CompanySitesRetrieved(companyId: widget.companyId));
     super.initState();
   }
 
   Widget _buildTitle() {
     return const PageTitle(
-      title: 'Assign templates to site',
+      title: 'Assign sites to company',
     );
   }
 
@@ -62,7 +63,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
       iconData: PhosphorIcons.notePencil,
       text: 'Show Site',
       onClick: () {
-        GoRouter.of(context).go('/sites/show/${widget.siteId}');
+        GoRouter.of(context).go('/sites/show/${widget.companyId}');
       },
     );
   }
@@ -81,7 +82,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SitesBloc, SitesState>(
+    return BlocBuilder<CompaniesBloc, CompaniesState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
@@ -126,7 +127,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      'The site \' ${widget.siteId} \' has been created.',
+                                      'The company \' ${widget.companyId} \' has been created.',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -149,29 +150,17 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Template Name',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Created By',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Last Revised on',
+                                  'Site Name',
                                 ),
                               ),
                             ],
-                            rows: List<AuditTemplate>.from(state.templates)
-                                .where(
-                                    (auditTemplate) => auditTemplate.assigned)
+                            rows: List<CompanySite>.from(state.companySites)
                                 .map(
-                                  (auditTemplate) => DataRow(
+                                  (companySite) => DataRow(
                                     cells: [
                                       DataCell(
                                         CustomSwitch(
-                                          switchValue: auditTemplate.assigned,
+                                          switchValue: true,
                                           trueString: 'Yes',
                                           falseString: 'No',
                                           textColor: darkTeal,
@@ -187,29 +176,24 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                                   'Do you really want to remove this template from site?',
                                               btnOkText: 'Remove',
                                               btnOkOnPress: () {
-                                                sitesBloc.add(
-                                                  AuditTemplateAssignedToSite(
-                                                    auditTemplateId:
-                                                        auditTemplate.id,
-                                                  ),
-                                                );
+                                                
                                               },
                                               dialogType: DialogType.question,
                                             );
                                           },
                                         ),
                                       ),
-                                      ...List.from(auditTemplate
-                                              .toTableDetailMap()
-                                              .values)
-                                          .map(
-                                            (detail) => DataCell(
-                                              CustomDataCell(
-                                                data: detail,
-                                              ),
-                                            ),
-                                          )
-                                          .toList()
+                                      // ...List.from(auditTemplate
+                                      //         .toTableDetailMap()
+                                      //         .values)
+                                      //     .map(
+                                      //       (detail) => DataCell(
+                                      //         CustomDataCell(
+                                      //           data: detail,
+                                      //         ),
+                                      //       ),
+                                      //     )
+                                      //     .toList()
                                     ],
                                   ),
                                 )
@@ -245,63 +229,52 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                         ),
                         const CustomDivider(),
                         SizedBox(
-                          child: DataTable(
-                            columns: const [
-                              DataColumn(
-                                label: Text('Assigned?'),
+                          child: DataTable(columns: const [
+                            DataColumn(
+                              label: Text('Assigned?'),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Site Name',
                               ),
-                              DataColumn(
-                                label: Text(
-                                  'Template Name',
-                                ),
+                            ),
+                          ], rows: []
+                              // state.selectedCompany!.sites
+                              //     .where(
+                              //         (auditTemplate) => !auditTemplate.assigned)
+                              //     .map(
+                              //       (auditTemplate) => DataRow(
+                              //         cells: [
+                              //           DataCell(
+                              //             CustomSwitch(
+                              //               trueString: 'Yes',
+                              //               falseString: 'No',
+                              //               textColor: darkTeal,
+                              //               switchValue: auditTemplate.assigned,
+                              //               onChanged: (value) {
+                              //                 sitesBloc.add(
+                              //                   AuditTemplateAssignedToSite(
+                              //                     auditTemplateId:
+                              //                         auditTemplate.id,
+                              //                   ),
+                              //                 );
+                              //               },
+                              //             ),
+                              //           ),
+                              //           ...auditTemplate
+                              //               .toTableDetailMap()
+                              //               .values
+                              //               .map(
+                              //                 (detail) => DataCell(
+                              //                   CustomDataCell(data: detail),
+                              //                 ),
+                              //               )
+                              //               .toList(),
+                              //         ],
+                              //       ),
+                              //     )
+                              //     .toList(),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  'Created By',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Last Revised on',
-                                ),
-                              ),
-                            ],
-                            rows: state.templates
-                                .where(
-                                    (auditTemplate) => !auditTemplate.assigned)
-                                .map(
-                                  (auditTemplate) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        CustomSwitch(
-                                          trueString: 'Yes',
-                                          falseString: 'No',
-                                          textColor: darkTeal,
-                                          switchValue: auditTemplate.assigned,
-                                          onChanged: (value) {
-                                            sitesBloc.add(
-                                              AuditTemplateAssignedToSite(
-                                                auditTemplateId:
-                                                    auditTemplate.id,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      ...auditTemplate
-                                          .toTableDetailMap()
-                                          .values
-                                          .map(
-                                            (detail) => DataCell(
-                                              CustomDataCell(data: detail),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
                         ),
                       ],
                     ),

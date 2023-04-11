@@ -109,7 +109,8 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context).go('/companies/abc/assign-sites');
+      GoRouter.of(context)
+          .go('/companies/${state.selectedCompany!.id}/assign-sites');
     }
     if (state.companyCrudStatus == EntityStatus.failure) {
       if (state.message.contains('EIN')) {
