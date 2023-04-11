@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -11,9 +10,11 @@ import '/data/bloc/bloc.dart';
 
 class AssignSitesToCompanyView extends StatefulWidget {
   final String companyId;
+  final String companyName;
   const AssignSitesToCompanyView({
     super.key,
     required this.companyId,
+    required this.companyName,
   });
 
   @override
@@ -30,54 +31,9 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   @override
   void initState() {
     sitesBloc = context.read<CompaniesBloc>()
-      ..add(CompanySitesRetrieved(companyId: widget.companyId));
+      ..add(CompanySitesRetrieved(companyId: widget.companyId))
+      ..add(CompanySelectedById(companyId: widget.companyId));
     super.initState();
-  }
-
-  Widget _buildTitle() {
-    return const PageTitle(
-      title: 'Assign sites to company',
-    );
-  }
-
-  Row _buildCrudButtons(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildGoToListButton(context),
-        SizedBox(
-          width: MediaQuery.of(context).size.width / 40,
-        ),
-        _buildShowButton(context),
-        const SizedBox(
-          width: 50,
-        )
-      ],
-    );
-  }
-
-  CustomButton _buildShowButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: const Color(0xff8e70c1),
-      hoverBackgroundColor: const Color(0xff8065ae),
-      iconData: PhosphorIcons.notePencil,
-      text: 'Show Site',
-      onClick: () {
-        GoRouter.of(context).go('/sites/show/${widget.companyId}');
-      },
-    );
-  }
-
-  CustomButton _buildGoToListButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
-      iconData: PhosphorIcons.listNumbers,
-      text: 'Sites List',
-      onClick: () {
-        GoRouter.of(context).go('/sites');
-      },
-    );
   }
 
   @override
@@ -114,92 +70,9 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'OpenSans',
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text:
-                                      'The company \' ${widget.companyId} \' has been created.',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text:
-                                      ' Sites can be assigned from list on right. Once assigned they will show here in this list below.',
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        _buildAssignedSitesTableViewHeader(state),
                         const CustomDivider(),
-                        SizedBox(
-                          width: double.infinity,
-                          child: DataTable(
-                            columns: const [
-                              DataColumn(
-                                label: Text('Assigned?'),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Site Name',
-                                ),
-                              ),
-                            ],
-                            rows: List<CompanySite>.from(state.companySites)
-                                .map(
-                                  (companySite) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        CustomSwitch(
-                                          switchValue: true,
-                                          trueString: 'Yes',
-                                          falseString: 'No',
-                                          textColor: darkTeal,
-                                          onChanged: (value) {
-                                            CustomAlert(
-                                              context: context,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4,
-                                              title: 'Confirm',
-                                              description:
-                                                  'Do you really want to remove this template from site?',
-                                              btnOkText: 'Remove',
-                                              btnOkOnPress: () {
-                                                
-                                              },
-                                              dialogType: DialogType.question,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      // ...List.from(auditTemplate
-                                      //         .toTableDetailMap()
-                                      //         .values)
-                                      //     .map(
-                                      //       (detail) => DataCell(
-                                      //         CustomDataCell(
-                                      //           data: detail,
-                                      //         ),
-                                      //       ),
-                                      //     )
-                                      //     .toList()
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
+                        _buildAssignedSitesTableView(state, context),
                       ],
                     ),
                   ),
@@ -211,71 +84,16 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Templates can be assigned to this site by selecting from the list below.',
+                          'Sites can be assigned to this company by selecting from the list below.',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                         const CustomDivider(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: CustomTextField(
-                            hintText: 'Filter unassigned sites by name..',
-                            onChanged: (value) {},
-                            controller: filterController,
-                            suffixIconData: PhosphorIcons.funnel,
-                          ),
-                        ),
+                        _buildFilterTextField(),
                         const CustomDivider(),
-                        SizedBox(
-                          child: DataTable(columns: const [
-                            DataColumn(
-                              label: Text('Assigned?'),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Site Name',
-                              ),
-                            ),
-                          ], rows: []
-                              // state.selectedCompany!.sites
-                              //     .where(
-                              //         (auditTemplate) => !auditTemplate.assigned)
-                              //     .map(
-                              //       (auditTemplate) => DataRow(
-                              //         cells: [
-                              //           DataCell(
-                              //             CustomSwitch(
-                              //               trueString: 'Yes',
-                              //               falseString: 'No',
-                              //               textColor: darkTeal,
-                              //               switchValue: auditTemplate.assigned,
-                              //               onChanged: (value) {
-                              //                 sitesBloc.add(
-                              //                   AuditTemplateAssignedToSite(
-                              //                     auditTemplateId:
-                              //                         auditTemplate.id,
-                              //                   ),
-                              //                 );
-                              //               },
-                              //             ),
-                              //           ),
-                              //           ...auditTemplate
-                              //               .toTableDetailMap()
-                              //               .values
-                              //               .map(
-                              //                 (detail) => DataCell(
-                              //                   CustomDataCell(data: detail),
-                              //                 ),
-                              //               )
-                              //               .toList(),
-                              //         ],
-                              //       ),
-                              //     )
-                              //     .toList(),
-                              ),
-                        ),
+                        _buildUnassignedSitesTableView(),
                       ],
                     ),
                   )
@@ -285,6 +103,173 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           ),
         );
       },
+    );
+  }
+
+  Padding _buildAssignedSitesTableViewHeader(CompaniesState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontFamily: 'OpenSans',
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'The company \'${widget.companyName}\' has been created.',
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const TextSpan(
+              text:
+                  ' Sites can be assigned from list on right. Once assigned they will show here in this list below.',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return const PageTitle(
+      title: 'Assign sites to company',
+    );
+  }
+
+  Row _buildCrudButtons(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _buildAssignProjectsButton(context),
+        const SizedBox(
+          width: 50,
+        ),
+      ],
+    );
+  }
+
+  CustomButton _buildAssignProjectsButton(BuildContext context) {
+    return CustomButton(
+      backgroundColor: primaryColor,
+      hoverBackgroundColor: primarHoverColor,
+      iconData: PhosphorIcons.arrowRight,
+      text: 'Assign Projects',
+      onClick: () {
+        GoRouter.of(context).go(
+            '/companies/assign-projects?companyId=${widget.companyId}&companyName=${widget.companyName}');
+      },
+    );
+  }
+
+  SizedBox _buildUnassignedSitesTableView() {
+    return SizedBox(
+      child: DataTable(
+        columns: const [
+          DataColumn(
+            label: Text('Assigned?'),
+          ),
+          DataColumn(
+            label: Text(
+              'Site Name',
+            ),
+          ),
+        ],
+        rows: [],
+        // state.selectedCompany!.sites
+        //     .map(
+        //       (auditTemplate) => DataRow(
+        //         cells: [
+        //           DataCell(
+        //             CustomSwitch(
+        //               trueString: 'Yes',
+        //               falseString: 'No',
+        //               textColor: darkTeal,
+        //               switchValue: false,
+        //               onChanged: (value) {},
+        //             ),
+        //           ),
+        //           ...auditTemplate
+        //               .toTableDetailMap()
+        //               .values
+        //               .map(
+        //                 (detail) => DataCell(
+        //                   CustomDataCell(data: detail),
+        //                 ),
+        //               )
+        //               .toList(),
+        //         ],
+        //       ),
+        //     )
+        //     .toList(),
+      ),
+    );
+  }
+
+  SizedBox _buildAssignedSitesTableView(
+      CompaniesState state, BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: DataTable(
+        columns: const [
+          DataColumn(
+            label: Text('Assigned?'),
+          ),
+          DataColumn(
+            label: Text(
+              'Site Name',
+            ),
+          ),
+        ],
+        rows: List<CompanySite>.from(state.companySites)
+            .map(
+              (companySite) => DataRow(
+                cells: [
+                  DataCell(
+                    CustomSwitch(
+                      switchValue: true,
+                      trueString: 'Yes',
+                      falseString: 'No',
+                      textColor: darkTeal,
+                      onChanged: (value) {
+                        CustomAlert(
+                          context: context,
+                          width: MediaQuery.of(context).size.width / 4,
+                          title: 'Confirm',
+                          description:
+                              'Do you really want to remove this site from company?',
+                          btnOkText: 'Remove',
+                          btnOkOnPress: () {},
+                          dialogType: DialogType.question,
+                        );
+                      },
+                    ),
+                  ),
+                  DataCell(
+                    CustomDataCell(
+                      data: companySite.siteName,
+                    ),
+                  ),
+                ],
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  Padding _buildFilterTextField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: CustomTextField(
+        hintText: 'Filter unassigned sites by name..',
+        onChanged: (value) {},
+        controller: filterController,
+        suffixIconData: PhosphorIcons.funnel,
+      ),
     );
   }
 }

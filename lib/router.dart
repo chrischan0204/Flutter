@@ -241,12 +241,26 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/companies/:companyId/assign-sites',
+      path: '/companies/assign-sites',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: AssignSitesToCompanyView(
-            companyId: state.params['companyId']!,
+            companyId: state.queryParams['companyId']!,
+            companyName: state.queryParams['companyName']!,
+          ),
+          selectedItemName: 'companies',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/companies/assign-projects',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AssignProjectsToCompanyView(
+            companyId: state.queryParams['companyId']!,
+            companyName: state.queryParams['companyName']!,
           ),
           selectedItemName: 'companies',
         ),
