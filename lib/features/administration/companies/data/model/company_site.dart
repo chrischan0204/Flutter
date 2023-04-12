@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '/data/model/model.dart';
+
 class CompanySite {
   final String id;
   final String siteId;
@@ -73,6 +75,14 @@ class CompanySite {
       companyName: companyName ?? this.companyName,
       roleId: roleId ?? this.roleId,
       roleName: roleName ?? this.roleName,
+    );
+  }
+
+  CompanySiteUpdation toCompanySiteUpdation() {
+    return CompanySiteUpdation(
+      siteId: siteId,
+      companyId: companyId,
+      roleId: roleId,
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '/data/model/model.dart';
+
 class ProjectCompany {
   final String id;
   final String projectId;
@@ -73,6 +75,14 @@ class ProjectCompany {
       companyName: companyName ?? this.companyName,
       roleId: roleId ?? this.roleId,
       roleName: roleName ?? this.roleName,
+    );
+  }
+
+  ProjectCompanyAssignment toProjectCompanyAssignment() {
+    return ProjectCompanyAssignment(
+      projectId: projectId,
+      companyId: companyId,
+      roleId: roleId,
     );
   }
 }

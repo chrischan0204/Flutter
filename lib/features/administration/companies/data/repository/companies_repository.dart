@@ -175,9 +175,21 @@ class CompaniesRepository {
     throw Exception();
   }
 
-  Future<List<CompanySite>> getCompanySites(String companyId) async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/$companyId/sites'));
+  Future<List<CompanySite>> getCompanySites(
+    String companyId,
+    bool? assigned,
+    String? name,
+  ) async {
+    Map<String, dynamic> queryParams = {};
+    if (assigned != null) {
+      queryParams.addEntries([MapEntry('assigned', assigned)]);
+    }
+    if (name != null) {
+      queryParams.addEntries([MapEntry('name', name)]);
+    }
+    Response response = await get(
+      Uri.https(ApiUri.host, '$url/$companyId/sites', queryParams),
+    );
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
           .map((companySiteMap) => CompanySite.fromMap(companySiteMap))
@@ -186,9 +198,20 @@ class CompaniesRepository {
     return [];
   }
 
-  Future<List<ProjectCompany>> getProjectCompanies(String companyId) async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/$companyId/projects'));
+  Future<List<ProjectCompany>> getProjectCompanies(
+    String companyId,
+    bool? assigned,
+    String? name,
+  ) async {
+    Map<String, dynamic> queryParams = {};
+    if (assigned != null) {
+      queryParams.addEntries([MapEntry('assigned', assigned)]);
+    }
+    if (name != null) {
+      queryParams.addEntries([MapEntry('name', name)]);
+    }
+    Response response = await get(
+        Uri.https(ApiUri.host, '$url/$companyId/projects', queryParams));
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
           .map((projectCompanyMap) => ProjectCompany.fromMap(projectCompanyMap))

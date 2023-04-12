@@ -4,15 +4,15 @@ import '/data/model/model.dart';
 
 class Company extends Entity {
   final String einNumber;
-  final List<Project> projects;
-  final List<Site> sites;
+  final String projects;
+  final String sites;
 
   const Company({
     super.id,
     super.name,
     this.einNumber = '',
-    this.projects = const [],
-    this.sites = const [],
+    this.projects = '',
+    this.sites = '',
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
@@ -69,9 +69,8 @@ class Company extends Entity {
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
       'EIN #': einNumber,
-      'Sites': sites.map((site) => site.name ?? '').join(', '),
-      'Projects (last 10)':
-          projects.map((project) => project.name ?? '').join(', '),
+      'Sites': sites,
+      'Projects (last 10)': projects,
       'Active': active,
       'Created On': '3/11/2020',
       'Created By': 'Gary Verb',
@@ -96,6 +95,8 @@ class Company extends Entity {
       id: entity.id,
       name: entity.name,
       einNumber: map['einNumber'] as String,
+      sites: map['sites'] ?? '',
+      projects: map['projects'] ?? '',
       active: entity.active,
       deactivationDate: entity.deactivationDate,
       deactivationUserName: entity.deactivationUserName,

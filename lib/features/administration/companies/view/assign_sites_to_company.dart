@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '/data/model/model.dart';
@@ -11,10 +10,12 @@ import '/data/bloc/bloc.dart';
 class AssignSitesToCompanyView extends StatefulWidget {
   final String companyId;
   final String companyName;
+  final String? view;
   const AssignSitesToCompanyView({
     super.key,
     required this.companyId,
-    required this.companyName,
+    this.companyName = '',
+    this.view,
   });
 
   @override
@@ -23,16 +24,14 @@ class AssignSitesToCompanyView extends StatefulWidget {
 }
 
 class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
-  late CompaniesBloc sitesBloc;
-  TextEditingController filterController = TextEditingController(
-    text: '',
-  );
+  late CompaniesBloc companiesBloc;
+  TextEditingController filterController = TextEditingController(text: '');
 
   @override
   void initState() {
-    sitesBloc = context.read<CompaniesBloc>()
-      ..add(CompanySitesRetrieved(companyId: widget.companyId))
-      ..add(CompanySelectedById(companyId: widget.companyId));
+    companiesBloc = context.read<CompaniesBloc>()
+      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId));
     super.initState();
   }
 
@@ -45,24 +44,6 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTitle(),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    _buildCrudButtons(context),
-                  ],
-                ),
-              ),
-              const CustomDivider(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -93,7 +74,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                         const CustomDivider(),
                         _buildFilterTextField(),
                         const CustomDivider(),
-                        _buildUnassignedSitesTableView(),
+                        _buildUnassignedSitesTableView(state),
                       ],
                     ),
                   )
@@ -119,7 +100,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           ),
           children: <TextSpan>[
             TextSpan(
-              text: 'The company \'${widget.companyName}\' has been created.',
+              text:
+                  'The company \'${widget.companyName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
               ),
@@ -134,130 +116,119 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  Widget _buildTitle() {
-    return const PageTitle(
-      title: 'Assign sites to company',
-    );
-  }
-
-  Row _buildCrudButtons(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildAssignProjectsButton(context),
-        const SizedBox(
-          width: 50,
-        ),
-      ],
-    );
-  }
-
-  CustomButton _buildAssignProjectsButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
-      iconData: PhosphorIcons.arrowRight,
-      text: 'Assign Projects',
-      onClick: () {
-        GoRouter.of(context).go(
-            '/companies/assign-projects?companyId=${widget.companyId}&companyName=${widget.companyName}');
-      },
-    );
-  }
-
-  SizedBox _buildUnassignedSitesTableView() {
-    return SizedBox(
-      child: DataTable(
-        columns: const [
-          DataColumn(
-            label: Text('Assigned?'),
-          ),
-          DataColumn(
-            label: Text(
-              'Site Name',
+  Widget _buildUnassignedSitesTableView(CompaniesState state) {
+    return state.unassignedCompanySitesRetrievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: CircularProgressIndicator(),
+          )
+        : SizedBox(
+            child: DataTable(
+              columns: const [
+                DataColumn(
+                  label: Text('Assigned?'),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Site Name',
+                  ),
+                ),
+              ],
+              rows: state.unassignedCompanySites
+                  .map(
+                    (unassignedCompanySite) => DataRow(
+                      cells: [
+                        DataCell(
+                          CustomSwitch(
+                            trueString: 'Yes',
+                            falseString: 'No',
+                            textColor: darkTeal,
+                            switchValue: false,
+                            onChanged: (value) =>
+                                _assignSiteToCompany(unassignedCompanySite),
+                          ),
+                        ),
+                        ...unassignedCompanySite
+                            .toTableDetailMap()
+                            .values
+                            .map(
+                              (detail) => DataCell(
+                                CustomDataCell(data: detail),
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
-          ),
-        ],
-        rows: [],
-        // state.selectedCompany!.sites
-        //     .map(
-        //       (auditTemplate) => DataRow(
-        //         cells: [
-        //           DataCell(
-        //             CustomSwitch(
-        //               trueString: 'Yes',
-        //               falseString: 'No',
-        //               textColor: darkTeal,
-        //               switchValue: false,
-        //               onChanged: (value) {},
-        //             ),
-        //           ),
-        //           ...auditTemplate
-        //               .toTableDetailMap()
-        //               .values
-        //               .map(
-        //                 (detail) => DataCell(
-        //                   CustomDataCell(data: detail),
-        //                 ),
-        //               )
-        //               .toList(),
-        //         ],
-        //       ),
-        //     )
-        //     .toList(),
-      ),
-    );
+          );
   }
 
-  SizedBox _buildAssignedSitesTableView(
+  Widget _buildAssignedSitesTableView(
       CompaniesState state, BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: DataTable(
-        columns: const [
-          DataColumn(
-            label: Text('Assigned?'),
-          ),
-          DataColumn(
-            label: Text(
-              'Site Name',
+    return state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: CircularProgressIndicator(),
+          )
+        : SizedBox(
+            width: double.infinity,
+            child: DataTable(
+              columns: const [
+                DataColumn(
+                  label: Text('Assigned?'),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Site Name',
+                  ),
+                ),
+              ],
+              rows: List<CompanySite>.from(state.assignedCompanySites)
+                  .map(
+                    (assignedCompanySite) => DataRow(
+                      cells: [
+                        DataCell(
+                          CustomSwitch(
+                            switchValue: true,
+                            trueString: 'Yes',
+                            falseString: 'No',
+                            textColor: darkTeal,
+                            onChanged: (value) =>
+                                _unassignFromCompany(assignedCompanySite.id),
+                          ),
+                        ),
+                        DataCell(
+                          CustomDataCell(
+                            data: assignedCompanySite.siteName,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
-          ),
-        ],
-        rows: List<CompanySite>.from(state.companySites)
-            .map(
-              (companySite) => DataRow(
-                cells: [
-                  DataCell(
-                    CustomSwitch(
-                      switchValue: true,
-                      trueString: 'Yes',
-                      falseString: 'No',
-                      textColor: darkTeal,
-                      onChanged: (value) {
-                        CustomAlert(
-                          context: context,
-                          width: MediaQuery.of(context).size.width / 4,
-                          title: 'Confirm',
-                          description:
-                              'Do you really want to remove this site from company?',
-                          btnOkText: 'Remove',
-                          btnOkOnPress: () {},
-                          dialogType: DialogType.question,
-                        );
-                      },
-                    ),
-                  ),
-                  DataCell(
-                    CustomDataCell(
-                      data: companySite.siteName,
-                    ),
-                  ),
-                ],
-              ),
-            )
-            .toList(),
-      ),
+          );
+  }
+
+  void _assignSiteToCompany(CompanySite companySite) {
+    companiesBloc.add(SiteToCompanyAssigned(
+        companySiteUpdation: companySite.toCompanySiteUpdation()));
+  }
+
+  void _unassignFromCompany(String companySiteId) {
+    CustomAlert(
+      context: context,
+      width: MediaQuery.of(context).size.width / 4,
+      title: 'Confirm',
+      description: 'Do you really want to remove this site from company?',
+      btnOkText: 'Remove',
+      btnOkOnPress: () {
+        companiesBloc.add(
+            SiteFromCompanyUnassigned(companySiteUpdationId: companySiteId));
+      },
+      dialogType: DialogType.question,
     );
   }
 
@@ -269,7 +240,15 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         onChanged: (value) {},
         controller: filterController,
         suffixIconData: PhosphorIcons.funnel,
+        onSuffixIconClick: () => _filterApply(),
       ),
     );
+  }
+
+  _filterApply() {
+    companiesBloc.add(UnassignedCompanySitesRetrieved(
+      companyId: widget.companyId,
+      name: filterController.text,
+    ));
   }
 }

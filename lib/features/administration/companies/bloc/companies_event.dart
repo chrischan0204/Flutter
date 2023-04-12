@@ -82,25 +82,59 @@ class CompaniesSorted extends CompaniesEvent {
 
 class CompaniesStatusInited extends CompaniesEvent {}
 
-class CompanySitesRetrieved extends CompaniesEvent {
+class AssignedCompanySitesRetrieved extends CompaniesEvent {
   final String companyId;
-  const CompanySitesRetrieved({
+  final String? name;
+  const AssignedCompanySitesRetrieved({
     required this.companyId,
+    this.name,
   });
   @override
   List<Object?> get props => [
         companyId,
+        name,
       ];
 }
 
-class ProjectCompaniesRetrieved extends CompaniesEvent {
+class UnassignedCompanySitesRetrieved extends CompaniesEvent {
   final String companyId;
-  const ProjectCompaniesRetrieved({
+  final String? name;
+  const UnassignedCompanySitesRetrieved({
     required this.companyId,
+    this.name,
   });
   @override
   List<Object?> get props => [
         companyId,
+        name,
+      ];
+}
+
+class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
+  final String companyId;
+  final String? name;
+  const AssignedProjectCompaniesRetrieved({
+    required this.companyId,
+    this.name,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+        name,
+      ];
+}
+
+class UnassignedProjectCompaniesRetrieved extends CompaniesEvent {
+  final String companyId;
+  final String? name;
+  const UnassignedProjectCompaniesRetrieved({
+    required this.companyId,
+    this.name,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+        name,
       ];
 }
 
@@ -115,6 +149,17 @@ class SiteToCompanyAssigned extends CompaniesEvent {
       ];
 }
 
+class SiteFromCompanyUnassigned extends CompaniesEvent {
+  final String companySiteUpdationId;
+  const SiteFromCompanyUnassigned({
+    required this.companySiteUpdationId,
+  });
+  @override
+  List<Object?> get props => [
+        companySiteUpdationId,
+      ];
+}
+
 class ProjectToCompanyAssigned extends CompaniesEvent {
   final ProjectCompanyAssignment projectCompanyAssignment;
   const ProjectToCompanyAssigned({
@@ -123,5 +168,16 @@ class ProjectToCompanyAssigned extends CompaniesEvent {
   @override
   List<Object?> get props => [
         projectCompanyAssignment,
+      ];
+}
+
+class ProjectFromCompanyUnassigned extends CompaniesEvent {
+  final String projectCompanyAssignmentId;
+  const ProjectFromCompanyUnassigned({
+    required this.projectCompanyAssignmentId,
+  });
+  @override
+  List<Object?> get props => [
+        projectCompanyAssignmentId,
       ];
 }

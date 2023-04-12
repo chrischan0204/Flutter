@@ -340,6 +340,11 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     );
   }
 
+  bool _checkAlphanumeric(String str) {
+    final alphpanumeric = RegExp(r'^[0-9a-zA-Z]+$');
+    return alphpanumeric.hasMatch(str);
+  }
+
   bool _validate() {
     bool validated = true;
     if (siteName == null ||
@@ -347,6 +352,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       setState(() {
         siteNameValidationMessage =
             'Site name is required and cannot be blank.';
+      });
+
+      validated = false;
+    }
+
+    if (!(_checkAlphanumeric(siteName!))) {
+      setState(() {
+        siteNameValidationMessage = 'Site name should be only alphanumeric.';
       });
 
       validated = false;
@@ -383,6 +396,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         (siteCode != null && (siteCode!.isEmpty || siteCode!.trim().isEmpty))) {
       setState(() {
         siteCodeValidationMessage = 'Site code is required.';
+      });
+
+      validated = false;
+    }
+
+    if (!(_checkAlphanumeric(siteCode!))) {
+      setState(() {
+        siteCodeValidationMessage = 'Site code should be only alphanumeric.';
       });
 
       validated = false;

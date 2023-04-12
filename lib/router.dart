@@ -238,6 +238,7 @@ final GoRouter router = GoRouter(
         child: Layout(
           body: AddEditCompanyView(
             companyId: state.params['companyId']!,
+            view: state.queryParams['view'],
           ),
           selectedItemName: 'companies',
         ),
@@ -250,32 +251,6 @@ final GoRouter router = GoRouter(
         child: Layout(
           body: ShowCompanyView(
             companyId: state.params['companyId']!,
-          ),
-          selectedItemName: 'companies',
-        ),
-      ),
-    ),
-    GoRoute(
-      path: '/companies/assign-sites',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: Layout(
-          body: AssignSitesToCompanyView(
-            companyId: state.queryParams['companyId']!,
-            companyName: state.queryParams['companyName']!,
-          ),
-          selectedItemName: 'companies',
-        ),
-      ),
-    ),
-    GoRoute(
-      path: '/companies/assign-projects',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: Layout(
-          body: AssignProjectsToCompanyView(
-            companyId: state.queryParams['companyId']!,
-            companyName: state.queryParams['companyName']!,
           ),
           selectedItemName: 'companies',
         ),

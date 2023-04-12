@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '/data/model/model.dart';
@@ -32,7 +31,8 @@ class _AssignProjectsToCompanyViewState
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
-      ..add(ProjectCompaniesRetrieved(companyId: widget.companyId));
+      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
+      ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId));
     super.initState();
   }
 
@@ -45,24 +45,6 @@ class _AssignProjectsToCompanyViewState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTitle(),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    _buildCrudButtons(context),
-                  ],
-                ),
-              ),
-              const CustomDivider(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -87,7 +69,7 @@ class _AssignProjectsToCompanyViewState
                         const CustomDivider(),
                         _buildFilterProjectView(),
                         const CustomDivider(),
-                        _buildUnassignedProjectsTableView(),
+                        _buildUnassignedProjectsTableView(state),
                       ],
                     ),
                   ),
@@ -96,52 +78,6 @@ class _AssignProjectsToCompanyViewState
             ],
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildTitle() {
-    return const PageTitle(
-      title: 'Assign projects to company',
-    );
-  }
-
-  Row _buildCrudButtons(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildGoToListButton(context),
-        SizedBox(
-          width: MediaQuery.of(context).size.width / 40,
-        ),
-        _buildShowButton(context),
-        const SizedBox(
-          width: 50,
-        )
-      ],
-    );
-  }
-
-  CustomButton _buildShowButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: const Color(0xff8e70c1),
-      hoverBackgroundColor: const Color(0xff8065ae),
-      iconData: PhosphorIcons.notePencil,
-      text: 'Company Details',
-      onClick: () {
-        GoRouter.of(context).go('/companies/show/${widget.companyId}');
-      },
-    );
-  }
-
-  CustomButton _buildGoToListButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
-      iconData: PhosphorIcons.listNumbers,
-      text: 'Companies List',
-      onClick: () {
-        GoRouter.of(context).go('/companies');
       },
     );
   }
@@ -156,82 +92,83 @@ class _AssignProjectsToCompanyViewState
     );
   }
 
-  SizedBox _buildAssignedProjectsTableView(
+  Widget _buildAssignedProjectsTableView(
       CompaniesState state, BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: DataTable(
-        columns: tableColumns,
-        rows: List<CompanySite>.from(state.companySites)
-            .map(
-              (companySite) => DataRow(
-                cells: [
-                  DataCell(
-                    CustomSwitch(
-                      switchValue: true,
-                      trueString: 'Yes',
-                      falseString: 'No',
-                      textColor: darkTeal,
-                      onChanged: (value) {
-                        CustomAlert(
-                          context: context,
-                          width: MediaQuery.of(context).size.width / 4,
-                          title: 'Confirm',
-                          description:
-                              'Do you really want to remove this project from company?',
-                          btnOkText: 'Remove',
-                          btnOkOnPress: () {},
-                          dialogType: DialogType.question,
-                        );
-                      },
+    return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: CircularProgressIndicator(),
+          )
+        : SizedBox(
+            width: double.infinity,
+            child: DataTable(
+              columns: tableColumns,
+              rows: List<CompanySite>.from(state.assignedProjectCompanies)
+                  .map(
+                    (projectCompany) => DataRow(
+                      cells: [
+                        DataCell(
+                          CustomSwitch(
+                            switchValue: true,
+                            trueString: 'Yes',
+                            falseString: 'No',
+                            textColor: darkTeal,
+                            onChanged: (value) =>
+                                _unassignProjectFromCompany(projectCompany.id),
+                          ),
+                        ),
+                        DataCell(
+                          CustomDataCell(
+                            data: projectCompany.siteName,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  DataCell(
-                    CustomDataCell(
-                      data: companySite.siteName,
-                    ),
-                  ),
-                ],
-              ),
-            )
-            .toList(),
-      ),
-    );
+                  )
+                  .toList(),
+            ),
+          );
   }
 
-  SizedBox _buildUnassignedProjectsTableView() {
-    return SizedBox(
-      child: DataTable(
-        columns: tableColumns,
-        rows: [],
-        // state.selectedCompany!.sites
-        //     .map(
-        //       (auditTemplate) => DataRow(
-        //         cells: [
-        //           DataCell(
-        //             CustomSwitch(
-        //               trueString: 'Yes',
-        //               falseString: 'No',
-        //               textColor: darkTeal,
-        //               switchValue: false,
-        //               onChanged: (value) {},
-        //             ),
-        //           ),
-        //           ...auditTemplate
-        //               .toTableDetailMap()
-        //               .values
-        //               .map(
-        //                 (detail) => DataCell(
-        //                   CustomDataCell(data: detail),
-        //                 ),
-        //               )
-        //               .toList(),
-        //         ],
-        //       ),
-        //     )
-        //     .toList(),
-      ),
-    );
+  Widget _buildUnassignedProjectsTableView(CompaniesState state) {
+    return state.unassignedProjectCompaniesRetrievedStatus ==
+            EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: CircularProgressIndicator(),
+          )
+        : SizedBox(
+            child: DataTable(
+              columns: tableColumns,
+              rows: state.unassignedProjectCompanies
+                  .map(
+                    (unassignedProjectCompany) => DataRow(
+                      cells: [
+                        DataCell(
+                          CustomSwitch(
+                            trueString: 'Yes',
+                            falseString: 'No',
+                            textColor: darkTeal,
+                            switchValue: false,
+                            onChanged: (value) => _assignProjectToCompany(
+                                unassignedProjectCompany),
+                          ),
+                        ),
+                        ...unassignedProjectCompany
+                            .toTableDetailMap()
+                            .values
+                            .map(
+                              (detail) => DataCell(
+                                CustomDataCell(data: detail),
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
   }
 
   List<DataColumn> get tableColumns {
@@ -279,14 +216,9 @@ class _AssignProjectsToCompanyViewState
         onChanged: (value) {},
         controller: filterController,
         suffixIconData: PhosphorIcons.funnel,
-        onSuffixIconClick: () => _filterApplied(),
+        onSuffixIconClick: () => _filterApply(),
       ),
     );
-  }
-
-  void _filterApplied() {
-    filterController.text =
-        'Showing companies matching \'${filterController.text}\' below..';
   }
 
   Widget _buildSiteSelectField() {
@@ -295,13 +227,7 @@ class _AssignProjectsToCompanyViewState
         return SizedBox(
           width: 150,
           child: CustomMultiSelect(
-            items: state.selectedCompany != null
-                ? (<String, Site>{}..addEntries(
-                    state.selectedCompany!.sites.map(
-                      (site) => MapEntry(site.name!, site),
-                    ),
-                  ))
-                : {},
+            items: {},
             selectedItems: [],
             hint: 'Filter by site',
             onChanged: (sites) {
@@ -339,5 +265,34 @@ class _AssignProjectsToCompanyViewState
         ),
       ),
     );
+  }
+
+  void _assignProjectToCompany(ProjectCompany projectCompany) {
+    companiesBloc.add(ProjectToCompanyAssigned(
+        projectCompanyAssignment: projectCompany.toProjectCompanyAssignment()));
+  }
+
+  void _unassignProjectFromCompany(String projectCompanyId) {
+    CustomAlert(
+      context: context,
+      width: MediaQuery.of(context).size.width / 4,
+      title: 'Confirm',
+      description: 'Do you really want to remove this project from company?',
+      btnOkText: 'Remove',
+      btnOkOnPress: () {
+        companiesBloc.add(ProjectFromCompanyUnassigned(
+            projectCompanyAssignmentId: projectCompanyId));
+      },
+      dialogType: DialogType.question,
+    );
+  }
+
+  _filterApply() {
+    filterController.text =
+        'Showing companies matching \'${filterController.text}\' below..';
+    companiesBloc.add(UnassignedCompanySitesRetrieved(
+      companyId: widget.companyId,
+      name: filterController.text,
+    ));
   }
 }

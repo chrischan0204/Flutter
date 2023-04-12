@@ -27,7 +27,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
       ..add(CompanySelectedById(companyId: widget.companyId))
-      ..add(CompanySitesRetrieved(companyId: widget.companyId));
+      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId));
     super.initState();
   }
 
@@ -62,7 +63,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
   }
 
   Column _buildAssociatedSites(CompaniesState state) {
-    var rows = state.companySites
+    var rows = state.assignedCompanySites
         .map(
           (companySite) => DataRow(
             cells: companySite
@@ -102,7 +103,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        state.companySites.isNotEmpty
+        state.assignedCompanySites.isNotEmpty
             ? const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
@@ -115,49 +116,57 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                 ),
               )
             : Container(),
-        state.companySites.isNotEmpty ? const CustomDivider() : Container(),
+        state.assignedCompanySites.isNotEmpty
+            ? const CustomDivider()
+            : Container(),
         Container(
-          child: state.companySites.isNotEmpty
-              ? DataTable(
-                  columns: columns,
-                  rows: rows,
+          child: state.assignedProjectCompaniesRetrievedStatus ==
+                  EntityStatus.loading
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 300),
+                  child: CircularProgressIndicator(),
                 )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'This company has no sites assigned to it yet.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w400,
+              : state.assignedCompanySites.isNotEmpty
+                  ? DataTable(
+                      columns: columns,
+                      rows: rows,
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            'This company has no sites assigned to it yet.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    CustomDivider(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w400,
+                        CustomDivider(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
-                      ),
+                        CustomDivider(),
+                      ],
                     ),
-                    CustomDivider(),
-                  ],
-                ),
         ),
       ],
     );
   }
 
   Column _buildAssociatedProjects(CompaniesState state) {
-    var rows = state.projectCompanies
+    var rows = state.assignedProjectCompanies
         .map(
           (projectCompany) => DataRow(
             cells: projectCompany
@@ -202,7 +211,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        state.companySites.isNotEmpty
+        state.assignedCompanySites.isNotEmpty
             ? const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
@@ -215,42 +224,50 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                 ),
               )
             : Container(),
-        state.companySites.isNotEmpty ? const CustomDivider() : Container(),
+        state.assignedCompanySites.isNotEmpty
+            ? const CustomDivider()
+            : Container(),
         Container(
-          child: state.companySites.isNotEmpty
-              ? DataTable(
-                  columns: columns,
-                  rows: rows,
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'This company has no projects assigned to it yet.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w400,
+          child:
+              state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 300),
+                      child: CircularProgressIndicator(),
+                    )
+                  : state.assignedCompanySites.isNotEmpty
+                      ? DataTable(
+                          columns: columns,
+                          rows: rows,
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                'This company has no projects assigned to it yet.',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            CustomDivider(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            CustomDivider(),
+                          ],
                         ),
-                      ),
-                    ),
-                    CustomDivider(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    CustomDivider(),
-                  ],
-                ),
         ),
       ],
     );
