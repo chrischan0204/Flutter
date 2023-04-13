@@ -169,15 +169,23 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     var rows = state.assignedProjectCompanies
         .map(
           (projectCompany) => DataRow(
-            cells: projectCompany
-                .toTableDetailMap()
-                .values
-                .map(
-                  (detail) => DataCell(
-                    CustomDataCell(data: detail),
-                  ),
-                )
-                .toList(),
+            cells: [
+              DataCell(
+                CustomDataCell(data: projectCompany.projectName),
+              ),
+              DataCell(
+                CustomDataCell(data: projectCompany.projectName),
+              ),
+              DataCell(
+                CustomDataCell(data: projectCompany.roleName),
+              ),
+              DataCell(
+                CustomDataCell(data: projectCompany.createdByUserName),
+              ),
+              DataCell(
+                CustomDataCell(data: projectCompany.createdOn),
+              )
+            ],
           ),
         )
         .toList();
@@ -211,7 +219,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        state.assignedCompanySites.isNotEmpty
+        state.assignedProjectCompanies.isNotEmpty
             ? const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
@@ -224,50 +232,50 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                 ),
               )
             : Container(),
-        state.assignedCompanySites.isNotEmpty
+        state.assignedProjectCompanies.isNotEmpty
             ? const CustomDivider()
             : Container(),
         Container(
-          child:
-              state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 300),
-                      child: CircularProgressIndicator(),
+          child: state.assignedProjectCompaniesRetrievedStatus ==
+                  EntityStatus.loading
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 300),
+                  child: CircularProgressIndicator(),
+                )
+              : state.assignedProjectCompanies.isNotEmpty
+                  ? DataTable(
+                      columns: columns,
+                      rows: rows,
                     )
-                  : state.assignedCompanySites.isNotEmpty
-                      ? DataTable(
-                          columns: columns,
-                          rows: rows,
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                'This company has no projects assigned to it yet.',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'OpenSans',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            'This company has no projects assigned to it yet.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.w400,
                             ),
-                            CustomDivider(),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'OpenSans',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            CustomDivider(),
-                          ],
+                          ),
                         ),
+                        CustomDivider(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        CustomDivider(),
+                      ],
+                    ),
         ),
       ],
     );

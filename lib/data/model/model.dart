@@ -14,6 +14,8 @@ export '/features/administration/projects/data/model/project.dart';
 export '/features/administration/projects/data/model/project_company.dart';
 export '/features/administration/projects/data/model/project_company_assignment.dart';
 
+export '/features/administration/projects/data/model/role.dart';
+
 export '/features/administration/companies/data/model/company.dart';
 export '/features/administration/companies/data/model/company_site.dart';
 export '/features/administration/companies/data/model/company_site_updation.dart';

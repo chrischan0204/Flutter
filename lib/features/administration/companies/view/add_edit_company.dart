@@ -23,6 +23,7 @@ class AddEditCompanyView extends StatefulWidget {
 class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   late CompaniesBloc companiesBloc;
   late SitesBloc sitesBloc;
+  late RolesBloc rolesBloc;
   TextEditingController companyNameController = TextEditingController(text: '');
   TextEditingController einNumberController = TextEditingController(text: '');
 
@@ -38,9 +39,13 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     companiesBloc = context.read<CompaniesBloc>();
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     if (widget.companyId != null) {
-      companiesBloc.add(
-        CompanySelectedById(companyId: widget.companyId!),
-      );
+      companiesBloc
+        ..add(CompanySelectedById(companyId: widget.companyId!))
+        ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId!))
+        ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId!))
+        ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId!))
+        ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId!));
+      rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     } else {
       companiesBloc.add(const CompanySelected(selectedCompany: Company()));
     }
@@ -88,6 +93,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       'Projects': AssignProjectsToCompanyView(
         companyId: widget.companyId!,
         companyName: state.selectedCompany?.name ?? '',
+        view: widget.view,
       ),
     };
   }

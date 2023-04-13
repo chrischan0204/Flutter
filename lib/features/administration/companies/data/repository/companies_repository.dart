@@ -24,14 +24,12 @@ class CompaniesRepository {
   Future<Company> getCompanyById(
     String companyId,
   ) async {
-    List<Company> companies = await getCompanies();
+    Response response = await get(Uri.https(ApiUri.host, '$url/$companyId'));
 
-    return companies.firstWhere(
-      (company) => company.id == companyId,
-      orElse: () {
-        throw Exception();
-      },
-    );
+    if (response.statusCode == 200) {
+      return Company.fromJson(response.body);
+    }
+    throw Exception();
   }
 
   // add company
@@ -105,7 +103,7 @@ class CompaniesRepository {
       if (response.statusCode == 200) {
         return EntityResponse(
           isSuccess: true,
-          message: 'message',
+          message: response.body,
         );
       }
       return EntityResponse.fromJson(response.body);
@@ -124,7 +122,7 @@ class CompaniesRepository {
       if (response.statusCode == 200) {
         return EntityResponse(
           isSuccess: true,
-          message: 'message',
+          message: response.body,
         );
       }
       return EntityResponse.fromJson(response.body);
@@ -182,9 +180,9 @@ class CompaniesRepository {
   ) async {
     Map<String, dynamic> queryParams = {};
     if (assigned != null) {
-      queryParams.addEntries([MapEntry('assigned', assigned)]);
+      queryParams.addEntries([MapEntry('assigned', assigned.toString())]);
     }
-    if (name != null) {
+    if (name != null && name.isNotEmpty) {
       queryParams.addEntries([MapEntry('name', name)]);
     }
     Response response = await get(
@@ -205,9 +203,9 @@ class CompaniesRepository {
   ) async {
     Map<String, dynamic> queryParams = {};
     if (assigned != null) {
-      queryParams.addEntries([MapEntry('assigned', assigned)]);
+      queryParams.addEntries([MapEntry('assigned', assigned.toString())]);
     }
-    if (name != null) {
+    if (name != null && name.isNotEmpty) {
       queryParams.addEntries([MapEntry('name', name)]);
     }
     Response response = await get(

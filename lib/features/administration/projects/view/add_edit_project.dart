@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safety_eta/features/administration/administration.dart';
 
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
@@ -8,9 +9,11 @@ import '/data/bloc/bloc.dart';
 
 class AddEditProjectView extends StatefulWidget {
   final String? projectId;
+  final String? view;
   const AddEditProjectView({
     super.key,
     this.projectId,
+    this.view,
   });
 
   @override
@@ -33,7 +36,6 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
   bool isFirstInit = true;
 
   static String pageLabel = 'project';
-  static String addButtonName = 'Assign Companies';
 
   @override
   void initState() {
@@ -64,9 +66,10 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
           selectedEntity: state.selectedProject,
           addEntity: () => _addProject(state),
           editEntity: () => _editProject(state),
-          addButtonName: addButtonName,
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.projectCrudStatus,
+          tabItems: widget.projectId == null ? {} : _buildTabs(state),
+          selectedTabIndex: widget.view == 'created' ? 1 : 0,
           child: Column(
             children: [
               _buildProjectNameField(state),
@@ -78,6 +81,16 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         );
       },
     );
+  }
+
+  Map<String, Widget> _buildTabs(ProjectsState state) {
+    return {
+      'Details': Container(),
+      'Companies': AssignCompaniesToProjectView(
+        projectId: widget.projectId!,
+        projectName: state.selectedProject?.name ?? '',
+      ),
+    };
   }
 
   // check if some of fields are filled
@@ -120,8 +133,9 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context).go(
-          '/projects/assign-companies?projectId=${state.selectedProject!.id}&projectName=${state.selectedProject!.name}');
+      if (widget.projectId == null) {
+        GoRouter.of(context).go('/projects/edit/${state.selectedProject!.id}?view=created');
+      }
     }
     if (state.projectCrudStatus == EntityStatus.failure) {
       projectsBloc.add(ProjectsStatusInited());

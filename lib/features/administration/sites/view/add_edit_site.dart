@@ -45,7 +45,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   String siteCodeValidationMessage = '';
 
   static String pageLabel = 'site';
-  static String addButtonName = 'Assign Templates';
 
   bool isFirstInit = true;
 
@@ -85,7 +84,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           selectedEntity: state.selectedSite,
           addEntity: () => _addSite(state),
           editEntity: () => _editSite(state),
-          addButtonName: addButtonName,
           crudStatus: state.siteCrudStatus,
           isCrudDataFill: _checkFormDataFill(),
           child: Column(
@@ -343,6 +341,10 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   bool _checkAlphanumeric(String str) {
     final alphpanumeric = RegExp(r'^[0-9a-zA-Z]+$');
     return alphpanumeric.hasMatch(str);
+  }
+
+  String _removeSpecialCharacters(String str) {
+    return str.replaceAll(RegExp('[^A-Za-z0-9]'), '');
   }
 
   bool _validate() {

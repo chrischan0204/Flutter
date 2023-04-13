@@ -10,10 +10,12 @@ import '/data/bloc/bloc.dart';
 class AssignProjectsToCompanyView extends StatefulWidget {
   final String companyId;
   final String companyName;
+  final String? view;
   const AssignProjectsToCompanyView({
     super.key,
     required this.companyId,
     required this.companyName,
+    this.view,
   });
 
   @override
@@ -30,9 +32,7 @@ class _AssignProjectsToCompanyViewState
 
   @override
   void initState() {
-    companiesBloc = context.read<CompaniesBloc>()
-      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
-      ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId));
+    companiesBloc = context.read<CompaniesBloc>();
     super.initState();
   }
 
@@ -97,13 +97,13 @@ class _AssignProjectsToCompanyViewState
     return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: CircularProgressIndicator(),
+            child: Center(child: CircularProgressIndicator()),
           )
         : SizedBox(
             width: double.infinity,
             child: DataTable(
               columns: tableColumns,
-              rows: List<CompanySite>.from(state.assignedProjectCompanies)
+              rows: state.assignedProjectCompanies
                   .map(
                     (projectCompany) => DataRow(
                       cells: [
@@ -119,7 +119,17 @@ class _AssignProjectsToCompanyViewState
                         ),
                         DataCell(
                           CustomDataCell(
-                            data: projectCompany.siteName,
+                            data: projectCompany.projectName,
+                          ),
+                        ),
+                        DataCell(
+                          CustomDataCell(
+                            data: projectCompany.projectName,
+                          ),
+                        ),
+                        DataCell(
+                          CustomDataCell(
+                            data: projectCompany.roleName,
                           ),
                         ),
                       ],
@@ -135,7 +145,7 @@ class _AssignProjectsToCompanyViewState
             EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: CircularProgressIndicator(),
+            child: Center(child: CircularProgressIndicator()),
           )
         : SizedBox(
             child: DataTable(
@@ -154,15 +164,18 @@ class _AssignProjectsToCompanyViewState
                                 unassignedProjectCompany),
                           ),
                         ),
-                        ...unassignedProjectCompany
-                            .toTableDetailMap()
-                            .values
-                            .map(
-                              (detail) => DataCell(
-                                CustomDataCell(data: detail),
-                              ),
-                            )
-                            .toList(),
+                        DataCell(
+                          CustomDataCell(
+                              data: unassignedProjectCompany.projectName),
+                        ),
+                        DataCell(
+                          CustomDataCell(
+                              data: unassignedProjectCompany.projectName),
+                        ),
+                        DataCell(
+                          CustomDataCell(
+                              data: unassignedProjectCompany.roleName),
+                        ),
                       ],
                     ),
                   )
@@ -216,7 +229,7 @@ class _AssignProjectsToCompanyViewState
         onChanged: (value) {},
         controller: filterController,
         suffixIconData: PhosphorIcons.funnel,
-        onSuffixIconClick: () => _filterApply(),
+        onSuffixIconClick: () => _applyFilter(),
       ),
     );
   }
@@ -287,7 +300,7 @@ class _AssignProjectsToCompanyViewState
     );
   }
 
-  _filterApply() {
+  _applyFilter() {
     filterController.text =
         'Showing companies matching \'${filterController.text}\' below..';
     companiesBloc.add(UnassignedCompanySitesRetrieved(

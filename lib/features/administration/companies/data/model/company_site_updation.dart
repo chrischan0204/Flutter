@@ -1,14 +1,23 @@
 import 'dart:convert';
 
-class CompanySiteUpdation {
+import 'package:equatable/equatable.dart';
+
+class CompanySiteUpdation extends Equatable {
   final String siteId;
   final String companyId;
   final String roleId;
-  CompanySiteUpdation({
+  const CompanySiteUpdation({
     required this.siteId,
     required this.companyId,
     required this.roleId,
   });
+
+  @override
+  List<Object?> get props => [
+        siteId,
+        companyId,
+        roleId,
+      ];
 
   CompanySiteUpdation copyWith({
     String? siteId,

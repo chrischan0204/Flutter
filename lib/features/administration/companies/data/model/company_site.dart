@@ -1,24 +1,44 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
+import '/utils/utils.dart';
 import '/data/model/model.dart';
 
-class CompanySite {
-  final String id;
+class CompanySite extends Equatable {
+  final String? id;
   final String siteId;
   final String siteName;
   final String companyId;
   final String companyName;
   final String roleId;
   final String roleName;
-  CompanySite({
-    required this.id,
+  final String? createdByUserName;
+  final String? createdOn;
+  const CompanySite({
+    this.id,
     required this.siteId,
     required this.siteName,
     required this.companyId,
     required this.companyName,
     required this.roleId,
     required this.roleName,
+    this.createdByUserName,
+    this.createdOn,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        siteId,
+        siteName,
+        companyId,
+        companyName,
+        roleId,
+        roleName,
+        createdByUserName,
+        createdOn,
+      ];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -43,13 +63,17 @@ class CompanySite {
 
   factory CompanySite.fromMap(Map<String, dynamic> map) {
     return CompanySite(
-      id: map['id'] as String,
+      id: map['id'],
       siteId: map['siteId'] as String,
       siteName: map['siteName'] as String,
       companyId: map['companyId'] as String,
       companyName: map['companyName'] as String,
       roleId: map['roleId'] as String,
       roleName: map['roleName'] as String,
+      createdByUserName: map['createdByUserName'],
+      createdOn:
+          FormatDate(dateString: map['createdOn'] as String, format: 'd MMMM y')
+              .formatDate,
     );
   }
 
@@ -66,6 +90,8 @@ class CompanySite {
     String? companyName,
     String? roleId,
     String? roleName,
+    String? createdByUserName,
+    String? createdOn,
   }) {
     return CompanySite(
       id: id ?? this.id,
@@ -75,6 +101,8 @@ class CompanySite {
       companyName: companyName ?? this.companyName,
       roleId: roleId ?? this.roleId,
       roleName: roleName ?? this.roleName,
+      createdByUserName: createdByUserName ?? this.createdByUserName,
+      createdOn: createdOn ?? this.createdOn,
     );
   }
 

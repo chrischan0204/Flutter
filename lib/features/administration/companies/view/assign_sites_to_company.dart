@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:safety_eta/features/administration/companies/view/widgets/filter_textfield.dart';
 
 import '/data/model/model.dart';
 import '/utils/utils.dart';
@@ -30,8 +31,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId));
+      ..add(const FilterTextForUnassignedSitesChanged(filterText: ''));
     super.initState();
   }
 
@@ -72,7 +72,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                           ),
                         ),
                         const CustomDivider(),
-                        _buildFilterTextField(),
+                        _buildFilterTextField(state),
                         const CustomDivider(),
                         _buildUnassignedSitesTableView(state),
                       ],
@@ -117,12 +117,30 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   }
 
   Widget _buildUnassignedSitesTableView(CompaniesState state) {
-    return state.unassignedCompanySitesRetrievedStatus == EntityStatus.loading
-        ? const Padding(
-            padding: EdgeInsets.only(top: 300),
-            child: CircularProgressIndicator(),
-          )
-        : SizedBox(
+    return SizedBox(
+      child: BlocBuilder<RolesBloc, RolesState>(
+        builder: (context, rolesState) {
+          return BlocListener<CompaniesBloc, CompaniesState>(
+            listener: (context, state) {
+              if (state.siteToCompanyUnassignedStatus == EntityStatus.success) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.success,
+                  content: state.message,
+                ).showNotification();
+                _refetchCompanySites(state.filterText);
+              } else if (state.siteToCompanyUnassignedStatus ==
+                  EntityStatus.failure) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.error,
+                  content: state.message,
+                ).showNotification();
+              }
+            },
+            listenWhen: (previous, current) =>
+                previous.siteToCompanyUnassignedStatus !=
+                current.siteToCompanyUnassignedStatus,
             child: DataTable(
               columns: const [
                 DataColumn(
@@ -131,6 +149,11 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                 DataColumn(
                   label: Text(
                     'Site Name',
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Role',
                   ),
                 ),
               ],
@@ -148,73 +171,129 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                                 _assignSiteToCompany(unassignedCompanySite),
                           ),
                         ),
-                        ...unassignedCompanySite
-                            .toTableDetailMap()
-                            .values
-                            .map(
-                              (detail) => DataCell(
-                                CustomDataCell(data: detail),
-                              ),
-                            )
-                            .toList(),
+                        DataCell(
+                          CustomDataCell(
+                            data: unassignedCompanySite.siteName,
+                          ),
+                        ),
+                        DataCell(
+                          CustomSingleSelect(
+                            items: {}..addEntries(rolesState.roles
+                                .map((role) => MapEntry(role.name, role))),
+                            hint: 'Select Role',
+                            selectedValue: rolesState.roles.isNotEmpty
+                                ? unassignedCompanySite.roleName.isNotEmpty
+                                    ? unassignedCompanySite.roleName
+                                    : null
+                                : null,
+                            onChanged: (role) => companiesBloc
+                                .add(UnAssignedCompanySiteRoleSelected(
+                              role: role.value,
+                              companySiteIndex: state.unassignedCompanySites
+                                  .indexOf(unassignedCompanySite),
+                            )),
+                          ),
+                        ),
                       ],
                     ),
                   )
                   .toList(),
             ),
           );
+        },
+      ),
+    );
   }
 
   Widget _buildAssignedSitesTableView(
       CompaniesState state, BuildContext context) {
-    return state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
-        ? const Padding(
-            padding: EdgeInsets.only(top: 300),
-            child: CircularProgressIndicator(),
-          )
-        : SizedBox(
-            width: double.infinity,
-            child: DataTable(
-              columns: const [
-                DataColumn(
-                  label: Text('Assigned?'),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Site Name',
-                  ),
-                ),
-              ],
-              rows: List<CompanySite>.from(state.assignedCompanySites)
-                  .map(
-                    (assignedCompanySite) => DataRow(
-                      cells: [
-                        DataCell(
-                          CustomSwitch(
-                            switchValue: true,
-                            trueString: 'Yes',
-                            falseString: 'No',
-                            textColor: darkTeal,
-                            onChanged: (value) =>
-                                _unassignFromCompany(assignedCompanySite.id),
-                          ),
-                        ),
-                        DataCell(
-                          CustomDataCell(
-                            data: assignedCompanySite.siteName,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+    return SizedBox(
+      width: double.infinity,
+      child: BlocListener<CompaniesBloc, CompaniesState>(
+        listener: (context, state) {
+          if (state.siteToCompanyAssignedStatus == EntityStatus.success) {
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.success,
+              content: state.message,
+            ).showNotification();
+            _refetchCompanySites(state.filterText);
+          } else if (state.siteToCompanyAssignedStatus ==
+              EntityStatus.failure) {
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.error,
+              content: state.message,
+            ).showNotification();
+          }
+        },
+        listenWhen: (previous, current) =>
+            previous.siteToCompanyAssignedStatus !=
+            current.siteToCompanyAssignedStatus,
+        child: DataTable(
+          columns: const [
+            DataColumn(
+              label: Text('Assigned?'),
             ),
-          );
+            DataColumn(
+              label: Text(
+                'Site Name',
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Role Name',
+              ),
+            ),
+          ],
+          rows: List<CompanySite>.from(state.assignedCompanySites)
+              .map(
+                (assignedCompanySite) => DataRow(
+                  cells: [
+                    DataCell(
+                      CustomSwitch(
+                        switchValue: true,
+                        trueString: 'Yes',
+                        falseString: 'No',
+                        textColor: darkTeal,
+                        onChanged: (value) =>
+                            _unassignFromCompany(assignedCompanySite.id!),
+                      ),
+                    ),
+                    DataCell(
+                      CustomDataCell(
+                        data: assignedCompanySite.siteName,
+                      ),
+                    ),
+                    DataCell(
+                      CustomDataCell(
+                        data: assignedCompanySite.roleName,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
   }
 
   void _assignSiteToCompany(CompanySite companySite) {
-    companiesBloc.add(SiteToCompanyAssigned(
-        companySiteUpdation: companySite.toCompanySiteUpdation()));
+    if (companySite.roleId.contains('00000000')) {
+      CustomAlert(
+        context: context,
+        width: MediaQuery.of(context).size.width / 4,
+        title: 'Notification',
+        description: 'Please select a role for the company first.',
+        btnOkText: 'OK',
+        btnOkOnPress: () {},
+        dialogType: DialogType.warning,
+      ).show();
+    } else {
+      companiesBloc.add(SiteToCompanyAssigned(
+          companySiteUpdation: companySite.toCompanySiteUpdation()));
+    }
   }
 
   void _unassignFromCompany(String companySiteId) {
@@ -224,31 +303,53 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
       title: 'Confirm',
       description: 'Do you really want to remove this site from company?',
       btnOkText: 'Remove',
+      btnCancelOnPress: () {},
       btnOkOnPress: () {
         companiesBloc.add(
             SiteFromCompanyUnassigned(companySiteUpdationId: companySiteId));
       },
       dialogType: DialogType.question,
-    );
+    ).show();
   }
 
-  Padding _buildFilterTextField() {
+  Padding _buildFilterTextField(CompaniesState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: CustomTextField(
+      child: FilterTextField(
         hintText: 'Filter unassigned sites by name..',
-        onChanged: (value) {},
-        controller: filterController,
-        suffixIconData: PhosphorIcons.funnel,
-        onSuffixIconClick: () => _filterApply(),
+        label: 'sites',
+        filterController: filterController,
+        filterIconClick: (filtered) {
+          if (filtered) {
+            _applyFilter(state);
+          } else {
+            _cancelFilter();
+          }
+        },
+        onChange: (value) => companiesBloc
+            .add(FilterTextForUnassignedSitesChanged(filterText: value)),
       ),
     );
   }
 
-  _filterApply() {
+  _applyFilter(CompaniesState state) {
     companiesBloc.add(UnassignedCompanySitesRetrieved(
       companyId: widget.companyId,
-      name: filterController.text,
+      name: state.filterText,
     ));
+  }
+
+  _cancelFilter() {
+    companiesBloc
+        .add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
+  }
+
+  _refetchCompanySites(String filterText) {
+    companiesBloc
+      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+      ..add(UnassignedCompanySitesRetrieved(
+        companyId: widget.companyId,
+        name: filterText,
+      ));
   }
 }

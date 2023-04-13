@@ -183,19 +183,9 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: AddEditProjectView(projectId: state.params['projectId']!),
-          selectedItemName: 'projects',
-        ),
-      ),
-    ),
-    GoRoute(
-      path: '/projects/assign-companies',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: Layout(
-          body: AssignCompaniesToProjectView(
-            projectId: state.queryParams['projectId']!,
-            projectName: state.queryParams['projectName']!,
+          body: AddEditProjectView(
+            projectId: state.params['projectId'],
+            view: state.queryParams['view'],
           ),
           selectedItemName: 'projects',
         ),

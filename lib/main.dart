@@ -44,6 +44,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => CompaniesRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => RolesRepository(),
         )
       ],
       child: MultiBlocProvider(
@@ -98,6 +101,11 @@ class MyApp extends StatelessWidget {
             create: (context) => CompaniesBloc(
               companiesRepository:
                   RepositoryProvider.of<CompaniesRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => RolesBloc(
+              rolesRepository: RepositoryProvider.of<RolesRepository>(context),
             ),
           ),
         ],

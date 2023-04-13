@@ -1,14 +1,23 @@
 import 'dart:convert';
 
-class ProjectCompanyAssignment {
+import 'package:equatable/equatable.dart';
+
+class ProjectCompanyAssignment extends Equatable {
   final String projectId;
   final String companyId;
   final String roleId;
-  ProjectCompanyAssignment({
+  const ProjectCompanyAssignment({
     required this.projectId,
     required this.companyId,
     required this.roleId,
   });
+
+  @override
+  List<Object?> get props => [
+    projectId,
+    companyId,
+    roleId,
+  ];
 
   ProjectCompanyAssignment copyWith({
     String? projectId,

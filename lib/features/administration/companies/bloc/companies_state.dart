@@ -12,10 +12,13 @@ class CompaniesState extends Equatable {
   final List<ProjectCompany> unassignedProjectCompanies;
   final EntityStatus unassignedProjectCompaniesRetrievedStatus;
   final EntityStatus siteToCompanyAssignedStatus;
+  final EntityStatus siteToCompanyUnassignedStatus;
   final EntityStatus projectToCompanyAssignedStatus;
+  final EntityStatus projectToCompanyUnassignedStatus;
   final Company? selectedCompany;
   final EntityStatus companySelectedStatus;
   final EntityStatus companyCrudStatus;
+  final String filterText;
   final String message;
   const CompaniesState({
     this.companies = const [],
@@ -26,13 +29,16 @@ class CompaniesState extends Equatable {
     this.selectedCompany,
     this.companiesRetrievedStatus = EntityStatus.initial,
     this.projectToCompanyAssignedStatus = EntityStatus.initial,
+    this.projectToCompanyUnassignedStatus = EntityStatus.initial,
     this.siteToCompanyAssignedStatus = EntityStatus.initial,
+    this.siteToCompanyUnassignedStatus = EntityStatus.initial,
     this.assignedCompanySitesRetrievedStatus = EntityStatus.initial,
     this.unassignedCompanySitesRetrievedStatus = EntityStatus.initial,
     this.assignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
     this.unassignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
     this.companyCrudStatus = EntityStatus.initial,
     this.companySelectedStatus = EntityStatus.initial,
+    this.filterText = '',
     this.message = '',
   });
 
@@ -46,7 +52,9 @@ class CompaniesState extends Equatable {
         selectedCompany,
         companiesRetrievedStatus,
         siteToCompanyAssignedStatus,
+        siteToCompanyUnassignedStatus,
         projectToCompanyAssignedStatus,
+        projectToCompanyUnassignedStatus,
         assignedCompanySitesRetrievedStatus,
         assignedProjectCompaniesRetrievedStatus,
         unassignedCompanySitesRetrievedStatus,
@@ -54,6 +62,7 @@ class CompaniesState extends Equatable {
         companyCrudStatus,
         companySelectedStatus,
         message,
+        filterText,
       ];
 
   CompaniesState copyWith({
@@ -65,14 +74,17 @@ class CompaniesState extends Equatable {
     Company? selectedCompany,
     EntityStatus? companiesRetrievedStatus,
     EntityStatus? companySelectedStatus,
-    EntityStatus? projectToCompanyAssignedStatus,
     EntityStatus? siteToCompanyAssignedStatus,
+    EntityStatus? siteToCompanyUnassignedStatus,
+    EntityStatus? projectToCompanyAssignedStatus,
+    EntityStatus? projectToCompanyUnassignedStatus,
     EntityStatus? companyCrudStatus,
     EntityStatus? assignedProjectCompaniesRetrievedStatus,
     EntityStatus? assignedCompanySitesRetrievedStatus,
     EntityStatus? unassignedProjectCompaniesRetrievedStatus,
     EntityStatus? unassignedCompanySitesRetrievedStatus,
     String? message,
+    String? filterText,
   }) {
     return CompaniesState(
       companies: companies ?? this.companies,
@@ -101,7 +113,16 @@ class CompaniesState extends Equatable {
       companySelectedStatus:
           companySelectedStatus ?? this.companySelectedStatus,
       companyCrudStatus: companyCrudStatus ?? this.companyCrudStatus,
+      siteToCompanyAssignedStatus:
+          siteToCompanyAssignedStatus ?? this.siteToCompanyAssignedStatus,
+      siteToCompanyUnassignedStatus:
+          siteToCompanyUnassignedStatus ?? this.siteToCompanyUnassignedStatus,
+      projectToCompanyAssignedStatus:
+          projectToCompanyAssignedStatus ?? this.projectToCompanyAssignedStatus,
+      projectToCompanyUnassignedStatus: projectToCompanyUnassignedStatus ??
+          this.projectToCompanyUnassignedStatus,
       message: message ?? this.message,
+      filterText: filterText ?? this.filterText,
     );
   }
 }
