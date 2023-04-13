@@ -80,8 +80,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             const CustomDivider(),
             widget.tabItems.isNotEmpty && widget.id != null
                 ? Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Column(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildTab(),
@@ -95,7 +95,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                             : _buildEditEntityView(),
                       ],
                     ),
-                )
+                  )
                 : _buildEditEntityView(),
           ],
         ),
@@ -254,7 +254,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       text: 'Show ${camelize(widget.label)}',
       onClick: () {
         String location = GoRouter.of(context).location;
-        location = location.replaceAll('edit', 'show');
+        int index = location.indexOf('edit');
+        location = location.replaceRange(index, null, 'show/${widget.id}');
         GoRouter.of(context).go(location);
       },
     );
