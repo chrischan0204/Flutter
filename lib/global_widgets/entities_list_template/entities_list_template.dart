@@ -428,7 +428,7 @@ class _CrudState extends State<EntityListTemplate> {
             ),
             ...(widget.selectedEntity != null
                 ? widget.selectedEntity!
-                    .detailItemsToMap()
+                    .sideDetailItemsToMap()
                     .entries
                     .map(
                       (detail) => DetailItem(

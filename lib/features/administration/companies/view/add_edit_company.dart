@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safety_eta/features/administration/administration.dart';
 
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
@@ -8,9 +9,11 @@ import '/data/bloc/bloc.dart';
 
 class AddEditCompanyView extends StatefulWidget {
   final String? companyId;
+  final String? view;
   const AddEditCompanyView({
     super.key,
     this.companyId,
+    this.view,
   });
 
   @override
@@ -20,6 +23,7 @@ class AddEditCompanyView extends StatefulWidget {
 class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   late CompaniesBloc companiesBloc;
   late SitesBloc sitesBloc;
+  late RolesBloc rolesBloc;
   TextEditingController companyNameController = TextEditingController(text: '');
   TextEditingController einNumberController = TextEditingController(text: '');
 
@@ -29,16 +33,19 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   bool isFirstInit = true;
 
   static String pageLabel = 'company';
-  static String addButtonName = 'Assign Sites';
 
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>();
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     if (widget.companyId != null) {
-      companiesBloc.add(
-        CompanySelectedById(companyId: widget.companyId!),
-      );
+      companiesBloc
+        ..add(CompanySelectedById(companyId: widget.companyId!))
+        ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId!))
+        ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId!))
+        ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId!))
+        ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId!));
+      rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     } else {
       companiesBloc.add(const CompanySelected(selectedCompany: Company()));
     }
@@ -60,9 +67,10 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           selectedEntity: state.selectedCompany,
           addEntity: () => _addCompany(state),
           editEntity: () => _editCompany(state),
-          addButtonName: addButtonName,
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.companyCrudStatus,
+          tabItems: widget.companyId == null ? {} : _buildTabs(state),
+          selectedTabIndex: widget.view == 'created' ? 1 : 0,
           child: Column(
             children: [
               _buildCompanyNameField(state),
@@ -72,6 +80,22 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         );
       },
     );
+  }
+
+  Map<String, Widget> _buildTabs(CompaniesState state) {
+    return {
+      'Details': Container(),
+      'Sites': AssignSitesToCompanyView(
+        companyId: widget.companyId!,
+        companyName: state.selectedCompany?.name ?? '',
+        view: widget.view,
+      ),
+      'Projects': AssignProjectsToCompanyView(
+        companyId: widget.companyId!,
+        companyName: state.selectedCompany?.name ?? '',
+        view: widget.view,
+      ),
+    };
   }
 
   // check if some of fields are filled
@@ -109,7 +133,10 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context).go('/companies/abc/assign-sites');
+      if (widget.companyId == null) {
+        GoRouter.of(context)
+            .go('/companies/edit/${state.selectedCompany!.id}?view=created');
+      }
     }
     if (state.companyCrudStatus == EntityStatus.failure) {
       if (state.message.contains('EIN')) {
@@ -187,7 +214,8 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       validated = false;
     }
 
-    if (!_checkEinNumber(einNumberController.text)) {
+    if (einNumberController.text.isNotEmpty &&
+        !_checkEinNumber(einNumberController.text)) {
       setState(() {
         einNumberValidationMessage =
             'EIN Field should allow only numbers, white space, dots and dashes in it. No alphabets and no other special characters.';

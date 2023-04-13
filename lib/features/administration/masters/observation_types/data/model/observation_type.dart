@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -46,7 +45,7 @@ class ObservationType extends Entity implements Equatable {
       'Active': active,
     };
   }
-  
+
   // return map of observation type
   @override
   Map<String, dynamic> toMap() {

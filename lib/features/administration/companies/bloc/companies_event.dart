@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'companies_bloc.dart';
 
 abstract class CompaniesEvent extends Equatable {
@@ -80,3 +81,130 @@ class CompaniesSorted extends CompaniesEvent {
 }
 
 class CompaniesStatusInited extends CompaniesEvent {}
+
+class AssignedCompanySitesRetrieved extends CompaniesEvent {
+  final String companyId;
+  final String? name;
+  const AssignedCompanySitesRetrieved({
+    required this.companyId,
+    this.name,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+        name,
+      ];
+}
+
+class UnassignedCompanySitesRetrieved extends CompaniesEvent {
+  final String companyId;
+  final String? name;
+  const UnassignedCompanySitesRetrieved({
+    required this.companyId,
+    this.name,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+        name,
+      ];
+}
+
+class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
+  final String companyId;
+  final String? name;
+  const AssignedProjectCompaniesRetrieved({
+    required this.companyId,
+    this.name,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+        name,
+      ];
+}
+
+class UnassignedProjectCompaniesRetrieved extends CompaniesEvent {
+  final String companyId;
+  final String? name;
+  const UnassignedProjectCompaniesRetrieved({
+    required this.companyId,
+    this.name,
+  });
+  @override
+  List<Object?> get props => [
+        companyId,
+        name,
+      ];
+}
+
+class SiteToCompanyAssigned extends CompaniesEvent {
+  final CompanySiteUpdation companySiteUpdation;
+  const SiteToCompanyAssigned({
+    required this.companySiteUpdation,
+  });
+  @override
+  List<Object?> get props => [
+        companySiteUpdation,
+      ];
+}
+
+class SiteFromCompanyUnassigned extends CompaniesEvent {
+  final String companySiteUpdationId;
+  const SiteFromCompanyUnassigned({
+    required this.companySiteUpdationId,
+  });
+  @override
+  List<Object?> get props => [
+        companySiteUpdationId,
+      ];
+}
+
+class ProjectToCompanyAssigned extends CompaniesEvent {
+  final ProjectCompanyAssignment projectCompanyAssignment;
+  const ProjectToCompanyAssigned({
+    required this.projectCompanyAssignment,
+  });
+  @override
+  List<Object?> get props => [
+        projectCompanyAssignment,
+      ];
+}
+
+class ProjectFromCompanyUnassigned extends CompaniesEvent {
+  final String projectCompanyAssignmentId;
+  const ProjectFromCompanyUnassigned({
+    required this.projectCompanyAssignmentId,
+  });
+  @override
+  List<Object?> get props => [
+        projectCompanyAssignmentId,
+      ];
+}
+
+class UnAssignedCompanySiteRoleSelected extends CompaniesEvent {
+  final Role role;
+  final int companySiteIndex;
+  const UnAssignedCompanySiteRoleSelected({
+    required this.role,
+    required this.companySiteIndex,
+  });
+
+  @override
+  List<Object?> get props => [
+        role,
+        companySiteIndex,
+      ];
+}
+
+class FilterTextForUnassignedSitesChanged extends CompaniesEvent {
+  final String filterText;
+  const FilterTextForUnassignedSitesChanged({
+    required this.filterText,
+  });
+
+  @override
+  List<Object?> get props => [
+        filterText,
+      ];
+}

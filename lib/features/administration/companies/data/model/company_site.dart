@@ -5,24 +5,24 @@ import 'package:equatable/equatable.dart';
 import '/utils/utils.dart';
 import '/data/model/model.dart';
 
-class ProjectCompany extends Equatable {
-  final String id;
-  final String projectId;
-  final String? projectName;
+class CompanySite extends Equatable {
+  final String? id;
+  final String siteId;
+  final String siteName;
   final String companyId;
-  final String? companyName;
+  final String companyName;
   final String roleId;
-  final String? roleName;
+  final String roleName;
   final String? createdByUserName;
   final String? createdOn;
-  const ProjectCompany({
-    required this.id,
-    required this.projectId,
-    this.projectName,
+  const CompanySite({
+    this.id,
+    required this.siteId,
+    required this.siteName,
     required this.companyId,
-    this.companyName,
+    required this.companyName,
     required this.roleId,
-    this.roleName,
+    required this.roleName,
     this.createdByUserName,
     this.createdOn,
   });
@@ -30,8 +30,8 @@ class ProjectCompany extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        projectId,
-        projectName,
+        siteId,
+        siteName,
         companyId,
         companyName,
         roleId,
@@ -40,20 +40,11 @@ class ProjectCompany extends Equatable {
         createdOn,
       ];
 
-  Map<String, dynamic> toTableDetailMap() {
-    return <String, dynamic>{
-      'Company Name': companyName,
-      'Role': roleName,
-      'Added By': 'Adam Drobot',
-      'Added on': '3rd Oct 2022',
-    };
-  }
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'projectId': projectId,
-      'projectName': projectName,
+      'siteId': siteId,
+      'siteName': siteName,
       'companyId': companyId,
       'companyName': companyName,
       'roleId': roleId,
@@ -61,13 +52,22 @@ class ProjectCompany extends Equatable {
     };
   }
 
-  factory ProjectCompany.fromMap(Map<String, dynamic> map) {
-    return ProjectCompany(
+  Map<String, dynamic> toTableDetailMap() {
+    return {
+      'siteName': siteName,
+      'roleName': roleName,
+      'addedBy': 'Adam Drobot',
+      'addedOn': '3rd Oct 2022',
+    };
+  }
+
+  factory CompanySite.fromMap(Map<String, dynamic> map) {
+    return CompanySite(
       id: map['id'],
-      projectId: map['projectId'] as String,
-      projectName: map['projectName'],
+      siteId: map['siteId'] as String,
+      siteName: map['siteName'] as String,
       companyId: map['companyId'] as String,
-      companyName: map['companyName'],
+      companyName: map['companyName'] as String,
       roleId: map['roleId'] as String,
       roleName: map['roleName'] as String,
       createdByUserName: map['createdByUserName'],
@@ -79,13 +79,13 @@ class ProjectCompany extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectCompany.fromJson(String source) =>
-      ProjectCompany.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CompanySite.fromJson(String source) =>
+      CompanySite.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  ProjectCompany copyWith({
+  CompanySite copyWith({
     String? id,
-    String? projectId,
-    String? projectName,
+    String? siteId,
+    String? siteName,
     String? companyId,
     String? companyName,
     String? roleId,
@@ -93,10 +93,10 @@ class ProjectCompany extends Equatable {
     String? createdByUserName,
     String? createdOn,
   }) {
-    return ProjectCompany(
+    return CompanySite(
       id: id ?? this.id,
-      projectId: projectId ?? this.projectId,
-      projectName: projectName ?? this.projectName,
+      siteId: siteId ?? this.siteId,
+      siteName: siteName ?? this.siteName,
       companyId: companyId ?? this.companyId,
       companyName: companyName ?? this.companyName,
       roleId: roleId ?? this.roleId,
@@ -106,9 +106,9 @@ class ProjectCompany extends Equatable {
     );
   }
 
-  ProjectCompanyAssignment toProjectCompanyAssignment() {
-    return ProjectCompanyAssignment(
-      projectId: projectId,
+  CompanySiteUpdation toCompanySiteUpdation() {
+    return CompanySiteUpdation(
+      siteId: siteId,
       companyId: companyId,
       roleId: roleId,
     );

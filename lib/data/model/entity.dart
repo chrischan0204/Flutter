@@ -22,9 +22,9 @@ class Entity extends Equatable {
   // constructor to create entity from map
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
-      id: map['id'] as String,
+      id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
-      active: map['active'] as bool,
+      active: map['active'] != null ? map['active'] as bool : true,
       deactivationDate: map['deactivationDate'] != null
           ? map['deactivationDate'] as String
           : null,
@@ -45,6 +45,11 @@ class Entity extends Equatable {
   // return table details map
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{};
+  }
+
+  // return table details map
+  Map<String, dynamic> sideDetailItemsToMap() {
+    return tableItemsToMap();
   }
 
   // return side detail amp
@@ -91,7 +96,7 @@ class EntityResponse {
   }
 
   factory EntityResponse.fromMap(Map<String, dynamic> map) {
-    String message = (map['message'] ?? (map['Message'] ?? '')).toString();
+    String message = (map['message'] ?? (map['Description'] ?? '')).toString();
     message = message.replaceAll('"', '');
     return EntityResponse(
       isSuccess: map['isSuccess'] == null
@@ -100,7 +105,8 @@ class EntityResponse {
               .contains('success')
           : map['isSuccess'] as bool,
       message: message,
-      // data: Entity.fromMap(map['data'] as Map<String, dynamic>),
+      data: Entity.fromMap(
+          map['data'] != null ? map['data'] as Map<String, dynamic> : {}),
     );
   }
 

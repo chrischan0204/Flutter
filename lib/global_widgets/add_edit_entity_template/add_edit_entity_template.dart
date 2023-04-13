@@ -13,6 +13,8 @@ class AddEditEntityTemplate extends StatefulWidget {
   final String label;
   final String? id;
   final Entity? selectedEntity;
+  final Map<String, Widget> tabItems;
+  final int selectedTabIndex;
   final Widget child;
   final String? addButtonName;
   final String? editButtonName;
@@ -25,6 +27,8 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.label,
     this.id,
     this.selectedEntity,
+    this.tabItems = const {},
+    this.selectedTabIndex = 0,
     required this.child,
     this.addButtonName,
     this.editButtonName,
@@ -39,6 +43,14 @@ class AddEditEntityTemplate extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<AddEditEntityTemplate> {
+  late int selectedTabIndex;
+
+  @override
+  void initState() {
+    selectedTabIndex = widget.selectedTabIndex;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -66,27 +78,85 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
               ),
             ),
             const CustomDivider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 6,
-              ),
-              child: Text(
-                'Fill in the details below to create a ${widget.label}. Fields with (*) are required.',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'OpenSans',
-                ),
-              ),
-            ),
-            const CustomDivider(),
-            widget.child,
-            _buildDeactivationInfo(),
-            _buildAddEditButton()
+            widget.tabItems.isNotEmpty && widget.id != null
+                ? Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTab(),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        selectedTabIndex != 0
+                            ? widget.tabItems.entries
+                                .toList()[selectedTabIndex]
+                                .value
+                            : _buildEditEntityView(),
+                      ],
+                    ),
+                )
+                : _buildEditEntityView(),
           ],
         ),
       ),
+    );
+  }
+
+  CustomTab _buildTab() {
+    return CustomTab(
+      initialIndex: widget.selectedTabIndex,
+      onSelect: (int index) => setState(() {
+        selectedTabIndex = index;
+      }),
+      containerBorderRadius: 6,
+      containerColor: Colors.transparent,
+      slidersBorder: Border.all(color: grey),
+      slidersColors: const [
+        Colors.white,
+      ],
+      containerHeight: 42,
+      containerWidth: 300,
+      borderColor: grey,
+      children: widget.tabItems.entries
+          .map(
+            (tabItem) => Text(
+              tabItem.key,
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.w400,
+                color: darkTeal,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Column _buildEditEntityView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 6,
+          ),
+          child: Text(
+            'Fill in the details below to create a ${widget.label}. Fields with (*) are required.',
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+        const CustomDivider(),
+        widget.child,
+        _buildDeactivationInfo(),
+        _buildAddEditButton(),
+      ],
     );
   }
 

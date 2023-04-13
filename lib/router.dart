@@ -124,12 +124,13 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/sites/:siteId/assign-templates',
+      path: '/sites/assign-templates',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: AssignTemplatesToSiteView(
-            siteId: state.params['siteId']!,
+            siteId: state.queryParams['siteId']!,
+            siteName: state.queryParams['siteName']!,
           ),
           selectedItemName: 'sites',
         ),
@@ -182,18 +183,10 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: AddEditProjectView(projectId: state.params['projectId']!),
-          selectedItemName: 'projects',
-        ),
-      ),
-    ),
-    GoRoute(
-      path: '/projects/:projectId/assign-companies',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: Layout(
-          body: AssignCompaniesToProjectView(
-              projectId: state.params['projectId']!),
+          body: AddEditProjectView(
+            projectId: state.params['projectId'],
+            view: state.queryParams['view'],
+          ),
           selectedItemName: 'projects',
         ),
       ),
@@ -234,6 +227,19 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: Layout(
           body: AddEditCompanyView(
+            companyId: state.params['companyId']!,
+            view: state.queryParams['view'],
+          ),
+          selectedItemName: 'companies',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/companies/show/:companyId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ShowCompanyView(
             companyId: state.params['companyId']!,
           ),
           selectedItemName: 'companies',

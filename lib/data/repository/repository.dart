@@ -8,4 +8,6 @@ export '/features/administration/sites/data/repository/sites_repository.dart';
 
 export '/features/administration/projects/data/repository/projects_repository.dart';
 
+export '/features/administration/companies/data/repository/roles_repository.dart';
+
 export '/features/administration/companies/data/repository/companies_repository.dart';

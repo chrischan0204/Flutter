@@ -1,81 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/utils/custom_alert.dart';
 
 import '/constants/color.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
 
-class AssignTemplatesToSiteView extends StatefulWidget {
-  final String siteId;
-  final String siteName;
-  const AssignTemplatesToSiteView({
+class AssignCompaniesToProjectView extends StatefulWidget {
+  final String projectId;
+  final String projectName;
+  const AssignCompaniesToProjectView({
     super.key,
-    required this.siteId,
-    required this.siteName,
+    required this.projectId,
+    required this.projectName,
   });
 
   @override
-  State<AssignTemplatesToSiteView> createState() =>
-      _AssignTemplatesToSiteViewState();
+  State<AssignCompaniesToProjectView> createState() =>
+      _AssignCompaniesToProjectViewState();
 }
 
-class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
-  late SitesBloc sitesBloc;
-  TextEditingController filterController = TextEditingController(text: '');
+class _AssignCompaniesToProjectViewState
+    extends State<AssignCompaniesToProjectView> {
+  TextEditingController filterController = TextEditingController(
+    text: '',
+  );
 
   @override
   void initState() {
-    sitesBloc = context.read<SitesBloc>()..add(AuditTemplatesRetrieved());
     super.initState();
-  }
-
-  Widget _buildTitle() {
-    return const PageTitle(
-      title: 'Assign templates to site',
-    );
-  }
-
-  Row _buildCrudButtons(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildGoToListButton(context),
-        SizedBox(
-          width: MediaQuery.of(context).size.width / 40,
-        ),
-        _buildShowButton(context),
-        const SizedBox(
-          width: 50,
-        )
-      ],
-    );
-  }
-
-  CustomButton _buildShowButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: const Color(0xff8e70c1),
-      hoverBackgroundColor: const Color(0xff8065ae),
-      iconData: PhosphorIcons.notePencil,
-      text: 'Show Site',
-      onClick: () {
-        GoRouter.of(context).go('/sites/show/${widget.siteId}');
-      },
-    );
-  }
-
-  CustomButton _buildGoToListButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
-      iconData: PhosphorIcons.listNumbers,
-      text: 'Sites List',
-      onClick: () {
-        GoRouter.of(context).go('/sites');
-      },
-    );
   }
 
   @override
@@ -87,23 +40,6 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTitle(),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    _buildCrudButtons(context),
-                  ],
-                ),
-              ),
               const CustomDivider(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,28 +50,24 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'OpenSans',
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Then project \' ${widget.projectId} \' has been created.',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text:
-                                      'The site \' ${widget.siteName} \' has been created.',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              const Text(
+                                'Companies can be assigned from list on right. Once assigned they will show here in this list.',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                                const TextSpan(
-                                  text:
-                                      ' Sites can be assigned from list on right. Once assigned they will show here in this list below.',
-                                ),
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
                         const CustomDivider(),
@@ -174,28 +106,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                           trueString: 'Yes',
                                           falseString: 'No',
                                           textColor: darkTeal,
-                                          onChanged: (value) {
-                                            CustomAlert(
-                                              context: context,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4,
-                                              title: 'Confirm',
-                                              description:
-                                                  'Do you really want to remove this template from site?',
-                                              btnOkText: 'Remove',
-                                              btnOkOnPress: () {
-                                                sitesBloc.add(
-                                                  AuditTemplateAssignedToSite(
-                                                    auditTemplateId:
-                                                        auditTemplate.id,
-                                                  ),
-                                                );
-                                              },
-                                              dialogType: DialogType.question,
-                                            );
-                                          },
+                                          onChanged: (value) {},
                                         ),
                                       ),
                                       ...List.from(auditTemplate
@@ -277,14 +188,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                           falseString: 'No',
                                           textColor: darkTeal,
                                           switchValue: auditTemplate.assigned,
-                                          onChanged: (value) {
-                                            sitesBloc.add(
-                                              AuditTemplateAssignedToSite(
-                                                auditTemplateId:
-                                                    auditTemplate.id,
-                                              ),
-                                            );
-                                          },
+                                          onChanged: (value) {},
                                         ),
                                       ),
                                       ...auditTemplate

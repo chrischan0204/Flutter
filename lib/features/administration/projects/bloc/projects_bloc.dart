@@ -91,7 +91,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         emit(state.copyWith(
           projectCrudStatus: EntityStatus.success,
           message: response.message,
-          selectedProject: null,
+          selectedProject:
+              state.selectedProject!.copyWith(id: response.data!.id),
         ));
       } else {
         emit(state.copyWith(
@@ -119,7 +120,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         emit(state.copyWith(
           projectCrudStatus: EntityStatus.success,
           message: response.message,
-          selectedProject: null,
+          selectedProject:
+              state.selectedProject!.copyWith(id: response.data!.id),
         ));
       } else {
         emit(state.copyWith(
