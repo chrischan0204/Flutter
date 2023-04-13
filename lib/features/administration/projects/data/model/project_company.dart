@@ -8,23 +8,27 @@ import '/data/model/model.dart';
 class ProjectCompany extends Equatable {
   final String id;
   final String projectId;
-  final String? projectName;
+  final String projectName;
   final String companyId;
-  final String? companyName;
+  final String companyName;
+  final String siteId;
+  final String siteName;
   final String roleId;
-  final String? roleName;
-  final String? createdByUserName;
-  final String? createdOn;
+  final String roleName;
+  final String createdByUserName;
+  final String createdOn;
   const ProjectCompany({
     required this.id,
     required this.projectId,
-    this.projectName,
+    this.projectName = '',
     required this.companyId,
-    this.companyName,
+    this.companyName = '',
+    required this.siteId,
+    this.siteName = '',
     required this.roleId,
-    this.roleName,
-    this.createdByUserName,
-    this.createdOn,
+    this.roleName = '',
+    this.createdByUserName = '',
+    this.createdOn = '',
   });
 
   @override
@@ -34,6 +38,8 @@ class ProjectCompany extends Equatable {
         projectName,
         companyId,
         companyName,
+        siteId,
+        siteName,
         roleId,
         roleName,
         createdByUserName,
@@ -58,21 +64,25 @@ class ProjectCompany extends Equatable {
       'companyName': companyName,
       'roleId': roleId,
       'roleName': roleName,
+      'siteId': siteId,
+      'siteName': siteName,
     };
   }
 
   factory ProjectCompany.fromMap(Map<String, dynamic> map) {
     return ProjectCompany(
       id: map['id'],
-      projectId: map['projectId'] as String,
-      projectName: map['projectName'],
-      companyId: map['companyId'] as String,
-      companyName: map['companyName'],
-      roleId: map['roleId'] as String,
-      roleName: map['roleName'] as String,
-      createdByUserName: map['createdByUserName'],
+      projectId: map['projectId'] ?? '',
+      projectName: map['projectName'] ?? '',
+      companyId: map['companyId'] ?? '',
+      companyName: map['companyName'] ?? '',
+      roleId: map['roleId'] ?? '',
+      roleName: map['roleName'] ?? '',
+      siteId: map['siteId'] ?? '',
+      siteName: map['siteName'] ?? '',
+      createdByUserName: map['createdByUserName'] ?? '',
       createdOn:
-          FormatDate(dateString: map['createdOn'] as String, format: 'd MMMM y')
+          FormatDate(dateString: map['createdOn'] ?? '', format: 'd MMMM y')
               .formatDate,
     );
   }
@@ -88,6 +98,8 @@ class ProjectCompany extends Equatable {
     String? projectName,
     String? companyId,
     String? companyName,
+    String? siteId,
+    String? siteName,
     String? roleId,
     String? roleName,
     String? createdByUserName,
@@ -99,6 +111,8 @@ class ProjectCompany extends Equatable {
       projectName: projectName ?? this.projectName,
       companyId: companyId ?? this.companyId,
       companyName: companyName ?? this.companyName,
+      siteId: siteId ?? this.siteId,
+      siteName: siteName ?? this.siteName,
       roleId: roleId ?? this.roleId,
       roleName: roleName ?? this.roleName,
       createdByUserName: createdByUserName ?? this.createdByUserName,

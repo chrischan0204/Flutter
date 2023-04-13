@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:safety_eta/features/administration/companies/view/widgets/filter_textfield.dart';
 
+import '/constants/constants.dart';
+import './widgets/filter_textfield.dart';
 import '/data/model/model.dart';
 import '/utils/utils.dart';
-import '/constants/color.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 
@@ -31,7 +30,9 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
-      ..add(const FilterTextForUnassignedSitesChanged(filterText: ''));
+      ..add(const FilterTextChanged(filterText: ''))
+      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+      ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
     super.initState();
   }
 
@@ -118,18 +119,20 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
 
   Widget _buildUnassignedSitesTableView(CompaniesState state) {
     return SizedBox(
+      width: double.infinity,
       child: BlocBuilder<RolesBloc, RolesState>(
         builder: (context, rolesState) {
           return BlocListener<CompaniesBloc, CompaniesState>(
             listener: (context, state) {
-              if (state.siteToCompanyUnassignedStatus == EntityStatus.success) {
+              if (state.siteFromCompanyUnassignedStatus ==
+                  EntityStatus.success) {
                 CustomNotification(
                   context: context,
                   notifyType: NotifyType.success,
                   content: state.message,
                 ).showNotification();
                 _refetchCompanySites(state.filterText);
-              } else if (state.siteToCompanyUnassignedStatus ==
+              } else if (state.siteFromCompanyUnassignedStatus ==
                   EntityStatus.failure) {
                 CustomNotification(
                   context: context,
@@ -139,9 +142,11 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               }
             },
             listenWhen: (previous, current) =>
-                previous.siteToCompanyUnassignedStatus !=
-                current.siteToCompanyUnassignedStatus,
+                previous.siteFromCompanyUnassignedStatus !=
+                current.siteFromCompanyUnassignedStatus,
             child: DataTable(
+              headingTextStyle: tableHeadingTextStyle,
+              dataTextStyle: tableDataTextStyle,
               columns: const [
                 DataColumn(
                   label: Text('Assigned?'),
@@ -231,6 +236,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             previous.siteToCompanyAssignedStatus !=
             current.siteToCompanyAssignedStatus,
         child: DataTable(
+          headingTextStyle: tableHeadingTextStyle,
+          dataTextStyle: tableDataTextStyle,
           columns: const [
             DataColumn(
               label: Text('Assigned?'),
@@ -316,7 +323,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FilterTextField(
-        hintText: 'Filter unassigned sites by name..',
+        hintText: 'Filter unassigned sites by name.',
         label: 'sites',
         filterController: filterController,
         filterIconClick: (filtered) {
@@ -326,8 +333,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             _cancelFilter();
           }
         },
-        onChange: (value) => companiesBloc
-            .add(FilterTextForUnassignedSitesChanged(filterText: value)),
+        onChange: (value) =>
+            companiesBloc.add(FilterTextChanged(filterText: value)),
       ),
     );
   }
@@ -341,7 +348,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
 
   _cancelFilter() {
     companiesBloc
-        .add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
+      ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId))
+      ..add(const FilterTextChanged(filterText: ''));
   }
 
   _refetchCompanySites(String filterText) {

@@ -33,15 +33,18 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<SiteToCompanyAssigned>(_onSiteToCompanyAssigned);
     on<SiteFromCompanyUnassigned>(_onSiteFromCompanyUnassigned);
     on<ProjectToCompanyAssigned>(_onProjectToCompanyAssigned);
+    on<ProjectFromCompanyUnassigned>(_onProjectFromCompanyUnassigned);
     on<CompanySelectedById>(_onCompanySelectedById);
     on<CompanyAdded>(_onCompanyAdded);
     on<CompanyEdited>(_onCompanyEdited);
     on<CompanyDeleted>(_onCompanyDeleted);
     on<CompaniesSorted>(_onCompaniesSorted);
     on<UnAssignedCompanySiteRoleSelected>(_onUnAssignedCompanySiteRoleSelected);
+    on<UnAssignedProjectCompanyRoleSelected>(
+        _onUnAssignedProjectCompanyRoleSelected);
     on<CompaniesStatusInited>(_onCompaniesStatusInited);
-    on<FilterTextForUnassignedSitesChanged>(
-        _onFilterTextForUnassignedSitesChanged);
+    on<FilterTextChanged>(_onFilterTextChanged);
+    on<FilterSiteIdChanged>(_onFilterSiteIdChanged);
   }
 
   Future<void> _onCompaniesRetrieved(
@@ -93,7 +96,6 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
         unassignedCompanySitesRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      print(e.toString());
       emit(state.copyWith(
           unassignedCompanySitesRetrievedStatus: EntityStatus.failure));
     }
@@ -125,8 +127,9 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     emit(state.copyWith(
         unassignedProjectCompaniesRetrievedStatus: EntityStatus.loading));
     try {
-      List<ProjectCompany> projectCompanies = await companiesRepository
-          .getProjectCompanies(event.companyId, false, event.name);
+      List<ProjectCompany> projectCompanies =
+          await companiesRepository.getProjectCompanies(
+              event.companyId, false, event.name, event.siteId);
       emit(state.copyWith(
         unassignedProjectCompanies: projectCompanies,
         unassignedProjectCompaniesRetrievedStatus: EntityStatus.success,
@@ -194,23 +197,50 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     SiteFromCompanyUnassigned event,
     Emitter<CompaniesState> emit,
   ) async {
-    emit(state.copyWith(siteToCompanyUnassignedStatus: EntityStatus.loading));
+    emit(state.copyWith(siteFromCompanyUnassignedStatus: EntityStatus.loading));
     try {
       EntityResponse response = await companiesRepository
           .unassignSiteFromCompany(event.companySiteUpdationId);
       if (response.isSuccess) {
         emit(state.copyWith(
-          siteToCompanyUnassignedStatus: EntityStatus.success,
+          siteFromCompanyUnassignedStatus: EntityStatus.success,
           message: response.message,
         ));
       } else {
         emit(state.copyWith(
-          siteToCompanyUnassignedStatus: EntityStatus.failure,
+          siteFromCompanyUnassignedStatus: EntityStatus.failure,
           message: response.message,
         ));
       }
     } catch (e) {
-      emit(state.copyWith(siteToCompanyUnassignedStatus: EntityStatus.failure));
+      emit(state.copyWith(
+          siteFromCompanyUnassignedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onProjectFromCompanyUnassigned(
+    ProjectFromCompanyUnassigned event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(
+        projectFromCompanyUnassignedStatus: EntityStatus.loading));
+    try {
+      EntityResponse response = await companiesRepository
+          .unassignProjectFromCompany(event.projectCompanyAssignmentId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          projectFromCompanyUnassignedStatus: EntityStatus.success,
+          message: response.message,
+        ));
+      } else {
+        emit(state.copyWith(
+          projectFromCompanyUnassignedStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+          projectFromCompanyUnassignedStatus: EntityStatus.failure));
     }
   }
 
@@ -224,12 +254,17 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
           .assignProjectToCompany(event.projectCompanyAssignment);
       if (response.isSuccess) {
         emit(state.copyWith(
-            projectToCompanyAssignedStatus: EntityStatus.success));
+          projectToCompanyAssignedStatus: EntityStatus.success,
+          message: response.message,
+        ));
       } else {
         emit(state.copyWith(
-            projectToCompanyAssignedStatus: EntityStatus.failure));
+          projectToCompanyAssignedStatus: EntityStatus.failure,
+          message: response.message,
+        ));
       }
     } catch (e) {
+      print(e);
       emit(
           state.copyWith(projectToCompanyAssignedStatus: EntityStatus.failure));
     }
@@ -364,10 +399,34 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     emit(state.copyWith(unassignedCompanySites: unassignedCompanySites));
   }
 
-  Future<void> _onFilterTextForUnassignedSitesChanged(
-    FilterTextForUnassignedSitesChanged event,
+  Future<void> _onUnAssignedProjectCompanyRoleSelected(
+    UnAssignedProjectCompanyRoleSelected event,
     Emitter<CompaniesState> emit,
   ) async {
+    List<ProjectCompany> unassignedProjectCompanies =
+        List.from(state.unassignedProjectCompanies);
+    int index = event.projectCompanyIndex;
+    unassignedProjectCompanies.replaceRange(index, index + 1, [
+      unassignedProjectCompanies[index].copyWith(
+        roleId: event.role.id,
+        roleName: event.role.name,
+      )
+    ]);
+    emit(
+        state.copyWith(unassignedProjectCompanies: unassignedProjectCompanies));
+  }
+
+  void _onFilterTextChanged(
+    FilterTextChanged event,
+    Emitter<CompaniesState> emit,
+  ) {
     emit(state.copyWith(filterText: event.filterText));
+  }
+
+  void _onFilterSiteIdChanged(
+    FilterSiteIdChanged event,
+    Emitter<CompaniesState> emit,
+  ) {
+    emit(state.copyWith(filterSiteId: event.siteId));
   }
 }

@@ -4,7 +4,6 @@ import 'package:safety_eta/global_widgets/global_widget.dart';
 import '/constants/color.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
-import 'widgets/widgets.dart';
 
 class ProjectsListView extends StatefulWidget {
   const ProjectsListView({super.key});
@@ -110,6 +109,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           'Floyd Window repairs': Entity(id: '5', name: 'Floyd Window repairs'),
         },
         hint: 'Select Contractors',
+        selectedItems: [],
         onChanged: (contractors) {
           filterContractors =
               contractors.map((contractor) => contractor.name ?? '').toList();
@@ -181,7 +181,9 @@ class _ProjectsListViewState extends State<ProjectsListView> {
               ),
             selectedItems: [],
             hint: 'Select Sites',
-            onChanged: (sites) {},
+            onChanged: (sites) {
+              filterSites = sites.map((site) => site.name ?? '').toList();
+            },
           );
         },
       ),

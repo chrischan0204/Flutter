@@ -123,7 +123,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             (tabItem) => Text(
               tabItem.key,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.w400,
                 color: darkTeal,

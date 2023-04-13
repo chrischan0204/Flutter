@@ -12,13 +12,14 @@ class CompaniesState extends Equatable {
   final List<ProjectCompany> unassignedProjectCompanies;
   final EntityStatus unassignedProjectCompaniesRetrievedStatus;
   final EntityStatus siteToCompanyAssignedStatus;
-  final EntityStatus siteToCompanyUnassignedStatus;
+  final EntityStatus siteFromCompanyUnassignedStatus;
   final EntityStatus projectToCompanyAssignedStatus;
-  final EntityStatus projectToCompanyUnassignedStatus;
+  final EntityStatus projectFromCompanyUnassignedStatus;
   final Company? selectedCompany;
   final EntityStatus companySelectedStatus;
   final EntityStatus companyCrudStatus;
   final String filterText;
+  final String filterSiteId;
   final String message;
   const CompaniesState({
     this.companies = const [],
@@ -29,9 +30,9 @@ class CompaniesState extends Equatable {
     this.selectedCompany,
     this.companiesRetrievedStatus = EntityStatus.initial,
     this.projectToCompanyAssignedStatus = EntityStatus.initial,
-    this.projectToCompanyUnassignedStatus = EntityStatus.initial,
+    this.projectFromCompanyUnassignedStatus = EntityStatus.initial,
     this.siteToCompanyAssignedStatus = EntityStatus.initial,
-    this.siteToCompanyUnassignedStatus = EntityStatus.initial,
+    this.siteFromCompanyUnassignedStatus = EntityStatus.initial,
     this.assignedCompanySitesRetrievedStatus = EntityStatus.initial,
     this.unassignedCompanySitesRetrievedStatus = EntityStatus.initial,
     this.assignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
@@ -39,6 +40,7 @@ class CompaniesState extends Equatable {
     this.companyCrudStatus = EntityStatus.initial,
     this.companySelectedStatus = EntityStatus.initial,
     this.filterText = '',
+    this.filterSiteId = '',
     this.message = '',
   });
 
@@ -52,9 +54,9 @@ class CompaniesState extends Equatable {
         selectedCompany,
         companiesRetrievedStatus,
         siteToCompanyAssignedStatus,
-        siteToCompanyUnassignedStatus,
+        siteFromCompanyUnassignedStatus,
         projectToCompanyAssignedStatus,
-        projectToCompanyUnassignedStatus,
+        projectFromCompanyUnassignedStatus,
         assignedCompanySitesRetrievedStatus,
         assignedProjectCompaniesRetrievedStatus,
         unassignedCompanySitesRetrievedStatus,
@@ -63,6 +65,7 @@ class CompaniesState extends Equatable {
         companySelectedStatus,
         message,
         filterText,
+        filterSiteId,
       ];
 
   CompaniesState copyWith({
@@ -75,9 +78,9 @@ class CompaniesState extends Equatable {
     EntityStatus? companiesRetrievedStatus,
     EntityStatus? companySelectedStatus,
     EntityStatus? siteToCompanyAssignedStatus,
-    EntityStatus? siteToCompanyUnassignedStatus,
+    EntityStatus? siteFromCompanyUnassignedStatus,
     EntityStatus? projectToCompanyAssignedStatus,
-    EntityStatus? projectToCompanyUnassignedStatus,
+    EntityStatus? projectFromCompanyUnassignedStatus,
     EntityStatus? companyCrudStatus,
     EntityStatus? assignedProjectCompaniesRetrievedStatus,
     EntityStatus? assignedCompanySitesRetrievedStatus,
@@ -85,6 +88,7 @@ class CompaniesState extends Equatable {
     EntityStatus? unassignedCompanySitesRetrievedStatus,
     String? message,
     String? filterText,
+    String? filterSiteId,
   }) {
     return CompaniesState(
       companies: companies ?? this.companies,
@@ -115,14 +119,15 @@ class CompaniesState extends Equatable {
       companyCrudStatus: companyCrudStatus ?? this.companyCrudStatus,
       siteToCompanyAssignedStatus:
           siteToCompanyAssignedStatus ?? this.siteToCompanyAssignedStatus,
-      siteToCompanyUnassignedStatus:
-          siteToCompanyUnassignedStatus ?? this.siteToCompanyUnassignedStatus,
+      siteFromCompanyUnassignedStatus: siteFromCompanyUnassignedStatus ??
+          this.siteFromCompanyUnassignedStatus,
       projectToCompanyAssignedStatus:
           projectToCompanyAssignedStatus ?? this.projectToCompanyAssignedStatus,
-      projectToCompanyUnassignedStatus: projectToCompanyUnassignedStatus ??
-          this.projectToCompanyUnassignedStatus,
+      projectFromCompanyUnassignedStatus: projectFromCompanyUnassignedStatus ??
+          this.projectFromCompanyUnassignedStatus,
       message: message ?? this.message,
       filterText: filterText ?? this.filterText,
+      filterSiteId: filterSiteId ?? this.filterSiteId,
     );
   }
 }

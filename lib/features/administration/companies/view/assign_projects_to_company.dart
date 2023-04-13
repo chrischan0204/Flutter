@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '/constants/constants.dart';
 import '/data/model/model.dart';
 import '/utils/utils.dart';
-import '/constants/color.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
+import 'widgets/filter_textfield.dart';
 
 class AssignProjectsToCompanyView extends StatefulWidget {
   final String companyId;
@@ -26,13 +26,16 @@ class AssignProjectsToCompanyView extends StatefulWidget {
 class _AssignProjectsToCompanyViewState
     extends State<AssignProjectsToCompanyView> {
   late CompaniesBloc companiesBloc;
-  TextEditingController filterController = TextEditingController(
-    text: '',
-  );
+  TextEditingController filterController = TextEditingController(text: '');
+  late String? selectedFilterSiteName = null;
 
   @override
   void initState() {
-    companiesBloc = context.read<CompaniesBloc>();
+    companiesBloc = context.read<CompaniesBloc>()
+      ..add(const FilterTextChanged(filterText: ''))
+      ..add(const FilterSiteIdChanged(siteId: ''))
+      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
+      ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId));
     super.initState();
   }
 
@@ -67,7 +70,7 @@ class _AssignProjectsToCompanyViewState
                       children: [
                         _buildUnassignedProjectsTableViewHeader(),
                         const CustomDivider(),
-                        _buildFilterProjectView(),
+                        _buildFilterProjectView(state),
                         const CustomDivider(),
                         _buildUnassignedProjectsTableView(state),
                       ],
@@ -94,61 +97,102 @@ class _AssignProjectsToCompanyViewState
 
   Widget _buildAssignedProjectsTableView(
       CompaniesState state, BuildContext context) {
-    return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
-        ? const Padding(
-            padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
-          )
-        : SizedBox(
-            width: double.infinity,
-            child: DataTable(
-              columns: tableColumns,
-              rows: state.assignedProjectCompanies
-                  .map(
-                    (projectCompany) => DataRow(
-                      cells: [
-                        DataCell(
-                          CustomSwitch(
-                            switchValue: true,
-                            trueString: 'Yes',
-                            falseString: 'No',
-                            textColor: darkTeal,
-                            onChanged: (value) =>
-                                _unassignProjectFromCompany(projectCompany.id),
-                          ),
-                        ),
-                        DataCell(
-                          CustomDataCell(
-                            data: projectCompany.projectName,
-                          ),
-                        ),
-                        DataCell(
-                          CustomDataCell(
-                            data: projectCompany.projectName,
-                          ),
-                        ),
-                        DataCell(
-                          CustomDataCell(
-                            data: projectCompany.roleName,
-                          ),
-                        ),
-                      ],
+    return SizedBox(
+      width: double.infinity,
+      child: BlocListener<CompaniesBloc, CompaniesState>(
+        listener: (context, state) {
+          if (state.projectFromCompanyUnassignedStatus ==
+              EntityStatus.success) {
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.success,
+              content: state.message,
+            ).showNotification();
+            _refetchProjectCompanies(state);
+          } else if (state.projectFromCompanyUnassignedStatus ==
+              EntityStatus.failure) {
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.error,
+              content: state.message,
+            ).showNotification();
+          }
+        },
+        listenWhen: (previous, current) =>
+            previous.projectFromCompanyUnassignedStatus !=
+            current.projectFromCompanyUnassignedStatus,
+        child: DataTable(
+          headingTextStyle: tableHeadingTextStyle,
+          dataTextStyle: tableDataTextStyle,
+          columns: tableColumns,
+          rows: state.assignedProjectCompanies
+              .map(
+                (projectCompany) => DataRow(
+                  cells: [
+                    DataCell(
+                      CustomSwitch(
+                        switchValue: true,
+                        trueString: 'Yes',
+                        falseString: 'No',
+                        textColor: darkTeal,
+                        onChanged: (value) =>
+                            _unassignProjectFromCompany(projectCompany.id),
+                      ),
                     ),
-                  )
-                  .toList(),
-            ),
-          );
+                    DataCell(
+                      CustomDataCell(
+                        data: projectCompany.projectName,
+                      ),
+                    ),
+                    DataCell(
+                      CustomDataCell(
+                        data: projectCompany.siteName,
+                      ),
+                    ),
+                    DataCell(
+                      CustomDataCell(
+                        data: projectCompany.roleName,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
   }
 
   Widget _buildUnassignedProjectsTableView(CompaniesState state) {
-    return state.unassignedProjectCompaniesRetrievedStatus ==
-            EntityStatus.loading
-        ? const Padding(
-            padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
-          )
-        : SizedBox(
+    return SizedBox(
+      width: double.infinity,
+      child: BlocBuilder<RolesBloc, RolesState>(
+        builder: (context, rolesState) {
+          return BlocListener<CompaniesBloc, CompaniesState>(
+            listener: (context, state) {
+              if (state.projectToCompanyAssignedStatus ==
+                  EntityStatus.success) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.success,
+                  content: state.message,
+                ).showNotification();
+                _refetchProjectCompanies(state);
+              } else if (state.projectToCompanyAssignedStatus ==
+                  EntityStatus.failure) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.error,
+                  content: state.message,
+                ).showNotification();
+              }
+            },
+            listenWhen: (previous, current) =>
+                previous.projectToCompanyAssignedStatus !=
+                current.projectToCompanyAssignedStatus,
             child: DataTable(
+              headingTextStyle: tableHeadingTextStyle,
+              dataTextStyle: tableDataTextStyle,
               columns: tableColumns,
               rows: state.unassignedProjectCompanies
                   .map(
@@ -170,11 +214,27 @@ class _AssignProjectsToCompanyViewState
                         ),
                         DataCell(
                           CustomDataCell(
-                              data: unassignedProjectCompany.projectName),
+                              data: unassignedProjectCompany.siteName),
                         ),
                         DataCell(
-                          CustomDataCell(
-                              data: unassignedProjectCompany.roleName),
+                          CustomSingleSelect(
+                            items: {}..addEntries(rolesState.roles
+                                .map((role) => MapEntry(role.name, role))),
+                            hint: 'Select Role',
+                            selectedValue: rolesState.roles.isNotEmpty
+                                ? unassignedProjectCompany.roleName.isNotEmpty
+                                    ? unassignedProjectCompany.roleName
+                                    : null
+                                : null,
+                            onChanged: (role) => companiesBloc.add(
+                              UnAssignedProjectCompanyRoleSelected(
+                                role: role.value,
+                                projectCompanyIndex: state
+                                    .unassignedProjectCompanies
+                                    .indexOf(unassignedProjectCompany),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -182,6 +242,9 @@ class _AssignProjectsToCompanyViewState
                   .toList(),
             ),
           );
+        },
+      ),
+    );
   }
 
   List<DataColumn> get tableColumns {
@@ -207,44 +270,61 @@ class _AssignProjectsToCompanyViewState
     ];
   }
 
-  Widget _buildFilterProjectView() {
+  Widget _buildFilterProjectView(CompaniesState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          _buildFilterProjectTextField(),
+          _buildFilterProjectTextField(state),
           const SizedBox(
             width: 50,
           ),
-          _buildSiteSelectField(),
+          _buildSiteSelectField(state),
         ],
       ),
     );
   }
 
-  Expanded _buildFilterProjectTextField() {
+  Expanded _buildFilterProjectTextField(CompaniesState state) {
     return Expanded(
-      child: CustomTextField(
-        hintText: 'Filter unassigned projects by name..',
-        onChanged: (value) {},
-        controller: filterController,
-        suffixIconData: PhosphorIcons.funnel,
-        onSuffixIconClick: () => _applyFilter(),
+      flex: 2,
+      child: FilterTextField(
+        hintText: 'Filter unassigned projects by name.',
+        label: 'sites',
+        filterController: filterController,
+        canFilter: state.filterSiteId.isNotEmpty,
+        filterIconClick: (filtered) {
+          if (filtered) {
+            _applyFilter(state);
+          } else {
+            _cancelFilter();
+          }
+        },
+        onChange: (value) =>
+            companiesBloc.add(FilterTextChanged(filterText: value)),
       ),
     );
   }
 
-  Widget _buildSiteSelectField() {
+  Widget _buildSiteSelectField(CompaniesState state) {
     return BlocBuilder<CompaniesBloc, CompaniesState>(
       builder: (context, state) {
-        return SizedBox(
-          width: 150,
-          child: CustomMultiSelect(
-            items: {},
-            selectedItems: [],
+        return Expanded(
+          child: CustomSingleSelect(
+            items: {}..addEntries(state.unassignedProjectCompanies.map(
+                (unassignedProjectCompany) => MapEntry(
+                    unassignedProjectCompany.siteName,
+                    unassignedProjectCompany.siteId))),
             hint: 'Filter by site',
-            onChanged: (sites) {
+            selectedValue: state.unassignedProjectCompanies.isNotEmpty
+                ? selectedFilterSiteName
+                : null,
+            onChanged: (site) {
+              companiesBloc.add(FilterSiteIdChanged(siteId: site.value));
               // filterSites = sites.map((site) => site as Site).toList();
+              setState(() {
+                selectedFilterSiteName = site.key;
+              });
             },
           ),
         );
@@ -281,8 +361,22 @@ class _AssignProjectsToCompanyViewState
   }
 
   void _assignProjectToCompany(ProjectCompany projectCompany) {
-    companiesBloc.add(ProjectToCompanyAssigned(
-        projectCompanyAssignment: projectCompany.toProjectCompanyAssignment()));
+    if (projectCompany.roleId.contains('00000000')) {
+      CustomAlert(
+        context: context,
+        width: MediaQuery.of(context).size.width / 4,
+        title: 'Notification',
+        description: 'Please select a role for the company first.',
+        btnOkText: 'OK',
+        btnOkOnPress: () {},
+        dialogType: DialogType.warning,
+      ).show();
+    } else {
+      companiesBloc.add(ProjectToCompanyAssigned(
+          projectCompanyAssignment: projectCompany
+              .copyWith(companyId: widget.companyId)
+              .toProjectCompanyAssignment()));
+    }
   }
 
   void _unassignProjectFromCompany(String projectCompanyId) {
@@ -296,16 +390,36 @@ class _AssignProjectsToCompanyViewState
         companiesBloc.add(ProjectFromCompanyUnassigned(
             projectCompanyAssignmentId: projectCompanyId));
       },
+      btnCancelOnPress: () {},
       dialogType: DialogType.question,
-    );
+    ).show();
   }
 
-  _applyFilter() {
-    filterController.text =
-        'Showing companies matching \'${filterController.text}\' below..';
-    companiesBloc.add(UnassignedCompanySitesRetrieved(
+  _applyFilter(CompaniesState state) {
+    companiesBloc.add(UnassignedProjectCompaniesRetrieved(
       companyId: widget.companyId,
-      name: filterController.text,
+      name: state.filterText,
+      siteId: state.filterSiteId,
     ));
+  }
+
+  _cancelFilter() {
+    companiesBloc
+      ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId))
+      ..add(const FilterTextChanged(filterText: ''))
+      ..add(const FilterSiteIdChanged(siteId: ''));
+    setState(() {
+      selectedFilterSiteName = null;
+    });
+  }
+
+  _refetchProjectCompanies(CompaniesState state) {
+    companiesBloc
+      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
+      ..add(UnassignedProjectCompaniesRetrieved(
+        companyId: widget.companyId,
+        name: state.filterText,
+        siteId: state.filterSiteId,
+      ));
   }
 }

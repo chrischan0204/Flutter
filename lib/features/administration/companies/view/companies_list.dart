@@ -194,8 +194,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
   }
 
   void _selectCompany(Entity selectedCompany) {
-    companiesBloc
-        .add(CompanySelected(selectedCompany: selectedCompany as Company));
+    companiesBloc.add(CompanySelectedById(companyId: selectedCompany.id!));
   }
 
   Wrap _buildFilterResultBody() {

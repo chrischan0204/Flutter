@@ -35,6 +35,8 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
         ),
+        dropdownStyleData: DropdownStyleData(
+            maxHeight: MediaQuery.of(context).size.height / 2.5),
         items: widget.items.entries.map((entry) {
           return DropdownMenuItem<String>(
             value: entry.key,

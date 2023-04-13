@@ -9,6 +9,7 @@ class FilterTextField extends StatefulWidget {
   final TextEditingController filterController;
   final ValueChanged<bool> filterIconClick;
   final ValueChanged<String> onChange;
+  final bool canFilter;
 
   const FilterTextField({
     super.key,
@@ -17,6 +18,7 @@ class FilterTextField extends StatefulWidget {
     required this.filterController,
     required this.filterIconClick,
     required this.onChange,
+    this.canFilter = false,
   });
 
   @override
@@ -35,7 +37,8 @@ class _FilterTextFieldState extends State<FilterTextField> {
           filtered ? PhosphorIcons.arrowCounterClockwise : PhosphorIcons.funnel,
       suffixIconColor: filtered ? Colors.red : const Color(0xff0c81ff),
       onSuffixIconClick: () async {
-        if (widget.filterController.text.trim().length > 1) {
+        if (widget.filterController.text.trim().length > 1 ||
+            widget.canFilter) {
           setState(() {
             filtered = !filtered;
           });

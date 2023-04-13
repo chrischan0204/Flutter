@@ -1,5 +1,5 @@
 export 'custom_multi_select.dart';
-export 'custom_select.dart';
+export 'custom_single_select.dart';
 export 'custom_switch.dart';
 export 'custom_textfield.dart';
 export 'custom_color_picker.dart';

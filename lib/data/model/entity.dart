@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
+import 'package:safety_eta/utils/utils.dart';
 
 // standadized model, which other models inherit
 class Entity extends Equatable {
@@ -10,6 +11,8 @@ class Entity extends Equatable {
   final String? deactivationDate;
   final String? deactivationUserName;
   final bool active;
+  final String? createdOn;
+  final String? createdByUserName;
 
   const Entity({
     this.id,
@@ -17,6 +20,8 @@ class Entity extends Equatable {
     this.deactivationDate,
     this.deactivationUserName,
     this.active = true,
+    this.createdByUserName,
+    this.createdOn,
   });
 
   // constructor to create entity from map
@@ -26,10 +31,16 @@ class Entity extends Equatable {
       name: map['name'] != null ? map['name'] as String : null,
       active: map['active'] != null ? map['active'] as bool : true,
       deactivationDate: map['deactivationDate'] != null
-          ? map['deactivationDate'] as String
+          ? FormatDate(format: 'd MMMM y', dateString: map['deactivationDate'])
+              .formatDate
           : null,
       deactivationUserName: map['deactivationUserName'] != null
           ? map['deactivationUserName'] as String
+          : null,
+      createdByUserName: map['createdByUserName'],
+      createdOn: map['createdOn'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
+              .formatDate
           : null,
     );
   }
@@ -73,19 +84,23 @@ class Entity extends Equatable {
         deactivationDate,
         deactivationUserName,
         active,
+        createdOn,
+        createdByUserName,
       ];
 }
 
 // response object to get the response from api, which others wil inherit it
 class EntityResponse {
   final bool isSuccess;
-  final String message;
+  String message;
   final Entity? data;
   EntityResponse({
     required this.isSuccess,
     required this.message,
     this.data,
-  });
+  }) {
+    message = message.replaceAll('"', '');
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

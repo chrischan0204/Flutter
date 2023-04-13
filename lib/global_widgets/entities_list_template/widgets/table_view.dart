@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '/constants/color.dart';
+import '/constants/constants.dart';
 import '../../custom_data_cell.dart';
 import '/data/model/entity.dart';
 
@@ -146,6 +146,8 @@ class _DataTableViewState extends State<DataTableView> {
   Widget build(BuildContext context) {
     return widget.entities.isNotEmpty
         ? DataTable(
+            headingTextStyle: tableHeadingTextStyle,
+            dataTextStyle: tableDataTextStyle,
             headingRowHeight: 54.5,
             dataRowHeight: 53.35,
             columns: _buildColumns(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/constants/constants.dart';
 import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
@@ -105,6 +106,8 @@ class _SiteShowViewState extends State<SiteShowView> {
         const CustomDivider(),
         SizedBox(
           child: DataTable(
+            headingTextStyle: tableHeadingTextStyle,
+            dataTextStyle: tableDataTextStyle,
             columns: const [
               DataColumn(
                 label: Text(

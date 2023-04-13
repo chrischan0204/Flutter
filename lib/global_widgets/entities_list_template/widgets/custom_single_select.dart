@@ -37,6 +37,8 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
         ),
+        dropdownStyleData: DropdownStyleData(
+            maxHeight: MediaQuery.of(context).size.height / 2.5),
         items: (widget.disabled
                 ? <String>[]
                 : widget.items.keys.map((entry) => entry).toList())
