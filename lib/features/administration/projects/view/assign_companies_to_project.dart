@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '/constants/color.dart';
+import '/constants/constants.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
@@ -74,6 +74,8 @@ class _AssignCompaniesToProjectViewState
                         SizedBox(
                           width: double.infinity,
                           child: DataTable(
+                            headingTextStyle: tableHeadingTextStyle,
+                            dataTextStyle: tableDataTextStyle,
                             columns: const [
                               DataColumn(
                                 label: Text('Assigned?'),
@@ -156,6 +158,8 @@ class _AssignCompaniesToProjectViewState
                         const CustomDivider(),
                         SizedBox(
                           child: DataTable(
+                            headingTextStyle: tableHeadingTextStyle,
+                            dataTextStyle: tableDataTextStyle,
                             columns: const [
                               DataColumn(
                                 label: Text('Assigned?'),

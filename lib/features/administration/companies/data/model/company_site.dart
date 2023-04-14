@@ -56,23 +56,23 @@ class CompanySite extends Equatable {
     return {
       'siteName': siteName,
       'roleName': roleName,
-      'addedBy': 'Adam Drobot',
-      'addedOn': '3rd Oct 2022',
+      'addedBy': createdOn,
+      'addedOn': createdByUserName,
     };
   }
 
   factory CompanySite.fromMap(Map<String, dynamic> map) {
     return CompanySite(
       id: map['id'],
-      siteId: map['siteId'] as String,
-      siteName: map['siteName'] as String,
-      companyId: map['companyId'] as String,
-      companyName: map['companyName'] as String,
-      roleId: map['roleId'] as String,
-      roleName: map['roleName'] as String,
-      createdByUserName: map['createdByUserName'],
+      siteId: map['siteId'] ?? '',
+      siteName: map['siteName'] ?? '',
+      companyId: map['companyId'] ?? '',
+      companyName: map['companyName'] ?? '',
+      roleId: map['roleId'] ?? '',
+      roleName: map['roleName'] ?? '',
+      createdByUserName: map['createdByUserName'] ?? '',
       createdOn:
-          FormatDate(dateString: map['createdOn'] as String, format: 'd MMMM y')
+          FormatDate(dateString: map['createdOn'] ?? '', format: 'd MMMM y')
               .formatDate,
     );
   }

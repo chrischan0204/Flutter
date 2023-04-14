@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:safety_eta/utils/custom_alert.dart';
 
-import '/constants/color.dart';
+import '/constants/constants.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
@@ -142,6 +142,8 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                         SizedBox(
                           width: double.infinity,
                           child: DataTable(
+                            headingTextStyle: tableHeadingTextStyle,
+                            dataTextStyle: tableDataTextStyle,
                             columns: const [
                               DataColumn(
                                 label: Text('Assigned?'),
@@ -245,6 +247,8 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                         const CustomDivider(),
                         SizedBox(
                           child: DataTable(
+                            headingTextStyle: tableHeadingTextStyle,
+                            dataTextStyle: tableDataTextStyle,
                             columns: const [
                               DataColumn(
                                 label: Text('Assigned?'),

@@ -127,14 +127,17 @@ class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
 class UnassignedProjectCompaniesRetrieved extends CompaniesEvent {
   final String companyId;
   final String? name;
+  final String? siteId;
   const UnassignedProjectCompaniesRetrieved({
     required this.companyId,
     this.name,
+    this.siteId,
   });
   @override
   List<Object?> get props => [
         companyId,
         name,
+        siteId,
       ];
 }
 
@@ -197,14 +200,41 @@ class UnAssignedCompanySiteRoleSelected extends CompaniesEvent {
       ];
 }
 
-class FilterTextForUnassignedSitesChanged extends CompaniesEvent {
+class UnAssignedProjectCompanyRoleSelected extends CompaniesEvent {
+  final Role role;
+  final int projectCompanyIndex;
+  const UnAssignedProjectCompanyRoleSelected({
+    required this.role,
+    required this.projectCompanyIndex,
+  });
+
+  @override
+  List<Object?> get props => [
+        role,
+        projectCompanyIndex,
+      ];
+}
+
+class FilterTextChanged extends CompaniesEvent {
   final String filterText;
-  const FilterTextForUnassignedSitesChanged({
+  const FilterTextChanged({
     required this.filterText,
   });
 
   @override
   List<Object?> get props => [
         filterText,
+      ];
+}
+
+class FilterSiteIdChanged extends CompaniesEvent {
+  final String siteId;
+  const FilterSiteIdChanged({
+    required this.siteId,
+  });
+
+  @override
+  List<Object?> get props => [
+        siteId,
       ];
 }

@@ -16,6 +16,8 @@ class Company extends Entity {
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
+    super.createdByUserName,
+    super.createdOn,
   });
 
   @override
@@ -31,14 +33,18 @@ class Company extends Entity {
     bool? active,
     String? deactivationDate,
     String? deactivationUserName,
+    String? createdOn,
+    String? createdByUserName,
   }) {
     return Company(
       id: id ?? this.id,
       name: name ?? this.name,
       einNumber: einNumber ?? this.einNumber,
       active: active ?? this.active,
-      deactivationDate: deactivationDate ?? deactivationDate,
-      deactivationUserName: deactivationUserName ?? deactivationUserName,
+      deactivationDate: deactivationDate ?? this.deactivationDate,
+      deactivationUserName: deactivationUserName ?? this.deactivationUserName,
+      createdByUserName: createdByUserName ?? this.createdByUserName,
+      createdOn: createdOn ?? this.createdOn,
     );
   }
 
@@ -60,8 +66,8 @@ class Company extends Entity {
     return {
       'Name': name,
       'EIN Number': einNumber,
-      'Created By': 'Gary Verb',
-      'Created On': '3/11/2020',
+      'Created By': createdByUserName,
+      'Created On': createdOn,
     };
   }
 
@@ -72,8 +78,8 @@ class Company extends Entity {
       'Sites': sites,
       'Projects (last 10)': projects,
       'Active': active,
-      'Created On': '3/11/2020',
-      'Created By': 'Gary Verb',
+      'Created On': createdOn,
+      'Created By': createdByUserName,
       'Last updated': '9/19/2021',
       'Updated By': 'Hesh Carlson',
     };
@@ -84,8 +90,8 @@ class Company extends Entity {
     return {
       'Name': name,
       'EIN #': einNumber,
-      'Created By': 'Gary Verb',
-      'Created On': '3/11/2020',
+      'Created By': createdByUserName,
+      'Created On': createdOn,
     };
   }
 
@@ -94,12 +100,14 @@ class Company extends Entity {
     return Company(
       id: entity.id,
       name: entity.name,
-      einNumber: map['einNumber'] as String,
+      einNumber: map['einNumber'] ?? '',
       sites: map['sites'] ?? '',
       projects: map['projects'] ?? '',
       active: entity.active,
       deactivationDate: entity.deactivationDate,
       deactivationUserName: entity.deactivationUserName,
+      createdByUserName: entity.createdByUserName,
+      createdOn: entity.createdOn,
     );
   }
 

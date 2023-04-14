@@ -145,7 +145,7 @@ class CompaniesRepository {
       if (response.statusCode == 200) {
         return EntityResponse(
           isSuccess: true,
-          message: 'message',
+          message: response.body,
         );
       }
       return EntityResponse.fromJson(response.body);
@@ -165,7 +165,7 @@ class CompaniesRepository {
       if (response.statusCode == 200) {
         return EntityResponse(
           isSuccess: true,
-          message: 'message',
+          message: response.body,
         );
       }
       return EntityResponse.fromJson(response.body);
@@ -197,16 +197,21 @@ class CompaniesRepository {
   }
 
   Future<List<ProjectCompany>> getProjectCompanies(
-    String companyId,
+    String companyId, [
     bool? assigned,
     String? name,
-  ) async {
+    String? siteId,
+  ]) async {
     Map<String, dynamic> queryParams = {};
     if (assigned != null) {
       queryParams.addEntries([MapEntry('assigned', assigned.toString())]);
     }
     if (name != null && name.isNotEmpty) {
       queryParams.addEntries([MapEntry('name', name)]);
+    }
+
+    if (siteId != null && siteId.isNotEmpty) {
+      queryParams.addEntries([MapEntry('siteId', siteId)]);
     }
     Response response = await get(
         Uri.https(ApiUri.host, '$url/$companyId/projects', queryParams));

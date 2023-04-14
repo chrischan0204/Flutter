@@ -39,12 +39,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     companiesBloc = context.read<CompaniesBloc>();
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     if (widget.companyId != null) {
-      companiesBloc
-        ..add(CompanySelectedById(companyId: widget.companyId!))
-        ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId!))
-        ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId!))
-        ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId!))
-        ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId!));
+      companiesBloc.add(CompanySelectedById(companyId: widget.companyId!));
       rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     } else {
       companiesBloc.add(const CompanySelected(selectedCompany: Company()));

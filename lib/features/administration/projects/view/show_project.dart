@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/constants/constants.dart';
 import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
@@ -120,6 +121,8 @@ class _ShowProjectViewState extends State<ShowProjectView> {
         Container(
           child: state.projectCompanies.isNotEmpty
               ? DataTable(
+                  headingTextStyle: tableHeadingTextStyle,
+                  dataTextStyle: tableDataTextStyle,
                   columns: columns,
                   rows: rows,
                 )

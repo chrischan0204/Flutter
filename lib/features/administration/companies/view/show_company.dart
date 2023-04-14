@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/constants/constants.dart';
 import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
@@ -128,6 +129,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                 )
               : state.assignedCompanySites.isNotEmpty
                   ? DataTable(
+                      headingTextStyle: tableHeadingTextStyle,
+                      dataTextStyle: tableDataTextStyle,
                       columns: columns,
                       rows: rows,
                     )
@@ -244,6 +247,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                 )
               : state.assignedProjectCompanies.isNotEmpty
                   ? DataTable(
+                      headingTextStyle: tableHeadingTextStyle,
+                      dataTextStyle: tableDataTextStyle,
                       columns: columns,
                       rows: rows,
                     )
