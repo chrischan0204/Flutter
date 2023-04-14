@@ -94,7 +94,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
         Colors.white,
       ],
       containerHeight: 42,
-      containerWidth: 450,
+      containerWidth: 550,
       borderColor: grey,
       children: widget.tabItems.entries
           .map(

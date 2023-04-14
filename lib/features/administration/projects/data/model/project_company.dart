@@ -16,7 +16,7 @@ class ProjectCompany extends Equatable {
   final String roleId;
   final String roleName;
   final String createdByUserName;
-  final String createdOn;
+  final String? createdOn;
   const ProjectCompany({
     required this.id,
     required this.projectId,
@@ -28,7 +28,7 @@ class ProjectCompany extends Equatable {
     required this.roleId,
     this.roleName = '',
     this.createdByUserName = '',
-    this.createdOn = '',
+    this.createdOn,
   });
 
   @override
@@ -50,8 +50,8 @@ class ProjectCompany extends Equatable {
     return <String, dynamic>{
       'Company Name': companyName,
       'Role': roleName,
-      'Added By': 'Adam Drobot',
-      'Added on': '3rd Oct 2022',
+      'Added By': createdByUserName,
+      'Added on': createdOn,
     };
   }
 
@@ -81,8 +81,9 @@ class ProjectCompany extends Equatable {
       siteId: map['siteId'] ?? '',
       siteName: map['siteName'] ?? '',
       createdByUserName: map['createdByUserName'] ?? '',
-      createdOn:
-          FormatDate(dateString: map['createdOn'] ?? '', format: 'd MMMM y')
+      createdOn: map['createdOn'] == null
+          ? null
+          : FormatDate(dateString: map['createdOn'] ?? '', format: 'd MMMM y')
               .formatDate,
     );
   }

@@ -60,6 +60,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
       'Sites': _buildAssociatedSites(state),
       'Projects': _buildAssociatedProjects(state),
       'Audit Trail': Container(),
+      '': Container(),
     };
   }
 

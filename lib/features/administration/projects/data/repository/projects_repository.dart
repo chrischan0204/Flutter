@@ -94,7 +94,7 @@ class ProjectsRepository {
     if (assigned != null) {
       map.addEntries([MapEntry('assigned', assigned.toString())]);
     }
-    if (name != null) {
+    if (name != null && name.isNotEmpty) {
       map.addEntries([MapEntry('name', name)]);
     }
     Response response = await get(Uri.https(
@@ -122,20 +122,32 @@ class ProjectsRepository {
       body: projectCompanyAssignment.toJson(),
     );
 
-    if (response.statusCode == 200) {
-      return;
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }
 
-  unassignCompanyToProject(String projectCompanyAssignmentId) async {
+  unassignCompanyFromProject(String projectCompanyAssignmentId) async {
     Response response = await post(
       Uri.https(
           ApiUri.host, '$url/unassign/$projectCompanyAssignmentId/company'),
     );
 
-    if (response.statusCode == 200) {
-      return;
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
     }
     throw Exception();
   }

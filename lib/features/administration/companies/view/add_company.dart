@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safety_eta/features/administration/administration.dart';
 
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
-class AddEditCompanyView extends StatefulWidget {
-  final String? companyId;
-  final String? view;
-  const AddEditCompanyView({
+class AddCompanyView extends StatefulWidget {
+  const AddCompanyView({
     super.key,
-    this.companyId,
-    this.view,
   });
 
   @override
-  State<AddEditCompanyView> createState() => _AddEditCompanyViewState();
+  State<AddCompanyView> createState() => _AddCompanyViewState();
 }
 
-class _AddEditCompanyViewState extends State<AddEditCompanyView> {
+class _AddCompanyViewState extends State<AddCompanyView> {
   late CompaniesBloc companiesBloc;
   late SitesBloc sitesBloc;
-  late RolesBloc rolesBloc;
   TextEditingController companyNameController = TextEditingController(text: '');
   TextEditingController einNumberController = TextEditingController(text: '');
 
@@ -33,17 +27,13 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   bool isFirstInit = true;
 
   static String pageLabel = 'company';
+  static String addButtonName = 'Assign Sites';
 
   @override
   void initState() {
-    companiesBloc = context.read<CompaniesBloc>();
+    companiesBloc = context.read<CompaniesBloc>()
+      ..add(const CompanySelected(selectedCompany: Company()));
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
-    if (widget.companyId != null) {
-      companiesBloc.add(CompanySelectedById(companyId: widget.companyId!));
-      rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
-    } else {
-      companiesBloc.add(const CompanySelected(selectedCompany: Company()));
-    }
 
     super.initState();
   }
@@ -58,14 +48,13 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,
-          id: widget.companyId,
+          id: null,
           selectedEntity: state.selectedCompany,
           addEntity: () => _addCompany(state),
-          editEntity: () => _editCompany(state),
+          editEntity: () {},
+          addButtonName: addButtonName,
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.companyCrudStatus,
-          tabItems: widget.companyId == null ? {} : _buildTabs(state),
-          selectedTabIndex: widget.view == 'created' ? 1 : 0,
           child: Column(
             children: [
               _buildCompanyNameField(state),
@@ -77,39 +66,18 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     );
   }
 
-  Map<String, Widget> _buildTabs(CompaniesState state) {
-    return {
-      'Details': Container(),
-      'Sites': AssignSitesToCompanyView(
-        companyId: widget.companyId!,
-        companyName: state.selectedCompany?.name ?? '',
-        view: widget.view,
-      ),
-      'Projects': AssignProjectsToCompanyView(
-        companyId: widget.companyId!,
-        companyName: state.selectedCompany?.name ?? '',
-        view: widget.view,
-      ),
-      '': Container(),
-    };
-  }
-
   // check if some of fields are filled
   bool _checkFormDataFill() {
-    return widget.companyId == null
-        ? companyNameController.text.trim().isNotEmpty ||
-            einNumberController.text.trim().isNotEmpty
-        : true;
+    return companyNameController.text.trim().isNotEmpty ||
+        einNumberController.text.trim().isNotEmpty;
   }
 
   // change form data whenever the state changes
   void _changeFormData(CompaniesState state) {
     if (state.selectedCompany != null) {
       if (isFirstInit) {
-        companyNameController.text =
-            widget.companyId == null ? '' : state.selectedCompany!.name ?? '';
-        einNumberController.text =
-            widget.companyId == null ? '' : state.selectedCompany!.einNumber;
+        companyNameController.text = state.selectedCompany!.name ?? '';
+        einNumberController.text = state.selectedCompany!.einNumber;
         isFirstInit = false;
       }
     }
@@ -129,10 +97,8 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      if (widget.companyId == null) {
-        GoRouter.of(context)
-            .go('/companies/edit/${state.selectedCompany!.id}?view=created');
-      }
+      GoRouter.of(context).go(
+          '/companies/assign-sites?companyId=${state.selectedCompany!.id}&companyName=${state.selectedCompany!.name}');
     }
     if (state.companyCrudStatus == EntityStatus.failure) {
       if (state.message.contains('EIN')) {
@@ -210,8 +176,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       validated = false;
     }
 
-    if (einNumberController.text.isNotEmpty &&
-        !_checkEinNumber(einNumberController.text)) {
+    if (!_checkEinNumber(einNumberController.text)) {
       setState(() {
         einNumberValidationMessage =
             'EIN Field should allow only numbers, white space, dots and dashes in it. No alphabets and no other special characters.';
@@ -226,11 +191,5 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   void _addCompany(CompaniesState state) {
     if (!_validate()) return;
     companiesBloc.add(CompanyAdded(company: state.selectedCompany!));
-  }
-
-  // call even to edit company
-  void _editCompany(CompaniesState state) {
-    if (!_validate()) return;
-    companiesBloc.add(CompanyEdited(company: state.selectedCompany!));
   }
 }
