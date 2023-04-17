@@ -45,41 +45,46 @@ class _AssignProjectsToCompanyViewState
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
+          child: state.assignedCompanySites.isEmpty
+              ? const SizedBox(
+                  child: Text(
+                      'Please assign site to assign project to this company.'),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildAssignedProjectsTableViewHeader(),
-                        const CustomDivider(),
-                        _buildAssignedProjectsTableView(state, context),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildAssignedProjectsTableViewHeader(),
+                              const CustomDivider(),
+                              _buildAssignedProjectsTableView(state, context),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 150,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildUnassignedProjectsTableViewHeader(),
+                              const CustomDivider(),
+                              _buildFilterProjectView(state),
+                              const CustomDivider(),
+                              _buildUnassignedProjectsTableView(state),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 150,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildUnassignedProjectsTableViewHeader(),
-                        const CustomDivider(),
-                        _buildFilterProjectView(state),
-                        const CustomDivider(),
-                        _buildUnassignedProjectsTableView(state),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                  ],
+                ),
         );
       },
     );

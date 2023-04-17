@@ -88,11 +88,6 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
       ),
       DataColumn(
         label: Text(
-          'Role',
-        ),
-      ),
-      DataColumn(
-        label: Text(
           'Added By',
         ),
       ),

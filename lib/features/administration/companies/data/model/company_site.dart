@@ -55,7 +55,6 @@ class CompanySite extends Equatable {
   Map<String, dynamic> toTableDetailMap() {
     return {
       'siteName': siteName,
-      'roleName': roleName,
       'addedBy': createdOn,
       'addedOn': createdByUserName,
     };

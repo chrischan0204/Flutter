@@ -16,6 +16,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       'There was an error while editing project. Our team has been notified. Please wait a few minutes and try again.';
   static String deleteErrorMessage =
       'There was an error while deleting project. Our team has been notified. Please wait a few minutes and try again.';
+  static String assignCompanyToProjectErrorMessage =
+      'There was an error while assigning company to project. Our team has been notified. Please wait a few minutes and try again.';
   ProjectsBloc({
     required this.projectsRepository,
   }) : super(const ProjectsState()) {
@@ -257,8 +259,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         ));
       }
     } catch (e) {
-      emit(
-          state.copyWith(companyToProjectAssignedStatus: EntityStatus.failure));
+      emit(state.copyWith(
+        companyToProjectAssignedStatus: EntityStatus.failure,
+        message: assignCompanyToProjectErrorMessage,
+      ));
     }
   }
 
