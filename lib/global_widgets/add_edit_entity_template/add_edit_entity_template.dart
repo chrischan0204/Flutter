@@ -105,7 +105,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   CustomTab _buildTab() {
     return CustomTab(
-      initialIndex: widget.selectedTabIndex,
+      initialIndex: selectedTabIndex,
       onSelect: (int index) => setState(() {
         selectedTabIndex = index;
       }),

@@ -15,7 +15,8 @@ class CompanySite extends Equatable {
   final String roleName;
   final String? createdByUserName;
   final String? createdOn;
-  const CompanySite({
+  bool assigned;
+  CompanySite({
     this.id,
     required this.siteId,
     required this.siteName,
@@ -25,7 +26,7 @@ class CompanySite extends Equatable {
     required this.roleName,
     this.createdByUserName,
     this.createdOn,
-  });
+  }) : assigned = id != null;
 
   @override
   List<Object?> get props => [
@@ -38,6 +39,7 @@ class CompanySite extends Equatable {
         roleName,
         createdByUserName,
         createdOn,
+        assigned,
       ];
 
   Map<String, dynamic> toMap() {
@@ -55,7 +57,6 @@ class CompanySite extends Equatable {
   Map<String, dynamic> toTableDetailMap() {
     return {
       'siteName': siteName,
-      'roleName': roleName,
       'addedBy': createdOn,
       'addedOn': createdByUserName,
     };

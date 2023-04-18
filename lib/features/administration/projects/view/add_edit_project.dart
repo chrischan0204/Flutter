@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safety_eta/features/administration/administration.dart';
+
 
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
+import 'assign_companies_to_project.dart';
 
 class AddEditProjectView extends StatefulWidget {
   final String? projectId;
@@ -23,6 +24,7 @@ class AddEditProjectView extends StatefulWidget {
 class _AddEditProjectViewState extends State<AddEditProjectView> {
   late ProjectsBloc projectsBloc;
   late SitesBloc sitesBloc;
+  late RolesBloc rolesBloc;
   TextEditingController projectNameController = TextEditingController(text: '');
   TextEditingController referenceNumberController =
       TextEditingController(text: '');
@@ -45,6 +47,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       projectsBloc.add(
         ProjectSelectedById(projectId: widget.projectId!),
       );
+      rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     } else {
       projectsBloc.add(const ProjectSelected(selectedProject: Project()));
     }
@@ -89,7 +92,9 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       'Companies': AssignCompaniesToProjectView(
         projectId: widget.projectId!,
         projectName: state.selectedProject?.name ?? '',
+        view: widget.view,
       ),
+      '': Container(),
     };
   }
 
@@ -134,7 +139,8 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         content: state.message,
       ).showNotification();
       if (widget.projectId == null) {
-        GoRouter.of(context).go('/projects/edit/${state.selectedProject!.id}?view=created');
+        GoRouter.of(context)
+            .go('/projects/edit/${state.selectedProject!.id}?view=created');
       }
     }
     if (state.projectCrudStatus == EntityStatus.failure) {

@@ -185,21 +185,6 @@ class ProjectFromCompanyUnassigned extends CompaniesEvent {
       ];
 }
 
-class UnAssignedCompanySiteRoleSelected extends CompaniesEvent {
-  final Role role;
-  final int companySiteIndex;
-  const UnAssignedCompanySiteRoleSelected({
-    required this.role,
-    required this.companySiteIndex,
-  });
-
-  @override
-  List<Object?> get props => [
-        role,
-        companySiteIndex,
-      ];
-}
-
 class UnAssignedProjectCompanyRoleSelected extends CompaniesEvent {
   final Role role;
   final int projectCompanyIndex;

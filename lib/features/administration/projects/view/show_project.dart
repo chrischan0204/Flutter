@@ -23,14 +23,15 @@ class _ShowProjectViewState extends State<ShowProjectView> {
 
   static String pageTitle = 'Project';
   static String pageLabel = 'project';
+  static String descriptionForDelete =
+      'This item can not be deleted as it has companies assigned to it.';
 
   @override
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()
       ..add(ProjectSelectedById(projectId: widget.projectId))
-      ..add(ProjectCompanyRetrieved(
+      ..add(AssignedCompanyProjectsRetrieved(
         projectId: widget.projectId,
-        assigned: true,
       ));
     super.initState();
   }
@@ -51,6 +52,8 @@ class _ShowProjectViewState extends State<ShowProjectView> {
           tabItems: _buildTabs(state),
           entity: state.selectedProject,
           crudStatus: state.projectCrudStatus,
+          deletable: state.deletable,
+          descriptionForDelete: descriptionForDelete,
         );
       },
     );
@@ -60,11 +63,12 @@ class _ShowProjectViewState extends State<ShowProjectView> {
     return {
       'Project Details': Container(),
       'Associated Companies': _buildAssociatedCompanies(state),
+      '': Container(),
     };
   }
 
   Column _buildAssociatedCompanies(ProjectsState state) {
-    var rows = state.projectCompanies
+    var rows = state.assignedCompanyProjects
         .map(
           (projectCompany) => DataRow(
             cells: projectCompany
@@ -104,7 +108,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        state.projectCompanies.isNotEmpty
+        state.assignedCompanyProjects.isNotEmpty
             ? const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
@@ -117,9 +121,11 @@ class _ShowProjectViewState extends State<ShowProjectView> {
                 ),
               )
             : Container(),
-        state.projectCompanies.isNotEmpty ? const CustomDivider() : Container(),
+        state.assignedCompanyProjects.isNotEmpty
+            ? const CustomDivider()
+            : Container(),
         Container(
-          child: state.projectCompanies.isNotEmpty
+          child: state.assignedCompanyProjects.isNotEmpty
               ? DataTable(
                   headingTextStyle: tableHeadingTextStyle,
                   dataTextStyle: tableDataTextStyle,

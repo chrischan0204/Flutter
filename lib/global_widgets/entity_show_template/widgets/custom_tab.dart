@@ -214,11 +214,13 @@ class _CustomTabState extends State<CustomTab>
                 (slidersIndex) => GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    _slidersOnTap(
-                      widget.isAllContainerTap && widget.children.length == 2
-                          ? 1 - index
-                          : slidersIndex,
-                    );
+                    if (slidersIndex != widget.children.length - 1) {
+                      _slidersOnTap(
+                        widget.isAllContainerTap && widget.children.length == 2
+                            ? 1 - index
+                            : slidersIndex,
+                      );
+                    }
                   },
                   onHorizontalDragEnd: widget.direction == Axis.horizontal
                       ? (details) {

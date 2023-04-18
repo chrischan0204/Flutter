@@ -16,6 +16,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       'There was an error while editing project. Our team has been notified. Please wait a few minutes and try again.';
   static String deleteErrorMessage =
       'There was an error while deleting project. Our team has been notified. Please wait a few minutes and try again.';
+  static String assignCompanyToProjectErrorMessage =
+      'There was an error while assigning company to project. Our team has been notified. Please wait a few minutes and try again.';
   ProjectsBloc({
     required this.projectsRepository,
   }) : super(const ProjectsState()) {
@@ -30,8 +32,15 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     on<ProjectEdited>(_onProjectEdited);
     on<ProjectDeleted>(_onProjectDeleted);
     on<ProjectsSorted>(_onProjectsSorted);
-    on<ProjectCompanyRetrieved>(_onProjectCompaniesRetrieved);
+    on<AssignedCompanyProjectsRetrieved>(_onAssignedCompanyProjectsRetrieved);
+    on<UnassignedCompanyProjectsRetrieved>(
+        _onUnassignedCompanyProjectsRetrieved);
     on<ProjectsStatusInited>(_onProjectsStatusInited);
+    on<FilterTextForCompanyChanged>(_onFilterTextForCompanyChanged);
+    on<CompanyToProjectAssigned>(_onCompanyToProjectAssigned);
+    on<CompanyFromProjectUnassigned>(_onCompanyFromProjectUnassigned);
+    on<UnAssignedCompanyProjectRoleSelected>(
+        _onUnAssignedCompanyProjectRoleSelected);
   }
 
   Future<void> _onProjectsRetrieved(
@@ -165,22 +174,41 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onProjectCompaniesRetrieved(
-    ProjectCompanyRetrieved event,
+  void _onAssignedCompanyProjectsRetrieved(
+    AssignedCompanyProjectsRetrieved event,
     Emitter<ProjectsState> emit,
   ) async {
-    emit(state.copyWith(projectCompaniesRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(
+        assignedCompanyProjectsRetrievedStatus: EntityStatus.loading));
     try {
-      List<ProjectCompany> projectCompanies = await projectsRepository
-          .getCompaniesForProject(event.projectId, event.assigned, event.name);
+      List<ProjectCompany> assignedCompanyProjects = await projectsRepository
+          .getCompaniesForProject(event.projectId, true, event.name);
       emit(state.copyWith(
-        projectCompanies: projectCompanies,
-        projectCompaniesRetrievedStatus: EntityStatus.success,
+        assignedCompanyProjects: assignedCompanyProjects,
+        assignedCompanyProjectsRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      print(e);
       emit(state.copyWith(
-          projectCompaniesRetrievedStatus: EntityStatus.failure));
+          assignedCompanyProjectsRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  void _onUnassignedCompanyProjectsRetrieved(
+    UnassignedCompanyProjectsRetrieved event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(
+        unassignedCompanyProjectsRetrievedStatus: EntityStatus.loading));
+    try {
+      List<ProjectCompany> unassignedCompanyProjects = await projectsRepository
+          .getCompaniesForProject(event.projectId, false, event.name);
+      emit(state.copyWith(
+        unassignedCompanyProjects: unassignedCompanyProjects,
+        unassignedCompanyProjectsRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          unassignedCompanyProjectsRetrievedStatus: EntityStatus.failure));
     }
   }
 
@@ -209,5 +237,100 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         projectsRetrievedStatus: EntityStatus.initial,
       ),
     );
+  }
+
+  Future<void> _onCompanyToProjectAssigned(
+    CompanyToProjectAssigned event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(companyToProjectAssignedStatus: EntityStatus.loading));
+
+    final result = state.unassignedCompanyProjects.firstWhere(
+      (unassignedCompanyProject) =>
+          unassignedCompanyProject.companyId ==
+              event.projectCompanyAssignment.companyId &&
+          unassignedCompanyProject.roleId ==
+              event.projectCompanyAssignment.roleId,
+    );
+
+    try {
+      result.assigned = true;
+      EntityResponse response = await projectsRepository
+          .assignCompanyToProject(event.projectCompanyAssignment);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          companyToProjectAssignedStatus: EntityStatus.success,
+          message: response.message,
+        ));
+      } else {
+        emit(state.copyWith(
+          companyToProjectAssignedStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+        result.assigned = false;
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        companyToProjectAssignedStatus: EntityStatus.failure,
+        message: assignCompanyToProjectErrorMessage,
+      ));
+      result.assigned = false;
+    }
+  }
+
+  Future<void> _onCompanyFromProjectUnassigned(
+    CompanyFromProjectUnassigned event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(
+        companyFromProjectUnassignedStatus: EntityStatus.loading));
+    final result = state.assignedCompanyProjects.firstWhere(
+        (assignedCompanyProject) =>
+            assignedCompanyProject.id == event.projectCompanyAssignmentId);
+
+    try {
+      result.assigned = false;
+      EntityResponse response = await projectsRepository
+          .unassignCompanyFromProject(event.projectCompanyAssignmentId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          companyFromProjectUnassignedStatus: EntityStatus.success,
+          message: response.message,
+        ));
+      } else {
+        emit(state.copyWith(
+          companyFromProjectUnassignedStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+        result.assigned = true;
+      }
+    } catch (e) {
+      emit(state.copyWith(
+          companyFromProjectUnassignedStatus: EntityStatus.failure));
+      result.assigned = true;
+    }
+  }
+
+  Future<void> _onUnAssignedCompanyProjectRoleSelected(
+    UnAssignedCompanyProjectRoleSelected event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    List<ProjectCompany> unassignedCompanyProjects =
+        List.from(state.unassignedCompanyProjects);
+    int index = event.projectCompanyIndex;
+    unassignedCompanyProjects.replaceRange(index, index + 1, [
+      unassignedCompanyProjects[index].copyWith(
+        roleId: event.role.id,
+        roleName: event.role.name,
+      )
+    ]);
+    emit(state.copyWith(unassignedCompanyProjects: unassignedCompanyProjects));
+  }
+
+  void _onFilterTextForCompanyChanged(
+    FilterTextForCompanyChanged event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(filterText: event.filterText));
   }
 }

@@ -79,15 +79,71 @@ class ProjectsSorted extends ProjectsEvent {
       ];
 }
 
-class ProjectCompanyRetrieved extends ProjectsEvent {
+class AssignedCompanyProjectsRetrieved extends ProjectsEvent {
   final String projectId;
   final String? name;
-  final bool? assigned;
-  const ProjectCompanyRetrieved({
+  const AssignedCompanyProjectsRetrieved({
     required this.projectId,
     this.name,
-    this.assigned,
+  });
+}
+
+class UnassignedCompanyProjectsRetrieved extends ProjectsEvent {
+  final String projectId;
+  final String? name;
+  const UnassignedCompanyProjectsRetrieved({
+    required this.projectId,
+    this.name,
   });
 }
 
 class ProjectsStatusInited extends ProjectsEvent {}
+
+class FilterTextForCompanyChanged extends ProjectsEvent {
+  final String filterText;
+  const FilterTextForCompanyChanged({
+    required this.filterText,
+  });
+
+  @override
+  List<Object?> get props => [
+        filterText,
+      ];
+}
+
+class CompanyToProjectAssigned extends ProjectsEvent {
+  final ProjectCompanyAssignment projectCompanyAssignment;
+  const CompanyToProjectAssigned({
+    required this.projectCompanyAssignment,
+  });
+  @override
+  List<Object?> get props => [
+        projectCompanyAssignment,
+      ];
+}
+
+class CompanyFromProjectUnassigned extends ProjectsEvent {
+  final String projectCompanyAssignmentId;
+  const CompanyFromProjectUnassigned({
+    required this.projectCompanyAssignmentId,
+  });
+  @override
+  List<Object?> get props => [
+        projectCompanyAssignmentId,
+      ];
+}
+
+class UnAssignedCompanyProjectRoleSelected extends ProjectsEvent {
+  final Role role;
+  final int projectCompanyIndex;
+  const UnAssignedCompanyProjectRoleSelected({
+    required this.role,
+    required this.projectCompanyIndex,
+  });
+
+  @override
+  List<Object?> get props => [
+        role,
+        projectCompanyIndex,
+      ];
+}

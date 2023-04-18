@@ -45,43 +45,57 @@ class _AssignProjectsToCompanyViewState
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
+          child: state.assignedCompanySites.isEmpty
+              ? const SizedBox(
+                  child: Text(
+                      'Please assign site to assign project to this company.'),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildAssignedProjectsTableViewHeader(),
-                        const CustomDivider(),
-                        _buildAssignedProjectsTableView(state, context),
+                        _buildAssignedProjectsView(state, context),
+                        const SizedBox(
+                          width: 150,
+                        ),
+                        _buildUnassignedProjectsView(state),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 150,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildUnassignedProjectsTableViewHeader(),
-                        const CustomDivider(),
-                        _buildFilterProjectView(state),
-                        const CustomDivider(),
-                        _buildUnassignedProjectsTableView(state),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                  ],
+                ),
         );
       },
+    );
+  }
+
+  Expanded _buildUnassignedProjectsView(CompaniesState state) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildUnassignedProjectsTableViewHeader(),
+          const CustomDivider(),
+          _buildFilterProjectView(state),
+          const CustomDivider(),
+          _buildUnassignedProjectsTableView(state),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildAssignedProjectsView(
+      CompaniesState state, BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildAssignedProjectsTableViewHeader(),
+          const CustomDivider(),
+          _buildAssignedProjectsTableView(state, context),
+        ],
+      ),
     );
   }
 
@@ -127,31 +141,31 @@ class _AssignProjectsToCompanyViewState
           columns: tableColumns,
           rows: state.assignedProjectCompanies
               .map(
-                (projectCompany) => DataRow(
+                (assignedprojectCompany) => DataRow(
                   cells: [
                     DataCell(
                       CustomSwitch(
-                        switchValue: true,
+                        switchValue: assignedprojectCompany.assigned,
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,
-                        onChanged: (value) =>
-                            _unassignProjectFromCompany(projectCompany.id),
+                        onChanged: (value) => _unassignProjectFromCompany(
+                            assignedprojectCompany.id),
                       ),
                     ),
                     DataCell(
                       CustomDataCell(
-                        data: projectCompany.projectName,
+                        data: assignedprojectCompany.projectName,
                       ),
                     ),
                     DataCell(
                       CustomDataCell(
-                        data: projectCompany.siteName,
+                        data: assignedprojectCompany.siteName,
                       ),
                     ),
                     DataCell(
                       CustomDataCell(
-                        data: projectCompany.roleName,
+                        data: assignedprojectCompany.roleName,
                       ),
                     ),
                   ],
@@ -203,7 +217,7 @@ class _AssignProjectsToCompanyViewState
                             trueString: 'Yes',
                             falseString: 'No',
                             textColor: darkTeal,
-                            switchValue: false,
+                            switchValue: unassignedProjectCompany.assigned,
                             onChanged: (value) => _assignProjectToCompany(
                                 unassignedProjectCompany),
                           ),
