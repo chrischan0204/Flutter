@@ -48,43 +48,51 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildAssignedSitesTableViewHeader(state),
-                        const CustomDivider(),
-                        _buildAssignedSitesTableView(state, context),
-                      ],
-                    ),
-                  ),
+                  _buildAssignedSitesView(state, context),
                   const SizedBox(
                     width: 150,
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Sites can be assigned to this company by selecting from the list below.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const CustomDivider(),
-                        _buildFilterTextField(state),
-                        const CustomDivider(),
-                        _buildUnassignedSitesTableView(state),
-                      ],
-                    ),
-                  )
+                  _buildUnassignedSitesView(state)
                 ],
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Expanded _buildUnassignedSitesView(CompaniesState state) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Sites can be assigned to this company by selecting from the list below.',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const CustomDivider(),
+          _buildFilterTextField(state),
+          const CustomDivider(),
+          _buildUnassignedSitesTableView(state),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildAssignedSitesView(CompaniesState state, BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildAssignedSitesTableViewHeader(state),
+          const CustomDivider(),
+          _buildAssignedSitesTableView(state, context),
+        ],
+      ),
     );
   }
 
@@ -163,9 +171,10 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,
-                        switchValue: false,
-                        onChanged: (value) =>
-                            _assignSiteToCompany(unassignedCompanySite),
+                        switchValue: unassignedCompanySite.assigned,
+                        onChanged: (value) {
+                          _assignSiteToCompany(unassignedCompanySite);
+                        },
                       ),
                     ),
                     DataCell(
@@ -226,7 +235,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                   cells: [
                     DataCell(
                       CustomSwitch(
-                        switchValue: true,
+                        switchValue: assignedCompanySite.assigned,
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,

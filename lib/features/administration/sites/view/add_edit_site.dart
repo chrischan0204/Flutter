@@ -357,14 +357,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       });
 
       validated = false;
-    }
+    } else {
+      if (!(_checkAlphanumeric(siteName!))) {
+        setState(() {
+          siteNameValidationMessage = 'Site name should be only alphanumeric.';
+        });
 
-    if (!(_checkAlphanumeric(siteName!))) {
-      setState(() {
-        siteNameValidationMessage = 'Site name should be only alphanumeric.';
-      });
-
-      validated = false;
+        validated = false;
+      }
     }
 
     if (region == null ||
@@ -393,7 +393,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
 
       validated = false;
     }
-
     if (siteCode == null ||
         (siteCode != null && (siteCode!.isEmpty || siteCode!.trim().isEmpty))) {
       setState(() {
@@ -401,14 +400,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       });
 
       validated = false;
-    }
+    } else {
+      if (!(_checkAlphanumeric(siteCode!))) {
+        setState(() {
+          siteCodeValidationMessage = 'Site code should be only alphanumeric.';
+        });
 
-    if (!(_checkAlphanumeric(siteCode!))) {
-      setState(() {
-        siteCodeValidationMessage = 'Site code should be only alphanumeric.';
-      });
-
-      validated = false;
+        validated = false;
+      }
     }
 
     return validated;

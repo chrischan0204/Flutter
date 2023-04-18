@@ -13,6 +13,8 @@ class Entity extends Equatable {
   final bool active;
   final String? createdOn;
   final String? createdByUserName;
+  final String? lastModifiedByUserName;
+  final String? lastModifiedOn;
 
   const Entity({
     this.id,
@@ -22,27 +24,35 @@ class Entity extends Equatable {
     this.active = true,
     this.createdByUserName,
     this.createdOn,
+    this.lastModifiedByUserName,
+    this.lastModifiedOn,
   });
 
   // constructor to create entity from map
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
-      id: map['id'] != null ? map['id'] as String : null,
-      name: map['name'] != null ? map['name'] as String : null,
-      active: map['active'] != null ? map['active'] as bool : true,
-      deactivationDate: map['deactivationDate'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['deactivationDate'])
-              .formatDate
-          : null,
-      deactivationUserName: map['deactivationUserName'] != null
-          ? map['deactivationUserName'] as String
-          : null,
-      createdByUserName: map['createdByUserName'],
-      createdOn: map['createdOn'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
-              .formatDate
-          : null,
-    );
+        id: map['id'] != null ? map['id'] as String : null,
+        name: map['name'] != null ? map['name'] as String : null,
+        active: map['active'] != null ? map['active'] as bool : true,
+        deactivationDate: map['deactivationDate'] != null
+            ? FormatDate(
+                    format: 'd MMMM y', dateString: map['deactivationDate'])
+                .formatDate
+            : '',
+        deactivationUserName: map['deactivationUserName'] != null
+            ? map['deactivationUserName'] as String
+            : '',
+        createdByUserName: map['createdByUserName'] ?? '',
+        createdOn: map['createdOn'] != null
+            ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
+                .formatDate
+            : '',
+        lastModifiedOn: map['lastModifiedOn'] != null
+            ? FormatDate(
+                    format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
+                .formatDate
+            : '',
+        lastModifiedByUserName: map['lastModifiedByUserName'] ?? '');
   }
 
   // return the entity object as map

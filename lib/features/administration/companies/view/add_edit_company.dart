@@ -138,10 +138,12 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       if (state.message.contains('EIN')) {
         setState(() {
           einNumberValidationMessage = state.message;
+          companyNameValidationMessage = '';
         });
       } else {
         setState(() {
           companyNameValidationMessage = state.message;
+          einNumberValidationMessage = '';
         });
       }
       companiesBloc.add(CompaniesStatusInited());

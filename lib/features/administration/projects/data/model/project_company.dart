@@ -17,7 +17,8 @@ class ProjectCompany extends Equatable {
   final String roleName;
   final String createdByUserName;
   final String? createdOn;
-  const ProjectCompany({
+  bool assigned;
+  ProjectCompany({
     required this.id,
     required this.projectId,
     this.projectName = '',
@@ -29,7 +30,7 @@ class ProjectCompany extends Equatable {
     this.roleName = '',
     this.createdByUserName = '',
     this.createdOn,
-  });
+  }) : assigned = id.isNotEmpty;
 
   @override
   List<Object?> get props => [
@@ -44,6 +45,7 @@ class ProjectCompany extends Equatable {
         roleName,
         createdByUserName,
         createdOn,
+        assigned,
       ];
 
   Map<String, dynamic> toTableDetailMap() {
@@ -82,7 +84,7 @@ class ProjectCompany extends Equatable {
       siteName: map['siteName'] ?? '',
       createdByUserName: map['createdByUserName'] ?? '',
       createdOn: map['createdOn'] == null
-          ? null
+          ? ''
           : FormatDate(dateString: map['createdOn'] ?? '', format: 'd MMMM y')
               .formatDate,
     );

@@ -18,6 +18,8 @@ class Company extends Entity {
     super.deactivationUserName,
     super.createdByUserName,
     super.createdOn,
+    super.lastModifiedByUserName,
+    super.lastModifiedOn,
   });
 
   @override
@@ -35,6 +37,8 @@ class Company extends Entity {
     String? deactivationUserName,
     String? createdOn,
     String? createdByUserName,
+    String? lastModifiedByUserName,
+    String? lastModifiedOn,
   }) {
     return Company(
       id: id ?? this.id,
@@ -45,6 +49,9 @@ class Company extends Entity {
       deactivationUserName: deactivationUserName ?? this.deactivationUserName,
       createdByUserName: createdByUserName ?? this.createdByUserName,
       createdOn: createdOn ?? this.createdOn,
+      lastModifiedByUserName:
+          lastModifiedByUserName ?? this.lastModifiedByUserName,
+      lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
     );
   }
 
@@ -52,8 +59,8 @@ class Company extends Entity {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'name': name,
-      'einNumber': einNumber,
       'active': active,
+      'einNumber': einNumber,
     };
     if (id != null) {
       map.addEntries([MapEntry('id', id)]);
@@ -80,8 +87,8 @@ class Company extends Entity {
       'Active': active,
       'Created On': createdOn,
       'Created By': createdByUserName,
-      'Last updated': '9/19/2021',
-      'Updated By': 'Hesh Carlson',
+      'Last updated': lastModifiedByUserName,
+      'Updated By': lastModifiedOn,
     };
   }
 
@@ -108,6 +115,8 @@ class Company extends Entity {
       deactivationUserName: entity.deactivationUserName,
       createdByUserName: entity.createdByUserName,
       createdOn: entity.createdOn,
+      lastModifiedByUserName: entity.lastModifiedByUserName,
+      lastModifiedOn: entity.lastModifiedOn,
     );
   }
 

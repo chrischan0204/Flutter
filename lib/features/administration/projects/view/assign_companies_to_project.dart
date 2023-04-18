@@ -156,7 +156,7 @@ class _AssignCompaniesToProjectViewState
                             trueString: 'Yes',
                             falseString: 'No',
                             textColor: darkTeal,
-                            switchValue: false,
+                            switchValue: unassignedProjectCompany.assigned,
                             onChanged: (value) => _assignCompanyToProject(
                                 unassignedProjectCompany),
                           ),
@@ -248,7 +248,7 @@ class _AssignCompaniesToProjectViewState
                   cells: [
                     DataCell(
                       CustomSwitch(
-                        switchValue: true,
+                        switchValue: assignedProjectCompany.assigned,
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,

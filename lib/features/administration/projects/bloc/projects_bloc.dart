@@ -244,7 +244,17 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     Emitter<ProjectsState> emit,
   ) async {
     emit(state.copyWith(companyToProjectAssignedStatus: EntityStatus.loading));
+
+    final result = state.unassignedCompanyProjects.firstWhere(
+      (unassignedCompanyProject) =>
+          unassignedCompanyProject.companyId ==
+              event.projectCompanyAssignment.companyId &&
+          unassignedCompanyProject.roleId ==
+              event.projectCompanyAssignment.roleId,
+    );
+
     try {
+      result.assigned = true;
       EntityResponse response = await projectsRepository
           .assignCompanyToProject(event.projectCompanyAssignment);
       if (response.isSuccess) {
@@ -257,12 +267,14 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
           companyToProjectAssignedStatus: EntityStatus.failure,
           message: response.message,
         ));
+        result.assigned = false;
       }
     } catch (e) {
       emit(state.copyWith(
         companyToProjectAssignedStatus: EntityStatus.failure,
         message: assignCompanyToProjectErrorMessage,
       ));
+      result.assigned = false;
     }
   }
 
@@ -272,7 +284,12 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ) async {
     emit(state.copyWith(
         companyFromProjectUnassignedStatus: EntityStatus.loading));
+    final result = state.assignedCompanyProjects.firstWhere(
+        (assignedCompanyProject) =>
+            assignedCompanyProject.id == event.projectCompanyAssignmentId);
+
     try {
+      result.assigned = false;
       EntityResponse response = await projectsRepository
           .unassignCompanyFromProject(event.projectCompanyAssignmentId);
       if (response.isSuccess) {
@@ -285,10 +302,12 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
           companyFromProjectUnassignedStatus: EntityStatus.failure,
           message: response.message,
         ));
+        result.assigned = true;
       }
     } catch (e) {
       emit(state.copyWith(
           companyFromProjectUnassignedStatus: EntityStatus.failure));
+      result.assigned = true;
     }
   }
 
