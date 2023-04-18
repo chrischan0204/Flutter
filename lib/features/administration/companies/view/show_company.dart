@@ -23,6 +23,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
 
   static String pageTitle = 'Company';
   static String pageLabel = 'company';
+  static String descriptionForDelete =
+      'This item can not be deleted as it has sites assigned to it.';
 
   @override
   void initState() {
@@ -49,6 +51,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
           tabItems: _buildTabs(state),
           entity: state.selectedCompany,
           crudStatus: state.companyCrudStatus,
+          deletable: state.deletable,
+          descriptionForDelete: descriptionForDelete,
         );
       },
     );

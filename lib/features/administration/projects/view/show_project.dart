@@ -23,6 +23,8 @@ class _ShowProjectViewState extends State<ShowProjectView> {
 
   static String pageTitle = 'Project';
   static String pageLabel = 'project';
+  static String descriptionForDelete =
+      'This item can not be deleted as it has companies assigned to it.';
 
   @override
   void initState() {
@@ -50,6 +52,8 @@ class _ShowProjectViewState extends State<ShowProjectView> {
           tabItems: _buildTabs(state),
           entity: state.selectedProject,
           crudStatus: state.projectCrudStatus,
+          deletable: state.deletable,
+          descriptionForDelete: descriptionForDelete,
         );
       },
     );

@@ -47,6 +47,8 @@ class ProjectsState extends Equatable {
         filterText,
       ];
 
+  bool get deletable => assignedCompanyProjects.isEmpty;
+
   ProjectsState copyWith({
     List<Project>? projects,
     List<ProjectCompany>? assignedCompanyProjects,

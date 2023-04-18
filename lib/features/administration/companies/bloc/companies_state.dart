@@ -68,6 +68,8 @@ class CompaniesState extends Equatable {
         filterSiteId,
       ];
 
+  bool get deletable => assignedCompanySites.isEmpty;
+
   CompaniesState copyWith({
     List<Company>? companies,
     List<CompanySite>? assignedCompanySites,
