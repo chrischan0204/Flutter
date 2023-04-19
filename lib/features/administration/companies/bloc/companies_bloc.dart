@@ -48,6 +48,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<CompaniesStatusInited>(_onCompaniesStatusInited);
     on<FilterTextChanged>(_onFilterTextChanged);
     on<FilterSiteIdChanged>(_onFilterSiteIdChanged);
+    on<AuditTrailsRetrievedByCompanyId>(_onAuditTrailsRetrievedByCompanyId);
   }
 
   // get companies list from repository
@@ -476,5 +477,26 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     Emitter<CompaniesState> emit,
   ) {
     emit(state.copyWith(filterSiteId: event.siteId));
+  }
+
+  void _onAuditTrailsRetrievedByCompanyId(
+    AuditTrailsRetrievedByCompanyId event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(auditTrailsRerievedStatus: EntityStatus.loading));
+
+    try {
+      List<AuditTrail> auditTrails =
+          await companiesRepository.getAuditTrailsByCompanyId(event.companyId);
+      emit(state.copyWith(
+        auditTrails: auditTrails,
+        auditTrailsRerievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        auditTrailsRerievedStatus: EntityStatus.failure,
+        auditTrails: [],
+      ));
+    }
   }
 }

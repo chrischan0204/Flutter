@@ -220,8 +220,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   }
 
   void _selectProject(Entity selectedProject) {
-    projectsBloc
-        .add(ProjectSelected(selectedProject: selectedProject as Project));
+    projectsBloc.add(ProjectSelectedById(projectId: selectedProject.id!));
   }
 
   Wrap _buildFilterResultBody() {

@@ -223,3 +223,15 @@ class FilterSiteIdChanged extends CompaniesEvent {
         siteId,
       ];
 }
+
+class AuditTrailsRetrievedByCompanyId extends CompaniesEvent {
+  final String companyId;
+  const AuditTrailsRetrievedByCompanyId({
+    required this.companyId,
+  });
+
+  @override
+  List<Object?> get props => [
+        companyId,
+      ];
+}

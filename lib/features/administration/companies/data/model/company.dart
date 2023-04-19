@@ -82,8 +82,8 @@ class Company extends Entity {
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
       'EIN #': einNumber,
-      'Sites': sites,
-      'Projects (last 10)': projects,
+      'Sites': {'content': sites},
+      'Projects (last 10)': {'content': projects},
       'Active': active,
       'Created On': createdOn,
       'Created By': createdByUserName,

@@ -40,7 +40,7 @@ class CustomDataCell extends StatelessWidget {
         fontWeight: FontWeight.w400,
         fontFamily: 'OpenSans',
       ),
-      maxLines: 2,
+      maxLines: 3,
       softWrap: true,
       overflow: TextOverflow.ellipsis,
     );
