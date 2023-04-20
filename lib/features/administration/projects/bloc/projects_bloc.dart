@@ -221,8 +221,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     projects.sort(
       (a, b) {
         return (event.sortType ? 1 : -1) *
-            (a.tableItemsToMap()[event.column].toString())
-                .compareTo(b.tableItemsToMap()[event.column].toString());
+            (a.tableItemsToMap()[event.column].toString().toLowerCase())
+                .compareTo(b.tableItemsToMap()[event.column].toString().toLowerCase());
       },
     );
     emit(state.copyWith(projects: projects));

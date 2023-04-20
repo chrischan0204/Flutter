@@ -131,9 +131,8 @@ class _ShowProjectViewState extends State<ShowProjectView> {
                   : Container(),
               Container(
                 child: state.assignedCompanyProjects.isNotEmpty
-                    ? DataTable(
-                        headingTextStyle: tableHeadingTextStyle,
-                        dataTextStyle: tableDataTextStyle,
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 340,
                         columns: columns,
                         rows: rows,
                       )

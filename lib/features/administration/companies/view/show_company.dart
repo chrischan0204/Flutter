@@ -102,7 +102,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
         ),
       ),
     ];
-    return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
+    return state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
             child: Center(child: CircularProgressIndicator()),
@@ -128,9 +128,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                   : Container(),
               Container(
                 child: state.assignedCompanySites.isNotEmpty
-                    ? DataTable(
-                        headingTextStyle: tableHeadingTextStyle,
-                        dataTextStyle: tableDataTextStyle,
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 337,
                         columns: columns,
                         rows: rows,
                       )
@@ -243,9 +242,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                   : Container(),
               Container(
                 child: state.assignedProjectCompanies.isNotEmpty
-                    ? DataTable(
-                        headingTextStyle: tableHeadingTextStyle,
-                        dataTextStyle: tableDataTextStyle,
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 337,
                         columns: columns,
                         rows: rows,
                       )
@@ -348,9 +346,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                   : Container(),
               Container(
                 child: state.auditTrails.isNotEmpty
-                    ? DataTable(
-                        headingTextStyle: tableHeadingTextStyle,
-                        dataTextStyle: tableDataTextStyle,
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 337,
                         columns: columns,
                         rows: rows,
                       )

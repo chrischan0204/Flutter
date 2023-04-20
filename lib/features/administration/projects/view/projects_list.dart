@@ -72,6 +72,13 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   void _clearFilter() {
     setState(() {
       filterApplied = false;
+      filterRegions = [];
+      filterSites = [];
+      filterContractors = [];
+      filterActive = true;
+      filterNameHasController.text = '';
+      filterRefCodeController.text = '';
+      filterRefNameController.text = '';
     });
   }
 

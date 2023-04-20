@@ -426,8 +426,8 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     companies.sort(
       (a, b) {
         return (event.sortType ? 1 : -1) *
-            (a.tableItemsToMap()[event.column].toString())
-                .compareTo(b.tableItemsToMap()[event.column].toString());
+            (a.tableItemsToMap()[event.column].toString().toLowerCase())
+                .compareTo(b.tableItemsToMap()[event.column].toString().toLowerCase());
       },
     );
     emit(state.copyWith(companies: companies));
