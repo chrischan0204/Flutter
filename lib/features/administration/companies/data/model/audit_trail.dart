@@ -26,8 +26,8 @@ class AuditTrail extends Entity {
     Entity entity = Entity.fromMap(map);
     return AuditTrail(
       action: map['action'],
-      oldValue: map['oldValue'],
-      newValue: map['newValue'],
+      oldValue: map['oldValue'] ?? '--',
+      newValue: map['newValue'] ?? '--',
       description: map['description'],
       lastModifiedByUserName: entity.lastModifiedByUserName,
       lastModifiedOn: entity.lastModifiedOn,

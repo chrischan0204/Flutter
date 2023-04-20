@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/constants.dart';
@@ -135,9 +136,8 @@ class _AssignProjectsToCompanyViewState
         listenWhen: (previous, current) =>
             previous.projectFromCompanyUnassignedStatus !=
             current.projectFromCompanyUnassignedStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
+        child: TableView(
+          height: MediaQuery.of(context).size.height - 357,
           columns: tableColumns,
           rows: state.assignedProjectCompanies
               .map(
