@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../companies/view/widgets/filter_textfield.dart';
+import '../../../../global_widgets/entities_list_template/widgets/filter_textfield.dart';
 import '/utils/utils.dart';
 import '/constants/constants.dart';
 import '/data/model/model.dart';
