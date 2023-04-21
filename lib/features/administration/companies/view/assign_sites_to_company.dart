@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/constants/constants.dart';
-import './widgets/filter_textfield.dart';
 import '/data/model/model.dart';
 import '/utils/utils.dart';
 import '/global_widgets/global_widget.dart';

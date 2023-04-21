@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 import 'package:safety_eta/utils/utils.dart';
 
 // standadized model, which other models inherit
@@ -75,11 +74,14 @@ class Entity extends Equatable {
 
   // return side detail amp
   Map<String, dynamic> detailItemsToMap() {
-    if (!active && deactivationDate != null && deactivationUserName != null) {
+    if (!active &&
+        deactivationDate != null &&
+        deactivationUserName != null &&
+        deactivationDate!.isNotEmpty &&
+        deactivationUserName!.isNotEmpty) {
       return <String, dynamic>{
         'Active': active,
-        'Deactivated':
-            'By: $deactivationUserName on ${DateFormat('d MMMM y', 'en_US').format(DateTime.parse(deactivationDate!))}',
+        'Deactivated': 'By: $deactivationUserName on $deactivationDate',
       };
     }
     return {

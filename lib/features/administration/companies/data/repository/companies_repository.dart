@@ -222,4 +222,15 @@ class CompaniesRepository {
     }
     return [];
   }
+
+  Future<List<AuditTrail>> getAuditTrailsByCompanyId(String companyId) async {
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/$companyId/AuditTrails'));
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((auditTrailMap) => AuditTrail.fromMap(auditTrailMap))
+          .toList();
+    }
+    return [];
+  }
 }

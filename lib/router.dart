@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:safety_eta/features/administration/projects/view/show_project.dart';
+import 'package:go_router/go_router.dart';
 
 import '/features/features.dart';
-import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
   routes: [
@@ -10,24 +9,6 @@ final GoRouter router = GoRouter(
       path: '/',
       redirect: (_, __) => '/dashboard',
     ),
-    // ...SidebarRepsitory.getItems()
-    //     .map(
-    //       (e) => GoRoute(
-    //         path: '/${e.path}',
-    //         pageBuilder: (context, state) => NoTransitionPage<void>(
-    //           key: state.pageKey,
-    //           child: Layout(
-    //             body: e.body,
-    //             title: e.label,
-    //             selectedItemName: e.path,
-    //           ),
-    //         ),
-    //         routes: [
-    //           GoRoute(path: path)
-    //         ],
-    //       ),
-    //     )
-    //     .toList()
     GoRoute(
       path: '/dashboard',
       pageBuilder: (context, state) => NoTransitionPage<void>(
@@ -38,7 +19,6 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
-
     GoRoute(
       path: '/observations',
       pageBuilder: (context, state) => NoTransitionPage<void>(
@@ -480,7 +460,6 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
-
     GoRoute(
       path: '/awareness-categories',
       pageBuilder: (context, state) => NoTransitionPage<void>(
@@ -538,8 +517,18 @@ final GoRouter router = GoRouter(
       path: '/users',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
-          body: Users(),
+        child: const Layout(
+          body: UsersListView(),
+          selectedItemName: 'users',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/users/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: UsersListView(),
           selectedItemName: 'users',
         ),
       ),
@@ -568,8 +557,8 @@ final GoRouter router = GoRouter(
   // errorBuilder: (context, state) => Container(
   //   child: Text('Page not found.'),
   // ),
-  errorPageBuilder: (context, state) => NoTransitionPage<void>(
-    child: Container(
+  errorPageBuilder: (context, state) => const NoTransitionPage<void>(
+    child: Center(
       child: Text('Page not found.'),
     ),
   ),

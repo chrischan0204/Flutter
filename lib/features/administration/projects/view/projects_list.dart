@@ -72,6 +72,13 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   void _clearFilter() {
     setState(() {
       filterApplied = false;
+      filterRegions = [];
+      filterSites = [];
+      filterContractors = [];
+      filterActive = true;
+      filterNameHasController.text = '';
+      filterRefCodeController.text = '';
+      filterRefNameController.text = '';
     });
   }
 
@@ -220,8 +227,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   }
 
   void _selectProject(Entity selectedProject) {
-    projectsBloc
-        .add(ProjectSelected(selectedProject: selectedProject as Project));
+    projectsBloc.add(ProjectSelectedById(projectId: selectedProject.id!));
   }
 
   Wrap _buildFilterResultBody() {

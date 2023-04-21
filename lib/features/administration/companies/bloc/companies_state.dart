@@ -11,6 +11,8 @@ class CompaniesState extends Equatable {
   final EntityStatus assignedProjectCompaniesRetrievedStatus;
   final List<ProjectCompany> unassignedProjectCompanies;
   final EntityStatus unassignedProjectCompaniesRetrievedStatus;
+  final List<AuditTrail> auditTrails;
+  final EntityStatus auditTrailsRerievedStatus;
   final EntityStatus siteToCompanyAssignedStatus;
   final EntityStatus siteFromCompanyUnassignedStatus;
   final EntityStatus projectToCompanyAssignedStatus;
@@ -27,6 +29,7 @@ class CompaniesState extends Equatable {
     this.unassignedCompanySites = const [],
     this.assignedProjectCompanies = const [],
     this.unassignedProjectCompanies = const [],
+    this.auditTrails = const [],
     this.selectedCompany,
     this.companiesRetrievedStatus = EntityStatus.initial,
     this.projectToCompanyAssignedStatus = EntityStatus.initial,
@@ -37,6 +40,7 @@ class CompaniesState extends Equatable {
     this.unassignedCompanySitesRetrievedStatus = EntityStatus.initial,
     this.assignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
     this.unassignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
+    this.auditTrailsRerievedStatus = EntityStatus.initial,
     this.companyCrudStatus = EntityStatus.initial,
     this.companySelectedStatus = EntityStatus.initial,
     this.filterText = '',
@@ -51,12 +55,14 @@ class CompaniesState extends Equatable {
         unassignedCompanySites,
         assignedProjectCompanies,
         unassignedProjectCompanies,
+        auditTrails,
         selectedCompany,
         companiesRetrievedStatus,
         siteToCompanyAssignedStatus,
         siteFromCompanyUnassignedStatus,
         projectToCompanyAssignedStatus,
         projectFromCompanyUnassignedStatus,
+        auditTrailsRerievedStatus,
         assignedCompanySitesRetrievedStatus,
         assignedProjectCompaniesRetrievedStatus,
         unassignedCompanySitesRetrievedStatus,
@@ -76,6 +82,7 @@ class CompaniesState extends Equatable {
     List<ProjectCompany>? assignedProjectCompanies,
     List<CompanySite>? unassignedCompanySites,
     List<ProjectCompany>? unassignedProjectCompanies,
+    List<AuditTrail>? auditTrails,
     Company? selectedCompany,
     EntityStatus? companiesRetrievedStatus,
     EntityStatus? companySelectedStatus,
@@ -88,6 +95,7 @@ class CompaniesState extends Equatable {
     EntityStatus? assignedCompanySitesRetrievedStatus,
     EntityStatus? unassignedProjectCompaniesRetrievedStatus,
     EntityStatus? unassignedCompanySitesRetrievedStatus,
+    EntityStatus? auditTrailsRerievedStatus,
     String? message,
     String? filterText,
     String? filterSiteId,
@@ -99,6 +107,7 @@ class CompaniesState extends Equatable {
           assignedProjectCompanies ?? this.assignedProjectCompanies,
       unassignedCompanySites:
           unassignedCompanySites ?? this.unassignedCompanySites,
+      auditTrails: auditTrails ?? this.auditTrails,
       unassignedProjectCompanies:
           unassignedProjectCompanies ?? this.unassignedProjectCompanies,
       assignedCompanySitesRetrievedStatus:
@@ -113,6 +122,8 @@ class CompaniesState extends Equatable {
       unassignedProjectCompaniesRetrievedStatus:
           unassignedProjectCompaniesRetrievedStatus ??
               this.unassignedProjectCompaniesRetrievedStatus,
+      auditTrailsRerievedStatus:
+          auditTrailsRerievedStatus ?? this.auditTrailsRerievedStatus,
       selectedCompany: selectedCompany ?? this.selectedCompany,
       companiesRetrievedStatus:
           companiesRetrievedStatus ?? this.companiesRetrievedStatus,

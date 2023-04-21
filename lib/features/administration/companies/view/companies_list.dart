@@ -70,6 +70,11 @@ class _CompaniesListViewState extends State<CompaniesListView> {
   void _clearFilter() {
     setState(() {
       filterApplied = false;
+      filterRegions = [];
+      filterSites = [];
+      filterProjects = [];
+      filterActive = true;
+      filterNameHasController.text = '';
     });
   }
 

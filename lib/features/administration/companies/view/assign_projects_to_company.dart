@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/constants.dart';
@@ -5,7 +6,6 @@ import '/data/model/model.dart';
 import '/utils/utils.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
-import 'widgets/filter_textfield.dart';
 
 class AssignProjectsToCompanyView extends StatefulWidget {
   final String companyId;
@@ -135,9 +135,8 @@ class _AssignProjectsToCompanyViewState
         listenWhen: (previous, current) =>
             previous.projectFromCompanyUnassignedStatus !=
             current.projectFromCompanyUnassignedStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
+        child: TableView(
+          height: MediaQuery.of(context).size.height - 357,
           columns: tableColumns,
           rows: state.assignedProjectCompanies
               .map(

@@ -267,7 +267,8 @@ class _CrudState extends State<EntityListTemplate> {
       curve: Curves.easeInOut,
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
-        height: 1000,
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
@@ -338,7 +339,8 @@ class _CrudState extends State<EntityListTemplate> {
       curve: Curves.easeInOut,
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
-        height: 1000,
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
@@ -387,8 +389,8 @@ class _CrudState extends State<EntityListTemplate> {
       curve: Curves.easeInOut,
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
-        // height: MediaQuery.of(context).size.height,
-        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
@@ -433,8 +435,11 @@ class _CrudState extends State<EntityListTemplate> {
                     .map(
                       (detail) => DetailItem(
                         label: detail.key,
+                        isTwoLine: detail.value is Map,
                         content: CustomDataCell(
-                          data: detail.value,
+                          data: detail.value is Map
+                              ? detail.value['content']
+                              : detail.value,
                         ),
                       ),
                     )

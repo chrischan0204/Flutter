@@ -204,9 +204,9 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
               backgroundColor: const Color(0xff059669),
               hoverBackgroundColor: const Color(0xff05875f),
               iconData: PhosphorIcons.arrowRight,
-              text: widget.addButtonName ??
-                  widget.editButtonName ??
-                  '${widget.id == null ? 'Add' : 'Edit'} ${camelize(widget.label)}',
+              text: widget.id == null
+                  ? widget.addButtonName ?? 'Add ${camelize(widget.label)}'
+                  : widget.editButtonName ?? 'Edit ${camelize(widget.label)}',
               onClick: () {
                 if (widget.id != null) {
                   widget.editEntity();

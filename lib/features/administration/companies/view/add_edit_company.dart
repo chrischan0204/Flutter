@@ -33,6 +33,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   bool isFirstInit = true;
 
   static String pageLabel = 'company';
+  static String editButtonName = 'Update Details';
 
   @override
   void initState() {
@@ -65,6 +66,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.companyCrudStatus,
           tabItems: widget.companyId == null ? {} : _buildTabs(state),
+          editButtonName: editButtonName,
           selectedTabIndex: widget.view == 'created' ? 1 : 0,
           child: Column(
             children: [

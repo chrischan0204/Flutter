@@ -54,18 +54,14 @@ class _LayoutState extends State<Layout> {
                 ),
               )
             : null,
-        body: ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-          }),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            controller: _scrollController,
-            child: Column(
-              children: [
-                const Topbar(),
-                Row(
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              const Topbar(),
+              Expanded(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     constraints.maxWidth < 1000
@@ -75,15 +71,15 @@ class _LayoutState extends State<Layout> {
                           ),
                     Expanded(
                       child: Container(
-                        constraints:
-                            BoxConstraints(minHeight: constraints.maxHeight),
+                        // constraints:
+                        //     BoxConstraints(minHeight: constraints.maxHeight),
                         child: widget.body,
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

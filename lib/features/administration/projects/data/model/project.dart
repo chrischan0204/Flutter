@@ -11,12 +11,9 @@ class Project extends Entity {
   final String referenceNumber;
   final String referneceName;
   final int companyCount;
-  final String? createdOn;
-  final String? createdByUserName;
-  final String? lastModifiedOn;
   final String? updatedByUserName;
   final String timeZoneName;
-  final String contractors;
+  final String companies;
 
   const Project({
     super.id,
@@ -31,11 +28,11 @@ class Project extends Entity {
     super.deactivationDate,
     super.deactivationUserName,
     this.companyCount = 0,
-    this.createdOn,
-    this.createdByUserName,
-    this.lastModifiedOn,
+    super.createdOn,
+    super.createdByUserName,
+    super.lastModifiedOn,
     this.updatedByUserName,
-    this.contractors = '',
+    this.companies = '',
   });
 
   @override
@@ -56,7 +53,7 @@ class Project extends Entity {
         createdByUserName,
         lastModifiedOn,
         updatedByUserName,
-        contractors,
+        companies,
       ];
 
   @override
@@ -79,7 +76,7 @@ class Project extends Entity {
       'Name': name,
       'Region': regionName,
       'Site': siteName,
-      'Contractors': contractors.length,
+      'Companies': companyCount,
     };
   }
 
@@ -96,7 +93,7 @@ class Project extends Entity {
       'Created By': createdByUserName,
       'Last updated': lastModifiedOn,
       'Updated By': updatedByUserName,
-      'Contractors': contractors,
+      'Companies': {'content': companies},
     };
   }
 
@@ -106,7 +103,7 @@ class Project extends Entity {
       'Name': name,
       'Site': siteName,
       'Region': regionName,
-      'Time Zone': active,
+      'Time Zone': timeZoneName,
       'Reference Code': referenceNumber,
       'Reference Name': referneceName,
       'Companies': companyCount,
@@ -124,9 +121,11 @@ class Project extends Entity {
           map['regionName'] == null ? '' : (map['regionName'] as String),
       siteId: map['siteId'] as String,
       siteName: map['siteName'] as String,
+      timeZoneName: map['timeZoneName'] ?? '',
       referenceNumber: map['referenceNumber'] as String,
       referneceName: map['referenceName'] as String,
       companyCount: map['companyCount'] as int,
+      companies: map['contractors'] ?? '',
       createdOn: map['createdOn'] == null
           ? ''
           : FormatDate(
@@ -159,6 +158,7 @@ class Project extends Entity {
     String? id,
     String? name,
     String? regionName,
+    String? companies,
     String? regionId,
     String? siteName,
     String? siteId,
@@ -173,6 +173,7 @@ class Project extends Entity {
       id: id ?? this.id,
       name: name ?? this.name,
       regionName: regionName ?? this.regionName,
+      companies: companies ?? this.companies,
       siteName: siteName ?? this.siteName,
       siteId: siteId ?? this.siteId,
       referenceNumber: referenceNumber ?? this.referenceNumber,

@@ -67,7 +67,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
     };
   }
 
-  Column _buildAssociatedCompanies(ProjectsState state) {
+  Widget _buildAssociatedCompanies(ProjectsState state) {
     var rows = state.assignedCompanyProjects
         .map(
           (projectCompany) => DataRow(
@@ -105,65 +105,69 @@ class _ShowProjectViewState extends State<ShowProjectView> {
         ),
       ),
     ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        state.assignedCompanyProjects.isNotEmpty
-            ? const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              )
-            : Container(),
-        state.assignedCompanyProjects.isNotEmpty
-            ? const CustomDivider()
-            : Container(),
-        Container(
-          child: state.assignedCompanyProjects.isNotEmpty
-              ? DataTable(
-                  headingTextStyle: tableHeadingTextStyle,
-                  dataTextStyle: tableDataTextStyle,
-                  columns: columns,
-                  rows: rows,
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Padding(
+    return state.assignedCompanyProjectsRetrievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              state.assignedCompanyProjects.isNotEmpty
+                  ? const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                        'This project has no companies assigned to it yet.',
+                        'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
                         style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                    CustomDivider(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Companies can be assigned by editing the project and going to the companies tab to select from available companies',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w400,
-                        ),
+                    )
+                  : Container(),
+              state.assignedCompanyProjects.isNotEmpty
+                  ? const CustomDivider()
+                  : Container(),
+              Container(
+                child: state.assignedCompanyProjects.isNotEmpty
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 340,
+                        columns: columns,
+                        rows: rows,
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'This project has no companies assigned to it yet.',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'OpenSans',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          CustomDivider(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'Companies can be assigned by editing the project and going to the companies tab to select from available companies',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'OpenSans',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          CustomDivider(),
+                        ],
                       ),
-                    ),
-                    CustomDivider(),
-                  ],
-                ),
-        ),
-      ],
-    );
+              ),
+            ],
+          );
   }
 
   void _checkDeleteProjectStatus(ProjectsState state, BuildContext context) {

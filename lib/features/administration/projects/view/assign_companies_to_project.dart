@@ -1,6 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../companies/view/widgets/filter_textfield.dart';
+import '../../../../global_widgets/entities_list_template/widgets/filter_textfield.dart';
 import '/utils/utils.dart';
 import '/constants/constants.dart';
 import '/data/model/model.dart';
@@ -143,9 +144,8 @@ class _AssignCompaniesToProjectViewState
             listenWhen: (previous, current) =>
                 previous.companyFromProjectUnassignedStatus !=
                 current.companyFromProjectUnassignedStatus,
-            child: DataTable(
-              headingTextStyle: tableHeadingTextStyle,
-              dataTextStyle: tableDataTextStyle,
+            child: TableView(
+              height: MediaQuery.of(context).size.height - 417,
               columns: tableColumns,
               rows: state.unassignedCompanyProjects
                   .map(
@@ -218,60 +218,58 @@ class _AssignCompaniesToProjectViewState
     return SizedBox(
       width: double.infinity,
       child: BlocListener<ProjectsBloc, ProjectsState>(
-        listener: (context, state) {
-          if (state.companyToProjectAssignedStatus == EntityStatus.success) {
-            CustomNotification(
-              context: context,
-              notifyType: NotifyType.success,
-              content: state.message,
-            ).showNotification();
-            _refetchProjectCompanies(state.filterText);
-          } else if (state.companyToProjectAssignedStatus ==
-              EntityStatus.failure) {
-            CustomNotification(
-              context: context,
-              notifyType: NotifyType.error,
-              content: state.message,
-            ).showNotification();
-          }
-        },
-        listenWhen: (previous, current) =>
-            previous.companyToProjectAssignedStatus !=
-            current.companyToProjectAssignedStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
-          columns: tableColumns,
-          rows: state.assignedCompanyProjects
-              .map(
-                (assignedProjectCompany) => DataRow(
-                  cells: [
-                    DataCell(
-                      CustomSwitch(
-                        switchValue: assignedProjectCompany.assigned,
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        onChanged: (value) =>
-                            _unassignFromCompany(assignedProjectCompany.id),
+          listener: (context, state) {
+            if (state.companyToProjectAssignedStatus == EntityStatus.success) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.success,
+                content: state.message,
+              ).showNotification();
+              _refetchProjectCompanies(state.filterText);
+            } else if (state.companyToProjectAssignedStatus ==
+                EntityStatus.failure) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.error,
+                content: state.message,
+              ).showNotification();
+            }
+          },
+          listenWhen: (previous, current) =>
+              previous.companyToProjectAssignedStatus !=
+              current.companyToProjectAssignedStatus,
+          child: TableView(
+            height: MediaQuery.of(context).size.height - 369,
+            columns: tableColumns,
+            rows: state.assignedCompanyProjects
+                .map(
+                  (assignedProjectCompany) => DataRow(
+                    cells: [
+                      DataCell(
+                        CustomSwitch(
+                          switchValue: assignedProjectCompany.assigned,
+                          trueString: 'Yes',
+                          falseString: 'No',
+                          textColor: darkTeal,
+                          onChanged: (value) =>
+                              _unassignFromCompany(assignedProjectCompany.id),
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedProjectCompany.companyName,
+                      DataCell(
+                        CustomDataCell(
+                          data: assignedProjectCompany.companyName,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedProjectCompany.roleName,
+                      DataCell(
+                        CustomDataCell(
+                          data: assignedProjectCompany.roleName,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-              .toList(),
-        ),
-      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          )),
     );
   }
 

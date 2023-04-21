@@ -31,7 +31,8 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     companiesBloc = context.read<CompaniesBloc>()
       ..add(CompanySelectedById(companyId: widget.companyId))
       ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId));
+      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
+      ..add(AuditTrailsRetrievedByCompanyId(companyId: widget.companyId));
     super.initState();
   }
 
@@ -63,12 +64,12 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
       'Details': Container(),
       'Sites': _buildAssociatedSites(state),
       'Projects': _buildAssociatedProjects(state),
-      'Audit Trail': Container(),
+      'Audit Trail': _builAuditTrails(state),
       '': Container(),
     };
   }
 
-  Column _buildAssociatedSites(CompaniesState state) {
+  Widget _buildAssociatedSites(CompaniesState state) {
     var rows = state.assignedCompanySites
         .map(
           (companySite) => DataRow(
@@ -101,74 +102,71 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
         ),
       ),
     ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        state.assignedCompanySites.isNotEmpty
-            ? const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'The following sites are associated with this project. Edit company to associate/ remove sites from this company',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              )
-            : Container(),
-        state.assignedCompanySites.isNotEmpty
-            ? const CustomDivider()
-            : Container(),
-        Container(
-          child: state.assignedProjectCompaniesRetrievedStatus ==
-                  EntityStatus.loading
-              ? const Padding(
-                  padding: EdgeInsets.only(top: 300),
-                  child: CircularProgressIndicator(),
-                )
-              : state.assignedCompanySites.isNotEmpty
-                  ? DataTable(
-                      headingTextStyle: tableHeadingTextStyle,
-                      dataTextStyle: tableDataTextStyle,
-                      columns: columns,
-                      rows: rows,
+    return state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              state.assignedCompanySites.isNotEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'The following sites are associated with this project. Edit company to associate/ remove sites from this company',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'This company has no sites assigned to it yet.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w400,
+                  : Container(),
+              state.assignedCompanySites.isNotEmpty
+                  ? const CustomDivider()
+                  : Container(),
+              Container(
+                child: state.assignedCompanySites.isNotEmpty
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 337,
+                        columns: columns,
+                        rows: rows,
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'This company has no sites assigned to it yet.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: 'OpenSans',
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        CustomDivider(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w400,
+                          CustomDivider(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        CustomDivider(),
-                      ],
-                    ),
-        ),
-      ],
-    );
+                          CustomDivider(),
+                        ],
+                      ),
+              ),
+            ],
+          );
   }
 
-  Column _buildAssociatedProjects(CompaniesState state) {
+  Widget _buildAssociatedProjects(CompaniesState state) {
     var rows = state.assignedProjectCompanies
         .map(
           (projectCompany) => DataRow(
@@ -219,71 +217,159 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
         ),
       ),
     ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        state.assignedProjectCompanies.isNotEmpty
-            ? const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'The following projects are associated with this company. Edit company to associate/ remove sites from this company',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              )
-            : Container(),
-        state.assignedProjectCompanies.isNotEmpty
-            ? const CustomDivider()
-            : Container(),
-        Container(
-          child: state.assignedProjectCompaniesRetrievedStatus ==
-                  EntityStatus.loading
-              ? const Padding(
-                  padding: EdgeInsets.only(top: 300),
-                  child: CircularProgressIndicator(),
-                )
-              : state.assignedProjectCompanies.isNotEmpty
-                  ? DataTable(
-                      headingTextStyle: tableHeadingTextStyle,
-                      dataTextStyle: tableDataTextStyle,
-                      columns: columns,
-                      rows: rows,
+    return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              state.assignedProjectCompanies.isNotEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'The following projects are associated with this company. Edit company to associate/ remove projects from this company',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'This company has no projects assigned to it yet.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w400,
+                  : Container(),
+              state.assignedProjectCompanies.isNotEmpty
+                  ? const CustomDivider()
+                  : Container(),
+              Container(
+                child: state.assignedProjectCompanies.isNotEmpty
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 337,
+                        columns: columns,
+                        rows: rows,
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'This company has no projects assigned to it yet.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        CustomDivider(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w400,
+                          CustomDivider(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        CustomDivider(),
-                      ],
-                    ),
+                          CustomDivider(),
+                        ],
+                      ),
+              ),
+            ],
+          );
+  }
+
+  Widget _builAuditTrails(CompaniesState state) {
+    var rows = state.auditTrails
+        .map(
+          (companySite) => DataRow(
+            cells: companySite
+                .toTableDetailMap()
+                .values
+                .map(
+                  (detail) => DataCell(
+                    CustomDataCell(data: detail),
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList();
+    var columns = const [
+      DataColumn(
+        label: Text(
+          'Change',
         ),
-      ],
-    );
+      ),
+      DataColumn(
+        label: Text(
+          'From',
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'To',
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Changed By',
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Changed On',
+        ),
+      ),
+    ];
+    return state.auditTrailsRerievedStatus == EntityStatus.loading
+        ? const Padding(
+            padding: EdgeInsets.only(top: 300),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              state.auditTrails.isNotEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'The following table shows the audit trail on this company.',
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    )
+                  : Container(),
+              state.auditTrails.isNotEmpty
+                  ? const CustomDivider()
+                  : Container(),
+              Container(
+                child: state.auditTrails.isNotEmpty
+                    ? TableView(
+                        height: MediaQuery.of(context).size.height - 337,
+                        columns: columns,
+                        rows: rows,
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              'No audit trail information available.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          CustomDivider(),
+                        ],
+                      ),
+              ),
+            ],
+          );
   }
 
   void _checkDeleteCompanyStatus(CompaniesState state, BuildContext context) {
