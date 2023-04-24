@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '/constants/color.dart';
-import '/data/model/model.dart';
-import '/global_widgets/global_widget.dart';
-import '/data/bloc/bloc.dart';
+import '/common_libraries.dart';
 
 class CompaniesListView extends StatefulWidget {
   const CompaniesListView({super.key});

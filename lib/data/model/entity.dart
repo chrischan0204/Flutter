@@ -30,28 +30,28 @@ class Entity extends Equatable {
   // constructor to create entity from map
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
-        id: map['id'] != null ? map['id'] as String : null,
-        name: map['name'] != null ? map['name'] as String : null,
-        active: map['active'] != null ? map['active'] as bool : true,
-        deactivationDate: map['deactivationDate'] != null
-            ? FormatDate(
-                    format: 'd MMMM y', dateString: map['deactivationDate'])
-                .formatDate
-            : '',
-        deactivationUserName: map['deactivationUserName'] != null
-            ? map['deactivationUserName'] as String
-            : '',
-        createdByUserName: map['createdByUserName'] ?? '',
-        createdOn: map['createdOn'] != null
-            ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
-                .formatDate
-            : '',
-        lastModifiedOn: map['lastModifiedOn'] != null
-            ? FormatDate(
-                    format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
-                .formatDate
-            : '',
-        lastModifiedByUserName: map['lastModifiedByUserName'] ?? '');
+      id: map['id'] != null ? map['id'] as String : null,
+      name: map['name'] != null ? map['name'] as String : null,
+      active: map['active'] != null ? map['active'] as bool : true,
+      deactivationDate: map['deactivationDate'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['deactivationDate'])
+              .formatDate
+          : '',
+      deactivationUserName: map['deactivationUserName'] != null
+          ? map['deactivationUserName'] as String
+          : '',
+      createdByUserName: map['createdByUserName'] ?? '',
+      createdOn: map['createdOn'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
+              .formatDate
+          : '',
+      lastModifiedOn: map['lastModifiedOn'] != null
+          ? FormatDate(
+                  format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '--')
+              .formatDate
+          : '',
+      lastModifiedByUserName: map['lastModifiedByUserName'] ?? '--',
+    );
   }
 
   // return the entity object as map
@@ -72,7 +72,7 @@ class Entity extends Equatable {
     return tableItemsToMap();
   }
 
-  // return side detail amp
+  // return side detail map
   Map<String, dynamic> detailItemsToMap() {
     if (!active &&
         deactivationDate != null &&

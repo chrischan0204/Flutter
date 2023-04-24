@@ -24,6 +24,7 @@ class EntityListTemplate extends StatefulWidget {
   final bool showTableHeaderButtons;
   final String emptyMessage;
   final ValueChanged<MapEntry<String, bool>>? onTableSort;
+  final IconData? newIconData;
   const EntityListTemplate({
     super.key,
     required this.title,
@@ -42,6 +43,7 @@ class EntityListTemplate extends StatefulWidget {
     this.emptyMessage = '',
     this.showTableHeaderButtons = false,
     this.onTableSort,
+    this.newIconData,
   });
 
   @override
@@ -143,7 +145,7 @@ class _CrudState extends State<EntityListTemplate> {
               CustomButton(
                 backgroundColor: warnColor,
                 hoverBackgroundColor: warnHoverColor,
-                iconData: PhosphorIcons.plus,
+                iconData: widget.newIconData ?? PhosphorIcons.plus,
                 text: 'New ${camelize(widget.label)}',
                 onClick: () {
                   String location = GoRouter.of(context).location;
@@ -181,11 +183,11 @@ class _CrudState extends State<EntityListTemplate> {
                     )
                   : Container(),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(
                       width: 1,
-                      color: darkTeal,
+                      color: Color(0xff9ca3af),
                     ),
                   ),
                 ),

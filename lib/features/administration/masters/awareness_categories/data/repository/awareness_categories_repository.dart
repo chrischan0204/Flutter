@@ -82,9 +82,13 @@ class AwarenessCategoriesRepository {
       Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
     );
 
-    if (response.statusCode != 500) {
-      return EntityResponse.fromJson(response.body);
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: 'Awareness Category deleted successfully',
+      );
     }
+
     throw Exception();
   }
 }

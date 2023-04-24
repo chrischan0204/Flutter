@@ -13,3 +13,5 @@ export '/features/administration/sites/bloc/sites_bloc.dart';
 export '/features/administration/projects/bloc/projects_bloc.dart';
 export '/features/administration/companies/bloc/companies_bloc.dart';
 export '/features/administration/companies/bloc/roles_bloc.dart';
+
+export '/features/administration/users/bloc/users_bloc.dart';
