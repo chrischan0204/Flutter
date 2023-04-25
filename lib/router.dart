@@ -7,7 +7,14 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      redirect: (_, __) => '/dashboard',
+      redirect: (_, __) => '/login',
+    ),
+    GoRoute(
+      path: '/login',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const LoginView(),
+      ),
     ),
     GoRoute(
       path: '/dashboard',

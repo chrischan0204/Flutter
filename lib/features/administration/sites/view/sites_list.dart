@@ -35,7 +35,7 @@ class _SitesListViewState extends State<SitesListView> {
           entities: state.sites,
           showTableHeaderButtons: true,
           onRowClick: (selectedSite) =>
-              sitesBloc.add(SiteSelected(selectedSite: selectedSite as Site)),
+              sitesBloc.add(SiteSelectedById(siteId: selectedSite.id!)),
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.sitesRetrievedStatus,
           selectedEntity: state.selectedSite,

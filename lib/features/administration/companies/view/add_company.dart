@@ -84,7 +84,7 @@ class _AddCompanyViewState extends State<AddCompanyView> {
   }
 
   bool _checkEinNumber(String einNumber) {
-    final numericSpecialReg = RegExp(r'^[0-9. /\\]+$');
+    final numericSpecialReg = RegExp(r'^[A-Z0-9.-/\\]+$');
     return numericSpecialReg.hasMatch(einNumber);
   }
 
@@ -179,7 +179,7 @@ class _AddCompanyViewState extends State<AddCompanyView> {
     if (!_checkEinNumber(einNumberController.text)) {
       setState(() {
         einNumberValidationMessage =
-            'EIN Field should allow only numbers, white space, dots and dashes in it. No alphabets and no other special characters.';
+            'EIN Field should allow only alphanumberics, white space, dots and dashes in it. No other special characters.';
       });
       validated = false;
     }

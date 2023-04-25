@@ -30,12 +30,15 @@ class Site extends Entity {
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
+    super.createdByUserName,
+    super.createdOn,
+    super.lastModifiedByUserName,
+    super.lastModifiedOn,
   });
 
   @override
   List<Object?> get props => [
-        id,
-        name,
+        ...super.props,
         siteCode,
         siteType,
         referenceCode,
@@ -73,6 +76,21 @@ class Site extends Entity {
     };
   }
 
+  @override
+  Map<String, dynamic> sideDetailItemsToMap() {
+    return {
+      'Site Code': siteCode,
+      'Reference Code': referenceCode,
+      'Region': region,
+      'Time Zone': timeZone,
+      'Active': active,
+      'Created On': createdOn,
+      'Created By': createdByUserName,
+      'Updated On': lastModifiedOn,
+      'Updated By': lastModifiedByUserName,
+    };
+  }
+
   Site copyWith({
     String? id,
     String? name,
@@ -89,6 +107,10 @@ class Site extends Entity {
     bool? active,
     String? deactivationDate,
     String? deactivationUserName,
+    String? createdOn,
+    String? createdByUserName,
+    String? lastModifiedByUserName,
+    String? lastModifiedOn,
   }) {
     return Site(
       id: id ?? this.id,
@@ -106,6 +128,11 @@ class Site extends Entity {
       active: active ?? this.active,
       deactivationDate: deactivationDate ?? deactivationDate,
       deactivationUserName: deactivationUserName ?? deactivationUserName,
+      createdByUserName: createdByUserName ?? this.createdByUserName,
+      createdOn: createdOn ?? this.createdOn,
+      lastModifiedByUserName:
+          lastModifiedByUserName ?? this.lastModifiedByUserName,
+      lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
     );
   }
 
@@ -128,9 +155,10 @@ class Site extends Entity {
 
   @override
   factory Site.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return Site(
-      id: map['id'] == null ? null : map['id'] as String,
-      name: map['name'],
+      id: entity.id,
+      name: entity.name,
       siteCode: map['siteCode'],
       siteType: map['siteType'] == null ? '' : map['siteType'] as String,
       referenceCode: map['referenceCode'],
@@ -144,6 +172,10 @@ class Site extends Entity {
       auditTemplates: map['auditTemplateCount'] == null
           ? 0
           : map['auditTemplateCount'] as int,
+      createdByUserName: entity.createdByUserName,
+      createdOn: entity.createdOn,
+      lastModifiedByUserName: entity.lastModifiedByUserName,
+      lastModifiedOn: entity.lastModifiedOn,
     );
   }
 

@@ -11,7 +11,7 @@ class Project extends Entity {
   final String referenceNumber;
   final String referneceName;
   final int companyCount;
-  final String? updatedByUserName;
+  final String? lastModifiedByUserName;
   final String timeZoneName;
   final String companies;
 
@@ -31,7 +31,7 @@ class Project extends Entity {
     super.createdOn,
     super.createdByUserName,
     super.lastModifiedOn,
-    this.updatedByUserName,
+    this.lastModifiedByUserName,
     this.companies = '',
   });
 
@@ -52,7 +52,7 @@ class Project extends Entity {
         createdOn,
         createdByUserName,
         lastModifiedOn,
-        updatedByUserName,
+        lastModifiedByUserName,
         companies,
       ];
 
@@ -92,7 +92,7 @@ class Project extends Entity {
       'Created on': createdOn,
       'Created By': createdByUserName,
       'Last updated': lastModifiedOn,
-      'Updated By': updatedByUserName,
+      'Updated By': lastModifiedByUserName,
       'Companies': {'content': companies},
     };
   }
@@ -126,23 +126,10 @@ class Project extends Entity {
       referneceName: map['referenceName'] as String,
       companyCount: map['companyCount'] as int,
       companies: map['contractors'] ?? '',
-      createdOn: map['createdOn'] == null
-          ? ''
-          : FormatDate(
-                  dateString: map['createdOn'] as String, format: 'd MMMM y')
-              .formatDate,
-      createdByUserName: map['createdByUserName'] == null
-          ? ''
-          : (map['createdByUserName'] as String),
-      lastModifiedOn: map['lastModifiedOn'] == null
-          ? ''
-          : FormatDate(
-                  dateString: map['lastModifiedOn'] as String,
-                  format: 'd MMMM y')
-              .formatDate,
-      updatedByUserName: map['updatedByUserName'] == null
-          ? ''
-          : (map['updatedByUserName'] as String),
+      createdOn: entity.createdOn,
+      createdByUserName: entity.createdByUserName,
+      lastModifiedOn: entity.lastModifiedOn,
+      lastModifiedByUserName: entity.lastModifiedByUserName,
       active: entity.active,
       deactivationDate: entity.deactivationDate,
       deactivationUserName: entity.deactivationUserName,
@@ -168,6 +155,10 @@ class Project extends Entity {
     bool? active,
     String? deactivationDate,
     String? deactivationUserName,
+    String? createdOn,
+    String? createdByUserName,
+    String? lastModifiedByUserName,
+    String? lastModifiedOn,
   }) {
     return Project(
       id: id ?? this.id,
@@ -182,6 +173,11 @@ class Project extends Entity {
       active: active ?? this.active,
       deactivationDate: deactivationDate ?? this.deactivationDate,
       deactivationUserName: deactivationUserName ?? this.deactivationUserName,
+      createdByUserName: createdByUserName ?? this.createdByUserName,
+      createdOn: createdOn ?? this.createdOn,
+      lastModifiedByUserName:
+          lastModifiedByUserName ?? this.lastModifiedByUserName,
+      lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
     );
   }
 }
