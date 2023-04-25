@@ -93,7 +93,10 @@ class RegionsRepository {
     );
 
     if (response.statusCode == 200) {
-      return EntityResponse.fromJson(response.body);
+      return EntityResponse(
+        isSuccess: true,
+        message: 'Region deleted successfully',
+      );
     }
     throw Exception();
   }

@@ -1,11 +1,4 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-
-import '/constants/constants.dart';
-import '/data/model/model.dart';
-import '/utils/utils.dart';
-import '/global_widgets/global_widget.dart';
-import '/data/bloc/bloc.dart';
+import '/common_libraries.dart';
 
 class AssignProjectsToCompanyView extends StatefulWidget {
   final String companyId;

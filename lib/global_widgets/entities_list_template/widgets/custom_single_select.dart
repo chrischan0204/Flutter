@@ -56,7 +56,11 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
               ),
             )
             .toList(),
-        value: widget.selectedValue,
+        value: widget.selectedValue == null
+            ? null
+            : widget.selectedValue!.isEmpty
+                ? null
+                : widget.selectedValue,
         onChanged: (value) {
           MapEntry entry = MapEntry(value, widget.items[value]!);
           widget.onChanged(entry);

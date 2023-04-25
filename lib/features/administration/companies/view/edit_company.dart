@@ -1,24 +1,25 @@
-import '/common_libraries.dart';
-import 'assign_projects_to_company.dart';
-import 'assign_sites_to_company.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class AddEditCompanyView extends StatefulWidget {
+import '/global_widgets/global_widget.dart';
+import '/utils/utils.dart';
+import '/data/model/model.dart';
+import '/data/bloc/bloc.dart';
+
+class EditCompanyView extends StatefulWidget {
   final String? companyId;
-  final String? view;
-  const AddEditCompanyView({
+  const EditCompanyView({
     super.key,
     this.companyId,
-    this.view,
   });
 
   @override
-  State<AddEditCompanyView> createState() => _AddEditCompanyViewState();
+  State<EditCompanyView> createState() => _EditCompanyViewState();
 }
 
-class _AddEditCompanyViewState extends State<AddEditCompanyView> {
+class _EditCompanyViewState extends State<EditCompanyView> {
   late CompaniesBloc companiesBloc;
   late SitesBloc sitesBloc;
-  late RolesBloc rolesBloc;
   TextEditingController companyNameController = TextEditingController(text: '');
   TextEditingController einNumberController = TextEditingController(text: '');
 
@@ -28,15 +29,16 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   bool isFirstInit = true;
 
   static String pageLabel = 'company';
-  static String editButtonName = 'Update Details';
+  static String addButtonName = 'Assign Sites';
 
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>();
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     if (widget.companyId != null) {
-      companiesBloc.add(CompanySelectedById(companyId: widget.companyId!));
-      rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
+      companiesBloc.add(
+        CompanySelectedById(companyId: widget.companyId!),
+      );
     } else {
       companiesBloc.add(const CompanySelected(selectedCompany: Company()));
     }
@@ -58,11 +60,9 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           selectedEntity: state.selectedCompany,
           addEntity: () => _addCompany(state),
           editEntity: () => _editCompany(state),
+          addButtonName: addButtonName,
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.companyCrudStatus,
-          tabItems: widget.companyId == null ? {} : _buildTabs(state),
-          editButtonName: editButtonName,
-          selectedTabIndex: widget.view == 'created' ? 1 : 0,
           child: Column(
             children: [
               _buildCompanyNameField(state),
@@ -72,23 +72,6 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         );
       },
     );
-  }
-
-  Map<String, Widget> _buildTabs(CompaniesState state) {
-    return {
-      'Details': Container(),
-      'Sites': AssignSitesToCompanyView(
-        companyId: widget.companyId!,
-        companyName: state.selectedCompany?.name ?? '',
-        view: widget.view,
-      ),
-      'Projects': AssignProjectsToCompanyView(
-        companyId: widget.companyId!,
-        companyName: state.selectedCompany?.name ?? '',
-        view: widget.view,
-      ),
-      '': Container(),
-    };
   }
 
   // check if some of fields are filled
@@ -126,21 +109,17 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      if (widget.companyId == null) {
-        GoRouter.of(context)
-            .go('/companies/edit/${state.selectedCompany!.id}?view=created');
-      }
+      GoRouter.of(context).go(
+          '/companies/assign-sites?companyId=${state.selectedCompany!.id}&companyName=${state.selectedCompany!.name}');
     }
     if (state.companyCrudStatus == EntityStatus.failure) {
       if (state.message.contains('EIN')) {
         setState(() {
           einNumberValidationMessage = state.message;
-          companyNameValidationMessage = '';
         });
       } else {
         setState(() {
           companyNameValidationMessage = state.message;
-          einNumberValidationMessage = '';
         });
       }
       companiesBloc.add(CompaniesStatusInited());
@@ -209,8 +188,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       validated = false;
     }
 
-    if (einNumberController.text.isNotEmpty &&
-        !_checkEinNumber(einNumberController.text)) {
+    if (!_checkEinNumber(einNumberController.text)) {
       setState(() {
         einNumberValidationMessage =
             'EIN Field should allow only numbers, white space, dots and dashes in it. No alphabets and no other special characters.';

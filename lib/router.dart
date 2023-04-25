@@ -534,6 +534,36 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/users/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditUserView(),
+          selectedItemName: 'users',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/users/edit/:userId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditUserView(userId: state.params['userId']!),
+          selectedItemName: 'users',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/users/show/:userId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ShowUserView(userId: state.params['userId']!),
+          selectedItemName: 'users',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/my-page',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
