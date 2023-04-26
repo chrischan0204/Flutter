@@ -52,6 +52,7 @@ class _UsersListViewState extends State<UsersListView> {
           onRowClick: (selectedUser) => _selectUser(selectedUser),
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.usersRetrievedStatus,
+          onTableSort: (sortedUsers) => _sortUsers(sortedUsers),
           selectedEntity: state.selectedUser,
           applyFilter: () => _applyFilter(),
           clearFilter: () => _clearFilter(),
@@ -191,7 +192,7 @@ class _UsersListViewState extends State<UsersListView> {
   }
 
   void _selectUser(Entity selectedUser) {
-    usersBloc.add(UserSelected(selectedUser: selectedUser as User));
+    usersBloc.add(UserSelectedById(userId: selectedUser.id!));
   }
 
   Wrap _buildFilterResultBody() {
@@ -219,5 +220,10 @@ class _UsersListViewState extends State<UsersListView> {
         ),
       ],
     );
+  }
+
+  void _sortUsers(List<Entity> sortedUsers) {
+    usersBloc.add(UsersSorted(
+        users: sortedUsers.map((sortedUser) => sortedUser as User).toList()));
   }
 }

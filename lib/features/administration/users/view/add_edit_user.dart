@@ -263,27 +263,23 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           ..addEntries(rolesState.roles.map(
               (assignedRole) => MapEntry(assignedRole.name, assignedRole.id)));
         return FormItem(
-          label: 'TimeZone',
+          label: 'Time Zone',
           content: CustomSingleSelect(
             items: items,
             hint: 'Select Timezone',
             selectedValue: state.selectedUser?.roleName,
-            onChanged: (role) {
-              setState(() {
-                roleValidationMessage = '';
-              });
-
+            onChanged: (timeZone) {
               usersBloc.add(
                 UserSelected(
                   selectedUser: state.selectedUser!.copyWith(
-                    roleName: role.key,
-                    roleId: role.value,
+                    timeZoneName: timeZone.key,
+                    timeZoneId: timeZone.value,
                   ),
                 ),
               );
             },
           ),
-          message: roleValidationMessage,
+          message: '',
         );
       },
     );

@@ -65,3 +65,15 @@ class UserDeleted extends UsersEvent {
 }
 
 class UsersStatusInited extends UsersEvent {}
+
+class UsersSorted extends UsersEvent {
+  final List<User> users;
+  const UsersSorted({
+    required this.users,
+  });
+
+  @override
+  List<Object?> get props => [
+        users,
+      ];
+}

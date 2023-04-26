@@ -113,7 +113,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   bool _checkEinNumber(String einNumber) {
-    final numericSpecialReg = RegExp(r'^[0-9. /\\]+$');
+    final numericSpecialReg = RegExp(r'^[A-Za-z0-9.-/\\]+$');
     return numericSpecialReg.hasMatch(einNumber);
   }
 
@@ -137,6 +137,13 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           einNumberValidationMessage = state.message;
           companyNameValidationMessage = '';
         });
+      }
+      if (state.message.contains('Our team')) {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.error,
+          content: state.message,
+        ).showNotification();
       } else {
         setState(() {
           companyNameValidationMessage = state.message;

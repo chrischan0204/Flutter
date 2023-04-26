@@ -51,7 +51,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.companiesRetrievedStatus,
           selectedEntity: state.selectedCompany,
-          onTableSort: (sortInfo) => _sortCompanies(sortInfo),
+          onTableSort: (sortedCompanies) => _sortCompanies(sortedCompanies),
           applyFilter: () => _applyFilter(),
           clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
@@ -188,9 +188,11 @@ class _CompaniesListViewState extends State<CompaniesListView> {
     );
   }
 
-  void _sortCompanies(MapEntry<String, bool> sortInfo) {
-    companiesBloc
-        .add(CompaniesSorted(column: sortInfo.key, sortType: sortInfo.value));
+  void _sortCompanies(List<Entity> sortedCompanies) {
+    companiesBloc.add(CompaniesSorted(
+        companies: sortedCompanies
+            .map((sortedCompany) => sortedCompany as Company)
+            .toList()));
   }
 
   void _selectCompany(Entity selectedCompany) {

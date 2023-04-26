@@ -216,16 +216,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     ProjectsSorted event,
     Emitter<ProjectsState> emit,
   ) {
-    List<Project> projects = List.from(state.projects);
-
-    projects.sort(
-      (a, b) {
-        return (event.sortType ? 1 : -1) *
-            (a.tableItemsToMap()[event.column].toString().toLowerCase())
-                .compareTo(b.tableItemsToMap()[event.column].toString().toLowerCase());
-      },
-    );
-    emit(state.copyWith(projects: projects));
+    emit(state.copyWith(projects: event.projects));
   }
 
   void _onProjectsStatusInited(

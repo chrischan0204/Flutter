@@ -28,6 +28,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     on<UserAdded>(_onUserAdded);
     on<UserEdited>(_onUserEdited);
     on<UserDeleted>(_onUserDeleted);
+    on<UsersSorted>(_onUsersSorted);
     on<UsersStatusInited>(_onUsersStatusInited);
   }
 
@@ -46,6 +47,13 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     } catch (e) {
       emit(state.copyWith(usersRetrievedStatus: EntityStatus.failure));
     }
+  }
+
+  void _onUsersSorted(
+    UsersSorted event,
+    Emitter<UsersState> emit,
+  ) {
+    emit(state.copyWith(users: event.users));
   }
 
   // select user to add or edit

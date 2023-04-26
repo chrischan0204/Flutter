@@ -58,7 +58,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
-          onTableSort: (sortInfo) => _sortProjects(sortInfo),
+          onTableSort: (sortedProjects) => _sortProjects(sortedProjects),
           applyFilter: () => _applyFilter(),
           clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
@@ -221,9 +221,11 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     );
   }
 
-  void _sortProjects(MapEntry<String, bool> sortInfo) {
-    projectsBloc
-        .add(ProjectsSorted(column: sortInfo.key, sortType: sortInfo.value));
+  void _sortProjects(List<Entity> sortedProjects) {
+    projectsBloc.add(ProjectsSorted(
+        projects: sortedProjects
+            .map((sortedProject) => sortedProject as Project)
+            .toList()));
   }
 
   void _selectProject(Entity selectedProject) {

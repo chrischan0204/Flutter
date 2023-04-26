@@ -20,10 +20,11 @@ class EntityListTemplate extends StatefulWidget {
   final String description;
   final String label;
   final ValueChanged<Entity> onRowClick;
+  final ValueChanged<bool>? includeDeletedChanged;
   final Entity? selectedEntity;
   final bool showTableHeaderButtons;
   final String emptyMessage;
-  final ValueChanged<MapEntry<String, bool>>? onTableSort;
+  final ValueChanged<List<Entity>>? onTableSort;
   final IconData? newIconData;
   const EntityListTemplate({
     super.key,
@@ -36,6 +37,7 @@ class EntityListTemplate extends StatefulWidget {
     this.viewSettingBody,
     required this.label,
     required this.onRowClick,
+    this.includeDeletedChanged,
     this.entityRetrievedStatus = EntityStatus.initial,
     this.entities = const [],
     this.selectedEntity,
@@ -55,6 +57,7 @@ class _CrudState extends State<EntityListTemplate> {
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
   late String selectedId;
+  bool includeDeleted = false;
 
   @override
   void initState() {
@@ -201,7 +204,27 @@ class _CrudState extends State<EntityListTemplate> {
                     : DataTableView(
                         entities: widget.entities,
                         emptyMessage: widget.emptyMessage,
-                        onTableSort: widget.onTableSort,
+                        onTableSort: widget.onTableSort == null
+                            ? null
+                            : (MapEntry<String, bool> sortInfo) {
+                                List<Entity> entities =
+                                    List.from(widget.entities);
+
+                                entities.sort(
+                                  (a, b) {
+                                    return (sortInfo.value ? 1 : -1) *
+                                        (a
+                                                .tableItemsToMap()[sortInfo.key]
+                                                .toString()
+                                                .toLowerCase())
+                                            .compareTo(b
+                                                .tableItemsToMap()[sortInfo.key]
+                                                .toString()
+                                                .toLowerCase());
+                                  },
+                                );
+                                widget.onTableSort!(entities);
+                              },
                         onRowClick: (entity) {
                           _showDetailsSlider();
                           setState(() {
@@ -227,33 +250,64 @@ class _CrudState extends State<EntityListTemplate> {
             horizontal: 15,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              HeaderButton(
-                iconData: PhosphorIcons.funnel,
-                label: 'Filters',
-                color: const Color(0xff0c83ff),
-                onClick: () => _showFilterSlider(),
+              Row(
+                children: [
+                  HeaderButton(
+                    iconData: PhosphorIcons.funnel,
+                    label: 'Filters',
+                    color: const Color(0xff0c83ff),
+                    onClick: () => _showFilterSlider(),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  HeaderButton(
+                    iconData: PhosphorIcons.slidersHorizontal,
+                    label: 'View Settings',
+                    color: warnColor,
+                    onClick: () => _showViewSettingsSlider(),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  HeaderButton(
+                    iconData: PhosphorIcons.chartBar,
+                    label: 'Dashboard',
+                    color: const Color(0xff0c83ff),
+                    onClick: () => GoRouter.of(context).go(
+                      '${GoRouter.of(context).location}/dashboard',
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 50,
-              ),
-              HeaderButton(
-                iconData: PhosphorIcons.slidersHorizontal,
-                label: 'View Settings',
-                color: warnColor,
-                onClick: () => _showViewSettingsSlider(),
-              ),
-              const SizedBox(
-                width: 50,
-              ),
-              HeaderButton(
-                iconData: PhosphorIcons.chartBar,
-                label: 'Dashboard',
-                color: const Color(0xff0c83ff),
-                onClick: () => GoRouter.of(context).go(
-                  '${GoRouter.of(context).location}/dashboard',
-                ),
-              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: includeDeleted,
+                    onChanged: (value) {
+                      if (widget.includeDeletedChanged != null) {
+                        widget.includeDeletedChanged!(value!);
+                      }
+
+                      setState(() {
+                        includeDeleted = !includeDeleted;
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3)),
+                  ),
+                  const SizedBox(width: 3),
+                  const Text(
+                    'Include Deleted',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),

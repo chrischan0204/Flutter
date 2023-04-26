@@ -50,7 +50,7 @@ class Entity extends Equatable {
                   format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
               .formatDate
           : '',
-      lastModifiedByUserName: map['lastModifiedByUserName'] ?? '',
+      lastModifiedByUserName: map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '',
     );
   }
 

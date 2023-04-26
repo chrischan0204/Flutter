@@ -421,16 +421,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     CompaniesSorted event,
     Emitter<CompaniesState> emit,
   ) {
-    List<Company> companies = List.from(state.companies);
-
-    companies.sort(
-      (a, b) {
-        return (event.sortType ? 1 : -1) *
-            (a.tableItemsToMap()[event.column].toString().toLowerCase())
-                .compareTo(b.tableItemsToMap()[event.column].toString().toLowerCase());
-      },
-    );
-    emit(state.copyWith(companies: companies));
+    emit(state.copyWith(companies: event.companies));
   }
 
   // init company state status
