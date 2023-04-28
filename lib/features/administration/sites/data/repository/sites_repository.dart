@@ -1,26 +1,27 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 
+import '/data/repository/repository.dart';
 import '/constants/uri.dart';
 import '/data/model/model.dart';
 
-class SitesRepository {
-  static String url = '/api/Sites';
-  List<Site> sites = const [];
+class SitesRepository extends BaseRepository {
+  SitesRepository({required super.token}) : super(url: '/api/Sites');
 
   Future<List<Site>> getSites() async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response =
+        await get(Uri.https(ApiUri.host, url), headers: headers);
     if (response.statusCode == 200) {
-      sites = List.from(jsonDecode(response.body))
+      return List.from(jsonDecode(response.body))
           .map((siteJson) => Site.fromMap(siteJson))
           .toList();
-      return sites;
     }
     return <Site>[];
   }
 
   Future<Site> getSiteById(String siteId) async {
-    Response response = await get(Uri.https(ApiUri.host, '$url/$siteId'));
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/$siteId'), headers: headers);
     if (response.statusCode == 200) {
       return Site.fromJson(response.body);
     }
@@ -30,10 +31,7 @@ class SitesRepository {
   Future<EntityResponse> addSite(Site site) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-      },
+      headers: headers,
       body: site.toJson(),
     );
 
@@ -46,10 +44,7 @@ class SitesRepository {
   Future<EntityResponse> editSite(Site site) async {
     Response response = await put(
       Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-      },
+      headers: headers,
       body: site.toJson(),
     );
 
@@ -66,7 +61,8 @@ class SitesRepository {
   }
 
   Future<EntityResponse> deleteSite(String siteId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/$siteId'));
+    Response response =
+        await delete(Uri.https(ApiUri.host, '$url/$siteId'), headers: headers);
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse.fromMap({

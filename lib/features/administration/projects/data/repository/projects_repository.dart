@@ -2,15 +2,17 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 
+import '/data/repository/repository.dart';
 import '/constants/uri.dart';
 import '/data/model/model.dart';
 
-class ProjectsRepository {
-  static String url = '/api/Projects';
+class ProjectsRepository extends BaseRepository {
+  ProjectsRepository({required super.token}) : super(url: '/api/Projects');
 
   // get projects list
   Future<List<Project>> getProjects() async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response =
+        await get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
@@ -24,7 +26,8 @@ class ProjectsRepository {
   Future<Project> getProjectById(
     String projectId,
   ) async {
-    Response response = await get(Uri.https(ApiUri.host, '$url/$projectId'));
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/$projectId'), headers: headers);
 
     if (response.statusCode == 200) {
       return Project.fromJson(response.body);
@@ -36,10 +39,7 @@ class ProjectsRepository {
   Future<EntityResponse> addProject(Project project) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-      },
+      headers: headers,
       body: project.toJson(),
     );
 
@@ -53,10 +53,7 @@ class ProjectsRepository {
   Future<EntityResponse> editProject(Project project) async {
     Response response = await put(
       Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'plain/text',
-      },
+      headers: headers,
       body: project.toJson(),
     );
 
@@ -73,7 +70,8 @@ class ProjectsRepository {
   }
 
   Future<EntityResponse> deleteProject(String projectId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/$projectId'));
+    Response response = await delete(Uri.https(ApiUri.host, '$url/$projectId'),
+        headers: headers);
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
@@ -97,11 +95,9 @@ class ProjectsRepository {
     if (name != null && name.isNotEmpty) {
       map.addEntries([MapEntry('name', name)]);
     }
-    Response response = await get(Uri.https(
-      ApiUri.host,
-      '$url/$projectId/companies',
-      map,
-    ));
+    Response response = await get(
+        Uri.https(ApiUri.host, '$url/$projectId/companies', map),
+        headers: headers);
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
@@ -115,10 +111,7 @@ class ProjectsRepository {
       ProjectCompanyAssignment projectCompanyAssignment) async {
     Response response = await post(
       Uri.https(ApiUri.host, '$url/assign/company'),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'text/plain',
-      },
+      headers: headers,
       body: projectCompanyAssignment.toJson(),
     );
 
@@ -136,9 +129,9 @@ class ProjectsRepository {
 
   unassignCompanyFromProject(String projectCompanyAssignmentId) async {
     Response response = await post(
-      Uri.https(
-          ApiUri.host, '$url/unassign/$projectCompanyAssignmentId/company'),
-    );
+        Uri.https(
+            ApiUri.host, '$url/unassign/$projectCompanyAssignmentId/company'),
+        headers: headers);
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {

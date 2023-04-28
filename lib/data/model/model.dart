@@ -22,3 +22,4 @@ export '/features/administration/companies/data/model/company_site_updation.dart
 export '/features/administration/companies/data/model/audit_trail.dart';
 
 export '/features/administration/users/data/model/user.dart';
+export '/features/administration/users/data/model/user_site_assignment.dart';

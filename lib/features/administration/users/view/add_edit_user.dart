@@ -31,17 +31,12 @@ class _AddEditUserViewState extends State<AddEditUserView> {
 
   @override
   void initState() {
-    usersBloc = context.read<UsersBloc>()..add(UsersStatusInited());
+    usersBloc = context.read<UsersBloc>();
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
-    usersBloc.add(const UserSelected(selectedUser: null));
     if (widget.userId != null) {
       usersBloc.add(UserSelectedById(userId: widget.userId!));
-    } else {
-      usersBloc.add(
-        const UserSelected(selectedUser: User()),
-      );
-    }
+    } else {}
 
     super.initState();
   }
@@ -57,10 +52,10 @@ class _AddEditUserViewState extends State<AddEditUserView> {
         return AddEditEntityTemplate(
           label: pageLabel,
           id: widget.userId,
-          selectedEntity: state.selectedUser,
+          // selectedEntity: state.selectedUser,
           addEntity: () => _addUser(state),
           editEntity: () => _editUser(state),
-          crudStatus: state.userCrudStatus,
+          // crudStatus: state.userCrudStatus,
           isCrudDataFill: _checkFormDataFill(),
           child: Column(
             children: [
@@ -88,19 +83,14 @@ class _AddEditUserViewState extends State<AddEditUserView> {
   }
 
   void _checkCrudResult(UsersState state, BuildContext context) {
-    if (state.userCrudStatus == EntityStatus.success) {
-      usersBloc.add(UsersStatusInited());
+    if (state is UserAddSuccess || state is UserEditSuccess) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,
         content: state.message,
       ).showNotification();
-      GoRouter.of(context).go(
-          '/users/assign-templates?userId=${state.selectedUser!.id}&userName=${state.selectedUser!.name}');
     }
-    if (state.userCrudStatus == EntityStatus.failure) {
-      usersBloc.add(UsersStatusInited());
-    }
+    if (state is UserAddSuccess || state is UserEditSuccess) {}
   }
 
   FormItem _buildFirstNameField(UsersState state) {
@@ -113,13 +103,13 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           setState(() {
             firstNameValidationMessage = '';
           });
-          usersBloc.add(
-            UserSelected(
-              selectedUser: state.selectedUser!.copyWith(
-                firstName: firstName,
-              ),
-            ),
-          );
+          // usersBloc.add(
+          //   UserSelected(
+          //     selectedUser: state.selectedUser!.copyWith(
+          //       firstName: firstName,
+          //     ),
+          //   ),
+          // );
         },
       ),
       message: firstNameValidationMessage,
@@ -136,13 +126,13 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           setState(() {
             lastNameValidationMessage = '';
           });
-          usersBloc.add(
-            UserSelected(
-              selectedUser: state.selectedUser!.copyWith(
-                lastName: lastName,
-              ),
-            ),
-          );
+          // usersBloc.add(
+          //   UserSelected(
+          //     selectedUser: state.selectedUser!.copyWith(
+          //       lastName: lastName,
+          //     ),
+          //   ),
+          // );
         },
       ),
       message: lastNameValidationMessage,
@@ -156,13 +146,13 @@ class _AddEditUserViewState extends State<AddEditUserView> {
         controller: userTitleController,
         hintText: 'User Title',
         onChanged: (title) {
-          usersBloc.add(
-            UserSelected(
-              selectedUser: state.selectedUser!.copyWith(
-                title: title,
-              ),
-            ),
-          );
+          // usersBloc.add(
+          //   UserSelected(
+          //     selectedUser: state.selectedUser!.copyWith(
+          //       title: title,
+          //     ),
+          //   ),
+          // );
         },
       ),
       message: '',
@@ -176,13 +166,13 @@ class _AddEditUserViewState extends State<AddEditUserView> {
         controller: mobilePhoneController,
         hintText: 'Cell Phone',
         onChanged: (mobilePhone) {
-          usersBloc.add(
-            UserSelected(
-              selectedUser: state.selectedUser!.copyWith(
-                mobileNumber: mobilePhone,
-              ),
-            ),
-          );
+          // usersBloc.add(
+          //   UserSelected(
+          //     selectedUser: state.selectedUser!.copyWith(
+          //       mobileNumber: mobilePhone,
+          //     ),
+          //   ),
+          // );
         },
       ),
       message: '',
@@ -200,20 +190,20 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           content: CustomSingleSelect(
             items: items,
             hint: 'Select Role',
-            selectedValue: state.selectedUser?.roleName,
+            // selectedValue: state.selectedUser?.roleName,
             onChanged: (role) {
               setState(() {
                 roleValidationMessage = '';
               });
 
-              usersBloc.add(
-                UserSelected(
-                  selectedUser: state.selectedUser!.copyWith(
-                    roleName: role.key,
-                    roleId: role.value,
-                  ),
-                ),
-              );
+              // usersBloc.add(
+              //   UserSelected(
+              //     selectedUser: state.selectedUser!.copyWith(
+              //       roleName: role.key,
+              //       roleId: role.value,
+              //     ),
+              //   ),
+              // );
             },
           ),
           message: roleValidationMessage,
@@ -233,20 +223,20 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           content: CustomSingleSelect(
             items: items,
             hint: 'Select Default Site',
-            selectedValue: state.selectedUser?.defaultSiteName,
+            // selectedValue: state.selectedUser?.defaultSiteName,
             onChanged: (role) {
               setState(() {
                 defaultSiteValidationMessage = '';
               });
 
-              usersBloc.add(
-                UserSelected(
-                  selectedUser: state.selectedUser!.copyWith(
-                    defaultSiteName: role.key,
-                    defaultSiteId: role.value,
-                  ),
-                ),
-              );
+              // usersBloc.add(
+              //   UserSelected(
+              //     selectedUser: state.selectedUser!.copyWith(
+              //       defaultSiteName: role.key,
+              //       defaultSiteId: role.value,
+              //     ),
+              //   ),
+              // );
             },
           ),
           message: defaultSiteValidationMessage,
@@ -267,16 +257,16 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           content: CustomSingleSelect(
             items: items,
             hint: 'Select Timezone',
-            selectedValue: state.selectedUser?.roleName,
+            // selectedValue: state.selectedUser?.roleName,
             onChanged: (timeZone) {
-              usersBloc.add(
-                UserSelected(
-                  selectedUser: state.selectedUser!.copyWith(
-                    timeZoneName: timeZone.key,
-                    timeZoneId: timeZone.value,
-                  ),
-                ),
-              );
+              // usersBloc.add(
+              //   UserSelected(
+              //     selectedUser: state.selectedUser!.copyWith(
+              //       timeZoneName: timeZone.key,
+              //       timeZoneId: timeZone.value,
+              //     ),
+              //   ),
+              // );
             },
           ),
           message: '',
@@ -303,32 +293,32 @@ class _AddEditUserViewState extends State<AddEditUserView> {
       validated = false;
     }
 
-    if (Validation.isEmpty(state.selectedUser!.roleName)) {
-      setState(() {
-        roleValidationMessage = 'Role is required.';
-      });
+    // if (Validation.isEmpty(state.selectedUser!.roleName)) {
+    //   setState(() {
+    //     roleValidationMessage = 'Role is required.';
+    //   });
 
-      validated = false;
-    }
+    //   validated = false;
+    // }
 
-    if (Validation.isEmpty(state.selectedUser!.defaultSiteName)) {
-      setState(() {
-        defaultSiteValidationMessage = 'Default site is required.';
-      });
+    // if (Validation.isEmpty(state.selectedUser!.defaultSiteName)) {
+    //   setState(() {
+    //     defaultSiteValidationMessage = 'Default site is required.';
+    //   });
 
-      validated = false;
-    }
+    //   validated = false;
+    // }
 
     return validated;
   }
 
   void _addUser(UsersState state) {
     if (!_validate(state)) return;
-    usersBloc.add(UserAdded(user: state.selectedUser!));
+    // usersBloc.add(UserAdded(user: state.selectedUser!));
   }
 
   void _editUser(UsersState state) {
     if (!_validate(state)) return;
-    usersBloc.add(UserEdited(user: state.selectedUser!));
+    // usersBloc.add(UserEdited(user: state.selectedUser!));
   }
 }

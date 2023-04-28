@@ -1,6 +1,5 @@
 import '/features/theme/view/widgets/topbar/topbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 
 import 'view/widgets/sidebar/sidebar.dart';
 import 'view/widgets/sidebar/sidebar_style.dart';

@@ -147,17 +147,20 @@ class User extends Entity {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
       'mobileNumber': mobileNumber,
-      'roleId': roleName,
+      'userRoleId': roleId,
+      'siteId': defaultSiteId,
       'title': title,
-      'defaultSiteName': defaultSiteName,
-      'siteAccess': siteAccess,
       'timeZoneId': timeZoneId,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+    return map;
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -173,7 +176,7 @@ class User extends Entity {
       roleId: map['roleId'] ?? '',
       title: map['title'] ?? '',
       defaultSiteName: map['siteName'] ?? '',
-      defaultSiteId: map['defaultSiteId'] ?? '',
+      defaultSiteId: map['siteId'] ?? '',
       siteAccess: map['sites'] ?? '',
       timeZoneName: map['timeZoneName'] ?? '',
       timeZoneId: map['timeZoneId'] ?? '',

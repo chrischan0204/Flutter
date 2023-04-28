@@ -71,10 +71,10 @@ class AwarenessGroup extends Entity {
       name: entity.name,
       active: entity.active,
       categoryCount: map['categoryCount'] as int,
-      awarenessCategories: List.from(map['awarenessCategories'])
-          .map((awarenessCategoryMap) =>
-              AwarenessCategory.fromMap(awarenessCategoryMap))
-          .toList(),
+      // awarenessCategories: List.from(map['awarenessCategories'])
+      //     .map((awarenessCategoryMap) =>
+      //         AwarenessCategory.fromMap(awarenessCategoryMap))
+      //     .toList(),
     );
   }
 

@@ -1,32 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:http/http.dart';
 
+import '/data/repository/repository.dart';
 import '/constants/uri.dart';
 import '/data/model/model.dart';
 
-class UsersRepository {
-  static String url = '/api/Users';
-  static List<User> users = List.generate(
-      30,
-      (index) => User(
-            id: index.toString(),
-            firstName: 'firstName$index',
-            lastName: 'lastName$index',
-            email: 'email$index',
-            mobileNumber: 'mobileNumber$index',
-            inviteSent: true,
-            roleName: 'roleName$index',
-            title: 'title$index',
-            defaultSiteName: 'defaultSiteName$index',
-            siteAccess: 'siteAccess$index',
-            timeZoneName: 'timeZoneName$index',
-            timeZoneId: 'timeZoneId$index',
-          )).toList();
+class UsersRepository extends BaseRepository {
+  UsersRepository({required super.token}) : super(url: '/api/Users');
 
   // get users list
   Future<List<User>> getUsers() async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response = await get(
+      Uri.https(ApiUri.host, url),
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
@@ -40,7 +29,10 @@ class UsersRepository {
   Future<User> getUserById(
     String userId,
   ) async {
-    Response response = await get(Uri.https(ApiUri.host, '$url/$userId'));
+    Response response = await get(
+      Uri.https(ApiUri.host, '$url/$userId'),
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       return User.fromJson(response.body);
@@ -53,10 +45,7 @@ class UsersRepository {
   Future<EntityResponse> addUser(User user) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-      },
+      headers: headers,
       body: user.toJson(),
     );
 
@@ -70,19 +59,16 @@ class UsersRepository {
   Future<EntityResponse> editUser(User user) async {
     Response response = await put(
       Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'plain/text',
-      },
+      headers: headers,
       body: user.toJson(),
     );
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
-        return EntityResponse.fromMap({
-          'isSuccess': true,
-          'message': response.body,
-        });
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
       }
       return EntityResponse.fromJson(response.body);
     }
@@ -90,18 +76,78 @@ class UsersRepository {
   }
 
   Future<EntityResponse> deleteUser(String userId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/$userId'));
+    Response response =
+        await delete(Uri.https(ApiUri.host, '$url/$userId'), headers: headers);
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
-        return EntityResponse.fromMap({
-          'isSuccess': true,
-          'message': response.body,
-        });
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
       }
       return EntityResponse.fromJson(response.body);
     }
 
+    throw Exception();
+  }
+
+  Future<List<Role>> getUserRoles() async {
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/roles'), headers: headers);
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((userRoleMap) => Role.fromMap(userRoleMap))
+          .toList();
+    }
+    return [];
+  }
+
+  Future<List<Site>> getSitesByUserId(String userId) async {
+    Response response = await get(Uri.https(ApiUri.host, '$url/$userId/sites'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((siteMap) => Site.fromMap(siteMap))
+          .toList();
+    }
+    return [];
+  }
+
+  Future<EntityResponse> assignSiteToUser(
+      UserSiteAssignment userSiteAssignment) async {
+    Response response = await post(Uri.https(ApiUri.host, '$url/assign/site'),
+        headers: headers);
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> unassignSiteFromUser(
+      String userSiteAssignementId) async {
+    Response response = await post(
+        Uri.https(ApiUri.host, '$url/unassign/$userSiteAssignementId/site'),
+        headers: headers);
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
     throw Exception();
   }
 }

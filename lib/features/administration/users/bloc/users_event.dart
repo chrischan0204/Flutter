@@ -9,16 +9,6 @@ abstract class UsersEvent extends Equatable {
 
 class UsersRetrieved extends UsersEvent {}
 
-class UserSelected extends UsersEvent {
-  final User? selectedUser;
-  const UserSelected({
-    required this.selectedUser,
-  });
-  @override
-  List<Object?> get props => [
-        selectedUser,
-      ];
-}
 
 class UserSelectedById extends UsersEvent {
   final String userId;
@@ -63,8 +53,6 @@ class UserDeleted extends UsersEvent {
         userId,
       ];
 }
-
-class UsersStatusInited extends UsersEvent {}
 
 class UsersSorted extends UsersEvent {
   final List<User> users;

@@ -1,3 +1,6 @@
+export '/features/auth/data/repository/auth_repository.dart';
+export 'base_repository.dart';
+
 export '/features/administration/masters/regions/data/repository/regions_repository.dart';
 export '/features/administration/masters/priority_levels/data/repository/priority_levels_repository.dart';
 export '/features/administration/masters/observation_types/data/repository/observation_types_repository.dart';
@@ -13,3 +16,4 @@ export '/features/administration/companies/data/repository/roles_repository.dart
 export '/features/administration/companies/data/repository/companies_repository.dart';
 
 export '/features/administration/users/data/repository/users_repository.dart';
+

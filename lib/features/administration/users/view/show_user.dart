@@ -40,8 +40,8 @@ class _ShowUserViewState extends State<ShowUserView> {
           label: pageLabel,
           deleteEntity: () => _deleteUser(state),
           tabItems: _buildTabs(state),
-          entity: state.selectedUser,
-          crudStatus: state.userCrudStatus,
+          entity: state is UserLoadByIdSuccess ? state.user : null,
+          crudStatus: state is UserLoadByIdInProgress ? EntityStatus.loading : EntityStatus.success,
           // deletable: state.deletable,
           descriptionForDelete: descriptionForDelete,
         );
@@ -157,8 +157,7 @@ class _ShowUserViewState extends State<ShowUserView> {
   // }
 
   void _checkDeleteUserStatus(UsersState state, BuildContext context) {
-    if (state.userCrudStatus == EntityStatus.success) {
-      usersBloc.add(UsersStatusInited());
+    if (state is UserDeleteSuccess) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,
@@ -167,8 +166,7 @@ class _ShowUserViewState extends State<ShowUserView> {
 
       GoRouter.of(context).go('/users');
     }
-    if (state.userCrudStatus == EntityStatus.failure) {
-      usersBloc.add(UsersStatusInited());
+    if (state is UserDeleteFailure) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,

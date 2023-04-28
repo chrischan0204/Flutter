@@ -17,19 +17,17 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
       'There was an error while deleting user. Our team has been notified. Please wait a few minutes and try again.';
   UsersBloc({
     required this.usersRepository,
-  }) : super(const UsersState()) {
+  }) : super(UserInitial()) {
     _triggerEvents();
   }
 
   void _triggerEvents() {
     on<UsersRetrieved>(_onUsersRetrieved);
-    on<UserSelected>(_onUserSelected);
     on<UserSelectedById>(_onUserSelectedById);
     on<UserAdded>(_onUserAdded);
     on<UserEdited>(_onUserEdited);
     on<UserDeleted>(_onUserDeleted);
     on<UsersSorted>(_onUsersSorted);
-    on<UsersStatusInited>(_onUsersStatusInited);
   }
 
   // get users list from repository
@@ -37,15 +35,12 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     UsersRetrieved event,
     Emitter<UsersState> emit,
   ) async {
-    emit(state.copyWith(usersRetrievedStatus: EntityStatus.loading));
+    emit(UserListLoadInProgress());
     try {
       List<User> users = await usersRepository.getUsers();
-      emit(state.copyWith(
-        users: users,
-        usersRetrievedStatus: EntityStatus.success,
-      ));
+      emit(UserListLoadSuccess(users: users));
     } catch (e) {
-      emit(state.copyWith(usersRetrievedStatus: EntityStatus.failure));
+      emit(UserListLoadFailure());
     }
   }
 
@@ -53,15 +48,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     UsersSorted event,
     Emitter<UsersState> emit,
   ) {
-    emit(state.copyWith(users: event.users));
-  }
-
-  // select user to add or edit
-  void _onUserSelected(
-    UserSelected event,
-    Emitter<UsersState> emit,
-  ) {
-    emit(state.copyWith(selectedUser: event.selectedUser));
+    emit(UserListLoadSuccess(users: event.users));
   }
 
   // get user details by id
@@ -69,20 +56,12 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     UserSelectedById event,
     Emitter<UsersState> emit,
   ) async {
-    emit(state.copyWith(
-      userSelectedStatus: EntityStatus.loading,
-    ));
+    emit(UserLoadByIdInProgress());
     try {
-      User selectedUser = await usersRepository.getUserById(event.userId);
-      emit(state.copyWith(
-        userSelectedStatus: EntityStatus.success,
-        selectedUser: selectedUser,
-      ));
+      User user = await usersRepository.getUserById(event.userId);
+      emit(UserLoadByIdSuccess(user: user));
     } catch (e) {
-      emit(state.copyWith(
-        userSelectedStatus: EntityStatus.failure,
-        selectedUser: null,
-      ));
+      emit(UserLoadByIdFailure());
     }
   }
 
@@ -91,26 +70,16 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     UserAdded event,
     Emitter<UsersState> emit,
   ) async {
-    emit(state.copyWith(userCrudStatus: EntityStatus.loading));
+    emit(UserAddInProgress());
     try {
       EntityResponse response = await usersRepository.addUser(event.user);
       if (response.isSuccess) {
-        emit(state.copyWith(
-          userCrudStatus: EntityStatus.success,
-          message: response.message,
-          selectedUser: state.selectedUser!.copyWith(id: response.data!.id),
-        ));
+        emit(UserAddSuccess(message: response.message));
       } else {
-        emit(state.copyWith(
-          userCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
+        emit(UserAddFailure(message: response.message));
       }
     } catch (e) {
-      emit(state.copyWith(
-        userCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
+      emit(UserAddFailure(message: addErrorMessage));
     }
   }
 
@@ -119,26 +88,16 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     UserEdited event,
     Emitter<UsersState> emit,
   ) async {
-    emit(state.copyWith(userCrudStatus: EntityStatus.loading));
+    emit(UserEditInProgress());
     try {
       EntityResponse response = await usersRepository.editUser(event.user);
       if (response.isSuccess) {
-        emit(state.copyWith(
-          userCrudStatus: EntityStatus.success,
-          message: response.message,
-          selectedUser: state.selectedUser!.copyWith(id: response.data?.id),
-        ));
+        emit(UserEditSuccess(message: response.message));
       } else {
-        emit(state.copyWith(
-          userCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
+        emit(UserEditFailure(message: response.message));
       }
     } catch (e) {
-      emit(state.copyWith(
-        userCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
+      emit(UserEditFailure(message: editErrorMessage));
     }
   }
 
@@ -147,31 +106,16 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     UserDeleted event,
     Emitter<UsersState> emit,
   ) async {
-    emit(state.copyWith(userCrudStatus: EntityStatus.loading));
+    emit(UserDeleteInProgress());
     try {
       EntityResponse response = await usersRepository.deleteUser(event.userId);
       if (response.isSuccess) {
-        emit(state.copyWith(
-          userCrudStatus: EntityStatus.success,
-          selectedUser: null,
-          message: response.message,
-        ));
+        emit(UserDeleteSuccess(message: response.message));
       } else {
-        emit(state.copyWith(
-          userCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
+        emit(UserDeleteFailure(message: response.message));
       }
     } catch (e) {
-      emit(state.copyWith(
-        userCrudStatus: EntityStatus.failure,
-        message: deleteErrorMessage,
-      ));
+      emit(UserDeleteFailure(message: deleteErrorMessage));
     }
   }
-
-  void _onUsersStatusInited(
-    UsersStatusInited event,
-    Emitter<UsersState> emit,
-  ) {}
 }

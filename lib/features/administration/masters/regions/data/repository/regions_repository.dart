@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import '/data/repository/repository.dart';
+
 import '/data/model/model.dart';
 import '/constants/uri.dart';
 import 'package:http/http.dart';
 
-class RegionsRepository {
-  static String url = '/api/Regions';
+class RegionsRepository extends BaseRepository {
+  RegionsRepository({required super.token}) : super(url: '/api/Regions');
+
   Future<List<Region>> getAssignedRegions() async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/GetAssignedRegions'));
+    Response response = await get(
+        Uri.https(ApiUri.host, '$url/GetAssignedRegions'),
+        headers: headers);
     if (response.statusCode == 200) {
       final regions = List<Region>.from(
         jsonDecode(response.body).map(
@@ -22,7 +26,8 @@ class RegionsRepository {
   }
 
   Future<Region> getRegionById(String regionId) async {
-    Response response = await get(Uri.https(ApiUri.host, '$url/$regionId'));
+    Response response =
+        await get(Uri.https(ApiUri.host, '$url/$regionId'), headers: headers);
 
     if (response.statusCode == 200) {
       return Region.fromJson(response.body);
@@ -31,8 +36,9 @@ class RegionsRepository {
   }
 
   Future<List<Region>> getUnassignedRegions() async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/GetUnassignedRegions'));
+    Response response = await get(
+        Uri.https(ApiUri.host, '$url/GetUnassignedRegions'),
+        headers: headers);
     if (response.statusCode == 200) {
       final List<Region> unassignedRegions = List.from(
         jsonDecode(response.body).map(
@@ -45,10 +51,12 @@ class RegionsRepository {
   }
 
   Future<List<TimeZone>> getTimeZonesForRegion(String regionId) async {
-    Response response = await get(Uri.https(
-      ApiUri.host,
-      '/api/Timezones/GetTimeZonesForRegion/$regionId',
-    ));
+    Response response = await get(
+        Uri.https(
+          ApiUri.host,
+          '/api/Timezones/GetTimeZonesForRegion/$regionId',
+        ),
+        headers: headers);
 
     if (response.statusCode == 200) {
       final List<TimeZone> timeZones = List.from(
@@ -60,12 +68,11 @@ class RegionsRepository {
   }
 
   Future<EntityResponse> addRegion(Region region) async {
-    Response response = await post(Uri.https(ApiUri.host, url),
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json',
-        },
-        body: region.toJson());
+    Response response = await post(
+      Uri.https(ApiUri.host, url),
+      headers: headers,
+      body: region.toJson(),
+    );
 
     if (response.statusCode == 200) {
       return EntityResponse.fromJson(response.body);
@@ -74,12 +81,11 @@ class RegionsRepository {
   }
 
   Future<EntityResponse> editRegion(Region region) async {
-    Response response = await put(Uri.https(ApiUri.host, url),
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json',
-        },
-        body: region.toJson());
+    Response response = await put(
+      Uri.https(ApiUri.host, url),
+      headers: headers,
+      body: region.toJson(),
+    );
 
     if (response.statusCode == 200) {
       return EntityResponse.fromJson(response.body);
@@ -88,9 +94,8 @@ class RegionsRepository {
   }
 
   Future<EntityResponse> deleteRegion(String regionId) async {
-    Response response = await delete(
-      Uri.https(ApiUri.host, '$url/$regionId'),
-    );
+    Response response = await delete(Uri.https(ApiUri.host, '$url/$regionId'),
+        headers: headers);
 
     if (response.statusCode == 200) {
       return EntityResponse(

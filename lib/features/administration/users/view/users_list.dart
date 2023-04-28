@@ -47,13 +47,16 @@ class _UsersListViewState extends State<UsersListView> {
         return EntityListTemplate(
           title: pageTitle,
           label: pageLabel,
-          entities: state.users,
+          entities: state is UserListLoadSuccess ? state.users : [],
           showTableHeaderButtons: true,
           onRowClick: (selectedUser) => _selectUser(selectedUser),
           emptyMessage: emptyMessage,
-          entityRetrievedStatus: state.usersRetrievedStatus,
+          entityRetrievedStatus: state is UserListLoadInProgress
+              ? EntityStatus.loading
+              : state is UserListLoadFailure
+                  ? EntityStatus.failure
+                  : EntityStatus.success,
           onTableSort: (sortedUsers) => _sortUsers(sortedUsers),
-          selectedEntity: state.selectedUser,
           applyFilter: () => _applyFilter(),
           clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),

@@ -2,14 +2,16 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:safety_eta/constants/uri.dart';
+import 'package:safety_eta/data/repository/repository.dart';
 
 import '/data/model/model.dart';
 
-class RolesRepository {
-  static String url = '/api/Roles';
+class RolesRepository extends BaseRepository {
+  RolesRepository({required super.token}) : super(url: '/api/Roles');
 
   Future<List<Role>> getRoles() async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response =
+        await get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))

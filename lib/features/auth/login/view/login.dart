@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:safety_eta/common_libraries.dart';
+import 'package:safety_eta/features/auth/data/model/auth.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -11,6 +11,17 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   bool isPassword = true;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = context.read<AuthBloc>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,28 +49,26 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.health_and_safety_sharp,
-                            size: 44,
-                            color: Colors.amberAccent,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Safety ETA',
-                            style: GoogleFonts.alumniSans(
-                              textStyle: const TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.health_and_safety_sharp,
+                          size: 44,
+                          color: Colors.amberAccent,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Safety ETA',
+                          style: GoogleFonts.alumniSans(
+                            textStyle: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                     Column(
                       children: [
@@ -76,6 +85,7 @@ class _LoginViewState extends State<LoginView> {
                           height: 100,
                         ),
                         TextField(
+                          controller: usernameController,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey[900],
@@ -103,6 +113,7 @@ class _LoginViewState extends State<LoginView> {
                           height: 10,
                         ),
                         TextField(
+                          controller: passwordController,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey[900],
@@ -144,24 +155,36 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              GoRouter.of(context).go('/dashboard');
+                          child: BlocListener<AuthBloc, AuthState>(
+                            listener: (context, state) {
+                              if (state is AuthAuthenticateSuccess) {
+                                GoRouter.of(context).go('/dashboard');
+                              }
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff68767b),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                authBloc.add(AuthLogined(
+                                    auth: Auth(
+                                  email: usernameController.text,
+                                  password: passwordController.text,
+                                )));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff68767b),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 24),
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 24),
-                            ),
-                            child: Text(
-                              'Login',
-                              style: GoogleFonts.amaranth(
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  letterSpacing: 2,
+                              child: Text(
+                                'Login',
+                                style: GoogleFonts.amaranth(
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    letterSpacing: 2,
+                                  ),
                                 ),
                               ),
                             ),
