@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart';
 
@@ -138,6 +139,41 @@ class UsersRepository extends BaseRepository {
     Response response = await post(
         Uri.https(ApiUri.host, '$url/unassign/$userSiteAssignementId/site'),
         headers: headers);
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<List<UserSiteNotification>> getSiteNotificationSettingsByUserId(
+      String userId) async {
+    Response response = await get(
+        Uri.https(ApiUri.host, '$url/$userId/notifications'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((notificationMap) =>
+              UserSiteNotification.fromMap(notificationMap))
+          .toList();
+    }
+    return [];
+  }
+
+  Future<EntityResponse> updateUserSiteNotificationSetting(
+      UserSiteNotification userSiteNotification) async {
+    Response response = await put(
+      Uri.https(ApiUri.host, '$url/notifications'),
+      headers: headers,
+      body: userSiteNotification.toJson(),
+    );
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
