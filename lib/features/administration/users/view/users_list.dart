@@ -1,16 +1,63 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-
 import '/common_libraries.dart';
 
-class UsersListView extends StatefulWidget {
+class UsersListView extends StatelessWidget {
   const UsersListView({super.key});
 
   @override
-  State<UsersListView> createState() => _UsersListViewState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, userListState) {
+        String token = userListState.token;
+        return MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+                create: (context) => UsersRepository(token: token)),
+            RepositoryProvider(
+                create: (context) => SitesRepository(token: token)),
+            RepositoryProvider(
+                create: (context) => RegionsRepository(token: token)),
+            RepositoryProvider(
+                create: (context) => RolesRepository(token: token))
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => UserListBloc(
+                      usersRepository:
+                          RepositoryProvider.of<UsersRepository>(context))),
+              BlocProvider(
+                  create: (context) => UserDetailBloc(
+                      usersRepository:
+                          RepositoryProvider.of<UsersRepository>(context))),
+              BlocProvider(
+                  create: (context) => SitesBloc(
+                      sitesRepository:
+                          RepositoryProvider.of<SitesRepository>(context))),
+              BlocProvider(
+                  create: (context) => RegionsBloc(
+                      regionsRepository: RepositoryProvider.of(context))),
+              BlocProvider(
+                  create: (context) => RolesBloc(
+                      rolesRepository: RepositoryProvider.of(context))),
+            ],
+            child: const UsersListWidget(),
+          ),
+        );
+      },
+    );
+  }
 }
 
-class _UsersListViewState extends State<UsersListView> {
-  late UsersBloc usersBloc;
+class UsersListWidget extends StatefulWidget {
+  const UsersListWidget({super.key});
+
+  @override
+  State<UsersListWidget> createState() => _UsersListState();
+}
+
+class _UsersListState extends State<UsersListWidget> {
+  late UserListBloc userListBloc;
+  late UserDetailBloc userDetailBloc;
   late SitesBloc sitesBloc;
   late RegionsBloc regionsBloc;
   late RolesBloc rolesBloc;
@@ -32,7 +79,8 @@ class _UsersListViewState extends State<UsersListView> {
 
   @override
   void initState() {
-    usersBloc = context.read<UsersBloc>()..add(UsersRetrieved());
+    userListBloc = context.read<UserListBloc>()..add(UserListLoaded());
+    userDetailBloc = context.read<UserDetailBloc>();
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
@@ -42,27 +90,28 @@ class _UsersListViewState extends State<UsersListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UsersBloc, UsersState>(
-      builder: (context, state) {
-        return EntityListTemplate(
-          title: pageTitle,
-          label: pageLabel,
-          entities: state is UserListLoadSuccess ? state.users : [],
-          showTableHeaderButtons: true,
-          onRowClick: (selectedUser) => _selectUser(selectedUser),
-          emptyMessage: emptyMessage,
-          entityRetrievedStatus: state is UserListLoadInProgress
-              ? EntityStatus.loading
-              : state is UserListLoadFailure
-                  ? EntityStatus.failure
-                  : EntityStatus.success,
-          onTableSort: (sortedUsers) => _sortUsers(sortedUsers),
-          applyFilter: () => _applyFilter(),
-          clearFilter: () => _clearFilter(),
-          filterResultBody: _buildFilterResultBody(),
-          filterApplied: filterApplied,
-          filterBody: _buildFilterBody(),
-          newIconData: PhosphorIcons.userPlus,
+    return BlocBuilder<UserListBloc, UserListState>(
+      builder: (context, userListState) {
+        return BlocBuilder<UserDetailBloc, UserDetailState>(
+          builder: (context, userDetailState) {
+            return EntityListTemplate(
+              title: pageTitle,
+              label: pageLabel,
+              entities: userListState.userList,
+              showTableHeaderButtons: true,
+              onRowClick: (selectedUser) => _selectUser(selectedUser),
+              emptyMessage: emptyMessage,
+              entityRetrievedStatus: userListState.userListLoadStatus,
+              selectedEntity: userDetailState.user,
+              onTableSort: (sortedUsers) => _sortUsers(sortedUsers),
+              applyFilter: () => _applyFilter(),
+              clearFilter: () => _clearFilter(),
+              filterResultBody: _buildFilterResultBody(),
+              filterApplied: filterApplied,
+              filterBody: _buildFilterBody(),
+              newIconData: PhosphorIcons.userPlus,
+            );
+          },
         );
       },
     );
@@ -139,10 +188,10 @@ class _UsersListViewState extends State<UsersListView> {
     return DetailItem(
       label: 'Site',
       content: BlocBuilder<SitesBloc, SitesState>(
-        builder: (context, state) {
+        builder: (context, userListState) {
           return CustomMultiSelect(
             items: <String, Site>{}..addEntries(
-                state.sites.map(
+                userListState.sites.map(
                   (site) => MapEntry(site.name!, site),
                 ),
               ),
@@ -161,10 +210,10 @@ class _UsersListViewState extends State<UsersListView> {
     return DetailItem(
       label: 'Role',
       content: BlocBuilder<RolesBloc, RolesState>(
-        builder: (context, state) {
+        builder: (context, userListState) {
           return CustomMultiSelect(
             items: <String, Entity>{}..addEntries(
-                state.roles.map(
+                userListState.roles.map(
                   (role) => MapEntry(
                       role.name,
                       Entity(
@@ -195,7 +244,7 @@ class _UsersListViewState extends State<UsersListView> {
   }
 
   void _selectUser(Entity selectedUser) {
-    usersBloc.add(UserSelectedById(userId: selectedUser.id!));
+    userDetailBloc.add(UserDetailUserLoadedById(userId: selectedUser.id!));
   }
 
   Wrap _buildFilterResultBody() {
@@ -226,7 +275,8 @@ class _UsersListViewState extends State<UsersListView> {
   }
 
   void _sortUsers(List<Entity> sortedUsers) {
-    usersBloc.add(UsersSorted(
-        users: sortedUsers.map((sortedUser) => sortedUser as User).toList()));
+    userListBloc.add(UserListSorted(
+        sortedUserList:
+            sortedUsers.map((sortedUser) => sortedUser as User).toList()));
   }
 }

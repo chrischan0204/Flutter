@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart';
 
@@ -135,9 +133,9 @@ class UsersRepository extends BaseRepository {
   }
 
   Future<EntityResponse> unassignSiteFromUser(
-      String userSiteAssignementId) async {
+      String userSiteAssignmentId) async {
     Response response = await post(
-        Uri.https(ApiUri.host, '$url/unassign/$userSiteAssignementId/site'),
+        Uri.https(ApiUri.host, '$url/unassign/$userSiteAssignmentId/site'),
         headers: headers);
 
     if (response.statusCode != 500) {

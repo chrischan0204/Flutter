@@ -64,9 +64,6 @@ class MyApp extends StatelessWidget {
             RepositoryProvider(
               create: (context) => RolesRepository(token: state.token),
             ),
-            RepositoryProvider(
-              create: (context) => UsersRepository(token: state.token),
-            )
           ],
           child: MultiBlocProvider(
             providers: [
@@ -131,12 +128,6 @@ class MyApp extends StatelessWidget {
                       RepositoryProvider.of<RolesRepository>(context),
                 ),
               ),
-              BlocProvider(
-                create: (context) => UsersBloc(
-                  usersRepository:
-                      RepositoryProvider.of<UsersRepository>(context),
-                ),
-              )
             ],
             child: MaterialApp.router(
               title: 'Safety ETA',

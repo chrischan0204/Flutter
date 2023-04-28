@@ -12,7 +12,7 @@ class AddEditUserView extends StatefulWidget {
 }
 
 class _AddEditUserViewState extends State<AddEditUserView> {
-  late UsersBloc usersBloc;
+  late AddEditUserBloc usersBloc;
   late RolesBloc rolesBloc;
   late SitesBloc sitesBloc;
   TextEditingController firstNameController = TextEditingController(text: '');
@@ -31,294 +31,295 @@ class _AddEditUserViewState extends State<AddEditUserView> {
 
   @override
   void initState() {
-    usersBloc = context.read<UsersBloc>();
+    usersBloc = context.read<AddEditUserBloc>();
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
-    if (widget.userId != null) {
-      usersBloc.add(UserSelectedById(userId: widget.userId!));
-    } else {}
+    // if (widget.userId != null) {
+    //   usersBloc.add(UserSelectedById(userId: widget.userId!));
+    // } else {}
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UsersBloc, UsersState>(
-      listener: (context, state) {
-        // _changeFormData(state);
-        _checkCrudResult(state, context);
-      },
-      builder: (context, state) {
-        return AddEditEntityTemplate(
-          label: pageLabel,
-          id: widget.userId,
-          // selectedEntity: state.selectedUser,
-          addEntity: () => _addUser(state),
-          editEntity: () => _editUser(state),
-          // crudStatus: state.userCrudStatus,
-          isCrudDataFill: _checkFormDataFill(),
-          child: Column(
-            children: [
-              _buildFirstNameField(state),
-              _buildLastNameField(state),
-              _buildUserTitleField(state),
-              _buildRoleSelectField(state),
-              _buildDefaultSiteSelectField(state),
-              _buildMobilePhoneField(state),
-              _buildDefaultTimeZoneSelectField(state),
-            ],
-          ),
-        );
-      },
-    );
+    return Container();
+    // return BlocConsumer<AddEditUserBloc, UsersState>(
+    //   listener: (context, state) {
+    //     // _changeFormData(state);
+    //     _checkCrudResult(state, context);
+    //   },
+    //   builder: (context, state) {
+    //     return AddEditEntityTemplate(
+    //       label: pageLabel,
+    //       id: widget.userId,
+    //       // selectedEntity: state.selectedUser,
+    //       addEntity: () => _addUser(state),
+    //       editEntity: () => _editUser(state),
+    //       // crudStatus: state.userCrudStatus,
+    //       isCrudDataFill: _checkFormDataFill(),
+    //       child: Column(
+    //         children: [
+    //           _buildFirstNameField(state),
+    //           _buildLastNameField(state),
+    //           _buildUserTitleField(state),
+    //           _buildRoleSelectField(state),
+    //           _buildDefaultSiteSelectField(state),
+    //           _buildMobilePhoneField(state),
+    //           _buildDefaultTimeZoneSelectField(state),
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
-  bool _checkFormDataFill() {
-    return widget.userId == null
-        ? Validation.isEmpty(firstNameController.text) ||
-            Validation.isEmpty(lastNameController.text) ||
-            Validation.isEmpty(userTitleController.text) ||
-            Validation.isEmpty(mobilePhoneController.text)
-        : true;
-  }
+  // bool _checkFormDataFill() {
+  //   return widget.userId == null
+  //       ? Validation.isEmpty(firstNameController.text) ||
+  //           Validation.isEmpty(lastNameController.text) ||
+  //           Validation.isEmpty(userTitleController.text) ||
+  //           Validation.isEmpty(mobilePhoneController.text)
+  //       : true;
+  // }
 
-  void _checkCrudResult(UsersState state, BuildContext context) {
-    if (state is UserAddSuccess || state is UserEditSuccess) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.success,
-        content: state.message,
-      ).showNotification();
-    }
-    if (state is UserAddSuccess || state is UserEditSuccess) {}
-  }
+  // void _checkCrudResult(UsersState state, BuildContext context) {
+  //   if (state is UserAddSuccess || state is UserEditSuccess) {
+  //     CustomNotification(
+  //       context: context,
+  //       notifyType: NotifyType.success,
+  //       content: state.message,
+  //     ).showNotification();
+  //   }
+  //   if (state is UserAddSuccess || state is UserEditSuccess) {}
+  // }
 
-  FormItem _buildFirstNameField(UsersState state) {
-    return FormItem(
-      label: 'First Name (*)',
-      content: CustomTextField(
-        controller: firstNameController,
-        hintText: 'First Name(required)',
-        onChanged: (firstName) {
-          setState(() {
-            firstNameValidationMessage = '';
-          });
-          // usersBloc.add(
-          //   UserSelected(
-          //     selectedUser: state.selectedUser!.copyWith(
-          //       firstName: firstName,
-          //     ),
-          //   ),
-          // );
-        },
-      ),
-      message: firstNameValidationMessage,
-    );
-  }
+  // FormItem _buildFirstNameField(UsersState state) {
+  //   return FormItem(
+  //     label: 'First Name (*)',
+  //     content: CustomTextField(
+  //       controller: firstNameController,
+  //       hintText: 'First Name(required)',
+  //       onChanged: (firstName) {
+  //         setState(() {
+  //           firstNameValidationMessage = '';
+  //         });
+  //         // usersBloc.add(
+  //         //   UserSelected(
+  //         //     selectedUser: state.selectedUser!.copyWith(
+  //         //       firstName: firstName,
+  //         //     ),
+  //         //   ),
+  //         // );
+  //       },
+  //     ),
+  //     message: firstNameValidationMessage,
+  //   );
+  // }
 
-  FormItem _buildLastNameField(UsersState state) {
-    return FormItem(
-      label: 'Last Name (*)',
-      content: CustomTextField(
-        controller: lastNameController,
-        hintText: 'Last Name(required)',
-        onChanged: (lastName) {
-          setState(() {
-            lastNameValidationMessage = '';
-          });
-          // usersBloc.add(
-          //   UserSelected(
-          //     selectedUser: state.selectedUser!.copyWith(
-          //       lastName: lastName,
-          //     ),
-          //   ),
-          // );
-        },
-      ),
-      message: lastNameValidationMessage,
-    );
-  }
+  // FormItem _buildLastNameField(UsersState state) {
+  //   return FormItem(
+  //     label: 'Last Name (*)',
+  //     content: CustomTextField(
+  //       controller: lastNameController,
+  //       hintText: 'Last Name(required)',
+  //       onChanged: (lastName) {
+  //         setState(() {
+  //           lastNameValidationMessage = '';
+  //         });
+  //         // usersBloc.add(
+  //         //   UserSelected(
+  //         //     selectedUser: state.selectedUser!.copyWith(
+  //         //       lastName: lastName,
+  //         //     ),
+  //         //   ),
+  //         // );
+  //       },
+  //     ),
+  //     message: lastNameValidationMessage,
+  //   );
+  // }
 
-  FormItem _buildUserTitleField(UsersState state) {
-    return FormItem(
-      label: 'User Title',
-      content: CustomTextField(
-        controller: userTitleController,
-        hintText: 'User Title',
-        onChanged: (title) {
-          // usersBloc.add(
-          //   UserSelected(
-          //     selectedUser: state.selectedUser!.copyWith(
-          //       title: title,
-          //     ),
-          //   ),
-          // );
-        },
-      ),
-      message: '',
-    );
-  }
+  // FormItem _buildUserTitleField(UsersState state) {
+  //   return FormItem(
+  //     label: 'User Title',
+  //     content: CustomTextField(
+  //       controller: userTitleController,
+  //       hintText: 'User Title',
+  //       onChanged: (title) {
+  //         // usersBloc.add(
+  //         //   UserSelected(
+  //         //     selectedUser: state.selectedUser!.copyWith(
+  //         //       title: title,
+  //         //     ),
+  //         //   ),
+  //         // );
+  //       },
+  //     ),
+  //     message: '',
+  //   );
+  // }
 
-  FormItem _buildMobilePhoneField(UsersState state) {
-    return FormItem(
-      label: 'Mobile Phone',
-      content: CustomTextField(
-        controller: mobilePhoneController,
-        hintText: 'Cell Phone',
-        onChanged: (mobilePhone) {
-          // usersBloc.add(
-          //   UserSelected(
-          //     selectedUser: state.selectedUser!.copyWith(
-          //       mobileNumber: mobilePhone,
-          //     ),
-          //   ),
-          // );
-        },
-      ),
-      message: '',
-    );
-  }
+  // FormItem _buildMobilePhoneField(UsersState state) {
+  //   return FormItem(
+  //     label: 'Mobile Phone',
+  //     content: CustomTextField(
+  //       controller: mobilePhoneController,
+  //       hintText: 'Cell Phone',
+  //       onChanged: (mobilePhone) {
+  //         // usersBloc.add(
+  //         //   UserSelected(
+  //         //     selectedUser: state.selectedUser!.copyWith(
+  //         //       mobileNumber: mobilePhone,
+  //         //     ),
+  //         //   ),
+  //         // );
+  //       },
+  //     ),
+  //     message: '',
+  //   );
+  // }
 
-  BlocBuilder<RolesBloc, RolesState> _buildRoleSelectField(UsersState state) {
-    return BlocBuilder<RolesBloc, RolesState>(
-      builder: (context, rolesState) {
-        Map<String, String> items = <String, String>{}
-          ..addEntries(rolesState.roles.map(
-              (assignedRole) => MapEntry(assignedRole.name, assignedRole.id)));
-        return FormItem(
-          label: 'Role (*)',
-          content: CustomSingleSelect(
-            items: items,
-            hint: 'Select Role',
-            // selectedValue: state.selectedUser?.roleName,
-            onChanged: (role) {
-              setState(() {
-                roleValidationMessage = '';
-              });
+  // BlocBuilder<RolesBloc, RolesState> _buildRoleSelectField(UsersState state) {
+  //   return BlocBuilder<RolesBloc, RolesState>(
+  //     builder: (context, rolesState) {
+  //       Map<String, String> items = <String, String>{}
+  //         ..addEntries(rolesState.roles.map(
+  //             (assignedRole) => MapEntry(assignedRole.name, assignedRole.id)));
+  //       return FormItem(
+  //         label: 'Role (*)',
+  //         content: CustomSingleSelect(
+  //           items: items,
+  //           hint: 'Select Role',
+  //           // selectedValue: state.selectedUser?.roleName,
+  //           onChanged: (role) {
+  //             setState(() {
+  //               roleValidationMessage = '';
+  //             });
 
-              // usersBloc.add(
-              //   UserSelected(
-              //     selectedUser: state.selectedUser!.copyWith(
-              //       roleName: role.key,
-              //       roleId: role.value,
-              //     ),
-              //   ),
-              // );
-            },
-          ),
-          message: roleValidationMessage,
-        );
-      },
-    );
-  }
+  //             // usersBloc.add(
+  //             //   UserSelected(
+  //             //     selectedUser: state.selectedUser!.copyWith(
+  //             //       roleName: role.key,
+  //             //       roleId: role.value,
+  //             //     ),
+  //             //   ),
+  //             // );
+  //           },
+  //         ),
+  //         message: roleValidationMessage,
+  //       );
+  //     },
+  //   );
+  // }
 
-  BlocBuilder<SitesBloc, SitesState> _buildDefaultSiteSelectField(
-      UsersState state) {
-    return BlocBuilder<SitesBloc, SitesState>(
-      builder: (context, sitesState) {
-        Map<String, String> items = <String, String>{}..addEntries(
-            sitesState.sites.map((site) => MapEntry(site.name!, site.id!)));
-        return FormItem(
-          label: 'Default Site (*)',
-          content: CustomSingleSelect(
-            items: items,
-            hint: 'Select Default Site',
-            // selectedValue: state.selectedUser?.defaultSiteName,
-            onChanged: (role) {
-              setState(() {
-                defaultSiteValidationMessage = '';
-              });
+  // BlocBuilder<SitesBloc, SitesState> _buildDefaultSiteSelectField(
+  //     UsersState state) {
+  //   return BlocBuilder<SitesBloc, SitesState>(
+  //     builder: (context, sitesState) {
+  //       Map<String, String> items = <String, String>{}..addEntries(
+  //           sitesState.sites.map((site) => MapEntry(site.name!, site.id!)));
+  //       return FormItem(
+  //         label: 'Default Site (*)',
+  //         content: CustomSingleSelect(
+  //           items: items,
+  //           hint: 'Select Default Site',
+  //           // selectedValue: state.selectedUser?.defaultSiteName,
+  //           onChanged: (role) {
+  //             setState(() {
+  //               defaultSiteValidationMessage = '';
+  //             });
 
-              // usersBloc.add(
-              //   UserSelected(
-              //     selectedUser: state.selectedUser!.copyWith(
-              //       defaultSiteName: role.key,
-              //       defaultSiteId: role.value,
-              //     ),
-              //   ),
-              // );
-            },
-          ),
-          message: defaultSiteValidationMessage,
-        );
-      },
-    );
-  }
+  //             // usersBloc.add(
+  //             //   UserSelected(
+  //             //     selectedUser: state.selectedUser!.copyWith(
+  //             //       defaultSiteName: role.key,
+  //             //       defaultSiteId: role.value,
+  //             //     ),
+  //             //   ),
+  //             // );
+  //           },
+  //         ),
+  //         message: defaultSiteValidationMessage,
+  //       );
+  //     },
+  //   );
+  // }
 
-  BlocBuilder<RolesBloc, RolesState> _buildDefaultTimeZoneSelectField(
-      UsersState state) {
-    return BlocBuilder<RolesBloc, RolesState>(
-      builder: (context, rolesState) {
-        Map<String, String> items = <String, String>{}
-          ..addEntries(rolesState.roles.map(
-              (assignedRole) => MapEntry(assignedRole.name, assignedRole.id)));
-        return FormItem(
-          label: 'Time Zone',
-          content: CustomSingleSelect(
-            items: items,
-            hint: 'Select Timezone',
-            // selectedValue: state.selectedUser?.roleName,
-            onChanged: (timeZone) {
-              // usersBloc.add(
-              //   UserSelected(
-              //     selectedUser: state.selectedUser!.copyWith(
-              //       timeZoneName: timeZone.key,
-              //       timeZoneId: timeZone.value,
-              //     ),
-              //   ),
-              // );
-            },
-          ),
-          message: '',
-        );
-      },
-    );
-  }
+  // BlocBuilder<RolesBloc, RolesState> _buildDefaultTimeZoneSelectField(
+  //     UsersState state) {
+  //   return BlocBuilder<RolesBloc, RolesState>(
+  //     builder: (context, rolesState) {
+  //       Map<String, String> items = <String, String>{}
+  //         ..addEntries(rolesState.roles.map(
+  //             (assignedRole) => MapEntry(assignedRole.name, assignedRole.id)));
+  //       return FormItem(
+  //         label: 'Time Zone',
+  //         content: CustomSingleSelect(
+  //           items: items,
+  //           hint: 'Select Timezone',
+  //           // selectedValue: state.selectedUser?.roleName,
+  //           onChanged: (timeZone) {
+  //             // usersBloc.add(
+  //             //   UserSelected(
+  //             //     selectedUser: state.selectedUser!.copyWith(
+  //             //       timeZoneName: timeZone.key,
+  //             //       timeZoneId: timeZone.value,
+  //             //     ),
+  //             //   ),
+  //             // );
+  //           },
+  //         ),
+  //         message: '',
+  //       );
+  //     },
+  //   );
+  // }
 
-  bool _validate(UsersState state) {
-    bool validated = true;
-    if (Validation.isEmpty(firstNameController.text)) {
-      setState(() {
-        firstNameValidationMessage = 'First Name is required.';
-      });
+  // bool _validate(UsersState state) {
+  //   bool validated = true;
+  //   if (Validation.isEmpty(firstNameController.text)) {
+  //     setState(() {
+  //       firstNameValidationMessage = 'First Name is required.';
+  //     });
 
-      validated = false;
-    }
+  //     validated = false;
+  //   }
 
-    if (Validation.isEmpty(lastNameController.text)) {
-      setState(() {
-        lastNameValidationMessage = 'Last Name is required.';
-      });
+  //   if (Validation.isEmpty(lastNameController.text)) {
+  //     setState(() {
+  //       lastNameValidationMessage = 'Last Name is required.';
+  //     });
 
-      validated = false;
-    }
+  //     validated = false;
+  //   }
 
-    // if (Validation.isEmpty(state.selectedUser!.roleName)) {
-    //   setState(() {
-    //     roleValidationMessage = 'Role is required.';
-    //   });
+  //   // if (Validation.isEmpty(state.selectedUser!.roleName)) {
+  //   //   setState(() {
+  //   //     roleValidationMessage = 'Role is required.';
+  //   //   });
 
-    //   validated = false;
-    // }
+  //   //   validated = false;
+  //   // }
 
-    // if (Validation.isEmpty(state.selectedUser!.defaultSiteName)) {
-    //   setState(() {
-    //     defaultSiteValidationMessage = 'Default site is required.';
-    //   });
+  //   // if (Validation.isEmpty(state.selectedUser!.defaultSiteName)) {
+  //   //   setState(() {
+  //   //     defaultSiteValidationMessage = 'Default site is required.';
+  //   //   });
 
-    //   validated = false;
-    // }
+  //   //   validated = false;
+  //   // }
 
-    return validated;
-  }
+  //   return validated;
+  // }
 
-  void _addUser(UsersState state) {
-    if (!_validate(state)) return;
-    // usersBloc.add(UserAdded(user: state.selectedUser!));
-  }
+  // void _addUser(UsersState state) {
+  //   if (!_validate(state)) return;
+  //   // usersBloc.add(UserAdded(user: state.selectedUser!));
+  // }
 
-  void _editUser(UsersState state) {
-    if (!_validate(state)) return;
-    // usersBloc.add(UserEdited(user: state.selectedUser!));
-  }
+  // void _editUser(UsersState state) {
+  //   if (!_validate(state)) return;
+  //   // usersBloc.add(UserEdited(user: state.selectedUser!));
+  // }
 }

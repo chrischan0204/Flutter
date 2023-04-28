@@ -1,18 +1,43 @@
 import '/common_libraries.dart';
 
-class ShowUserView extends StatefulWidget {
+class UserDetailView extends StatelessWidget {
   final String userId;
-  const ShowUserView({
+  const UserDetailView({
     super.key,
     required this.userId,
   });
 
   @override
-  State<ShowUserView> createState() => _ShowUserViewState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        String token = state.token;
+        return RepositoryProvider(
+          create: (context) => UsersRepository(token: token),
+          child: BlocProvider(
+            create: (context) =>
+                UserDetailBloc(usersRepository: RepositoryProvider.of(context)),
+            child: UserDetailWidget(userId: userId),
+          ),
+        );
+      },
+    );
+  }
 }
 
-class _ShowUserViewState extends State<ShowUserView> {
-  late UsersBloc usersBloc;
+class UserDetailWidget extends StatefulWidget {
+  final String userId;
+  const UserDetailWidget({
+    super.key,
+    required this.userId,
+  });
+
+  @override
+  State<UserDetailWidget> createState() => _UserDetailViewState();
+}
+
+class _UserDetailViewState extends State<UserDetailWidget> {
+  late UserDetailBloc usersBloc;
 
   static String pageTitle = 'User';
   static String pageLabel = 'user';
@@ -21,18 +46,18 @@ class _ShowUserViewState extends State<ShowUserView> {
 
   @override
   void initState() {
-    usersBloc = context.read<UsersBloc>()
-      ..add(UserSelectedById(userId: widget.userId));
+    usersBloc = context.read<UserDetailBloc>()
+      ..add(UserDetailUserLoadedById(userId: widget.userId));
     super.initState();
   }
 
-  _deleteUser(UsersState state) {
-    usersBloc.add(UserDeleted(userId: widget.userId));
+  _deleteUser(UserDetailState state) {
+    usersBloc.add(UserDetailUserDeleted(userId: widget.userId));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UsersBloc, UsersState>(
+    return BlocConsumer<UserDetailBloc, UserDetailState>(
       listener: (context, state) => _checkDeleteUserStatus(state, context),
       builder: (context, state) {
         return EntityShowTemplate(
@@ -40,8 +65,8 @@ class _ShowUserViewState extends State<ShowUserView> {
           label: pageLabel,
           deleteEntity: () => _deleteUser(state),
           tabItems: _buildTabs(state),
-          entity: state is UserLoadByIdSuccess ? state.user : null,
-          crudStatus: state is UserLoadByIdInProgress ? EntityStatus.loading : EntityStatus.success,
+          entity: state.user,
+          crudStatus: state.userDeleteStatus,
           // deletable: state.deletable,
           descriptionForDelete: descriptionForDelete,
         );
@@ -49,7 +74,7 @@ class _ShowUserViewState extends State<ShowUserView> {
     );
   }
 
-  Map<String, Widget> _buildTabs(UsersState state) {
+  Map<String, Widget> _buildTabs(UserDetailState state) {
     return {
       'User Details': Container(),
       'Site Access': Container(),
@@ -59,7 +84,7 @@ class _ShowUserViewState extends State<ShowUserView> {
     };
   }
 
-  // Widget _buildAssociatedSites(UsersState state) {
+  // Widget _buildAssociatedSites(UserDetailState state) {
   //   var rows = state.assignedUserSites
   //       .map(
   //         (userSite) => DataRow(
@@ -156,8 +181,8 @@ class _ShowUserViewState extends State<ShowUserView> {
   //         );
   // }
 
-  void _checkDeleteUserStatus(UsersState state, BuildContext context) {
-    if (state is UserDeleteSuccess) {
+  void _checkDeleteUserStatus(UserDetailState state, BuildContext context) {
+    if (state.userDeleteStatus.isSuccess) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,
@@ -166,7 +191,7 @@ class _ShowUserViewState extends State<ShowUserView> {
 
       GoRouter.of(context).go('/users');
     }
-    if (state is UserDeleteFailure) {
+    if (state.userDeleteStatus.isFailure) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,

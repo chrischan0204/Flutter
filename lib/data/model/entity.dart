@@ -50,7 +50,8 @@ class Entity extends Equatable {
                   format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
               .formatDate
           : '',
-      lastModifiedByUserName: map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '',
+      lastModifiedByUserName:
+          map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '',
     );
   }
 
@@ -154,5 +155,9 @@ enum EntityStatus {
   initial,
   loading,
   success,
-  failure,
+  failure;
+
+  bool get isLoading => this == EntityStatus.loading;
+  bool get isSuccess => this == EntityStatus.success;
+  bool get isFailure => this == EntityStatus.failure;
 }

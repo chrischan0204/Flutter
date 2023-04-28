@@ -173,7 +173,7 @@ class User extends Entity {
       mobileNumber: map['mobileNumber'] ?? '',
       inviteSent: map['inviteSent'] ?? false,
       roleName: map['roleName'] ?? '',
-      roleId: map['roleId'] ?? '',
+      roleId: map['userRoleId'] ?? '',
       title: map['title'] ?? '',
       defaultSiteName: map['siteName'] ?? '',
       defaultSiteId: map['siteId'] ?? '',
