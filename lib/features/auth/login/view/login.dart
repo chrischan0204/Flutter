@@ -1,4 +1,5 @@
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:safety_eta/common_libraries.dart';
 import 'package:safety_eta/features/auth/data/model/auth.dart';
 
@@ -11,15 +12,23 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   bool isPassword = true;
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  late AuthBloc authBloc;
+  late AuthBloc _authBloc;
 
   @override
   void initState() {
-    authBloc = context.read<AuthBloc>();
+    _authBloc = context.read<AuthBloc>();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_authBloc.state.token.isNotEmpty) {
+      // GoRouter.of(context).go('/dashboard');
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -85,7 +94,7 @@ class _LoginViewState extends State<LoginView> {
                           height: 100,
                         ),
                         TextField(
-                          controller: usernameController,
+                          controller: _usernameController,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey[900],
@@ -113,7 +122,7 @@ class _LoginViewState extends State<LoginView> {
                           height: 10,
                         ),
                         TextField(
-                          controller: passwordController,
+                          controller: _passwordController,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey[900],
@@ -155,19 +164,21 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         SizedBox(
                           width: double.infinity,
-                          child: BlocListener<AuthBloc, AuthState>(
+                          child: BlocConsumer<AuthBloc, AuthState>(
                             listener: (context, state) {
                               if (state is AuthAuthenticateSuccess) {
                                 GoRouter.of(context).go('/dashboard');
                               }
                             },
-                            child: ElevatedButton(
+                            builder: (context, state) => ElevatedButton(
                               onPressed: () {
-                                authBloc.add(AuthLogined(
-                                    auth: Auth(
-                                  email: usernameController.text,
-                                  password: passwordController.text,
-                                )));
+                                if (state is! AuthAuthenticateInProgress) {
+                                  _authBloc.add(AuthAuthenticated(
+                                      auth: Auth(
+                                    email: _usernameController.text,
+                                    password: _passwordController.text,
+                                  )));
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xff68767b),
@@ -177,16 +188,21 @@ class _LoginViewState extends State<LoginView> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 24),
                               ),
-                              child: Text(
-                                'Login',
-                                style: GoogleFonts.amaranth(
-                                  textStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-                              ),
+                              child: state is AuthAuthenticateInProgress
+                                  ? LoadingAnimationWidget.staggeredDotsWave(
+                                      color: Colors.white,
+                                      size: 26,
+                                    )
+                                  : Text(
+                                      'Login',
+                                      style: GoogleFonts.amaranth(
+                                        textStyle: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                    ),
                             ),
                           ),
                         ),

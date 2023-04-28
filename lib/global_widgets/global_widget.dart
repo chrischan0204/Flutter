@@ -8,3 +8,4 @@ export 'add_edit_entity_template/widgets/widgets.dart';
 export 'entity_show_template/widgets/widgets.dart';
 export 'entities_list_template/widgets/widgets.dart';
 export 'table_view.dart';
+export 'loader.dart';

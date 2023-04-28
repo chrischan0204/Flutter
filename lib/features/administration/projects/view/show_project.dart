@@ -108,7 +108,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
     return state.assignedCompanyProjectsRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: Loader()),
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

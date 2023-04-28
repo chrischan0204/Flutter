@@ -22,4 +22,6 @@ class AuthRepository {
     }
     throw Exception();
   }
+
+  Future<void> logout() async {}
 }

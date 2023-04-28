@@ -35,35 +35,37 @@ class MyApp extends StatelessWidget {
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
-              create: (context) => RegionsRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => RegionsRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => PriorityLevelsRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => PriorityLevelsRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => ObservationTypesRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) =>
+                  ObservationTypesRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => AwarenessGroupsRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) =>
+                  AwarenessGroupsRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => AwarenessCategoriesRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) =>
+                  AwarenessCategoriesRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => SitesRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => SitesRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => ProjectsRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => ProjectsRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => CompaniesRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => CompaniesRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => RolesRepository(token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => RolesRepository(token: state.token),
             ),
             RepositoryProvider(
-              create: (context) => UsersRepository(
-                  token: state is AuthAuthenticateSuccess ? state.token : ''),
+              create: (context) => UsersRepository(token: state.token),
             )
           ],
           child: MultiBlocProvider(

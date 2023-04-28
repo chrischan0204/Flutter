@@ -198,7 +198,7 @@ class _CrudState extends State<EntityListTemplate> {
                     ? const Padding(
                         padding: EdgeInsets.only(top: 200.0),
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: Loader(),
                         ),
                       )
                     : DataTableView(

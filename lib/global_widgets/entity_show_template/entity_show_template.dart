@@ -135,7 +135,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
         : const Padding(
             padding: EdgeInsets.only(top: 200.0),
             child: Center(
-              child: CircularProgressIndicator(),
+              child: Loader(),
             ),
           );
   }

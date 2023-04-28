@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:safety_eta/common_libraries.dart';
 
 import '../../../../bloc/theme_bloc.dart';
 import '../../../../data/model/model.dart';
@@ -278,17 +279,21 @@ class _SidebarItemState extends State<SidebarItem>
   Widget _buildItemBody(ThemeState state) {
     return GestureDetector(
       onTap: () {
-        if (widget.path.isNotEmpty) {
-          if ('/${widget.path}' == GoRouter.of(context).location) {
-            GoRouter.of(context).go('/${widget.path}/index');
-          } else {
-            GoRouter.of(context).go('/${widget.path}');
+        if (widget.path.contains('logout')) {
+          context.read<AuthBloc>().add(AuthUnauthenticated());
+        } else {
+          if (widget.path.isNotEmpty) {
+            if ('/${widget.path}' == GoRouter.of(context).location) {
+              GoRouter.of(context).go('/${widget.path}/index');
+            } else {
+              GoRouter.of(context).go('/${widget.path}');
+            }
           }
-        }
 
-        setState(() {
-          isSidebarItemExtended = !isSidebarItemExtended;
-        });
+          setState(() {
+            isSidebarItemExtended = !isSidebarItemExtended;
+          });
+        }
       },
       child: MouseRegion(
         onEnter: (event) {

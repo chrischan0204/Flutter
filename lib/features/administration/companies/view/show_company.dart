@@ -98,7 +98,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     return state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: Loader()),
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -213,7 +213,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: Loader()),
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -318,7 +318,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
     return state.auditTrailsRerievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: Loader()),
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
