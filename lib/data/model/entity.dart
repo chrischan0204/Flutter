@@ -144,13 +144,6 @@ class EntityResponse {
       EntityResponse.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
-enum EntityInputType {
-  textField,
-  singleSelect,
-  multiSelect,
-  colorPicker,
-}
-
 enum EntityStatus {
   initial,
   loading,
@@ -160,4 +153,10 @@ enum EntityStatus {
   bool get isLoading => this == EntityStatus.loading;
   bool get isSuccess => this == EntityStatus.success;
   bool get isFailure => this == EntityStatus.failure;
+}
+
+extension BoolToEntityStatus on bool {
+  EntityStatus toEntityStatusCode() {
+    return this ? EntityStatus.success : EntityStatus.failure;
+  }
 }

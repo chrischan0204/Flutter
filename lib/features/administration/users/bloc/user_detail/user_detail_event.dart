@@ -25,9 +25,9 @@ class UserDetailUserDeleted extends UserDetailEvent {
   List<Object> get props => [userId];
 }
 
-class UserDetailSiteAssignmentListLoaded extends UserDetailEvent {
+class UserDetailAssignedUserSiteListLoaded extends UserDetailEvent {
   final String userId;
-  const UserDetailSiteAssignmentListLoaded({
+  const UserDetailAssignedUserSiteListLoaded({
     required this.userId,
   });
 }

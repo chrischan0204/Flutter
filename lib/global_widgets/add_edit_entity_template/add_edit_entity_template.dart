@@ -14,7 +14,8 @@ class AddEditEntityTemplate extends StatefulWidget {
   final String? id;
   final Entity? selectedEntity;
   final Map<String, Widget> tabItems;
-  final int selectedTabIndex;
+  final double tabWidth;
+  final String? view;
   final Widget child;
   final String? addButtonName;
   final String? editButtonName;
@@ -28,7 +29,8 @@ class AddEditEntityTemplate extends StatefulWidget {
     this.id,
     this.selectedEntity,
     this.tabItems = const {},
-    this.selectedTabIndex = 0,
+    this.tabWidth = 300,
+    this.view,
     required this.child,
     this.addButtonName,
     this.editButtonName,
@@ -47,7 +49,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   @override
   void initState() {
-    selectedTabIndex = widget.selectedTabIndex;
+    selectedTabIndex = widget.view == 'created' ? 1 : 0;
     super.initState();
   }
 
@@ -116,7 +118,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         Colors.white,
       ],
       containerHeight: 42,
-      containerWidth: 300,
+      containerWidth: widget.tabWidth,
       borderColor: grey,
       children: widget.tabItems.entries
           .map(
@@ -190,7 +192,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         horizontal: 20,
         vertical: 12,
       ),
-      child: widget.crudStatus == EntityStatus.loading
+      child: widget.crudStatus.isLoading
           ? CustomButton(
               backgroundColor: const Color(0xff059669),
               hoverBackgroundColor: const Color(0xff05875f),

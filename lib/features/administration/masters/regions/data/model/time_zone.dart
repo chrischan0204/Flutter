@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -37,8 +36,8 @@ class TimeZone extends Entity implements Equatable {
       id: map['id'] as String,
       name: map['name'] != null ? map['name'] as String : null,
       abbreviation:
-          map['abbreviation'] != null ? map['abbreviation'] as String : null,
-      assigned: map['assigned'] as bool,
+          map['abbreviation'],
+      assigned: map['assigned'] ?? false,
     );
   }
 

@@ -21,15 +21,10 @@ class AddEditSiteView extends StatefulWidget {
 class _AddEditSiteViewState extends State<AddEditSiteView> {
   late SitesBloc sitesBloc;
   late RegionsBloc regionsBloc;
-  TextEditingController siteNameController = TextEditingController(
-    text: '',
-  );
-  TextEditingController siteCodeController = TextEditingController(
-    text: '',
-  );
-  TextEditingController referenceCodeController = TextEditingController(
-    text: '',
-  );
+  TextEditingController siteNameController = TextEditingController(text: '');
+  TextEditingController siteCodeController = TextEditingController(text: '');
+  TextEditingController referenceCodeController =
+      TextEditingController(text: '');
 
   String? siteName;
   String? siteCode;

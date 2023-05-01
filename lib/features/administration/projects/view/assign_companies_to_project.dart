@@ -1,7 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../global_widgets/entities_list_template/widgets/filter_textfield.dart';
 import '/utils/utils.dart';
 import '/constants/constants.dart';
 import '/data/model/model.dart';
@@ -27,7 +25,6 @@ class AssignCompaniesToProjectView extends StatefulWidget {
 class _AssignCompaniesToProjectViewState
     extends State<AssignCompaniesToProjectView> {
   late ProjectsBloc projectsBloc;
-  TextEditingController filterController = TextEditingController(text: '');
 
   @override
   void initState() {
@@ -314,7 +311,6 @@ class _AssignCompaniesToProjectViewState
       child: FilterTextField(
         hintText: 'Filter unassigned companies by name.',
         label: 'sites',
-        filterController: filterController,
         filterIconClick: (filtered) {
           if (filtered) {
             _applyFilter(state);

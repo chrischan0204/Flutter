@@ -4,7 +4,7 @@ part of 'user_detail_bloc.dart';
 class UserDetailState extends Equatable {
   final User? user;
   final EntityStatus userLoadStatus;
-  final List<UserSiteAssignment> userSiteAssignmentList;
+  final List<UserSite> userSiteAssignmentList;
   final EntityStatus userSiteAssignmentListLoadStatus;
   final List<UserSiteNotification> userSiteNotificationList;
   final EntityStatus userSiteNotificationListLoadStatus;
@@ -33,10 +33,13 @@ class UserDetailState extends Equatable {
         message,
       ];
 
+  bool get deletable =>
+      userSiteAssignmentList.isEmpty && userSiteNotificationList.isEmpty;
+
   UserDetailState copyWith({
     User? user,
     EntityStatus? userLoadStatus,
-    List<UserSiteAssignment>? userSiteAssignmentList,
+    List<UserSite>? userSiteAssignmentList,
     EntityStatus? userSiteAssignmentListLoadStatus,
     List<UserSiteNotification>? userSiteNotificationList,
     EntityStatus? userSiteNotificationListLoadStatus,

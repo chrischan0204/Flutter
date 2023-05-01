@@ -1,13 +1,21 @@
 import '/common_libraries.dart';
 
-class UsersListView extends StatelessWidget {
+class UsersListView extends StatefulWidget {
   const UsersListView({super.key});
 
   @override
+  State<UsersListView> createState() => _UsersListViewState();
+}
+
+class _UsersListViewState extends State<UsersListView> {
+  String token = '';
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, userListState) {
-        String token = userListState.token;
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) => token = state.token,
+      listenWhen: (previous, current) => previous.token != current.token,
+      builder: (context, state) {
+        token = state.token;
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
@@ -17,7 +25,7 @@ class UsersListView extends StatelessWidget {
             RepositoryProvider(
                 create: (context) => RegionsRepository(token: token)),
             RepositoryProvider(
-                create: (context) => RolesRepository(token: token))
+                create: (context) => RolesRepository(token: token)),
           ],
           child: MultiBlocProvider(
             providers: [

@@ -1,46 +1,152 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'add_edit_user_bloc.dart';
 
-abstract class AddEditUserState extends Equatable {
+class AddEditUserState extends Equatable {
+  final String firstName;
+  final String firstNameValidationMessage;
+
+  final String lastName;
+  final String lastNameValidationMessage;
+
+  final String title;
+
+  final String email;
+  final String emailValidationMessage;
+
+  final String mobilePhone;
+
+  final String roleId;
+  final String? roleName;
+  final String roleValidationMessage;
+
+  final String defaultSiteId;
+  final String? defaultSiteName;
+  final String defaultSiteValidationMessage;
+
+  final String timeZoneId;
+  final String? timeZoneName;
+
+  final List<Role> userRoleList;
+  final EntityStatus userRoleListLoadStatus;
+
+  final EntityStatus userAddStatus;
+  final EntityStatus userEditStatus;
+
   final String message;
-  const AddEditUserState({this.message = ''});
-
-  @override
-  List<Object?> get props => [];
-}
-
-class AddEditUserInitial extends AddEditUserState {}
-
-class UserAddInProgress extends AddEditUserState {}
-
-class UserAddSuccess extends AddEditUserState {
-  final User? addedUser;
-  const UserAddSuccess({
-    this.addedUser,
-    super.message,
+  final int statusCode;
+  const AddEditUserState({
+    this.firstName = '',
+    this.firstNameValidationMessage = '',
+    this.lastName = '',
+    this.lastNameValidationMessage = '',
+    this.title = '',
+    this.email = '',
+    this.emailValidationMessage = '',
+    this.mobilePhone = '',
+    this.roleId = '',
+    this.roleName,
+    this.roleValidationMessage = '',
+    this.defaultSiteId = '',
+    this.defaultSiteName,
+    this.defaultSiteValidationMessage = '',
+    this.timeZoneId = '',
+    this.timeZoneName = '',
+    this.userRoleList = const [],
+    this.userRoleListLoadStatus = EntityStatus.initial,
+    this.userAddStatus = EntityStatus.initial,
+    this.userEditStatus = EntityStatus.initial,
+    this.message = '',
+    this.statusCode = 0,
   });
-  @override
-  List<Object?> get props => [addedUser];
-}
 
-class UserAddFailure extends AddEditUserState {
-  const UserAddFailure({super.message});
-}
-
-class UserEditInProgress extends AddEditUserState {}
-
-class UserEditSuccess extends AddEditUserState {
-  final User? editedUser;
-  const UserEditSuccess({
-    this.editedUser,
-    super.message,
-  });
   @override
   List<Object?> get props => [
-        editedUser,
+        firstName,
+        firstNameValidationMessage,
+        lastName,
+        lastNameValidationMessage,
+        title,
+        email,
+        emailValidationMessage,
+        mobilePhone,
+        roleId,
+        roleName,
+        roleValidationMessage,
+        defaultSiteId,
+        defaultSiteName,
+        defaultSiteValidationMessage,
+        timeZoneId,
+        timeZoneName,
+        userAddStatus,
+        userEditStatus,
+        userRoleList,
+        userRoleListLoadStatus,
         message,
+        statusCode,
       ];
-}
 
-class UserEditFailure extends AddEditUserState {
-  const UserEditFailure({super.message});
+  bool get isUserDataFill => !(Validation.isEmpty(firstName) &&
+      Validation.isEmpty(lastName) &&
+      Validation.isEmpty(title) &&
+      Validation.isEmpty(email) &&
+      Validation.isEmpty(roleId) &&
+      Validation.isEmpty(defaultSiteId) &&
+      Validation.isEmpty(mobilePhone) &&
+      Validation.isEmpty(timeZoneId));
+
+  AddEditUserState copyWith({
+    String? firstName,
+    String? firstNameValidationMessage,
+    String? lastName,
+    String? lastNameValidationMessage,
+    String? title,
+    String? email,
+    String? emailValidationMessage,
+    String? mobilePhone,
+    String? roleId,
+    String? roleName,
+    String? roleValidationMessage,
+    String? defaultSiteId,
+    String? defaultSiteName,
+    String? defaultSiteValidationMessage,
+    String? timeZoneId,
+    String? timeZoneName,
+    List<Role>? userRoleList,
+    EntityStatus? userRoleListLoadStatus,
+    EntityStatus? userAddStatus,
+    EntityStatus? userEditStatus,
+    String? message,
+    int? statusCode,
+  }) {
+    return AddEditUserState(
+      firstName: firstName ?? this.firstName,
+      firstNameValidationMessage:
+          firstNameValidationMessage ?? this.firstNameValidationMessage,
+      lastName: lastName ?? this.lastName,
+      lastNameValidationMessage:
+          lastNameValidationMessage ?? this.lastNameValidationMessage,
+      title: title ?? this.title,
+      email: email ?? this.email,
+      emailValidationMessage:
+          emailValidationMessage ?? this.emailValidationMessage,
+      mobilePhone: mobilePhone ?? this.mobilePhone,
+      roleId: roleId ?? this.roleId,
+      roleName: roleName ?? this.roleName,
+      roleValidationMessage:
+          roleValidationMessage ?? this.roleValidationMessage,
+      defaultSiteId: defaultSiteId ?? this.defaultSiteId,
+      defaultSiteName: defaultSiteName ?? this.defaultSiteName,
+      defaultSiteValidationMessage:
+          defaultSiteValidationMessage ?? this.defaultSiteValidationMessage,
+      timeZoneId: timeZoneId ?? this.timeZoneId,
+      timeZoneName: timeZoneName ?? this.timeZoneName,
+      userRoleList: userRoleList ?? this.userRoleList,
+      userRoleListLoadStatus:
+          userRoleListLoadStatus ?? this.userRoleListLoadStatus,
+      userAddStatus: userAddStatus ?? this.userAddStatus,
+      userEditStatus: userEditStatus ?? this.userEditStatus,
+      message: message ?? this.message,
+      statusCode: statusCode ?? this.statusCode,
+    );
+  }
 }

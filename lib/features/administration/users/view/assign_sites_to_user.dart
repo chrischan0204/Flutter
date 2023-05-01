@@ -1,36 +1,36 @@
 import '/common_libraries.dart';
 
-class AssignSitesToCompanyView extends StatefulWidget {
-  final String companyId;
-  final String companyName;
+class AssignSitesToUserView extends StatefulWidget {
+  final String userId;
+  final String userName;
   final String? view;
-  const AssignSitesToCompanyView({
+  const AssignSitesToUserView({
     super.key,
-    required this.companyId,
-    this.companyName = '',
+    required this.userId,
+    this.userName = '',
     this.view,
   });
 
   @override
-  State<AssignSitesToCompanyView> createState() =>
-      _AssignSitesToCompanyViewState();
+  State<AssignSitesToUserView> createState() => _AssignSitesToUserViewState();
 }
 
-class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
-  late CompaniesBloc companiesBloc;
+class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
+  late AssignSiteToUserBloc addEditUserBloc;
+  TextEditingController filterController = TextEditingController(text: '');
 
   @override
   void initState() {
-    companiesBloc = context.read<CompaniesBloc>()
-      ..add(const FilterTextChanged(filterText: ''))
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
+    addEditUserBloc = context.read<AssignSiteToUserBloc>()
+      ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId))
+      ..add(
+          AssignSiteToUserUnassignedUserSiteListLoaded(userId: widget.userId));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CompaniesBloc, CompaniesState>(
+    return BlocBuilder<AssignSiteToUserBloc, AssignSiteToUserState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
@@ -54,13 +54,13 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  Expanded _buildUnassignedSitesView(CompaniesState state) {
+  Expanded _buildUnassignedSitesView(AssignSiteToUserState state) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Sites can be assigned to this company by selecting from the list below.',
+            'Sites can be assigned to this project by selecting from the list below.',
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -75,7 +75,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  Expanded _buildAssignedSitesView(CompaniesState state, BuildContext context) {
+  Expanded _buildAssignedSitesView(
+      AssignSiteToUserState state, BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,12 +89,12 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  Padding _buildAssignedSitesTableViewHeader(CompaniesState state) {
+  Padding _buildAssignedSitesTableViewHeader(AssignSiteToUserState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(
-        text: TextSpan(
-          style: const TextStyle(
+        text: const TextSpan(
+          style: TextStyle(
             fontSize: 12,
             color: Colors.black,
             fontWeight: FontWeight.w400,
@@ -102,14 +103,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           children: <TextSpan>[
             TextSpan(
               text:
-                  'The company \'${widget.companyName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const TextSpan(
-              text:
-                  ' Sites can be assigned from list on right. Once assigned they will show here in this list below.',
+                  ' Sites can be assigned from list on right. Once assigned they will show here in this list.',
             ),
           ],
         ),
@@ -117,20 +111,19 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  Widget _buildUnassignedSitesTableView(CompaniesState state) {
+  Widget _buildUnassignedSitesTableView(AssignSiteToUserState state) {
     return SizedBox(
       width: double.infinity,
-      child: BlocListener<CompaniesBloc, CompaniesState>(
+      child: BlocListener<AssignSiteToUserBloc, AssignSiteToUserState>(
         listener: (context, state) {
-          if (state.siteFromCompanyUnassignedStatus == EntityStatus.success) {
+          if (state.unassignStatus == EntityStatus.success) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
-            _refetchCompanySites(state.filterText);
-          } else if (state.siteFromCompanyUnassignedStatus ==
-              EntityStatus.failure) {
+            _refetchUserSites(state.filterText);
+          } else if (state.unassignStatus == EntityStatus.failure) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.error,
@@ -139,8 +132,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           }
         },
         listenWhen: (previous, current) =>
-            previous.siteFromCompanyUnassignedStatus !=
-            current.siteFromCompanyUnassignedStatus,
+            previous.unassignStatus != current.unassignStatus,
         child: DataTable(
           headingTextStyle: tableHeadingTextStyle,
           dataTextStyle: tableDataTextStyle,
@@ -154,24 +146,24 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               ),
             ),
           ],
-          rows: state.unassignedCompanySites
+          rows: state.unassignedUserSiteList
               .map(
-                (unassignedCompanySite) => DataRow(
+                (unassignedUserSite) => DataRow(
                   cells: [
                     DataCell(
                       CustomSwitch(
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,
-                        switchValue: unassignedCompanySite.assigned,
+                        switchValue: unassignedUserSite.isAssigned,
                         onChanged: (value) {
-                          _assignSiteToCompany(unassignedCompanySite);
+                          _assignSiteToUser(unassignedUserSite);
                         },
                       ),
                     ),
                     DataCell(
                       CustomDataCell(
-                        data: unassignedCompanySite.siteName,
+                        data: unassignedUserSite.siteName,
                       ),
                     ),
                   ],
@@ -184,20 +176,19 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   }
 
   Widget _buildAssignedSitesTableView(
-      CompaniesState state, BuildContext context) {
+      AssignSiteToUserState state, BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: BlocListener<CompaniesBloc, CompaniesState>(
+      child: BlocListener<AssignSiteToUserBloc, AssignSiteToUserState>(
         listener: (context, state) {
-          if (state.siteToCompanyAssignedStatus == EntityStatus.success) {
+          if (state.assignStatus == EntityStatus.success) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
-            _refetchCompanySites(state.filterText);
-          } else if (state.siteToCompanyAssignedStatus ==
-              EntityStatus.failure) {
+            _refetchUserSites(state.filterText);
+          } else if (state.assignStatus == EntityStatus.failure) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.error,
@@ -206,8 +197,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           }
         },
         listenWhen: (previous, current) =>
-            previous.siteToCompanyAssignedStatus !=
-            current.siteToCompanyAssignedStatus,
+            previous.assignStatus != current.assignStatus,
         child: DataTable(
           headingTextStyle: tableHeadingTextStyle,
           dataTextStyle: tableDataTextStyle,
@@ -220,24 +210,34 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                 'Site Name',
               ),
             ),
+            DataColumn(
+              label: Text(
+                'Default',
+              ),
+            ),
           ],
-          rows: List<CompanySite>.from(state.assignedCompanySites)
+          rows: List<UserSite>.from(state.assignedUserSiteList)
               .map(
-                (assignedCompanySite) => DataRow(
+                (assignedUserSite) => DataRow(
                   cells: [
                     DataCell(
                       CustomSwitch(
-                        switchValue: assignedCompanySite.assigned,
+                        switchValue: assignedUserSite.isAssigned,
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,
                         onChanged: (value) =>
-                            _unassignFromCompany(assignedCompanySite.id!),
+                            _unassignFromUser(assignedUserSite.id!),
                       ),
                     ),
                     DataCell(
                       CustomDataCell(
-                        data: assignedCompanySite.siteName,
+                        data: assignedUserSite.siteName,
+                      ),
+                    ),
+                    DataCell(
+                      CustomDataCell(
+                        data: assignedUserSite.isDefault ? 'Yes' : '--',
                       ),
                     ),
                   ],
@@ -249,28 +249,29 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  void _assignSiteToCompany(CompanySite companySite) {
-    companiesBloc.add(SiteToCompanyAssigned(
-        companySiteUpdation: companySite.toCompanySiteUpdation()));
+  void _assignSiteToUser(UserSite userSite) {
+    addEditUserBloc.add(AssignSiteToUserSiteAssigned(
+        userSiteAssignment: UserSiteAssignment(
+            siteId: userSite.siteId, userId: widget.userId)));
   }
 
-  void _unassignFromCompany(String companySiteId) {
+  void _unassignFromUser(String userSiteId) {
     CustomAlert(
       context: context,
       width: MediaQuery.of(context).size.width / 4,
       title: 'Confirm',
-      description: 'Do you really want to remove this site from company?',
+      description: 'Do you really want to remove this site from user?',
       btnOkText: 'Remove',
       btnCancelOnPress: () {},
       btnOkOnPress: () {
-        companiesBloc.add(
-            SiteFromCompanyUnassigned(companySiteUpdationId: companySiteId));
+        addEditUserBloc.add(
+            AssignSiteToUserSiteUnassigned(userSiteAssignmentId: userSiteId));
       },
       dialogType: DialogType.question,
     ).show();
   }
 
-  Padding _buildFilterTextField(CompaniesState state) {
+  Padding _buildFilterTextField(AssignSiteToUserState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FilterTextField(
@@ -283,30 +284,30 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             _cancelFilter();
           }
         },
-        onChange: (value) =>
-            companiesBloc.add(FilterTextChanged(filterText: value)),
+        onChange: (filterText) => addEditUserBloc
+            .add(AssignSiteToUserFilterTextChanged(filterText: filterText)),
       ),
     );
   }
 
-  _applyFilter(CompaniesState state) {
-    companiesBloc.add(UnassignedCompanySitesRetrieved(
-      companyId: widget.companyId,
+  _applyFilter(AssignSiteToUserState state) {
+    addEditUserBloc.add(AssignSiteToUserUnassignedUserSiteListLoaded(
+      userId: widget.userId,
       name: state.filterText,
     ));
   }
 
   _cancelFilter() {
-    companiesBloc
-      ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(const FilterTextChanged(filterText: ''));
+    addEditUserBloc
+      ..add(AssignSiteToUserUnassignedUserSiteListLoaded(userId: widget.userId))
+      ..add(const AssignSiteToUserFilterTextChanged(filterText: ''));
   }
 
-  _refetchCompanySites(String filterText) {
-    companiesBloc
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(UnassignedCompanySitesRetrieved(
-        companyId: widget.companyId,
+  _refetchUserSites(String filterText) {
+    addEditUserBloc
+      ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId))
+      ..add(AssignSiteToUserUnassignedUserSiteListLoaded(
+        userId: widget.userId,
         name: filterText,
       ));
   }

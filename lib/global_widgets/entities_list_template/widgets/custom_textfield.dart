@@ -3,6 +3,7 @@ import '/constants/color.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
+  final String? initialValue;
   final ValueChanged<String> onChanged;
   final bool isDisabled;
   final TextEditingController? controller;
@@ -14,6 +15,7 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.hintText,
+    this.initialValue,
     required this.onChanged,
     this.isDisabled = false,
     this.controller,
@@ -38,7 +40,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 36,
-      child: TextField(
+      child: TextFormField(
+        initialValue: widget.initialValue,
         controller: widget.controller,
         enabled: !widget.isDisabled,
         onChanged: (value) {

@@ -4,8 +4,6 @@ import 'package:safety_eta/common_libraries.dart';
 
 import 'router.dart';
 
-import 'data/repository/repository.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadEnv();
@@ -20,49 +18,54 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String token = '';
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        // if (state is! AuthAuthenticateSuccess) {
-        //   GoRouter.of(context).go('/login');
-        // }
+        setState(() {
+          token = state.token;
+        });
       },
+      listenWhen: (previous, current) => previous.token != current.token,
       builder: (context, state) {
+        token = state.token;
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
-              create: (context) => RegionsRepository(token: state.token),
+              create: (context) => RegionsRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) => PriorityLevelsRepository(token: state.token),
+              create: (context) => PriorityLevelsRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) =>
-                  ObservationTypesRepository(token: state.token),
+              create: (context) => ObservationTypesRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) =>
-                  AwarenessGroupsRepository(token: state.token),
+              create: (context) => AwarenessGroupsRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) =>
-                  AwarenessCategoriesRepository(token: state.token),
+              create: (context) => AwarenessCategoriesRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) => SitesRepository(token: state.token),
+              create: (context) => SitesRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) => ProjectsRepository(token: state.token),
+              create: (context) => ProjectsRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) => CompaniesRepository(token: state.token),
+              create: (context) => CompaniesRepository(token: token),
             ),
             RepositoryProvider(
-              create: (context) => RolesRepository(token: state.token),
+              create: (context) => RolesRepository(token: token),
             ),
           ],
           child: MultiBlocProvider(

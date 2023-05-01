@@ -1,7 +1,7 @@
 export 'entity.dart';
 
 export '/features/administration/masters/regions/data/model/region.dart';
-export '/features/administration/masters/regions/data/model/timezone.dart';
+export '/features/administration/masters/regions/data/model/time_zone.dart';
 export '/features/administration/masters/priority_levels/data/model/priority_level.dart';
 export '/features/administration/masters/observation_types/data/model/observation_type.dart';
 export '/features/administration/masters/awareness_groups/data/model/awareness_group.dart';
@@ -21,6 +21,5 @@ export '/features/administration/companies/data/model/company_site.dart';
 export '/features/administration/companies/data/model/company_site_updation.dart';
 export '/features/administration/companies/data/model/audit_trail.dart';
 
-export '/features/administration/users/data/model/user.dart';
-export '/features/administration/users/data/model/user_site_assignment.dart';
-export '/features/administration/users/data/model/user_site_notification.dart';
+export '/features/administration/users/data/model/model.dart';
+

@@ -8,11 +8,13 @@ part 'user_detail_state.dart';
 
 class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   final UsersRepository usersRepository;
+
+  static String deleteErrorMessage =
+      'There was an error while deleting site. Our team has been notified. Please wait a few minutes and try again.';
   UserDetailBloc({required this.usersRepository})
       : super(const UserDetailState()) {
     on<UserDetailUserLoadedById>(_onUserDetailUserLoadedById);
-    on<UserDetailSiteAssignmentListLoaded>(
-        _onUserDetailSiteAssignmentListLoaded);
+    on<UserDetailAssignedUserSiteListLoaded>(_onUserDetailSiteAssignmentListLoaded);
     on<UserDetailSiteNotificationListLoaded>(
         _onUserDetailSiteNotificationListLoaded);
     on<UserDetailUserDeleted>(_onUserDetailUserDeleted);
@@ -37,13 +39,14 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   }
 
   Future<void> _onUserDetailSiteAssignmentListLoaded(
-    UserDetailSiteAssignmentListLoaded event,
+    UserDetailAssignedUserSiteListLoaded event,
     Emitter<UserDetailState> emit,
   ) async {
     emit(
         state.copyWith(userSiteAssignmentListLoadStatus: EntityStatus.loading));
     try {
-      List<UserSiteAssignment> userSiteAssignmentList = [];
+      List<UserSite> userSiteAssignmentList =
+          await usersRepository.getUserSitesByUserId(event.userId, assigned: true);
       emit(state.copyWith(
         userSiteAssignmentListLoadStatus: EntityStatus.success,
         userSiteAssignmentList: userSiteAssignmentList,
@@ -77,5 +80,20 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   Future<void> _onUserDetailUserDeleted(
     UserDetailUserDeleted event,
     Emitter<UserDetailState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(userDeleteStatus: EntityStatus.loading));
+    try {
+      EntityResponse response = await usersRepository.deleteUser(event.userId);
+      emit(state.copyWith(
+        userDeleteStatus:
+            response.isSuccess ? EntityStatus.success : EntityStatus.failure,
+        message: response.message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        userDeleteStatus: EntityStatus.failure,
+        message: deleteErrorMessage,
+      ));
+    }
+  }
 }
