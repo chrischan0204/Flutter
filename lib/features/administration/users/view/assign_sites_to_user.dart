@@ -223,6 +223,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
                     DataCell(
                       CustomSwitch(
                         switchValue: assignedUserSite.isAssigned,
+                        active: !assignedUserSite.isDefault,
                         trueString: 'Yes',
                         falseString: 'No',
                         textColor: darkTeal,

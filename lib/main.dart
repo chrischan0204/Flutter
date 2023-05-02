@@ -13,28 +13,19 @@ void main() async {
     child: BlocProvider(
       create: (context) => AuthBloc(
           authRepository: RepositoryProvider.of<AuthRepository>(context)),
-      child: const MyApp(),
+      child: MyApp(),
     ),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   String token = '';
+  MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        setState(() {
-          token = state.token;
-        });
-      },
+      listener: (context, state) => token = state.token,
       listenWhen: (previous, current) => previous.token != current.token,
       builder: (context, state) {
         token = state.token;
