@@ -187,7 +187,7 @@ class UsersRepository extends BaseRepository {
               UserSiteNotification.fromMap(notificationMap))
           .toList();
     }
-    return [];
+    throw Exception();
   }
 
   Future<EntityResponse> updateUserSiteNotificationSetting(
