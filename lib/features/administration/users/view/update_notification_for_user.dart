@@ -37,9 +37,11 @@ class _UpdateNotificationForUserViewState
                 NotificationSettingNotificationListLoaded(
                     userId: widget.userId));
           } else if (state.siteNotificationUpdateStatus.isFailure) {
-            // notificationSettingBloc.add(
-            //     NotificationSettingNotificationListLoaded(
-            //         userId: widget.userId));
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.error,
+              content: state.message,
+            ).showNotification();
           }
         },
         listenWhen: (previous, current) =>

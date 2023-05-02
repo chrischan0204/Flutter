@@ -14,9 +14,6 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   UserDetailBloc({required this.usersRepository})
       : super(const UserDetailState()) {
     on<UserDetailUserLoadedById>(_onUserDetailUserLoadedById);
-    on<UserDetailAssignedUserSiteListLoaded>(_onUserDetailSiteAssignmentListLoaded);
-    on<UserDetailSiteNotificationListLoaded>(
-        _onUserDetailSiteNotificationListLoaded);
     on<UserDetailUserDeleted>(_onUserDetailUserDeleted);
   }
 
@@ -35,45 +32,6 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
       emit(state.copyWith(
         userLoadStatus: EntityStatus.failure,
       ));
-    }
-  }
-
-  Future<void> _onUserDetailSiteAssignmentListLoaded(
-    UserDetailAssignedUserSiteListLoaded event,
-    Emitter<UserDetailState> emit,
-  ) async {
-    emit(
-        state.copyWith(userSiteAssignmentListLoadStatus: EntityStatus.loading));
-    try {
-      List<UserSite> userSiteAssignmentList =
-          await usersRepository.getUserSitesByUserId(event.userId, assigned: true);
-      emit(state.copyWith(
-        userSiteAssignmentListLoadStatus: EntityStatus.success,
-        userSiteAssignmentList: userSiteAssignmentList,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-          userSiteAssignmentListLoadStatus: EntityStatus.failure));
-    }
-  }
-
-  Future<void> _onUserDetailSiteNotificationListLoaded(
-    UserDetailSiteNotificationListLoaded event,
-    Emitter<UserDetailState> emit,
-  ) async {
-    emit(state.copyWith(
-        userSiteNotificationListLoadStatus: EntityStatus.loading));
-    try {
-      List<UserSiteNotification> userSiteNotificationList =
-          await usersRepository
-              .getSiteNotificationSettingsByUserId(event.userId);
-      emit(state.copyWith(
-        userSiteNotificationListLoadStatus: EntityStatus.success,
-        userSiteNotificationList: userSiteNotificationList,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-          userSiteNotificationListLoadStatus: EntityStatus.failure));
     }
   }
 

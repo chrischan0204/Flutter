@@ -24,17 +24,3 @@ class UserDetailUserDeleted extends UserDetailEvent {
   @override
   List<Object> get props => [userId];
 }
-
-class UserDetailAssignedUserSiteListLoaded extends UserDetailEvent {
-  final String userId;
-  const UserDetailAssignedUserSiteListLoaded({
-    required this.userId,
-  });
-}
-
-class UserDetailSiteNotificationListLoaded extends UserDetailEvent {
-  final String userId;
-  const UserDetailSiteNotificationListLoaded({
-    required this.userId,
-  });
-}
