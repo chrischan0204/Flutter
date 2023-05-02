@@ -33,6 +33,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -48,9 +49,9 @@ class _LoginViewState extends State<LoginView> {
             Align(
               alignment: Alignment.centerRight,
               child: Container(
-                width: MediaQuery.of(context).size.width * 2 / 7,
+                width: width * 2 / 7,
                 margin: const EdgeInsets.all(50),
-                padding: const EdgeInsets.all(80),
+                padding: EdgeInsets.all(width / 30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
@@ -82,16 +83,16 @@ class _LoginViewState extends State<LoginView> {
                     Column(
                       children: [
                         Text(
-                          'Welcome to Safety ETA',
+                          'Welcome to Safety',
                           style: GoogleFonts.amiko(
-                            textStyle: const TextStyle(
-                              fontSize: 30,
+                            textStyle: TextStyle(
+                              fontSize: width / 60,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 100,
+                        SizedBox(
+                          height: width / 20,
                         ),
                         TextField(
                           controller: _usernameController,
@@ -159,8 +160,8 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           obscureText: isPassword,
                         ),
-                        const SizedBox(
-                          height: 50,
+                        SizedBox(
+                          height: width / 40,
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -196,9 +197,9 @@ class _LoginViewState extends State<LoginView> {
                                   : Text(
                                       'Login',
                                       style: GoogleFonts.amaranth(
-                                        textStyle: const TextStyle(
+                                        textStyle: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 24,
+                                          fontSize: width / 70,
                                           letterSpacing: 2,
                                         ),
                                       ),
@@ -206,8 +207,8 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: width / 60,
                         ),
                         Align(
                           alignment: Alignment.centerRight,
@@ -216,7 +217,7 @@ class _LoginViewState extends State<LoginView> {
                             child: const Text(
                               'Forgot password?',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
