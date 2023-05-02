@@ -1,4 +1,5 @@
 import 'package:safety_eta/features/administration/users/view/assign_sites_to_user.dart';
+import 'package:safety_eta/features/administration/users/view/update_notification_for_user.dart';
 
 import '/common_libraries.dart';
 
@@ -54,6 +55,9 @@ class _AddEditUserViewState extends State<AddEditUserView> {
                       timeZonesRepository: RepositoryProvider.of(context))),
               BlocProvider(
                   create: (context) => AssignSiteToUserBloc(
+                      usersRepository: RepositoryProvider.of(context))),
+              BlocProvider(
+                  create: (context) => NotificationSettingBloc(
                       usersRepository: RepositoryProvider.of(context))),
             ],
             child: AddEditUserWidget(userId: widget.userId),
@@ -176,11 +180,13 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
       return {
         'User Details': Container(),
         'Site Access': AssignSitesToUserView(userId: widget.userId!),
-        'Notifications': Container(),
+        'Notifications': UpdateNotificationForUserView(
+          userId: widget.userId!,
+        ),
         'Invite Details': Container(),
         '': Container(),
       };
-    }
+    } 
     return {};
   }
 

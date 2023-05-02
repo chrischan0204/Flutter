@@ -136,7 +136,7 @@ class _UserDetailWidgetState extends State<UserDetailWidget> {
             children: [
               state.userSiteAssignmentList.isNotEmpty
                   ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
                         '${state.user?.name ?? ''} has access to the following sites. Site access can be changed by editing this user',
                         style: const TextStyle(

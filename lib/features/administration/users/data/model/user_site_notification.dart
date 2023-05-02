@@ -35,6 +35,8 @@ class UserSiteNotification extends Equatable {
         unsafe,
       ];
 
+  bool get all => goodCatch && nearMiss && safe && unsafe;
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -65,4 +67,26 @@ class UserSiteNotification extends Equatable {
 
   factory UserSiteNotification.fromJson(String source) =>
       UserSiteNotification.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  UserSiteNotification copyWith({
+    String? id,
+    String? siteId,
+    String? siteName,
+    String? userId,
+    bool? goodCatch,
+    bool? nearMiss,
+    bool? safe,
+    bool? unsafe,
+  }) {
+    return UserSiteNotification(
+      id: id ?? this.id,
+      siteId: siteId ?? this.siteId,
+      siteName: siteName ?? this.siteName,
+      userId: userId ?? this.userId,
+      goodCatch: goodCatch ?? this.goodCatch,
+      nearMiss: nearMiss ?? this.nearMiss,
+      safe: safe ?? this.safe,
+      unsafe: unsafe ?? this.unsafe,
+    );
+  }
 }

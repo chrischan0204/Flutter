@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const TextStyle tableHeadingTextStyle = TextStyle(
-  fontSize: 12,
+  fontSize: 14,
   color: Color(0xff1F2937),
   fontWeight: FontWeight.w600,
 );
