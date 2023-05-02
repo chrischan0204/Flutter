@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+
 import 'package:safety_eta/utils/utils.dart';
 
 // standadized model, which other models inherit
@@ -142,6 +144,18 @@ class EntityResponse {
 
   factory EntityResponse.fromJson(String source) =>
       EntityResponse.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  EntityResponse copyWith({
+    bool? isSuccess,
+    String? message,
+    Entity? data,
+  }) {
+    return EntityResponse(
+      isSuccess: isSuccess ?? this.isSuccess,
+      message: message ?? this.message,
+      data: data ?? this.data,
+    );
+  }
 }
 
 enum EntityStatus {

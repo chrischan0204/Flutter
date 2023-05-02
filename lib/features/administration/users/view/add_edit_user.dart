@@ -60,7 +60,10 @@ class _AddEditUserViewState extends State<AddEditUserView> {
                   create: (context) => NotificationSettingBloc(
                       usersRepository: RepositoryProvider.of(context))),
             ],
-            child: AddEditUserWidget(userId: widget.userId),
+            child: AddEditUserWidget(
+              userId: widget.userId,
+              view: widget.view,
+            ),
           ),
         );
       },
@@ -186,7 +189,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
         'Invite Details': Container(),
         '': Container(),
       };
-    } 
+    }
     return {};
   }
 
@@ -201,7 +204,8 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
       ).showNotification();
       addEditUserBloc.add(AddEditUserStatusInited());
       if (widget.userId == null) {
-        GoRouter.of(context).go('/users/edit/${widget.userId}?view=created');
+        GoRouter.of(context)
+            .go('/users/edit/${addEditUserState.createdUserId!}?view=created');
       }
     } else if (addEditUserState.userAddStatus.isFailure) {
       if (!addEditUserState.message

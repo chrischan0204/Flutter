@@ -143,9 +143,9 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
         ));
 
         emit(state.copyWith(
-          userAddStatus:
-              response.isSuccess ? EntityStatus.success : EntityStatus.failure,
+          userAddStatus: response.isSuccess.toEntityStatusCode(),
           message: response.message,
+          createdUserId: response.data?.id,
         ));
         if (response.message.contains('Email')) {
           emit(state.copyWith(emailValidationMessage: response.message));

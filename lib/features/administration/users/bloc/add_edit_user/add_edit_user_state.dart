@@ -2,6 +2,8 @@
 part of 'add_edit_user_bloc.dart';
 
 class AddEditUserState extends Equatable {
+  final String? createdUserId;
+
   final String firstName;
   final String firstNameValidationMessage;
 
@@ -35,6 +37,7 @@ class AddEditUserState extends Equatable {
   final String message;
   final int statusCode;
   const AddEditUserState({
+    this.createdUserId,
     this.firstName = '',
     this.firstNameValidationMessage = '',
     this.lastName = '',
@@ -61,6 +64,7 @@ class AddEditUserState extends Equatable {
 
   @override
   List<Object?> get props => [
+        createdUserId,
         firstName,
         firstNameValidationMessage,
         lastName,
@@ -95,6 +99,7 @@ class AddEditUserState extends Equatable {
       Validation.isEmpty(timeZoneId));
 
   AddEditUserState copyWith({
+    String? createdUserId,
     String? firstName,
     String? firstNameValidationMessage,
     String? lastName,
@@ -119,6 +124,7 @@ class AddEditUserState extends Equatable {
     int? statusCode,
   }) {
     return AddEditUserState(
+      createdUserId: createdUserId ?? this.createdUserId,
       firstName: firstName ?? this.firstName,
       firstNameValidationMessage:
           firstNameValidationMessage ?? this.firstNameValidationMessage,
