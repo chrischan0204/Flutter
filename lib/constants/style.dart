@@ -10,3 +10,5 @@ const TextStyle tableDataTextStyle = TextStyle(
   fontWeight: FontWeight.w400,
   color: Color(0xff1F2937),
 );
+
+const double topbarHeight = 75;

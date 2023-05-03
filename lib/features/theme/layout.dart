@@ -93,8 +93,9 @@ class _LayoutState extends State<Layout> {
                                   ),
                             Expanded(
                               child: Container(
-                                // constraints:
-                                //     BoxConstraints(minHeight: constraints.maxHeight),
+                                constraints: BoxConstraints(
+                                    minHeight:
+                                        MediaQuery.of(context).size.height),
                                 child: widget.body,
                               ),
                             ),

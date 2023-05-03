@@ -1,8 +1,8 @@
+import 'package:safety_eta/common_libraries.dart';
+
 import '/features/theme/view/widgets/sidebar/sidebar_style.dart';
 import '/features/theme/view/widgets/topbar/topbar_widgets/logo.dart';
 import '/features/theme/view/widgets/topbar/topbar_widgets/search_field.dart';
-import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Topbar extends StatelessWidget {
   const Topbar({
@@ -12,7 +12,7 @@ class Topbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75,
+      height: topbarHeight,
       width: double.infinity,
       decoration: BoxDecoration(
         color: sidebarColor,

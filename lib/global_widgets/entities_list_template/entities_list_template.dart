@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:strings/strings.dart';
+import 'package:flutter/gestures.dart';
 
-import '/global_widgets/global_widget.dart';
-import '/data/model/entity.dart';
-import '/constants/color.dart';
+import '/common_libraries.dart';
+import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
@@ -73,34 +69,40 @@ class _CrudState extends State<EntityListTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              widget.filterApplied ? const CustomDivider() : Container(),
-              widget.filterApplied
-                  ? _buildFilterAppliedNotification()
-                  : Container(),
-              widget.filterApplied ? const CustomDivider() : Container(),
-              widget.filterApplied
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: widget.filterResultBody ?? Container(),
-                    )
-                  : Container(),
-              widget.showTableHeaderButtons ? _buildTableHeader() : Container(),
-              _buildTableView()
-            ],
+    return Container(
+      constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height - topbarHeight - 20),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                widget.filterApplied ? const CustomDivider() : Container(),
+                widget.filterApplied
+                    ? _buildFilterAppliedNotification()
+                    : Container(),
+                widget.filterApplied ? const CustomDivider() : Container(),
+                widget.filterApplied
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: widget.filterResultBody ?? Container(),
+                      )
+                    : Container(),
+                widget.showTableHeaderButtons
+                    ? _buildTableHeader()
+                    : Container(),
+                _buildTableView()
+              ],
+            ),
           ),
-        ),
-        _buildDetailsSlider(context),
-        _buildViewSettingsSlider(context),
-        _buildFiltersSlider(context),
-      ],
+          _buildDetailsSlider(context),
+          _buildViewSettingsSlider(context),
+          _buildFiltersSlider(context),
+        ],
+      ),
     );
   }
 
@@ -166,78 +168,91 @@ class _CrudState extends State<EntityListTemplate> {
     );
   }
 
-  Column _buildTableView() {
-    return Column(
-      children: [
-        widget.description.isNotEmpty
-            ? const CustomDivider()
-            : const SizedBox(
-                height: 12,
-              ),
-        Container(
-          width: double.infinity,
-          alignment: Alignment.topLeft,
+  Expanded _buildTableView() {
+    return Expanded(
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+        }),
+        child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               widget.description.isNotEmpty
-                  ? Description(
-                      description: widget.description,
-                    )
-                  : Container(),
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      width: 1,
-                      color: Color(0xff9ca3af),
+                  ? const CustomDivider()
+                  : const SizedBox(
+                      height: 12,
                     ),
-                  ),
-                ),
-                child: widget.entityRetrievedStatus == EntityStatus.loading
-                    ? const Padding(
-                        padding: EdgeInsets.only(top: 200.0),
-                        child: Center(
-                          child: Loader(),
+              Container(
+                width: double.infinity,
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    widget.description.isNotEmpty
+                        ? Description(
+                            description: widget.description,
+                          )
+                        : Container(),
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 1,
+                            color: Color(0xff9ca3af),
+                          ),
                         ),
-                      )
-                    : DataTableView(
-                        entities: widget.entities,
-                        emptyMessage: widget.emptyMessage,
-                        onTableSort: widget.onTableSort == null
-                            ? null
-                            : (MapEntry<String, bool> sortInfo) {
-                                List<Entity> entities =
-                                    List.from(widget.entities);
-
-                                entities.sort(
-                                  (a, b) {
-                                    return (sortInfo.value ? 1 : -1) *
-                                        (a
-                                                .tableItemsToMap()[sortInfo.key]
-                                                .toString()
-                                                .toLowerCase())
-                                            .compareTo(b
-                                                .tableItemsToMap()[sortInfo.key]
-                                                .toString()
-                                                .toLowerCase());
-                                  },
-                                );
-                                widget.onTableSort!(entities);
-                              },
-                        onRowClick: (entity) {
-                          _showDetailsSlider();
-                          setState(() {
-                            selectedId = entity.id!;
-                          });
-                          widget.onRowClick(entity);
-                        },
                       ),
-              )
+                      child:
+                          widget.entityRetrievedStatus == EntityStatus.loading
+                              ? const Padding(
+                                  padding: EdgeInsets.only(top: 200.0),
+                                  child: Center(
+                                    child: Loader(),
+                                  ),
+                                )
+                              : DataTableView(
+                                  entities: widget.entities,
+                                  emptyMessage: widget.emptyMessage,
+                                  onTableSort: widget.onTableSort == null
+                                      ? null
+                                      : (MapEntry<String, bool> sortInfo) {
+                                          List<Entity> entities =
+                                              List.from(widget.entities);
+
+                                          entities.sort(
+                                            (a, b) {
+                                              return (sortInfo.value ? 1 : -1) *
+                                                  (a
+                                                          .tableItemsToMap()[
+                                                              sortInfo.key]
+                                                          .toString()
+                                                          .toLowerCase())
+                                                      .compareTo(b
+                                                          .tableItemsToMap()[
+                                                              sortInfo.key]
+                                                          .toString()
+                                                          .toLowerCase());
+                                            },
+                                          );
+                                          widget.onTableSort!(entities);
+                                        },
+                                  onRowClick: (entity) {
+                                    _showDetailsSlider();
+                                    setState(() {
+                                      selectedId = entity.id!;
+                                    });
+                                    widget.onRowClick(entity);
+                                  },
+                                ),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 

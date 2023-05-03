@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -146,26 +145,13 @@ class _DataTableViewState extends State<DataTableView> {
   @override
   Widget build(BuildContext context) {
     return widget.entities.isNotEmpty
-        ? SizedBox(
-            height: MediaQuery.of(context).size.height - 230,
-            child: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-                PointerDeviceKind.touch,
-                PointerDeviceKind.mouse,
-              }),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                controller: ScrollController(),
-                child: DataTable(
-                  headingTextStyle: tableHeadingTextStyle,
-                  dataTextStyle: tableDataTextStyle,
-                  headingRowHeight: 54.5,
-                  dataRowHeight: 53.35,
-                  columns: _buildColumns(),
-                  rows: _buildRows(),
-                ),
-              ),
-            ),
+        ? DataTable(
+            headingTextStyle: tableHeadingTextStyle,
+            dataTextStyle: tableDataTextStyle,
+            headingRowHeight: 54.5,
+            dataRowHeight: 53.35,
+            columns: _buildColumns(),
+            rows: _buildRows(),
           )
         : Container(
             margin: const EdgeInsets.only(

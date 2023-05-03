@@ -100,62 +100,66 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
             padding: EdgeInsets.only(top: 300),
             child: Center(child: Loader()),
           )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              state.assignedCompanySites.isNotEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'The following sites are associated with this project. Edit company to associate/ remove sites from this company',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w400,
+        : Container(
+            color: Colors.red,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                state.assignedCompanySites.isNotEmpty
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          'The following sites are associated with this project. Edit company to associate/ remove sites from this company',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    )
-                  : Container(),
-              state.assignedCompanySites.isNotEmpty
-                  ? const CustomDivider()
-                  : Container(),
-              Container(
-                child: state.assignedCompanySites.isNotEmpty
-                    ? TableView(
-                        height: MediaQuery.of(context).size.height - 337,
-                        columns: columns,
-                        rows: rows,
                       )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
-                              'This company has no sites assigned to it yet.',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: 'OpenSans',
-                                fontWeight: FontWeight.w400,
+                    : Container(),
+                state.assignedCompanySites.isNotEmpty
+                    ? const CustomDivider()
+                    : Container(),
+                Container(
+                  child: state.assignedCompanySites.isNotEmpty
+                      ? TableView(
+                          height: MediaQuery.of(context).size.height - 337,
+                          columns: columns,
+                          rows: rows,
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                'This company has no sites assigned to it yet.',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
-                          ),
-                          CustomDivider(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
-                              'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                            CustomDivider(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
-                          ),
-                          CustomDivider(),
-                        ],
-                      ),
-              ),
-            ],
+                            CustomDivider(),
+                          ],
+                        ),
+                ),
+              ],
+            ),
           );
   }
 
