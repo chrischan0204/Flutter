@@ -1,5 +1,5 @@
-import 'package:safety_eta/features/administration/users/view/assign_sites_to_user.dart';
-import 'package:safety_eta/features/administration/users/view/update_notification_for_user.dart';
+import 'widgets/assign_sites_to_user.dart';
+import 'widgets/update_notification_for_user.dart';
 
 import '/common_libraries.dart';
 

@@ -18,14 +18,24 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
-  String token = '';
+class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String token = '';
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) => token = state.token,
+      listener: (context, state) {
+        setState(() {
+          token = state.token;
+        });
+      },
       listenWhen: (previous, current) => previous.token != current.token,
       builder: (context, state) {
         token = state.token;
