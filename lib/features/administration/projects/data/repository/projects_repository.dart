@@ -7,12 +7,15 @@ import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class ProjectsRepository extends BaseRepository {
-  ProjectsRepository({required super.token}) : super(url: '/api/Projects');
+  ProjectsRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/Projects');
 
   // get projects list
   Future<List<Project>> getProjects() async {
     Response response =
-        await get(Uri.https(ApiUri.host, url), headers: headers);
+        await super.get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
@@ -27,7 +30,7 @@ class ProjectsRepository extends BaseRepository {
     String projectId,
   ) async {
     Response response =
-        await get(Uri.https(ApiUri.host, '$url/$projectId'), headers: headers);
+        await super.get(Uri.https(ApiUri.host, '$url/$projectId'), headers: headers);
 
     if (response.statusCode == 200) {
       return Project.fromJson(response.body);
@@ -37,7 +40,7 @@ class ProjectsRepository extends BaseRepository {
 
   // add project
   Future<EntityResponse> addProject(Project project) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: project.toJson(),
@@ -51,7 +54,7 @@ class ProjectsRepository extends BaseRepository {
 
   // edit project
   Future<EntityResponse> editProject(Project project) async {
-    Response response = await put(
+    Response response = await super.put(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: project.toJson(),
@@ -70,7 +73,7 @@ class ProjectsRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteProject(String projectId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/$projectId'),
+    Response response = await super.delete(Uri.https(ApiUri.host, '$url/$projectId'),
         headers: headers);
 
     if (response.statusCode != 500) {
@@ -95,7 +98,7 @@ class ProjectsRepository extends BaseRepository {
     if (name != null && name.isNotEmpty) {
       map.addEntries([MapEntry('name', name)]);
     }
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$projectId/companies', map),
         headers: headers);
 
@@ -109,7 +112,7 @@ class ProjectsRepository extends BaseRepository {
 
   assignCompanyToProject(
       ProjectCompanyAssignment projectCompanyAssignment) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, '$url/assign/company'),
       headers: headers,
       body: projectCompanyAssignment.toJson(),
@@ -118,6 +121,7 @@ class ProjectsRepository extends BaseRepository {
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse(
+          statusCode: response.statusCode,
           isSuccess: true,
           message: response.body,
         );
@@ -128,7 +132,7 @@ class ProjectsRepository extends BaseRepository {
   }
 
   unassignCompanyFromProject(String projectCompanyAssignmentId) async {
-    Response response = await post(
+    Response response = await super.post(
         Uri.https(
             ApiUri.host, '$url/unassign/$projectCompanyAssignmentId/company'),
         headers: headers);
@@ -136,6 +140,7 @@ class ProjectsRepository extends BaseRepository {
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse(
+          statusCode: response.statusCode,
           isSuccess: true,
           message: response.body,
         );

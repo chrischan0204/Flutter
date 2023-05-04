@@ -12,8 +12,9 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
   static String lastNameValidationMessage = 'Last name is required.';
   static String roleValidationMessage = 'Role is required.';
   static String defaultSiteValidationMessage = 'Default site is required.';
-  AddEditUserBloc({required this.usersRepository})
-      : super(const AddEditUserState()) {
+  AddEditUserBloc({
+    required this.usersRepository,
+  }) : super(const AddEditUserState()) {
     on<AddEditUserDetailsInited>(_onAddEditUserDetailsInited);
     on<AddEditUserFirstNameChanged>(_onAddEditUserFirstNameChanged);
     on<AddEditUserLastNameChanged>(_onAddEditUserLastNameChanged);

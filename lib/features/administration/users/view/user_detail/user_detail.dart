@@ -24,7 +24,10 @@ class _UserDetailViewState extends State<UserDetailView> {
       builder: (context, state) {
         token = state.token;
         return RepositoryProvider(
-          create: (context) => UsersRepository(token: token),
+          create: (context) => UsersRepository(
+            token: token,
+            authBloc: BlocProvider.of(context),
+          ),
           child: MultiBlocProvider(
             providers: [
               BlocProvider(

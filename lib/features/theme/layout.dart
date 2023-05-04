@@ -56,6 +56,13 @@ class _LayoutState extends State<Layout> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticateSuccess) {
+          if (state.statusCode == 401) {
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.info,
+              content: 'Session has expired',
+            ).showNotification();
+          }
           GoRouter.of(context).go('/login');
         }
       },
@@ -92,12 +99,7 @@ class _LayoutState extends State<Layout> {
                                     selectedItemName: widget.selectedItemName,
                                   ),
                             Expanded(
-                              child: Container(
-                                constraints: BoxConstraints(
-                                    minHeight:
-                                        MediaQuery.of(context).size.height),
-                                child: widget.body,
-                              ),
+                              child: widget.body,
                             ),
                           ],
                         ),

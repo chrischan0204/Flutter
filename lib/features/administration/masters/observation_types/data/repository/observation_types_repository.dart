@@ -7,11 +7,13 @@ import '/data/repository/base_repository.dart';
 import '/data/model/model.dart';
 
 class ObservationTypesRepository extends BaseRepository {
-  ObservationTypesRepository({required super.token})
-      : super(url: '/api/ObservationType');
+  ObservationTypesRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/ObservationType');
   Future<List<ObservationType>> getObservationTypes() async {
     Response response =
-        await get(Uri.https(ApiUri.host, url), headers: headers);
+        await super.get(Uri.https(ApiUri.host, url), headers: headers);
     if (response.statusCode == 200) {
       List<ObservationType> observationTypes =
           List.from(jsonDecode(response.body))
@@ -27,7 +29,7 @@ class ObservationTypesRepository extends BaseRepository {
 
   Future<ObservationType> getObservationTypeById(
       String observationTypeId) async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$observationTypeId'),
         headers: headers);
 
@@ -39,7 +41,7 @@ class ObservationTypesRepository extends BaseRepository {
 
   Future<EntityResponse> addObservationType(
       ObservationType observationType) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: observationType.toJson(),
@@ -53,7 +55,7 @@ class ObservationTypesRepository extends BaseRepository {
 
   Future<EntityResponse> editObservationType(
       ObservationType observationType) async {
-    Response response = await put(
+    Response response = await super.put(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: observationType.toJson(),
@@ -66,7 +68,7 @@ class ObservationTypesRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteObservationType(String observationTypeId) async {
-    Response response = await delete(
+    Response response = await super.delete(
         Uri.https(ApiUri.host, '$url/$observationTypeId'),
         headers: headers);
 

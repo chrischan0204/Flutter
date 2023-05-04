@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:safety_eta/features/auth/data/repository/auth_repository.dart';
 
 import '../../../common_libraries.dart';
 import '../data/model/auth.dart';
@@ -35,7 +34,8 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     emit(AuthUnauthenticateInProgress());
     try {
       await authRepository.logout();
-      emit(const AuthUnauthenticateSuccess(token: ''));
+      emit(AuthUnauthenticateSuccess(
+          token: '', statusCode: event.statusCode ?? 200));
     } catch (e) {
       emit(AuthUnauthenticateFailure());
     }

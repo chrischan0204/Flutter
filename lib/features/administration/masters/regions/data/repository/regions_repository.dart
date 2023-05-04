@@ -7,10 +7,13 @@ import '/constants/uri.dart';
 import 'package:http/http.dart';
 
 class RegionsRepository extends BaseRepository {
-  RegionsRepository({required super.token}) : super(url: '/api/Regions');
+  RegionsRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/Regions');
 
   Future<List<Region>> getAssignedRegions() async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/GetAssignedRegions'),
         headers: headers);
     if (response.statusCode == 200) {
@@ -27,7 +30,7 @@ class RegionsRepository extends BaseRepository {
 
   Future<Region> getRegionById(String regionId) async {
     Response response =
-        await get(Uri.https(ApiUri.host, '$url/$regionId'), headers: headers);
+        await super.get(Uri.https(ApiUri.host, '$url/$regionId'), headers: headers);
 
     if (response.statusCode == 200) {
       return Region.fromJson(response.body);
@@ -36,7 +39,7 @@ class RegionsRepository extends BaseRepository {
   }
 
   Future<List<Region>> getUnassignedRegions() async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/GetUnassignedRegions'),
         headers: headers);
     if (response.statusCode == 200) {
@@ -51,7 +54,7 @@ class RegionsRepository extends BaseRepository {
   }
 
   Future<List<TimeZone>> getTimeZonesForRegion(String regionId) async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(
           ApiUri.host,
           '/api/Timezones/GetTimeZonesForRegion/$regionId',
@@ -68,7 +71,7 @@ class RegionsRepository extends BaseRepository {
   }
 
   Future<EntityResponse> addRegion(Region region) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: region.toJson(),
@@ -81,7 +84,7 @@ class RegionsRepository extends BaseRepository {
   }
 
   Future<EntityResponse> editRegion(Region region) async {
-    Response response = await put(
+    Response response = await super.put(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: region.toJson(),
@@ -94,11 +97,12 @@ class RegionsRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteRegion(String regionId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/$regionId'),
+    Response response = await super.delete(Uri.https(ApiUri.host, '$url/$regionId'),
         headers: headers);
 
     if (response.statusCode == 200) {
       return EntityResponse(
+        statusCode: response.statusCode,
         isSuccess: true,
         message: 'Region deleted successfully',
       );

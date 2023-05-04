@@ -28,19 +28,32 @@ class _AddEditUserViewState extends State<AddEditUserView> {
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
-                create: (context) => UsersRepository(token: token)),
+                create: (context) => UsersRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
             RepositoryProvider(
-                create: (context) => SitesRepository(token: token)),
+                create: (context) => SitesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
             RepositoryProvider(
-                create: (context) => RolesRepository(token: token)),
+                create: (context) => RolesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
             RepositoryProvider(
-                create: (context) => TimeZonesRepository(token: token)),
+                create: (context) => TimeZonesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
           ],
           child: MultiBlocProvider(
             providers: [
               BlocProvider(
                   create: (context) => AddEditUserBloc(
-                      usersRepository: RepositoryProvider.of(context))),
+                        usersRepository: RepositoryProvider.of(context),
+                      )),
               BlocProvider(
                   create: (context) => UserDetailBloc(
                       usersRepository: RepositoryProvider.of(context))),

@@ -141,13 +141,13 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           companyNameValidationMessage = '';
         });
       }
-      if (state.message.contains('Our team')) {
-        CustomNotification(
+      else if (state.message.contains('Our team')) {
+        CustomNotification( 
           context: context,
           notifyType: NotifyType.error,
           content: state.message,
         ).showNotification();
-      } else {
+      } else if (state.message.isNotEmpty) {
         setState(() {
           companyNameValidationMessage = state.message;
           einNumberValidationMessage = '';

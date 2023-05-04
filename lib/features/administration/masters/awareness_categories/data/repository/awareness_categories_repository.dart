@@ -7,13 +7,15 @@ import '/data/model/entity.dart';
 import '../model/awareness_category.dart';
 
 class AwarenessCategoriesRepository extends BaseRepository {
-  AwarenessCategoriesRepository({required super.token})
-      : super(url: '/api/AwarenessCategory');
+  AwarenessCategoriesRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/AwarenessCategory');
 
   // get awareness categories list from api
   Future<List<AwarenessCategory>> getAwarenessCategories() async {
     Response response =
-        await get(Uri.https(ApiUri.host, url), headers: headers);
+        await super.get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       List<AwarenessCategory> awarenessCategories =
@@ -30,7 +32,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
   Future<AwarenessCategory> getAwarenessCategoryById(
     String awarenessCategoryId,
   ) async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
         headers: headers);
 
@@ -44,7 +46,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
   Future<EntityResponse> addAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: awarenessCategory.toJson(),
@@ -60,7 +62,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
   Future<EntityResponse> editAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
-    Response response = await put(
+    Response response = await super.put(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: awarenessCategory.toJson(),
@@ -76,12 +78,13 @@ class AwarenessCategoriesRepository extends BaseRepository {
   Future<EntityResponse> deleteAwarenessCategory(
     String awarenessCategoryId,
   ) async {
-    Response response = await delete(
+    Response response = await super.delete(
         Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
         headers: headers);
 
     if (response.statusCode == 200) {
       return EntityResponse(
+        statusCode: response.statusCode,
         isSuccess: true,
         message: 'Awareness Category deleted successfully',
       );

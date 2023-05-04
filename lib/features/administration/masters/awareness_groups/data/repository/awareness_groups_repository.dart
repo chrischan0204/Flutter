@@ -6,13 +6,15 @@ import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class AwarenessGroupsRepository extends BaseRepository {
-  AwarenessGroupsRepository({required super.token})
-      : super(url: '/api/AwarenessGroups');
+  AwarenessGroupsRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/AwarenessGroups');
 
   // get awareness groups list
   Future<List<AwarenessGroup>> getAwarenessGroups() async {
     Response response =
-        await get(Uri.https(ApiUri.host, url), headers: headers);
+        await super.get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       List<AwarenessGroup> awarenessGroups =
@@ -29,7 +31,7 @@ class AwarenessGroupsRepository extends BaseRepository {
   Future<AwarenessGroup> getAwarenessGroupById(
     String awarenessGroupId,
   ) async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$awarenessGroupId'),
         headers: headers);
 
@@ -43,7 +45,7 @@ class AwarenessGroupsRepository extends BaseRepository {
   Future<EntityResponse> addAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: awarenessGroup.toJson(),
@@ -59,7 +61,7 @@ class AwarenessGroupsRepository extends BaseRepository {
   Future<EntityResponse> editAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
-    Response response = await put(
+    Response response = await super.put(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: awarenessGroup.toJson(),
@@ -73,7 +75,7 @@ class AwarenessGroupsRepository extends BaseRepository {
 
   // delete awareness group
   Future<EntityResponse> deleteAwarenessGroup(String awarenessGroupId) async {
-    Response response = await delete(
+    Response response = await super.delete(
         Uri.https(ApiUri.host, '$url/$awarenessGroupId'),
         headers: headers);
 

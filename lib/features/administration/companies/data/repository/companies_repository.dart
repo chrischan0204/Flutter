@@ -7,12 +7,15 @@ import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class CompaniesRepository extends BaseRepository {
-  CompaniesRepository({required super.token}) : super(url: '/api/Companies');
+  CompaniesRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/Companies');
 
   // get companies list
   Future<List<Company>> getCompanies() async {
     Response response =
-        await get(Uri.https(ApiUri.host, url), headers: headers);
+        await super.get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
@@ -27,7 +30,7 @@ class CompaniesRepository extends BaseRepository {
     String companyId,
   ) async {
     Response response =
-        await get(Uri.https(ApiUri.host, '$url/$companyId'), headers: headers);
+        await super.get(Uri.https(ApiUri.host, '$url/$companyId'), headers: headers);
 
     if (response.statusCode == 200) {
       return Company.fromJson(response.body);
@@ -37,7 +40,7 @@ class CompaniesRepository extends BaseRepository {
 
   // add company
   Future<EntityResponse> addCompany(Company company) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: company.toJson(),
@@ -51,7 +54,7 @@ class CompaniesRepository extends BaseRepository {
 
   // edit company
   Future<EntityResponse> editCompany(Company company) async {
-    Response response = await put(
+    Response response = await super.put(
       Uri.https(ApiUri.host, url),
       headers: headers,
       body: company.toJson(),
@@ -70,7 +73,7 @@ class CompaniesRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteCompany(String companyId) async {
-    Response response = await delete(Uri.https(ApiUri.host, '$url/$companyId'),
+    Response response = await super.delete(Uri.https(ApiUri.host, '$url/$companyId'),
         headers: headers);
 
     if (response.statusCode != 500) {
@@ -88,7 +91,7 @@ class CompaniesRepository extends BaseRepository {
 
   Future<EntityResponse> assignSiteToCompany(
       CompanySiteUpdation companySiteUpdation) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, '$url/assign/site'),
       headers: headers,
       body: companySiteUpdation.toJson(),
@@ -97,6 +100,7 @@ class CompaniesRepository extends BaseRepository {
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse(
+          statusCode: response.statusCode,
           isSuccess: true,
           message: response.body,
         );
@@ -107,12 +111,13 @@ class CompaniesRepository extends BaseRepository {
   }
 
   Future<EntityResponse> unassignSiteFromCompany(String companySiteId) async {
-    Response response = await post(
+    Response response = await super.post(
         Uri.https(ApiUri.host, '$url/unassign/$companySiteId/site'),
         headers: headers);
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse(
+          statusCode: response.statusCode,
           isSuccess: true,
           message: response.body,
         );
@@ -124,7 +129,7 @@ class CompaniesRepository extends BaseRepository {
 
   Future<EntityResponse> assignProjectToCompany(
       ProjectCompanyAssignment projectCompanyAssignment) async {
-    Response response = await post(
+    Response response = await super.post(
       Uri.https(ApiUri.host, '$url/assign/project'),
       headers: headers,
       body: projectCompanyAssignment.toJson(),
@@ -133,6 +138,7 @@ class CompaniesRepository extends BaseRepository {
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse(
+          statusCode: response.statusCode,
           isSuccess: true,
           message: response.body,
         );
@@ -144,12 +150,13 @@ class CompaniesRepository extends BaseRepository {
 
   Future<EntityResponse> unassignProjectFromCompany(
       String projectCompanyId) async {
-    Response response = await post(
+    Response response = await super.post(
         Uri.https(ApiUri.host, '$url/unassign/$projectCompanyId/project'),
         headers: headers);
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse(
+          statusCode: response.statusCode,
           isSuccess: true,
           message: response.body,
         );
@@ -171,7 +178,7 @@ class CompaniesRepository extends BaseRepository {
     if (name != null && name.isNotEmpty) {
       queryParams.addEntries([MapEntry('name', name)]);
     }
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$companyId/sites', queryParams),
         headers: headers);
     if (response.statusCode == 200) {
@@ -199,7 +206,7 @@ class CompaniesRepository extends BaseRepository {
     if (siteId != null && siteId.isNotEmpty) {
       queryParams.addEntries([MapEntry('siteId', siteId)]);
     }
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$companyId/projects', queryParams),
         headers: headers);
     if (response.statusCode == 200) {
@@ -211,7 +218,7 @@ class CompaniesRepository extends BaseRepository {
   }
 
   Future<List<AuditTrail>> getAuditTrailsByCompanyId(String companyId) async {
-    Response response = await get(
+    Response response = await super.get(
         Uri.https(ApiUri.host, '$url/$companyId/AuditTrails'),
         headers: headers);
     if (response.statusCode == 200) {

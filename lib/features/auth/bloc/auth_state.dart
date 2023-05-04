@@ -31,7 +31,11 @@ class AuthAuthenticateFailure extends AuthState {}
 class AuthUnauthenticateInProgress extends AuthState {}
 
 class AuthUnauthenticateSuccess extends AuthState {
-  const AuthUnauthenticateSuccess({required super.token});
+  final int statusCode;
+  const AuthUnauthenticateSuccess({
+    required super.token,
+    this.statusCode = 200,
+  });
 }
 
 class AuthUnauthenticateFailure extends AuthState {}

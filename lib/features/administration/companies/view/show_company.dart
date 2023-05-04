@@ -101,7 +101,6 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
             child: Center(child: Loader()),
           )
         : Container(
-            color: Colors.red,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.max,

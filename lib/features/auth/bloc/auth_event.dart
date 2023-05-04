@@ -18,4 +18,9 @@ class AuthAuthenticated extends AuthEvent {
   List<Object> get props => [auth];
 }
 
-class AuthUnauthenticated extends AuthEvent {}
+class AuthUnauthenticated extends AuthEvent {
+  final int? statusCode;
+  const AuthUnauthenticated({
+    this.statusCode,
+  });
+}

@@ -7,11 +7,14 @@ import 'package:safety_eta/data/repository/repository.dart';
 import '/data/model/model.dart';
 
 class RolesRepository extends BaseRepository {
-  RolesRepository({required super.token}) : super(url: '/api/Roles');
+  RolesRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/Roles');
 
   Future<List<Role>> getRoles() async {
     Response response =
-        await get(Uri.https(ApiUri.host, url), headers: headers);
+        await super.get(Uri.https(ApiUri.host, url), headers: headers);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))

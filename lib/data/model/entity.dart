@@ -108,10 +108,12 @@ class Entity extends Equatable {
 class EntityResponse {
   final bool isSuccess;
   String message;
+  final int statusCode;
   final Entity? data;
   EntityResponse({
     required this.isSuccess,
     required this.message,
+    this.statusCode = 200,
     this.data,
   }) {
     message = message.replaceAll('"', '');
@@ -129,6 +131,7 @@ class EntityResponse {
     String message = (map['message'] ?? (map['Description'] ?? '')).toString();
     message = message.replaceAll('"', '');
     return EntityResponse(
+      statusCode: map['StatusCode'] ?? 200,
       isSuccess: map['isSuccess'] == null
           ? (map['message'] ?? (map['Message'] ?? ''))
               .toString()
@@ -149,8 +152,10 @@ class EntityResponse {
     bool? isSuccess,
     String? message,
     Entity? data,
+    int? statusCode,
   }) {
     return EntityResponse(
+      statusCode: statusCode ?? this.statusCode,
       isSuccess: isSuccess ?? this.isSuccess,
       message: message ?? this.message,
       data: data ?? this.data,

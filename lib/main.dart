@@ -42,31 +42,58 @@ class _MyAppState extends State<MyApp> {
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
-              create: (context) => RegionsRepository(token: token),
+              create: (context) => RegionsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => PriorityLevelsRepository(token: token),
+              create: (context) => PriorityLevelsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => ObservationTypesRepository(token: token),
+              create: (context) => ObservationTypesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => AwarenessGroupsRepository(token: token),
+              create: (context) => AwarenessGroupsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => AwarenessCategoriesRepository(token: token),
+              create: (context) => AwarenessCategoriesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => SitesRepository(token: token),
+              create: (context) => SitesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => ProjectsRepository(token: token),
+              create: (context) => ProjectsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => CompaniesRepository(token: token),
+              create: (context) => CompaniesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
             RepositoryProvider(
-              create: (context) => RolesRepository(token: token),
+              create: (context) => RolesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
             ),
           ],
           child: MultiBlocProvider(
