@@ -23,7 +23,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
       token = token.replaceAll('"', '');
       emit(AuthAuthenticateSuccess(token: token));
     } catch (e) {
-      emit(AuthAuthenticateFailure());
+      emit(const AuthAuthenticateFailure(message: 'Invalid Credendials'));
     }
   }
 

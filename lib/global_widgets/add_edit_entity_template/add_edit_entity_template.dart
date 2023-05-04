@@ -5,6 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
+import '/constants/style.dart';
 import '/constants/color.dart';
 import '/data/model/entity.dart';
 import '/global_widgets/global_widget.dart';
@@ -55,51 +56,56 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 15,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildTitle(),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  _buildCrudButtons(context)
-                ],
-              ),
-            ),
-            const CustomDivider(),
-            widget.tabItems.isNotEmpty && widget.id != null
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTab(),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        selectedTabIndex != 0
-                            ? widget.tabItems.entries
-                                .toList()[selectedTabIndex]
-                                .value
-                            : _buildEditEntityView(),
-                      ],
+    return Container(
+      constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height - topbarHeight - 20),
+      height: MediaQuery.of(context).size.height - topbarHeight - 20,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(10),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildTitle(),
+                    const SizedBox(
+                      width: 15,
                     ),
-                  )
-                : _buildEditEntityView(),
-          ],
+                    _buildCrudButtons(context)
+                  ],
+                ),
+              ),
+              const CustomDivider(),
+              widget.tabItems.isNotEmpty && widget.id != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 50.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTab(),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          selectedTabIndex != 0
+                              ? widget.tabItems.entries
+                                  .toList()[selectedTabIndex]
+                                  .value
+                              : _buildEditEntityView(),
+                        ],
+                      ),
+                    )
+                  : _buildEditEntityView(),
+            ],
+          ),
         ),
       ),
     );

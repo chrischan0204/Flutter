@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'auth_bloc.dart';
 
 class AuthState extends Equatable {
@@ -26,7 +27,15 @@ class AuthAuthenticateSuccess extends AuthState {
   const AuthAuthenticateSuccess({required super.token});
 }
 
-class AuthAuthenticateFailure extends AuthState {}
+class AuthAuthenticateFailure extends AuthState {
+  final String message;
+  const AuthAuthenticateFailure({
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [message];
+}
 
 class AuthUnauthenticateInProgress extends AuthState {}
 

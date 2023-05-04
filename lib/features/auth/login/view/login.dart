@@ -15,6 +15,9 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  String usernameValidationMessage = '';
+  String passwordValidationMessage = '';
+
   late AuthBloc _authBloc;
 
   @override
@@ -29,6 +32,25 @@ class _LoginViewState extends State<LoginView> {
       // GoRouter.of(context).go('/dashboard');
     }
     super.didChangeDependencies();
+  }
+
+  bool _checkValidation() {
+    bool success = true;
+    if (Validation.isEmpty(_usernameController.text)) {
+      setState(() {
+        usernameValidationMessage = 'Username is required';
+      });
+      success = false;
+    }
+
+    if (Validation.isEmpty(_passwordController.text)) {
+      setState(() {
+        passwordValidationMessage = 'Password is required';
+      });
+      success = false;
+    }
+
+    return success;
   }
 
   @override
@@ -81,6 +103,7 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Welcome to Safety',
@@ -100,6 +123,11 @@ class _LoginViewState extends State<LoginView> {
                             fontSize: 14,
                             color: Colors.blueGrey[900],
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              usernameValidationMessage = '';
+                            });
+                          },
                           decoration: InputDecoration(
                             filled: true,
                             focusColor: const Color(0xfffbfafb),
@@ -119,8 +147,15 @@ class _LoginViewState extends State<LoginView> {
                             hintText: 'Username',
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: 30,
+                          child: Text(
+                            usernameValidationMessage,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                         TextField(
                           controller: _passwordController,
@@ -128,6 +163,11 @@ class _LoginViewState extends State<LoginView> {
                             fontSize: 14,
                             color: Colors.blueGrey[900],
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              passwordValidationMessage = '';
+                            });
+                          },
                           decoration: InputDecoration(
                             filled: true,
                             focusColor: const Color(0xfffbfafb),
@@ -162,6 +202,13 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         SizedBox(
                           height: width / 40,
+                          child: Text(
+                            passwordValidationMessage,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -169,16 +216,24 @@ class _LoginViewState extends State<LoginView> {
                             listener: (context, state) {
                               if (state is AuthAuthenticateSuccess) {
                                 GoRouter.of(context).go('/dashboard');
+                              } else if (state is AuthAuthenticateFailure) {
+                                CustomNotification(
+                                  context: context,
+                                  notifyType: NotifyType.error,
+                                  content: 'Invalid Credentials',
+                                ).showNotification();
                               }
                             },
                             builder: (context, state) => ElevatedButton(
                               onPressed: () {
                                 if (state is! AuthAuthenticateInProgress) {
-                                  _authBloc.add(AuthAuthenticated(
-                                      auth: Auth(
-                                    email: _usernameController.text,
-                                    password: _passwordController.text,
-                                  )));
+                                  if (_checkValidation()) {
+                                    _authBloc.add(AuthAuthenticated(
+                                        auth: Auth(
+                                      email: _usernameController.text,
+                                      password: _passwordController.text,
+                                    )));
+                                  }
                                 }
                               },
                               style: ElevatedButton.styleFrom(

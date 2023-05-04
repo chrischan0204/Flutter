@@ -19,15 +19,13 @@ class BaseRepository {
           'Authorization': 'Bearer $token'
         };
 
-  void _checkJwt(int statusCode) {
-    if (statusCode == 401) {
-      authBloc.add(AuthUnauthenticated(statusCode: statusCode));
-    }
-  }
-
   Future<http.Response> get(Uri url, {Map<String, String>? headers}) async {
-    http.Response response = await http.get(url, headers: headers);
-    _checkJwt(response.statusCode);
+    late http.Response response;
+    try {
+      response = await http.get(url, headers: headers);
+    } on http.ClientException catch (_) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
+    }
     return response;
   }
 
@@ -37,14 +35,17 @@ class BaseRepository {
     Object? body,
     Encoding? encoding,
   }) async {
-    http.Response response = await http.post(
-      url,
-      headers: headers,
-      body: body,
-      encoding: encoding,
-    );
-
-    _checkJwt(response.statusCode);
+    late http.Response response;
+    try {
+      response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+        encoding: encoding,
+      );
+    } catch (e) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
+    }
     return response;
   }
 
@@ -54,14 +55,17 @@ class BaseRepository {
     Object? body,
     Encoding? encoding,
   }) async {
-    http.Response response = await http.put(
-      url,
-      headers: headers,
-      body: body,
-      encoding: encoding,
-    );
-
-    _checkJwt(response.statusCode);
+    late http.Response response;
+    try {
+      response = await http.put(
+        url,
+        headers: headers,
+        body: body,
+        encoding: encoding,
+      );
+    } catch (e) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
+    }
     return response;
   }
 
@@ -71,14 +75,17 @@ class BaseRepository {
     Object? body,
     Encoding? encoding,
   }) async {
-    http.Response response = await http.delete(
-      url,
-      headers: headers,
-      body: body,
-      encoding: encoding,
-    );
-
-    _checkJwt(response.statusCode);
+    late http.Response response;
+    try {
+      response = await http.delete(
+        url,
+        headers: headers,
+        body: body,
+        encoding: encoding,
+      );
+    } catch (e) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
+    }
     return response;
   }
 }
