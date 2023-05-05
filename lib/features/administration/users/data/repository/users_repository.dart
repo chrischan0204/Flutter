@@ -195,11 +195,11 @@ class UsersRepository extends BaseRepository {
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
-          .map((inviteDetailMap) => UserInviteDetail.fromJson(inviteDetailMap))
+          .map((inviteDetailMap) => UserInviteDetail.fromMap(inviteDetailMap))
           .toList();
     }
 
-    return [];
+    throw Exception();
   }
 
   Future<EntityResponse> sendInvite(String userId) async {

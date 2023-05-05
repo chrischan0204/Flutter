@@ -1,3 +1,5 @@
+import 'package:safety_eta/features/administration/users/view/user_detail/widgets/invite_details.dart';
+
 import 'widgets/user_notifcation_settings.dart';
 import 'widgets/user_site_access.dart';
 
@@ -39,6 +41,9 @@ class _UserDetailViewState extends State<UserDetailView> {
               BlocProvider(
                   create: (context) => NotificationSettingBloc(
                       usersRepository: RepositoryProvider.of(context))),
+              BlocProvider(
+                  create: (context) => UserInviteBloc(
+                      usersRepository: RepositoryProvider.of(context)))
             ],
             child: UserDetailWidget(userId: widget.userId),
           ),
@@ -77,6 +82,7 @@ class _UserDetailWidgetState extends State<UserDetailWidget> {
       ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId));
     notificationSettingBloc = context.read()
       ..add(NotificationSettingNotificationListLoaded(userId: widget.userId));
+
     super.initState();
   }
 
@@ -107,7 +113,9 @@ class _UserDetailWidgetState extends State<UserDetailWidget> {
       'User Details': Container(),
       'Site Access': UserSiteAccessView(username: state.user?.name ?? ''),
       'Notifications': const UserNotificationSettingView(),
-      'Invite Details': Container(),
+      'Invite Details': UserInviteDetailsView(
+        userId: widget.userId,
+      ),
       '': Container(),
     };
   }

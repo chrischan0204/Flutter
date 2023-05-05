@@ -54,7 +54,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
           children: [
             _buildHeader(context),
             const CustomDivider(),
-            Padding(
+            Container(
               padding: const EdgeInsets.only(
                 top: 50,
               ),

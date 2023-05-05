@@ -8,9 +8,12 @@ class Loader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingAnimationWidget.hexagonDots(
-      color: const Color(0xff8d8c91),
-      size: 70,
+    return Padding(
+      padding: const EdgeInsets.only(top: 200),
+      child: LoadingAnimationWidget.hexagonDots(
+        color: const Color(0xff8d8c91),
+        size: 70,
+      ),
     );
   }
 }
