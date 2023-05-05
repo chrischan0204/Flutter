@@ -11,6 +11,8 @@ class CustomButton extends StatefulWidget {
   final VoidCallback? onClick;
   final bool disabled;
   final Widget? body;
+  final EdgeInsets padding;
+  final double borderRadius;
   const CustomButton({
     Key? key,
     required this.backgroundColor,
@@ -20,6 +22,11 @@ class CustomButton extends StatefulWidget {
       fontFamily: 'OpenSans',
       fontSize: 12,
       fontWeight: FontWeight.w400,
+    ),
+    this.borderRadius = 3,
+    this.padding = const EdgeInsets.symmetric(
+      vertical: 8,
+      horizontal: 12,
     ),
     this.iconColor = Colors.white,
     this.iconData,
@@ -57,28 +64,30 @@ class _CustomButtonState extends State<CustomButton> {
                 ? null
                 : widget.onClick!(),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 12,
-          ),
+          padding: widget.padding,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3),
-            color:
-                isHover || widget.disabled ? widget.hoverBackgroundColor : widget.backgroundColor,
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            color: isHover || widget.disabled
+                ? widget.hoverBackgroundColor
+                : widget.backgroundColor,
           ),
           child: widget.body ??
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    widget.iconData,
-                    size: widget.iconSize,
-                    color: widget.iconColor,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  widget.iconData == null
+                      ? Container()
+                      : Icon(
+                          widget.iconData,
+                          size: widget.iconSize,
+                          color: widget.iconColor,
+                        ),
+                  widget.iconData == null
+                      ? Container()
+                      : const SizedBox(
+                          width: 10,
+                        ),
                   Text(
                     widget.text,
                     style: widget.textStyle,

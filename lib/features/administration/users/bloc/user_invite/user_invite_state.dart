@@ -10,9 +10,11 @@ class UserInviteState extends Equatable {
   final EntityStatus appDownloadLinkClickStatus;
   final EntityStatus registrationLinkClickStatus;
 
+  final String registrationLinkClikedOn;
+  final String appDownloadLinkClickedOn;
+
   final EntityStatus inviteSentStatus;
 
-  // final List<UserInviteDetail> userInviteDetailList;
   final EntityStatus userInviteDetailListLoadStatus;
 
   final String message;
@@ -21,10 +23,11 @@ class UserInviteState extends Equatable {
     this.inviteSentOn = '',
     this.registrationLinkClick = '',
     this.appDownloadLinkClick = '',
+    this.appDownloadLinkClickedOn = '',
+    this.registrationLinkClikedOn = '',
     this.appDownloadLinkClickStatus = EntityStatus.initial,
     this.registrationLinkClickStatus = EntityStatus.initial,
     this.inviteSentStatus = EntityStatus.initial,
-    // this.userInviteDetailList = const [],
     this.userInviteDetailListLoadStatus = EntityStatus.initial,
     this.message = '',
   });
@@ -37,7 +40,8 @@ class UserInviteState extends Equatable {
         appDownloadLinkClick,
         appDownloadLinkClickStatus,
         registrationLinkClickStatus,
-        // userInviteDetailList,
+        appDownloadLinkClickedOn,
+        registrationLinkClikedOn,
         userInviteDetailListLoadStatus,
         inviteSentStatus,
         message,
@@ -50,6 +54,8 @@ class UserInviteState extends Equatable {
     String? appDownloadLinkClick,
     EntityStatus? appDownloadLinkClickStatus,
     EntityStatus? registrationLinkClickStatus,
+    String? registrationLinkClikedOn,
+    String? appDownloadLinkClickedOn,
     EntityStatus? inviteSentStatus,
     EntityStatus? userInviteDetailListLoadStatus,
     String? message,
@@ -64,6 +70,10 @@ class UserInviteState extends Equatable {
           appDownloadLinkClickStatus ?? this.appDownloadLinkClickStatus,
       registrationLinkClickStatus:
           registrationLinkClickStatus ?? this.registrationLinkClickStatus,
+      registrationLinkClikedOn:
+          registrationLinkClikedOn ?? this.registrationLinkClikedOn,
+      appDownloadLinkClickedOn:
+          appDownloadLinkClickedOn ?? this.appDownloadLinkClickedOn,
       inviteSentStatus: inviteSentStatus ?? this.inviteSentStatus,
       userInviteDetailListLoadStatus:
           userInviteDetailListLoadStatus ?? this.userInviteDetailListLoadStatus,

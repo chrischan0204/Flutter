@@ -27,7 +27,7 @@ class InviteDetailItem extends StatelessWidget {
                 '$label:',
                 style: const TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),

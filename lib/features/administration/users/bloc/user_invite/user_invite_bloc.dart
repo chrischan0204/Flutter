@@ -47,6 +47,10 @@ class UserInviteBloc extends Bloc<UserInviteEvent, UserInviteState> {
         registrationLinkClick: registrationLinkClick,
         inviteSent: inviteSent,
         inviteSentOn: userInviteDetailMap['Invite Sent'],
+        appDownloadLinkClickedOn:
+            userInviteDetailMap['App Download Link Clicked'],
+        registrationLinkClikedOn:
+            userInviteDetailMap['Registration Link Clicked'],
       ));
     } catch (e) {
       emit(

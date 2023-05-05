@@ -1,3 +1,4 @@
+import 'widgets/invite_details.dart';
 import 'widgets/assign_sites_to_user.dart';
 import 'widgets/update_notification_for_user.dart';
 
@@ -56,6 +57,9 @@ class _AddEditUserViewState extends State<AddEditUserView> {
                       )),
               BlocProvider(
                   create: (context) => UserDetailBloc(
+                      usersRepository: RepositoryProvider.of(context))),
+              BlocProvider(
+                  create: (context) => UserInviteBloc(
                       usersRepository: RepositoryProvider.of(context))),
               BlocProvider(
                   create: (context) => RolesBloc(
@@ -146,11 +150,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
                 if (state.user != null) {
                   addEditUserBloc
                       .add(AddEditUserDetailsInited(user: state.user!));
-                  firstNameController.text = state.user!.firstName;
-                  lastNameController.text = state.user!.lastName;
-                  titleController.text = state.user!.title;
-                  emailController.text = state.user!.email;
-                  mobileNumberController.text = state.user!.mobileNumber;
+                  _initFields(state);
                 }
               },
               listenWhen: (previous, current) => previous.user != current.user,
@@ -187,6 +187,14 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     );
   }
 
+  void _initFields(UserDetailState state) {
+    firstNameController.text = state.user!.firstName;
+    lastNameController.text = state.user!.lastName;
+    titleController.text = state.user!.title;
+    emailController.text = state.user!.email;
+    mobileNumberController.text = state.user!.mobileNumber;
+  }
+
   bool _checkFormDataFill(AddEditUserState addEditUserState) {
     return widget.userId == null ? addEditUserState.isUserDataFill : true;
   }
@@ -199,7 +207,9 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
         'Notifications': UpdateNotificationForUserView(
           userId: widget.userId!,
         ),
-        'Invite Details': Container(),
+        'Invite Details': InviteDetailView(
+          userId: widget.userId!,
+        ),
         '': Container(),
       };
     }
