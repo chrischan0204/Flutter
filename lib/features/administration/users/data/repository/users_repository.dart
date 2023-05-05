@@ -190,7 +190,52 @@ class UsersRepository extends BaseRepository {
     throw Exception();
   }
 
-  // Future<List<UserInviteDetail>> getInviteDetails(String userId) async {
-  //   Response response = await super.get(ApiUri.)
-  // }
+  Future<List<UserInviteDetail>> getInviteDetails(String userId) async {
+    Response response = await super.get('$url/$userId/invitedetails');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((inviteDetailMap) => UserInviteDetail.fromJson(inviteDetailMap))
+          .toList();
+    }
+
+    return [];
+  }
+
+  Future<EntityResponse> sendInvite(String userId) async {
+    Response response = await super.post('$url/$userId/sendinvite');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> register(String userId) async {
+    Response response = await super.get('$url/$userId/register');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: 'message',
+      );
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> appDownload(String userId) async {
+    Response response = await super.get('$url/$userId/appdownload');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: 'message',
+      );
+    }
+    throw Exception();
+  }
 }
