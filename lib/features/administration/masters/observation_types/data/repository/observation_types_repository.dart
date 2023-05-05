@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:safety_eta/constants/uri.dart';
 
 import '/data/repository/base_repository.dart';
 import '/data/model/model.dart';
@@ -12,8 +11,9 @@ class ObservationTypesRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/ObservationType');
   Future<List<ObservationType>> getObservationTypes() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, url), headers: headers);
+    Response response = await super.get(
+      url,
+    );
     if (response.statusCode == 200) {
       List<ObservationType> observationTypes =
           List.from(jsonDecode(response.body))
@@ -29,9 +29,7 @@ class ObservationTypesRepository extends BaseRepository {
 
   Future<ObservationType> getObservationTypeById(
       String observationTypeId) async {
-    Response response = await super.get(
-        Uri.https(ApiUri.host, '$url/$observationTypeId'),
-        headers: headers);
+    Response response = await super.get('$url/$observationTypeId');
 
     if (response.statusCode == 200) {
       return ObservationType.fromJson(response.body);
@@ -42,8 +40,7 @@ class ObservationTypesRepository extends BaseRepository {
   Future<EntityResponse> addObservationType(
       ObservationType observationType) async {
     Response response = await super.post(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: observationType.toJson(),
     );
 
@@ -56,8 +53,7 @@ class ObservationTypesRepository extends BaseRepository {
   Future<EntityResponse> editObservationType(
       ObservationType observationType) async {
     Response response = await super.put(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: observationType.toJson(),
     );
 
@@ -68,9 +64,7 @@ class ObservationTypesRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteObservationType(String observationTypeId) async {
-    Response response = await super.delete(
-        Uri.https(ApiUri.host, '$url/$observationTypeId'),
-        headers: headers);
+    Response response = await super.delete('$url/$observationTypeId');
 
     if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);

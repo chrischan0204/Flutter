@@ -14,8 +14,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
 
   // get awareness categories list from api
   Future<List<AwarenessCategory>> getAwarenessCategories() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, url), headers: headers);
+    Response response = await super.get(url);
 
     if (response.statusCode == 200) {
       List<AwarenessCategory> awarenessCategories =
@@ -32,9 +31,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
   Future<AwarenessCategory> getAwarenessCategoryById(
     String awarenessCategoryId,
   ) async {
-    Response response = await super.get(
-        Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
-        headers: headers);
+    Response response = await super.get('$url/$awarenessCategoryId');
 
     if (response.statusCode == 200) {
       return AwarenessCategory.fromJson(response.body);
@@ -47,8 +44,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     AwarenessCategory awarenessCategory,
   ) async {
     Response response = await super.post(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: awarenessCategory.toJson(),
     );
 
@@ -63,8 +59,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     AwarenessCategory awarenessCategory,
   ) async {
     Response response = await super.put(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: awarenessCategory.toJson(),
     );
 
@@ -78,9 +73,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
   Future<EntityResponse> deleteAwarenessCategory(
     String awarenessCategoryId,
   ) async {
-    Response response = await super.delete(
-        Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
-        headers: headers);
+    Response response = await super.delete('$url/$awarenessCategoryId');
 
     if (response.statusCode == 200) {
       return EntityResponse(

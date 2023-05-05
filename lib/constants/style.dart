@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
+import '/common_libraries.dart';
 
-const TextStyle tableHeadingTextStyle = TextStyle(
+TextStyle tableHeadingTextStyle = TextStyle(
   fontSize: 14,
-  color: Color(0xff1F2937),
+  color: textColor,
   fontWeight: FontWeight.w600,
 );
-const TextStyle tableDataTextStyle = TextStyle(
+TextStyle tableDataTextStyle = TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.w400,
-  color: Color(0xff1F2937),
+  color: textColor,
 );
 
 const double topbarHeight = 75;

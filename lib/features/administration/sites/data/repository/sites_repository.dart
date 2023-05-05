@@ -12,8 +12,7 @@ class SitesRepository extends BaseRepository {
   }) : super(url: '/api/Sites');
 
   Future<List<Site>> getSites() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, url), headers: headers);
+    Response response = await super.get(url);
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
           .map((siteJson) => Site.fromMap(siteJson))
@@ -23,8 +22,7 @@ class SitesRepository extends BaseRepository {
   }
 
   Future<Site> getSiteById(String siteId) async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, '$url/$siteId'), headers: headers);
+    Response response = await super.get('$url/$siteId');
     if (response.statusCode == 200) {
       return Site.fromJson(response.body);
     }
@@ -33,8 +31,7 @@ class SitesRepository extends BaseRepository {
 
   Future<EntityResponse> addSite(Site site) async {
     Response response = await super.post(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: site.toJson(),
     );
 
@@ -46,8 +43,7 @@ class SitesRepository extends BaseRepository {
 
   Future<EntityResponse> editSite(Site site) async {
     Response response = await super.put(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: site.toJson(),
     );
 
@@ -64,8 +60,7 @@ class SitesRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteSite(String siteId) async {
-    Response response =
-        await super.delete(Uri.https(ApiUri.host, '$url/$siteId'), headers: headers);
+    Response response = await super.delete('$url/$siteId');
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
         return EntityResponse.fromMap({

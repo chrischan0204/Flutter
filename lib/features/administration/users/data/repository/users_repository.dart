@@ -12,10 +12,7 @@ class UsersRepository extends BaseRepository {
 
   // get users list
   Future<List<User>> getUsers() async {
-    Response response = await super.get(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
-    );
+    Response response = await super.get(url);
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
           .map((userMap) => User.fromMap(userMap))
@@ -28,10 +25,7 @@ class UsersRepository extends BaseRepository {
   Future<User> getUserById(
     String userId,
   ) async {
-    Response response = await super.get(
-      Uri.https(ApiUri.host, '$url/$userId'),
-      headers: headers,
-    );
+    Response response = await super.get('$url/$userId');
 
     if (response.statusCode == 200) {
       return User.fromJson(response.body);
@@ -42,11 +36,7 @@ class UsersRepository extends BaseRepository {
 
   // add user
   Future<EntityResponse> addUser(User user) async {
-    Response response = await super.post(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
-      body: user.toJson(),
-    );
+    Response response = await super.post(url, body: user.toJson());
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
@@ -60,8 +50,7 @@ class UsersRepository extends BaseRepository {
   // edit user
   Future<EntityResponse> editUser(User user) async {
     Response response = await super.put(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: user.toJson(),
     );
 
@@ -79,8 +68,7 @@ class UsersRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteUser(String userId) async {
-    Response response =
-        await super.delete(Uri.https(ApiUri.host, '$url/$userId'), headers: headers);
+    Response response = await super.delete('$url/$userId');
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
@@ -97,8 +85,7 @@ class UsersRepository extends BaseRepository {
   }
 
   Future<List<Role>> getUserRoles() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, '$url/roles'), headers: headers);
+    Response response = await super.get('$url/roles');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
@@ -122,9 +109,7 @@ class UsersRepository extends BaseRepository {
       queryParams.addEntries([MapEntry('assigned', assigned.toString())]);
     }
 
-    Response response = await super.get(
-        Uri.https(ApiUri.host, '$url/$userId/sites', queryParams),
-        headers: headers);
+    Response response = await super.get('$url/$userId/sites', queryParams);
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
@@ -137,8 +122,7 @@ class UsersRepository extends BaseRepository {
   Future<EntityResponse> assignSiteToUser(
       UserSiteAssignment userSiteAssignment) async {
     Response response = await super.post(
-      Uri.https(ApiUri.host, '$url/assign/site'),
-      headers: headers,
+      '$url/assign/site',
       body: userSiteAssignment.toJson(),
     );
 
@@ -157,9 +141,8 @@ class UsersRepository extends BaseRepository {
 
   Future<EntityResponse> unassignSiteFromUser(
       String userSiteAssignmentId) async {
-    Response response = await super.post(
-        Uri.https(ApiUri.host, '$url/unassign/$userSiteAssignmentId/site'),
-        headers: headers);
+    Response response =
+        await super.post('$url/unassign/$userSiteAssignmentId/site');
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
@@ -176,9 +159,7 @@ class UsersRepository extends BaseRepository {
 
   Future<List<UserSiteNotification>> getSiteNotificationSettingsByUserId(
       String userId) async {
-    Response response = await super.get(
-        Uri.https(ApiUri.host, '$url/$userId/notifications'),
-        headers: headers);
+    Response response = await super.get('$url/$userId/notifications');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
@@ -192,8 +173,7 @@ class UsersRepository extends BaseRepository {
   Future<EntityResponse> updateUserSiteNotificationSetting(
       UserSiteNotification userSiteNotification) async {
     Response response = await super.put(
-      Uri.https(ApiUri.host, '$url/notifications'),
-      headers: headers,
+      '$url/notifications',
       body: userSiteNotification.toJson(),
     );
 
@@ -209,4 +189,8 @@ class UsersRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  // Future<List<UserInviteDetail>> getInviteDetails(String userId) async {
+  //   Response response = await super.get(ApiUri.)
+  // }
 }

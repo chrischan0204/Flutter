@@ -13,8 +13,7 @@ class RolesRepository extends BaseRepository {
   }) : super(url: '/api/Roles');
 
   Future<List<Role>> getRoles() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, url), headers: headers);
+    Response response = await super.get(url);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))

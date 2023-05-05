@@ -1,6 +1,6 @@
 import 'package:http/http.dart';
-import 'package:safety_eta/constants/uri.dart';
 
+import '/constants/uri.dart';
 import '../model/auth.dart';
 
 class AuthRepository {

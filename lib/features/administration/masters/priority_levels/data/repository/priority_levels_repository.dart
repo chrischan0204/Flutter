@@ -13,8 +13,7 @@ class PriorityLevelsRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/PriorityLevels');
   Future<List<PriorityLevel>> getPriorityLevels() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, url), headers: headers);
+    Response response = await super.get(url);
     if (response.statusCode == 200) {
       List<PriorityLevel> priorityLevels = List.from(jsonDecode(response.body))
           .map(
@@ -29,9 +28,7 @@ class PriorityLevelsRepository extends BaseRepository {
   Future<PriorityLevel> getPriorityLevelById(
     String priorityLevelId,
   ) async {
-    Response response = await super.get(
-        Uri.https(ApiUri.host, '$url/$priorityLevelId'),
-        headers: headers);
+    Response response = await super.get('$url/$priorityLevelId');
 
     if (response.statusCode == 200) {
       return PriorityLevel.fromJson(response.body);
@@ -43,8 +40,7 @@ class PriorityLevelsRepository extends BaseRepository {
     PriorityLevel priorityLevel,
   ) async {
     Response response = await super.post(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: priorityLevel.toJson(),
     );
 
@@ -58,8 +54,7 @@ class PriorityLevelsRepository extends BaseRepository {
     PriorityLevel priorityLevel,
   ) async {
     Response response = await super.put(
-      Uri.https(ApiUri.host, url),
-      headers: headers,
+      url,
       body: priorityLevel.toJson(),
     );
 
@@ -70,9 +65,7 @@ class PriorityLevelsRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deletePriorityLevel(String priorityLevelId) async {
-    Response response = await super.delete(
-        Uri.https(ApiUri.host, '$url/$priorityLevelId'),
-        headers: headers);
+    Response response = await super.delete('$url/$priorityLevelId');
 
     if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);

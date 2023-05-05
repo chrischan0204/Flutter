@@ -10,8 +10,7 @@ class TimeZonesRepository extends BaseRepository {
   }) : super(url: '/api/Timezones');
 
   Future<List<TimeZone>> getTimeZoneList() async {
-    Response response =
-        await super.get(Uri.https(ApiUri.host, '$url/list'), headers: headers);
+    Response response = await super.get('$url/list');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))

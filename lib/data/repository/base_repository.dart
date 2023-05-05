@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
-import '/features/auth/bloc/auth_bloc.dart';
+import '/common_libraries.dart';
 
 class BaseRepository {
   final String url;
@@ -19,10 +18,13 @@ class BaseRepository {
           'Authorization': 'Bearer $token'
         };
 
-  Future<http.Response> get(Uri url, {Map<String, String>? headers}) async {
+  Future<http.Response> get(String encodedPath,
+      [Map<String, dynamic>? queryParams]) async {
     late http.Response response;
     try {
-      response = await http.get(url, headers: headers);
+      response = await http.get(
+          Uri.https(ApiUri.host, encodedPath, queryParams),
+          headers: headers);
     } on http.ClientException catch (_) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
@@ -30,15 +32,14 @@ class BaseRepository {
   }
 
   Future<http.Response> post(
-    Uri url, {
-    Map<String, String>? headers,
+    String encodedPath, {
     Object? body,
     Encoding? encoding,
   }) async {
     late http.Response response;
     try {
       response = await http.post(
-        url,
+        Uri.https(ApiUri.host, encodedPath),
         headers: headers,
         body: body,
         encoding: encoding,
@@ -50,15 +51,14 @@ class BaseRepository {
   }
 
   Future<http.Response> put(
-    Uri url, {
-    Map<String, String>? headers,
+    String encodedPath, {
     Object? body,
     Encoding? encoding,
   }) async {
     late http.Response response;
     try {
       response = await http.put(
-        url,
+        Uri.https(ApiUri.host, encodedPath),
         headers: headers,
         body: body,
         encoding: encoding,
@@ -70,15 +70,14 @@ class BaseRepository {
   }
 
   Future<http.Response> delete(
-    Uri url, {
-    Map<String, String>? headers,
+    String encodedPath, {
     Object? body,
     Encoding? encoding,
   }) async {
     late http.Response response;
     try {
       response = await http.delete(
-        url,
+        Uri.https(ApiUri.host, encodedPath),
         headers: headers,
         body: body,
         encoding: encoding,

@@ -24,6 +24,11 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
                   RichText(
                     text: TextSpan(
                       text: userSite.siteName,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        color: textColor,
+                      ),
                       children: [
                         TextSpan(
                           text: userSite.isDefault ? ' (default)' : '',
