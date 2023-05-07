@@ -22,6 +22,7 @@ class EntityListTemplate extends StatefulWidget {
   final String emptyMessage;
   final ValueChanged<List<Entity>>? onTableSort;
   final IconData? newIconData;
+  final List<String> columns;
   const EntityListTemplate({
     super.key,
     required this.title,
@@ -42,6 +43,7 @@ class EntityListTemplate extends StatefulWidget {
     this.showTableHeaderButtons = false,
     this.onTableSort,
     this.newIconData,
+    this.columns = const [],
   });
 
   @override
@@ -213,6 +215,7 @@ class _CrudState extends State<EntityListTemplate> {
                                 )
                               : DataTableView(
                                   entities: widget.entities,
+                                  columns: widget.columns,  
                                   emptyMessage: widget.emptyMessage,
                                   onTableSort: widget.onTableSort == null
                                       ? null

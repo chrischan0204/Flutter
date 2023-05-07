@@ -7,6 +7,7 @@ import '/data/model/entity.dart';
 class ObservationType extends Entity implements Equatable {
   final String severity;
   final String visibility;
+
   const ObservationType({
     super.id,
     super.name,

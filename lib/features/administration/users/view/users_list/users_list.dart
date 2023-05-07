@@ -104,7 +104,7 @@ class _UsersListState extends State<UsersListWidget> {
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
-
+    User.column = ['Last Name', 'First Name', 'Title', 'Role'];
     super.initState();
   }
 
@@ -118,6 +118,7 @@ class _UsersListState extends State<UsersListWidget> {
               title: pageTitle,
               label: pageLabel,
               entities: userListState.userList,
+              columns: User.column,
               showTableHeaderButtons: true,
               onRowClick: (selectedUser) => _selectUser(selectedUser),
               emptyMessage: emptyMessage,

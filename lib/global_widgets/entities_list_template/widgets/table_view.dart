@@ -6,17 +6,19 @@ import '../../custom_data_cell.dart';
 import '/data/model/entity.dart';
 
 class DataTableView extends StatefulWidget {
+  final List<Entity> entities;
+  final List<String> columns;
   final ValueChanged<Entity> onRowClick;
   final String emptyMessage;
   final ValueChanged<MapEntry<String, bool>>? onTableSort;
   const DataTableView({
     super.key,
     this.entities = const [],
+    this.columns = const [],
     required this.onRowClick,
     this.emptyMessage = '',
     this.onTableSort,
   });
-  final List<Entity> entities;
 
   @override
   State<DataTableView> createState() => _DataTableViewState();
@@ -28,7 +30,9 @@ class _DataTableViewState extends State<DataTableView> {
 
   List<DataColumn> _buildColumns() {
     if (widget.entities.isNotEmpty) {
-      List<String> columns = widget.entities[0].tableItemsToMap().keys.toList();
+      List<String> columns = widget.columns.isEmpty
+          ? widget.entities[0].tableItemsToMap().keys.toList()
+          : widget.columns;
       return [
         ...columns
             .map(
@@ -114,13 +118,19 @@ class _DataTableViewState extends State<DataTableView> {
               return null; // Use the default value.
             }),
             cells: [
-              ...entity
-                  .tableItemsToMap()
-                  .values
-                  .map((value) => DataCell(CustomDataCell(
-                        data: value,
-                      )))
-                  .toList(),
+              ...(widget.columns.isEmpty
+                  ? entity
+                      .tableItemsToMap()
+                      .values
+                      .map((value) => DataCell(CustomDataCell(
+                            data: value,
+                          )))
+                      .toList()
+                  : widget.columns
+                      .map((column) => DataCell(CustomDataCell(
+                            data: entity.tableItemsToMap()[column],
+                          )))
+                      .toList()),
               DataCell(
                 MouseRegion(
                   cursor: SystemMouseCursors.click,

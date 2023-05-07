@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import '/data/model/entity.dart';
@@ -17,6 +16,8 @@ class User extends Entity {
   final String siteAccess;
   final String timeZoneName;
   final String timeZoneId;
+  static List<String> column = [];
+
   const User({
     super.id,
     this.firstName = '',
