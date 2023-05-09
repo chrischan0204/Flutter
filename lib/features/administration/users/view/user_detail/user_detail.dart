@@ -21,10 +21,10 @@ class _UserDetailViewState extends State<UserDetailView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) => setState(() => token = state.token),
-      listenWhen: (previous, current) => previous.token != current.token,
+      listener: (context, state) => setState(() => token = state.authUser?.token ?? ''),
+      listenWhen: (previous, current) => previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
-        token = state.token;
+        token = state.authUser?.token ?? '';
         return RepositoryProvider(
           create: (context) => UsersRepository(
             token: token,

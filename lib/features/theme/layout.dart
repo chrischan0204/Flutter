@@ -1,8 +1,6 @@
-import 'package:safety_eta/common_libraries.dart';
-import 'package:safety_eta/features/features.dart';
-
+import '/common_libraries.dart';
+import '/features/features.dart';
 import '/features/theme/view/widgets/topbar/topbar.dart';
-import 'package:flutter/material.dart';
 
 import 'view/widgets/sidebar/sidebar.dart';
 import 'view/widgets/sidebar/sidebar_style.dart';
@@ -38,7 +36,7 @@ class _LayoutState extends State<Layout> {
 
   @override
   void didChangeDependencies() {
-    if (_authBloc.state.token.isEmpty ||
+    if (_authBloc.state.authUser == null ||
         _authBloc.state is AuthUnauthenticateSuccess) {
       GoRouter.of(context).go('/login');
     }
@@ -66,7 +64,7 @@ class _LayoutState extends State<Layout> {
           GoRouter.of(context).go('/login');
         }
       },
-      builder: (context, state) => state.token.isEmpty
+      builder: (context, state) => state.authUser == null
           ? const LoginView()
           : LayoutBuilder(
               builder: (context, constraints) => Scaffold(

@@ -1,7 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:safety_eta/common_libraries.dart';
-import 'package:safety_eta/features/auth/data/model/auth.dart';
+import '/common_libraries.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -28,8 +27,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void didChangeDependencies() {
-    if (_authBloc.state.token.isNotEmpty) {
-      // GoRouter.of(context).go('/dashboard');
+    if (_authBloc.state.authUser != null) {
+      GoRouter.of(context).go('/dashboard');
     }
     super.didChangeDependencies();
   }

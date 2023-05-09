@@ -33,12 +33,13 @@ class _MyAppState extends State<MyApp> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         setState(() {
-          token = state.token;
+          token = state.authUser?.token ?? '';
         });
       },
-      listenWhen: (previous, current) => previous.token != current.token,
+      listenWhen: (previous, current) =>
+          previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
-        token = state.token;
+        token = state.authUser?.token ?? '';
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(

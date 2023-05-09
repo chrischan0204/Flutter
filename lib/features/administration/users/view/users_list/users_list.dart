@@ -1,4 +1,5 @@
 import '/common_libraries.dart';
+import 'widgets/users_list_view_setting.dart';
 
 class UsersListView extends StatefulWidget {
   const UsersListView({super.key});
@@ -12,10 +13,11 @@ class _UsersListViewState extends State<UsersListView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) => token = state.token,
-      listenWhen: (previous, current) => previous.token != current.token,
+      listener: (context, state) => token = state.authUser?.token ?? '',
+      listenWhen: (previous, current) =>
+          previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
-        token = state.token;
+        token = state.authUser?.token ?? '';
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
@@ -49,6 +51,7 @@ class _UsersListViewState extends State<UsersListView> {
                   create: (context) => UserDetailBloc(
                       usersRepository:
                           RepositoryProvider.of<UsersRepository>(context))),
+              BlocProvider(create: (context) => UserListViewSettingBloc()),
               BlocProvider(
                   create: (context) => SitesBloc(
                       sitesRepository:
@@ -130,6 +133,7 @@ class _UsersListState extends State<UsersListWidget> {
               filterResultBody: _buildFilterResultBody(),
               filterApplied: filterApplied,
               filterBody: _buildFilterBody(),
+              viewSettingBody: const UserListViewSettingView(),
               newIconData: PhosphorIcons.userPlus,
             );
           },

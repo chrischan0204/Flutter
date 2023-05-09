@@ -23,3 +23,6 @@ export '/features/administration/companies/data/model/audit_trail.dart';
 
 export '/features/administration/users/data/model/model.dart';
 
+export '/features/setting/data/model/model.dart';
+
+export 'package:safety_eta/features/auth/data/model/model.dart';

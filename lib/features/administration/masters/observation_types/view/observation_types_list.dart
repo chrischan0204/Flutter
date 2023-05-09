@@ -12,6 +12,12 @@ class ObservationTypesListView extends StatefulWidget {
 
 class _ObservationTypesState extends State<ObservationTypesListView> {
   late ObservationTypesBloc observationTypesBloc;
+  static String emptyMessage =
+      'There are no observation types. Please click on New Observation Type to assign new observation type.';
+  static String title = 'Observation Types';
+  static String label = 'observation type';
+  static String description =
+      'List of defined observation types. Types can be added or current ones edited from this screen.';
 
   @override
   void initState() {
@@ -25,13 +31,11 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
     return BlocBuilder<ObservationTypesBloc, ObservationTypesState>(
       builder: (context, state) {
         return EntityListTemplate(
-          description:
-              'List of defined observation types. Types can be added or current ones edited from this screen.',
+          description: description,
           entities: state.observationTypes,
-          title: 'Observation Types',
-          label: 'observation type',
-          emptyMessage:
-              'There are no observation types. Please click on New Observation Type to assign new observation type.',
+          title: title,
+          label: label,
+          emptyMessage: emptyMessage,
           entityRetrievedStatus: state.observationTypesRetrievedStatus,
           onRowClick: (observationType) {
             observationTypesBloc.add(ObservationTypeSelected(

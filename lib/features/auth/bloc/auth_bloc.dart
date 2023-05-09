@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common_libraries.dart';
-import '../data/model/auth.dart';
+import '/common_libraries.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -19,9 +18,8 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthAuthenticateInProgress());
     try {
-      String token = await authRepository.login(event.auth);
-      token = token.replaceAll('"', '');
-      emit(AuthAuthenticateSuccess(token: token));
+      AuthUser authUser = await authRepository.login(event.auth);
+      emit(AuthAuthenticateSuccess(authUser: authUser));
     } catch (e) {
       emit(const AuthAuthenticateFailure(message: 'Invalid Credendials'));
     }
@@ -35,7 +33,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     try {
       await authRepository.logout();
       emit(AuthUnauthenticateSuccess(
-          token: '', statusCode: event.statusCode ?? 200));
+          authUser: null, statusCode: event.statusCode ?? 200));
     } catch (e) {
       emit(AuthUnauthenticateFailure());
     }

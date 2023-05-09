@@ -5,8 +5,6 @@ export '/data/bloc/bloc.dart';
 export '/data/repository/repository.dart';
 export '/constants/constants.dart';
 export '/utils/utils.dart';
-export 'package:flutter/material.dart';
+export 'package:flutter/material.dart' hide ReorderableList;
 export 'package:go_router/go_router.dart';
 export 'package:phosphor_flutter/phosphor_flutter.dart';
-
-

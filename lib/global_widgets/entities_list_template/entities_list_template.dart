@@ -215,7 +215,7 @@ class _CrudState extends State<EntityListTemplate> {
                                 )
                               : DataTableView(
                                   entities: widget.entities,
-                                  columns: widget.columns,  
+                                  columns: widget.columns,
                                   emptyMessage: widget.emptyMessage,
                                   onTableSort: widget.onTableSort == null
                                       ? null
@@ -342,7 +342,7 @@ class _CrudState extends State<EntityListTemplate> {
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
         constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
@@ -398,7 +398,7 @@ class _CrudState extends State<EntityListTemplate> {
                   _hideFilterSlider();
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -414,13 +414,14 @@ class _CrudState extends State<EntityListTemplate> {
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
         constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
         ),
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -445,8 +446,28 @@ class _CrudState extends State<EntityListTemplate> {
                       size: 20,
                       color: Color(0xffef4444),
                     ),
-                  )
+                  ),
                 ],
+              ),
+            ),
+            widget.viewSettingBody ?? Container(),
+            Divider(
+              color: grey,
+              height: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              child: CustomButton(
+                backgroundColor: const Color(0xff0c83ff),
+                hoverBackgroundColor: const Color(0xff0b76e6),
+                iconData: PhosphorIcons.arrowRight,
+                text: 'Apply',
+                onClick: () {
+                  _hideViewSettingsSlider();
+                },
               ),
             ),
           ],

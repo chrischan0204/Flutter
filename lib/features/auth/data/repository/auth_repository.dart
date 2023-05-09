@@ -1,7 +1,5 @@
 import 'package:http/http.dart';
-
-import '/constants/uri.dart';
-import '../model/auth.dart';
+import '/common_libraries.dart';
 
 class AuthRepository {
   static String url = '/api/Auth/token';
@@ -10,7 +8,7 @@ class AuthRepository {
     'accept': '*/*',
   };
 
-  Future<String> login(Auth auth) async {
+  Future<AuthUser> login(Auth auth) async {
     Response response = await post(
       Uri.https(ApiUri.host, url),
       headers: headers,
@@ -18,7 +16,7 @@ class AuthRepository {
     );
 
     if (response.statusCode == 200) {
-      return response.body;
+      return AuthUser.fromJson(response.body);
     }
     throw Exception();
   }

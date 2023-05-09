@@ -22,10 +22,12 @@ class _AddEditUserViewState extends State<AddEditUserView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) => setState(() => token = state.token),
-      listenWhen: (previous, current) => previous.token != current.token,
+      listener: (context, state) =>
+          setState(() => token = state.authUser?.token ?? ''),
+      listenWhen: (previous, current) =>
+          previous.authUser?.token != current.authUser?.token,
       builder: (context, addEditUserState) {
-        token = addEditUserState.token;
+        token = addEditUserState.authUser?.token ?? '';
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
