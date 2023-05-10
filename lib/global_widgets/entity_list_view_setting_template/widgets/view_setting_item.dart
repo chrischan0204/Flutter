@@ -15,6 +15,7 @@ class ViewSettingItem extends StatefulWidget {
     this.displayColumnList = const [],
     this.canSort = false,
     this.onSortChanged,
+    this.sortDirection = 'asc',
   }) : super(key: key);
 
   final ViewSettingItemData data;
@@ -26,7 +27,8 @@ class ViewSettingItem extends StatefulWidget {
   final List<ViewSettingColumn> columns;
   final List<String> displayColumnList;
   final bool canSort;
-  final ValueChanged<bool>? onSortChanged;
+  final ValueChanged<String>? onSortChanged;
+  final String sortDirection;
 
   @override
   State<ViewSettingItem> createState() => _ItemState();
@@ -35,9 +37,17 @@ class ViewSettingItem extends StatefulWidget {
 class _ItemState extends State<ViewSettingItem> {
   bool isHover = false;
   String? selectedValue;
-  bool asc = true;
+  // String sortDirection = 'asc';
 
   final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
+
+  @override
+  void initState() {
+    // setState(() {
+    //   sortDirection = widget.sortDirection;
+    // });
+    super.initState();
+  }
 
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
@@ -95,13 +105,17 @@ class _ItemState extends State<ViewSettingItem> {
     return widget.canSort
         ? IconButton(
             onPressed: () {
-              setState(() => asc = !asc);
+              // setState(() =>
+              //     sortDirection = sortDirection == 'asc' ? 'desc' : 'asc');
               if (widget.onSortChanged != null) {
-                widget.onSortChanged!(asc);
+                widget.onSortChanged!(
+                    widget.sortDirection == 'asc' ? 'desc' : 'asc');
               }
             },
             icon: Icon(
-              asc ? PhosphorIcons.arrowUp : PhosphorIcons.arrowDown,
+              widget.sortDirection == 'asc'
+                  ? PhosphorIcons.arrowUp
+                  : PhosphorIcons.arrowDown,
               size: 20,
               color: Colors.blue,
             ))
@@ -137,29 +151,31 @@ class _ItemState extends State<ViewSettingItem> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 14.0),
-        child: Builder(builder: (context) {
-          Map<String, dynamic> items = {};
-          for (var column in widget.columns) {
-            items.addEntries([MapEntry(column.title, column)]);
-          }
-          return CustomSingleSelect(
-            items: items,
-            hint: 'Select Column',
-            selectedValue: widget.selectedValue,
-            onChanged: (value) {
-              // widget.onChange(value.key);
-              setState(() {
-                selectedValue = value.key;
-              });
-              if (widget.displayColumnList.isNotEmpty &&
-                  widget.displayColumnList.contains(value.key)) {
-                // tooltipkey.currentState
-                //     ?.ensureTooltipVisible();
-              }
-              widget.onChange(value.value);
-            },
-          );
-        }),
+        child: Builder(
+          builder: (context) {
+            Map<String, dynamic> items = {};
+            for (var column in widget.columns) {
+              items.addEntries([MapEntry(column.title, column)]);
+            }
+            return CustomSingleSelect(
+              items: items,
+              hint: 'Select Column',
+              selectedValue: widget.selectedValue,
+              onChanged: (value) {
+                // widget.onChange(value.key);
+                setState(() {
+                  selectedValue = value.key;
+                });
+                if (widget.displayColumnList.isNotEmpty &&
+                    widget.displayColumnList.contains(value.key)) {
+                  // tooltipkey.currentState
+                  //     ?.ensureTooltipVisible();
+                }
+                widget.onChange(value.value);
+              },
+            );
+          },
+        ),
       ),
     );
   }

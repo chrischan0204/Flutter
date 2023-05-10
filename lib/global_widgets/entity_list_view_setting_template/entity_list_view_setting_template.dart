@@ -7,15 +7,16 @@ import 'widgets/view_setting_tab.dart';
 class EntityListViewSettingView extends StatefulWidget {
   final VoidCallback onColumnAdded;
   final bool Function(Key, Key) onReorderCallback;
-  final void Function(int, String) onColumnSelectCallback;
+  final void Function(int, ViewSettingColumn) onColumnSelectCallback;
   final ValueChanged<int> onColumnDeleteCallback;
   final VoidCallback onSortingAdded;
   final bool Function(Key, Key) onSortingReorderCallback;
-  final void Function(int, String) onSortingSelectCallback;
+  final void Function(int, ViewSettingColumn) onSortingSelectCallback;
   final ValueChanged<int> onSortingDeleteCallback;
-  final List<ViewSettingItemData> viewSettingDisplayList;
-  final List<ViewSettingItemData> viewSettingSortingList;
+  final List<ViewSettingItemData> viewSettingDisplayColumnList;
+  final List<ViewSettingItemData> viewSettingSortingColumnList;
   final List<ViewSettingColumn> columns;
+  final void Function(int, String) onSortDirectionChanged;
   const EntityListViewSettingView({
     super.key,
     required this.onColumnAdded,
@@ -26,9 +27,10 @@ class EntityListViewSettingView extends StatefulWidget {
     required this.onSortingReorderCallback,
     required this.onSortingSelectCallback,
     required this.onSortingDeleteCallback,
-    required this.viewSettingDisplayList,
-    required this.viewSettingSortingList,
+    required this.viewSettingDisplayColumnList,
+    required this.viewSettingSortingColumnList,
     required this.columns,
+    required this.onSortDirectionChanged,
   });
 
   @override
@@ -57,30 +59,30 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
                               if (index ==
-                                  widget.viewSettingDisplayList.length + 1) {
+                                  widget.viewSettingDisplayColumnList.length + 1) {
                                 return _buildAddButton(true);
                               } else if (index == 0) {
                                 return _buildTab();
                               }
                               return ViewSettingItem(
-                                data: widget.viewSettingDisplayList[index - 1],
+                                data: widget.viewSettingDisplayColumnList[index - 1],
                                 isFirst: index == 1,
                                 isLast: index ==
-                                    widget.viewSettingDisplayList.length,
+                                    widget.viewSettingDisplayColumnList.length,
                                 columns: widget.columns,
                                 // displayColumnList: state.usedColumns,
                                 selectedValue: widget
-                                    .viewSettingDisplayList[index - 1]
-                                    .selectedValue,
-                                onChange: (value) =>
-                                    widget.onColumnSelectCallback(
-                                        index - 1, value.title),
+                                    .viewSettingDisplayColumnList[index - 1]
+                                    .selectedValue
+                                    ?.title,
+                                onChange: (value) => widget
+                                    .onColumnSelectCallback(index - 1, value),
                                 deleteItem: () =>
                                     widget.onColumnDeleteCallback(index - 1),
                               );
                             },
                             childCount:
-                                widget.viewSettingDisplayList.length + 2,
+                                widget.viewSettingDisplayColumnList.length + 2,
                           ),
                         ),
                       ),
@@ -99,31 +101,36 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
                               if (index ==
-                                  widget.viewSettingSortingList.length + 1) {
+                                  widget.viewSettingSortingColumnList.length + 1) {
                                 return _buildAddButton(false);
                               } else if (index == 0) {
                                 return _buildTab();
                               }
                               return ViewSettingItem(
-                                data: widget.viewSettingSortingList[index - 1],
+                                data: widget.viewSettingSortingColumnList[index - 1],
                                 isFirst: index == 1,
                                 isLast: index ==
-                                    widget.viewSettingSortingList.length,
+                                    widget.viewSettingSortingColumnList.length,
                                 columns: widget.columns,
                                 // displayColumnList: state.usedColumns,
                                 selectedValue: widget
-                                    .viewSettingSortingList[index - 1]
-                                    .selectedValue,
+                                    .viewSettingSortingColumnList[index - 1]
+                                    .selectedValue
+                                    ?.title,
                                 canSort: true,
-                                onChange: (value) =>
-                                    widget.onSortingSelectCallback(
-                                        index - 1, value.title),
+                                sortDirection: widget
+                                    .viewSettingSortingColumnList[index - 1]
+                                    .sortDirection,
+                                onSortChanged: (value) => widget
+                                    .onSortDirectionChanged(index - 1, value),
+                                onChange: (value) => widget
+                                    .onSortingSelectCallback(index - 1, value),
                                 deleteItem: () =>
                                     widget.onSortingDeleteCallback(index - 1),
                               );
                             },
                             childCount:
-                                widget.viewSettingSortingList.length + 2,
+                                widget.viewSettingSortingColumnList.length + 2,
                           ),
                         ),
                       ),

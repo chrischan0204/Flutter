@@ -131,7 +131,7 @@ class _UsersListState extends State<UsersListWidget> {
               title: pageTitle,
               label: pageLabel,
               entities: userListState.userList,
-              columns: ['Last Name', 'First Name', 'Title', 'Role'],
+              columns: const ['First Name', 'Last Name', 'Title', 'Role'],
               showTableHeaderButtons: true,
               onRowClick: (selectedUser) => _selectUser(selectedUser),
               emptyMessage: emptyMessage,
@@ -144,8 +144,8 @@ class _UsersListState extends State<UsersListWidget> {
               filterApplied: filterApplied,
               filterBody: _buildFilterBody(),
               viewSettingBody: const UserListViewSettingView(),
-              applyViewSetting: () =>
-                  userListViewSettingBloc.add(UserListViewSettingApplied()),
+              applyViewSetting: () => userListViewSettingBloc
+                  .add(const UserListViewSettingApplied(viewName: 'user')),
               newIconData: PhosphorIcons.userPlus,
             );
           },

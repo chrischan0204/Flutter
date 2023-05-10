@@ -26,8 +26,6 @@ class ViewSettingColumn extends Equatable {
     return <String, dynamic>{
       'id': id,
       'viewSettingId': viewSettingId,
-      'name': name,
-      'title': title,
     };
   }
 

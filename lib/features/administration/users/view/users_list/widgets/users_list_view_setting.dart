@@ -13,12 +13,13 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
 
   @override
   void initState() {
-    userListViewSettingBloc = context.read()..add(UserListViewSettingLoaded());
+    userListViewSettingBloc = context.read()
+      ..add(const UserListViewSettingLoaded(viewName: 'user'));
     super.initState();
   }
 
   int _indexOfKey(Key key) {
-    return userListViewSettingBloc.state.viewSettingDisplayList
+    return userListViewSettingBloc.state.viewSettingDisplayColumnList
         .indexWhere((d) => d.key == key);
   }
 
@@ -26,7 +27,7 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
     int draggingIndex = _indexOfKey(item);
     int newPositionIndex = _indexOfKey(newPosition);
 
-    userListViewSettingBloc.add(UserListViewSettingDisplayOrderChanged(
+    userListViewSettingBloc.add(UserListViewSettingDisplayColumnOrderChanged(
       draggingIndex: draggingIndex,
       newPositionIndex: newPositionIndex,
     ));
@@ -37,7 +38,7 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
     int draggingIndex = _indexOfKey(item);
     int newPositionIndex = _indexOfKey(newPosition);
 
-    userListViewSettingBloc.add(UserListViewSettingSortingOrderChanged(
+    userListViewSettingBloc.add(UserListViewSettingSortingColumnOrderChanged(
       draggingIndex: draggingIndex,
       newPositionIndex: newPositionIndex,
     ));
@@ -46,7 +47,7 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
 
   void _reorderDone(Key item) {
     final draggedItem =
-        userListViewSettingBloc.state.viewSettingDisplayList[_indexOfKey(item)];
+        userListViewSettingBloc.state.viewSettingDisplayColumnList[_indexOfKey(item)];
     debugPrint("Reordering finished for ${draggedItem.selectedValue}}");
   }
 
@@ -57,27 +58,32 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
       builder: (context, state) {
         return EntityListViewSettingView(
           onColumnAdded: () =>
-              userListViewSettingBloc.add(UserListViewSettingDisplayAdded()),
+              userListViewSettingBloc.add(UserListViewSettingDisplayColumnAdded()),
           onReorderCallback: _reorderDisplayColumnCallback,
           onColumnSelectCallback: (index, value) =>
-              userListViewSettingBloc.add(UserListViewSettingDisplaySelected(
+              userListViewSettingBloc.add(UserListViewSettingDisplayColumnSelected(
             columnIndex: index,
             selectedValue: value,
           )),
           onColumnDeleteCallback: (index) => userListViewSettingBloc
-              .add(UserListViewSettingDisplayDeleted(columnIndex: index)),
-          viewSettingDisplayList: state.viewSettingDisplayList,
-          viewSettingSortingList: state.viewSettingSortingList,
+              .add(UserListViewSettingDisplayColumnDeleted(columnIndex: index)),
+          viewSettingDisplayColumnList: state.viewSettingDisplayColumnList,
+          viewSettingSortingColumnList: state.viewSettingSortingColumnList,
           columns: state.columns,
           onSortingAdded: () =>
-              userListViewSettingBloc.add(UserListViewSettingSortingAdded()),
+              userListViewSettingBloc.add(UserListViewSettingSortingColumnAdded()),
           onSortingDeleteCallback: (index) => userListViewSettingBloc
-              .add(UserListViewSettingSortingDeleted(columnIndex: index)),
+              .add(UserListViewSettingSortingColumnDeleted(columnIndex: index)),
           onSortingReorderCallback: _reorderSortingColumnCallback,
           onSortingSelectCallback: (index, value) =>
-              userListViewSettingBloc.add(UserListViewSettingSortingSelected(
+              userListViewSettingBloc.add(UserListViewSettingSortingColumnSelected(
             columnIndex: index,
             selectedValue: value,
+          )),
+          onSortDirectionChanged: (index, value) => userListViewSettingBloc
+              .add(UserListViewSettingSortingColumnSortDirectionChanged(
+            columnIndex: index,
+            sortDirection: value,
           )),
         );
       },
