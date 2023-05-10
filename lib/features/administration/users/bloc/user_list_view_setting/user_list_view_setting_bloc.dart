@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
 
@@ -46,13 +47,17 @@ class UserListViewSettingBloc
         displayColumns: state.viewSettingDisplayColumnList
             .map((e) => e
                 .copyWith(
-                    order: state.viewSettingDisplayColumnList.indexOf(e) + 1)
+                    order:
+                        state.undeletedViewSettingDisplayColumnList.indexOf(e) +
+                            1)
                 .toViewSettingColumnUpdate()!)
             .toList(),
         sortingColumns: state.viewSettingSortingColumnList
             .map((e) => e
                 .copyWith(
-                    order: state.viewSettingSortingColumnList.indexOf(e) + 1)
+                    order:
+                        state.undeletedViewSettingSortingColumnList.indexOf(e) +
+                            1)
                 .toViewSettingColumnUpdate()!)
             .toList(),
       ));
@@ -81,7 +86,7 @@ class UserListViewSettingBloc
             .map((e) => ViewSettingItemData(
                   id: e.id,
                   order: e.order,
-                  key: ValueKey(e.order - 1),
+                  key: ValueKey(const Uuid().v1()),
                   selectedValue: e,
                 ))
             .toList(),
@@ -89,7 +94,7 @@ class UserListViewSettingBloc
             .map((e) => ViewSettingItemData(
                   id: e.id,
                   order: e.order,
-                  key: ValueKey(e.order - 1),
+                  key: ValueKey(const Uuid().v1()),
                   selectedValue: e,
                   sortDirection: e.sortDirection,
                 ))
@@ -133,12 +138,11 @@ class UserListViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
-    final item = viewSettingDisplayColumnList.removeAt(event.columnIndex);
+    final int index = viewSettingDisplayColumnList.indexOf(event.column);
+    final item = viewSettingDisplayColumnList.removeAt(index);
     viewSettingDisplayColumnList.insert(
-        event.columnIndex,
+        index,
         item.copyWith(
-          order: event.columnIndex + 1,
-          key: ValueKey(event.columnIndex),
           selectedValue: event.selectedValue,
         ));
     emit(state.copyWith(
@@ -151,12 +155,12 @@ class UserListViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
-    final item = viewSettingSortingColumnList.removeAt(event.columnIndex);
+    final int index = viewSettingSortingColumnList.indexOf(event.column);
+    final item = viewSettingSortingColumnList.removeAt(index);
+
     viewSettingSortingColumnList.insert(
-        event.columnIndex,
+        index,
         item.copyWith(
-          order: event.columnIndex + 1,
-          key: ValueKey(event.columnIndex),
           selectedValue: event.selectedValue,
         ));
     emit(state.copyWith(
@@ -170,8 +174,7 @@ class UserListViewSettingBloc
     emit(state.copyWith(viewSettingDisplayColumnList: [
       ...state.viewSettingDisplayColumnList,
       ViewSettingItemData(
-        order: state.viewSettingDisplayColumnList.length + 1,
-        key: ValueKey(state.viewSettingDisplayColumnList.length),
+        key: ValueKey(const Uuid().v1()),
       )
     ]));
   }
@@ -183,8 +186,7 @@ class UserListViewSettingBloc
     emit(state.copyWith(viewSettingSortingColumnList: [
       ...state.viewSettingSortingColumnList,
       ViewSettingItemData(
-        order: state.viewSettingDisplayColumnList.length + 1,
-        key: ValueKey(state.viewSettingSortingColumnList.length),
+        key: ValueKey(const Uuid().v1()),
       )
     ]));
   }
@@ -195,7 +197,9 @@ class UserListViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
-    viewSettingDisplayColumnList.removeAt(event.columnIndex);
+    final int index = viewSettingDisplayColumnList.indexOf(event.column);
+    final item = viewSettingDisplayColumnList.removeAt(index);
+    viewSettingDisplayColumnList.insert(index, item.copyWith(deleted: true));
 
     emit(state.copyWith(
         viewSettingDisplayColumnList: viewSettingDisplayColumnList));
@@ -207,7 +211,10 @@ class UserListViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
-    viewSettingSortingColumnList.removeAt(event.columnIndex);
+
+    final int index = viewSettingSortingColumnList.indexOf(event.column);
+    final item = viewSettingSortingColumnList.removeAt(index);
+    viewSettingSortingColumnList.insert(index, item.copyWith(deleted: true));
 
     emit(state.copyWith(
         viewSettingSortingColumnList: viewSettingSortingColumnList));
@@ -219,11 +226,11 @@ class UserListViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
+    final int index = viewSettingSortingColumnList.indexOf(event.column);
+    final columnItem = viewSettingSortingColumnList.removeAt(index);
 
-    final columnItem = viewSettingSortingColumnList.removeAt(event.columnIndex);
-
-    viewSettingSortingColumnList.insert(event.columnIndex,
-        columnItem.copyWith(sortDirection: event.sortDirection));
+    viewSettingSortingColumnList.insert(
+        index, columnItem.copyWith(sortDirection: event.sortDirection));
 
     emit(state.copyWith(
         viewSettingSortingColumnList: viewSettingSortingColumnList));

@@ -14,7 +14,7 @@ class ViewSettingItemData {
     this.id = '00000000-0000-0000-0000-000000000000',
     this.selectedValue,
     required this.key,
-    required this.order,
+    this.order = 0,
     this.deleted = false,
     this.sortDirection = 'asc',
   });
@@ -33,6 +33,7 @@ class ViewSettingItemData {
   }
 
   ViewSettingItemData copyWith({
+    String? id,
     ViewSettingColumn? selectedValue,
     String? sortDirection,
     int? order,
@@ -40,6 +41,7 @@ class ViewSettingItemData {
     Key? key,
   }) {
     return ViewSettingItemData(
+      id: id ?? this.id,
       selectedValue: selectedValue ?? this.selectedValue,
       sortDirection: sortDirection ?? this.sortDirection,
       order: order ?? this.order,

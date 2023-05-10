@@ -27,7 +27,8 @@ class UserListViewSettingLoaded extends UserListViewSettingEvent {
   List<Object> get props => [viewName];
 }
 
-class UserListViewSettingDisplayColumnOrderChanged extends UserListViewSettingEvent {
+class UserListViewSettingDisplayColumnOrderChanged
+    extends UserListViewSettingEvent {
   final int draggingIndex;
   final int newPositionIndex;
   const UserListViewSettingDisplayColumnOrderChanged({
@@ -44,32 +45,34 @@ class UserListViewSettingDisplayColumnOrderChanged extends UserListViewSettingEv
 
 class UserListViewSettingDisplayColumnAdded extends UserListViewSettingEvent {}
 
-class UserListViewSettingDisplayColumnSelected extends UserListViewSettingEvent {
-  final int columnIndex;
+class UserListViewSettingDisplayColumnSelected
+    extends UserListViewSettingEvent {
+  final ViewSettingItemData column;
   final ViewSettingColumn selectedValue;
   const UserListViewSettingDisplayColumnSelected({
-    required this.columnIndex,
+    required this.column,
     required this.selectedValue,
   });
 
   @override
   List<Object> get props => [
-        columnIndex,
+        column,
         selectedValue,
       ];
 }
 
 class UserListViewSettingDisplayColumnDeleted extends UserListViewSettingEvent {
-  final int columnIndex;
+  final ViewSettingItemData column;
   const UserListViewSettingDisplayColumnDeleted({
-    required this.columnIndex,
+    required this.column,
   });
 
   @override
-  List<Object> get props => [columnIndex];
+  List<Object> get props => [column];
 }
 
-class UserListViewSettingSortingColumnOrderChanged extends UserListViewSettingEvent {
+class UserListViewSettingSortingColumnOrderChanged
+    extends UserListViewSettingEvent {
   final int draggingIndex;
   final int newPositionIndex;
   const UserListViewSettingSortingColumnOrderChanged({
@@ -86,43 +89,44 @@ class UserListViewSettingSortingColumnOrderChanged extends UserListViewSettingEv
 
 class UserListViewSettingSortingColumnAdded extends UserListViewSettingEvent {}
 
-class UserListViewSettingSortingColumnSelected extends UserListViewSettingEvent {
-  final int columnIndex;
+class UserListViewSettingSortingColumnSelected
+    extends UserListViewSettingEvent {
+  final ViewSettingItemData column;
   final ViewSettingColumn selectedValue;
   const UserListViewSettingSortingColumnSelected({
-    required this.columnIndex,
+    required this.column,
     required this.selectedValue,
   });
 
   @override
   List<Object> get props => [
-        columnIndex,
+        column,
         selectedValue,
       ];
 }
 
 class UserListViewSettingSortingColumnSortDirectionChanged
     extends UserListViewSettingEvent {
-  final int columnIndex;
+  final ViewSettingItemData column;
   final String sortDirection;
   const UserListViewSettingSortingColumnSortDirectionChanged({
-    required this.columnIndex,
+    required this.column,
     required this.sortDirection,
   });
 
   @override
   List<Object> get props => [
-        columnIndex,
+        column,
         sortDirection,
       ];
 }
 
 class UserListViewSettingSortingColumnDeleted extends UserListViewSettingEvent {
-  final int columnIndex;
+  final ViewSettingItemData column;
   const UserListViewSettingSortingColumnDeleted({
-    required this.columnIndex,
+    required this.column,
   });
 
   @override
-  List<Object> get props => [columnIndex];
+  List<Object> get props => [column];
 }
