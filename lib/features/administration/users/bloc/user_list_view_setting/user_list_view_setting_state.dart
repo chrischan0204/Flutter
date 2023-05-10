@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'user_list_view_setting_bloc.dart';
 
 class ViewSettingItemData {
@@ -14,20 +15,15 @@ class ViewSettingItemData {
 }
 
 class UserListViewSettingState extends Equatable {
+  final EntityStatus viewSettingLoadStatus;
   final List<ViewSettingItemData> viewSettingDisplayList;
   final List<ViewSettingItemData> viewSettingSortingList;
-  final List<String> columns;
+  final List<ViewSettingColumn> columns;
   const UserListViewSettingState({
+    this.viewSettingLoadStatus = EntityStatus.initial,
     this.viewSettingDisplayList = const [],
     this.viewSettingSortingList = const [],
-    this.columns = const [
-      'First Name',
-      'Last Name',
-      'Role',
-      'Email',
-      'Default Site',
-      'Mobile Number',
-    ],
+    this.columns = const [],
   });
 
   List<String> get unusedColumns {
@@ -43,8 +39,26 @@ class UserListViewSettingState extends Equatable {
 
   @override
   List<Object> get props => [
+        viewSettingLoadStatus,
         viewSettingDisplayList,
         viewSettingSortingList,
         columns,
       ];
+
+  UserListViewSettingState copyWith({
+    EntityStatus? viewSettingLoadStatus,
+    List<ViewSettingItemData>? viewSettingDisplayList,
+    List<ViewSettingItemData>? viewSettingSortingList,
+    List<ViewSettingColumn>? columns,
+  }) {
+    return UserListViewSettingState(
+      viewSettingLoadStatus:
+          viewSettingLoadStatus ?? this.viewSettingLoadStatus,
+      viewSettingDisplayList:
+          viewSettingDisplayList ?? this.viewSettingDisplayList,
+      viewSettingSortingList:
+          viewSettingSortingList ?? this.viewSettingSortingList,
+      columns: columns ?? this.columns,
+    );
+  }
 }

@@ -16,7 +16,6 @@ class User extends Entity {
   final String siteAccess;
   final String timeZoneName;
   final String timeZoneId;
-  static List<String> column = [];
 
   const User({
     super.id,

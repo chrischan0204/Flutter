@@ -13,7 +13,7 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
 
   @override
   void initState() {
-    userListViewSettingBloc = context.read();
+    userListViewSettingBloc = context.read()..add(UserListViewSettingLoaded());
     super.initState();
   }
 
@@ -22,11 +22,22 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
         .indexWhere((d) => d.key == key);
   }
 
-  bool _reorderCallback(Key item, Key newPosition) {
+  bool _reorderDisplayColumnCallback(Key item, Key newPosition) {
     int draggingIndex = _indexOfKey(item);
     int newPositionIndex = _indexOfKey(newPosition);
 
     userListViewSettingBloc.add(UserListViewSettingDisplayOrderChanged(
+      draggingIndex: draggingIndex,
+      newPositionIndex: newPositionIndex,
+    ));
+    return true;
+  }
+
+  bool _reorderSortingColumnCallback(Key item, Key newPosition) {
+    int draggingIndex = _indexOfKey(item);
+    int newPositionIndex = _indexOfKey(newPosition);
+
+    userListViewSettingBloc.add(UserListViewSettingSortingOrderChanged(
       draggingIndex: draggingIndex,
       newPositionIndex: newPositionIndex,
     ));
@@ -41,22 +52,33 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserListViewSettingBloc, UserListViewSettingState>(
+    return BlocConsumer<UserListViewSettingBloc, UserListViewSettingState>(
+      listener: (context, state) {},
       builder: (context, state) {
         return EntityListViewSettingView(
           onColumnAdded: () =>
               userListViewSettingBloc.add(UserListViewSettingDisplayAdded()),
-          onReorderCallback: _reorderCallback,
+          onReorderCallback: _reorderDisplayColumnCallback,
           onColumnSelectCallback: (index, value) =>
               userListViewSettingBloc.add(UserListViewSettingDisplaySelected(
             columnIndex: index,
             selectedValue: value,
           )),
-          onColumnDeletCallback: (index) => userListViewSettingBloc
+          onColumnDeleteCallback: (index) => userListViewSettingBloc
               .add(UserListViewSettingDisplayDeleted(columnIndex: index)),
           viewSettingDisplayList: state.viewSettingDisplayList,
           viewSettingSortingList: state.viewSettingSortingList,
           columns: state.columns,
+          onSortingAdded: () =>
+              userListViewSettingBloc.add(UserListViewSettingSortingAdded()),
+          onSortingDeleteCallback: (index) => userListViewSettingBloc
+              .add(UserListViewSettingSortingDeleted(columnIndex: index)),
+          onSortingReorderCallback: _reorderSortingColumnCallback,
+          onSortingSelectCallback: (index, value) =>
+              userListViewSettingBloc.add(UserListViewSettingSortingSelected(
+            columnIndex: index,
+            selectedValue: value,
+          )),
         );
       },
     );

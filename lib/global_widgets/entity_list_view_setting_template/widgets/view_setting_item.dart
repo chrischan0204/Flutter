@@ -21,9 +21,9 @@ class ViewSettingItem extends StatefulWidget {
   final bool isFirst;
   final bool isLast;
   final VoidCallback deleteItem;
-  final ValueChanged<String> onChange;
+  final ValueChanged<ViewSettingColumn> onChange;
   final String? selectedValue;
-  final List<String> columns;
+  final List<ViewSettingColumn> columns;
   final List<String> displayColumnList;
   final bool canSort;
   final ValueChanged<bool>? onSortChanged;
@@ -138,9 +138,9 @@ class _ItemState extends State<ViewSettingItem> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 14.0),
         child: Builder(builder: (context) {
-          Map<String, String> items = {};
+          Map<String, dynamic> items = {};
           for (var column in widget.columns) {
-            items.addEntries([MapEntry(column, column)]);
+            items.addEntries([MapEntry(column.title, column)]);
           }
           return CustomSingleSelect(
             items: items,
@@ -156,7 +156,7 @@ class _ItemState extends State<ViewSettingItem> {
                 // tooltipkey.currentState
                 //     ?.ensureTooltipVisible();
               }
-              widget.onChange(value.key);
+              widget.onChange(value.value);
             },
           );
         }),

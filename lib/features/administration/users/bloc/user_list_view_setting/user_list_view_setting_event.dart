@@ -7,6 +7,8 @@ abstract class UserListViewSettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class UserListViewSettingApplied extends UserListViewSettingEvent {}
+
 class UserListViewSettingLoaded extends UserListViewSettingEvent {}
 
 class UserListViewSettingDisplayOrderChanged extends UserListViewSettingEvent {

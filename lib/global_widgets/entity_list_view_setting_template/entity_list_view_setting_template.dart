@@ -8,16 +8,24 @@ class EntityListViewSettingView extends StatefulWidget {
   final VoidCallback onColumnAdded;
   final bool Function(Key, Key) onReorderCallback;
   final void Function(int, String) onColumnSelectCallback;
-  final ValueChanged<int> onColumnDeletCallback;
+  final ValueChanged<int> onColumnDeleteCallback;
+  final VoidCallback onSortingAdded;
+  final bool Function(Key, Key) onSortingReorderCallback;
+  final void Function(int, String) onSortingSelectCallback;
+  final ValueChanged<int> onSortingDeleteCallback;
   final List<ViewSettingItemData> viewSettingDisplayList;
   final List<ViewSettingItemData> viewSettingSortingList;
-  final List<String> columns;
+  final List<ViewSettingColumn> columns;
   const EntityListViewSettingView({
     super.key,
     required this.onColumnAdded,
     required this.onReorderCallback,
     required this.onColumnSelectCallback,
-    required this.onColumnDeletCallback,
+    required this.onColumnDeleteCallback,
+    required this.onSortingAdded,
+    required this.onSortingReorderCallback,
+    required this.onSortingSelectCallback,
+    required this.onSortingDeleteCallback,
     required this.viewSettingDisplayList,
     required this.viewSettingSortingList,
     required this.columns,
@@ -50,7 +58,7 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                             (BuildContext context, int index) {
                               if (index ==
                                   widget.viewSettingDisplayList.length + 1) {
-                                return _buildAddButton();
+                                return _buildAddButton(true);
                               } else if (index == 0) {
                                 return _buildTab();
                               }
@@ -64,10 +72,11 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                                 selectedValue: widget
                                     .viewSettingDisplayList[index - 1]
                                     .selectedValue,
-                                onChange: (value) => widget
-                                    .onColumnSelectCallback(index - 1, value),
+                                onChange: (value) =>
+                                    widget.onColumnSelectCallback(
+                                        index - 1, value.title),
                                 deleteItem: () =>
-                                    widget.onColumnDeletCallback(index - 1),
+                                    widget.onColumnDeleteCallback(index - 1),
                               );
                             },
                             childCount:
@@ -80,7 +89,7 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                 );
               } else {
                 return ReorderableList(
-                  onReorder: widget.onReorderCallback,
+                  onReorder: widget.onSortingReorderCallback,
                   child: CustomScrollView(
                     slivers: <Widget>[
                       SliverPadding(
@@ -91,7 +100,7 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                             (BuildContext context, int index) {
                               if (index ==
                                   widget.viewSettingSortingList.length + 1) {
-                                return _buildAddButton();
+                                return _buildAddButton(false);
                               } else if (index == 0) {
                                 return _buildTab();
                               }
@@ -106,10 +115,11 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                                     .viewSettingSortingList[index - 1]
                                     .selectedValue,
                                 canSort: true,
-                                onChange: (value) => widget
-                                    .onColumnSelectCallback(index - 1, value),
+                                onChange: (value) =>
+                                    widget.onSortingSelectCallback(
+                                        index - 1, value.title),
                                 deleteItem: () =>
-                                    widget.onColumnDeletCallback(index - 1),
+                                    widget.onSortingDeleteCallback(index - 1),
                               );
                             },
                             childCount:
@@ -134,9 +144,10 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
     );
   }
 
-  TextButton _buildAddButton() {
+  TextButton _buildAddButton(bool isDisplay) {
     return TextButton(
-      onPressed: () => widget.onColumnAdded(),
+      onPressed: () =>
+          isDisplay ? widget.onColumnAdded() : widget.onSortingAdded(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

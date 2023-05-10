@@ -23,7 +23,7 @@ class ViewSetting extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'columnList': columnList.map((x) => x.toMap()).toList(),
+      'sortingColumns': columnList.map((x) => x.toMap()).toList(),
       'displayColumnList': displayColumnList.map((x) => x.toMap()).toList(),
       'sortingColumnList': sortingColumnList.map((x) => x.toMap()).toList(),
     };
@@ -32,17 +32,17 @@ class ViewSetting extends Equatable {
   factory ViewSetting.fromMap(Map<String, dynamic> map) {
     return ViewSetting(
       columnList: List.from(
-        (map['columnList']).map<ViewSettingColumn>(
+        (map['columns']).map<ViewSettingColumn>(
           (columnMap) => ViewSettingColumn.fromMap(columnMap),
         ),
       ),
       displayColumnList: List.from(
-        (map['displayColumnList']).map(
+        (map['displayColumns']).map(
           (columnMap) => ViewSettingDisplayColumn.fromMap(columnMap),
         ),
       ),
       sortingColumnList: List.from(
-        (map['sortingColumnList']).map(
+        (map['sortingColumns']).map(
           (columnMap) => ViewSettingSortingColumn.fromMap(columnMap),
         ),
       ),

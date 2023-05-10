@@ -1,3 +1,5 @@
+import 'package:safety_eta/features/setting/data/repository/settings_repository.dart';
+
 import '/common_libraries.dart';
 import 'widgets/users_list_view_setting.dart';
 
@@ -40,6 +42,11 @@ class _UsersListViewState extends State<UsersListView> {
                       token: token,
                       authBloc: BlocProvider.of(context),
                     )),
+            RepositoryProvider(
+                create: (context) => SettingsRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
           ],
           child: MultiBlocProvider(
             providers: [
@@ -51,7 +58,9 @@ class _UsersListViewState extends State<UsersListView> {
                   create: (context) => UserDetailBloc(
                       usersRepository:
                           RepositoryProvider.of<UsersRepository>(context))),
-              BlocProvider(create: (context) => UserListViewSettingBloc()),
+              BlocProvider(
+                  create: (context) => UserListViewSettingBloc(
+                      settingsRepository: RepositoryProvider.of(context))),
               BlocProvider(
                   create: (context) => SitesBloc(
                       sitesRepository:
@@ -81,6 +90,7 @@ class UsersListWidget extends StatefulWidget {
 class _UsersListState extends State<UsersListWidget> {
   late UserListBloc userListBloc;
   late UserDetailBloc userDetailBloc;
+  late UserListViewSettingBloc userListViewSettingBloc;
   late SitesBloc sitesBloc;
   late RegionsBloc regionsBloc;
   late RolesBloc rolesBloc;
@@ -104,10 +114,10 @@ class _UsersListState extends State<UsersListWidget> {
   void initState() {
     userListBloc = context.read<UserListBloc>()..add(UserListLoaded());
     userDetailBloc = context.read<UserDetailBloc>();
+    userListViewSettingBloc = context.read();
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
-    User.column = ['Last Name', 'First Name', 'Title', 'Role'];
     super.initState();
   }
 
@@ -121,7 +131,7 @@ class _UsersListState extends State<UsersListWidget> {
               title: pageTitle,
               label: pageLabel,
               entities: userListState.userList,
-              columns: User.column,
+              columns: ['Last Name', 'First Name', 'Title', 'Role'],
               showTableHeaderButtons: true,
               onRowClick: (selectedUser) => _selectUser(selectedUser),
               emptyMessage: emptyMessage,
@@ -134,6 +144,8 @@ class _UsersListState extends State<UsersListWidget> {
               filterApplied: filterApplied,
               filterBody: _buildFilterBody(),
               viewSettingBody: const UserListViewSettingView(),
+              applyViewSetting: () =>
+                  userListViewSettingBloc.add(UserListViewSettingApplied()),
               newIconData: PhosphorIcons.userPlus,
             );
           },

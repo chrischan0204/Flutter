@@ -11,6 +11,7 @@ class EntityListTemplate extends StatefulWidget {
   final VoidCallback? applyFilter;
   final VoidCallback? clearFilter;
   final Widget? viewSettingBody;
+  final VoidCallback? applyViewSetting;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
@@ -32,6 +33,7 @@ class EntityListTemplate extends StatefulWidget {
     this.applyFilter,
     this.clearFilter,
     this.viewSettingBody,
+    this.applyViewSetting,
     required this.label,
     required this.onRowClick,
     this.includeDeletedChanged,
@@ -467,6 +469,9 @@ class _CrudState extends State<EntityListTemplate> {
                 text: 'Apply',
                 onClick: () {
                   _hideViewSettingsSlider();
+                  if (widget.applyViewSetting != null) {
+                    widget.applyViewSetting!();
+                  }
                 },
               ),
             ),
