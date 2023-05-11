@@ -42,7 +42,8 @@ class UserListViewSettingBloc
     if (isNotCompleted(state.viewSettingDisplayColumnList) ||
         isNotCompleted(state.viewSettingSortingColumnList)) {
     } else {
-      await settingsRepository.applyViewSetting(ViewSettingUpdate(
+      emit(state.copyWith(viewSettingSaveStatus: EntityStatus.loading));
+      final viewSettingUpdate = ViewSettingUpdate(
         viewName: event.viewName,
         displayColumns: state.viewSettingDisplayColumnList
             .map((e) => e
@@ -60,7 +61,13 @@ class UserListViewSettingBloc
                             1)
                 .toViewSettingColumnUpdate()!)
             .toList(),
-      ));
+      );
+      try {
+        await settingsRepository.onViewSettingApplied(viewSettingUpdate);
+        emit(state.copyWith(viewSettingSaveStatus: EntityStatus.success));
+      } catch (e) {
+        emit(state.copyWith(viewSettingSaveStatus: EntityStatus.failure));
+      }
     }
   }
 
@@ -138,7 +145,17 @@ class UserListViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
-    final int index = viewSettingDisplayColumnList.indexOf(event.column);
+    final deletedViewSettingDisplayColumnList = List.from(
+        state.viewSettingDisplayColumnList.where((element) => element.deleted));
+
+    int index = state.viewSettingDisplayColumnList.indexWhere((element) =>
+        element.selectedValue?.viewSettingId ==
+        event.selectedValue.viewSettingId);
+    if (index != -1) {
+      viewSettingDisplayColumnList.removeAt(index);
+    }
+
+    index = viewSettingDisplayColumnList.indexOf(event.column);
     final item = viewSettingDisplayColumnList.removeAt(index);
     viewSettingDisplayColumnList.insert(
         index,

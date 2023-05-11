@@ -13,8 +13,7 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
 
   @override
   void initState() {
-    userListViewSettingBloc = context.read()
-      ..add(const UserListViewSettingLoaded(viewName: 'user'));
+    userListViewSettingBloc = context.read();
     super.initState();
   }
 
@@ -44,18 +43,27 @@ class _UserListViewSettingViewState extends State<UserListViewSettingView> {
     return true;
   }
 
-  void _reorderDone(Key item) {
-    // final draggedItem =
-    //     userListViewSettingBloc.state.viewSettingDisplayColumnList[
-    //         userListViewSettingBloc.state.indexOf(item)];
-    // debugPrint("Reordering finished for ${draggedItem.selectedValue}}");
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserListViewSettingBloc, UserListViewSettingState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.viewSettingSaveStatus.isSuccess) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: 'User view setting saved',
+          ).showNotification();
+        }
+      },
+      listenWhen: (previous, current) =>
+          previous.viewSettingSaveStatus != current.viewSettingSaveStatus,
       builder: (context, state) {
+        if (state.viewSettingLoadStatus.isLoading) {
+          return const Padding(
+            padding: EdgeInsets.only(top: 100.0),
+            child: Loader(),
+          );
+        }
         return EntityListViewSettingView(
           onDisplayColumnAdded: () => userListViewSettingBloc
               .add(UserListViewSettingDisplayColumnAdded()),

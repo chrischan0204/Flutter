@@ -10,14 +10,14 @@ class DataTableView extends StatefulWidget {
   final List<String> columns;
   final ValueChanged<Entity> onRowClick;
   final String emptyMessage;
-  final ValueChanged<MapEntry<String, bool>>? onTableSort;
+  final ValueChanged<MapEntry<String, bool>>? onTableSorted;
   const DataTableView({
     super.key,
     this.entities = const [],
     this.columns = const [],
     required this.onRowClick,
     this.emptyMessage = '',
-    this.onTableSort,
+    this.onTableSorted,
   });
 
   @override
@@ -42,7 +42,7 @@ class _DataTableViewState extends State<DataTableView> {
                     int index = columns.indexOf(column);
                     return GestureDetector(
                       onTap: () {
-                        if (widget.onTableSort != null) {
+                        if (widget.onTableSorted != null) {
                           if (selectedColumnIndex == index) {
                             setState(() {
                               sortType = !sortType;
@@ -53,7 +53,7 @@ class _DataTableViewState extends State<DataTableView> {
                               sortType = true;
                             });
                           }
-                          widget.onTableSort!(MapEntry(column, sortType));
+                          widget.onTableSorted!(MapEntry(column, sortType));
                         }
                       },
                       child: Row(

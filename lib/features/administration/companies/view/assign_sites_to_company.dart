@@ -278,7 +278,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         label: 'sites',
         filterIconClick: (filtered) {
           if (filtered) {
-            _applyFilter(state);
+            _onFilterApplied(state);
           } else {
             _cancelFilter();
           }
@@ -289,7 +289,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  _applyFilter(CompaniesState state) {
+  _onFilterApplied(CompaniesState state) {
     companiesBloc.add(UnassignedCompanySitesRetrieved(
       companyId: widget.companyId,
       name: state.filterText,

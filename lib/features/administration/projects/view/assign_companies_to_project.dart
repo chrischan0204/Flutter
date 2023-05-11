@@ -313,7 +313,7 @@ class _AssignCompaniesToProjectViewState
         label: 'sites',
         filterIconClick: (filtered) {
           if (filtered) {
-            _applyFilter(state);
+            _onFilterApplied(state);
           } else {
             _cancelFilter();
           }
@@ -324,7 +324,7 @@ class _AssignCompaniesToProjectViewState
     );
   }
 
-  _applyFilter(ProjectsState state) {
+  _onFilterApplied(ProjectsState state) {
     projectsBloc.add(UnassignedCompanyProjectsRetrieved(
       projectId: widget.projectId,
       name: state.filterText,

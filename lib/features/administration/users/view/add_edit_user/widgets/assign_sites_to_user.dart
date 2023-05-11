@@ -280,7 +280,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
         label: 'sites',
         filterIconClick: (filtered) {
           if (filtered) {
-            _applyFilter(state);
+            _onFilterApplied(state);
           } else {
             _cancelFilter();
           }
@@ -291,7 +291,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
     );
   }
 
-  _applyFilter(AssignSiteToUserState state) {
+  _onFilterApplied(AssignSiteToUserState state) {
     addEditUserBloc.add(AssignSiteToUserUnassignedUserSiteListLoaded(
       userId: widget.userId,
       name: state.filterText,

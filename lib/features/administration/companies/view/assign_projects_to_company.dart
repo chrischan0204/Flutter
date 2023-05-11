@@ -299,7 +299,7 @@ class _AssignProjectsToCompanyViewState
         canFilter: state.filterSiteId.isNotEmpty,
         filterIconClick: (filtered) {
           if (filtered) {
-            _applyFilter(state);
+            _onFilterApplied(state);
           } else {
             _cancelFilter();
           }
@@ -399,7 +399,7 @@ class _AssignProjectsToCompanyViewState
     ).show();
   }
 
-  _applyFilter(CompaniesState state) {
+  _onFilterApplied(CompaniesState state) {
     companiesBloc.add(UnassignedProjectCompaniesRetrieved(
       companyId: widget.companyId,
       name: state.filterText,

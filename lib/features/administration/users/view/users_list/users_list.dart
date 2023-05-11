@@ -137,15 +137,17 @@ class _UsersListState extends State<UsersListWidget> {
               emptyMessage: emptyMessage,
               entityRetrievedStatus: userListState.userListLoadStatus,
               selectedEntity: userDetailState.user,
-              onTableSort: (sortedUsers) => _sortUsers(sortedUsers),
-              applyFilter: () => _applyFilter(),
+              onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
+              onFilterApplied: () => _onFilterApplied(),
               clearFilter: () => _clearFilter(),
               filterResultBody: _buildFilterResultBody(),
               filterApplied: filterApplied,
               filterBody: _buildFilterBody(),
               viewSettingBody: const UserListViewSettingView(),
-              applyViewSetting: () => userListViewSettingBloc
+              onViewSettingApplied: () => userListViewSettingBloc
                   .add(const UserListViewSettingApplied(viewName: 'user')),
+              onViewSettingSliderOpened: () => userListViewSettingBloc
+                  .add(const UserListViewSettingLoaded(viewName: 'user')),
               newIconData: PhosphorIcons.userPlus,
             );
           },
@@ -164,7 +166,7 @@ class _UsersListState extends State<UsersListWidget> {
     });
   }
 
-  void _applyFilter() {
+  void _onFilterApplied() {
     setState(() {
       filterApplied = true;
     });

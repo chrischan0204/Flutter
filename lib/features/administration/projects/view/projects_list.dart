@@ -58,8 +58,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
-          onTableSort: (sortedProjects) => _sortProjects(sortedProjects),
-          applyFilter: () => _applyFilter(),
+          onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
+          onFilterApplied: () => _onFilterApplied(),
           clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
           filterApplied: filterApplied,
@@ -82,7 +82,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     });
   }
 
-  void _applyFilter() {
+  void _onFilterApplied() {
     setState(() {
       filterApplied = true;
     });

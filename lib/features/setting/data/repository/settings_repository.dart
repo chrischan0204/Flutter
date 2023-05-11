@@ -30,7 +30,7 @@ class SettingsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<ViewSetting> applyViewSetting(
+  Future<ViewSetting> onViewSettingApplied(
       ViewSettingUpdate viewSettingUpdate) async {
     Response response =
         await super.post('$url/users/view', body: viewSettingUpdate.toJson());

@@ -51,8 +51,8 @@ class _CompaniesListViewState extends State<CompaniesListView> {
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.companiesRetrievedStatus,
           selectedEntity: state.selectedCompany,
-          onTableSort: (sortedCompanies) => _sortCompanies(sortedCompanies),
-          applyFilter: () => _applyFilter(),
+          onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
+          onFilterApplied: () => _onFilterApplied(),
           clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
           filterApplied: filterApplied,
@@ -73,7 +73,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
     });
   }
 
-  void _applyFilter() {
+  void _onFilterApplied() {
     setState(() {
       filterApplied = true;
     });

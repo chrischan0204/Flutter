@@ -8,20 +8,21 @@ class EntityListTemplate extends StatefulWidget {
   final Widget? filterBody;
   final Widget? filterResultBody;
   final bool filterApplied;
-  final VoidCallback? applyFilter;
+  final VoidCallback? onFilterApplied;
   final VoidCallback? clearFilter;
   final Widget? viewSettingBody;
-  final VoidCallback? applyViewSetting;
+  final VoidCallback? onViewSettingApplied;
+  final VoidCallback? onViewSettingSliderOpened;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
   final String label;
   final ValueChanged<Entity> onRowClick;
-  final ValueChanged<bool>? includeDeletedChanged;
+  final ValueChanged<bool>? onIncludeDeletedChanged;
   final Entity? selectedEntity;
   final bool showTableHeaderButtons;
   final String emptyMessage;
-  final ValueChanged<List<Entity>>? onTableSort;
+  final ValueChanged<List<Entity>>? onTableSorted;
   final IconData? newIconData;
   final List<String> columns;
   const EntityListTemplate({
@@ -30,20 +31,21 @@ class EntityListTemplate extends StatefulWidget {
     this.filterBody,
     this.filterResultBody,
     this.filterApplied = false,
-    this.applyFilter,
+    this.onFilterApplied,
     this.clearFilter,
     this.viewSettingBody,
-    this.applyViewSetting,
+    this.onViewSettingApplied,
+    this.onViewSettingSliderOpened,
     required this.label,
     required this.onRowClick,
-    this.includeDeletedChanged,
+    this.onIncludeDeletedChanged,
     this.entityRetrievedStatus = EntityStatus.initial,
     this.entities = const [],
     this.selectedEntity,
     this.description = '',
     this.emptyMessage = '',
     this.showTableHeaderButtons = false,
-    this.onTableSort,
+    this.onTableSorted,
     this.newIconData,
     this.columns = const [],
   });
@@ -219,7 +221,7 @@ class _CrudState extends State<EntityListTemplate> {
                                   entities: widget.entities,
                                   columns: widget.columns,
                                   emptyMessage: widget.emptyMessage,
-                                  onTableSort: widget.onTableSort == null
+                                  onTableSorted: widget.onTableSorted == null
                                       ? null
                                       : (MapEntry<String, bool> sortInfo) {
                                           List<Entity> entities =
@@ -240,7 +242,7 @@ class _CrudState extends State<EntityListTemplate> {
                                                           .toLowerCase());
                                             },
                                           );
-                                          widget.onTableSort!(entities);
+                                          widget.onTableSorted!(entities);
                                         },
                                   onRowClick: (entity) {
                                     _showDetailsSlider();
@@ -287,7 +289,12 @@ class _CrudState extends State<EntityListTemplate> {
                     iconData: PhosphorIcons.slidersHorizontal,
                     label: 'View Settings',
                     color: warnColor,
-                    onClick: () => _showViewSettingsSlider(),
+                    onClick: () {
+                      if (widget.onViewSettingSliderOpened != null) {
+                        widget.onViewSettingSliderOpened!();
+                      }
+                      _showViewSettingsSlider();
+                    },
                   ),
                   const SizedBox(
                     width: 50,
@@ -307,8 +314,8 @@ class _CrudState extends State<EntityListTemplate> {
                   Checkbox(
                     value: includeDeleted,
                     onChanged: (value) {
-                      if (widget.includeDeletedChanged != null) {
-                        widget.includeDeletedChanged!(value!);
+                      if (widget.onIncludeDeletedChanged != null) {
+                        widget.onIncludeDeletedChanged!(value!);
                       }
 
                       setState(() {
@@ -396,7 +403,7 @@ class _CrudState extends State<EntityListTemplate> {
                 iconData: PhosphorIcons.arrowRight,
                 text: 'Apply Filters',
                 onClick: () {
-                  widget.applyFilter!();
+                  widget.onFilterApplied!();
                   _hideFilterSlider();
                 },
               ),
@@ -469,8 +476,8 @@ class _CrudState extends State<EntityListTemplate> {
                 text: 'Apply',
                 onClick: () {
                   _hideViewSettingsSlider();
-                  if (widget.applyViewSetting != null) {
-                    widget.applyViewSetting!();
+                  if (widget.onViewSettingApplied != null) {
+                    widget.onViewSettingApplied!();
                   }
                 },
               ),
