@@ -62,7 +62,7 @@ class SettingsRepository extends BaseRepository {
   }
 
   Future<EntityResponse> updateUserFilterSetting(
-      UserFilterUpdate userFilterUpdate) async {
+      UserFilter userFilterUpdate) async {
     Response response =
         await super.post('$url/users/filter', body: userFilterUpdate.toJson());
 

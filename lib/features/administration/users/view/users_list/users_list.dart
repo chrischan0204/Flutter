@@ -1,5 +1,3 @@
-import 'package:safety_eta/features/setting/data/repository/settings_repository.dart';
-
 import '/common_libraries.dart';
 import 'widgets/users_list_view_setting.dart';
 
@@ -60,6 +58,9 @@ class _UsersListViewState extends State<UsersListView> {
                           RepositoryProvider.of<UsersRepository>(context))),
               BlocProvider(
                   create: (context) => UserListViewSettingBloc(
+                      settingsRepository: RepositoryProvider.of(context))),
+              BlocProvider(
+                  create: (context) => UserListFilterSettingBloc(
                       settingsRepository: RepositoryProvider.of(context))),
               BlocProvider(
                   create: (context) => SitesBloc(
