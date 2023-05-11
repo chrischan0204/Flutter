@@ -63,7 +63,7 @@ class UserListViewSettingBloc
             .toList(),
       );
       try {
-        await settingsRepository.onViewSettingApplied(viewSettingUpdate);
+        await settingsRepository.applyViewSetting(viewSettingUpdate);
         emit(state.copyWith(viewSettingSaveStatus: EntityStatus.success));
       } catch (e) {
         emit(state.copyWith(viewSettingSaveStatus: EntityStatus.failure));

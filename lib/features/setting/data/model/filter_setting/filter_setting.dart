@@ -30,18 +30,6 @@ class FilterSetting extends Equatable {
         controlType,
       ];
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'viewName': viewName,
-      'columnName': columnName,
-      'columnType': columnType,
-      'columnValues': columnValues,
-      'columnValueURL': columnValueURL,
-      'controlType': controlType,
-    };
-  }
-
   factory FilterSetting.fromMap(Map<String, dynamic> map) {
     return FilterSetting(
       id: map['id'] as String,
@@ -56,8 +44,26 @@ class FilterSetting extends Equatable {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
   factory FilterSetting.fromJson(String source) =>
       FilterSetting.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  FilterSetting copyWith({
+    String? id,
+    String? viewName,
+    String? columnName,
+    String? columnType,
+    List<String>? columnValues,
+    String? columnValueURL,
+    String? controlType,
+  }) {
+    return FilterSetting(
+      id: id ?? this.id,
+      viewName: viewName ?? this.viewName,
+      columnName: columnName ?? this.columnName,
+      columnType: columnType ?? this.columnType,
+      columnValues: columnValues ?? this.columnValues,
+      columnValueURL: columnValueURL ?? this.columnValueURL,
+      controlType: controlType ?? this.controlType,
+    );
+  }
 }
