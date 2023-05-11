@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -7,17 +6,19 @@ import '../../custom_data_cell.dart';
 import '/data/model/entity.dart';
 
 class DataTableView extends StatefulWidget {
+  final List<Entity> entities;
+  final List<String> columns;
   final ValueChanged<Entity> onRowClick;
   final String emptyMessage;
-  final ValueChanged<MapEntry<String, bool>>? onTableSort;
+  final ValueChanged<MapEntry<String, bool>>? onTableSorted;
   const DataTableView({
     super.key,
     this.entities = const [],
+    this.columns = const [],
     required this.onRowClick,
     this.emptyMessage = '',
-    this.onTableSort,
+    this.onTableSorted,
   });
-  final List<Entity> entities;
 
   @override
   State<DataTableView> createState() => _DataTableViewState();
@@ -29,7 +30,9 @@ class _DataTableViewState extends State<DataTableView> {
 
   List<DataColumn> _buildColumns() {
     if (widget.entities.isNotEmpty) {
-      List<String> columns = widget.entities[0].tableItemsToMap().keys.toList();
+      List<String> columns = widget.columns.isEmpty
+          ? widget.entities[0].tableItemsToMap().keys.toList()
+          : widget.columns;
       return [
         ...columns
             .map(
@@ -39,7 +42,7 @@ class _DataTableViewState extends State<DataTableView> {
                     int index = columns.indexOf(column);
                     return GestureDetector(
                       onTap: () {
-                        if (widget.onTableSort != null) {
+                        if (widget.onTableSorted != null) {
                           if (selectedColumnIndex == index) {
                             setState(() {
                               sortType = !sortType;
@@ -50,7 +53,7 @@ class _DataTableViewState extends State<DataTableView> {
                               sortType = true;
                             });
                           }
-                          widget.onTableSort!(MapEntry(column, sortType));
+                          widget.onTableSorted!(MapEntry(column, sortType));
                         }
                       },
                       child: Row(
@@ -115,13 +118,19 @@ class _DataTableViewState extends State<DataTableView> {
               return null; // Use the default value.
             }),
             cells: [
-              ...entity
-                  .tableItemsToMap()
-                  .values
-                  .map((value) => DataCell(CustomDataCell(
-                        data: value,
-                      )))
-                  .toList(),
+              ...(widget.columns.isEmpty
+                  ? entity
+                      .tableItemsToMap()
+                      .values
+                      .map((value) => DataCell(CustomDataCell(
+                            data: value,
+                          )))
+                      .toList()
+                  : widget.columns
+                      .map((column) => DataCell(CustomDataCell(
+                            data: entity.tableItemsToMap()[column],
+                          )))
+                      .toList()),
               DataCell(
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
@@ -146,26 +155,13 @@ class _DataTableViewState extends State<DataTableView> {
   @override
   Widget build(BuildContext context) {
     return widget.entities.isNotEmpty
-        ? SizedBox(
-            height: MediaQuery.of(context).size.height - 230,
-            child: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-                PointerDeviceKind.touch,
-                PointerDeviceKind.mouse,
-              }),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                controller: ScrollController(),
-                child: DataTable(
-                  headingTextStyle: tableHeadingTextStyle,
-                  dataTextStyle: tableDataTextStyle,
-                  headingRowHeight: 54.5,
-                  dataRowHeight: 53.35,
-                  columns: _buildColumns(),
-                  rows: _buildRows(),
-                ),
-              ),
-            ),
+        ? DataTable(
+            headingTextStyle: tableHeadingTextStyle,
+            dataTextStyle: tableDataTextStyle,
+            headingRowHeight: 54.5,
+            dataRowHeight: 53.35,
+            columns: _buildColumns(),
+            rows: _buildRows(),
           )
         : Container(
             margin: const EdgeInsets.only(

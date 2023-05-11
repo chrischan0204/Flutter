@@ -555,7 +555,10 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: AddEditUserView(userId: state.params['userId']!),
+          body: AddEditUserView(
+            userId: state.params['userId'],
+            view: state.queryParams['view'],
+          ),
           selectedItemName: 'users',
         ),
       ),
@@ -565,7 +568,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: ShowUserView(userId: state.params['userId']!),
+          body: UserDetailView(userId: state.params['userId']!),
           selectedItemName: 'users',
         ),
       ),

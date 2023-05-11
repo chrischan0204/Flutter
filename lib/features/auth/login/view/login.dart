@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '/common_libraries.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -11,8 +11,50 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   bool isPassword = true;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String usernameValidationMessage = '';
+  String passwordValidationMessage = '';
+
+  late AuthBloc _authBloc;
+
+  @override
+  void initState() {
+    _authBloc = context.read<AuthBloc>();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_authBloc.state.authUser != null) {
+      GoRouter.of(context).go('/dashboard');
+    }
+    super.didChangeDependencies();
+  }
+
+  bool _checkValidation() {
+    bool success = true;
+    if (Validation.isEmpty(_usernameController.text)) {
+      setState(() {
+        usernameValidationMessage = 'Username is required';
+      });
+      success = false;
+    }
+
+    if (Validation.isEmpty(_passwordController.text)) {
+      setState(() {
+        passwordValidationMessage = 'Password is required';
+      });
+      success = false;
+    }
+
+    return success;
+  }
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -28,9 +70,9 @@ class _LoginViewState extends State<LoginView> {
             Align(
               alignment: Alignment.centerRight,
               child: Container(
-                width: MediaQuery.of(context).size.width * 2 / 7,
+                width: width * 2 / 7,
                 margin: const EdgeInsets.all(50),
-                padding: const EdgeInsets.all(80),
+                padding: EdgeInsets.all(width / 30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
@@ -38,48 +80,53 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.health_and_safety_sharp,
-                            size: 44,
-                            color: Colors.amberAccent,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Safety ETA',
-                            style: GoogleFonts.alumniSans(
-                              textStyle: const TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.health_and_safety_sharp,
+                          size: 44,
+                          color: Colors.amberAccent,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Safety ETA',
+                          style: GoogleFonts.alumniSans(
+                            textStyle: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Welcome to Safety ETA',
+                          'Welcome to Safety',
                           style: GoogleFonts.amiko(
-                            textStyle: const TextStyle(
-                              fontSize: 30,
+                            textStyle: TextStyle(
+                              fontSize: width / 60,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 100,
+                        SizedBox(
+                          height: width / 20,
                         ),
                         TextField(
+                          controller: _usernameController,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey[900],
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              usernameValidationMessage = '';
+                            });
+                          },
                           decoration: InputDecoration(
                             filled: true,
                             focusColor: const Color(0xfffbfafb),
@@ -99,14 +146,27 @@ class _LoginViewState extends State<LoginView> {
                             hintText: 'Username',
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: 30,
+                          child: Text(
+                            usernameValidationMessage,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                         TextField(
+                          controller: _passwordController,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey[900],
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              passwordValidationMessage = '';
+                            });
+                          },
                           decoration: InputDecoration(
                             filled: true,
                             focusColor: const Color(0xfffbfafb),
@@ -139,36 +199,70 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           obscureText: isPassword,
                         ),
-                        const SizedBox(
-                          height: 50,
-                        ),
                         SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              GoRouter.of(context).go('/dashboard');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff68767b),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 24),
-                            ),
-                            child: Text(
-                              'Login',
-                              style: GoogleFonts.amaranth(
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  letterSpacing: 2,
-                                ),
-                              ),
+                          height: width / 40,
+                          child: Text(
+                            passwordValidationMessage,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.red,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          width: double.infinity,
+                          child: BlocConsumer<AuthBloc, AuthState>(
+                            listener: (context, state) {
+                              if (state is AuthAuthenticateSuccess) {
+                                GoRouter.of(context).go('/dashboard');
+                              } else if (state is AuthAuthenticateFailure) {
+                                CustomNotification(
+                                  context: context,
+                                  notifyType: NotifyType.error,
+                                  content: 'Invalid Credentials',
+                                ).showNotification();
+                              }
+                            },
+                            builder: (context, state) => ElevatedButton(
+                              onPressed: () {
+                                if (state is! AuthAuthenticateInProgress) {
+                                  if (_checkValidation()) {
+                                    _authBloc.add(AuthAuthenticated(
+                                        auth: Auth(
+                                      email: _usernameController.text,
+                                      password: _passwordController.text,
+                                    )));
+                                  }
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff68767b),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 24),
+                              ),
+                              child: state is AuthAuthenticateInProgress
+                                  ? LoadingAnimationWidget.staggeredDotsWave(
+                                      color: Colors.white,
+                                      size: 26,
+                                    )
+                                  : Text(
+                                      'Login',
+                                      style: GoogleFonts.amaranth(
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: width / 70,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: width / 60,
                         ),
                         Align(
                           alignment: Alignment.centerRight,
@@ -177,7 +271,7 @@ class _LoginViewState extends State<LoginView> {
                             child: const Text(
                               'Forgot password?',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

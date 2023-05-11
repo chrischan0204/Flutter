@@ -1,49 +1,53 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:strings/strings.dart';
+import 'package:flutter/gestures.dart';
 
-import '/global_widgets/global_widget.dart';
-import '/data/model/entity.dart';
-import '/constants/color.dart';
+import '/common_libraries.dart';
+import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
   final Widget? filterBody;
   final Widget? filterResultBody;
   final bool filterApplied;
-  final VoidCallback? applyFilter;
+  final VoidCallback? onFilterApplied;
   final VoidCallback? clearFilter;
   final Widget? viewSettingBody;
+  final VoidCallback? onViewSettingApplied;
+  final VoidCallback? onViewSettingSliderOpened;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
   final String label;
   final ValueChanged<Entity> onRowClick;
+  final ValueChanged<bool>? onIncludeDeletedChanged;
   final Entity? selectedEntity;
   final bool showTableHeaderButtons;
   final String emptyMessage;
-  final ValueChanged<MapEntry<String, bool>>? onTableSort;
+  final ValueChanged<List<Entity>>? onTableSorted;
   final IconData? newIconData;
+  final List<String> columns;
   const EntityListTemplate({
     super.key,
     required this.title,
     this.filterBody,
     this.filterResultBody,
     this.filterApplied = false,
-    this.applyFilter,
+    this.onFilterApplied,
     this.clearFilter,
     this.viewSettingBody,
+    this.onViewSettingApplied,
+    this.onViewSettingSliderOpened,
     required this.label,
     required this.onRowClick,
+    this.onIncludeDeletedChanged,
     this.entityRetrievedStatus = EntityStatus.initial,
     this.entities = const [],
     this.selectedEntity,
     this.description = '',
     this.emptyMessage = '',
     this.showTableHeaderButtons = false,
-    this.onTableSort,
+    this.onTableSorted,
     this.newIconData,
+    this.columns = const [],
   });
 
   @override
@@ -55,6 +59,7 @@ class _CrudState extends State<EntityListTemplate> {
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
   late String selectedId;
+  bool includeDeleted = false;
 
   @override
   void initState() {
@@ -70,34 +75,40 @@ class _CrudState extends State<EntityListTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              widget.filterApplied ? const CustomDivider() : Container(),
-              widget.filterApplied
-                  ? _buildFilterAppliedNotification()
-                  : Container(),
-              widget.filterApplied ? const CustomDivider() : Container(),
-              widget.filterApplied
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: widget.filterResultBody ?? Container(),
-                    )
-                  : Container(),
-              widget.showTableHeaderButtons ? _buildTableHeader() : Container(),
-              _buildTableView()
-            ],
+    return Container(
+      constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height - topbarHeight - 20),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                widget.filterApplied ? const CustomDivider() : Container(),
+                widget.filterApplied
+                    ? _buildFilterAppliedNotification()
+                    : Container(),
+                widget.filterApplied ? const CustomDivider() : Container(),
+                widget.filterApplied
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: widget.filterResultBody ?? Container(),
+                      )
+                    : Container(),
+                widget.showTableHeaderButtons
+                    ? _buildTableHeader()
+                    : Container(),
+                _buildTableView()
+              ],
+            ),
           ),
-        ),
-        _buildDetailsSlider(context),
-        _buildViewSettingsSlider(context),
-        _buildFiltersSlider(context),
-      ],
+          _buildDetailsSlider(context),
+          _buildViewSettingsSlider(context),
+          _buildFiltersSlider(context),
+        ],
+      ),
     );
   }
 
@@ -163,58 +174,92 @@ class _CrudState extends State<EntityListTemplate> {
     );
   }
 
-  Column _buildTableView() {
-    return Column(
-      children: [
-        widget.description.isNotEmpty
-            ? const CustomDivider()
-            : const SizedBox(
-                height: 12,
-              ),
-        Container(
-          width: double.infinity,
-          alignment: Alignment.topLeft,
+  Expanded _buildTableView() {
+    return Expanded(
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+        }),
+        child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               widget.description.isNotEmpty
-                  ? Description(
-                      description: widget.description,
-                    )
-                  : Container(),
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      width: 1,
-                      color: Color(0xff9ca3af),
+                  ? const CustomDivider()
+                  : const SizedBox(
+                      height: 12,
                     ),
-                  ),
-                ),
-                child: widget.entityRetrievedStatus == EntityStatus.loading
-                    ? const Padding(
-                        padding: EdgeInsets.only(top: 200.0),
-                        child: Center(
-                          child: CircularProgressIndicator(),
+              Container(
+                width: double.infinity,
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    widget.description.isNotEmpty
+                        ? Description(
+                            description: widget.description,
+                          )
+                        : Container(),
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 1,
+                            color: Color(0xff9ca3af),
+                          ),
                         ),
-                      )
-                    : DataTableView(
-                        entities: widget.entities,
-                        emptyMessage: widget.emptyMessage,
-                        onTableSort: widget.onTableSort,
-                        onRowClick: (entity) {
-                          _showDetailsSlider();
-                          setState(() {
-                            selectedId = entity.id!;
-                          });
-                          widget.onRowClick(entity);
-                        },
                       ),
-              )
+                      child:
+                          widget.entityRetrievedStatus == EntityStatus.loading
+                              ? const Padding(
+                                  padding: EdgeInsets.only(top: 200.0),
+                                  child: Center(
+                                    child: Loader(),
+                                  ),
+                                )
+                              : DataTableView(
+                                  entities: widget.entities,
+                                  columns: widget.columns,
+                                  emptyMessage: widget.emptyMessage,
+                                  onTableSorted: widget.onTableSorted == null
+                                      ? null
+                                      : (MapEntry<String, bool> sortInfo) {
+                                          List<Entity> entities =
+                                              List.from(widget.entities);
+
+                                          entities.sort(
+                                            (a, b) {
+                                              return (sortInfo.value ? 1 : -1) *
+                                                  (a
+                                                          .tableItemsToMap()[
+                                                              sortInfo.key]
+                                                          .toString()
+                                                          .toLowerCase())
+                                                      .compareTo(b
+                                                          .tableItemsToMap()[
+                                                              sortInfo.key]
+                                                          .toString()
+                                                          .toLowerCase());
+                                            },
+                                          );
+                                          widget.onTableSorted!(entities);
+                                        },
+                                  onRowClick: (entity) {
+                                    _showDetailsSlider();
+                                    setState(() {
+                                      selectedId = entity.id!;
+                                    });
+                                    widget.onRowClick(entity);
+                                  },
+                                ),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -227,33 +272,69 @@ class _CrudState extends State<EntityListTemplate> {
             horizontal: 15,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              HeaderButton(
-                iconData: PhosphorIcons.funnel,
-                label: 'Filters',
-                color: const Color(0xff0c83ff),
-                onClick: () => _showFilterSlider(),
+              Row(
+                children: [
+                  HeaderButton(
+                    iconData: PhosphorIcons.funnel,
+                    label: 'Filters',
+                    color: const Color(0xff0c83ff),
+                    onClick: () => _showFilterSlider(),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  HeaderButton(
+                    iconData: PhosphorIcons.slidersHorizontal,
+                    label: 'View Settings',
+                    color: warnColor,
+                    onClick: () {
+                      if (widget.onViewSettingSliderOpened != null) {
+                        widget.onViewSettingSliderOpened!();
+                      }
+                      _showViewSettingsSlider();
+                    },
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  HeaderButton(
+                    iconData: PhosphorIcons.chartBar,
+                    label: 'Dashboard',
+                    color: const Color(0xff0c83ff),
+                    onClick: () => GoRouter.of(context).go(
+                      '${GoRouter.of(context).location}/dashboard',
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 50,
-              ),
-              HeaderButton(
-                iconData: PhosphorIcons.slidersHorizontal,
-                label: 'View Settings',
-                color: warnColor,
-                onClick: () => _showViewSettingsSlider(),
-              ),
-              const SizedBox(
-                width: 50,
-              ),
-              HeaderButton(
-                iconData: PhosphorIcons.chartBar,
-                label: 'Dashboard',
-                color: const Color(0xff0c83ff),
-                onClick: () => GoRouter.of(context).go(
-                  '${GoRouter.of(context).location}/dashboard',
-                ),
-              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: includeDeleted,
+                    onChanged: (value) {
+                      if (widget.onIncludeDeletedChanged != null) {
+                        widget.onIncludeDeletedChanged!(value!);
+                      }
+
+                      setState(() {
+                        includeDeleted = !includeDeleted;
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3)),
+                  ),
+                  const SizedBox(width: 3),
+                  const Text(
+                    'Include Deleted',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -270,7 +351,7 @@ class _CrudState extends State<EntityListTemplate> {
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
         constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
@@ -322,11 +403,11 @@ class _CrudState extends State<EntityListTemplate> {
                 iconData: PhosphorIcons.arrowRight,
                 text: 'Apply Filters',
                 onClick: () {
-                  widget.applyFilter!();
+                  widget.onFilterApplied!();
                   _hideFilterSlider();
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -342,13 +423,14 @@ class _CrudState extends State<EntityListTemplate> {
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
         constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 75),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 30,
         ),
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -373,8 +455,31 @@ class _CrudState extends State<EntityListTemplate> {
                       size: 20,
                       color: Color(0xffef4444),
                     ),
-                  )
+                  ),
                 ],
+              ),
+            ),
+            widget.viewSettingBody ?? Container(),
+            Divider(
+              color: grey,
+              height: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              child: CustomButton(
+                backgroundColor: const Color(0xff0c83ff),
+                hoverBackgroundColor: const Color(0xff0b76e6),
+                iconData: PhosphorIcons.arrowRight,
+                text: 'Apply',
+                onClick: () {
+                  _hideViewSettingsSlider();
+                  if (widget.onViewSettingApplied != null) {
+                    widget.onViewSettingApplied!();
+                  }
+                },
               ),
             ),
           ],

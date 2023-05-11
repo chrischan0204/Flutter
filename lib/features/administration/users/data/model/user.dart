@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import '/data/model/entity.dart';
@@ -17,6 +16,7 @@ class User extends Entity {
   final String siteAccess;
   final String timeZoneName;
   final String timeZoneId;
+
   const User({
     super.id,
     this.firstName = '',
@@ -122,7 +122,7 @@ class User extends Entity {
       'Default Site': defaultSiteName,
       'Mobile Number': mobileNumber,
       'Invite Sent': inviteSent,
-      'Site Access': siteAccess,
+      'Site Access': {'content': siteAccess},
     };
   }
 
@@ -147,36 +147,39 @@ class User extends Entity {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
       'mobileNumber': mobileNumber,
-      'roleId': roleName,
+      'userRoleId': roleId,
+      'siteId': defaultSiteId,
       'title': title,
-      'defaultSiteName': defaultSiteName,
-      'siteAccess': siteAccess,
       'timeZoneId': timeZoneId,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+    return map;
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     Entity entity = Entity.fromMap(map);
     return User(
       id: entity.id,
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      email: map['email'],
-      mobileNumber: map['mobileNumber'],
-      inviteSent: map['inviteSent'],
-      roleName: map['roleName'],
-      roleId: map['roleId'],
-      title: map['title'],
-      defaultSiteName: map['defaultSiteName'],
-      defaultSiteId: map['defaultSiteId'],
-      siteAccess: map['siteAccess'],
-      timeZoneName: map['timeZoneName'],
-      timeZoneId: map['timeZoneId'],
+      firstName: map['firstName'] ?? '',
+      lastName: map['lastName'] ?? '',
+      email: map['email'] ?? '',
+      mobileNumber: map['mobileNumber'] ?? '',
+      inviteSent: map['inviteSent'] ?? false,
+      roleName: map['roleName'] ?? '',
+      roleId: map['userRoleId'] ?? '',
+      title: map['title'] ?? '',
+      defaultSiteName: map['siteName'] ?? '',
+      defaultSiteId: map['siteId'] ?? '',
+      siteAccess: map['sites'] ?? '',
+      timeZoneName: map['timeZoneName'] ?? '',
+      timeZoneId: map['timeZoneId'] ?? '',
       active: entity.active,
       createdByUserName: entity.createdByUserName,
       createdOn: entity.createdOn,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+
 import 'package:safety_eta/utils/utils.dart';
 
 // standadized model, which other models inherit
@@ -49,8 +50,9 @@ class Entity extends Equatable {
           ? FormatDate(
                   format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
               .formatDate
-          : '',
-      lastModifiedByUserName: map['lastModifiedByUserName'] ?? '',
+          : '--',
+      lastModifiedByUserName:
+          map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '--',
     );
   }
 
@@ -105,10 +107,12 @@ class Entity extends Equatable {
 class EntityResponse {
   final bool isSuccess;
   String message;
+  final int statusCode;
   final Entity? data;
   EntityResponse({
     required this.isSuccess,
     required this.message,
+    this.statusCode = 200,
     this.data,
   }) {
     message = message.replaceAll('"', '');
@@ -126,6 +130,7 @@ class EntityResponse {
     String message = (map['message'] ?? (map['Description'] ?? '')).toString();
     message = message.replaceAll('"', '');
     return EntityResponse(
+      statusCode: map['StatusCode'] ?? 200,
       isSuccess: map['isSuccess'] == null
           ? (map['message'] ?? (map['Message'] ?? ''))
               .toString()
@@ -141,18 +146,35 @@ class EntityResponse {
 
   factory EntityResponse.fromJson(String source) =>
       EntityResponse.fromMap(json.decode(source) as Map<String, dynamic>);
-}
 
-enum EntityInputType {
-  textField,
-  singleSelect,
-  multiSelect,
-  colorPicker,
+  EntityResponse copyWith({
+    bool? isSuccess,
+    String? message,
+    Entity? data,
+    int? statusCode,
+  }) {
+    return EntityResponse(
+      statusCode: statusCode ?? this.statusCode,
+      isSuccess: isSuccess ?? this.isSuccess,
+      message: message ?? this.message,
+      data: data ?? this.data,
+    );
+  }
 }
 
 enum EntityStatus {
   initial,
   loading,
   success,
-  failure,
+  failure;
+
+  bool get isLoading => this == EntityStatus.loading;
+  bool get isSuccess => this == EntityStatus.success;
+  bool get isFailure => this == EntityStatus.failure;
+}
+
+extension BoolToEntityStatus on bool {
+  EntityStatus toEntityStatusCode() {
+    return this ? EntityStatus.success : EntityStatus.failure;
+  }
 }

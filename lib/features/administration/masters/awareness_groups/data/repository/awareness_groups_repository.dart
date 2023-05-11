@@ -1,15 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 
+import '/data/repository/repository.dart';
 import '/constants/uri.dart';
 import '/data/model/model.dart';
 
-class AwarenessGroupsRepository {
-  static String url = '/api/AwarenessGroups';
+class AwarenessGroupsRepository extends BaseRepository {
+  AwarenessGroupsRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/AwarenessGroups');
 
   // get awareness groups list
   Future<List<AwarenessGroup>> getAwarenessGroups() async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response = await super.get(
+      url,
+    );
 
     if (response.statusCode == 200) {
       List<AwarenessGroup> awarenessGroups =
@@ -26,8 +32,7 @@ class AwarenessGroupsRepository {
   Future<AwarenessGroup> getAwarenessGroupById(
     String awarenessGroupId,
   ) async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/$awarenessGroupId'));
+    Response response = await super.get('$url/$awarenessGroupId');
 
     if (response.statusCode == 200) {
       return AwarenessGroup.fromJson(response.body);
@@ -39,12 +44,8 @@ class AwarenessGroupsRepository {
   Future<EntityResponse> addAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
-    Response response = await post(
-      Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'text/plain',
-      },
+    Response response = await super.post(
+      url,
       body: awarenessGroup.toJson(),
     );
 
@@ -58,15 +59,8 @@ class AwarenessGroupsRepository {
   Future<EntityResponse> editAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
-    Response response = await put(
-      Uri.https(
-        ApiUri.host,
-        url,
-      ),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'text/plain',
-      },
+    Response response = await super.put(
+      url,
       body: awarenessGroup.toJson(),
     );
 
@@ -78,8 +72,7 @@ class AwarenessGroupsRepository {
 
   // delete awareness group
   Future<EntityResponse> deleteAwarenessGroup(String awarenessGroupId) async {
-    Response response =
-        await delete(Uri.https(ApiUri.host, '$url/$awarenessGroupId'));
+    Response response = await super.delete('$url/$awarenessGroupId');
 
     if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);

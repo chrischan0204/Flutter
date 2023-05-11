@@ -1,16 +1,20 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:safety_eta/data/repository/base_repository.dart';
 import '/constants/uri.dart';
 
 import '/data/model/entity.dart';
 import '../model/awareness_category.dart';
 
-class AwarenessCategoriesRepository {
-  static String url = '/api/AwarenessCategory';
+class AwarenessCategoriesRepository extends BaseRepository {
+  AwarenessCategoriesRepository({
+    required super.token,
+    required super.authBloc,
+  }) : super(url: '/api/AwarenessCategory');
 
   // get awareness categories list from api
   Future<List<AwarenessCategory>> getAwarenessCategories() async {
-    Response response = await get(Uri.https(ApiUri.host, url));
+    Response response = await super.get(url);
 
     if (response.statusCode == 200) {
       List<AwarenessCategory> awarenessCategories =
@@ -27,8 +31,7 @@ class AwarenessCategoriesRepository {
   Future<AwarenessCategory> getAwarenessCategoryById(
     String awarenessCategoryId,
   ) async {
-    Response response =
-        await get(Uri.https(ApiUri.host, '$url/$awarenessCategoryId'));
+    Response response = await super.get('$url/$awarenessCategoryId');
 
     if (response.statusCode == 200) {
       return AwarenessCategory.fromJson(response.body);
@@ -40,12 +43,8 @@ class AwarenessCategoriesRepository {
   Future<EntityResponse> addAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
-    Response response = await post(
-      Uri.https(ApiUri.host, url),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'text/plain',
-      },
+    Response response = await super.post(
+      url,
       body: awarenessCategory.toJson(),
     );
 
@@ -59,12 +58,8 @@ class AwarenessCategoriesRepository {
   Future<EntityResponse> editAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
-    Response response = await put(
-      Uri.https(ApiUri.host, url),
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-      },
+    Response response = await super.put(
+      url,
       body: awarenessCategory.toJson(),
     );
 
@@ -78,12 +73,11 @@ class AwarenessCategoriesRepository {
   Future<EntityResponse> deleteAwarenessCategory(
     String awarenessCategoryId,
   ) async {
-    Response response = await delete(
-      Uri.https(ApiUri.host, '$url/$awarenessCategoryId'),
-    );
+    Response response = await super.delete('$url/$awarenessCategoryId');
 
     if (response.statusCode == 200) {
       return EntityResponse(
+        statusCode: response.statusCode,
         isSuccess: true,
         message: 'Awareness Category deleted successfully',
       );

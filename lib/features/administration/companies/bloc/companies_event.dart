@@ -66,17 +66,12 @@ class CompanyDeleted extends CompaniesEvent {
 }
 
 class CompaniesSorted extends CompaniesEvent {
-  final String column;
-  final bool sortType;
-  const CompaniesSorted({
-    required this.column,
-    required this.sortType,
-  });
+  final List<Company> companies;
+  const CompaniesSorted({required this.companies});
 
   @override
   List<Object?> get props => [
-        column,
-        sortType,
+        companies,
       ];
 }
 

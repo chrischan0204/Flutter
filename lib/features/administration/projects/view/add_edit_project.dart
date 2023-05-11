@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
 import '/data/model/model.dart';
@@ -71,8 +70,8 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
           editEntity: () => _editProject(state),
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.projectCrudStatus,
-          tabItems: widget.projectId == null ? {} : _buildTabs(state),
-          selectedTabIndex: widget.view == 'created' ? 1 : 0,
+          tabItems: _buildTabs(state),
+          view: widget.view,
           child: Column(
             children: [
               _buildProjectNameField(state),
@@ -87,6 +86,9 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
   }
 
   Map<String, Widget> _buildTabs(ProjectsState state) {
+    if (widget.projectId == null) {
+      return {};
+    }
     return {
       'Details': Container(),
       'Companies': AssignCompaniesToProjectView(

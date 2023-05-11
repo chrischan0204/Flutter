@@ -12,6 +12,14 @@ class PriorityLevelsListView extends StatefulWidget {
 
 class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
   late PriorityLevelsBloc priorityLevelsBloc;
+
+  static String emptyMessage =
+      'There are no priority levels. Please click on New Priority Level to assign new priority level.';
+  static String title = 'Priority Levels';
+  static String label = 'priority level';
+  static String description =
+      'List of defined Priority Levels. Types can be added or current ones edited from this screen.';
+
   @override
   void initState() {
     super.initState();
@@ -24,11 +32,11 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
     return BlocBuilder<PriorityLevelsBloc, PriorityLevelsState>(
       builder: (context, state) {
         return EntityListTemplate(
-          description:
-              'List of defined Priority Levels. Types can be added or current ones edited from this screen.',
+          description: description,
           entities: state.priorityLevels,
-          title: 'Priority Levels',
-          label: 'priority level',
+          title: title,
+          label: label,
+          emptyMessage: emptyMessage,
           onRowClick: (priorityLevel) {
             priorityLevelsBloc.add(PriorityLevelSelected(
               priorityLevel: priorityLevel as PriorityLevel,

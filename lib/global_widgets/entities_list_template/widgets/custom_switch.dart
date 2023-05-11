@@ -8,6 +8,7 @@ class CustomSwitch extends StatefulWidget {
   final String trueString;
   final String falseString;
   final Color textColor;
+  final bool active;
   final ValueChanged<bool> onChanged;
 
   const CustomSwitch({
@@ -18,6 +19,7 @@ class CustomSwitch extends StatefulWidget {
     this.trueString = 'Deactivated',
     this.falseString = '',
     this.textColor = Colors.red,
+    this.active = true,
   });
 
   @override
@@ -40,7 +42,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           // toggleColor: Colors.transparent,
           activeToggleColor: Colors.white,
           inactiveToggleColor: Colors.grey,
-          activeColor: Colors.blue,
+          activeColor: widget.active ? Colors.blue : Colors.blue.shade200,
           inactiveColor: Colors.transparent,
           inactiveSwitchBorder: Border.all(
             width: 2,
@@ -48,11 +50,13 @@ class _CustomSwitchState extends State<CustomSwitch> {
           ),
           activeSwitchBorder: Border.all(
             width: 2,
-            color: primaryColor,
+            color: widget.active ? Colors.blue : Colors.blue.shade200,
           ),
           showOnOff: false,
           onToggle: (val) {
-            widget.onChanged(val);
+            if (widget.active) {
+              widget.onChanged(val);
+            }
           },
         ),
         const SizedBox(

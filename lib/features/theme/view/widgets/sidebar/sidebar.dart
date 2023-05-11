@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../bloc/theme_bloc.dart';
 import '../../../data/model/model.dart';
+import '/common_libraries.dart';
 
 import '../../../data/repository/repository.dart';
 import 'sidebar_style.dart';
@@ -49,84 +47,89 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (ctx, state) {
-        return Stack(
-          children: [
-            Container(
-              // constraints: BoxConstraints(
-              //   minHeight: MediaQuery.of(context).size.height,
-              // ),
-              decoration: BoxDecoration(
-                color: sidebarColor,
-              ),
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-              ),
-              width:
-                  state.isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: state.isSidebarExtended
-                      ? CrossAxisAlignment.start
-                      : CrossAxisAlignment.center,
-                  children: [
-                    Header(
-                      isSidebarExtended: state.isSidebarExtended,
-                      userName: 'Carl Kent',
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        return BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (ctx, state) {
+            return Stack(
+              children: [
+                Container(
+                  // constraints: BoxConstraints(
+                  //   minHeight: MediaQuery.of(context).size.height,
+                  // ),
+                  decoration: BoxDecoration(
+                    color: sidebarColor,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
+                  width: state.isSidebarExtended
+                      ? sidebarWidth
+                      : shrinkSidebarWidth,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: state.isSidebarExtended
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.center,
+                      children: [
+                        Header(
+                          isSidebarExtended: state.isSidebarExtended,
+                          userName: authState.authUser?.name ?? '',
+                        ),
+                        Divider(
+                          color: backgroundColor,
+                          thickness: 0.5,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: Criteria(
+                            isSidebarExtended: state.isSidebarExtended,
+                            label: 'MAIN',
+                          ),
+                        ),
+                        ..._buildSidebarItems(
+                          SidebarRepsitory.mainItems,
+                          widget.selectedItemName,
+                          state.isSidebarExtended,
+                        ),
+                        Divider(
+                          color: backgroundColor,
+                          thickness: 0.5,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: Criteria(
+                            isSidebarExtended: state.isSidebarExtended,
+                            label: 'ADMINISTRATION',
+                          ),
+                        ),
+                        ..._buildSidebarItems(
+                          SidebarRepsitory.administrationItems,
+                          widget.selectedItemName,
+                          state.isSidebarExtended,
+                        ),
+                        Divider(
+                          color: backgroundColor,
+                          thickness: 0.5,
+                        ),
+                        ..._buildSidebarItems(
+                          SidebarRepsitory.profileItems,
+                          widget.selectedItemName,
+                          state.isSidebarExtended,
+                        )
+                      ],
                     ),
-                    Divider(
-                      color: backgroundColor,
-                      thickness: 0.5,
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: Criteria(
-                        isSidebarExtended: state.isSidebarExtended,
-                        label: 'MAIN',
-                      ),
-                    ),
-                    ..._buildSidebarItems(
-                      SidebarRepsitory.mainItems,
-                      widget.selectedItemName,
-                      state.isSidebarExtended,
-                    ),
-                    Divider(
-                      color: backgroundColor,
-                      thickness: 0.5,
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: Criteria(
-                        isSidebarExtended: state.isSidebarExtended,
-                        label: 'ADMINISTRATION',
-                      ),
-                    ),
-                    ..._buildSidebarItems(
-                      SidebarRepsitory.administrationItems,
-                      widget.selectedItemName,
-                      state.isSidebarExtended,
-                    ),
-                    Divider(
-                      color: backgroundColor,
-                      thickness: 0.5,
-                    ),
-                    ..._buildSidebarItems(
-                      SidebarRepsitory.profileItems,
-                      widget.selectedItemName,
-                      state.isSidebarExtended,
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            // _buildBody(state),
-            CollapseButton(
-              isSidebarExtended: state.isSidebarExtended,
-            ),
-          ],
+                // _buildBody(state),
+                CollapseButton(
+                  isSidebarExtended: state.isSidebarExtended,
+                ),
+              ],
+            );
+          },
         );
       },
     );

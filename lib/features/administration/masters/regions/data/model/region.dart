@@ -6,6 +6,7 @@ class Region extends Entity {
   final List<TimeZone> timeZones;
 
   final int? siteCount;
+
   const Region({
     this.timeZones = const [],
     this.siteCount,

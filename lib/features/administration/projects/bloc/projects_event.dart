@@ -65,17 +65,14 @@ class ProjectDeleted extends ProjectsEvent {
 }
 
 class ProjectsSorted extends ProjectsEvent {
-  final String column;
-  final bool sortType;
+  final List<Project> projects;
   const ProjectsSorted({
-    required this.column,
-    required this.sortType,
+    required this.projects,
   });
 
   @override
   List<Object?> get props => [
-        column,
-        sortType,
+        projects,
       ];
 }
 

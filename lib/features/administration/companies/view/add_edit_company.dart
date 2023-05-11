@@ -60,9 +60,9 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           editEntity: () => _editCompany(state),
           isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.companyCrudStatus,
-          tabItems: widget.companyId == null ? {} : _buildTabs(state),
+          tabItems: _buildTabs(state),
           editButtonName: editButtonName,
-          selectedTabIndex: widget.view == 'created' ? 1 : 0,
+          view: widget.view,
           child: Column(
             children: [
               _buildCompanyNameField(state),
@@ -75,20 +75,23 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   Map<String, Widget> _buildTabs(CompaniesState state) {
-    return {
-      'Details': Container(),
-      'Sites': AssignSitesToCompanyView(
-        companyId: widget.companyId!,
-        companyName: state.selectedCompany?.name ?? '',
-        view: widget.view,
-      ),
-      'Projects': AssignProjectsToCompanyView(
-        companyId: widget.companyId!,
-        companyName: state.selectedCompany?.name ?? '',
-        view: widget.view,
-      ),
-      '': Container(),
-    };
+    if (widget.companyId != null) {
+      return {
+        'Details': Container(),
+        'Sites': AssignSitesToCompanyView(
+          companyId: widget.companyId!,
+          companyName: state.selectedCompany?.name ?? '',
+          view: widget.view,
+        ),
+        'Projects': AssignProjectsToCompanyView(
+          companyId: widget.companyId!,
+          companyName: state.selectedCompany?.name ?? '',
+          view: widget.view,
+        ),
+        '': Container(),
+      };
+    }
+    return {};
   }
 
   // check if some of fields are filled
@@ -113,7 +116,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   bool _checkEinNumber(String einNumber) {
-    final numericSpecialReg = RegExp(r'^[0-9. /\\]+$');
+    final numericSpecialReg = RegExp(r'^[A-Za-z0-9.-/\\]+$');
     return numericSpecialReg.hasMatch(einNumber);
   }
 
@@ -137,7 +140,14 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           einNumberValidationMessage = state.message;
           companyNameValidationMessage = '';
         });
-      } else {
+      }
+      else if (state.message.contains('Our team')) {
+        CustomNotification( 
+          context: context,
+          notifyType: NotifyType.error,
+          content: state.message,
+        ).showNotification();
+      } else if (state.message.isNotEmpty) {
         setState(() {
           companyNameValidationMessage = state.message;
           einNumberValidationMessage = '';

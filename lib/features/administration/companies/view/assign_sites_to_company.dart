@@ -18,7 +18,6 @@ class AssignSitesToCompanyView extends StatefulWidget {
 
 class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   late CompaniesBloc companiesBloc;
-  TextEditingController filterController = TextEditingController(text: '');
 
   @override
   void initState() {
@@ -277,10 +276,9 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
       child: FilterTextField(
         hintText: 'Filter unassigned sites by name.',
         label: 'sites',
-        filterController: filterController,
         filterIconClick: (filtered) {
           if (filtered) {
-            _applyFilter(state);
+            _onFilterApplied(state);
           } else {
             _cancelFilter();
           }
@@ -291,7 +289,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  _applyFilter(CompaniesState state) {
+  _onFilterApplied(CompaniesState state) {
     companiesBloc.add(UnassignedCompanySitesRetrieved(
       companyId: widget.companyId,
       name: state.filterText,

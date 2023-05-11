@@ -5,6 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
+import '/constants/style.dart';
 import '/constants/color.dart';
 import '/data/model/entity.dart';
 import '/global_widgets/global_widget.dart';
@@ -14,7 +15,8 @@ class AddEditEntityTemplate extends StatefulWidget {
   final String? id;
   final Entity? selectedEntity;
   final Map<String, Widget> tabItems;
-  final int selectedTabIndex;
+  final double tabWidth;
+  final String? view;
   final Widget child;
   final String? addButtonName;
   final String? editButtonName;
@@ -28,7 +30,8 @@ class AddEditEntityTemplate extends StatefulWidget {
     this.id,
     this.selectedEntity,
     this.tabItems = const {},
-    this.selectedTabIndex = 0,
+    this.tabWidth = 300,
+    this.view,
     required this.child,
     this.addButtonName,
     this.editButtonName,
@@ -47,57 +50,62 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   @override
   void initState() {
-    selectedTabIndex = widget.selectedTabIndex;
+    selectedTabIndex = widget.view == 'created' ? 1 : 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 15,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildTitle(),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  _buildCrudButtons(context)
-                ],
-              ),
-            ),
-            const CustomDivider(),
-            widget.tabItems.isNotEmpty && widget.id != null
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTab(),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        selectedTabIndex != 0
-                            ? widget.tabItems.entries
-                                .toList()[selectedTabIndex]
-                                .value
-                            : _buildEditEntityView(),
-                      ],
+    return Container(
+      constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height - topbarHeight - 20),
+      height: MediaQuery.of(context).size.height - topbarHeight - 20,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(10),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildTitle(),
+                    const SizedBox(
+                      width: 15,
                     ),
-                  )
-                : _buildEditEntityView(),
-          ],
+                    _buildCrudButtons(context)
+                  ],
+                ),
+              ),
+              const CustomDivider(),
+              widget.tabItems.isNotEmpty && widget.id != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 50.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTab(),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          selectedTabIndex != 0
+                              ? widget.tabItems.entries
+                                  .toList()[selectedTabIndex]
+                                  .value
+                              : _buildEditEntityView(),
+                        ],
+                      ),
+                    )
+                  : _buildEditEntityView(),
+            ],
+          ),
         ),
       ),
     );
@@ -116,7 +124,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         Colors.white,
       ],
       containerHeight: 42,
-      containerWidth: 300,
+      containerWidth: widget.tabWidth,
       borderColor: grey,
       children: widget.tabItems.entries
           .map(
@@ -190,7 +198,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         horizontal: 20,
         vertical: 12,
       ),
-      child: widget.crudStatus == EntityStatus.loading
+      child: widget.crudStatus.isLoading
           ? CustomButton(
               backgroundColor: const Color(0xff059669),
               hoverBackgroundColor: const Color(0xff05875f),

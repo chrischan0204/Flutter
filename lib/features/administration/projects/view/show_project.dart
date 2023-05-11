@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '/constants/constants.dart';
 import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
@@ -108,7 +107,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
     return state.assignedCompanyProjectsRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: Loader()),
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
