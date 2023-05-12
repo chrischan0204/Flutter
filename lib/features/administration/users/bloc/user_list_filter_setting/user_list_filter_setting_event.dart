@@ -79,14 +79,14 @@ class UserListFilterSettingUserFilterSettingUpdated
 
 class UserListFilterSettingUserFilterSettingSelected
     extends UserListFilterSettingEvent {
-  final UserFilterSetting userFilterSetting;
+  final UserFilterSetting? userFilterSetting;
 
   const UserListFilterSettingUserFilterSettingSelected({
-    required this.userFilterSetting,
+    this.userFilterSetting,
   });
 
   @override
-  List<Object> get props => [userFilterSetting];
+  List<Object?> get props => [userFilterSetting];
 }
 
 class UserListFilterSettingUserFilterItemAdded
@@ -99,6 +99,8 @@ class UserListFilterSettingUserFilterItemAdded
   @override
   List<Object?> get props => [userFilterItem];
 }
+
+class UserListFilterSettingUserFilterAdded extends UserListFilterSettingEvent {}
 
 class UserListFilterSettingUserFilterItemDeleted
     extends UserListFilterSettingEvent {

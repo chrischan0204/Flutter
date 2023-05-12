@@ -54,8 +54,17 @@ class _UserListFilterSettingViewState extends State<UserListFilterSettingView> {
             children: [
               _buildHeader(state),
               Builder(builder: (context) {
-                if (state.userFilterSettingLoadStatus.isLoading) {
-                  return const Loader();
+                // if (state.userFilterSettingLoadStatus.isLoading) {
+                //   return const Loader();
+                // }
+                if (state.userFilterSettingList.isEmpty &&
+                    state.userFilterUpdate.undeletedUserFilterItems.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'There are no user filter settings. Please click Add Button to create new user filter setting',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  );
                 }
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,9 +171,11 @@ class _UserListFilterSettingViewState extends State<UserListFilterSettingView> {
                   UserListFilterSettingState>(
                 listener: (context, state) {
                   if (state.userFilterSettingUpdateStatus.isSuccess) {
-                    userListFilterSettingBloc.add(
-                        const UserListFilterSettingUserFilterSettingListLoaded(
-                            name: 'user'));
+                    CustomNotification(
+                      context: context,
+                      notifyType: NotifyType.success,
+                      content: 'User filter saved successfully',
+                    ).showNotification();
                   }
                 },
                 listenWhen: (previous, current) =>
@@ -188,9 +199,11 @@ class _UserListFilterSettingViewState extends State<UserListFilterSettingView> {
                   UserListFilterSettingState>(
                 listener: (context, state) {
                   if (state.userFilterSettingDeleteStatus.isSuccess) {
-                    userListFilterSettingBloc.add(
-                        const UserListFilterSettingUserFilterSettingListLoaded(
-                            name: 'user'));
+                    CustomNotification(
+                      context: context,
+                      notifyType: NotifyType.success,
+                      content: 'User filter deleted successfully',
+                    ).showNotification();
                   }
                 },
                 listenWhen: (previous, current) =>
@@ -228,71 +241,92 @@ class _UserListFilterSettingViewState extends State<UserListFilterSettingView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          _buildUserFilterSettingSelectField(state),
+          const SizedBox(width: 20),
           Expanded(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Select Filter',
-                  style: TextStyle(fontSize: 14),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     if (state.selectedUserFilterSetting != null) {
+                //       userListFilterSettingBloc.add(
+                //           UserListFilterSettingUserFilterSettingLoadedById(
+                //               filterId: state.selectedUserFilterSetting!.id));
+                //     }
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(3),
+                //     ),
+                //   ),
+                //   child: const Text(
+                //     'Load',
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 14,
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(width: 20),
-                Expanded(
-                  child: Builder(
-                    builder: (context) {
-                      Map<String, UserFilterSetting> items = {};
-                      for (var userFilterSetting
-                          in state.userFilterSettingList) {
-                        items.addEntries([
-                          MapEntry(
-                              userFilterSetting.filterName, userFilterSetting)
-                        ]);
-                      }
-                      return SizedBox(
-                        child: CustomSingleSelect(
-                          selectedValue:
-                              state.selectedUserFilterSetting?.filterName,
-                          items: items,
-                          hint: 'Select Filter',
-                          // selectedValue: state.,
-                          onChanged: (value) {
-                            userListFilterSettingBloc.add(
-                                UserListFilterSettingUserFilterSettingSelected(
-                                    userFilterSetting: value.value));
-                          },
-                        ),
-                      );
-                    },
+                ElevatedButton(
+                  onPressed: () => userListFilterSettingBloc
+                      .add(UserListFilterSettingUserFilterAdded()),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildUserFilterSettingSelectField(
+      UserListFilterSettingState state) {
+    return Expanded(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Select Filter',
+            style: TextStyle(fontSize: 14),
+          ),
           const SizedBox(width: 20),
           Expanded(
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (state.selectedUserFilterSetting != null) {
-                    userListFilterSettingBloc.add(
-                        UserListFilterSettingUserFilterSettingLoadedById(
-                            filterId: state.selectedUserFilterSetting!.id));
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(3),
+            child: Builder(
+              builder: (context) {
+                Map<String, UserFilterSetting> items = {};
+                for (var userFilterSetting in state.userFilterSettingList) {
+                  items.addEntries([
+                    MapEntry(userFilterSetting.filterName, userFilterSetting)
+                  ]);
+                }
+                return SizedBox(
+                  child: CustomSingleSelect(
+                    selectedValue: state.selectedUserFilterSetting?.filterName,
+                    items: items,
+                    hint: 'Select Filter',
+                    // selectedValue: state.,
+                    onChanged: (value) {
+                      userListFilterSettingBloc.add(
+                          UserListFilterSettingUserFilterSettingSelected(
+                              userFilterSetting: value.value));
+                    },
                   ),
-                ),
-                child: const Text(
-                  'Load',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],
@@ -385,6 +419,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
                   );
                 })
               : Container(
+                  width: double.infinity,
                   color: Colors.grey,
                 ),
     );

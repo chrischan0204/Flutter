@@ -13,11 +13,11 @@ class UserFilter extends Equatable {
   final List<UserFilterItem> userFilterItems;
   const UserFilter({
     this.id = '00000000-0000-0000-0000-000000000000',
-    this.filterName = 'Unnamed filter',
+    this.filterName = '',
     required this.viewName,
     this.isDefault = false,
     this.deleted = false,
-    this.userFilterItems = const [UserFilterItem()],
+    this.userFilterItems = const [],
   });
 
   @override

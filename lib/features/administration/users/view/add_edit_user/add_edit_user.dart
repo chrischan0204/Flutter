@@ -70,7 +70,7 @@ class _AddEditUserViewState extends State<AddEditUserView> {
                   create: (context) => SitesBloc(
                       sitesRepository: RepositoryProvider.of(context))),
               BlocProvider(
-                  create: (context) => TimeZoneBloc(
+                  create: (context) => TimeZonesBloc(
                       timeZonesRepository: RepositoryProvider.of(context))),
               BlocProvider(
                   create: (context) => AssignSiteToUserBloc(
@@ -109,7 +109,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
   late UserDetailBloc userDetailBloc;
   late RolesBloc rolesBloc;
   late SitesBloc sitesBloc;
-  late TimeZoneBloc timeZoneBloc;
+  late TimeZonesBloc timeZoneBloc;
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -128,7 +128,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     addEditUserBloc = context.read<AddEditUserBloc>()
       ..add(AddEditUserRoleListLoaded());
     userDetailBloc = context.read<UserDetailBloc>();
-    timeZoneBloc = context.read<TimeZoneBloc>()..add(TimeZoneListLoaded());
+    timeZoneBloc = context.read<TimeZonesBloc>()..add(TimeZoneListLoaded());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     if (widget.userId != null) {
@@ -353,9 +353,9 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     );
   }
 
-  BlocBuilder<TimeZoneBloc, TimeZoneState> _buildDefaultTimeZoneSelectField(
+  BlocBuilder<TimeZonesBloc, TimeZoneState> _buildDefaultTimeZoneSelectField(
       AddEditUserState addEditUserState) {
-    return BlocBuilder<TimeZoneBloc, TimeZoneState>(
+    return BlocBuilder<TimeZonesBloc, TimeZoneState>(
       builder: (context, state) {
         Map<String, String> items = <String, String>{}..addEntries(state
             .timeZoneList

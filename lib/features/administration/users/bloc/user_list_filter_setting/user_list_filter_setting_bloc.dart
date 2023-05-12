@@ -40,6 +40,9 @@ class UserListFilterSettingBloc
         _onUserListFilterSettingUserFilterItemValueChanged);
     on<UserListFilterSettingUserFilterItemColumnChanged>(
         _onUserListFilterSettingUserFilterItemColumnChanged);
+
+    on<UserListFilterSettingUserFilterAdded>(
+        _onUserListFilterSettingUserFilterAdded);
   }
 
   Future<void> _onUserListFilterSettingFilterSettingListLoaded(
@@ -73,6 +76,18 @@ class UserListFilterSettingBloc
         userFilterSettingListLoadStatus: EntityStatus.success,
         userFilterSettingList: userFilterSettingList,
       ));
+
+      if (state.selectedUserFilterSetting == null) {
+        if (userFilterSettingList.indexWhere((element) => element.isDefault) !=
+            -1) {
+          add(UserListFilterSettingUserFilterSettingSelected(
+              userFilterSetting: userFilterSettingList
+                  .firstWhere((element) => element.isDefault)));
+        } else if (userFilterSettingList.isNotEmpty) {
+          add(UserListFilterSettingUserFilterSettingSelected(
+              userFilterSetting: userFilterSettingList[0]));
+        }
+      }
     } catch (e) {
       emit(state.copyWith(
           userFilterSettingListLoadStatus: EntityStatus.failure));
@@ -115,6 +130,11 @@ class UserListFilterSettingBloc
       emit(state.copyWith(
         userFilterSettingDeleteStatus: response.isSuccess.toEntityStatusCode(),
       ));
+
+      if (response.isSuccess) {
+        add(const UserListFilterSettingUserFilterSettingListLoaded(
+            name: 'user'));
+      }
     } catch (e) {
       emit(state.copyWith(userFilterSettingDeleteStatus: EntityStatus.failure));
     }
@@ -127,7 +147,15 @@ class UserListFilterSettingBloc
     emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.loading));
 
     try {
-      await settingsRepository.updateUserFilterSetting(state.userFilterUpdate);
+      EntityResponse response = await settingsRepository
+          .updateUserFilterSetting(state.userFilterUpdate);
+      emit(state.copyWith(
+          userFilterSettingUpdateStatus:
+              response.isSuccess.toEntityStatusCode()));
+      if (response.isSuccess) {
+        add(const UserListFilterSettingUserFilterSettingListLoaded(
+            name: 'user'));
+      }
     } catch (e) {
       emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.failure));
     }
@@ -156,6 +184,10 @@ class UserListFilterSettingBloc
     Emitter<UserListFilterSettingState> emit,
   ) {
     emit(state.copyWith(selectedUserFilterSetting: event.userFilterSetting));
+    if (event.userFilterSetting != null) {
+      add(UserListFilterSettingUserFilterSettingLoadedById(
+          filterId: event.userFilterSetting!.id));
+    }
   }
 
   void _onUserListFilterSettingUserFilterItemAdded(
@@ -253,10 +285,21 @@ class UserListFilterSettingBloc
     final index = userFilterItems.indexOf(event.userFilterItem);
     userFilterItems.remove(event.userFilterItem);
     userFilterItems.insert(
-        index, event.userFilterItem.copyWith(filterSetting: event.column));
+        index,
+        event.userFilterItem
+            .copyWith(filterSetting: event.column, filterValue: ['']));
 
     emit(state.copyWith(
         userFilterUpdate:
             state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
+  }
+
+  void _onUserListFilterSettingUserFilterAdded(
+    UserListFilterSettingUserFilterAdded event,
+    Emitter<UserListFilterSettingState> emit,
+  ) async {
+    emit(state.copyWith(
+        userFilterUpdate: const UserFilter(
+            viewName: 'user', userFilterItems: [UserFilterItem()])));
   }
 }

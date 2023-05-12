@@ -46,6 +46,11 @@ class _UsersListViewState extends State<UsersListView> {
                       token: token,
                       authBloc: BlocProvider.of(context),
                     )),
+            RepositoryProvider(
+                create: (context) => TimeZonesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
           ],
           child: MultiBlocProvider(
             providers: [
@@ -73,6 +78,9 @@ class _UsersListViewState extends State<UsersListView> {
               BlocProvider(
                   create: (context) => RolesBloc(
                       rolesRepository: RepositoryProvider.of(context))),
+              BlocProvider(
+                  create: (context) => TimeZonesBloc(
+                      timeZonesRepository: RepositoryProvider.of(context))),
             ],
             child: const UsersListWidget(),
           ),
@@ -96,6 +104,7 @@ class _UsersListState extends State<UsersListWidget> {
   late SitesBloc sitesBloc;
   late RegionsBloc regionsBloc;
   late RolesBloc rolesBloc;
+  late TimeZonesBloc timeZonesBloc;
 
   bool filterApplied = false;
 
@@ -120,6 +129,7 @@ class _UsersListState extends State<UsersListWidget> {
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
     regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
+    timeZonesBloc = context.read()..add(TimeZoneListLoaded());
     super.initState();
   }
 
