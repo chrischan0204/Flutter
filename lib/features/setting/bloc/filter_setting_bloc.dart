@@ -5,8 +5,7 @@ import '/common_libraries.dart';
 part 'filter_setting_event.dart';
 part 'filter_setting_state.dart';
 
-class FilterSettingBloc
-    extends Bloc<FilterSettingEvent, FilterSettingState> {
+class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
   final SettingsRepository settingsRepository;
 
   FilterSettingBloc({required this.settingsRepository})
@@ -28,8 +27,7 @@ class FilterSettingBloc
 
     on<FilterSettingUserFilterSettingSelected>(
         _onFilterSettingUserFilterSettingSelected);
-    on<FilterSettingUserFilterItemAdded>(
-        _onFilterSettingUserFilterItemAdded);
+    on<FilterSettingUserFilterItemAdded>(_onFilterSettingUserFilterItemAdded);
     on<FilterSettingUserFilterItemDeleted>(
         _onFilterSettingUserFilterItemDeleted);
     on<FilterSettingUserFilterItemBooleanConditionChanged>(
@@ -41,8 +39,7 @@ class FilterSettingBloc
     on<FilterSettingUserFilterItemColumnChanged>(
         _onFilterSettingUserFilterItemColumnChanged);
 
-    on<FilterSettingUserFilterAdded>(
-        _onFilterSettingUserFilterAdded);
+    on<FilterSettingUserFilterAdded>(_onFilterSettingUserFilterAdded);
   }
 
   Future<void> _onFilterSettingFilterSettingListLoaded(
@@ -132,8 +129,7 @@ class FilterSettingBloc
       ));
 
       if (response.isSuccess) {
-        add(const FilterSettingUserFilterSettingListLoaded(
-            name: 'user'));
+        add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
       }
     } catch (e) {
       emit(state.copyWith(userFilterSettingDeleteStatus: EntityStatus.failure));
@@ -153,8 +149,7 @@ class FilterSettingBloc
           userFilterSettingUpdateStatus:
               response.isSuccess.toEntityStatusCode()));
       if (response.isSuccess) {
-        add(const FilterSettingUserFilterSettingListLoaded(
-            name: 'user'));
+        add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
       }
     } catch (e) {
       emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.failure));
@@ -282,16 +277,37 @@ class FilterSettingBloc
   ) async {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
-    final index = userFilterItems.indexOf(event.userFilterItem);
+    int index = userFilterItems.indexOf(event.userFilterItem);
+
+    List<String> filterValue = [''];
+
     userFilterItems.remove(event.userFilterItem);
     userFilterItems.insert(
         index,
         event.userFilterItem
-            .copyWith(filterSetting: event.column, filterValue: ['']));
+            .copyWith(filterSetting: event.column, filterValue: filterValue));
+
+    final List<FilterSetting> filterSettingList =
+        List.from(state.filterSettingList);
+    if (event.column.columnValueURL.contains('api')) {
+      try {
+        List<String> columnValues =
+            await settingsRepository.getNameList(event.column.columnValueURL);
+
+        index = filterSettingList.indexOf(event.column);
+        filterSettingList.remove(event.column);
+        filterSettingList.insert(
+            index, event.column.copyWith(columnValues: columnValues));
+      } catch (e) {
+        print(e);
+      }
+    }
 
     emit(state.copyWith(
-        userFilterUpdate:
-            state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
+      userFilterUpdate:
+          state.userFilterUpdate.copyWith(userFilterItems: userFilterItems),
+      filterSettingList: filterSettingList,
+    ));
   }
 
   void _onFilterSettingUserFilterAdded(

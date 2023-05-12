@@ -74,6 +74,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
                     map.addEntries([MapEntry(item, item)]);
                   }
                   return CustomSingleSelect(
+                    hint: 'Select ${widget.userFilterItem.filterSetting.columnTitle}',
                     selectedValue: widget.userFilterItem.filterValue[0],
                     items: map,
                     onChanged: (value) => filterSettingBloc

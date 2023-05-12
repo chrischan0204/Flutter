@@ -82,4 +82,15 @@ class SettingsRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  Future<List<String>> getNameList(String url) async {
+    Response response = await super.get(url);
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => e['name'] as String)
+          .toList();
+    }
+    throw Exception();
+  }
 }
