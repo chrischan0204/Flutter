@@ -16,11 +16,11 @@ class FilterSettingItemView extends StatefulWidget {
 }
 
 class _FilterSettingItemViewState extends State<FilterSettingItemView> {
-  late FilterSettingBloc userListFilterSettingBloc;
+  late FilterSettingBloc filterSettingBloc;
 
   @override
   void initState() {
-    userListFilterSettingBloc = context.read();
+    filterSettingBloc = context.read();
     super.initState();
   }
 
@@ -55,13 +55,13 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
           ? widget.userFilterItem.filterValue.isNotEmpty
               ? CustomTextField(
                   initialValue: widget.userFilterItem.filterValue[0],
-                  onChanged: (value) => userListFilterSettingBloc
+                  onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
                         userFilterItem: widget.userFilterItem,
                         value: value,
                       )))
               : CustomTextField(
-                  onChanged: (value) => userListFilterSettingBloc
+                  onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
                         userFilterItem: widget.userFilterItem,
                         value: value,
@@ -76,7 +76,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
                   return CustomSingleSelect(
                     selectedValue: widget.userFilterItem.filterValue[0],
                     items: map,
-                    onChanged: (value) => userListFilterSettingBloc
+                    onChanged: (value) => filterSettingBloc
                         .add(FilterSettingUserFilterItemValueChanged(
                       userFilterItem: widget.userFilterItem,
                       value: value.key,
@@ -107,7 +107,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
           'IN': 'IN',
           'Not In': 'Not In',
         },
-        onChanged: (value) => userListFilterSettingBloc.add(
+        onChanged: (value) => filterSettingBloc.add(
             FilterSettingUserFilterItemOperatorChanged(
                 operator: value.value, userFilterItem: widget.userFilterItem)),
       ),
@@ -128,7 +128,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
           hint: 'Select Column',
           items: items,
           selectedValue: widget.userFilterItem.filterSetting.columnTitle,
-          onChanged: (value) => userListFilterSettingBloc.add(
+          onChanged: (value) => filterSettingBloc.add(
               FilterSettingUserFilterItemColumnChanged(
                   column: value.value, userFilterItem: widget.userFilterItem)),
         );
@@ -138,7 +138,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
 
   IconButton _buildDeleteButton() {
     return IconButton(
-      onPressed: () => userListFilterSettingBloc.add(
+      onPressed: () => filterSettingBloc.add(
           FilterSettingUserFilterItemDeleted(
               userFilterItem: widget.userFilterItem)),
       icon: const Icon(
@@ -151,7 +151,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
 
   IconButton _buildAddButton() {
     return IconButton(
-      onPressed: () => userListFilterSettingBloc.add(
+      onPressed: () => filterSettingBloc.add(
           FilterSettingUserFilterItemAdded(
               userFilterItem: widget.userFilterItem)),
       icon: const Icon(
@@ -170,7 +170,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
           : CustomSingleSelect(
               selectedValue: widget.userFilterItem.booleanCondition,
               items: const {'And': 'And', 'Or': 'Or'},
-              onChanged: (value) => userListFilterSettingBloc.add(
+              onChanged: (value) => filterSettingBloc.add(
                   FilterSettingUserFilterItemBooleanConditionChanged(
                       booleanCondition: value.value,
                       userFilterItem: widget.userFilterItem)),

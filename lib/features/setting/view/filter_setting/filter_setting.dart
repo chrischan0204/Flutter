@@ -1,5 +1,8 @@
+import 'widgets/filter_setting_body/filter_setting_body.dart';
+import 'widgets/filter_setting_footer/filter_setting_footer.dart';
+import 'widgets/filter_setting_header/filter_setting_header.dart';
+
 import '/common_libraries.dart';
-import 'widgets/filter_setting_item.dart';
 
 class FilterSettingView extends StatefulWidget {
   final String viewName;
@@ -59,27 +62,20 @@ class FilterSettingWidget extends StatefulWidget {
 }
 
 class _FilterSettingWidgetState extends State<FilterSettingWidget> {
-  late FilterSettingBloc userListFilterSettingBloc;
-  TextEditingController filterNameController = TextEditingController();
+  late FilterSettingBloc filterSettingBloc;
 
   @override
   void initState() {
-    userListFilterSettingBloc = context.read()
+    filterSettingBloc = context.read()
       ..add(FilterSettingFilterSettingListLoaded(name: widget.viewName))
       ..add(FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
-    filterNameController.text =
-        userListFilterSettingBloc.state.userFilterUpdate.filterName;
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-      listener: (context, state) {
-        filterNameController.text = state.userFilterUpdate.filterName;
-      },
-      listenWhen: (previous, current) =>
-          previous.userFilterUpdate.id != current.userFilterUpdate.id,
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -101,11 +97,8 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildHeader(state),
+              const FilterSettingHeaderView(),
               Builder(builder: (context) {
-                // if (state.userFilterSettingLoadStatus.isLoading) {
-                //   return const Loader();
-                // }
                 if (state.userFilterSettingList.isEmpty &&
                     state.userFilterUpdate.undeletedUserFilterItems.isEmpty) {
                   return const Center(
@@ -118,9 +111,9 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildBody(state),
+                    const FilterSettingBodyView(),
                     _buildAddClauseButton(),
-                    _buildFooter(state)
+                    const FilterSettingFooterView()
                   ],
                 );
               })
@@ -131,22 +124,6 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
     );
   }
 
-  Column _buildBody(FilterSettingState state) {
-    return Column(
-      children: state.userFilterUpdate.undeletedUserFilterItems.map(
-        (userFilterItem) {
-          return FilterSettingItemView(
-            isFirst: state.userFilterUpdate.undeletedUserFilterItems
-                    .indexOf(userFilterItem) ==
-                0,
-            filterSettingList: state.filterSettingList,
-            userFilterItem: userFilterItem,
-          );
-        },
-      ).toList(),
-    );
-  }
-
   Padding _buildAddClauseButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -154,8 +131,8 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
         horizontal: 20,
       ),
       child: TextButton(
-        onPressed: () => userListFilterSettingBloc
-            .add(const FilterSettingUserFilterItemAdded()),
+        onPressed: () =>
+            filterSettingBloc.add(const FilterSettingUserFilterItemAdded()),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: const [
@@ -174,206 +151,6 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Padding _buildFooter(FilterSettingState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 150,
-        vertical: 20,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Filter Name', style: TextStyle(fontSize: 14)),
-              const SizedBox(width: 30),
-              SizedBox(
-                width: 200,
-                child: CustomTextField(
-                    // initialValue: state.userFilterUpdate.filterName,
-                    controller: filterNameController,
-                    onChanged: (value) => userListFilterSettingBloc.add(
-                        FilterSettingUserFilterNameChanged(filterName: value))),
-              ),
-              const SizedBox(width: 20),
-              CustomSwitch(
-                switchValue: state.userFilterUpdate.isDefault,
-                onChanged: (value) => userListFilterSettingBloc.add(
-                    FilterSettingUserFilterIsDefaultChanged(isDefault: value)),
-                onlySwitch: true,
-              ),
-              const SizedBox(width: 10),
-              const Text('Default', style: TextStyle(fontSize: 14)),
-            ],
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BlocListener<FilterSettingBloc, FilterSettingState>(
-                listener: (context, state) {
-                  if (state.userFilterSettingUpdateStatus.isSuccess) {
-                    CustomNotification(
-                      context: context,
-                      notifyType: NotifyType.success,
-                      content: 'User filter saved successfully',
-                    ).showNotification();
-                  }
-                },
-                listenWhen: (previous, current) =>
-                    previous.userFilterSettingUpdateStatus !=
-                    current.userFilterSettingUpdateStatus,
-                child: ElevatedButton(
-                  onPressed: () => userListFilterSettingBloc
-                      .add(FilterSettingUserFilterSettingUpdated()),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3))),
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20),
-              BlocListener<FilterSettingBloc, FilterSettingState>(
-                listener: (context, state) {
-                  if (state.userFilterSettingDeleteStatus.isSuccess) {
-                    CustomNotification(
-                      context: context,
-                      notifyType: NotifyType.success,
-                      content: 'User filter deleted successfully',
-                    ).showNotification();
-                  }
-                },
-                listenWhen: (previous, current) =>
-                    previous.userFilterSettingDeleteStatus !=
-                    current.userFilterSettingDeleteStatus,
-                child: ElevatedButton(
-                  onPressed: () {
-                    userListFilterSettingBloc.add(
-                        FilterSettingUserFilterSettingDeletedById(
-                            filterId: state.userFilterUpdate.id));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3))),
-                  child: const Text(
-                    'Delete',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildHeader(FilterSettingState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 100,
-        vertical: 20,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildUserFilterSettingSelectField(state),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // ElevatedButton(
-                //   onPressed: () {
-                //     if (state.selectedUserFilterSetting != null) {
-                //       userListFilterSettingBloc.add(
-                //           FilterSettingUserFilterSettingLoadedById(
-                //               filterId: state.selectedUserFilterSetting!.id));
-                //     }
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(3),
-                //     ),
-                //   ),
-                //   child: const Text(
-                //     'Load',
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontSize: 14,
-                //     ),
-                //   ),
-                // ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => userListFilterSettingBloc
-                      .add(FilterSettingUserFilterAdded()),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Expanded _buildUserFilterSettingSelectField(FilterSettingState state) {
-    return Expanded(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text(
-            'Select Filter',
-            style: TextStyle(fontSize: 14),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Builder(
-              builder: (context) {
-                Map<String, UserFilterSetting> items = {};
-                for (var userFilterSetting in state.userFilterSettingList) {
-                  items.addEntries([
-                    MapEntry(userFilterSetting.filterName, userFilterSetting)
-                  ]);
-                }
-                return SizedBox(
-                  child: CustomSingleSelect(
-                    selectedValue: state.selectedUserFilterSetting?.filterName,
-                    items: items,
-                    hint: 'Select Filter',
-                    // selectedValue: state.,
-                    onChanged: (value) {
-                      userListFilterSettingBloc.add(
-                          FilterSettingUserFilterSettingSelected(
-                              userFilterSetting: value.value));
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
