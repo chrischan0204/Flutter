@@ -80,8 +80,19 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                         previous.userFilterSettingUpdateStatus !=
                         current.userFilterSettingUpdateStatus,
                     child: ElevatedButton(
-                      onPressed: () => filterSettingBloc
-                          .add(FilterSettingUserFilterSettingUpdated()),
+                      onPressed: () {
+                        if (Validation.isEmpty(
+                            state.userFilterUpdate.filterName)) {
+                          CustomNotification(
+                            context: context,
+                            notifyType: NotifyType.error,
+                            content: 'Please fill the filter name',
+                          ).showNotification();
+                        } else {
+                          filterSettingBloc
+                              .add(FilterSettingUserFilterSettingUpdated());
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(

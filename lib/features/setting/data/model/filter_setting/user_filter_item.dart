@@ -16,7 +16,7 @@ class UserFilterItem extends Equatable {
     this.filterSetting = const FilterSetting(),
     this.booleanCondition = 'And',
     this.operator = '=',
-    this.filterValue = const [''],
+    this.filterValue = const [],
     this.deleted = false,
   });
 

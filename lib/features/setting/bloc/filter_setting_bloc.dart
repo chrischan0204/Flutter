@@ -50,6 +50,23 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     try {
       final List<FilterSetting> filterSettingList =
           await settingsRepository.getFilterSettingList(event.name);
+      for (var filterSetting in filterSettingList
+          .where((element) => element.columnValueURL.contains('api'))) {
+        if (filterSetting.columnValueURL.contains('api')) {
+          try {
+            List<String> columnValues = await settingsRepository
+                .getNameList(filterSetting.columnValueURL);
+
+            int index = filterSettingList.indexOf(filterSetting);
+            filterSettingList.remove(filterSetting);
+            filterSettingList.insert(
+                index, filterSetting.copyWith(columnValues: columnValues));
+          } catch (e) {
+            print(e);
+          }
+        }
+      }
+
       emit(state.copyWith(
         filterSettingList: filterSettingList,
         filterSettingListLoadStatus: EntityStatus.success,
@@ -100,16 +117,21 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       final UserFilter userFilter =
           await settingsRepository.getUserFilterById(event.filterId);
       emit(state.copyWith(
-          userFilterUpdate: userFilter.userFilterItems.isEmpty
-              ? userFilter.copyWith(
-                  userFilterItems: [UserFilterItem(id: const Uuid().v1())])
-              : userFilter.copyWith(
-                  userFilterItems: userFilter.userFilterItems
-                      .map((e) => e.copyWith(
+        userFilterUpdate: userFilter.userFilterItems.isEmpty
+            ? userFilter.copyWith(
+                userFilterItems: [UserFilterItem(id: const Uuid().v1())])
+            : userFilter.copyWith(
+                userFilterItems: userFilter.userFilterItems
+                    .map((e) => e.copyWith(
                           filterSetting:
-                              state.getFilterSettingById(e.filterSetting.id)))
-                      .toList()),
-          userFilterSettingLoadStatus: EntityStatus.success));
+                              state.getFilterSettingById(e.filterSetting.id),
+                          filterValue: e.filterValue
+                              .where((element) => element.isNotEmpty)
+                              .toList(),
+                        ))
+                    .toList()),
+        userFilterSettingLoadStatus: EntityStatus.success,
+      ));
     } catch (e) {
       emit(state.copyWith(userFilterSettingLoadStatus: EntityStatus.failure));
     }
@@ -143,14 +165,13 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.loading));
 
     try {
-      EntityResponse response = await settingsRepository
+      UserFilterSetting updatedserFilterSetting = await settingsRepository
           .updateUserFilterSetting(state.userFilterUpdate);
       emit(state.copyWith(
-          userFilterSettingUpdateStatus:
-              response.isSuccess.toEntityStatusCode()));
-      if (response.isSuccess) {
-        add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
-      }
+        userFilterSettingUpdateStatus: EntityStatus.success,
+        selectedUserFilterSetting: updatedserFilterSetting,
+      ));
+      add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
     } catch (e) {
       emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.failure));
     }
@@ -211,13 +232,15 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       final List<UserFilterItem> userFilterItems =
           List.from(state.userFilterUpdate.userFilterItems);
       final index = userFilterItems.indexOf(event.userFilterItem);
-      userFilterItems.remove(event.userFilterItem);
-      userFilterItems.insert(
-          index, event.userFilterItem.copyWith(deleted: true));
+      if (index != -1) {
+        userFilterItems.remove(event.userFilterItem);
+        userFilterItems.insert(
+            index, event.userFilterItem.copyWith(deleted: true));
 
-      emit(state.copyWith(
-          userFilterUpdate: state.userFilterUpdate
-              .copyWith(userFilterItems: userFilterItems)));
+        emit(state.copyWith(
+            userFilterUpdate: state.userFilterUpdate
+                .copyWith(userFilterItems: userFilterItems)));
+      }
     }
   }
 
@@ -228,15 +251,17 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
     final index = userFilterItems.indexOf(event.userFilterItem);
-    userFilterItems.remove(event.userFilterItem);
-    userFilterItems.insert(
-        index,
-        event.userFilterItem
-            .copyWith(booleanCondition: event.booleanCondition));
+    if (index != -1) {
+      userFilterItems.remove(event.userFilterItem);
+      userFilterItems.insert(
+          index,
+          event.userFilterItem
+              .copyWith(booleanCondition: event.booleanCondition));
 
-    emit(state.copyWith(
-        userFilterUpdate:
-            state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
+      emit(state.copyWith(
+          userFilterUpdate: state.userFilterUpdate
+              .copyWith(userFilterItems: userFilterItems)));
+    }
   }
 
   void _onFilterSettingUserFilterItemOperatorChanged(
@@ -246,13 +271,15 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
     final index = userFilterItems.indexOf(event.userFilterItem);
-    userFilterItems.remove(event.userFilterItem);
-    userFilterItems.insert(
-        index, event.userFilterItem.copyWith(operator: event.operator));
+    if (index != -1) {
+      userFilterItems.remove(event.userFilterItem);
+      userFilterItems.insert(
+          index, event.userFilterItem.copyWith(operator: event.operator));
 
-    emit(state.copyWith(
-        userFilterUpdate:
-            state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
+      emit(state.copyWith(
+          userFilterUpdate: state.userFilterUpdate
+              .copyWith(userFilterItems: userFilterItems)));
+    }
   }
 
   void _onFilterSettingUserFilterItemValueChanged(
@@ -262,13 +289,15 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
     final index = userFilterItems.indexOf(event.userFilterItem);
-    userFilterItems.remove(event.userFilterItem);
-    userFilterItems.insert(
-        index, event.userFilterItem.copyWith(filterValue: [event.value]));
+    if (index != -1) {
+      userFilterItems.remove(event.userFilterItem);
+      userFilterItems.insert(
+          index, event.userFilterItem.copyWith(filterValue: event.value));
 
-    emit(state.copyWith(
-        userFilterUpdate:
-            state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
+      emit(state.copyWith(
+          userFilterUpdate: state.userFilterUpdate
+              .copyWith(userFilterItems: userFilterItems)));
+    }
   }
 
   void _onFilterSettingUserFilterItemColumnChanged(
@@ -279,35 +308,18 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
         List.from(state.userFilterUpdate.userFilterItems);
     int index = userFilterItems.indexOf(event.userFilterItem);
 
-    List<String> filterValue = [''];
+    if (index != -1) {
+      userFilterItems.remove(event.userFilterItem);
+      userFilterItems.insert(
+          index,
+          event.userFilterItem
+              .copyWith(filterSetting: event.column, filterValue: []));
 
-    userFilterItems.remove(event.userFilterItem);
-    userFilterItems.insert(
-        index,
-        event.userFilterItem
-            .copyWith(filterSetting: event.column, filterValue: filterValue));
-
-    final List<FilterSetting> filterSettingList =
-        List.from(state.filterSettingList);
-    if (event.column.columnValueURL.contains('api')) {
-      try {
-        List<String> columnValues =
-            await settingsRepository.getNameList(event.column.columnValueURL);
-
-        index = filterSettingList.indexOf(event.column);
-        filterSettingList.remove(event.column);
-        filterSettingList.insert(
-            index, event.column.copyWith(columnValues: columnValues));
-      } catch (e) {
-        print(e);
-      }
+      emit(state.copyWith(
+        userFilterUpdate:
+            state.userFilterUpdate.copyWith(userFilterItems: userFilterItems),
+      ));
     }
-
-    emit(state.copyWith(
-      userFilterUpdate:
-          state.userFilterUpdate.copyWith(userFilterItems: userFilterItems),
-      filterSettingList: filterSettingList,
-    ));
   }
 
   void _onFilterSettingUserFilterAdded(

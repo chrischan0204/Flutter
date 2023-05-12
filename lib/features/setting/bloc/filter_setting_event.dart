@@ -8,8 +8,7 @@ abstract class FilterSettingEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FilterSettingFilterSettingListLoaded
-    extends FilterSettingEvent {
+class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
   const FilterSettingFilterSettingListLoaded({
     required this.name,
@@ -19,8 +18,7 @@ class FilterSettingFilterSettingListLoaded
   List<Object> get props => [name];
 }
 
-class FilterSettingUserFilterSettingListLoaded
-    extends FilterSettingEvent {
+class FilterSettingUserFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
   const FilterSettingUserFilterSettingListLoaded({
     required this.name,
@@ -30,8 +28,7 @@ class FilterSettingUserFilterSettingListLoaded
   List<Object> get props => [name];
 }
 
-class FilterSettingUserFilterSettingLoadedById
-    extends FilterSettingEvent {
+class FilterSettingUserFilterSettingLoadedById extends FilterSettingEvent {
   final String filterId;
   const FilterSettingUserFilterSettingLoadedById({
     required this.filterId,
@@ -41,8 +38,7 @@ class FilterSettingUserFilterSettingLoadedById
   List<Object> get props => [filterId];
 }
 
-class FilterSettingUserFilterSettingDeletedById
-    extends FilterSettingEvent {
+class FilterSettingUserFilterSettingDeletedById extends FilterSettingEvent {
   final String filterId;
   const FilterSettingUserFilterSettingDeletedById({
     required this.filterId,
@@ -52,8 +48,7 @@ class FilterSettingUserFilterSettingDeletedById
   List<Object> get props => [filterId];
 }
 
-class FilterSettingUserFilterNameChanged
-    extends FilterSettingEvent {
+class FilterSettingUserFilterNameChanged extends FilterSettingEvent {
   final String filterName;
   const FilterSettingUserFilterNameChanged({
     required this.filterName,
@@ -63,8 +58,7 @@ class FilterSettingUserFilterNameChanged
   List<Object> get props => [filterName];
 }
 
-class FilterSettingUserFilterIsDefaultChanged
-    extends FilterSettingEvent {
+class FilterSettingUserFilterIsDefaultChanged extends FilterSettingEvent {
   final bool isDefault;
   const FilterSettingUserFilterIsDefaultChanged({
     required this.isDefault,
@@ -74,11 +68,9 @@ class FilterSettingUserFilterIsDefaultChanged
   List<Object> get props => [isDefault];
 }
 
-class FilterSettingUserFilterSettingUpdated
-    extends FilterSettingEvent {}
+class FilterSettingUserFilterSettingUpdated extends FilterSettingEvent {}
 
-class FilterSettingUserFilterSettingSelected
-    extends FilterSettingEvent {
+class FilterSettingUserFilterSettingSelected extends FilterSettingEvent {
   final UserFilterSetting? userFilterSetting;
 
   const FilterSettingUserFilterSettingSelected({
@@ -89,8 +81,7 @@ class FilterSettingUserFilterSettingSelected
   List<Object?> get props => [userFilterSetting];
 }
 
-class FilterSettingUserFilterItemAdded
-    extends FilterSettingEvent {
+class FilterSettingUserFilterItemAdded extends FilterSettingEvent {
   final UserFilterItem? userFilterItem;
   const FilterSettingUserFilterItemAdded({
     this.userFilterItem,
@@ -102,8 +93,7 @@ class FilterSettingUserFilterItemAdded
 
 class FilterSettingUserFilterAdded extends FilterSettingEvent {}
 
-class FilterSettingUserFilterItemDeleted
-    extends FilterSettingEvent {
+class FilterSettingUserFilterItemDeleted extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   const FilterSettingUserFilterItemDeleted({
     required this.userFilterItem,
@@ -129,8 +119,7 @@ class FilterSettingUserFilterItemBooleanConditionChanged
       ];
 }
 
-class FilterSettingUserFilterItemOperatorChanged
-    extends FilterSettingEvent {
+class FilterSettingUserFilterItemOperatorChanged extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   final String operator;
   const FilterSettingUserFilterItemOperatorChanged({
@@ -145,10 +134,9 @@ class FilterSettingUserFilterItemOperatorChanged
       ];
 }
 
-class FilterSettingUserFilterItemValueChanged
-    extends FilterSettingEvent {
+class FilterSettingUserFilterItemValueChanged extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
-  final String value;
+  final List<String> value;
   const FilterSettingUserFilterItemValueChanged({
     required this.userFilterItem,
     required this.value,
@@ -161,8 +149,7 @@ class FilterSettingUserFilterItemValueChanged
       ];
 }
 
-class FilterSettingUserFilterItemColumnChanged
-    extends FilterSettingEvent {
+class FilterSettingUserFilterItemColumnChanged extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   final FilterSetting column;
   const FilterSettingUserFilterItemColumnChanged({

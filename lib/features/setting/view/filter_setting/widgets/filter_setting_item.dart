@@ -54,33 +54,49 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
       child: controlType == 'Textbox'
           ? widget.userFilterItem.filterValue.isNotEmpty
               ? CustomTextField(
-                  initialValue: widget.userFilterItem.filterValue[0],
+                  initialValue: widget.userFilterItem.filterValue.isEmpty
+                      ? null
+                      : widget.userFilterItem.filterValue[0],
                   onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
                         userFilterItem: widget.userFilterItem,
-                        value: value,
+                        value: [value],
                       )))
               : CustomTextField(
                   onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
                         userFilterItem: widget.userFilterItem,
-                        value: value,
+                        value: [value],
                       )))
           : controlType == 'Select'
               ? Builder(builder: (context) {
-                  Map<String, String> map = {};
+                  Map<String, Entity> items = {};
                   for (final item
                       in widget.userFilterItem.filterSetting.columnValues) {
-                    map.addEntries([MapEntry(item, item)]);
+                    items.addEntries(
+                        [MapEntry(item, Entity(id: item, name: item))]);
                   }
-                  return CustomSingleSelect(
-                    hint: 'Select ${widget.userFilterItem.filterSetting.columnTitle}',
-                    selectedValue: widget.userFilterItem.filterValue[0],
-                    items: map,
-                    onChanged: (value) => filterSettingBloc
+                  // return CustomSingleSelect(
+                  //   hint: 'Select ${widget.userFilterItem.filterSetting.columnTitle}',
+                  //   selectedValue: widget.userFilterItem.filterValue[0],
+                  //   items: map,
+                  // onChanged: (value) => filterSettingBloc
+                  //     .add(FilterSettingUserFilterItemValueChanged(
+                  //   userFilterItem: widget.userFilterItem,
+                  //   value: value.key,
+                  // )),
+                  // );
+                  return CustomMultiSelect(
+                    items: items,
+                    selectedItems: widget.userFilterItem.filterValue
+                        .map((e) => Entity(id: e, name: e))
+                        .toList(),
+                    hint:
+                        'Select ${widget.userFilterItem.filterSetting.columnTitle}',
+                    onChanged: (projects) => filterSettingBloc
                         .add(FilterSettingUserFilterItemValueChanged(
                       userFilterItem: widget.userFilterItem,
-                      value: value.key,
+                      value: projects.map((e) => e.name!).toList(),
                     )),
                   );
                 })
@@ -139,9 +155,8 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
 
   IconButton _buildDeleteButton() {
     return IconButton(
-      onPressed: () => filterSettingBloc.add(
-          FilterSettingUserFilterItemDeleted(
-              userFilterItem: widget.userFilterItem)),
+      onPressed: () => filterSettingBloc.add(FilterSettingUserFilterItemDeleted(
+          userFilterItem: widget.userFilterItem)),
       icon: const Icon(
         PhosphorIcons.x,
         color: Colors.red,
@@ -152,9 +167,8 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
 
   IconButton _buildAddButton() {
     return IconButton(
-      onPressed: () => filterSettingBloc.add(
-          FilterSettingUserFilterItemAdded(
-              userFilterItem: widget.userFilterItem)),
+      onPressed: () => filterSettingBloc.add(FilterSettingUserFilterItemAdded(
+          userFilterItem: widget.userFilterItem)),
       icon: const Icon(
         PhosphorIcons.plus,
         color: Colors.green,
