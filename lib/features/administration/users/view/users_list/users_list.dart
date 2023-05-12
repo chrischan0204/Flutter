@@ -14,7 +14,8 @@ class _UsersListViewState extends State<UsersListView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) => token = state.authUser?.token ?? '',
+      listener: (context, state) =>
+          setState(() => token = state.authUser?.token ?? ''),
       listenWhen: (previous, current) =>
           previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
@@ -23,6 +24,11 @@ class _UsersListViewState extends State<UsersListView> {
           providers: [
             RepositoryProvider(
                 create: (context) => UsersRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
+            RepositoryProvider(
+                create: (context) => SettingsRepository(
                       token: token,
                       authBloc: BlocProvider.of(context),
                     )),
@@ -38,11 +44,6 @@ class _UsersListViewState extends State<UsersListView> {
                     )),
             RepositoryProvider(
                 create: (context) => RolesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-            RepositoryProvider(
-                create: (context) => SettingsRepository(
                       token: token,
                       authBloc: BlocProvider.of(context),
                     )),
@@ -64,9 +65,6 @@ class _UsersListViewState extends State<UsersListView> {
                           RepositoryProvider.of<UsersRepository>(context))),
               BlocProvider(
                   create: (context) => UserListViewSettingBloc(
-                      settingsRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => UserListFilterSettingBloc(
                       settingsRepository: RepositoryProvider.of(context))),
               BlocProvider(
                   create: (context) => SitesBloc(

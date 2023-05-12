@@ -1,6 +1,6 @@
-part of 'user_list_filter_setting_bloc.dart';
+part of 'filter_setting_bloc.dart';
 
-class UserListFilterSettingState extends Equatable {
+class FilterSettingState extends Equatable {
   final EntityStatus filterSettingListLoadStatus;
   final List<FilterSetting> filterSettingList;
 
@@ -13,7 +13,7 @@ class UserListFilterSettingState extends Equatable {
   final EntityStatus userFilterSettingUpdateStatus;
   final EntityStatus userFilterSettingDeleteStatus;
   final UserFilterSetting? selectedUserFilterSetting;
-  const UserListFilterSettingState({
+  const FilterSettingState({
     this.filterSettingListLoadStatus = EntityStatus.initial,
     this.filterSettingList = const [],
     this.userFilterUpdate = const UserFilter(viewName: 'user'),
@@ -41,7 +41,7 @@ class UserListFilterSettingState extends Equatable {
   FilterSetting getFilterSettingById(String id) =>
       filterSettingList.firstWhere((element) => element.id == id);
 
-  UserListFilterSettingState copyWith({
+  FilterSettingState copyWith({
     EntityStatus? filterSettingListLoadStatus,
     List<FilterSetting>? filterSettingList,
     UserFilter? userFilterUpdate,
@@ -52,7 +52,7 @@ class UserListFilterSettingState extends Equatable {
     EntityStatus? userFilterSettingUpdateStatus,
     EntityStatus? userFilterSettingDeleteStatus,
   }) {
-    return UserListFilterSettingState(
+    return FilterSettingState(
       filterSettingListLoadStatus:
           filterSettingListLoadStatus ?? this.filterSettingListLoadStatus,
       filterSettingList: filterSettingList ?? this.filterSettingList,

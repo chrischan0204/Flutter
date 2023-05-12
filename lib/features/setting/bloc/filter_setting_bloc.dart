@@ -2,52 +2,52 @@ import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 import '/common_libraries.dart';
 
-part 'user_list_filter_setting_event.dart';
-part 'user_list_filter_setting_state.dart';
+part 'filter_setting_event.dart';
+part 'filter_setting_state.dart';
 
-class UserListFilterSettingBloc
-    extends Bloc<UserListFilterSettingEvent, UserListFilterSettingState> {
+class FilterSettingBloc
+    extends Bloc<FilterSettingEvent, FilterSettingState> {
   final SettingsRepository settingsRepository;
 
-  UserListFilterSettingBloc({required this.settingsRepository})
-      : super(const UserListFilterSettingState()) {
-    on<UserListFilterSettingFilterSettingListLoaded>(
-        _onUserListFilterSettingFilterSettingListLoaded);
-    on<UserListFilterSettingUserFilterSettingListLoaded>(
-        _onUserListFilterSettingUserFilterSettingListLoaded);
-    on<UserListFilterSettingUserFilterSettingLoadedById>(
-        _onUserListFilterSettingUserFilterSettingLoadedById);
-    on<UserListFilterSettingUserFilterSettingDeletedById>(
-        _onUserListFilterSettingUserFilterSettingDeletedById);
-    on<UserListFilterSettingUserFilterSettingUpdated>(
-        _onUserListFilterSettingUserFilterSettingUpdated);
-    on<UserListFilterSettingUserFilterNameChanged>(
-        _onUserListFilterSettingUserFilterNameChanged);
-    on<UserListFilterSettingUserFilterIsDefaultChanged>(
-        _onUserListFilterSettingUserFilterIsDefaultChanged);
+  FilterSettingBloc({required this.settingsRepository})
+      : super(const FilterSettingState()) {
+    on<FilterSettingFilterSettingListLoaded>(
+        _onFilterSettingFilterSettingListLoaded);
+    on<FilterSettingUserFilterSettingListLoaded>(
+        _onFilterSettingUserFilterSettingListLoaded);
+    on<FilterSettingUserFilterSettingLoadedById>(
+        _onFilterSettingUserFilterSettingLoadedById);
+    on<FilterSettingUserFilterSettingDeletedById>(
+        _onFilterSettingUserFilterSettingDeletedById);
+    on<FilterSettingUserFilterSettingUpdated>(
+        _onFilterSettingUserFilterSettingUpdated);
+    on<FilterSettingUserFilterNameChanged>(
+        _onFilterSettingUserFilterNameChanged);
+    on<FilterSettingUserFilterIsDefaultChanged>(
+        _onFilterSettingUserFilterIsDefaultChanged);
 
-    on<UserListFilterSettingUserFilterSettingSelected>(
-        _onUserListFilterSettingUserFilterSettingSelected);
-    on<UserListFilterSettingUserFilterItemAdded>(
-        _onUserListFilterSettingUserFilterItemAdded);
-    on<UserListFilterSettingUserFilterItemDeleted>(
-        _onUserListFilterSettingUserFilterItemDeleted);
-    on<UserListFilterSettingUserFilterItemBooleanConditionChanged>(
-        _onUserListFilterSettingUserFilterItemBooleanConditionChanged);
-    on<UserListFilterSettingUserFilterItemOperatorChanged>(
-        _onUserListFilterSettingUserFilterItemOperatorChanged);
-    on<UserListFilterSettingUserFilterItemValueChanged>(
-        _onUserListFilterSettingUserFilterItemValueChanged);
-    on<UserListFilterSettingUserFilterItemColumnChanged>(
-        _onUserListFilterSettingUserFilterItemColumnChanged);
+    on<FilterSettingUserFilterSettingSelected>(
+        _onFilterSettingUserFilterSettingSelected);
+    on<FilterSettingUserFilterItemAdded>(
+        _onFilterSettingUserFilterItemAdded);
+    on<FilterSettingUserFilterItemDeleted>(
+        _onFilterSettingUserFilterItemDeleted);
+    on<FilterSettingUserFilterItemBooleanConditionChanged>(
+        _onFilterSettingUserFilterItemBooleanConditionChanged);
+    on<FilterSettingUserFilterItemOperatorChanged>(
+        _onFilterSettingUserFilterItemOperatorChanged);
+    on<FilterSettingUserFilterItemValueChanged>(
+        _onFilterSettingUserFilterItemValueChanged);
+    on<FilterSettingUserFilterItemColumnChanged>(
+        _onFilterSettingUserFilterItemColumnChanged);
 
-    on<UserListFilterSettingUserFilterAdded>(
-        _onUserListFilterSettingUserFilterAdded);
+    on<FilterSettingUserFilterAdded>(
+        _onFilterSettingUserFilterAdded);
   }
 
-  Future<void> _onUserListFilterSettingFilterSettingListLoaded(
-    UserListFilterSettingFilterSettingListLoaded event,
-    Emitter<UserListFilterSettingState> emit,
+  Future<void> _onFilterSettingFilterSettingListLoaded(
+    FilterSettingFilterSettingListLoaded event,
+    Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(filterSettingListLoadStatus: EntityStatus.loading));
     try {
@@ -62,9 +62,9 @@ class UserListFilterSettingBloc
     }
   }
 
-  Future<void> _onUserListFilterSettingUserFilterSettingListLoaded(
-    UserListFilterSettingUserFilterSettingListLoaded event,
-    Emitter<UserListFilterSettingState> emit,
+  Future<void> _onFilterSettingUserFilterSettingListLoaded(
+    FilterSettingUserFilterSettingListLoaded event,
+    Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(userFilterSettingListLoadStatus: EntityStatus.loading));
 
@@ -80,11 +80,11 @@ class UserListFilterSettingBloc
       if (state.selectedUserFilterSetting == null) {
         if (userFilterSettingList.indexWhere((element) => element.isDefault) !=
             -1) {
-          add(UserListFilterSettingUserFilterSettingSelected(
+          add(FilterSettingUserFilterSettingSelected(
               userFilterSetting: userFilterSettingList
                   .firstWhere((element) => element.isDefault)));
         } else if (userFilterSettingList.isNotEmpty) {
-          add(UserListFilterSettingUserFilterSettingSelected(
+          add(FilterSettingUserFilterSettingSelected(
               userFilterSetting: userFilterSettingList[0]));
         }
       }
@@ -94,9 +94,9 @@ class UserListFilterSettingBloc
     }
   }
 
-  Future<void> _onUserListFilterSettingUserFilterSettingLoadedById(
-    UserListFilterSettingUserFilterSettingLoadedById event,
-    Emitter<UserListFilterSettingState> emit,
+  Future<void> _onFilterSettingUserFilterSettingLoadedById(
+    FilterSettingUserFilterSettingLoadedById event,
+    Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(userFilterSettingLoadStatus: EntityStatus.loading));
     try {
@@ -118,9 +118,9 @@ class UserListFilterSettingBloc
     }
   }
 
-  Future<void> _onUserListFilterSettingUserFilterSettingDeletedById(
-    UserListFilterSettingUserFilterSettingDeletedById event,
-    Emitter<UserListFilterSettingState> emit,
+  Future<void> _onFilterSettingUserFilterSettingDeletedById(
+    FilterSettingUserFilterSettingDeletedById event,
+    Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(userFilterSettingDeleteStatus: EntityStatus.loading));
 
@@ -132,7 +132,7 @@ class UserListFilterSettingBloc
       ));
 
       if (response.isSuccess) {
-        add(const UserListFilterSettingUserFilterSettingListLoaded(
+        add(const FilterSettingUserFilterSettingListLoaded(
             name: 'user'));
       }
     } catch (e) {
@@ -140,9 +140,9 @@ class UserListFilterSettingBloc
     }
   }
 
-  Future<void> _onUserListFilterSettingUserFilterSettingUpdated(
-    UserListFilterSettingUserFilterSettingUpdated event,
-    Emitter<UserListFilterSettingState> emit,
+  Future<void> _onFilterSettingUserFilterSettingUpdated(
+    FilterSettingUserFilterSettingUpdated event,
+    Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.loading));
 
@@ -153,7 +153,7 @@ class UserListFilterSettingBloc
           userFilterSettingUpdateStatus:
               response.isSuccess.toEntityStatusCode()));
       if (response.isSuccess) {
-        add(const UserListFilterSettingUserFilterSettingListLoaded(
+        add(const FilterSettingUserFilterSettingListLoaded(
             name: 'user'));
       }
     } catch (e) {
@@ -161,38 +161,38 @@ class UserListFilterSettingBloc
     }
   }
 
-  void _onUserListFilterSettingUserFilterNameChanged(
-    UserListFilterSettingUserFilterNameChanged event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterNameChanged(
+    FilterSettingUserFilterNameChanged event,
+    Emitter<FilterSettingState> emit,
   ) {
     emit(state.copyWith(
         userFilterUpdate:
             state.userFilterUpdate.copyWith(filterName: event.filterName)));
   }
 
-  void _onUserListFilterSettingUserFilterIsDefaultChanged(
-    UserListFilterSettingUserFilterIsDefaultChanged event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterIsDefaultChanged(
+    FilterSettingUserFilterIsDefaultChanged event,
+    Emitter<FilterSettingState> emit,
   ) {
     emit(state.copyWith(
         userFilterUpdate:
             state.userFilterUpdate.copyWith(isDefault: event.isDefault)));
   }
 
-  void _onUserListFilterSettingUserFilterSettingSelected(
-    UserListFilterSettingUserFilterSettingSelected event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterSettingSelected(
+    FilterSettingUserFilterSettingSelected event,
+    Emitter<FilterSettingState> emit,
   ) {
     emit(state.copyWith(selectedUserFilterSetting: event.userFilterSetting));
     if (event.userFilterSetting != null) {
-      add(UserListFilterSettingUserFilterSettingLoadedById(
+      add(FilterSettingUserFilterSettingLoadedById(
           filterId: event.userFilterSetting!.id));
     }
   }
 
-  void _onUserListFilterSettingUserFilterItemAdded(
-    UserListFilterSettingUserFilterItemAdded event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterItemAdded(
+    FilterSettingUserFilterItemAdded event,
+    Emitter<FilterSettingState> emit,
   ) {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
@@ -208,9 +208,9 @@ class UserListFilterSettingBloc
             state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
   }
 
-  void _onUserListFilterSettingUserFilterItemDeleted(
-    UserListFilterSettingUserFilterItemDeleted event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterItemDeleted(
+    FilterSettingUserFilterItemDeleted event,
+    Emitter<FilterSettingState> emit,
   ) {
     if (state.userFilterUpdate.undeletedUserFilterItems.length > 1) {
       final List<UserFilterItem> userFilterItems =
@@ -226,9 +226,9 @@ class UserListFilterSettingBloc
     }
   }
 
-  void _onUserListFilterSettingUserFilterItemBooleanConditionChanged(
-    UserListFilterSettingUserFilterItemBooleanConditionChanged event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterItemBooleanConditionChanged(
+    FilterSettingUserFilterItemBooleanConditionChanged event,
+    Emitter<FilterSettingState> emit,
   ) async {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
@@ -244,9 +244,9 @@ class UserListFilterSettingBloc
             state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
   }
 
-  void _onUserListFilterSettingUserFilterItemOperatorChanged(
-    UserListFilterSettingUserFilterItemOperatorChanged event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterItemOperatorChanged(
+    FilterSettingUserFilterItemOperatorChanged event,
+    Emitter<FilterSettingState> emit,
   ) async {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
@@ -260,9 +260,9 @@ class UserListFilterSettingBloc
             state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
   }
 
-  void _onUserListFilterSettingUserFilterItemValueChanged(
-    UserListFilterSettingUserFilterItemValueChanged event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterItemValueChanged(
+    FilterSettingUserFilterItemValueChanged event,
+    Emitter<FilterSettingState> emit,
   ) async {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
@@ -276,9 +276,9 @@ class UserListFilterSettingBloc
             state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
   }
 
-  void _onUserListFilterSettingUserFilterItemColumnChanged(
-    UserListFilterSettingUserFilterItemColumnChanged event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterItemColumnChanged(
+    FilterSettingUserFilterItemColumnChanged event,
+    Emitter<FilterSettingState> emit,
   ) async {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
@@ -294,9 +294,9 @@ class UserListFilterSettingBloc
             state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
   }
 
-  void _onUserListFilterSettingUserFilterAdded(
-    UserListFilterSettingUserFilterAdded event,
-    Emitter<UserListFilterSettingState> emit,
+  void _onFilterSettingUserFilterAdded(
+    FilterSettingUserFilterAdded event,
+    Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(
         userFilterUpdate: const UserFilter(
