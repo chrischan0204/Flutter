@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -13,12 +12,12 @@ class UserFilter extends Equatable {
   final bool deleted;
   final List<UserFilterItem> userFilterItems;
   const UserFilter({
-    required this.id,
-    required this.filterName,
+    this.id = '00000000-0000-0000-0000-000000000000',
+    this.filterName = 'Unnamed filter',
     required this.viewName,
-    required this.isDefault,
-    required this.deleted,
-    required this.userFilterItems,
+    this.isDefault = false,
+    this.deleted = false,
+    this.userFilterItems = const [UserFilterItem()],
   });
 
   @override
@@ -30,6 +29,9 @@ class UserFilter extends Equatable {
         deleted,
         userFilterItems,
       ];
+
+  List<UserFilterItem> get undeletedUserFilterItems =>
+      userFilterItems.where((element) => !element.deleted).toList();
 
   UserFilter copyWith({
     String? id,
@@ -56,7 +58,7 @@ class UserFilter extends Equatable {
       'viewName': viewName,
       'isDefault': isDefault,
       'deleted': deleted,
-      'userFilterItems': userFilterItems
+      'filterItems': userFilterItems
           .map((userFilterItem) => userFilterItem.toMap())
           .toList(),
     };
@@ -70,7 +72,7 @@ class UserFilter extends Equatable {
       isDefault: map['isDefault'] as bool,
       deleted: (map['deleted'] ?? false) as bool,
       userFilterItems: List<UserFilterItem>.from(
-        (map['userFilterItems']).map(
+        (map['filterItems']).map(
           (userFilterItemMap) => UserFilterItem.fromMap(userFilterItemMap),
         ),
       ),

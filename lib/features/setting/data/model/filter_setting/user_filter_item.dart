@@ -1,28 +1,29 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'filter_setting.dart';
+
 class UserFilterItem extends Equatable {
   final String id;
-  final String viewSettingId;
+  final FilterSetting filterSetting;
   final String booleanCondition;
   final String operator;
-  final String filterValue;
+  final List<String> filterValue;
   final bool deleted;
   const UserFilterItem({
-    required this.id,
-    required this.viewSettingId,
-    required this.booleanCondition,
-    required this.operator,
-    required this.filterValue,
-    required this.deleted,
+    this.id = '00000000-0000-0000-0000-000000000000',
+    this.filterSetting = const FilterSetting(),
+    this.booleanCondition = 'And',
+    this.operator = '=',
+    this.filterValue = const [''],
+    this.deleted = false,
   });
 
   @override
   List<Object?> get props => [
         id,
-        viewSettingId,
+        filterSetting,
         booleanCondition,
         operator,
         filterValue,
@@ -31,15 +32,15 @@ class UserFilterItem extends Equatable {
 
   UserFilterItem copyWith({
     String? id,
-    String? viewSettingId,
+    FilterSetting? filterSetting,
     String? booleanCondition,
     String? operator,
-    String? filterValue,
+    List<String>? filterValue,
     bool? deleted,
   }) {
     return UserFilterItem(
       id: id ?? this.id,
-      viewSettingId: viewSettingId ?? this.viewSettingId,
+      filterSetting: filterSetting ?? this.filterSetting,
       booleanCondition: booleanCondition ?? this.booleanCondition,
       operator: operator ?? this.operator,
       filterValue: filterValue ?? this.filterValue,
@@ -50,7 +51,7 @@ class UserFilterItem extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'viewSettingId': viewSettingId,
+      'viewSettingId': filterSetting.id,
       'booleanCondition': booleanCondition,
       'operator': operator,
       'filterValue': filterValue,
@@ -61,10 +62,10 @@ class UserFilterItem extends Equatable {
   factory UserFilterItem.fromMap(Map<String, dynamic> map) {
     return UserFilterItem(
       id: map['id'] as String,
-      viewSettingId: map['viewSettingId'] as String,
+      filterSetting: FilterSetting(id: map['viewSettingId'] as String),
       booleanCondition: map['booleanCondition'] as String,
       operator: map['operator'] as String,
-      filterValue: map['filterValue'] as String,
+      filterValue: List.from(map['filterValue']),
       deleted: (map['deleted'] ?? false) as bool,
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/constants/color.dart';
 
 class CustomTextField extends StatefulWidget {
-  final String hintText;
+  final String? hintText;
   final String? initialValue;
   final ValueChanged<String> onChanged;
   final bool isDisabled;
@@ -14,7 +14,7 @@ class CustomTextField extends StatefulWidget {
   final VoidCallback? onSuffixIconClick;
   const CustomTextField({
     super.key,
-    required this.hintText,
+    this.hintText,
     this.initialValue,
     required this.onChanged,
     this.isDisabled = false,

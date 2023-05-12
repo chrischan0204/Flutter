@@ -52,10 +52,10 @@ class _CompaniesListViewState extends State<CompaniesListView> {
           entityRetrievedStatus: state.companiesRetrievedStatus,
           selectedEntity: state.selectedCompany,
           onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
-          onFilterApplied: () => _onFilterApplied(),
-          clearFilter: () => _clearFilter(),
+          // onFilterApplied: () => _onFilterApplied(),
+          // clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
-          filterApplied: filterApplied,
+          // filterApplied: filterApplied,
           filterBody: _buildFilterBody(),
         );
       },

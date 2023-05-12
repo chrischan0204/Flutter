@@ -1,4 +1,5 @@
 import '/common_libraries.dart';
+import 'widgets/users_list_filter_setting.dart';
 import 'widgets/users_list_view_setting.dart';
 
 class UsersListView extends StatefulWidget {
@@ -139,11 +140,11 @@ class _UsersListState extends State<UsersListWidget> {
               entityRetrievedStatus: userListState.userListLoadStatus,
               selectedEntity: userDetailState.user,
               onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
-              onFilterApplied: () => _onFilterApplied(),
-              clearFilter: () => _clearFilter(),
-              filterResultBody: _buildFilterResultBody(),
-              filterApplied: filterApplied,
-              filterBody: _buildFilterBody(),
+              // onFilterApplied: () => _onFilterApplied(),
+              // clearFilter: () => _clearFilter(),
+              // filterResultBody: _buildFilterResultBody(),
+              // filterApplied: filterApplied,
+              filterBody: const UserListFilterSettingView(),
               viewSettingBody: const UserListViewSettingView(),
               onViewSettingApplied: () => userListViewSettingBloc
                   .add(const UserListViewSettingApplied(viewName: 'user')),

@@ -5,15 +5,15 @@ import '/constants/color.dart';
 class CustomSingleSelect extends StatefulWidget {
   final Map<String, dynamic> items;
   final String? selectedValue;
-  final String hint;
-  final ValueChanged<MapEntry> onChanged;
+  final String? hint;
+  final ValueChanged<MapEntry<String, dynamic>> onChanged;
   final bool disabled;
 
   const CustomSingleSelect({
     super.key,
     required this.items,
     this.selectedValue,
-    required this.hint,
+    this.hint,
     required this.onChanged,
     this.disabled = false,
   });
@@ -22,21 +22,25 @@ class CustomSingleSelect extends StatefulWidget {
   State<CustomSingleSelect> createState() => _CustomSingleSelectState();
 }
 
-class _CustomSingleSelectState extends State<CustomSingleSelect> {
+class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
         isExpanded: true,
-        hint: Text(
-          widget.disabled ? widget.selectedValue ?? '' : widget.hint,
-          style: TextStyle(
-            fontSize: 12,
-            color: darkTeal,
-          ),
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.left,
-        ),
+        hint: widget.hint == null
+            ? null
+            : Text(
+                widget.disabled
+                    ? widget.selectedValue ?? ''
+                    : widget.hint ?? '',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: darkTeal,
+                ),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
+              ),
         dropdownStyleData: DropdownStyleData(
             maxHeight: MediaQuery.of(context).size.height / 2.5),
         items: (widget.disabled
@@ -62,7 +66,8 @@ class _CustomSingleSelectState extends State<CustomSingleSelect> {
                 ? null
                 : widget.selectedValue,
         onChanged: (value) {
-          MapEntry entry = MapEntry(value, widget.items[value]!);
+          MapEntry<String, dynamic> entry = MapEntry<String, dynamic>(
+              value!, widget.items[value]! as dynamic);
           widget.onChanged(entry);
         },
         buttonStyleData: ButtonStyleData(
