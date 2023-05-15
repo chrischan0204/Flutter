@@ -56,7 +56,6 @@ class _CompaniesListViewState extends State<CompaniesListView> {
           // clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
           // filterApplied: filterApplied,
-          filterBody: _buildFilterBody(),
         );
       },
     );

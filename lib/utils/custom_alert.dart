@@ -11,6 +11,7 @@ class CustomAlert {
   final VoidCallback? btnOkOnPress;
   final VoidCallback? btnCancelOnPress;
   final DialogType dialogType;
+  final Widget? body;
   CustomAlert({
     required this.context,
     this.title,
@@ -20,6 +21,7 @@ class CustomAlert {
     this.btnOkOnPress,
     this.btnCancelOnPress,
     required this.dialogType,
+    this.body,
   });
   void show() {
     AwesomeDialog(
@@ -29,6 +31,7 @@ class CustomAlert {
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
       title: title,
+      body: body,
       dialogBorderRadius: BorderRadius.circular(5),
       desc: description,
       buttonsTextStyle: const TextStyle(color: Colors.white),

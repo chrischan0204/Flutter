@@ -70,6 +70,16 @@ class FilterSettingUserFilterIsDefaultChanged extends FilterSettingEvent {
 
 class FilterSettingUserFilterSettingUpdated extends FilterSettingEvent {}
 
+class FilterSettingUserFilterSettingSavedAs extends FilterSettingEvent {
+  final String saveAsName;
+  const FilterSettingUserFilterSettingSavedAs({
+    required this.saveAsName,
+  });
+
+  @override
+  List<Object> get props => [saveAsName];
+}
+
 class FilterSettingUserFilterSettingSelected extends FilterSettingEvent {
   final UserFilterSetting? userFilterSetting;
 

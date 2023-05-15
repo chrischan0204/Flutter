@@ -63,7 +63,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           // clearFilter: () => _clearFilter(),
           filterResultBody: _buildFilterResultBody(),
           // filterApplied: filterApplied,
-          filterBody: _buildFilterBody(),
         );
       },
     );

@@ -6,9 +6,11 @@ import '/common_libraries.dart';
 
 class FilterSettingView extends StatefulWidget {
   final String viewName;
+  final VoidCallback onFilterOptionClosed;
   const FilterSettingView({
     super.key,
     required this.viewName,
+    required this.onFilterOptionClosed,
   });
 
   @override
@@ -42,6 +44,7 @@ class _FilterSettingViewState extends State<FilterSettingView> {
             ],
             child: FilterSettingWidget(
               viewName: widget.viewName,
+              onFilterOptionClosed: widget.onFilterOptionClosed,
             ),
           ),
         );
@@ -52,9 +55,11 @@ class _FilterSettingViewState extends State<FilterSettingView> {
 
 class FilterSettingWidget extends StatefulWidget {
   final String viewName;
+  final VoidCallback onFilterOptionClosed;
   const FilterSettingWidget({
     super.key,
     required this.viewName,
+    required this.onFilterOptionClosed,
   });
 
   @override
@@ -77,48 +82,57 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          constraints:
-              BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(1, 1),
-                blurRadius: 1,
-                spreadRadius: 1,
-              )
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const FilterSettingHeaderView(),
-              Builder(builder: (context) {
-                if (state.userFilterSettingList.isEmpty &&
-                    state.userFilterUpdate.undeletedUserFilterItems.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'There are no user filter settings. Please click Add Button to create new user filter setting',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  );
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const FilterSettingBodyView(),
-                    _buildAddClauseButton(),
-                    const FilterSettingFooterView()
-                  ],
-                );
-              })
-            ],
-          ),
+        return Column(
+          children: [
+            const CustomDivider(),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height / 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(1, 1),
+                    blurRadius: 1,
+                    spreadRadius: 1,
+                  )
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FilterSettingHeaderView(
+                    onFilterOptionClosed: () =>
+                        setState(() => widget.onFilterOptionClosed()),
+                  ),
+                  Builder(builder: (context) {
+                    if (state.userFilterSettingList.isEmpty &&
+                        state.userFilterUpdate.undeletedUserFilterItems
+                            .isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'There are no user filter settings. Please click Add Button to create new user filter setting',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      );
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const FilterSettingBodyView(),
+                        _buildAddClauseButton(),
+                        const FilterSettingFooterView()
+                      ],
+                    );
+                  })
+                ],
+              ),
+            ),
+          ],
         );
       },
     );

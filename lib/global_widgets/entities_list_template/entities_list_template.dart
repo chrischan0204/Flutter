@@ -5,7 +5,6 @@ import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
-  final Widget? filterBody;
   final Widget? filterResultBody;
   final Widget? viewSettingBody;
   final VoidCallback? onViewSettingApplied;
@@ -25,7 +24,6 @@ class EntityListTemplate extends StatefulWidget {
   const EntityListTemplate({
     super.key,
     required this.title,
-    this.filterBody,
     this.filterResultBody,
     this.viewSettingBody,
     this.onViewSettingApplied,
@@ -80,26 +78,16 @@ class _CrudState extends State<EntityListTemplate> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(),
-                // widget.filterApplied ? const CustomDivider() : Container(),
-                // widget.filterApplied
-                //     ? _buildFilterAppliedNotification()
-                //     : Container(),
-                // widget.filterApplied ? const CustomDivider() : Container(),
-                // widget.filterApplied
-                //     ? Padding(
-                //         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                //         child: widget.filterResultBody ?? Container(),
-                //       )
-                //     : Container(),
                 widget.showTableHeaderButtons
                     ? _buildTableHeader()
                     : Container(),
                 filterViewShow
-                    ? widget.filterBody != null
-                        ? const CustomDivider()
-                        : Container()
+                    ? FilterSettingView(
+                        viewName: 'user',
+                        onFilterOptionClosed: () =>
+                            setState(() => filterViewShow = false),
+                      )
                     : Container(),
-                filterViewShow ? widget.filterBody ?? Container() : Container(),
                 _buildTableView()
               ],
             ),
@@ -110,32 +98,6 @@ class _CrudState extends State<EntityListTemplate> {
       ),
     );
   }
-
-  // Padding _buildFilterAppliedNotification() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 20),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         const Text(
-  //           'Filter Applied',
-  //           style: TextStyle(
-  //             decoration: TextDecoration.underline,
-  //             fontSize: 14,
-  //             fontWeight: FontWeight.w600,
-  //           ),
-  //         ),
-  //         CustomButton(
-  //           backgroundColor: const Color(0xff049aad),
-  //           hoverBackgroundColor: const Color(0xff048b9c),
-  //           iconData: PhosphorIcons.arrowArcLeft,
-  //           text: 'Clear Filters',
-  //           onClick: () => widget.clearFilter!(),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Column _buildHeader() {
     return Column(

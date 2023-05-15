@@ -13,6 +13,9 @@ class FilterSettingState extends Equatable {
   final EntityStatus userFilterSettingUpdateStatus;
   final EntityStatus userFilterSettingDeleteStatus;
   final UserFilterSetting? selectedUserFilterSetting;
+
+  final String addButtonName;
+
   const FilterSettingState({
     this.filterSettingListLoadStatus = EntityStatus.initial,
     this.filterSettingList = const [],
@@ -23,6 +26,7 @@ class FilterSettingState extends Equatable {
     this.userFilterSettingListLoadStatus = EntityStatus.initial,
     this.userFilterSettingUpdateStatus = EntityStatus.initial,
     this.userFilterSettingDeleteStatus = EntityStatus.initial,
+    this.addButtonName = 'Update',
   });
 
   @override
@@ -36,6 +40,7 @@ class FilterSettingState extends Equatable {
         userFilterSettingListLoadStatus,
         userFilterSettingUpdateStatus,
         userFilterSettingDeleteStatus,
+        addButtonName,
       ];
 
   FilterSetting getFilterSettingById(String id) =>
@@ -51,6 +56,7 @@ class FilterSettingState extends Equatable {
     EntityStatus? userFilterSettingListLoadStatus,
     EntityStatus? userFilterSettingUpdateStatus,
     EntityStatus? userFilterSettingDeleteStatus,
+    String? addButtonName,
   }) {
     return FilterSettingState(
       filterSettingListLoadStatus:
@@ -69,6 +75,7 @@ class FilterSettingState extends Equatable {
           userFilterSettingUpdateStatus ?? this.userFilterSettingUpdateStatus,
       userFilterSettingDeleteStatus:
           userFilterSettingDeleteStatus ?? this.userFilterSettingDeleteStatus,
+      addButtonName: addButtonName ?? this.addButtonName,
     );
   }
 }

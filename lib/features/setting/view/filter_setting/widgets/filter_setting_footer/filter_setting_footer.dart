@@ -11,6 +11,7 @@ class FilterSettingFooterView extends StatefulWidget {
 class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
   late FilterSettingBloc filterSettingBloc;
   TextEditingController filterNameController = TextEditingController();
+  String saveAsName = '';
 
   @override
   void initState() {
@@ -97,10 +98,53 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                           backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(3))),
-                      child: const Text(
-                        'Save',
-                        style: TextStyle(color: Colors.white),
+                      child: Text(
+                        state.addButtonName,
+                        style: const TextStyle(color: Colors.white),
                       ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      CustomAlert(
+                        context: context,
+                        width: MediaQuery.of(context).size.width / 4,
+                        title: 'Save as',
+                        description: 'Please enter the filter name.',
+                        btnOkText: 'Save as',
+                        btnOkOnPress: () {
+                          if (!Validation.isEmpty(saveAsName)) {
+                            filterSettingBloc.add(
+                                FilterSettingUserFilterSettingSavedAs(
+                                    saveAsName: saveAsName));
+                          }
+                        },
+                        btnCancelOnPress: () {},
+                        body: Column(
+                          children: [
+                            const Text(
+                              'Please enter the filter name to save as.',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const SizedBox(width: 20),
+                            CustomTextField(
+                              onChanged: (value) {
+                                setState(() => saveAsName = value);
+                              },
+                            ),
+                          ],
+                        ),
+                        dialogType: DialogType.info,
+                      ).show();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3))),
+                    child: const Text(
+                      'Save as',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(width: 20),

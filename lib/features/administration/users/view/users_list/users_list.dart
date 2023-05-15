@@ -1,5 +1,4 @@
 import '/common_libraries.dart';
-import 'widgets/users_list_filter_setting.dart';
 import 'widgets/users_list_view_setting.dart';
 
 class UsersListView extends StatefulWidget {
@@ -148,11 +147,6 @@ class _UsersListState extends State<UsersListWidget> {
               entityRetrievedStatus: userListState.userListLoadStatus,
               selectedEntity: userDetailState.user,
               onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
-              // onFilterApplied: () => _onFilterApplied(),
-              // clearFilter: () => _clearFilter(),
-              // filterResultBody: _buildFilterResultBody(),
-              // filterApplied: filterApplied,
-              filterBody: const UserListFilterSettingView(),
               viewSettingBody: const UserListViewSettingView(),
               onViewSettingApplied: () => userListViewSettingBloc
                   .add(const UserListViewSettingApplied(viewName: 'user')),
@@ -166,161 +160,8 @@ class _UsersListState extends State<UsersListWidget> {
     );
   }
 
-  void _clearFilter() {
-    setState(() {
-      filterApplied = false;
-      filterSites = [];
-      filterRoles = [];
-      filterActive = true;
-      filterNameHasController.text = '';
-    });
-  }
-
-  void _onFilterApplied() {
-    setState(() {
-      filterApplied = true;
-    });
-  }
-
-  Column _buildFilterBody() {
-    return Column(
-      children: [
-        _buildFilterUserNameTextField(),
-        _buildFilterRoleMultiSelectField(),
-        _buildFilterTitleTextField(),
-        _buildFilterSiteMultiSelectField(),
-        _buildFilterActiveSwitch(),
-      ],
-    );
-  }
-
-  DetailItem _buildFilterUserNameTextField() {
-    return DetailItem(
-      label: 'Name has',
-      content: CustomTextField(
-        controller: filterNameHasController,
-        hintText: 'User Name contains...',
-        onChanged: (nameHas) {},
-      ),
-    );
-  }
-
-  DetailItem _buildFilterTitleTextField() {
-    return DetailItem(
-      label: 'Title',
-      content: CustomTextField(
-        controller: filterTitleController,
-        hintText: 'User Title contains...',
-        onChanged: (nameHas) {},
-      ),
-    );
-  }
-
-  DetailItem _buildFilterActiveSwitch() {
-    return DetailItem(
-      label: 'Active',
-      content: CustomSwitch(
-        switchValue: filterActive,
-        trueString: 'Yes',
-        falseString: 'No',
-        textColor: darkTeal,
-        onChanged: (value) {
-          setState(() {
-            filterActive = value;
-          });
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterSiteMultiSelectField() {
-    return DetailItem(
-      label: 'Site',
-      content: BlocBuilder<SitesBloc, SitesState>(
-        builder: (context, userListState) {
-          return CustomMultiSelect(
-            items: <String, Site>{}..addEntries(
-                userListState.sites.map(
-                  (site) => MapEntry(site.name!, site),
-                ),
-              ),
-            selectedItems: filterSites,
-            hint: 'Associated with sites',
-            onChanged: (sites) {
-              filterSites = sites.map((site) => site as Site).toList();
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterRoleMultiSelectField() {
-    return DetailItem(
-      label: 'Role',
-      content: BlocBuilder<RolesBloc, RolesState>(
-        builder: (context, userListState) {
-          return CustomMultiSelect(
-            items: <String, Entity>{}..addEntries(
-                userListState.roles.map(
-                  (role) => MapEntry(
-                      role.name,
-                      Entity(
-                        id: role.id,
-                        name: role.name,
-                      )),
-                ),
-              ),
-            selectedItems: filterRoles
-                .map((filterRole) => Entity(
-                      id: filterRole.id,
-                      name: filterRole.name,
-                    ))
-                .toList(),
-            hint: 'Select role',
-            onChanged: (roles) {
-              filterRoles = roles
-                  .map((role) => Role(
-                        id: role.id ?? '',
-                        name: role.name ?? '',
-                      ))
-                  .toList();
-            },
-          );
-        },
-      ),
-    );
-  }
-
   void _selectUser(Entity selectedUser) {
     userDetailBloc.add(UserDetailUserLoadedById(userId: selectedUser.id!));
-  }
-
-  Wrap _buildFilterResultBody() {
-    return Wrap(
-      children: [
-        FilterItem(
-          label: 'Name has:',
-          content: filterNameHasController.text,
-        ),
-        FilterItem(
-          label: 'Role:',
-          content: filterRoles.map((role) => role.name).join(', '),
-        ),
-        FilterItem(
-          label: 'Title:',
-          content: filterTitleController.text,
-        ),
-        FilterItem(
-          label: 'Site:',
-          content: filterSites.map((site) => site.name ?? '').join(', '),
-        ),
-        FilterItem(
-          label: 'Active:',
-          content: filterActive ? 'Yes' : 'No',
-        ),
-      ],
-    );
   }
 
   void _sortUsers(List<Entity> sortedUsers) {

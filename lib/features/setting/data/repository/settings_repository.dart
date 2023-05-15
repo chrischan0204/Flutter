@@ -61,13 +61,13 @@ class SettingsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<UserFilterSetting> updateUserFilterSetting(
+  Future<UserFilter> updateUserFilterSetting(
       UserFilter userFilterUpdate) async {
     Response response =
         await super.post('$url/users/filter', body: userFilterUpdate.toJson());
 
     if (response.statusCode == 200) {
-      return UserFilterSetting.fromJson(response.body);
+      return UserFilter.fromJson(response.body);
     }
     throw Exception();
   }
