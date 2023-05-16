@@ -8,6 +8,7 @@ class CustomSingleSelect extends StatefulWidget {
   final String? hint;
   final ValueChanged<MapEntry<String, dynamic>> onChanged;
   final bool disabled;
+  final bool isSearchable;
 
   const CustomSingleSelect({
     super.key,
@@ -16,6 +17,7 @@ class CustomSingleSelect extends StatefulWidget {
     this.hint,
     required this.onChanged,
     this.disabled = false,
+    this.isSearchable = true,
   });
 
   @override
@@ -23,10 +25,49 @@ class CustomSingleSelect extends StatefulWidget {
 }
 
 class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
+  final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
+        dropdownSearchData: widget.isSearchable
+            ? DropdownSearchData<String>(
+                searchController: textEditingController,
+                searchInnerWidgetHeight: 50,
+                searchInnerWidget: Container(
+                  height: 50,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    bottom: 4,
+                    right: 8,
+                    left: 8,
+                  ),
+                  child: TextFormField(
+                    expands: true,
+                    maxLines: null,
+                    controller: textEditingController,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      hintText: 'Search...',
+                      hintStyle: const TextStyle(fontSize: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                searchMatchFn: (item, searchValue) {
+                  return (item.value
+                      .toString()
+                      .toLowerCase()
+                      .contains(searchValue.toLowerCase()));
+                },
+              )
+            : null,
         isExpanded: true,
         hint: widget.hint == null
             ? null
