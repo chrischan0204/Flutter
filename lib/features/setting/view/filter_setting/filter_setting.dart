@@ -7,10 +7,14 @@ import '/common_libraries.dart';
 class FilterSettingView extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
+  final ValueChanged<String> onFilterSaved;
+  final VoidCallback onFilterApplied;
   const FilterSettingView({
     super.key,
     required this.viewName,
     required this.onFilterOptionClosed,
+    required this.onFilterSaved,
+    required this.onFilterApplied,
   });
 
   @override
@@ -45,6 +49,8 @@ class _FilterSettingViewState extends State<FilterSettingView> {
             child: FilterSettingWidget(
               viewName: widget.viewName,
               onFilterOptionClosed: widget.onFilterOptionClosed,
+              onFilterSaved: widget.onFilterSaved,
+              onFilterApplied: widget.onFilterApplied,
             ),
           ),
         );
@@ -56,10 +62,14 @@ class _FilterSettingViewState extends State<FilterSettingView> {
 class FilterSettingWidget extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
+  final ValueChanged<String> onFilterSaved;
+  final VoidCallback onFilterApplied;
   const FilterSettingWidget({
     super.key,
     required this.viewName,
     required this.onFilterOptionClosed,
+    required this.onFilterSaved,
+    required this.onFilterApplied,
   });
 
   @override
@@ -125,7 +135,10 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                       children: [
                         const FilterSettingBodyView(),
                         _buildAddClauseButton(),
-                        const FilterSettingFooterView()
+                        FilterSettingFooterView(
+                            onFilterApplied: () => widget.onFilterApplied(),
+                            onFilterSaved: (filterId) =>
+                                widget.onFilterSaved(filterId))
                       ],
                     );
                   })

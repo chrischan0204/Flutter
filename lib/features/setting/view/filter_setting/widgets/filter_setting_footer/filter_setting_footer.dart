@@ -1,7 +1,13 @@
 import '/common_libraries.dart';
 
 class FilterSettingFooterView extends StatefulWidget {
-  const FilterSettingFooterView({super.key});
+  final ValueChanged<String> onFilterSaved;
+  final VoidCallback onFilterApplied;
+  const FilterSettingFooterView({
+    super.key,
+    required this.onFilterSaved,
+    required this.onFilterApplied,
+  });
 
   @override
   State<FilterSettingFooterView> createState() =>
@@ -75,6 +81,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                           notifyType: NotifyType.success,
                           content: 'User filter saved successfully',
                         ).showNotification();
+                        widget.onFilterSaved(state.userFilterUpdate.id);
                       }
                     },
                     listenWhen: (previous, current) =>
@@ -147,6 +154,18 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+                  // const SizedBox(width: 20),
+                  // ElevatedButton(
+                  //   onPressed: () => widget.onFilterApplied(),
+                  //   style: ElevatedButton.styleFrom(
+                  //       backgroundColor: Colors.green,
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(3))),
+                  //   child: const Text(
+                  //     'Apply',
+                  //     style: TextStyle(color: Colors.white),
+                  //   ),
+                  // ),
                   const SizedBox(width: 20),
                   BlocListener<FilterSettingBloc, FilterSettingState>(
                     listener: (context, state) {

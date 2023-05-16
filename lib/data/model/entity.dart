@@ -8,7 +8,7 @@ import 'package:safety_eta/utils/utils.dart';
 class EntityHeader extends Equatable {
   final String name;
   final String title;
-  final String isHidden;
+  final bool isHidden;
   const EntityHeader({
     required this.name,
     required this.title,
@@ -26,17 +26,13 @@ class EntityHeader extends Equatable {
     return EntityHeader(
       name: map['name'] as String,
       title: map['title'] as String,
-      isHidden: map['isHidden'] as String,
+      isHidden: map['isHidden'] as bool,
     );
   }
 
   factory EntityHeader.fromJson(String source) =>
       EntityHeader.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-
-// class FilteredEntity extends Equatable {
-//   final lastName
-// }
 
 // standadized model, which other models inherit
 class Entity extends Equatable {
@@ -50,8 +46,10 @@ class Entity extends Equatable {
   final String? createdByUserName;
   final String? lastModifiedByUserName;
   final String? lastModifiedOn;
+  final List<String> columns;
 
   const Entity({
+    this.columns = const [],
     this.headers = const [],
     this.id,
     this.name,
@@ -141,6 +139,7 @@ class Entity extends Equatable {
         active,
         createdOn,
         createdByUserName,
+        columns,
       ];
 }
 

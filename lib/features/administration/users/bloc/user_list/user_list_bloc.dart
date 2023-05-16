@@ -9,6 +9,7 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
   UserListBloc({required this.usersRepository}) : super(const UserListState()) {
     on<UserListLoaded>(_onUserListLoaded);
     on<UserListSorted>(_onUserListSorted);
+    on<UserListFiltered>(_onUserListFiltered);
   }
 
   Future<void> _onUserListLoaded(
@@ -32,5 +33,23 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
     Emitter<UserListState> emit,
   ) {
     emit(state.copyWith(userList: event.sortedUserList));
+  }
+
+  Future<void> _onUserListFiltered(
+    UserListFiltered event,
+    Emitter<UserListState> emit,
+  ) async {
+    emit(state.copyWith(userListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<User> filteredUserList = await usersRepository.getFilteredUserList(
+          event.filterId, event.includeDeleted);
+      emit(state.copyWith(
+        userList: filteredUserList,
+        userListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(userListLoadStatus: EntityStatus.failure));
+    }
   }
 }

@@ -59,10 +59,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
           onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
-          // onFilterApplied: () => _onFilterApplied(),
-          // clearFilter: () => _clearFilter(),
-          filterResultBody: _buildFilterResultBody(),
-          // filterApplied: filterApplied,
         );
       },
     );

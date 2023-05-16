@@ -34,7 +34,7 @@ class FilterSettingState extends Equatable {
         filterSettingListLoadStatus,
         filterSettingList,
         userFilterUpdate,
-        selectedUserFilterSetting,
+        selectedUserFilterSetting?.id,
         userFilterSettingLoadStatus,
         userFilterSettingList,
         userFilterSettingListLoadStatus,
@@ -45,6 +45,15 @@ class FilterSettingState extends Equatable {
 
   FilterSetting getFilterSettingById(String id) =>
       filterSettingList.firstWhere((element) => element.id == id);
+
+  String get defaultFilterSettingId => userFilterSettingList.firstWhere(
+        (element) => element.isDefault,
+        orElse: () {
+          return userFilterSettingList.isEmpty
+              ? const UserFilterSetting()
+              : userFilterSettingList[0];
+        },
+      ).id;
 
   FilterSettingState copyWith({
     EntityStatus? filterSettingListLoadStatus,

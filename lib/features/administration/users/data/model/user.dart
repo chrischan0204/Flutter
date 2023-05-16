@@ -16,6 +16,7 @@ class User extends Entity {
   final String siteAccess;
   final String timeZoneName;
   final String timeZoneId;
+  // final List<String> columns;
 
   const User({
     super.id,
@@ -37,6 +38,7 @@ class User extends Entity {
     super.createdOn,
     super.lastModifiedByUserName,
     super.lastModifiedOn,
+    super.columns = const [],
   }) : super(name: '$firstName $lastName');
 
   @override
@@ -76,6 +78,7 @@ class User extends Entity {
     String? createdByUserName,
     String? lastModifiedByUserName,
     String? lastModifiedOn,
+    List<String>? columns,
   }) {
     return User(
       id: id ?? this.id,
@@ -97,6 +100,7 @@ class User extends Entity {
       lastModifiedByUserName:
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
+      columns: columns ?? this.columns,
     );
   }
 
@@ -108,6 +112,9 @@ class User extends Entity {
       'Role': roleName,
       'Title': title,
       'Default Site': defaultSiteName,
+      'Mobile Number': mobileNumber,
+      'Time Zone': timeZoneName,
+      'Email': email,
     };
   }
 

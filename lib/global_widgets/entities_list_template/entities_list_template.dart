@@ -5,10 +5,11 @@ import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
-  final Widget? filterResultBody;
   final Widget? viewSettingBody;
   final VoidCallback? onViewSettingApplied;
   final VoidCallback? onViewSettingSliderOpened;
+  final ValueChanged<String>? onFilterSaved;
+  final VoidCallback? onFilterApplied;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
@@ -24,10 +25,11 @@ class EntityListTemplate extends StatefulWidget {
   const EntityListTemplate({
     super.key,
     required this.title,
-    this.filterResultBody,
     this.viewSettingBody,
     this.onViewSettingApplied,
     this.onViewSettingSliderOpened,
+    this.onFilterSaved,
+    this.onFilterApplied,
     required this.label,
     required this.onRowClick,
     this.onIncludeDeletedChanged,
@@ -86,6 +88,9 @@ class _CrudState extends State<EntityListTemplate> {
                         viewName: 'user',
                         onFilterOptionClosed: () =>
                             setState(() => filterViewShow = false),
+                            onFilterApplied: () => widget.onFilterApplied!(),
+                        onFilterSaved: (filterId) =>
+                            widget.onFilterSaved!(filterId),
                       )
                     : Container(),
                 _buildTableView()

@@ -7,9 +7,9 @@ class UserFilterSetting extends Equatable {
   final String filterName;
   final bool isDefault;
   const UserFilterSetting({
-    required this.id,
-    required this.filterName,
-    required this.isDefault,
+    this.id = '',
+    this.filterName = '',
+    this.isDefault = false,
   });
 
   @override

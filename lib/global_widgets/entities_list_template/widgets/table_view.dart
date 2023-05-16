@@ -30,9 +30,13 @@ class _DataTableViewState extends State<DataTableView> {
 
   List<DataColumn> _buildColumns() {
     if (widget.entities.isNotEmpty) {
-      List<String> columns = widget.columns.isEmpty
-          ? widget.entities[0].tableItemsToMap().keys.toList()
-          : widget.columns;
+      // List<String> columns = widget.columns.isEmpty
+      //     ? widget.entities[0].tableItemsToMap().keys.toList()
+      //     : widget.columns;
+      // print(columns);
+      List<String> columns = widget.entities[0].columns.isNotEmpty
+          ? widget.entities[0].columns
+          : widget.entities[0].tableItemsToMap().keys.toList();
       return [
         ...columns
             .map(
@@ -106,6 +110,9 @@ class _DataTableViewState extends State<DataTableView> {
   }
 
   List<DataRow> _buildRows() {
+    List<String> columns = widget.entities[0].columns.isNotEmpty
+        ? widget.entities[0].columns
+        : widget.entities[0].tableItemsToMap().keys.toList();
     return widget.entities
         .map(
           (entity) => DataRow(
@@ -118,7 +125,7 @@ class _DataTableViewState extends State<DataTableView> {
               return null; // Use the default value.
             }),
             cells: [
-              ...(widget.columns.isEmpty
+              ...(columns.isEmpty
                   ? entity
                       .tableItemsToMap()
                       .values
@@ -126,7 +133,7 @@ class _DataTableViewState extends State<DataTableView> {
                             data: value,
                           )))
                       .toList()
-                  : widget.columns
+                  : columns
                       .map((column) => DataCell(CustomDataCell(
                             data: entity.tableItemsToMap()[column],
                           )))

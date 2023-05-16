@@ -26,7 +26,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
         _onFilterSettingUserFilterNameChanged);
     on<FilterSettingUserFilterIsDefaultChanged>(
         _onFilterSettingUserFilterIsDefaultChanged);
-
     on<FilterSettingUserFilterSettingSelected>(
         _onFilterSettingUserFilterSettingSelected);
     on<FilterSettingUserFilterItemAdded>(_onFilterSettingUserFilterItemAdded);
@@ -88,11 +87,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       List<UserFilterSetting> userFilterSettingList =
           await settingsRepository.getUserFilterSettingList(event.name);
 
-      emit(state.copyWith(
-        userFilterSettingListLoadStatus: EntityStatus.success,
-        userFilterSettingList: userFilterSettingList,
-      ));
-
       if (state.selectedUserFilterSetting == null) {
         if (userFilterSettingList.indexWhere((element) => element.isDefault) !=
             -1) {
@@ -104,6 +98,10 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
               userFilterSetting: userFilterSettingList[0]));
         }
       }
+      emit(state.copyWith(
+        userFilterSettingListLoadStatus: EntityStatus.success,
+        userFilterSettingList: userFilterSettingList,
+      ));
     } catch (e) {
       emit(state.copyWith(
           userFilterSettingListLoadStatus: EntityStatus.failure));
@@ -249,6 +247,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     FilterSettingUserFilterSettingSelected event,
     Emitter<FilterSettingState> emit,
   ) {
+    print(event.userFilterSetting?.id);
     emit(state.copyWith(selectedUserFilterSetting: event.userFilterSetting));
     if (event.userFilterSetting != null) {
       add(FilterSettingUserFilterSettingLoadedById(
