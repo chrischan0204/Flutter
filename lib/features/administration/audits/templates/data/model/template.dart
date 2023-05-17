@@ -75,7 +75,9 @@ class Template extends Entity {
     return Template(
       id: entity.id,
       name: entity.name,
-      revisionDate: map['revisionDate'] as String,
+      revisionDate:
+          FormatDate(format: 'd MMMM y', dateString: map['revisionDate'] ?? '')
+              .formatDate,
       usedInAudit: map['usedInAudit'] as bool,
       usedInInspection: map['usedInInspection'] as bool,
       locked: map['locked'] as bool,
@@ -84,6 +86,16 @@ class Template extends Entity {
       createdByUserName: entity.createdByUserName,
       createdOn: entity.createdOn,
     );
+  }
+
+  @override
+  Map<String, dynamic> detailItemsToMap() {
+    return {
+      'Template Description': name,
+      'Revision Date': revisionDate,
+      'Used in audits?': usedInAudit,
+      'Used in inspections?': usedInInspection,
+    };
   }
 
   String toJson() => json.encode(toMap());

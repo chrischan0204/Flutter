@@ -1,5 +1,4 @@
-import 'package:safety_eta/features/administration/users/view/user_detail/widgets/invite_details.dart';
-
+import 'widgets/invite_details.dart';
 import 'widgets/user_notifcation_settings.dart';
 import 'widgets/user_site_access.dart';
 
@@ -21,8 +20,10 @@ class _UserDetailViewState extends State<UserDetailView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) => setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) => previous.authUser?.token != current.authUser?.token,
+      listener: (context, state) =>
+          setState(() => token = state.authUser?.token ?? ''),
+      listenWhen: (previous, current) =>
+          previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
         token = state.authUser?.token ?? '';
         return RepositoryProvider(

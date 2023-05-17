@@ -254,6 +254,39 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/templates/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditUserView(),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/edit/:templateId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditUserView(
+            userId: state.params['templateId'],
+            view: state.queryParams['view'],
+          ),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/show/:templateId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: TemplateDetailView(templateId: state.params['templateId']!),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/audits',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
