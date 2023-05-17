@@ -1,6 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:http/http.dart';
+import 'package:equatable/equatable.dart';
 
 import '/common_libraries.dart';
 
@@ -238,4 +239,122 @@ class UsersRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  Future<List<User>> getFilteredUserList(
+    String filterId,
+    bool includeDeleted,
+  ) async {
+    Map<String, String> queryParams = {
+      'includeDeleted': includeDeleted.toString(),
+      'filterId': filterId,
+    };
+    Response response = await super.get('$url/list', queryParams);
+
+    if (response.statusCode == 200) {
+      final data = FilteredUserData.fromJson(response.body);
+      final List<String> columns =
+          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
+      return data.data
+          .map((e) => User(
+                id: e.id,
+                firstName: e.firstName,
+                lastName: e.lastName,
+                email: e.email,
+                title: e.title,
+                timeZoneName: e.timeZone,
+                mobileNumber: e.mobileNumber,
+                defaultSiteName: e.defaultSite,
+                roleName: e.role,
+                columns: columns,
+              ))
+          .toList();
+    }
+    throw Exception();
+  }
+}
+
+class FilteredUser extends Equatable {
+  final String id;
+  final String lastName;
+  final String firstName;
+  final String mobileNumber;
+  final String timeZone;
+  final String email;
+  final String title;
+  final String defaultSite;
+  final String role;
+  const FilteredUser({
+    required this.id,
+    this.lastName = '',
+    this.firstName = '',
+    this.mobileNumber = '',
+    this.timeZone = '',
+    this.email = '',
+    this.title = '',
+    this.defaultSite = '',
+    this.role = '',
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        firstName,
+        lastName,
+        mobileNumber,
+        timeZone,
+        email,
+        title,
+        defaultSite,
+        role,
+      ];
+
+  factory FilteredUser.fromMap(Map<String, dynamic> map) {
+    return FilteredUser(
+      id: map['id'],
+      lastName: map['last_Name'] ?? '',
+      firstName: map['first_Name'] ?? '',
+      mobileNumber: map['mobile_Number'] ?? '',
+      timeZone: map['time_Zone'] ?? '',
+      email: map['email'] ?? '',
+      title: map['title'] ?? '',
+      defaultSite: map['default_Site'] ?? '',
+      role: map['role'] ?? '',
+    );
+  }
+
+  factory FilteredUser.fromJson(String source) =>
+      FilteredUser.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class FilteredUserData extends Equatable {
+  final List<EntityHeader> headers;
+  final List<FilteredUser> data;
+  const FilteredUserData({
+    required this.headers,
+    required this.data,
+  });
+
+  @override
+  List<Object?> get props => [
+        headers,
+        data,
+      ];
+
+  factory FilteredUserData.fromMap(Map<String, dynamic> map) {
+    return FilteredUserData(
+      headers: List<EntityHeader>.from(
+        (map['headers']).map<EntityHeader>(
+          (x) => EntityHeader.fromMap(x),
+        ),
+      ),
+      data: List<FilteredUser>.from(
+        (map['data']).map<FilteredUser>(
+          (x) => FilteredUser.fromMap(x),
+        ),
+      ),
+    );
+  }
+
+  factory FilteredUserData.fromJson(String source) =>
+      FilteredUserData.fromMap(json.decode(source) as Map<String, dynamic>);
 }

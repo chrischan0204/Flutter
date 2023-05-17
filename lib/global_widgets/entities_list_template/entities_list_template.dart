@@ -5,14 +5,11 @@ import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
-  final Widget? filterBody;
-  final Widget? filterResultBody;
-  final bool filterApplied;
-  final VoidCallback? onFilterApplied;
-  final VoidCallback? clearFilter;
   final Widget? viewSettingBody;
   final VoidCallback? onViewSettingApplied;
   final VoidCallback? onViewSettingSliderOpened;
+  final ValueChanged<String>? onFilterSaved;
+  final VoidCallback? onFilterApplied;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
@@ -25,17 +22,15 @@ class EntityListTemplate extends StatefulWidget {
   final ValueChanged<List<Entity>>? onTableSorted;
   final IconData? newIconData;
   final List<String> columns;
+  final String viewName;
   const EntityListTemplate({
     super.key,
     required this.title,
-    this.filterBody,
-    this.filterResultBody,
-    this.filterApplied = false,
-    this.onFilterApplied,
-    this.clearFilter,
     this.viewSettingBody,
     this.onViewSettingApplied,
     this.onViewSettingSliderOpened,
+    this.onFilterSaved,
+    this.onFilterApplied,
     required this.label,
     required this.onRowClick,
     this.onIncludeDeletedChanged,
@@ -48,6 +43,7 @@ class EntityListTemplate extends StatefulWidget {
     this.onTableSorted,
     this.newIconData,
     this.columns = const [],
+    this.viewName = 'user',
   });
 
   @override
@@ -55,20 +51,24 @@ class EntityListTemplate extends StatefulWidget {
 }
 
 class _CrudState extends State<EntityListTemplate> {
-  late double positionRightForFiltersSlier;
   late double positionRightForViewSettingsSlider;
   late double positionRightForDetailsSlider;
   late String selectedId;
   bool includeDeleted = false;
+  bool filterViewShow = false;
+
+  late FilterSettingBloc filterSettingBloc;
 
   @override
   void initState() {
+    filterSettingBloc = context.read()
+      ..add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    positionRightForFiltersSlier = positionRightForViewSettingsSlider =
+    positionRightForViewSettingsSlider =
         positionRightForDetailsSlider = -MediaQuery.of(context).size.width / 4;
     super.didChangeDependencies();
   }
@@ -86,19 +86,18 @@ class _CrudState extends State<EntityListTemplate> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(),
-                widget.filterApplied ? const CustomDivider() : Container(),
-                widget.filterApplied
-                    ? _buildFilterAppliedNotification()
-                    : Container(),
-                widget.filterApplied ? const CustomDivider() : Container(),
-                widget.filterApplied
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: widget.filterResultBody ?? Container(),
-                      )
-                    : Container(),
                 widget.showTableHeaderButtons
                     ? _buildTableHeader()
+                    : Container(),
+                filterViewShow
+                    ? FilterSettingView(
+                        viewName: widget.viewName,
+                        onFilterOptionClosed: () =>
+                            setState(() => filterViewShow = false),
+                        onFilterApplied: () => widget.onFilterApplied!(),
+                        onFilterSaved: (filterId) =>
+                            widget.onFilterSaved!(filterId),
+                      )
                     : Container(),
                 _buildTableView()
               ],
@@ -106,33 +105,6 @@ class _CrudState extends State<EntityListTemplate> {
           ),
           _buildDetailsSlider(context),
           _buildViewSettingsSlider(context),
-          _buildFiltersSlider(context),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildFilterAppliedNotification() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Filter Applied',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          CustomButton(
-            backgroundColor: const Color(0xff049aad),
-            hoverBackgroundColor: const Color(0xff048b9c),
-            iconData: PhosphorIcons.arrowArcLeft,
-            text: 'Clear Filters',
-            onClick: () => widget.clearFilter!(),
-          )
         ],
       ),
     );
@@ -280,7 +252,9 @@ class _CrudState extends State<EntityListTemplate> {
                     iconData: PhosphorIcons.funnel,
                     label: 'Filters',
                     color: const Color(0xff0c83ff),
-                    onClick: () => _showFilterSlider(),
+                    onClick: () {
+                      _showFilterView();
+                    },
                   ),
                   const SizedBox(
                     width: 50,
@@ -311,11 +285,26 @@ class _CrudState extends State<EntityListTemplate> {
               ),
               Row(
                 children: [
+                  BlocBuilder<FilterSettingBloc, FilterSettingState>(
+                    builder: (context, state) {
+                      return Text(
+                        state.selectedUserFilterSetting?.filterName ?? '',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 3),
                   Checkbox(
                     value: includeDeleted,
                     onChanged: (value) {
                       if (widget.onIncludeDeletedChanged != null) {
-                        widget.onIncludeDeletedChanged!(value!);
+                        filterSettingBloc.add(
+                            FilterSettingIncludeDeletedChanged(
+                                includeDeleted: value!));
+                        widget.onIncludeDeletedChanged!(value);
                       }
 
                       setState(() {
@@ -332,85 +321,26 @@ class _CrudState extends State<EntityListTemplate> {
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
-                  )
+                  ),
+                  const SizedBox(width: 3),
+                  IconButton(
+                    onPressed: () {
+                      if (widget.onIncludeDeletedChanged != null) {
+                        widget.onIncludeDeletedChanged!(includeDeleted);
+                      }
+                    },
+                    icon: const Icon(
+                      PhosphorIcons.arrowsClockwise,
+                      size: 20,
+                      color: Colors.blue,
+                    ),
+                  ),
                 ],
               )
             ],
           ),
         ),
       ],
-    );
-  }
-
-  AnimatedPositioned _buildFiltersSlider(BuildContext context) {
-    return AnimatedPositioned(
-      top: 0,
-      right: positionRightForFiltersSlier,
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 4,
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 75),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 30,
-        ),
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Filters',
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => _hideFilterSlider(),
-                    icon: const Icon(
-                      PhosphorIcons.arrowCircleRight,
-                      size: 20,
-                      color: Color(0xffef4444),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            widget.filterBody ?? Container(),
-            Divider(
-              color: grey,
-              height: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
-              ),
-              child: CustomButton(
-                backgroundColor: const Color(0xff0c83ff),
-                hoverBackgroundColor: const Color(0xff0b76e6),
-                iconData: PhosphorIcons.arrowRight,
-                text: 'Apply Filters',
-                onClick: () {
-                  widget.onFilterApplied!();
-                  _hideFilterSlider();
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -592,8 +522,6 @@ class _CrudState extends State<EntityListTemplate> {
   void _showViewSettingsSlider() {
     setState(() {
       positionRightForViewSettingsSlider = 0;
-      positionRightForFiltersSlier = positionRightForDetailsSlider =
-          -MediaQuery.of(context).size.width / 4;
     });
   }
 
@@ -604,24 +532,22 @@ class _CrudState extends State<EntityListTemplate> {
     });
   }
 
-  void _showFilterSlider() {
+  void _showFilterView() {
     setState(() {
-      positionRightForFiltersSlier = 0;
-      positionRightForDetailsSlider = positionRightForViewSettingsSlider =
-          -MediaQuery.of(context).size.width / 4;
+      filterViewShow = true;
     });
   }
 
-  void _hideFilterSlider() {
+  void _hideFilterView() {
     setState(() {
-      positionRightForFiltersSlier = -MediaQuery.of(context).size.width / 4;
+      filterViewShow = true;
     });
   }
 
   void _showDetailsSlider() {
     setState(() {
       positionRightForDetailsSlider = 0;
-      positionRightForFiltersSlier = positionRightForViewSettingsSlider =
+      positionRightForViewSettingsSlider =
           -MediaQuery.of(context).size.width / 4;
     });
   }

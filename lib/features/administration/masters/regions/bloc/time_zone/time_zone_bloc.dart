@@ -4,9 +4,9 @@ import 'package:safety_eta/common_libraries.dart';
 part 'time_zone_event.dart';
 part 'time_zone_state.dart';
 
-class TimeZoneBloc extends Bloc<TimeZonesEvent, TimeZoneState> {
+class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZoneState> {
   final TimeZonesRepository timeZonesRepository;
-  TimeZoneBloc({required this.timeZonesRepository})
+  TimeZonesBloc({required this.timeZonesRepository})
       : super(const TimeZoneState()) {
     on<TimeZoneListLoaded>(_onTimeZoneListLoaded);
   }

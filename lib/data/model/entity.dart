@@ -1,11 +1,42 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
 import 'package:safety_eta/utils/utils.dart';
 
+class EntityHeader extends Equatable {
+  final String name;
+  final String title;
+  final bool isHidden;
+  const EntityHeader({
+    required this.name,
+    required this.title,
+    required this.isHidden,
+  });
+
+  @override
+  List<Object?> get props => [
+        name,
+        title,
+        isHidden,
+      ];
+
+  factory EntityHeader.fromMap(Map<String, dynamic> map) {
+    return EntityHeader(
+      name: map['name'] as String,
+      title: map['title'] as String,
+      isHidden: map['isHidden'] as bool,
+    );
+  }
+
+  factory EntityHeader.fromJson(String source) =>
+      EntityHeader.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
 // standadized model, which other models inherit
 class Entity extends Equatable {
+  final List<EntityHeader> headers;
   final String? id;
   final String? name;
   final String? deactivationDate;
@@ -15,8 +46,11 @@ class Entity extends Equatable {
   final String? createdByUserName;
   final String? lastModifiedByUserName;
   final String? lastModifiedOn;
+  final List<String> columns;
 
   const Entity({
+    this.columns = const [],
+    this.headers = const [],
     this.id,
     this.name,
     this.deactivationDate,
@@ -31,6 +65,11 @@ class Entity extends Equatable {
   // constructor to create entity from map
   factory Entity.fromMap(Map<String, dynamic> map) {
     return Entity(
+      headers: map['headers'] != null
+          ? List.from(map['headers'])
+              .map((e) => EntityHeader.fromMap(e))
+              .toList()
+          : [],
       id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       active: map['active'] != null ? map['active'] as bool : true,
@@ -100,6 +139,7 @@ class Entity extends Equatable {
         active,
         createdOn,
         createdByUserName,
+        columns,
       ];
 }
 

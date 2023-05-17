@@ -3,41 +3,41 @@ import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
 
-part 'user_list_view_setting_event.dart';
-part 'user_list_view_setting_state.dart';
+part 'view_setting_event.dart';
+part 'view_setting_state.dart';
 
-class UserListViewSettingBloc
-    extends Bloc<UserListViewSettingEvent, UserListViewSettingState> {
+class ViewSettingBloc
+    extends Bloc<ViewSettingEvent, ViewSettingState> {
   final SettingsRepository settingsRepository;
 
-  UserListViewSettingBloc({required this.settingsRepository})
-      : super(const UserListViewSettingState()) {
-    on<UserListViewSettingApplied>(_onUserListViewSettingApplied);
-    on<UserListViewSettingLoaded>(_onUserListViewSettingLoaded);
-    on<UserListViewSettingDisplayColumnOrderChanged>(
-        _onUserListViewSettingDisplayColumnOrderChanged);
-    on<UserListViewSettingDisplayColumnSelected>(
-        _onUserListViewSettingDisplayColumnSelected);
-    on<UserListViewSettingDisplayColumnAdded>(
-        _onUserListViewSettingDisplayColumnAdded);
-    on<UserListViewSettingDisplayColumnDeleted>(
-        _onUserListViewSettingDisplayColumnDeleted);
+  ViewSettingBloc({required this.settingsRepository})
+      : super(const ViewSettingState()) {
+    on<ViewSettingApplied>(_onViewSettingApplied);
+    on<ViewSettingLoaded>(_onViewSettingLoaded);
+    on<ViewSettingDisplayColumnOrderChanged>(
+        _onViewSettingDisplayColumnOrderChanged);
+    on<ViewSettingDisplayColumnSelected>(
+        _onViewSettingDisplayColumnSelected);
+    on<ViewSettingDisplayColumnAdded>(
+        _onViewSettingDisplayColumnAdded);
+    on<ViewSettingDisplayColumnDeleted>(
+        _onViewSettingDisplayColumnDeleted);
 
-    on<UserListViewSettingSortingColumnOrderChanged>(
-        _onUserListViewSettingSortingColumnOrderChanged);
-    on<UserListViewSettingSortingColumnSortDirectionChanged>(
-        _onUserListViewSettingSortingColumnSortDirectionChanged);
-    on<UserListViewSettingSortingColumnSelected>(
-        _onUserListViewSettingSortingColumnSelected);
-    on<UserListViewSettingSortingColumnAdded>(
-        _onUserListViewSettingSortingColumnAdded);
-    on<UserListViewSettingSortingColumnDeleted>(
-        _onUserListViewSettingSortingColumnDeleted);
+    on<ViewSettingSortingColumnOrderChanged>(
+        _onViewSettingSortingColumnOrderChanged);
+    on<ViewSettingSortingColumnSortDirectionChanged>(
+        _onViewSettingSortingColumnSortDirectionChanged);
+    on<ViewSettingSortingColumnSelected>(
+        _onViewSettingSortingColumnSelected);
+    on<ViewSettingSortingColumnAdded>(
+        _onViewSettingSortingColumnAdded);
+    on<ViewSettingSortingColumnDeleted>(
+        _onViewSettingSortingColumnDeleted);
   }
 
-  Future<void> _onUserListViewSettingApplied(
-    UserListViewSettingApplied event,
-    Emitter<UserListViewSettingState> emit,
+  Future<void> _onViewSettingApplied(
+    ViewSettingApplied event,
+    Emitter<ViewSettingState> emit,
   ) async {
     if (isNotCompleted(state.viewSettingDisplayColumnList) ||
         isNotCompleted(state.viewSettingSortingColumnList)) {
@@ -63,7 +63,7 @@ class UserListViewSettingBloc
             .toList(),
       );
       try {
-        await settingsRepository.onViewSettingApplied(viewSettingUpdate);
+        await settingsRepository.applyViewSetting(viewSettingUpdate);
         emit(state.copyWith(viewSettingSaveStatus: EntityStatus.success));
       } catch (e) {
         emit(state.copyWith(viewSettingSaveStatus: EntityStatus.failure));
@@ -79,9 +79,9 @@ class UserListViewSettingBloc
             .length;
   }
 
-  Future<void> _onUserListViewSettingLoaded(
-    UserListViewSettingLoaded event,
-    Emitter<UserListViewSettingState> emit,
+  Future<void> _onViewSettingLoaded(
+    ViewSettingLoaded event,
+    Emitter<ViewSettingState> emit,
   ) async {
     emit(state.copyWith(viewSettingLoadStatus: EntityStatus.loading));
     try {
@@ -113,9 +113,9 @@ class UserListViewSettingBloc
     }
   }
 
-  void _onUserListViewSettingSortingColumnOrderChanged(
-    UserListViewSettingSortingColumnOrderChanged event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingSortingColumnOrderChanged(
+    ViewSettingSortingColumnOrderChanged event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
@@ -126,9 +126,9 @@ class UserListViewSettingBloc
         viewSettingSortingColumnList: viewSettingSortingColumnList));
   }
 
-  void _onUserListViewSettingDisplayColumnOrderChanged(
-    UserListViewSettingDisplayColumnOrderChanged event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingDisplayColumnOrderChanged(
+    ViewSettingDisplayColumnOrderChanged event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
@@ -139,9 +139,9 @@ class UserListViewSettingBloc
         viewSettingDisplayColumnList: viewSettingDisplayColumnList));
   }
 
-  void _onUserListViewSettingDisplayColumnSelected(
-    UserListViewSettingDisplayColumnSelected event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingDisplayColumnSelected(
+    ViewSettingDisplayColumnSelected event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
@@ -166,9 +166,9 @@ class UserListViewSettingBloc
         viewSettingDisplayColumnList: viewSettingDisplayColumnList));
   }
 
-  void _onUserListViewSettingSortingColumnSelected(
-    UserListViewSettingSortingColumnSelected event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingSortingColumnSelected(
+    ViewSettingSortingColumnSelected event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
@@ -184,9 +184,9 @@ class UserListViewSettingBloc
         viewSettingSortingColumnList: viewSettingSortingColumnList));
   }
 
-  void _onUserListViewSettingDisplayColumnAdded(
-    UserListViewSettingDisplayColumnAdded event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingDisplayColumnAdded(
+    ViewSettingDisplayColumnAdded event,
+    Emitter<ViewSettingState> emit,
   ) {
     emit(state.copyWith(viewSettingDisplayColumnList: [
       ...state.viewSettingDisplayColumnList,
@@ -196,9 +196,9 @@ class UserListViewSettingBloc
     ]));
   }
 
-  void _onUserListViewSettingSortingColumnAdded(
-    UserListViewSettingSortingColumnAdded event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingSortingColumnAdded(
+    ViewSettingSortingColumnAdded event,
+    Emitter<ViewSettingState> emit,
   ) {
     emit(state.copyWith(viewSettingSortingColumnList: [
       ...state.viewSettingSortingColumnList,
@@ -208,9 +208,9 @@ class UserListViewSettingBloc
     ]));
   }
 
-  void _onUserListViewSettingDisplayColumnDeleted(
-    UserListViewSettingDisplayColumnDeleted event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingDisplayColumnDeleted(
+    ViewSettingDisplayColumnDeleted event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
@@ -222,9 +222,9 @@ class UserListViewSettingBloc
         viewSettingDisplayColumnList: viewSettingDisplayColumnList));
   }
 
-  void _onUserListViewSettingSortingColumnDeleted(
-    UserListViewSettingSortingColumnDeleted event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingSortingColumnDeleted(
+    ViewSettingSortingColumnDeleted event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
@@ -237,9 +237,9 @@ class UserListViewSettingBloc
         viewSettingSortingColumnList: viewSettingSortingColumnList));
   }
 
-  void _onUserListViewSettingSortingColumnSortDirectionChanged(
-    UserListViewSettingSortingColumnSortDirectionChanged event,
-    Emitter<UserListViewSettingState> emit,
+  void _onViewSettingSortingColumnSortDirectionChanged(
+    ViewSettingSortingColumnSortDirectionChanged event,
+    Emitter<ViewSettingState> emit,
   ) {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);

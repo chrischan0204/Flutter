@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:dropdown_button2/dropdown_button2.dart';
 import '/data/model/entity.dart';
 import '/constants/color.dart';
+import 'dropdown_button2/dropdown_button2.dart';
 
 class CustomMultiSelect extends StatefulWidget {
   final Map<String, Entity> items;
   final List<Entity> selectedItems;
   final String hint;
   final ValueChanged<List<Entity>> onChanged;
+  final bool isSearchable;
+
   const CustomMultiSelect({
     super.key,
     this.items = const <String, Entity>{},
     this.selectedItems = const [],
     required this.hint,
     required this.onChanged,
+    this.isSearchable = true,
   });
 
   @override
@@ -21,10 +25,49 @@ class CustomMultiSelect extends StatefulWidget {
 }
 
 class _CustomMultiSelectState extends State<CustomMultiSelect> {
+  final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
+        dropdownSearchData: widget.isSearchable
+            ? DropdownSearchData<String>(
+                searchController: textEditingController,
+                searchInnerWidgetHeight: 50,
+                searchInnerWidget: Container(
+                  height: 50,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    bottom: 4,
+                    right: 8,
+                    left: 8,
+                  ),
+                  child: TextFormField(
+                    expands: true,
+                    maxLines: null,
+                    controller: textEditingController,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      hintText: 'Search...',
+                      hintStyle: const TextStyle(fontSize: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                searchMatchFn: (item, searchValue) {
+                  return (item.value
+                      .toString()
+                      .toLowerCase()
+                      .contains(searchValue.toLowerCase()));
+                },
+              )
+            : null,
         isExpanded: true,
         hint: Text(
           widget.hint,

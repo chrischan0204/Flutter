@@ -1,15 +1,15 @@
-part of 'user_list_view_setting_bloc.dart';
+part of 'view_setting_bloc.dart';
 
-abstract class UserListViewSettingEvent extends Equatable {
-  const UserListViewSettingEvent();
+abstract class ViewSettingEvent extends Equatable {
+  const ViewSettingEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class UserListViewSettingApplied extends UserListViewSettingEvent {
+class ViewSettingApplied extends ViewSettingEvent {
   final String viewName;
-  const UserListViewSettingApplied({
+  const ViewSettingApplied({
     required this.viewName,
   });
 
@@ -17,9 +17,9 @@ class UserListViewSettingApplied extends UserListViewSettingEvent {
   List<Object> get props => [viewName];
 }
 
-class UserListViewSettingLoaded extends UserListViewSettingEvent {
+class ViewSettingLoaded extends ViewSettingEvent {
   final String viewName;
-  const UserListViewSettingLoaded({
+  const ViewSettingLoaded({
     required this.viewName,
   });
 
@@ -27,11 +27,11 @@ class UserListViewSettingLoaded extends UserListViewSettingEvent {
   List<Object> get props => [viewName];
 }
 
-class UserListViewSettingDisplayColumnOrderChanged
-    extends UserListViewSettingEvent {
+class ViewSettingDisplayColumnOrderChanged
+    extends ViewSettingEvent {
   final int draggingIndex;
   final int newPositionIndex;
-  const UserListViewSettingDisplayColumnOrderChanged({
+  const ViewSettingDisplayColumnOrderChanged({
     required this.draggingIndex,
     required this.newPositionIndex,
   });
@@ -43,13 +43,13 @@ class UserListViewSettingDisplayColumnOrderChanged
       ];
 }
 
-class UserListViewSettingDisplayColumnAdded extends UserListViewSettingEvent {}
+class ViewSettingDisplayColumnAdded extends ViewSettingEvent {}
 
-class UserListViewSettingDisplayColumnSelected
-    extends UserListViewSettingEvent {
+class ViewSettingDisplayColumnSelected
+    extends ViewSettingEvent {
   final ViewSettingItemData column;
   final ViewSettingColumn selectedValue;
-  const UserListViewSettingDisplayColumnSelected({
+  const ViewSettingDisplayColumnSelected({
     required this.column,
     required this.selectedValue,
   });
@@ -61,9 +61,9 @@ class UserListViewSettingDisplayColumnSelected
       ];
 }
 
-class UserListViewSettingDisplayColumnDeleted extends UserListViewSettingEvent {
+class ViewSettingDisplayColumnDeleted extends ViewSettingEvent {
   final ViewSettingItemData column;
-  const UserListViewSettingDisplayColumnDeleted({
+  const ViewSettingDisplayColumnDeleted({
     required this.column,
   });
 
@@ -71,11 +71,11 @@ class UserListViewSettingDisplayColumnDeleted extends UserListViewSettingEvent {
   List<Object> get props => [column];
 }
 
-class UserListViewSettingSortingColumnOrderChanged
-    extends UserListViewSettingEvent {
+class ViewSettingSortingColumnOrderChanged
+    extends ViewSettingEvent {
   final int draggingIndex;
   final int newPositionIndex;
-  const UserListViewSettingSortingColumnOrderChanged({
+  const ViewSettingSortingColumnOrderChanged({
     required this.draggingIndex,
     required this.newPositionIndex,
   });
@@ -87,13 +87,13 @@ class UserListViewSettingSortingColumnOrderChanged
       ];
 }
 
-class UserListViewSettingSortingColumnAdded extends UserListViewSettingEvent {}
+class ViewSettingSortingColumnAdded extends ViewSettingEvent {}
 
-class UserListViewSettingSortingColumnSelected
-    extends UserListViewSettingEvent {
+class ViewSettingSortingColumnSelected
+    extends ViewSettingEvent {
   final ViewSettingItemData column;
   final ViewSettingColumn selectedValue;
-  const UserListViewSettingSortingColumnSelected({
+  const ViewSettingSortingColumnSelected({
     required this.column,
     required this.selectedValue,
   });
@@ -105,11 +105,11 @@ class UserListViewSettingSortingColumnSelected
       ];
 }
 
-class UserListViewSettingSortingColumnSortDirectionChanged
-    extends UserListViewSettingEvent {
+class ViewSettingSortingColumnSortDirectionChanged
+    extends ViewSettingEvent {
   final ViewSettingItemData column;
   final String sortDirection;
-  const UserListViewSettingSortingColumnSortDirectionChanged({
+  const ViewSettingSortingColumnSortDirectionChanged({
     required this.column,
     required this.sortDirection,
   });
@@ -121,9 +121,9 @@ class UserListViewSettingSortingColumnSortDirectionChanged
       ];
 }
 
-class UserListViewSettingSortingColumnDeleted extends UserListViewSettingEvent {
+class ViewSettingSortingColumnDeleted extends ViewSettingEvent {
   final ViewSettingItemData column;
-  const UserListViewSettingSortingColumnDeleted({
+  const ViewSettingSortingColumnDeleted({
     required this.column,
   });
 

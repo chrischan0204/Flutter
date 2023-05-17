@@ -7,6 +7,7 @@ class CustomSwitch extends StatefulWidget {
   final bool switchValue;
   final String trueString;
   final String falseString;
+  final bool onlySwitch;
   final Color textColor;
   final bool active;
   final ValueChanged<bool> onChanged;
@@ -18,6 +19,7 @@ class CustomSwitch extends StatefulWidget {
     required this.onChanged,
     this.trueString = 'Deactivated',
     this.falseString = '',
+    this.onlySwitch = false,
     this.textColor = Colors.red,
     this.active = true,
   });
@@ -59,18 +61,22 @@ class _CustomSwitchState extends State<CustomSwitch> {
             }
           },
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          widget.switchValue ? widget.trueString : widget.falseString,
-          style: TextStyle(
-            color: widget.textColor,
-            fontSize: 11,
-            fontFamily: 'OpenSans',
-            fontWeight: FontWeight.w400,
-          ),
-        )
+        widget.onlySwitch
+            ? Container()
+            : const SizedBox(
+                width: 10,
+              ),
+        widget.onlySwitch
+            ? Container()
+            : Text(
+                widget.switchValue ? widget.trueString : widget.falseString,
+                style: TextStyle(
+                  color: widget.textColor,
+                  fontSize: 11,
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.w400,
+                ),
+              )
       ],
     );
   }
