@@ -30,6 +30,8 @@ class UserFilterItem extends Equatable {
         deleted,
       ];
 
+  bool get isNew => id == '00000000-0000-0000-0000-000000000000';
+
   UserFilterItem copyWith({
     String? id,
     FilterSetting? filterSetting,

@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import '/common_libraries.dart';
 import 'package:strings/strings.dart';
@@ -88,7 +89,7 @@ class _CrudState extends State<EntityListTemplate> {
                         viewName: 'user',
                         onFilterOptionClosed: () =>
                             setState(() => filterViewShow = false),
-                            onFilterApplied: () => widget.onFilterApplied!(),
+                        onFilterApplied: () => widget.onFilterApplied!(),
                         onFilterSaved: (filterId) =>
                             widget.onFilterSaved!(filterId),
                       )
@@ -246,7 +247,61 @@ class _CrudState extends State<EntityListTemplate> {
                     iconData: PhosphorIcons.funnel,
                     label: 'Filters',
                     color: const Color(0xff0c83ff),
-                    onClick: () => _showFilterView(),
+                    onClick: () {
+                      // SmartDialog.show(
+                      //   animationTime: const Duration(milliseconds: 400),
+                      //   animationBuilder: (
+                      //     AnimationController controller,
+                      //     Widget child,
+                      //     AnimationParam animationParam,
+                      //   ) {
+                      //     // return FadeTransition(
+                      //     //   opacity: CurvedAnimation(parent: controller, curve: Curves.easeInExpo),
+                      //     //   child: child,
+                      //     // );
+                      //     return ScaleTransition(
+                      //       scale: CurvedAnimation(
+                      //           parent: controller,
+                      //           curve: Curves.linearToEaseOut),
+                      //       child: child,
+                      //     );
+                      //   },
+
+                      //   // maskColor: Colors.transparent,
+                      //   builder: (_) {
+                      //     return Container(
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         boxShadow: const [
+                      //           BoxShadow(
+                      //             color: Colors.grey,
+                      //             blurRadius: 1,
+                      //             spreadRadius: 1,
+                      //           ),
+                      //         ],
+                      //         color: Colors.white,
+                      //       ),
+                      //       width: 1000,
+                      //       height: 600,
+                      //       padding: const EdgeInsets.all(30),
+                      //       child: Stack(
+                      //         children: [
+                      //           FilterSettingView(
+                      //             viewName: 'user',
+                      //             onFilterOptionClosed: () =>
+                      //                 setState(() => filterViewShow = false),
+                      //             onFilterApplied: () =>
+                      //                 widget.onFilterApplied!(),
+                      //             onFilterSaved: (filterId) =>
+                      //                 widget.onFilterSaved!(filterId),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     );
+                      //   },
+                      // );
+                      _showFilterView();
+                    },
                   ),
                   const SizedBox(
                     width: 50,

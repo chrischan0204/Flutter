@@ -101,7 +101,15 @@ class FilterSettingUserFilterItemAdded extends FilterSettingEvent {
   List<Object?> get props => [userFilterItem];
 }
 
-class FilterSettingUserFilterAdded extends FilterSettingEvent {}
+class FilterSettingUserFilterAdded extends FilterSettingEvent {
+  final String viewName;
+  const FilterSettingUserFilterAdded({
+    required this.viewName,
+  });
+
+  @override
+  List<Object?> get props => [viewName];
+}
 
 class FilterSettingUserFilterItemDeleted extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
@@ -174,4 +182,12 @@ class FilterSettingUserFilterItemColumnChanged extends FilterSettingEvent {
       ];
 }
 
+class FilterSettingIncludeDeletedChanged extends FilterSettingEvent {
+  final bool includeDeleted;
+  const FilterSettingIncludeDeletedChanged({
+    required this.includeDeleted,
+  });
 
+  @override
+  List<Object> get props => [includeDeleted];
+}

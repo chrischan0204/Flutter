@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -33,24 +34,6 @@ class FilterSetting extends Equatable {
         controlType,
       ];
 
-  factory FilterSetting.fromMap(Map<String, dynamic> map) {
-    return FilterSetting(
-      id: map['id'] as String,
-      viewName: map['viewName'] as String,
-      columnName: map['columnName'] as String,
-      columnType: map['columnType'] as String,
-      columnTitle: map['columnTitle'] as String,
-      columnValues: List.from(map['columnValues'])
-          .map((columnValue) => columnValue as String)
-          .toList(),
-      columnValueURL: map['columnValueURL'] as String,
-      controlType: map['controlType'] as String,
-    );
-  }
-
-  factory FilterSetting.fromJson(String source) =>
-      FilterSetting.fromMap(json.decode(source) as Map<String, dynamic>);
-
   FilterSetting copyWith({
     String? id,
     String? viewName,
@@ -72,4 +55,37 @@ class FilterSetting extends Equatable {
       controlType: controlType ?? this.controlType,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'viewName': viewName,
+      'columnName': columnName,
+      'columnType': columnType,
+      'columnTitle': columnTitle,
+      'columnValues': columnValues,
+      'columnValueURL': columnValueURL,
+      'controlType': controlType,
+    };
+  }
+
+  factory FilterSetting.fromMap(Map<String, dynamic> map) {
+    return FilterSetting(
+      id: map['id'] as String,
+      viewName: map['viewName'] as String,
+      columnName: map['columnName'] as String,
+      columnType: map['columnType'] as String,
+      columnTitle: map['columnTitle'] as String,
+      columnValues: List.from(map['columnValues'])
+          .map((columnValue) => columnValue as String)
+          .toList(),
+      columnValueURL: map['columnValueURL'] as String,
+      controlType: map['controlType'] as String,
+    );
+  }
+
+  factory FilterSetting.fromJson(String source) =>
+      FilterSetting.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  String toJson() => json.encode(toMap());
 }

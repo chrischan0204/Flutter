@@ -15,6 +15,8 @@ class FilterSettingState extends Equatable {
   final UserFilterSetting? selectedUserFilterSetting;
 
   final String addButtonName;
+  final String saveAsButtonName;
+  final bool includeDeleted;
 
   const FilterSettingState({
     this.filterSettingListLoadStatus = EntityStatus.initial,
@@ -27,6 +29,8 @@ class FilterSettingState extends Equatable {
     this.userFilterSettingUpdateStatus = EntityStatus.initial,
     this.userFilterSettingDeleteStatus = EntityStatus.initial,
     this.addButtonName = 'Update',
+    this.saveAsButtonName = 'Save as',
+    this.includeDeleted = false,
   });
 
   @override
@@ -34,17 +38,21 @@ class FilterSettingState extends Equatable {
         filterSettingListLoadStatus,
         filterSettingList,
         userFilterUpdate,
-        selectedUserFilterSetting?.id,
+        selectedUserFilterSetting,
         userFilterSettingLoadStatus,
         userFilterSettingList,
         userFilterSettingListLoadStatus,
         userFilterSettingUpdateStatus,
         userFilterSettingDeleteStatus,
         addButtonName,
+        saveAsButtonName,
+        includeDeleted,
       ];
 
+  bool get isNew => saveAsButtonName != 'Save as';
+
   FilterSetting getFilterSettingById(String id) =>
-      filterSettingList.firstWhere((element) => element.id == id);
+      List.from(filterSettingList).firstWhere((element) => element.id == id);
 
   String get defaultFilterSettingId => userFilterSettingList.firstWhere(
         (element) => element.isDefault,
@@ -66,6 +74,8 @@ class FilterSettingState extends Equatable {
     EntityStatus? userFilterSettingUpdateStatus,
     EntityStatus? userFilterSettingDeleteStatus,
     String? addButtonName,
+    String? saveAsButtonName,
+    bool? includeDeleted,
   }) {
     return FilterSettingState(
       filterSettingListLoadStatus:
@@ -85,6 +95,8 @@ class FilterSettingState extends Equatable {
       userFilterSettingDeleteStatus:
           userFilterSettingDeleteStatus ?? this.userFilterSettingDeleteStatus,
       addButtonName: addButtonName ?? this.addButtonName,
+      saveAsButtonName: saveAsButtonName ?? this.saveAsButtonName,
+      includeDeleted: includeDeleted ?? this.includeDeleted,
     );
   }
 }

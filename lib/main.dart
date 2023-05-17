@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:safety_eta/common_libraries.dart';
 
 import 'router.dart';
@@ -169,6 +170,8 @@ class _MyAppState extends State<MyApp> {
               ),
               debugShowCheckedModeBanner: false,
               routerConfig: router,
+              // navigatorObservers: [FlutterSmartDialog.observer],
+              builder: FlutterSmartDialog.init(),
             ),
           ),
         );

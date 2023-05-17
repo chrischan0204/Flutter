@@ -26,8 +26,20 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: grey),
+        borderRadius: BorderRadius.circular(5),
+        color: lightTeal,
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 6,
+        vertical: 4,
+      ),
+      margin: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 20,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -54,9 +66,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
       child: controlType == 'Textbox'
           ? widget.userFilterItem.filterValue.isNotEmpty
               ? CustomTextField(
-                  initialValue: widget.userFilterItem.filterValue.isEmpty
-                      ? null
-                      : widget.userFilterItem.filterValue[0],
+                  initialValue: widget.userFilterItem.filterValue[0],
                   onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
                         userFilterItem: widget.userFilterItem,
@@ -153,26 +163,33 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
     );
   }
 
-  IconButton _buildDeleteButton() {
-    return IconButton(
-      onPressed: () => filterSettingBloc.add(FilterSettingUserFilterItemDeleted(
-          userFilterItem: widget.userFilterItem)),
-      icon: const Icon(
-        PhosphorIcons.x,
-        color: Colors.red,
-        size: 20,
+  SizedBox _buildDeleteButton() {
+    return SizedBox(
+      width: 50,
+      child: IconButton(
+        onPressed: () => filterSettingBloc.add(
+            FilterSettingUserFilterItemDeleted(
+                userFilterItem: widget.userFilterItem)),
+        icon: const Icon(
+          PhosphorIcons.x,
+          color: Colors.red,
+          size: 20,
+        ),
       ),
     );
   }
 
-  IconButton _buildAddButton() {
-    return IconButton(
-      onPressed: () => filterSettingBloc.add(FilterSettingUserFilterItemAdded(
-          userFilterItem: widget.userFilterItem)),
-      icon: const Icon(
-        PhosphorIcons.plus,
-        color: Colors.green,
-        size: 20,
+  SizedBox _buildAddButton() {
+    return SizedBox(
+      width: 50,
+      child: IconButton(
+        onPressed: () => filterSettingBloc.add(FilterSettingUserFilterItemAdded(
+            userFilterItem: widget.userFilterItem)),
+        icon: const Icon(
+          PhosphorIcons.plus,
+          color: Colors.green,
+          size: 20,
+        ),
       ),
     );
   }

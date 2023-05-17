@@ -21,7 +21,8 @@ class _AddFilterSettingItemButtonState
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => filterSettingBloc.add(FilterSettingUserFilterAdded()),
+      onPressed: () => filterSettingBloc
+          .add(const FilterSettingUserFilterAdded(viewName: 'user')),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),

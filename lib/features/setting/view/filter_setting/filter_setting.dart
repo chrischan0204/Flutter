@@ -82,15 +82,23 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
   @override
   void initState() {
     filterSettingBloc = context.read()
-      ..add(FilterSettingFilterSettingListLoaded(name: widget.viewName))
-      ..add(FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
+      ..add(FilterSettingFilterSettingListLoaded(name: widget.viewName));
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
+      listener: (context, state) {
+        if (state.filterSettingListLoadStatus.isSuccess) {
+          filterSettingBloc.add(
+              const FilterSettingUserFilterSettingListLoaded(name: 'user'));
+        }
+      },
+      listenWhen: (previous, current) =>
+          previous.filterSettingListLoadStatus !=
+          current.filterSettingListLoadStatus,
       builder: (context, state) {
         return Column(
           children: [
@@ -117,15 +125,19 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                     onFilterOptionClosed: () =>
                         setState(() => widget.onFilterOptionClosed()),
                   ),
+                  const CustomDivider(),
                   Builder(
                     builder: (context) {
                       if (state.userFilterSettingList.isEmpty &&
                           state.userFilterUpdate.undeletedUserFilterItems
                               .isEmpty) {
                         return const Center(
-                          child: Text(
-                            'There are no user filter settings. Please click Add Button to create new user filter setting',
-                            style: TextStyle(fontSize: 14),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: Text(
+                              'There are no user filter settings. Please click Add Button to create new user filter setting',
+                              style: TextStyle(fontSize: 14),
+                            ),
                           ),
                         );
                       }
@@ -135,7 +147,9 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                         children: [
                           const FilterSettingBodyView(),
                           _buildAddClauseButton(),
+                          const CustomDivider(),
                           FilterSettingFooterView(
+                            onFilterOptionClosed: widget.onFilterOptionClosed,
                             onFilterApplied: () => widget.onFilterApplied(),
                             onFilterSaved: (filterId) =>
                                 widget.onFilterSaved(filterId),

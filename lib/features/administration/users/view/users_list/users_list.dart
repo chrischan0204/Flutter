@@ -134,6 +134,17 @@ class _UsersListState extends State<UsersListWidget> {
     regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     timeZonesBloc = context.read()..add(TimeZoneListLoaded());
+
+    // if (filterSettingBloc.state.selectedUserFilterSetting != null &&
+    //     filterSettingBloc.state.selectedUserFilterSetting!.id.isNotEmpty) {
+    //   userListBloc.add(UserListFiltered(
+    //     filterId: filterSettingBloc.state.selectedUserFilterSetting!.id,
+    //     includeDeleted: filterSettingBloc.state.includeDeleted,
+    //   ));
+    // } else {
+    //   userListBloc.add(UserListLoaded());
+    // }
+
     super.initState();
   }
 
@@ -141,17 +152,18 @@ class _UsersListState extends State<UsersListWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<FilterSettingBloc, FilterSettingState>(
         listener: (context, state) {
-          if (state.selectedUserFilterSetting != null &&
-              state.selectedUserFilterSetting!.id.isNotEmpty) {
+          if (state.selectedUserFilterSetting!.id.isNotEmpty) {
             userListBloc.add(UserListFiltered(
-                filterId: state.selectedUserFilterSetting!.id));
+              filterId: state.selectedUserFilterSetting!.id,
+              includeDeleted: state.includeDeleted,
+            ));
           } else {
             userListBloc.add(UserListLoaded());
           }
         },
         listenWhen: (previous, current) =>
-            previous.selectedUserFilterSetting?.id !=
-            current.selectedUserFilterSetting?.id,
+            previous.selectedUserFilterSetting !=
+            current.selectedUserFilterSetting,
         builder: (context, state) {
           return BlocBuilder<UserListBloc, UserListState>(
             builder: (context, userListState) {
@@ -181,7 +193,18 @@ class _UsersListState extends State<UsersListWidget> {
                         userListViewSettingBloc.add(
                             const UserListViewSettingApplied(viewName: 'user'));
                         userListBloc.add(UserListFiltered(
-                            filterId: state.selectedUserFilterSetting!.id));
+                          filterId: state.selectedUserFilterSetting!.id,
+                          includeDeleted: state.includeDeleted,
+                        ));
+                      },
+                      onIncludeDeletedChanged: (value) {
+                        filterSettingBloc.add(
+                            FilterSettingIncludeDeletedChanged(
+                                includeDeleted: value));
+                        userListBloc.add(UserListFiltered(
+                          filterId: state.selectedUserFilterSetting!.id,
+                          includeDeleted: value,
+                        ));
                       },
                       onViewSettingSliderOpened: () => userListViewSettingBloc
                           .add(const UserListViewSettingLoaded(
@@ -189,7 +212,7 @@ class _UsersListState extends State<UsersListWidget> {
                       onFilterSaved: (filterId) =>
                           userListBloc.add(UserListFiltered(
                         filterId: filterId,
-                        includeDeleted: true,
+                        includeDeleted: state.includeDeleted,
                       )),
                       onFilterApplied: () => userListBloc.add(UserListFiltered(
                           filterId: state.selectedUserFilterSetting!.id)),

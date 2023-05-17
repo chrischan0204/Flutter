@@ -1,6 +1,7 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import '/constants/color.dart';
+import 'dropdown_button2/dropdown_button2.dart';
 
 class CustomSingleSelect extends StatefulWidget {
   final Map<String, dynamic> items;
@@ -26,6 +27,7 @@ class CustomSingleSelect extends StatefulWidget {
 
 class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
   final TextEditingController textEditingController = TextEditingController();
+  String? value;
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
@@ -106,10 +108,14 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
             : widget.selectedValue!.isEmpty
                 ? null
                 : widget.selectedValue,
-        onChanged: (value) {
-          MapEntry<String, dynamic> entry = MapEntry<String, dynamic>(
-              value!, widget.items[value]! as dynamic);
+        // value: value,
+        onChanged: (val) {
+          MapEntry<String, dynamic> entry =
+              MapEntry<String, dynamic>(val!, widget.items[val]! as dynamic);
           widget.onChanged(entry);
+          // setState(() {
+          //   value = val;
+          // });
         },
         buttonStyleData: ButtonStyleData(
           height: 36,
