@@ -9,6 +9,7 @@ export '/features/administration/masters/regions/bloc/time_zone/time_zone_bloc.d
 export '/features/administration/projects/bloc/projects_bloc.dart';
 export '/features/administration/sites/bloc/sites_bloc.dart';
 export '/features/administration/users/bloc/users_bloc.dart';
+export '/features/administration/audits/templates/bloc/templates_bloc.dart';
 export '/features/auth/bloc/auth_bloc.dart';
 export '/features/setting/bloc/setting_bloc.dart';
 export '/features/theme/bloc/theme_bloc.dart';

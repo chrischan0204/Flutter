@@ -69,16 +69,6 @@ class _UsersListState extends State<UsersListWidget> {
   late UserDetailBloc userDetailBloc;
   late ViewSettingBloc viewSettingBloc;
 
-  bool filterApplied = false;
-
-  List<Site> filterSites = [];
-  List<Role> filterRoles = [];
-  bool filterActive = true;
-
-  TextEditingController filterNameHasController =
-      TextEditingController(text: '');
-  TextEditingController filterTitleController = TextEditingController(text: '');
-
   static String pageTitle = 'Users';
   static String pageLabel = 'user';
   static String emptyMessage =

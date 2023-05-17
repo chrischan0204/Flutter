@@ -237,8 +237,18 @@ final GoRouter router = GoRouter(
       path: '/templates',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
-          body: Templates(),
+        child: const Layout(
+          body: TemplateListView(),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: TemplateListView(),
           selectedItemName: 'templates',
         ),
       ),

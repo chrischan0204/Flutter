@@ -1,9 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-
 import '/data/repository/repository.dart';
-import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class CompaniesRepository extends BaseRepository {
@@ -14,9 +11,7 @@ class CompaniesRepository extends BaseRepository {
 
   // get companies list
   Future<List<Company>> getCompanies() async {
-    Response response = await super.get(
-      url,
-    );
+    Response response = await super.get(url);
 
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
@@ -27,9 +22,7 @@ class CompaniesRepository extends BaseRepository {
   }
 
   // get company by id
-  Future<Company> getCompanyById(
-    String companyId,
-  ) async {
+  Future<Company> getCompanyById(String companyId) async {
     Response response = await super.get('$url/$companyId');
 
     if (response.statusCode == 200) {
@@ -40,10 +33,7 @@ class CompaniesRepository extends BaseRepository {
 
   // add company
   Future<EntityResponse> addCompany(Company company) async {
-    Response response = await super.post(
-      url,
-      body: company.toJson(),
-    );
+    Response response = await super.post(url, body: company.toJson());
 
     if (response.statusCode != 500) {
       return EntityResponse.fromJson(response.body);
@@ -53,10 +43,7 @@ class CompaniesRepository extends BaseRepository {
 
   // edit company
   Future<EntityResponse> editCompany(Company company) async {
-    Response response = await super.put(
-      url,
-      body: company.toJson(),
-    );
+    Response response = await super.put(url, body: company.toJson());
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
@@ -88,10 +75,8 @@ class CompaniesRepository extends BaseRepository {
 
   Future<EntityResponse> assignSiteToCompany(
       CompanySiteUpdation companySiteUpdation) async {
-    Response response = await super.post(
-      '$url/assign/site',
-      body: companySiteUpdation.toJson(),
-    );
+    Response response = await super
+        .post('$url/assign/site', body: companySiteUpdation.toJson());
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
@@ -123,10 +108,8 @@ class CompaniesRepository extends BaseRepository {
 
   Future<EntityResponse> assignProjectToCompany(
       ProjectCompanyAssignment projectCompanyAssignment) async {
-    Response response = await super.post(
-      '$url/assign/project',
-      body: projectCompanyAssignment.toJson(),
-    );
+    Response response = await super
+        .post('$url/assign/project', body: projectCompanyAssignment.toJson());
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {

@@ -13,16 +13,6 @@ class _CompaniesListViewState extends State<CompaniesListView> {
   late RegionsBloc regionsBloc;
   late ProjectsBloc projectsBloc;
 
-  bool filterApplied = false;
-
-  List<Region> filterRegions = [];
-  List<Site> filterSites = [];
-  List<Project> filterProjects = [];
-  bool filterActive = true;
-
-  TextEditingController filterNameHasController =
-      TextEditingController(text: '');
-
   static String pageTitle = 'Companies';
   static String pageLabel = 'company';
   static String emptyMessage =
@@ -57,132 +47,6 @@ class _CompaniesListViewState extends State<CompaniesListView> {
     );
   }
 
-  void _clearFilter() {
-    setState(() {
-      filterApplied = false;
-      filterRegions = [];
-      filterSites = [];
-      filterProjects = [];
-      filterActive = true;
-      filterNameHasController.text = '';
-    });
-  }
-
-  void _onFilterApplied() {
-    setState(() {
-      filterApplied = true;
-    });
-  }
-
-  Column _buildFilterBody() {
-    return Column(
-      children: [
-        _buildFilterCompanyNameTextField(),
-        _buildFilterRegionMultiSelectField(),
-        _buildFilterSiteMultiSelectField(),
-        _buildFilterProjectMultiSelectField(),
-        _buildFilterActiveSwitch(),
-      ],
-    );
-  }
-
-  DetailItem _buildFilterCompanyNameTextField() {
-    return DetailItem(
-      label: 'Name has',
-      content: CustomTextField(
-        controller: filterNameHasController,
-        hintText: 'Company Name contains',
-        onChanged: (nameHas) {},
-      ),
-    );
-  }
-
-  DetailItem _buildFilterActiveSwitch() {
-    return DetailItem(
-      label: 'Active',
-      content: CustomSwitch(
-        switchValue: filterActive,
-        trueString: 'Yes',
-        falseString: 'No',
-        textColor: darkTeal,
-        onChanged: (value) {
-          setState(() {
-            filterActive = value;
-          });
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterSiteMultiSelectField() {
-    return DetailItem(
-      label: 'Site',
-      content: BlocBuilder<SitesBloc, SitesState>(
-        builder: (context, state) {
-          return CustomMultiSelect(
-            items: <String, Site>{}..addEntries(
-                state.sites.map(
-                  (site) => MapEntry(site.name!, site),
-                ),
-              ),
-            selectedItems: filterSites,
-            hint: 'Associated with sites',
-            onChanged: (sites) {
-              filterSites = sites.map((site) => site as Site).toList();
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterRegionMultiSelectField() {
-    return DetailItem(
-      label: 'Region',
-      content: BlocBuilder<RegionsBloc, RegionsState>(
-        builder: (context, state) {
-          return CustomMultiSelect(
-            items: <String, Region>{}..addEntries(
-                state.assignedRegions.map(
-                  (assignedRegion) =>
-                      MapEntry(assignedRegion.name!, assignedRegion),
-                ),
-              ),
-            selectedItems: filterRegions,
-            hint: 'Select Regions',
-            onChanged: (regions) {
-              filterRegions =
-                  regions.map((region) => region as Region).toList();
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterProjectMultiSelectField() {
-    return DetailItem(
-      label: 'Project',
-      content: BlocBuilder<ProjectsBloc, ProjectsState>(
-        builder: (context, state) {
-          return CustomMultiSelect(
-            items: <String, Project>{}..addEntries(
-                state.projects.map(
-                  (project) => MapEntry(project.name!, project),
-                ),
-              ),
-            selectedItems: filterProjects,
-            hint: 'Associated with projects',
-            onChanged: (projects) {
-              filterProjects =
-                  projects.map((project) => project as Project).toList();
-            },
-          );
-        },
-      ),
-    );
-  }
-
   void _sortCompanies(List<Entity> sortedCompanies) {
     companiesBloc.add(CompaniesSorted(
         companies: sortedCompanies
@@ -192,33 +56,5 @@ class _CompaniesListViewState extends State<CompaniesListView> {
 
   void _selectCompany(Entity selectedCompany) {
     companiesBloc.add(CompanySelectedById(companyId: selectedCompany.id!));
-  }
-
-  Wrap _buildFilterResultBody() {
-    return Wrap(
-      children: [
-        FilterItem(
-          label: 'Name has:',
-          content: filterNameHasController.text,
-        ),
-        FilterItem(
-          label: 'Region:',
-          content: filterRegions.map((region) => region.name ?? '').join(', '),
-        ),
-        FilterItem(
-          label: 'Site:',
-          content: filterSites.map((site) => site.name ?? '').join(', '),
-        ),
-        FilterItem(
-          label: 'Project:',
-          content:
-              filterProjects.map((project) => project.name ?? '').join(', '),
-        ),
-        FilterItem(
-          label: 'Active:',
-          content: filterActive ? 'Yes' : 'No',
-        ),
-      ],
-    );
   }
 }
