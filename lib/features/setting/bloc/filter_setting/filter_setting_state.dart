@@ -47,6 +47,8 @@ class FilterSettingState extends Equatable {
         addButtonName,
         saveAsButtonName,
         includeDeleted,
+        isNew,
+        defaultFilterSettingId,
       ];
 
   bool get isNew => saveAsButtonName != 'Save as';

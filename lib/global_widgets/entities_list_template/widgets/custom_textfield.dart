@@ -41,6 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return SizedBox(
       height: 36,
       child: TextFormField(
+        key: widget.key,
         initialValue: widget.initialValue,
         controller: widget.controller,
         enabled: !widget.isDisabled,

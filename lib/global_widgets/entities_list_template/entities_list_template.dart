@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import '/common_libraries.dart';
 import 'package:strings/strings.dart';
@@ -23,6 +22,7 @@ class EntityListTemplate extends StatefulWidget {
   final ValueChanged<List<Entity>>? onTableSorted;
   final IconData? newIconData;
   final List<String> columns;
+  final String viewName;
   const EntityListTemplate({
     super.key,
     required this.title,
@@ -43,6 +43,7 @@ class EntityListTemplate extends StatefulWidget {
     this.onTableSorted,
     this.newIconData,
     this.columns = const [],
+    this.viewName = 'user',
   });
 
   @override
@@ -56,8 +57,12 @@ class _CrudState extends State<EntityListTemplate> {
   bool includeDeleted = false;
   bool filterViewShow = false;
 
+  late FilterSettingBloc filterSettingBloc;
+
   @override
   void initState() {
+    filterSettingBloc = context.read()
+      ..add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
     super.initState();
   }
 
@@ -86,7 +91,7 @@ class _CrudState extends State<EntityListTemplate> {
                     : Container(),
                 filterViewShow
                     ? FilterSettingView(
-                        viewName: 'user',
+                        viewName: widget.viewName,
                         onFilterOptionClosed: () =>
                             setState(() => filterViewShow = false),
                         onFilterApplied: () => widget.onFilterApplied!(),
@@ -248,58 +253,6 @@ class _CrudState extends State<EntityListTemplate> {
                     label: 'Filters',
                     color: const Color(0xff0c83ff),
                     onClick: () {
-                      // SmartDialog.show(
-                      //   animationTime: const Duration(milliseconds: 400),
-                      //   animationBuilder: (
-                      //     AnimationController controller,
-                      //     Widget child,
-                      //     AnimationParam animationParam,
-                      //   ) {
-                      //     // return FadeTransition(
-                      //     //   opacity: CurvedAnimation(parent: controller, curve: Curves.easeInExpo),
-                      //     //   child: child,
-                      //     // );
-                      //     return ScaleTransition(
-                      //       scale: CurvedAnimation(
-                      //           parent: controller,
-                      //           curve: Curves.linearToEaseOut),
-                      //       child: child,
-                      //     );
-                      //   },
-
-                      //   // maskColor: Colors.transparent,
-                      //   builder: (_) {
-                      //     return Container(
-                      //       decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(5),
-                      //         boxShadow: const [
-                      //           BoxShadow(
-                      //             color: Colors.grey,
-                      //             blurRadius: 1,
-                      //             spreadRadius: 1,
-                      //           ),
-                      //         ],
-                      //         color: Colors.white,
-                      //       ),
-                      //       width: 1000,
-                      //       height: 600,
-                      //       padding: const EdgeInsets.all(30),
-                      //       child: Stack(
-                      //         children: [
-                      //           FilterSettingView(
-                      //             viewName: 'user',
-                      //             onFilterOptionClosed: () =>
-                      //                 setState(() => filterViewShow = false),
-                      //             onFilterApplied: () =>
-                      //                 widget.onFilterApplied!(),
-                      //             onFilterSaved: (filterId) =>
-                      //                 widget.onFilterSaved!(filterId),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     );
-                      //   },
-                      // );
                       _showFilterView();
                     },
                   ),
@@ -332,11 +285,26 @@ class _CrudState extends State<EntityListTemplate> {
               ),
               Row(
                 children: [
+                  BlocBuilder<FilterSettingBloc, FilterSettingState>(
+                    builder: (context, state) {
+                      return Text(
+                        state.selectedUserFilterSetting?.filterName ?? '',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 3),
                   Checkbox(
                     value: includeDeleted,
                     onChanged: (value) {
                       if (widget.onIncludeDeletedChanged != null) {
-                        widget.onIncludeDeletedChanged!(value!);
+                        filterSettingBloc.add(
+                            FilterSettingIncludeDeletedChanged(
+                                includeDeleted: value!));
+                        widget.onIncludeDeletedChanged!(value);
                       }
 
                       setState(() {
@@ -353,7 +321,20 @@ class _CrudState extends State<EntityListTemplate> {
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
-                  )
+                  ),
+                  const SizedBox(width: 3),
+                  IconButton(
+                    onPressed: () {
+                      if (widget.onIncludeDeletedChanged != null) {
+                        widget.onIncludeDeletedChanged!(includeDeleted);
+                      }
+                    },
+                    icon: const Icon(
+                      PhosphorIcons.arrowsClockwise,
+                      size: 20,
+                      color: Colors.blue,
+                    ),
+                  ),
                 ],
               )
             ],

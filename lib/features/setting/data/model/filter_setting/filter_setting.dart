@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -32,7 +31,10 @@ class FilterSetting extends Equatable {
         columnValues,
         columnValueURL,
         controlType,
+        isNew
       ];
+
+  bool get isNew => id == '00000000-0000-0000-0000-000000000000';
 
   FilterSetting copyWith({
     String? id,

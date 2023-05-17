@@ -93,7 +93,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
       listener: (context, state) {
         if (state.filterSettingListLoadStatus.isSuccess) {
           filterSettingBloc.add(
-              const FilterSettingUserFilterSettingListLoaded(name: 'user'));
+              FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
         }
       },
       listenWhen: (previous, current) =>
@@ -104,7 +104,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
           children: [
             const CustomDivider(),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.white,
@@ -145,10 +145,11 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const FilterSettingBodyView(),
+                          FilterSettingBodyView(viewName: widget.viewName),
                           _buildAddClauseButton(),
                           const CustomDivider(),
                           FilterSettingFooterView(
+                            viewName: widget.viewName,
                             onFilterOptionClosed: widget.onFilterOptionClosed,
                             onFilterApplied: () => widget.onFilterApplied(),
                             onFilterSaved: (filterId) =>
@@ -170,7 +171,6 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
   Padding _buildAddClauseButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 8.0,
         horizontal: 20,
       ),
       child: TextButton(
@@ -181,7 +181,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
           children: const [
             Icon(
               PhosphorIcons.plus,
-              size: 20,
+              size: 16,
               color: Colors.green,
             ),
             SizedBox(width: 3),

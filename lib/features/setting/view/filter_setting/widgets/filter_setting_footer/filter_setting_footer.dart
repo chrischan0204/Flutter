@@ -4,11 +4,13 @@ class FilterSettingFooterView extends StatefulWidget {
   final ValueChanged<String> onFilterSaved;
   final VoidCallback onFilterApplied;
   final VoidCallback onFilterOptionClosed;
+  final String viewName;
   const FilterSettingFooterView({
     super.key,
     required this.onFilterSaved,
     required this.onFilterApplied,
     required this.onFilterOptionClosed,
+    required this.viewName,
   });
 
   @override
@@ -30,10 +32,19 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
   }
 
   @override
+  void dispose() {
+    filterNameController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<FilterSettingBloc, FilterSettingState>(
       listener: (context, state) {
         filterNameController.text = state.userFilterUpdate.filterName;
+        filterNameController.selection = TextSelection.collapsed(
+            offset: state.userFilterUpdate.filterName.length);
       },
       listenWhen: (previous, current) =>
           previous.userFilterUpdate.filterName !=
@@ -41,8 +52,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 50,
-            vertical: 20,
+            horizontal: 20,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +63,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                 child: Row(
                   children: [
                     const Text('Filter Name', style: TextStyle(fontSize: 14)),
-                    const SizedBox(width: 30),
+                    const SizedBox(width: 20),
                     Expanded(
                       child: CustomTextField(
                           // initialValue: state.userFilterUpdate.filterName,
@@ -75,17 +85,26 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                   ],
                 ),
               ),
-              Flexible(
-                fit: FlexFit.tight,
-                flex: 1,
-                child: Container(),
-              ),
+              const SizedBox(width: 30),
               Flexible(
                 fit: FlexFit.tight,
                 flex: 2,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    ElevatedButton(
+                      onPressed:
+                          state.isNew ? null : () => widget.onFilterApplied(),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3))),
+                      child: const Text(
+                        'Apply',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
                     BlocListener<FilterSettingBloc, FilterSettingState>(
                       listener: (context, state) {
                         if (state.userFilterSettingUpdateStatus.isSuccess) {
@@ -96,6 +115,9 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                           ).showNotification();
                           widget.onFilterSaved(state.userFilterUpdate.id);
                         }
+                        filterSettingBloc.add(
+                            FilterSettingUserFilterSettingListLoaded(
+                                name: widget.viewName));
                       },
                       listenWhen: (previous, current) =>
                           previous.userFilterSettingUpdateStatus !=
@@ -126,7 +148,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 30),
+                    const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
                         CustomAlert(
@@ -169,19 +191,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                    // const SizedBox(width: 20),
-                    // ElevatedButton(
-                    //   onPressed: () => widget.onFilterApplied(),
-                    //   style: ElevatedButton.styleFrom(
-                    //       backgroundColor: Colors.green,
-                    //       shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(3))),
-                    //   child: const Text(
-                    //     'Apply',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ),
-                    const SizedBox(width: 30),
+                    const SizedBox(width: 20),
                     BlocListener<FilterSettingBloc, FilterSettingState>(
                       listener: (context, state) {
                         if (state.userFilterSettingDeleteStatus.isSuccess) {
@@ -191,6 +201,9 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                             content: 'User filter deleted successfully',
                           ).showNotification();
                         }
+                        filterSettingBloc.add(
+                            FilterSettingUserFilterSettingListLoaded(
+                                name: widget.viewName));
                       },
                       listenWhen: (previous, current) =>
                           previous.userFilterSettingDeleteStatus !=
@@ -211,7 +224,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 30),
+                    const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
                         widget.onFilterOptionClosed();

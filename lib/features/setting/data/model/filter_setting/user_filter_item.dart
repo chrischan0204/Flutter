@@ -28,6 +28,7 @@ class UserFilterItem extends Equatable {
         operator,
         filterValue,
         deleted,
+        isNew,
       ];
 
   bool get isNew => id == '00000000-0000-0000-0000-000000000000';

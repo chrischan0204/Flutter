@@ -15,19 +15,20 @@ class FilterSettingHeaderView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(bottom: 10),
-            child: IconButton(
-                onPressed: () => onFilterOptionClosed(),
-                icon: const Icon(PhosphorIcons.x, size: 18)),
-          ),
+          Container(),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 50),
             child: FilterSettingSelectField(),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+                onPressed: () => onFilterOptionClosed(),
+                icon: const Icon(PhosphorIcons.x, size: 14)),
           ),
         ],
       ),

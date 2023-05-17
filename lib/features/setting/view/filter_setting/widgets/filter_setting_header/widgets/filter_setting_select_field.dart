@@ -37,7 +37,6 @@ class _FilterSettingSelectFieldState extends State<FilterSettingSelectField> {
                   MapEntry(userFilterSetting.filterName, userFilterSetting)
                 ]);
               }
-              print(state.selectedUserFilterSetting?.filterName ?? '');
               return SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
                 child: CustomSingleSelect(

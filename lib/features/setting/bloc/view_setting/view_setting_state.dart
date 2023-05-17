@@ -1,12 +1,12 @@
-part of 'user_list_view_setting_bloc.dart';
+part of 'view_setting_bloc.dart';
 
-class UserListViewSettingState extends Equatable {
+class ViewSettingState extends Equatable {
   final EntityStatus viewSettingLoadStatus;
   final EntityStatus viewSettingSaveStatus;
   final List<ViewSettingItemData> viewSettingDisplayColumnList;
   final List<ViewSettingItemData> viewSettingSortingColumnList;
   final List<ViewSettingColumn> columns;
-  const UserListViewSettingState({
+  const ViewSettingState({
     this.viewSettingLoadStatus = EntityStatus.initial,
     this.viewSettingSaveStatus = EntityStatus.initial,
     this.viewSettingDisplayColumnList = const [],
@@ -41,14 +41,14 @@ class UserListViewSettingState extends Equatable {
     return viewSettingSortingColumnList.indexWhere((d) => d.key == key);
   }
 
-  UserListViewSettingState copyWith({
+  ViewSettingState copyWith({
     EntityStatus? viewSettingLoadStatus,
     EntityStatus? viewSettingSaveStatus,
     List<ViewSettingItemData>? viewSettingDisplayColumnList,
     List<ViewSettingItemData>? viewSettingSortingColumnList,
     List<ViewSettingColumn>? columns,
   }) {
-    return UserListViewSettingState(
+    return ViewSettingState(
       viewSettingLoadStatus:
           viewSettingLoadStatus ?? this.viewSettingLoadStatus,
       viewSettingSaveStatus:

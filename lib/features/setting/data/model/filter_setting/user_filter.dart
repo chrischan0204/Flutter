@@ -28,6 +28,7 @@ class UserFilter extends Equatable {
         isDefault,
         deleted,
         userFilterItems,
+        undeletedUserFilterItems,
       ];
 
   List<UserFilterItem> get undeletedUserFilterItems =>

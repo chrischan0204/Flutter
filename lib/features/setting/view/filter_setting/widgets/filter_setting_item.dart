@@ -34,10 +34,10 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 6,
-        vertical: 4,
+        vertical: 3,
       ),
       margin: const EdgeInsets.symmetric(
-        vertical: 5,
+        vertical: 3,
         horizontal: 20,
       ),
       child: Row(
@@ -66,6 +66,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
       child: controlType == 'Textbox'
           ? widget.userFilterItem.filterValue.isNotEmpty
               ? CustomTextField(
+                  key: ValueKey(widget.userFilterItem.id),
                   initialValue: widget.userFilterItem.filterValue[0],
                   onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
@@ -73,6 +74,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
                         value: [value],
                       )))
               : CustomTextField(
+                  key: ValueKey(widget.userFilterItem.id),
                   onChanged: (value) => filterSettingBloc
                           .add(FilterSettingUserFilterItemValueChanged(
                         userFilterItem: widget.userFilterItem,

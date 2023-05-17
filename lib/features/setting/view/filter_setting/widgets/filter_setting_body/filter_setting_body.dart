@@ -3,7 +3,11 @@ import '../filter_setting_item.dart';
 import '/common_libraries.dart';
 
 class FilterSettingBodyView extends StatefulWidget {
-  const FilterSettingBodyView({super.key});
+  final String viewName;
+  const FilterSettingBodyView({
+    super.key,
+    required this.viewName,
+  });
 
   @override
   State<FilterSettingBodyView> createState() => _FilterSettingBodyViewState();
@@ -21,16 +25,17 @@ class _FilterSettingBodyViewState extends State<FilterSettingBodyView> {
   Widget build(BuildContext context) {
     return BlocConsumer<FilterSettingBloc, FilterSettingState>(
       listener: (context, state) {
-        filterSettingBloc
-            .add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
+        filterSettingBloc.add(
+            FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
       },
       listenWhen: (previous, current) =>
           previous.userFilterSettingDeleteStatus !=
           current.userFilterSettingDeleteStatus,
       builder: (context, state) => Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 4),
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        // constraints:
+        //     BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 4, minHeight: 52 * 5),
+        height: 300,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,

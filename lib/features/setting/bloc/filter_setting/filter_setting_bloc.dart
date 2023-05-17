@@ -189,6 +189,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     try {
       UserFilter updatedUserFilter = await settingsRepository
           .updateUserFilterSetting(state.userFilterUpdate);
+      print(updatedUserFilter.id);
       emit(state.copyWith(
         userFilterSettingUpdateStatus: EntityStatus.success,
         selectedUserFilterSetting: UserFilterSetting(
@@ -199,17 +200,18 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
         userFilterUpdate: state.userFilterUpdate.copyWith(
             id: updatedUserFilter.id,
             filterName: updatedUserFilter.filterName,
-            userFilterItems: state.userFilterUpdate.userFilterItems
+            userFilterItems: state.userFilterUpdate.undeletedUserFilterItems
                 .map((e) => e.copyWith(
                     id: updatedUserFilter
                         .userFilterItems[
                             state.userFilterUpdate.userFilterItems.indexOf(e)]
                         .id))
+                .toList()
+                .toSet()
                 .toList()),
         addButtonName: 'Update',
         saveAsButtonName: 'Save as',
       ));
-      add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
     } catch (e) {
       emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.failure));
     }
@@ -241,17 +243,18 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
         userFilterUpdate: state.userFilterUpdate.copyWith(
             id: updatedUserFilter.id,
             filterName: updatedUserFilter.filterName,
-            userFilterItems: state.userFilterUpdate.userFilterItems
+            userFilterItems: state.userFilterUpdate.undeletedUserFilterItems
                 .map((e) => e.copyWith(
                     id: updatedUserFilter
                         .userFilterItems[
                             state.userFilterUpdate.userFilterItems.indexOf(e)]
                         .id))
+                .toList()
+                .toSet()
                 .toList()),
         addButtonName: 'Update',
         saveAsButtonName: 'Save as',
       ));
-      add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
     } catch (e) {
       emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.failure));
     }
@@ -301,7 +304,10 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
             filterSetting: FilterSetting(id: const Uuid().v1()),
           ));
     } else {
-      userFilterItems.add(UserFilterItem(id: const Uuid().v1()));
+      userFilterItems.add(UserFilterItem(
+        id: '00000000-0000-0000-0000-000000000000',
+        filterSetting: FilterSetting(id: const Uuid().v1()),
+      ));
     }
 
     emit(state.copyWith(
