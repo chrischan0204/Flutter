@@ -13,6 +13,48 @@ class TemplateDesignerView extends StatefulWidget {
 }
 
 class _TemplateDesignerViewState extends State<TemplateDesignerView> {
+  String token = '';
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) =>
+          setState(() => token = state.authUser?.token ?? ''),
+      listenWhen: (previous, current) =>
+          previous.authUser?.token != current.authUser?.token,
+      builder: (context, addEditTemplateState) {
+        token = addEditTemplateState.authUser?.token ?? '';
+        return MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+                create: (context) => TemplatesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => TemplateDesignerBloc(
+                        templatesRepository: RepositoryProvider.of(context),
+                      )),
+            ],
+            child: TemplateDesignerWidget(
+              templateId: widget.templateId,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class TemplateDesignerWidget extends StatelessWidget {
+  final String templateId;
+  const TemplateDesignerWidget({
+    super.key,
+    required this.templateId,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,10 +66,10 @@ class _TemplateDesignerViewState extends State<TemplateDesignerView> {
           ),
           child: Row(
             children: [
-              const Flexible(
+              Flexible(
                 flex: 1,
                 fit: FlexFit.tight,
-                child: TemplateSectionView(),
+                child: TemplateSectionView(templateId: templateId),
               ),
               const SizedBox(width: 30),
               Flexible(

@@ -8,10 +8,10 @@ class TemplateSection extends Equatable {
   final String name;
   final int templateSectionItemCount;
   const TemplateSection({
-    required this.id,
+    this.id = '',
     required this.templateId,
     required this.name,
-    required this.templateSectionItemCount,
+    this.templateSectionItemCount = 0,
   });
 
   @override

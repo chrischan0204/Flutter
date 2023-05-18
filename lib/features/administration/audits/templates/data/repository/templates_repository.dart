@@ -59,4 +59,27 @@ class TemplatesRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<List<TemplateSection>> getTemplateSectionList(
+      String templateId) async {
+    Response response = await super.get('$url/$templateId/sections');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => TemplateSection.fromMap(e))
+          .toList();
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> addTemplateSection(
+    TemplateSection templateSection,
+    String templateId,
+  ) async {
+    Response response =
+        await super.post('$url/section', body: templateSection.toJson());
+
+    return EntityResponse.fromJson(response.body)
+        .copyWith(statusCode: response.statusCode);
+  }
 }

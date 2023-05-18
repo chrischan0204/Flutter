@@ -27,4 +27,4 @@ export '/features/setting/data/model/model.dart';
 
 export '/features/auth/data/model/model.dart';
 
-export '/features/administration/audits/templates/data/model/template.dart';
+export '/features/administration/audits/templates/data/model/model.dart';
