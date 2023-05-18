@@ -1,4 +1,6 @@
 import '/common_libraries.dart';
+import 'widgets/first_name_field.dart';
+import 'widgets/revision_date_picker.dart';
 
 class AddEditTemplateView extends StatefulWidget {
   final String? templateId;
@@ -104,7 +106,18 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
         return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, templateDetailState) {
             return BlocListener<TemplateDetailBloc, TemplateDetailState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                if (state.template != null) {
+                  addEditTemplateBloc.add(AddEditTemplateDateChanged(
+                      date: DateTime.parse(state.template!.revisionDate)));
+                  addEditTemplateBloc.add(AddEditTemplateDescriptionChanged(
+                      description: state.template!.name!));
+                  addEditTemplateBloc.add(AddEditTemplateUsedInAudit(
+                      usedInAudit: state.template!.usedInAudit));
+                  addEditTemplateBloc.add(AddEditTemplateUsedInInspection(
+                      usedInInspection: state.template!.usedInInspection));
+                }
+              },
               listenWhen: (previous, current) =>
                   previous.template != current.template,
               child: AddEditEntityTemplate(
@@ -121,8 +134,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 view: widget.view,
                 child: Column(
                   children: [
-                    _buildFirstNameField(addEditTemplateState),
-                    _buildDatePicker(addEditTemplateState),
+                    const FirstNameField(),
+                    const RevisionDatePicker(),
                     _buildUsedInCheckBoxes(addEditTemplateState)
                   ],
                 ),
@@ -167,42 +180,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     }
   }
 
-  BlocListener _buildFirstNameField(AddEditTemplateState addEditTemplateState) {
-    return BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
-      listener: (context, state) {
-        CustomNotification(
-          context: context,
-          notifyType: NotifyType.error,
-          content: addEditTemplateState.message,
-        ).showNotification();
-      },
-      listenWhen: (previous, current) =>
-          previous.templateAddStatus != current.templateAddStatus &&
-          current.templateAddStatus.isFailure &&
-          previous.message != current.message,
-      child: FormItem(
-        label: 'Template Description (*)',
-        content: CustomTextField(
-          controller: descriptionController,
-          hintText: 'Template description',
-          onChanged: (firstName) => addEditTemplateBloc
-              .add(AddEditTemplateDescriptionChanged(description: firstName)),
-        ),
-        message: addEditTemplateState.templateDescriptionValidationMessage,
-      ),
-    );
-  }
 
-  FormItem _buildDatePicker(AddEditTemplateState addEditTemplateState) {
-    return FormItem(
-      label: 'Date (*)',
-      content: CustomDatePicker(
-        onChanged: (date) =>
-            addEditTemplateBloc.add(AddEditTemplateDateChanged(date: date)),
-      ),
-      message: addEditTemplateState.dateValidationMesage,
-    );
-  }
 
   FormItem _buildUsedInCheckBoxes(AddEditTemplateState addEditTemplateState) {
     return FormItem(

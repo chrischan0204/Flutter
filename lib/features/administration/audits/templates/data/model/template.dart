@@ -75,9 +75,7 @@ class Template extends Entity {
     return Template(
       id: entity.id,
       name: entity.name,
-      revisionDate:
-          FormatDate(format: 'd MMMM y', dateString: map['revisionDate'] ?? '')
-              .formatDate,
+      revisionDate: map['revisionDate'] ?? '',
       usedInAudit: map['usedInAudit'] as bool,
       usedInInspection: map['usedInInspection'] as bool,
       locked: map['locked'] as bool,

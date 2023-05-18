@@ -7,10 +7,12 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class CustomDatePicker extends StatefulWidget {
   final DateTime? initialSelectedDate;
   final ValueChanged<DateTime> onChanged;
+  final TextEditingController controller;
   const CustomDatePicker({
     super.key,
     this.initialSelectedDate,
     required this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -18,17 +20,20 @@ class CustomDatePicker extends StatefulWidget {
 }
 
 class _CustomDatePickerState extends State<CustomDatePicker> {
-  TextEditingController textController = TextEditingController();
-
-  final Color monthCellBackground = const Color(0xfff7f4ff);
+  final Color monthCellBackground = lightTeal;
   final Color indicatorColor = const Color(0xFF1AC4C7);
-  final Color highlightColor = Colors.deepPurpleAccent;
+  final Color highlightColor = Colors.blueAccent;
   final Color cellTextColor = const Color(0xFF130438);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
       if (args.value is DateTime) {
-        textController.text =
+        widget.controller.text =
             DateFormat('yyyy-MM-dd').format((args.value as DateTime));
         widget.onChanged(args.value);
       }
@@ -47,79 +52,82 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           key: UniqueKey(),
           padding: const EdgeInsets.all(5.0),
           child: Container(
-              padding: const EdgeInsets.all(1),
-              width: MediaQuery.of(context).size.width > 1250 ? 400 : 300,
-              height: MediaQuery.of(context).size.width > 1250 ? 520 : 400,
-              child: SfDateRangePicker(
-                onSelectionChanged: _onSelectionChanged,
-                selectionMode: DateRangePickerSelectionMode.single,
-                initialSelectedDate: widget.initialSelectedDate,
-              )
-              // SfDateRangePicker(
-              //   selectionShape: DateRangePickerSelectionShape.rectangle,
-              //   selectionColor: highlightColor,
-              //   selectionTextStyle:
-              //      const TextStyle(color: Colors.white, fontSize: 14),
-              //   minDate: DateTime.now().add(const Duration(days: -200)),
-              //   maxDate: DateTime.now().add(const Duration(days: 500)),
-              //   headerStyle: DateRangePickerHeaderStyle(
-              //       textAlign: TextAlign.center,
-              //       textStyle: TextStyle(
-              //         fontSize: 18,
-              //         color: cellTextColor,
-              //       )),
-              //   monthCellStyle: DateRangePickerMonthCellStyle(
-              //       cellDecoration: _MonthCellDecoration(
-              //           backgroundColor: monthCellBackground,
-              //           showIndicator: false,
-              //           indicatorColor: indicatorColor),
-              //       todayCellDecoration: _MonthCellDecoration(
-              //           borderColor: highlightColor,
-              //           backgroundColor: monthCellBackground,
-              //           showIndicator: false,
-              //           indicatorColor: indicatorColor),
-              //       specialDatesDecoration: _MonthCellDecoration(
-              //           backgroundColor: monthCellBackground,
-              //           showIndicator: true,
-              //           indicatorColor: indicatorColor),
-              //       disabledDatesTextStyle: const TextStyle(
-              //         color: Color(0xffe2d7fe),
-              //       ),
-              //       weekendTextStyle: TextStyle(
-              //         color: highlightColor,
-              //       ),
-              //       textStyle: TextStyle(color: cellTextColor, fontSize: 14),
-              //       specialDatesTextStyle:
-              //           TextStyle(color: cellTextColor, fontSize: 14),
-              //       todayTextStyle:
-              //           TextStyle(color: highlightColor, fontSize: 14)),
-              //   yearCellStyle: DateRangePickerYearCellStyle(
-              //     todayTextStyle:
-              //         TextStyle(color: highlightColor, fontSize: 14),
-              //     textStyle: TextStyle(color: cellTextColor, fontSize: 14),
-              //     disabledDatesTextStyle:
-              //         const TextStyle(color:  Color(0xffe2d7fe)),
-              //     leadingDatesTextStyle: TextStyle(
-              //         color: cellTextColor.withOpacity(0.5), fontSize: 14),
-              //   ),
-              //   showNavigationArrow: true,
-              //   todayHighlightColor: highlightColor,
-              //   monthViewSettings: DateRangePickerMonthViewSettings(
-              //     firstDayOfWeek: 1,
-              //     viewHeaderStyle: DateRangePickerViewHeaderStyle(
-              //         textStyle: TextStyle(
-              //             fontSize: 10,
-              //             color: cellTextColor,
-              //             fontWeight: FontWeight.w600)),
-              //     dayFormat: 'EEE',
-              //   ),
-              // ),
+            padding: const EdgeInsets.all(1),
+            width: MediaQuery.of(context).size.width > 1250 ? 400 : 300,
+            height: MediaQuery.of(context).size.width > 1250 ? 520 : 400,
+            child:
+                // SfDateRangePicker(
+                //   onSelectionChanged: _onSelectionChanged,
+                //   selectionMode: DateRangePickerSelectionMode.single,
+                //   initialSelectedDate: widget.initialSelectedDate,
+                // )
+                SfDateRangePicker(
+              selectionMode: DateRangePickerSelectionMode.single,
+              onSelectionChanged: _onSelectionChanged,
+              initialSelectedDate: widget.initialSelectedDate,
+              selectionShape: DateRangePickerSelectionShape.rectangle,
+              selectionColor: highlightColor,
+              selectionTextStyle:
+                  const TextStyle(color: Colors.white, fontSize: 14),
+              minDate: DateTime.now().add(const Duration(days: -200)),
+              maxDate: DateTime.now().add(const Duration(days: 500)),
+              headerStyle: DateRangePickerHeaderStyle(
+                  textAlign: TextAlign.center,
+                  textStyle: TextStyle(
+                    fontSize: 18,
+                    color: cellTextColor,
+                  )),
+              monthCellStyle: DateRangePickerMonthCellStyle(
+                  cellDecoration: _MonthCellDecoration(
+                      backgroundColor: monthCellBackground,
+                      showIndicator: false,
+                      indicatorColor: indicatorColor),
+                  todayCellDecoration: _MonthCellDecoration(
+                      borderColor: highlightColor,
+                      backgroundColor: monthCellBackground,
+                      showIndicator: false,
+                      indicatorColor: indicatorColor),
+                  specialDatesDecoration: _MonthCellDecoration(
+                      backgroundColor: monthCellBackground,
+                      showIndicator: true,
+                      indicatorColor: indicatorColor),
+                  disabledDatesTextStyle: const TextStyle(
+                    color: Color(0xffe2d7fe),
+                  ),
+                  weekendTextStyle: TextStyle(
+                    color: highlightColor,
+                  ),
+                  textStyle: TextStyle(color: cellTextColor, fontSize: 14),
+                  specialDatesTextStyle:
+                      TextStyle(color: cellTextColor, fontSize: 14),
+                  todayTextStyle:
+                      TextStyle(color: highlightColor, fontSize: 14)),
+              yearCellStyle: DateRangePickerYearCellStyle(
+                todayTextStyle: TextStyle(color: highlightColor, fontSize: 14),
+                textStyle: TextStyle(color: cellTextColor, fontSize: 14),
+                disabledDatesTextStyle:
+                    const TextStyle(color: Color(0xffe2d7fe)),
+                leadingDatesTextStyle: TextStyle(
+                    color: cellTextColor.withOpacity(0.5), fontSize: 14),
               ),
+              showNavigationArrow: true,
+              todayHighlightColor: highlightColor,
+              monthViewSettings: DateRangePickerMonthViewSettings(
+                firstDayOfWeek: 1,
+                viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                    textStyle: TextStyle(
+                        fontSize: 10,
+                        color: cellTextColor,
+                        fontWeight: FontWeight.w600)),
+                dayFormat: 'EEE',
+              ),
+            ),
+          ),
         ),
       ],
       child: SizedBox(
         width: double.infinity,
-        child: CustomTextField(controller: textController),
+        child: CustomTextField(controller: widget.controller),
       ),
     );
   }
