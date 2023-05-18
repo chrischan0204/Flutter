@@ -6,7 +6,6 @@ import 'package:strings/strings.dart';
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
   final VoidCallback? onViewSettingApplied;
-  final VoidCallback? onViewSettingSliderOpened;
   final ValueChanged<String>? onFilterSaved;
   final void Function([String?])? onFilterApplied;
   final EntityStatus entityRetrievedStatus;
@@ -26,7 +25,6 @@ class EntityListTemplate extends StatefulWidget {
     super.key,
     required this.title,
     this.onViewSettingApplied,
-    this.onViewSettingSliderOpened,
     this.onFilterSaved,
     this.onFilterApplied,
     required this.label,
@@ -56,16 +54,16 @@ class _CrudState extends State<EntityListTemplate> {
   bool filterViewShow = false;
 
   late FilterSettingBloc filterSettingBloc;
+  late ViewSettingBloc viewSettingBloc;
 
   String token = '';
 
   @override
   void initState() {
     filterSettingBloc = context.read();
+    viewSettingBloc = context.read();
     if (widget.viewName != null) {
       filterSettingBloc.add(FilterSettingInit(viewName: widget.viewName!));
-      // filterSettingBloc
-      //     .add(FilterSettingFilterSettingListLoaded(name: widget.viewName!));
     }
     super.initState();
   }
@@ -281,9 +279,8 @@ class _CrudState extends State<EntityListTemplate> {
                     label: 'View Settings',
                     color: warnColor,
                     onClick: () {
-                      if (widget.onViewSettingSliderOpened != null) {
-                        widget.onViewSettingSliderOpened!();
-                      }
+                      viewSettingBloc
+                          .add(ViewSettingLoaded(viewName: widget.viewName!));
                       _showViewSettingsSlider();
                     },
                   ),
@@ -312,8 +309,9 @@ class _CrudState extends State<EntityListTemplate> {
                       }
                     },
                     listenWhen: (previous, current) =>
+                        previous.selectedUserFilterSetting == null &&
                         previous.selectedUserFilterSetting !=
-                        current.selectedUserFilterSetting,
+                            current.selectedUserFilterSetting,
                     builder: (context, state) {
                       return Text(
                         'Filter Name: ${state.selectedUserFilterSetting?.filterName ?? 'No Filter'}',
@@ -427,17 +425,28 @@ class _CrudState extends State<EntityListTemplate> {
                 horizontal: 20,
                 vertical: 12,
               ),
-              child: CustomButton(
-                backgroundColor: const Color(0xff0c83ff),
-                hoverBackgroundColor: const Color(0xff0b76e6),
-                iconData: PhosphorIcons.arrowRight,
-                text: 'Apply',
-                onClick: () {
-                  _hideViewSettingsSlider();
+              child: BlocListener<ViewSettingBloc, ViewSettingState>(
+                listener: (context, viewSettingState) {
                   if (widget.onViewSettingApplied != null) {
                     widget.onViewSettingApplied!();
                   }
                 },
+                listenWhen: (previous, current) =>
+                    previous.viewSettingSaveStatus !=
+                    current.viewSettingSaveStatus,
+                child: CustomButton(
+                  backgroundColor: const Color(0xff0c83ff),
+                  hoverBackgroundColor: const Color(0xff0b76e6),
+                  iconData: PhosphorIcons.arrowRight,
+                  text: 'Apply',
+                  onClick: () {
+                    _hideViewSettingsSlider();
+                    if (widget.viewName != null) {
+                      viewSettingBloc
+                          .add(ViewSettingApplied(viewName: widget.viewName!));
+                    }
+                  },
+                ),
               ),
             ),
           ],

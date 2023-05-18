@@ -25,11 +25,6 @@ class _UsersListViewState extends State<UsersListView> {
                       token: token,
                       authBloc: BlocProvider.of(context),
                     )),
-            RepositoryProvider(
-                create: (context) => SettingsRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
           ],
           child: MultiBlocProvider(
             providers: [
@@ -41,9 +36,6 @@ class _UsersListViewState extends State<UsersListView> {
                   create: (context) => UserDetailBloc(
                       usersRepository:
                           RepositoryProvider.of<UsersRepository>(context))),
-              BlocProvider(
-                  create: (context) => ViewSettingBloc(
-                      settingsRepository: RepositoryProvider.of(context))),
             ],
             child: const UsersListWidget(),
           ),
@@ -63,7 +55,6 @@ class UsersListWidget extends StatefulWidget {
 class _UsersListState extends State<UsersListWidget> {
   late UserListBloc userListBloc;
   late UserDetailBloc userDetailBloc;
-  late ViewSettingBloc viewSettingBloc;
 
   static String pageTitle = 'Users';
   static String pageLabel = 'user';
@@ -74,7 +65,6 @@ class _UsersListState extends State<UsersListWidget> {
   void initState() {
     userListBloc = context.read<UserListBloc>();
     userDetailBloc = context.read<UserDetailBloc>();
-    viewSettingBloc = context.read();
 
     super.initState();
   }
@@ -85,34 +75,22 @@ class _UsersListState extends State<UsersListWidget> {
       builder: (context, userListState) {
         return BlocBuilder<UserDetailBloc, UserDetailState>(
           builder: (context, userDetailState) {
-            return BlocListener<ViewSettingBloc, ViewSettingState>(
-              listener: (context, viewSettingState) => _filterUsers(),
-              listenWhen: (previous, current) =>
-                  previous.viewSettingSaveStatus !=
-                  current.viewSettingSaveStatus,
-              child: EntityListTemplate(
-                title: pageTitle,
-                label: pageLabel,
-                entities: userListState.userList,
-                showTableHeaderButtons: true,
-                onRowClick: (selectedUser) => _selectUser(selectedUser),
-                emptyMessage: emptyMessage,
-                entityRetrievedStatus: userListState.userListLoadStatus,
-                selectedEntity: userDetailState.user,
-                onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
-                onViewSettingApplied: () {
-                  viewSettingBloc
-                      .add(const ViewSettingApplied(viewName: 'user'));
-                  _filterUsers();
-                },
-                onIncludeDeletedChanged: (value) => _filterUsers(null, value),
-                onViewSettingSliderOpened: () => viewSettingBloc
-                    .add(const ViewSettingLoaded(viewName: 'user')),
-                viewName: 'user',
-                onFilterSaved: _filterUsers,
-                onFilterApplied: _filterUsers,
-                newIconData: PhosphorIcons.userPlus,
-              ),
+            return EntityListTemplate(
+              title: pageTitle,
+              label: pageLabel,
+              entities: userListState.userList,
+              showTableHeaderButtons: true,
+              onRowClick: (selectedUser) => _selectUser(selectedUser),
+              emptyMessage: emptyMessage,
+              entityRetrievedStatus: userListState.userListLoadStatus,
+              selectedEntity: userDetailState.user,
+              onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
+              onViewSettingApplied: () => _filterUsers(),
+              onIncludeDeletedChanged: (value) => _filterUsers(null, value),
+              viewName: 'user',
+              onFilterSaved: _filterUsers,
+              onFilterApplied: _filterUsers,
+              newIconData: PhosphorIcons.userPlus,
             );
           },
         );

@@ -137,10 +137,6 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                       //   includeDeleted: value,
                       // ));
                     },
-                    onViewSettingSliderOpened: () {
-                      // viewSettingBloc
-                      //   .add(const ViewSettingLoaded(viewName: 'template'));
-                    },
                     viewName: 'template',
                     onFilterSaved: (filterId) {
                       //       templatesListBloc.add(TemplateListFiltered(

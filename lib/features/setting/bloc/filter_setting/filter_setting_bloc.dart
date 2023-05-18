@@ -51,10 +51,10 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
   void onChange(Change<FilterSettingState> change) {
     super.onChange(change);
     // debugPrint(change.toString());
-    debugPrint(
-        'current filter name: ${change.currentState.selectedUserFilterSetting}');
-    debugPrint(
-        'next filter name: ${change.nextState.selectedUserFilterSetting}');
+    // debugPrint(
+    //     'current filter name: ${change.currentState.selectedUserFilterSetting}');
+    // debugPrint(
+    //     'next filter name: ${change.nextState.selectedUserFilterSetting}');
     // debugPrint(
     //     'current update filter name: ${change.currentState.userFilterUpdate.filterName}');
     // debugPrint(
@@ -133,7 +133,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
   ) async {
     emit(state.copyWith(
       userFilterSettingListLoadStatus: EntityStatus.loading,
-      selectedUserFilterSetting: null,
     ));
 
     try {

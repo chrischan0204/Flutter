@@ -23,7 +23,7 @@ class FilterSettingState extends Equatable {
   const FilterSettingState({
     this.filterSettingListLoadStatus = EntityStatus.initial,
     this.filterSettingList = const [],
-    this.userFilterUpdate = const UserFilter(viewName: 'user'),
+    this.userFilterUpdate = const UserFilter(viewName: ''),
     this.selectedUserFilterSetting,
     this.userFilterSettingLoadStatus = EntityStatus.initial,
     this.userFilterSettingList = const [],
