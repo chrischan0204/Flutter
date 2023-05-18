@@ -29,6 +29,18 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
+  Future<EntityResponse> addTemplate(Template template) async {
+    Response response = await super.post(url, body: template.toJson());
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse.fromJson(response.body);
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
   Future<EntityResponse> deleteTemplate(String templateId) async {
     Response response = await super.delete('$url/$templateId');
 

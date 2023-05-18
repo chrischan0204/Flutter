@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safety_eta/features/administration/audits/templates/view/add_edit_template/add_edit_template.dart';
 
 import '/features/features.dart';
 
@@ -258,7 +259,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
-          body: AddEditUserView(),
+          body: AddEditTemplateView(),
           selectedItemName: 'templates',
         ),
       ),
