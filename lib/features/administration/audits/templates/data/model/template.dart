@@ -66,7 +66,7 @@ class Template extends Entity {
       'revisionDate': revisionDate,
       'name': name,
       'usedInInspection': usedInInspection,
-      'usedInAudit': usedInAudits,
+      'usedInAudit': usedInAudit,
     };
   }
 

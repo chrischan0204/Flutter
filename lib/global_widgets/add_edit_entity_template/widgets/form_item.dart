@@ -6,11 +6,13 @@ class FormItem extends StatelessWidget {
   final String label;
   final Widget content;
   final String message;
+  final Widget? sideContent;
   const FormItem({
     super.key,
     required this.label,
     required this.content,
     this.message = '',
+    this.sideContent,
   });
 
   @override
@@ -56,14 +58,15 @@ class FormItem extends StatelessWidget {
                 left: 50.0,
                 right: 20,
               ),
-              child: Text(
-                message,
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontSize: 11,
-                  fontFamily: 'OpenSans',
-                ),
-              ),
+              child: sideContent ??
+                  Text(
+                    message,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 11,
+                      fontFamily: 'OpenSans',
+                    ),
+                  ),
             ),
           ),
         ],

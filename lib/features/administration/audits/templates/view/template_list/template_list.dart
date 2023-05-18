@@ -25,11 +25,6 @@ class _TemplateListViewState extends State<TemplateListView> {
                       token: token,
                       authBloc: BlocProvider.of(context),
                     )),
-            RepositoryProvider(
-                create: (context) => SettingsRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
           ],
           child: MultiBlocProvider(
             providers: [
@@ -39,14 +34,6 @@ class _TemplateListViewState extends State<TemplateListView> {
               BlocProvider(
                   create: (context) => TemplateDetailBloc(
                       templatesRepository: RepositoryProvider.of(context))),
-              // BlocProvider(
-              //     create: (context) => FilterSettingBloc(
-              //         viewName: 'template',
-              //         settingsRepository:
-              //             RepositoryProvider.of<SettingsRepository>(context))),
-              BlocProvider(
-                  create: (context) => ViewSettingBloc(
-                      settingsRepository: RepositoryProvider.of(context))),
             ],
             child: const TemplateListWidget(),
           ),

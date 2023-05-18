@@ -4,7 +4,7 @@ import '/constants/color.dart';
 class CustomTextField extends StatefulWidget {
   final String? hintText;
   final String? initialValue;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
   final bool isDisabled;
   final TextEditingController? controller;
   final IconData? suffixIconData;
@@ -16,7 +16,7 @@ class CustomTextField extends StatefulWidget {
     super.key,
     this.hintText,
     this.initialValue,
-    required this.onChanged,
+    this.onChanged,
     this.isDisabled = false,
     this.controller,
     this.suffixIconData,
@@ -45,9 +45,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         initialValue: widget.initialValue,
         controller: widget.controller,
         enabled: !widget.isDisabled,
-        onChanged: (value) {
-          widget.onChanged(value);
-        },
+        onChanged: widget.onChanged,
         style: const TextStyle(
           fontSize: 12,
           fontFamily: 'OpenSans',

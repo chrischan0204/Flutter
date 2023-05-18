@@ -36,6 +36,7 @@ dependencies:
   phosphor_flutter: ^1.4.0
   star_menu: ^3.1.4
   strings: ^0.2.2
+  syncfusion_flutter_datepicker: ^21.2.3
   uuid: ^3.0.7
   web_smooth_scroll: ^1.1.0
 

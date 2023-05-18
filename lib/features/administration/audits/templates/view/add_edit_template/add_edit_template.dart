@@ -122,6 +122,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 child: Column(
                   children: [
                     _buildFirstNameField(addEditTemplateState),
+                    _buildDatePicker(addEditTemplateState),
+                    _buildUsedInCheckBoxes(addEditTemplateState)
                   ],
                 ),
               ),
@@ -132,9 +134,6 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     );
   }
 
-  void _initFields(TemplateDetailState state) {
-    // descriptionController.text = state.template!.firstName;
-  }
 
   bool _checkFormDataFill(AddEditTemplateState addEditTemplateState) {
     return widget.templateId == null
@@ -162,21 +161,10 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
         notifyType: NotifyType.success,
         content: addEditTemplateState.message,
       ).showNotification();
-      // addEditTemplateBloc.add(AddEditTemplateStatusInited());
       // if (widget.templateId == null) {
       //   GoRouter.of(context).go(
       //       '/templates/edit/${addEditTemplateState.createdTemplateId!}?view=created');
       // }
-    } else if (addEditTemplateState.templateAddStatus.isFailure) {
-      if (!addEditTemplateState.message
-          .contains('Email exists, Email cannot be duplicate.')) {
-        CustomNotification(
-          context: context,
-          notifyType: NotifyType.error,
-          content: addEditTemplateState.message,
-        ).showNotification();
-      }
-      // addEditTemplateBloc.add(AddEditTemplateStatusInited());
     }
   }
 
@@ -190,6 +178,49 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
             .add(AddEditTemplateDescriptionChanged(description: firstName)),
       ),
       message: addEditTemplateState.templateDescriptionValidationMessage,
+    );
+  }
+
+  FormItem _buildDatePicker(AddEditTemplateState addEditTemplateState) {
+    return FormItem(
+      label: 'Date (*)',
+      content: CustomDatePicker(
+        onChanged: (date) =>
+            addEditTemplateBloc.add(AddEditTemplateDateChanged(date: date)),
+      ),
+      message: addEditTemplateState.dateValidationMesage,
+    );
+  }
+
+  FormItem _buildUsedInCheckBoxes(AddEditTemplateState addEditTemplateState) {
+    return FormItem(
+      label: 'Used in',
+      content: Row(
+        children: [
+          Checkbox(
+            value: addEditTemplateState.usedInAudit,
+            onChanged: (usedInAudit) =>
+                addEditTemplateBloc.add(AddEditTemplateUsedInAudit(
+              usedInAudit: usedInAudit!,
+            )),
+          ),
+          const SizedBox(width: 5),
+          const Text('Audits', style: TextStyle(fontSize: 12)),
+        ],
+      ),
+      sideContent: Row(
+        children: [
+          Checkbox(
+            value: addEditTemplateState.usedInInspection,
+            onChanged: (usedInInspection) =>
+                addEditTemplateBloc.add(AddEditTemplateUsedInInspection(
+              usedInInspection: usedInInspection!,
+            )),
+          ),
+          const SizedBox(width: 5),
+          const Text('Inspections', style: TextStyle(fontSize: 12)),
+        ],
+      ),
     );
   }
 

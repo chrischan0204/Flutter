@@ -18,7 +18,7 @@ class AddEditTemplateDescriptionChanged extends AddEditTemplateEvent {
 }
 
 class AddEditTemplateDateChanged extends AddEditTemplateEvent {
-  final String date;
+  final DateTime date;
   const AddEditTemplateDateChanged({
     required this.date,
   });

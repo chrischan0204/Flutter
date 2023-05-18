@@ -20,14 +20,20 @@ class AddEditTemplateBloc
     AddEditTemplateDescriptionChanged event,
     Emitter<AddEditTemplateState> emit,
   ) {
-    emit(state.copyWith(templateDescription: event.description));
+    emit(state.copyWith(
+      templateDescription: event.description,
+      templateDescriptionValidationMessage: '',
+    ));
   }
 
   void _onAddEditTemplateDateChanged(
     AddEditTemplateDateChanged event,
     Emitter<AddEditTemplateState> emit,
   ) {
-    emit(state.copyWith(date: event.date));
+    emit(state.copyWith(
+      date: event.date,
+      dateValidationMesage: '',
+    ));
   }
 
   void _onAddEditTemplateUsedInInspection(
@@ -48,21 +54,45 @@ class AddEditTemplateBloc
     AddEditTemplateTemplateAdded event,
     Emitter<AddEditTemplateState> emit,
   ) async {
-    emit(state.copyWith(templateAddStatus: EntityStatus.loading));
-    try {
-      EntityResponse response = await templatesRepository.addTemplate(Template(
-        name: state.templateDescription,
-        usedInAudit: state.usedInAudit,
-        usedInInspection: state.usedInInspection,
-        revisionDate: state.date,
-      ));
-
+    bool success = true;
+    if (Validation.isEmpty(state.templateDescription)) {
       emit(state.copyWith(
-        templateAddStatus: response.isSuccess.toEntityStatusCode(),
-        message: response.message,
-      ));
-    } catch (e) {
-      emit(state.copyWith(templateAddStatus: EntityStatus.failure));
+          templateDescriptionValidationMessage:
+              'Description is required and cannot be blank.'));
+      success = false;
+    }
+
+    if (Validation.isEmpty(state.date?.toIso8601String())) {
+      emit(state.copyWith(dateValidationMesage: 'Date is required.'));
+      success = false;
+    }
+
+    if (success) {
+      emit(state.copyWith(templateAddStatus: EntityStatus.loading));
+
+      try {
+        EntityResponse response =
+            await templatesRepository.addTemplate(Template(
+          name: state.templateDescription,
+          usedInAudit: state.usedInAudit,
+          usedInInspection: state.usedInInspection,
+          revisionDate: state.date!.toIso8601String(),
+        ));
+
+        if (response.statusCode == 409) {
+          emit(state.copyWith(
+            templateDescriptionValidationMessage: response.message,
+            templateAddStatus: response.isSuccess.toEntityStatusCode(),
+          ));
+        } else {
+          emit(state.copyWith(
+            templateAddStatus: response.isSuccess.toEntityStatusCode(),
+            message: response.message,
+          ));
+        }
+      } catch (e) {
+        emit(state.copyWith(templateAddStatus: EntityStatus.failure));
+      }
     }
   }
 }

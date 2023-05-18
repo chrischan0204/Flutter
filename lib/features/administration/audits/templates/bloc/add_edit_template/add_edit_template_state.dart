@@ -4,7 +4,7 @@ class AddEditTemplateState extends Equatable {
   final String templateDescription;
   final String templateDescriptionValidationMessage;
 
-  final String date;
+  final DateTime? date;
   final String dateValidationMesage;
 
   final bool usedInAudit;
@@ -17,7 +17,7 @@ class AddEditTemplateState extends Equatable {
   const AddEditTemplateState({
     this.templateDescription = '',
     this.templateDescriptionValidationMessage = '',
-    this.date = '',
+    this.date,
     this.dateValidationMesage = '',
     this.usedInAudit = false,
     this.usedInInspection = false,
@@ -27,7 +27,7 @@ class AddEditTemplateState extends Equatable {
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         templateDescription,
         templateDescriptionValidationMessage,
         date,
@@ -39,13 +39,13 @@ class AddEditTemplateState extends Equatable {
         message,
       ];
 
-  bool get templateDetailFilled =>
-      !(Validation.isEmpty(templateDescription) && Validation.isEmpty(date));
+  bool get templateDetailFilled => !(Validation.isEmpty(templateDescription) &&
+      Validation.isEmpty(date?.toIso8601String()));
 
   AddEditTemplateState copyWith({
     String? templateDescription,
     String? templateDescriptionValidationMessage,
-    String? date,
+    DateTime? date,
     String? dateValidationMesage,
     bool? usedInAudit,
     bool? usedInInspection,
