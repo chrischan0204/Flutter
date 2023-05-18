@@ -172,25 +172,38 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
       Map<String, dynamic> regionItems, RegionsState state) {
     return FormItem(
       label: 'Region (*)',
-      content: CustomSingleSelect(
-        items: regionItems,
-        hint: 'Select Region',
-        disabled: state.selectedRegion != null
-            ? !state.selectedRegion!.deletable
-            : true,
-        selectedValue: regionName,
-        onChanged: (region) {
-          setState(() {
-            regionNameValidationMessage = '';
-          });
-          regionsBloc.add(
-            RegionSelected(
-              region: (region.value as Region).copyWith(
-                active: widget.regionId != null ? null : true,
-              ),
-            ),
-          );
+      content: BlocListener<RegionsBloc, RegionsState>(
+        listener: (context, state) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.info,
+            content: state.message,
+          ).showNotification();
         },
+        listenWhen: (previous, current) =>
+            previous.unassignedRegionsRetrievedStatus !=
+                current.unassignedRegionsRetrievedStatus &&
+            current.unassignedRegionsRetrievedStatus.isFailure,
+        child: CustomSingleSelect(
+          items: regionItems,
+          hint: 'Select Region',
+          disabled: state.selectedRegion != null
+              ? !state.selectedRegion!.deletable
+              : true,
+          selectedValue: regionName,
+          onChanged: (region) {
+            setState(() {
+              regionNameValidationMessage = '';
+            });
+            regionsBloc.add(
+              RegionSelected(
+                region: (region.value as Region).copyWith(
+                  active: widget.regionId != null ? null : true,
+                ),
+              ),
+            );
+          },
+        ),
       ),
       message: regionNameValidationMessage,
     );

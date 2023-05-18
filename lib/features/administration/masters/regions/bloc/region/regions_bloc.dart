@@ -68,24 +68,30 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   ) async {
     emit(
       state.copyWith(
-        assignedRegionsRetrievedStatus: EntityStatus.loading,
+        unassignedRegionsRetrievedStatus: EntityStatus.loading,
         timeZones: [],
       ),
     );
     try {
       List<Region> unassignedRegions =
           await regionsRepository.getUnassignedRegions();
-      emit(
-        state.copyWith(
-          unassignedRegions: unassignedRegions,
-          assignedRegionsRetrievedStatus: EntityStatus.success,
+      if (unassignedRegions.isEmpty) {
+        emit(state.copyWith(
+          unassignedRegionsRetrievedStatus: EntityStatus.failure,
+          message: 'No region available for Add',
           selectedRegion: null,
-        ),
-      );
+        ));
+      } else {
+        emit(state.copyWith(
+          unassignedRegions: unassignedRegions,
+          unassignedRegionsRetrievedStatus: EntityStatus.success,
+          selectedRegion: null,
+        ));
+      }
     } catch (e) {
       emit(
         state.copyWith(
-          assignedRegionsRetrievedStatus: EntityStatus.failure,
+          unassignedRegionsRetrievedStatus: EntityStatus.failure,
         ),
       );
     }
