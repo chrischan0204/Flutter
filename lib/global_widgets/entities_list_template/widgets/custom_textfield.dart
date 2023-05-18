@@ -12,6 +12,8 @@ class CustomTextField extends StatefulWidget {
   final Color suffixIconBackgroundColor;
   final double iconSize;
   final VoidCallback? onSuffixIconClick;
+  final double height;
+  final Widget? suffixWidget;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -24,6 +26,8 @@ class CustomTextField extends StatefulWidget {
     this.suffixIconBackgroundColor = const Color(0xfff9fafb),
     this.iconSize = 20,
     this.onSuffixIconClick,
+    this.height = 36,
+    this.suffixWidget,
   });
 
   @override
@@ -39,7 +43,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 36,
+      height: widget.height,
       child: TextFormField(
         key: widget.key,
         initialValue: widget.initialValue,
@@ -78,7 +82,29 @@ class _CustomTextFieldState extends State<CustomTextField> {
           focusColor: Colors.white,
           hoverColor: Colors.white,
           suffixIcon: widget.suffixIconData == null
-              ? null
+              ? widget.suffixWidget == null
+                  ? null
+                  : GestureDetector(
+                      onTap: () => widget.onSuffixIconClick!(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(5),
+                            bottomRight: Radius.circular(5),
+                          ),
+                          border: Border.all(
+                            color: grey,
+                            width: 1,
+                          ),
+                          color: widget.suffixIconBackgroundColor,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
+                        child: widget.suffixWidget,
+                      ),
+                    )
               : GestureDetector(
                   onTap: () => widget.onSuffixIconClick!(),
                   child: Container(

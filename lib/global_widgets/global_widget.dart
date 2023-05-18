@@ -11,3 +11,4 @@ export 'entity_list_view_setting_template/entity_list_view_setting_template.dart
 export 'table_view.dart';
 export 'loader.dart';
 export 'custom_date_picker.dart';
+export 'custom_textfield_with_icon.dart';

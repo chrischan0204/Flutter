@@ -265,12 +265,24 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/templates/designer/:templateId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: TemplateDesignerView(
+            templateId: state.params['templateId']!,
+          ),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/templates/edit/:templateId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: AddEditUserView(
-            userId: state.params['templateId'],
+          body: AddEditTemplateView(
+            templateId: state.params['templateId'],
             view: state.queryParams['view'],
           ),
           selectedItemName: 'templates',

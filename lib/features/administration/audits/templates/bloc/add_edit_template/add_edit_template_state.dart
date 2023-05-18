@@ -1,6 +1,8 @@
 part of 'add_edit_template_bloc.dart';
 
 class AddEditTemplateState extends Equatable {
+  final String createdTemplateId;
+
   final String templateDescription;
   final String templateDescriptionValidationMessage;
 
@@ -15,6 +17,7 @@ class AddEditTemplateState extends Equatable {
   final String message;
 
   const AddEditTemplateState({
+    this.createdTemplateId = '',
     this.templateDescription = '',
     this.templateDescriptionValidationMessage = '',
     this.date,
@@ -28,6 +31,7 @@ class AddEditTemplateState extends Equatable {
 
   @override
   List<Object?> get props => [
+        createdTemplateId,
         templateDescription,
         templateDescriptionValidationMessage,
         date,
@@ -43,6 +47,7 @@ class AddEditTemplateState extends Equatable {
       Validation.isEmpty(date?.toIso8601String()));
 
   AddEditTemplateState copyWith({
+    String? createdTemplateId,
     String? templateDescription,
     String? templateDescriptionValidationMessage,
     DateTime? date,
@@ -54,6 +59,7 @@ class AddEditTemplateState extends Equatable {
     String? message,
   }) {
     return AddEditTemplateState(
+      createdTemplateId: createdTemplateId ?? this.createdTemplateId,
       templateDescription: templateDescription ?? this.templateDescription,
       templateDescriptionValidationMessage:
           templateDescriptionValidationMessage ??

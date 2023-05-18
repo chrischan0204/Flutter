@@ -134,7 +134,6 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     );
   }
 
-
   bool _checkFormDataFill(AddEditTemplateState addEditTemplateState) {
     return widget.templateId == null
         ? addEditTemplateState.templateDetailFilled
@@ -161,23 +160,36 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
         notifyType: NotifyType.success,
         content: addEditTemplateState.message,
       ).showNotification();
-      // if (widget.templateId == null) {
-      //   GoRouter.of(context).go(
-      //       '/templates/edit/${addEditTemplateState.createdTemplateId!}?view=created');
-      // }
+      if (widget.templateId == null) {
+        GoRouter.of(context).go(
+            '/templates/designer/${addEditTemplateState.createdTemplateId}');
+      }
     }
   }
 
-  FormItem _buildFirstNameField(AddEditTemplateState addEditTemplateState) {
-    return FormItem(
-      label: 'Template Description (*)',
-      content: CustomTextField(
-        controller: descriptionController,
-        hintText: 'Template description',
-        onChanged: (firstName) => addEditTemplateBloc
-            .add(AddEditTemplateDescriptionChanged(description: firstName)),
+  BlocListener _buildFirstNameField(AddEditTemplateState addEditTemplateState) {
+    return BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
+      listener: (context, state) {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.error,
+          content: addEditTemplateState.message,
+        ).showNotification();
+      },
+      listenWhen: (previous, current) =>
+          previous.templateAddStatus != current.templateAddStatus &&
+          current.templateAddStatus.isFailure &&
+          previous.message != current.message,
+      child: FormItem(
+        label: 'Template Description (*)',
+        content: CustomTextField(
+          controller: descriptionController,
+          hintText: 'Template description',
+          onChanged: (firstName) => addEditTemplateBloc
+              .add(AddEditTemplateDescriptionChanged(description: firstName)),
+        ),
+        message: addEditTemplateState.templateDescriptionValidationMessage,
       ),
-      message: addEditTemplateState.templateDescriptionValidationMessage,
     );
   }
 

@@ -7,6 +7,10 @@ part 'add_edit_template_state.dart';
 class AddEditTemplateBloc
     extends Bloc<AddEditTemplateEvent, AddEditTemplateState> {
   final TemplatesRepository templatesRepository;
+
+  static String templateAddErrorMessage =
+      'There was a problem in creating the template. We have made a note of this. Please try again after a few minutes....';
+
   AddEditTemplateBloc({required this.templatesRepository})
       : super(const AddEditTemplateState()) {
     on<AddEditTemplateDescriptionChanged>(_onAddEditTemplateDescriptionChanged);
@@ -79,6 +83,15 @@ class AddEditTemplateBloc
           revisionDate: state.date!.toIso8601String(),
         ));
 
+        if (response.isSuccess) {
+          emit(state.copyWith(
+            templateAddStatus: EntityStatus.success,
+            createdTemplateId: response.data?.id,
+            message: response.message,
+          ));
+          return;
+        }
+
         if (response.statusCode == 409) {
           emit(state.copyWith(
             templateDescriptionValidationMessage: response.message,
@@ -91,7 +104,10 @@ class AddEditTemplateBloc
           ));
         }
       } catch (e) {
-        emit(state.copyWith(templateAddStatus: EntityStatus.failure));
+        emit(state.copyWith(
+          templateAddStatus: EntityStatus.failure,
+          message: templateAddErrorMessage,
+        ));
       }
     }
   }
