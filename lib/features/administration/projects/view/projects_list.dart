@@ -14,22 +14,6 @@ class ProjectsListView extends StatefulWidget {
 
 class _ProjectsListViewState extends State<ProjectsListView> {
   late ProjectsBloc projectsBloc;
-  late SitesBloc sitesBloc;
-  late RegionsBloc regionsBloc;
-
-  bool filterApplied = false;
-
-  List<String> filterRegions = [];
-  List<String> filterSites = [];
-  List<String> filterContractors = [];
-  bool filterActive = true;
-
-  TextEditingController filterNameHasController =
-      TextEditingController(text: '');
-  TextEditingController filterRefCodeController =
-      TextEditingController(text: '');
-  TextEditingController filterRefNameController =
-      TextEditingController(text: '');
 
   static String pageTitle = 'Projects';
   static String pageLabel = 'project';
@@ -39,8 +23,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   @override
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()..add(ProjectsRetrieved());
-    sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
-    regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
 
     super.initState();
   }
@@ -60,160 +42,12 @@ class _ProjectsListViewState extends State<ProjectsListView> {
           entityRetrievedStatus: state.projectsRetrievedStatus,
           selectedEntity: state.selectedProject,
           onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
+          onViewSettingApplied: () => _filterProjects(),
+          onIncludeDeletedChanged: (value) => _filterProjects(null, value),
+          onFilterSaved: _filterProjects,
+          onFilterApplied: _filterProjects,
         );
       },
-    );
-  }
-
-  void _clearFilter() {
-    setState(() {
-      filterApplied = false;
-      filterRegions = [];
-      filterSites = [];
-      filterContractors = [];
-      filterActive = true;
-      filterNameHasController.text = '';
-      filterRefCodeController.text = '';
-      filterRefNameController.text = '';
-    });
-  }
-
-  void _onFilterApplied() {
-    setState(() {
-      filterApplied = true;
-    });
-  }
-
-  Column _buildFilterBody() {
-    return Column(
-      children: [
-        _buildFilterRegionMultiSelectField(),
-        _buildFilterSiteMultiSelectField(),
-        _buildFilterActiveSwitch(),
-        _buildFilterProjectNameTextField(),
-        _buildFilterRefCodeTextField(),
-        _buildFilterRefNameTextField(),
-        _buildFilterContractorsMultiSelectField(),
-      ],
-    );
-  }
-
-  DetailItem _buildFilterContractorsMultiSelectField() {
-    return DetailItem(
-      label: 'Contractors',
-      content: CustomMultiSelect(
-        items: const <String, Entity>{
-          '3CMA Metal': Entity(id: '1', name: '3CMA Metal'),
-          'Alington Cement Works':
-              Entity(id: '2', name: 'Alington Cement Works'),
-          'Burlingto Garden and Tree':
-              Entity(id: '3', name: 'Burlingto Garden and Tree'),
-          'Carter Concrete': Entity(id: '4', name: 'Carter Concrete'),
-          'Floyd Window repairs': Entity(id: '5', name: 'Floyd Window repairs'),
-        },
-        hint: 'Select Contractors',
-        selectedItems: [],
-        onChanged: (contractors) {
-          filterContractors =
-              contractors.map((contractor) => contractor.name ?? '').toList();
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterRefNameTextField() {
-    return DetailItem(
-      label: 'Ref Name',
-      content: CustomTextField(
-        controller: filterRefNameController,
-        hintText: 'Project Name contains',
-        onChanged: (refName) {},
-      ),
-    );
-  }
-
-  DetailItem _buildFilterRefCodeTextField() {
-    return DetailItem(
-      label: 'Ref Code',
-      content: CustomTextField(
-        controller: filterRefCodeController,
-        hintText: 'Project Name contains',
-        onChanged: (refCode) {},
-      ),
-    );
-  }
-
-  DetailItem _buildFilterProjectNameTextField() {
-    return DetailItem(
-      label: 'Name has',
-      content: CustomTextField(
-        controller: filterNameHasController,
-        hintText: 'Project Name contains',
-        onChanged: (nameHas) {},
-      ),
-    );
-  }
-
-  DetailItem _buildFilterActiveSwitch() {
-    return DetailItem(
-      label: 'Active',
-      content: CustomSwitch(
-        switchValue: filterActive,
-        trueString: 'Yes',
-        falseString: 'No',
-        textColor: darkTeal,
-        onChanged: (value) {
-          setState(() {
-            filterActive = value;
-          });
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterSiteMultiSelectField() {
-    return DetailItem(
-      label: 'Site',
-      content: BlocBuilder<SitesBloc, SitesState>(
-        builder: (context, state) {
-          return CustomMultiSelect(
-            items: <String, Site>{}..addEntries(
-                state.sites.map(
-                  (site) => MapEntry(site.name!, site),
-                ),
-              ),
-            selectedItems: [],
-            hint: 'Select Sites',
-            onChanged: (sites) {
-              filterSites = sites.map((site) => site.name ?? '').toList();
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  DetailItem _buildFilterRegionMultiSelectField() {
-    return DetailItem(
-      label: 'Region',
-      content: BlocBuilder<RegionsBloc, RegionsState>(
-        builder: (context, state) {
-          return CustomMultiSelect(
-            items: <String, Region>{}..addEntries(
-                state.assignedRegions.map(
-                  (assignedRegion) =>
-                      MapEntry(assignedRegion.name!, assignedRegion),
-                ),
-              ),
-            selectedItems: [],
-            hint: 'Select Regions',
-            onChanged: (regions) {
-              filterRegions =
-                  regions.map((region) => region.name ?? '').toList();
-            },
-          );
-        },
-      ),
     );
   }
 
@@ -228,39 +62,16 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     projectsBloc.add(ProjectSelectedById(projectId: selectedProject.id!));
   }
 
-  Wrap _buildFilterResultBody() {
-    return Wrap(
-      children: [
-        FilterItem(
-          label: 'Region:',
-          content: filterRegions.join(', '),
-        ),
-        FilterItem(
-          label: 'Site:',
-          content: filterSites.join(', '),
-        ),
-        FilterItem(
-          label: 'Active:',
-          content: filterActive ? 'Yes' : 'No',
-        ),
-        FilterItem(
-          label: 'Name has:',
-          content: filterNameHasController.text,
-        ),
-        FilterItem(
-          label: 'Ref Code:',
-          content: filterRefCodeController.text,
-        ),
-        FilterItem(
-          label: 'Ref Name:',
-          content: filterRefNameController.text,
-        ),
-        FilterItem(
-          label: 'Contractors:',
-          content: filterContractors.join(', '),
-          last: true,
-        ),
-      ],
-    );
+  void _filterProjects([
+    String? filterId,
+    bool? includeDeleted,
+  ]) {
+    final FilterSettingBloc filterSettingBloc = context.read();
+    // userListBloc.add(UserListFiltered(
+    //   filterId: filterId ??
+    //       filterSettingBloc.state.selectedUserFilterSetting?.id ??
+    //       '00000000-0000-0000-0000-000000000000',
+    //   includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    // ));
   }
 }

@@ -32,7 +32,7 @@ class FilterSettingState extends Equatable {
     this.userFilterSettingListLoadStatus = EntityStatus.initial,
     this.userFilterSettingUpdateStatus = EntityStatus.initial,
     this.userFilterSettingDeleteStatus = EntityStatus.initial,
-    this.addButtonName = 'Update',
+    this.addButtonName = 'Save',
     this.saveAsButtonName = 'Save as',
     this.includeDeleted = false,
     this.viewName = '',

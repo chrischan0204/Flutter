@@ -119,7 +119,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
 
   static String pageLabel = 'user';
   static String addButtonName = 'Assign sites & invite';
-  static String editButtonName = 'Update';
+  static String editButtonName = 'Save';
 
   bool isFirstInit = true;
 

@@ -257,7 +257,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
                 .toList()
                 .toSet()
                 .toList()),
-        addButtonName: 'Update',
+        addButtonName: 'Save',
         saveAsButtonName: 'Save as',
       ));
     } catch (e) {
@@ -300,7 +300,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
                 .toList()
                 .toSet()
                 .toList()),
-        addButtonName: 'Update',
+        addButtonName: 'Save',
         saveAsButtonName: 'Save as',
       ));
     } catch (e) {

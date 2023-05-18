@@ -148,7 +148,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(3))),
                         child: const Text(
-                          'Update',
+                          'Save',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
