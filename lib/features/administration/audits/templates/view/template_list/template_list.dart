@@ -122,7 +122,6 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                     selectedEntity: templateDetailState.template,
                     onTableSorted: (sortedTemplates) =>
                         _sortTemplates(sortedTemplates),
-                    viewSettingBody: const ViewSettingView(),
                     onViewSettingApplied: () {
                       // viewSettingBloc
                       //     .add(const ViewSettingApplied(viewName: 'template'));
@@ -148,7 +147,7 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                       //   includeDeleted: state.includeDeleted,
                       // ));
                     },
-                    onFilterApplied: () {
+                    onFilterApplied: (filterId) {
                       // templatesListBloc.add(TemplateListFiltered(
                       //   filterId: state.templateFilterUpdate.id,
                       //   includeDeleted: state.includeDeleted,

@@ -48,7 +48,7 @@ class FilterSettingState extends Equatable {
         saveAsButtonName,
         includeDeleted,
         isNew,
-        defaultFilterSettingId,
+        defaultFilterSetting,
       ];
 
   bool get isNew => saveAsButtonName != 'Save as';
@@ -56,14 +56,15 @@ class FilterSettingState extends Equatable {
   FilterSetting getFilterSettingById(String id) =>
       List.from(filterSettingList).firstWhere((element) => element.id == id);
 
-  String get defaultFilterSettingId => userFilterSettingList.firstWhere(
+  UserFilterSetting get defaultFilterSetting =>
+      userFilterSettingList.firstWhere(
         (element) => element.isDefault,
         orElse: () {
           return userFilterSettingList.isEmpty
               ? const UserFilterSetting()
               : userFilterSettingList[0];
         },
-      ).id;
+      );
 
   FilterSettingState copyWith({
     EntityStatus? filterSettingListLoadStatus,

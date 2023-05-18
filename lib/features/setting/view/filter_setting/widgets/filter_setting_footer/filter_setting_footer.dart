@@ -2,7 +2,7 @@ import '/common_libraries.dart';
 
 class FilterSettingFooterView extends StatefulWidget {
   final ValueChanged<String> onFilterSaved;
-  final VoidCallback onFilterApplied;
+  final ValueChanged<String> onFilterApplied;
   final VoidCallback onFilterOptionClosed;
   final String viewName;
   const FilterSettingFooterView({
@@ -93,8 +93,10 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed:
-                          state.isNew ? null : () => widget.onFilterApplied(),
+                      onPressed: state.isNew
+                          ? null
+                          : () =>
+                              widget.onFilterApplied(state.userFilterUpdate.id),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(

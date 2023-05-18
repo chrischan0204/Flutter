@@ -8,7 +8,7 @@ class FilterSettingView extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
   final ValueChanged<String> onFilterSaved;
-  final VoidCallback onFilterApplied;
+  final ValueChanged<String> onFilterApplied;
   const FilterSettingView({
     super.key,
     required this.viewName,
@@ -63,7 +63,7 @@ class FilterSettingWidget extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
   final ValueChanged<String> onFilterSaved;
-  final VoidCallback onFilterApplied;
+  final ValueChanged<String> onFilterApplied;
   const FilterSettingWidget({
     super.key,
     required this.viewName,
@@ -151,7 +151,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                           FilterSettingFooterView(
                             viewName: widget.viewName,
                             onFilterOptionClosed: widget.onFilterOptionClosed,
-                            onFilterApplied: () => widget.onFilterApplied(),
+                            onFilterApplied: widget.onFilterApplied,
                             onFilterSaved: (filterId) =>
                                 widget.onFilterSaved(filterId),
                           ),

@@ -89,72 +89,34 @@ class _UsersListState extends State<UsersListWidget> {
       builder: (context, userListState) {
         return BlocBuilder<UserDetailBloc, UserDetailState>(
           builder: (context, userDetailState) {
-            return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-              listener: (context, state) {
-                if (state.selectedUserFilterSetting!.id.isNotEmpty) {
-                  userListBloc.add(UserListFiltered(
-                    filterId: state.selectedUserFilterSetting!.id,
-                    includeDeleted: state.includeDeleted,
-                  ));
-                } else {
-                  userListBloc.add(UserListLoaded());
-                }
-              },
+            return BlocListener<ViewSettingBloc, ViewSettingState>(
+              listener: (context, viewSettingState) => _filterUsers(),
               listenWhen: (previous, current) =>
-                  previous.selectedUserFilterSetting !=
-                  current.selectedUserFilterSetting,
-              builder: (context, state) {
-                return BlocListener<ViewSettingBloc, ViewSettingState>(
-                  listener: (context, viewSettingState) {
-                    userListBloc.add(UserListFiltered(
-                      filterId: state.userFilterUpdate.id,
-                      includeDeleted: state.includeDeleted,
-                    ));
-                  },
-                  listenWhen: (previous, current) =>
-                      previous.viewSettingSaveStatus !=
-                      current.viewSettingSaveStatus,
-                  child: EntityListTemplate(
-                    title: pageTitle,
-                    label: pageLabel,
-                    entities: userListState.userList,
-                    showTableHeaderButtons: true,
-                    onRowClick: (selectedUser) => _selectUser(selectedUser),
-                    emptyMessage: emptyMessage,
-                    entityRetrievedStatus: userListState.userListLoadStatus,
-                    selectedEntity: userDetailState.user,
-                    onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
-                    viewSettingBody: const ViewSettingView(),
-                    onViewSettingApplied: () {
-                      viewSettingBloc
-                          .add(const ViewSettingApplied(viewName: 'user'));
-                      userListBloc.add(UserListFiltered(
-                        filterId: state.userFilterUpdate.id,
-                        includeDeleted: state.includeDeleted,
-                      ));
-                    },
-                    onIncludeDeletedChanged: (value) {
-                      userListBloc.add(UserListFiltered(
-                        filterId: state.userFilterUpdate.id,
-                        includeDeleted: value,
-                      ));
-                    },
-                    onViewSettingSliderOpened: () => viewSettingBloc
-                        .add(const ViewSettingLoaded(viewName: 'user')),
-                    viewName: 'user',
-                    onFilterSaved: (filterId) =>
-                        userListBloc.add(UserListFiltered(
-                      filterId: state.userFilterUpdate.id,
-                      includeDeleted: state.includeDeleted,
-                    )),
-                    onFilterApplied: () => userListBloc.add(UserListFiltered(
-                      filterId: state.userFilterUpdate.id,
-                      includeDeleted: state.includeDeleted,
-                    )),
-                    newIconData: PhosphorIcons.userPlus,
-                  ),
-                );
-              },
+                  previous.viewSettingSaveStatus !=
+                  current.viewSettingSaveStatus,
+              child: EntityListTemplate(
+                title: pageTitle,
+                label: pageLabel,
+                entities: userListState.userList,
+                showTableHeaderButtons: true,
+                onRowClick: (selectedUser) => _selectUser(selectedUser),
+                emptyMessage: emptyMessage,
+                entityRetrievedStatus: userListState.userListLoadStatus,
+                selectedEntity: userDetailState.user,
+                onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
+                onViewSettingApplied: () {
+                  viewSettingBloc
+                      .add(const ViewSettingApplied(viewName: 'user'));
+                  _filterUsers();
+                },
+                onIncludeDeletedChanged: (value) => _filterUsers(null, value),
+                onViewSettingSliderOpened: () => viewSettingBloc
+                    .add(const ViewSettingLoaded(viewName: 'user')),
+                viewName: 'user',
+                onFilterSaved: _filterUsers,
+                onFilterApplied: _filterUsers,
+                newIconData: PhosphorIcons.userPlus,
+              ),
             );
           },
         );
@@ -170,5 +132,18 @@ class _UsersListState extends State<UsersListWidget> {
     userListBloc.add(UserListSorted(
         sortedUserList:
             sortedUsers.map((sortedUser) => sortedUser as User).toList()));
+  }
+
+  void _filterUsers([
+    String? filterId,
+    bool? includeDeleted,
+  ]) {
+    final FilterSettingBloc filterSettingBloc = context.read();
+    userListBloc.add(UserListFiltered(
+      filterId: filterId ??
+          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          '00000000-0000-0000-0000-000000000000',
+      includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    ));
   }
 }

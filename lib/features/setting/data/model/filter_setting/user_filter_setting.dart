@@ -7,7 +7,7 @@ class UserFilterSetting extends Equatable {
   final String filterName;
   final bool isDefault;
   const UserFilterSetting({
-    this.id = '',
+    this.id = '00000000-0000-0000-0000-000000000000',
     this.filterName = '',
     this.isDefault = false,
   });

@@ -5,11 +5,10 @@ import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
-  final Widget? viewSettingBody;
   final VoidCallback? onViewSettingApplied;
   final VoidCallback? onViewSettingSliderOpened;
   final ValueChanged<String>? onFilterSaved;
-  final VoidCallback? onFilterApplied;
+  final ValueChanged<String>? onFilterApplied;
   final EntityStatus entityRetrievedStatus;
   final String title;
   final String description;
@@ -26,7 +25,6 @@ class EntityListTemplate extends StatefulWidget {
   const EntityListTemplate({
     super.key,
     required this.title,
-    this.viewSettingBody,
     this.onViewSettingApplied,
     this.onViewSettingSliderOpened,
     this.onFilterSaved,
@@ -94,7 +92,11 @@ class _CrudState extends State<EntityListTemplate> {
                         viewName: widget.viewName,
                         onFilterOptionClosed: () =>
                             setState(() => filterViewShow = false),
-                        onFilterApplied: () => widget.onFilterApplied!(),
+                        onFilterApplied: (filterId) {
+                          if (widget.onFilterApplied != null) {
+                            widget.onFilterApplied!(filterId);
+                          }
+                        },
                         onFilterSaved: (filterId) =>
                             widget.onFilterSaved!(filterId),
                       )
@@ -285,16 +287,32 @@ class _CrudState extends State<EntityListTemplate> {
               ),
               Row(
                 children: [
-                  BlocBuilder<FilterSettingBloc, FilterSettingState>(
-                    builder: (context, state) {
-                      return Text(
-                        state.selectedUserFilterSetting?.filterName ?? '',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      );
-                    },
+                  BlocProvider.value(
+                    value: filterSettingBloc,
+                    child: BlocConsumer<FilterSettingBloc, FilterSettingState>(
+                      listener: (context, state) {
+                        if (state.selectedUserFilterSetting != null) {
+                          print('selected changed');
+                          if (widget.onFilterApplied != null) {
+                            widget.onFilterApplied!(
+                                state.selectedUserFilterSetting!.id);
+                          }
+                        }
+                      },
+                      listenWhen: (previous, current) =>
+                          previous.selectedUserFilterSetting !=
+                          current.selectedUserFilterSetting,
+                      builder: (context, state) {
+                        return Text(
+                          state.selectedUserFilterSetting?.filterName ?? '',
+                          key: UniqueKey(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(width: 3),
                   Checkbox(
@@ -389,7 +407,7 @@ class _CrudState extends State<EntityListTemplate> {
                 ],
               ),
             ),
-            widget.viewSettingBody ?? Container(),
+            const ViewSettingView(),
             Divider(
               color: grey,
               height: 1,

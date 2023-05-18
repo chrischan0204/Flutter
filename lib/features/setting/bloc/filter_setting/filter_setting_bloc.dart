@@ -64,9 +64,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
             filterSettingList.remove(filterSetting);
             filterSettingList.insert(
                 index, filterSetting.copyWith(columnValues: columnValues));
-          } catch (e) {
-            // print(e);
-          }
+          } catch (e) {}
         }
       }
 
@@ -131,11 +129,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       final UserFilter userFilter =
           await settingsRepository.getUserFilterById(event.filterId);
       try {
-        // print(state.filterSettingList.map((e) => e.id).toString());
-        // for(var e in state.filterSettingList.map((e) => e.id)) {
-        //   print(e);
-        // }
-        // print(userFilter.userFilterItems.map((e) => e.id));
         emit(state.copyWith(
           userFilterUpdate: userFilter.userFilterItems.isEmpty
               ? userFilter.copyWith(
@@ -143,8 +136,8 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
               : userFilter.copyWith(
                   userFilterItems: userFilter.userFilterItems.map((e) {
                   return e.copyWith(
-                    filterSetting:
-                        state.getFilterSettingById(e.filterSetting.id),
+                    // filterSetting:
+                    //     state.getFilterSettingById(e.filterSetting.id),
                     filterValue: e.filterValue
                         .where((element) => element.isNotEmpty)
                         .toList(),
@@ -157,7 +150,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
         print(e);
       }
     } catch (e) {
-      print(e);
       emit(state.copyWith(userFilterSettingLoadStatus: EntityStatus.failure));
     }
   }
@@ -189,7 +181,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     try {
       UserFilter updatedUserFilter = await settingsRepository
           .updateUserFilterSetting(state.userFilterUpdate);
-      print(updatedUserFilter.id);
       emit(state.copyWith(
         userFilterSettingUpdateStatus: EntityStatus.success,
         selectedUserFilterSetting: UserFilterSetting(
