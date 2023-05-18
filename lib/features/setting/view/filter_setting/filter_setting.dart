@@ -25,36 +25,11 @@ class _FilterSettingViewState extends State<FilterSettingView> {
   String token = '';
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) =>
-          setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) =>
-          previous.authUser?.token != current.authUser?.token,
-      builder: (context, state) {
-        token = state.authUser?.token ?? '';
-        return MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-                create: (context) => SettingsRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => FilterSettingBloc(
-                      settingsRepository: RepositoryProvider.of(context))),
-            ],
-            child: FilterSettingWidget(
-              viewName: widget.viewName,
-              onFilterOptionClosed: widget.onFilterOptionClosed,
-              onFilterSaved: widget.onFilterSaved,
-              onFilterApplied: widget.onFilterApplied,
-            ),
-          ),
-        );
-      },
+    return FilterSettingWidget(
+      viewName: widget.viewName,
+      onFilterOptionClosed: widget.onFilterOptionClosed,
+      onFilterSaved: widget.onFilterSaved,
+      onFilterApplied: widget.onFilterApplied,
     );
   }
 }
@@ -89,16 +64,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-      listener: (context, state) {
-        if (state.filterSettingListLoadStatus.isSuccess) {
-          filterSettingBloc.add(
-              FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
-        }
-      },
-      listenWhen: (previous, current) =>
-          previous.filterSettingListLoadStatus !=
-          current.filterSettingListLoadStatus,
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
         return Column(
           children: [

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 
@@ -32,6 +31,7 @@ class _SitesListViewState extends State<SitesListView> {
         return EntityListTemplate(
           title: pageTitle,
           label: pageLabel,
+          viewName: pageLabel,
           entities: state.sites,
           showTableHeaderButtons: true,
           onRowClick: (selectedSite) =>

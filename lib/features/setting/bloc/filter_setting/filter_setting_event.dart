@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'filter_setting_bloc.dart';
 
 abstract class FilterSettingEvent extends Equatable {
@@ -6,6 +5,15 @@ abstract class FilterSettingEvent extends Equatable {
 
   @override
   List<Object?> get props => [];
+}
+
+class FilterSettingInit extends FilterSettingEvent {
+  final String viewName;
+  const FilterSettingInit({
+    required this.viewName,
+  });
+  @override
+  List<Object?> get props => [viewName];
 }
 
 class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
@@ -20,8 +28,10 @@ class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
 
 class FilterSettingUserFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
+  final bool deleted;
   const FilterSettingUserFilterSettingListLoaded({
     required this.name,
+    this.deleted = false,
   });
 
   @override

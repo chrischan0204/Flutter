@@ -42,10 +42,6 @@ class _UsersListViewState extends State<UsersListView> {
                       usersRepository:
                           RepositoryProvider.of<UsersRepository>(context))),
               BlocProvider(
-                  create: (context) => FilterSettingBloc(
-                      settingsRepository:
-                          RepositoryProvider.of<SettingsRepository>(context))),
-              BlocProvider(
                   create: (context) => ViewSettingBloc(
                       settingsRepository: RepositoryProvider.of(context))),
             ],

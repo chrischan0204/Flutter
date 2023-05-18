@@ -39,10 +39,11 @@ class _TemplateListViewState extends State<TemplateListView> {
               BlocProvider(
                   create: (context) => TemplateDetailBloc(
                       templatesRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => FilterSettingBloc(
-                      settingsRepository:
-                          RepositoryProvider.of<SettingsRepository>(context))),
+              // BlocProvider(
+              //     create: (context) => FilterSettingBloc(
+              //         viewName: 'template',
+              //         settingsRepository:
+              //             RepositoryProvider.of<SettingsRepository>(context))),
               BlocProvider(
                   create: (context) => ViewSettingBloc(
                       settingsRepository: RepositoryProvider.of(context))),
@@ -147,12 +148,7 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                       //   includeDeleted: state.includeDeleted,
                       // ));
                     },
-                    onFilterApplied: (filterId) {
-                      // templatesListBloc.add(TemplateListFiltered(
-                      //   filterId: state.templateFilterUpdate.id,
-                      //   includeDeleted: state.includeDeleted,
-                      // ));
-                    },
+                    onFilterApplied: ([p0]) {},
                   ),
                 );
               },

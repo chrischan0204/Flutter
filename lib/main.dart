@@ -97,6 +97,12 @@ class _MyAppState extends State<MyApp> {
                 authBloc: BlocProvider.of(context),
               ),
             ),
+            RepositoryProvider(
+              create: (context) => SettingsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
           ],
           child: MultiBlocProvider(
             providers: [
@@ -104,61 +110,59 @@ class _MyAppState extends State<MyApp> {
                 create: (context) => ThemeBloc(),
               ),
               BlocProvider(
+                create: (context) => FilterSettingBloc(
+                  settingsRepository: RepositoryProvider.of(context),
+                ),
+              ),
+              BlocProvider(
+                create: (context) => ViewSettingBloc(
+                  settingsRepository: RepositoryProvider.of(context),
+                ),
+              ),
+              BlocProvider(
                 create: (context) => RegionsBloc(
-                  regionsRepository:
-                      RepositoryProvider.of<RegionsRepository>(context),
+                  regionsRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => PriorityLevelsBloc(
-                  priorityLevelsRepository:
-                      RepositoryProvider.of<PriorityLevelsRepository>(context),
+                  priorityLevelsRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => ObservationTypesBloc(
-                  observationTypesRepository:
-                      RepositoryProvider.of<ObservationTypesRepository>(
-                          context),
+                  observationTypesRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => AwarenessGroupsBloc(
-                  awarenessGroupsRepository:
-                      RepositoryProvider.of<AwarenessGroupsRepository>(context),
+                  awarenessGroupsRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => AwarenessCategoriesBloc(
-                  awarenessCategoriesRepository:
-                      RepositoryProvider.of<AwarenessCategoriesRepository>(
-                          context),
-                  awarenessGroupsRepository:
-                      RepositoryProvider.of<AwarenessGroupsRepository>(context),
+                  awarenessCategoriesRepository: RepositoryProvider.of(context),
+                  awarenessGroupsRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => SitesBloc(
-                  sitesRepository:
-                      RepositoryProvider.of<SitesRepository>(context),
+                  sitesRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => ProjectsBloc(
-                  projectsRepository:
-                      RepositoryProvider.of<ProjectsRepository>(context),
+                  projectsRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => CompaniesBloc(
-                  companiesRepository:
-                      RepositoryProvider.of<CompaniesRepository>(context),
+                  companiesRepository: RepositoryProvider.of(context),
                 ),
               ),
               BlocProvider(
                 create: (context) => RolesBloc(
-                  rolesRepository:
-                      RepositoryProvider.of<RolesRepository>(context),
+                  rolesRepository: RepositoryProvider.of(context),
                 ),
               ),
             ],

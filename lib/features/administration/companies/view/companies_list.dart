@@ -35,6 +35,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
         return EntityListTemplate(
           title: pageTitle,
           label: pageLabel,
+          viewName: pageLabel,
           entities: state.companies,
           showTableHeaderButtons: true,
           onRowClick: (selectedCompany) => _selectCompany(selectedCompany),

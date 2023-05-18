@@ -52,6 +52,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
         return EntityListTemplate(
           title: pageTitle,
           label: pageLabel,
+          viewName: pageLabel,
           entities: state.projects,
           showTableHeaderButtons: true,
           onRowClick: (selectedProject) => _selectProject(selectedProject),

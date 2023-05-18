@@ -8,8 +8,10 @@ part 'filter_setting_state.dart';
 class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
   final SettingsRepository settingsRepository;
 
-  FilterSettingBloc({required this.settingsRepository})
-      : super(const FilterSettingState()) {
+  FilterSettingBloc({
+    required this.settingsRepository,
+  }) : super(const FilterSettingState()) {
+    on<FilterSettingInit>(_onFilterSettingInit);
     on<FilterSettingFilterSettingListLoaded>(
         _onFilterSettingFilterSettingListLoaded);
     on<FilterSettingUserFilterSettingListLoaded>(
@@ -45,11 +47,59 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
         _onFilterSettingIncludeDeletedChanged);
   }
 
+  @override
+  void onChange(Change<FilterSettingState> change) {
+    super.onChange(change);
+    // debugPrint(change.toString());
+    debugPrint(
+        'current filter name: ${change.currentState.selectedUserFilterSetting}');
+    debugPrint(
+        'next filter name: ${change.nextState.selectedUserFilterSetting}');
+    // debugPrint(
+    //     'current update filter name: ${change.currentState.userFilterUpdate.filterName}');
+    // debugPrint(
+    //     'next update filter name: ${change.nextState.userFilterUpdate.filterName}');
+    if ((change.currentState.filterSettingListLoadStatus !=
+                change.nextState.filterSettingListLoadStatus &&
+            change.nextState.filterSettingListLoadStatus.isSuccess) ||
+        (change.currentState.userFilterSettingUpdateStatus !=
+                change.nextState.userFilterSettingUpdateStatus &&
+            change.nextState.userFilterSettingUpdateStatus.isSuccess)) {
+      add(FilterSettingUserFilterSettingListLoaded(
+          name: change.nextState.viewName));
+    }
+    if (change.currentState.userFilterSettingDeleteStatus !=
+            change.nextState.userFilterSettingDeleteStatus &&
+        change.nextState.userFilterSettingDeleteStatus.isSuccess) {
+      add(FilterSettingUserFilterSettingListLoaded(
+        name: change.nextState.viewName,
+        deleted: true,
+      ));
+    }
+  }
+
+  @override
+  void onEvent(FilterSettingEvent event) {
+    super.onEvent(event);
+    debugPrint(event.toString());
+  }
+
+  void _onFilterSettingInit(
+    FilterSettingInit event,
+    Emitter<FilterSettingState> emit,
+  ) {
+    emit(FilterSettingState(viewName: event.viewName));
+    add(FilterSettingFilterSettingListLoaded(name: event.viewName));
+  }
+
   Future<void> _onFilterSettingFilterSettingListLoaded(
     FilterSettingFilterSettingListLoaded event,
     Emitter<FilterSettingState> emit,
   ) async {
-    emit(state.copyWith(filterSettingListLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(
+      filterSettingListLoadStatus: EntityStatus.loading,
+      viewName: event.name,
+    ));
     try {
       final List<FilterSetting> filterSettingList =
           await settingsRepository.getFilterSettingList(event.name);
@@ -81,7 +131,10 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     FilterSettingUserFilterSettingListLoaded event,
     Emitter<FilterSettingState> emit,
   ) async {
-    emit(state.copyWith(userFilterSettingListLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(
+      userFilterSettingListLoadStatus: EntityStatus.loading,
+      selectedUserFilterSetting: null,
+    ));
 
     try {
       List<UserFilterSetting> userFilterSettingList =
@@ -97,7 +150,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
           saveAsButtonName: 'Add new',
         ));
       } else {
-        if (state.selectedUserFilterSetting == null) {
+        if (state.selectedUserFilterSetting == null || event.deleted) {
           if (userFilterSettingList
                   .indexWhere((element) => element.isDefault) !=
               -1) {
@@ -107,6 +160,9 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
           } else if (userFilterSettingList.isNotEmpty) {
             add(FilterSettingUserFilterSettingSelected(
                 userFilterSetting: userFilterSettingList[0]));
+          } else if (userFilterSettingList.isEmpty) {
+            add(const FilterSettingUserFilterSettingSelected(
+                userFilterSetting: null));
           }
         }
         emit(state.copyWith(
@@ -136,8 +192,8 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
               : userFilter.copyWith(
                   userFilterItems: userFilter.userFilterItems.map((e) {
                   return e.copyWith(
-                    // filterSetting:
-                    //     state.getFilterSettingById(e.filterSetting.id),
+                    filterSetting:
+                        state.getFilterSettingById(e.filterSetting.id),
                     filterValue: e.filterValue
                         .where((element) => element.isNotEmpty)
                         .toList(),

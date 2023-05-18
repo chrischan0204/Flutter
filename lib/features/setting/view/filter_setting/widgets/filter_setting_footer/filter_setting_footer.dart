@@ -117,9 +117,6 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                           ).showNotification();
                           widget.onFilterSaved(state.userFilterUpdate.id);
                         }
-                        filterSettingBloc.add(
-                            FilterSettingUserFilterSettingListLoaded(
-                                name: widget.viewName));
                       },
                       listenWhen: (previous, current) =>
                           previous.userFilterSettingUpdateStatus !=
@@ -203,9 +200,6 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                             content: 'User filter deleted successfully',
                           ).showNotification();
                         }
-                        filterSettingBloc.add(
-                            FilterSettingUserFilterSettingListLoaded(
-                                name: widget.viewName));
                       },
                       listenWhen: (previous, current) =>
                           previous.userFilterSettingDeleteStatus !=

@@ -23,14 +23,14 @@ class _FilterSettingBodyViewState extends State<FilterSettingBodyView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-      listener: (context, state) {
-        filterSettingBloc.add(
-            FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
-      },
-      listenWhen: (previous, current) =>
-          previous.userFilterSettingDeleteStatus !=
-          current.userFilterSettingDeleteStatus,
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+      // listener: (context, state) {
+      //   filterSettingBloc.add(
+      //       FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
+      // },
+      // listenWhen: (previous, current) =>
+      //     previous.userFilterSettingDeleteStatus !=
+      //     current.userFilterSettingDeleteStatus,
       builder: (context, state) => Container(
         padding: const EdgeInsets.symmetric(vertical: 6),
         // constraints:
