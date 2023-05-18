@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'filter_setting_bloc.dart';
 
 abstract class FilterSettingEvent extends Equatable {
@@ -200,4 +201,14 @@ class FilterSettingIncludeDeletedChanged extends FilterSettingEvent {
 
   @override
   List<Object> get props => [includeDeleted];
+}
+
+class FilterSettingAppliedFilterNameChanged extends FilterSettingEvent {
+  final String appliedFilterName;
+  const FilterSettingAppliedFilterNameChanged({
+    required this.appliedFilterName,
+  });
+
+  @override
+  List<Object> get props => [appliedFilterName];
 }

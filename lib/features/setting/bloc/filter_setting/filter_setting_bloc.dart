@@ -45,6 +45,8 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     on<FilterSettingUserFilterAdded>(_onFilterSettingUserFilterAdded);
     on<FilterSettingIncludeDeletedChanged>(
         _onFilterSettingIncludeDeletedChanged);
+    on<FilterSettingAppliedFilterNameChanged>(
+        _onFilterSettingAppliedFilterNameChanged);
   }
 
   @override
@@ -478,5 +480,12 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     Emitter<FilterSettingState> emit,
   ) {
     emit(state.copyWith(includeDeleted: event.includeDeleted));
+  }
+
+  void _onFilterSettingAppliedFilterNameChanged(
+    FilterSettingAppliedFilterNameChanged event,
+    Emitter<FilterSettingState> emit,
+  ) {
+    emit(state.copyWith(appliedFilterName: event.appliedFilterName));
   }
 }

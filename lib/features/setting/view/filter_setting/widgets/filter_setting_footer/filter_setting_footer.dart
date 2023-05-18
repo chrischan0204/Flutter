@@ -95,8 +95,14 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                     ElevatedButton(
                       onPressed: state.isNew
                           ? null
-                          : () =>
-                              widget.onFilterApplied(state.userFilterUpdate.id),
+                          : () {
+                              widget.onFilterApplied(state.userFilterUpdate.id);
+                              filterSettingBloc.add(
+                                  FilterSettingAppliedFilterNameChanged(
+                                      appliedFilterName: state
+                                          .selectedUserFilterSetting!
+                                          .filterName));
+                            },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(

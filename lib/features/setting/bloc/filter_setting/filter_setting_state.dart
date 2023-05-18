@@ -18,6 +18,8 @@ class FilterSettingState extends Equatable {
   final String saveAsButtonName;
   final bool includeDeleted;
 
+  final String appliedFilterName;
+
   final String viewName;
 
   const FilterSettingState({
@@ -34,6 +36,7 @@ class FilterSettingState extends Equatable {
     this.saveAsButtonName = 'Save as',
     this.includeDeleted = false,
     this.viewName = '',
+    this.appliedFilterName = 'No Filter',
   });
 
   @override
@@ -53,6 +56,7 @@ class FilterSettingState extends Equatable {
         isNew,
         defaultFilterSetting,
         viewName,
+        appliedFilterName,
       ];
 
   bool get isNew => saveAsButtonName != 'Save as';
@@ -84,6 +88,7 @@ class FilterSettingState extends Equatable {
     String? saveAsButtonName,
     bool? includeDeleted,
     String? viewName,
+    String? appliedFilterName,
   }) {
     return FilterSettingState(
       filterSettingListLoadStatus:
@@ -106,6 +111,7 @@ class FilterSettingState extends Equatable {
       saveAsButtonName: saveAsButtonName ?? this.saveAsButtonName,
       includeDeleted: includeDeleted ?? this.includeDeleted,
       viewName: viewName ?? this.viewName,
+      appliedFilterName: appliedFilterName ?? this.appliedFilterName,
     );
   }
 }
