@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:safety_eta/utils/utils.dart';
-
 import '/data/model/model.dart';
 
 class Project extends Entity {
@@ -11,7 +9,6 @@ class Project extends Entity {
   final String referenceNumber;
   final String referneceName;
   final int companyCount;
-  final String? lastModifiedByUserName;
   final String timeZoneName;
   final String companies;
 
@@ -24,15 +21,16 @@ class Project extends Entity {
     this.siteId = '',
     this.referenceNumber = '',
     this.referneceName = '',
+    this.companyCount = 0,
+    this.companies = '',
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
-    this.companyCount = 0,
     super.createdOn,
     super.createdByUserName,
     super.lastModifiedOn,
-    this.lastModifiedByUserName,
-    this.companies = '',
+    super.lastModifiedByUserName,
+    super.columns = const [],
   });
 
   @override
@@ -77,6 +75,10 @@ class Project extends Entity {
       'Region': regionName,
       'Site': siteName,
       'Companies': companyCount,
+      'Deactivated On': deactivationDate,
+      'Reference Name': referneceName,
+      'Reference Number': referenceNumber,
+      'Active': active,
     };
   }
 
@@ -159,6 +161,7 @@ class Project extends Entity {
     String? createdByUserName,
     String? lastModifiedByUserName,
     String? lastModifiedOn,
+    List<String>? columns,
   }) {
     return Project(
       id: id ?? this.id,
@@ -178,6 +181,7 @@ class Project extends Entity {
       lastModifiedByUserName:
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
+      columns: columns ?? this.columns,
     );
   }
 }

@@ -255,18 +255,7 @@ class UsersRepository extends BaseRepository {
       final List<String> columns =
           List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
       return data.data
-          .map((e) => User(
-                id: e.id,
-                firstName: e.firstName,
-                lastName: e.lastName,
-                email: e.email,
-                title: e.title,
-                timeZoneName: e.timeZone,
-                mobileNumber: e.mobileNumber,
-                defaultSiteName: e.defaultSite,
-                roleName: e.role,
-                columns: columns,
-              ))
+          .map((e) => e.toUser().copyWith(columns: columns))
           .toList();
     }
     throw Exception();

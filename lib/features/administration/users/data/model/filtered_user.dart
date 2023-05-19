@@ -63,4 +63,22 @@ class FilteredUser extends FilteredEntity {
 
   factory FilteredUser.fromJson(String source) =>
       FilteredUser.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  User toUser() {
+    return User(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      title: title,
+      timeZoneName: timeZone,
+      mobileNumber: mobileNumber,
+      defaultSiteName: defaultSite,
+      roleName: role,
+      createdOn: createdOn,
+      createdByUserName: createdBy,
+      lastModifiedOn: lastModifiedOn,
+      lastModifiedByUserName: lastModifiedByUserName,
+    );
+  }
 }

@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:safety_eta/global_widgets/global_widget.dart';
-
-import '/constants/color.dart';
-import '/data/model/model.dart';
-import '/data/bloc/bloc.dart';
+import '/common_libraries.dart';
 
 class ProjectsListView extends StatefulWidget {
   const ProjectsListView({super.key});
@@ -22,7 +17,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
 
   @override
   void initState() {
-    projectsBloc = context.read<ProjectsBloc>()..add(ProjectsRetrieved());
+    projectsBloc = context.read<ProjectsBloc>();
 
     super.initState();
   }
@@ -67,11 +62,11 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     bool? includeDeleted,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
-    // userListBloc.add(UserListFiltered(
-    //   filterId: filterId ??
-    //       filterSettingBloc.state.selectedUserFilterSetting?.id ??
-    //       '00000000-0000-0000-0000-000000000000',
-    //   includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
-    // ));
+    projectsBloc.add(ProjectListFiltered(
+      filterId: filterId ??
+          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          '00000000-0000-0000-0000-000000000000',
+      includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    ));
   }
 }
