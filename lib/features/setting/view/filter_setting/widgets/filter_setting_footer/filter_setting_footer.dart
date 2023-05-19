@@ -1,6 +1,7 @@
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
-class FilterSettingFooterView extends StatefulWidget {
+class FilterSettingFooterView extends StatelessWidget {
   final ValueChanged<String> onFilterSaved;
   final ValueChanged<String> onFilterApplied;
   final VoidCallback onFilterOptionClosed;
@@ -14,242 +15,40 @@ class FilterSettingFooterView extends StatefulWidget {
   });
 
   @override
-  State<FilterSettingFooterView> createState() =>
-      _FilterSettingFooterViewState();
-}
-
-class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
-  late FilterSettingBloc filterSettingBloc;
-  TextEditingController filterNameController = TextEditingController();
-  String saveAsName = '';
-
-  @override
-  void initState() {
-    filterSettingBloc = context.read();
-    filterNameController.text =
-        filterSettingBloc.state.userFilterUpdate.filterName;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    filterNameController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-      listener: (context, state) {
-        filterNameController.text = state.userFilterUpdate.filterName;
-        filterNameController.selection = TextSelection.collapsed(
-            offset: state.userFilterUpdate.filterName.length);
-      },
-      listenWhen: (previous, current) =>
-          previous.userFilterUpdate.filterName !=
-          current.userFilterUpdate.filterName,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Flexible(
+            fit: FlexFit.tight,
+            flex: 3,
+            child: FilterInfo(),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                flex: 3,
-                child: Row(
-                  children: [
-                    const Text('Filter Name', style: TextStyle(fontSize: 14)),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: CustomTextField(
-                          // initialValue: state.userFilterUpdate.filterName,
-                          controller: filterNameController,
-                          onChanged: (value) => filterSettingBloc.add(
-                              FilterSettingUserFilterNameChanged(
-                                  filterName: value))),
-                    ),
-                    const SizedBox(width: 20),
-                    CustomSwitch(
-                      switchValue: state.userFilterUpdate.isDefault,
-                      onChanged: (value) => filterSettingBloc.add(
-                          FilterSettingUserFilterIsDefaultChanged(
-                              isDefault: value)),
-                      onlySwitch: true,
-                    ),
-                    const SizedBox(width: 10),
-                    const Text('Default', style: TextStyle(fontSize: 14)),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 30),
-              Flexible(
-                fit: FlexFit.tight,
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: state.isNew || state.isFilterUpdateNotFill
-                          ? null
-                          : () {
-                              widget.onFilterApplied(state.userFilterUpdate.id);
-                              filterSettingBloc.add(
-                                  FilterSettingAppliedUserFilterSettingChanged(
-                                      appliedUserFilterSetting:
-                                          state.selectedUserFilterSetting!));
-                            },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(3))),
-                      child: const Text(
-                        'Apply',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    BlocListener<FilterSettingBloc, FilterSettingState>(
-                      listener: (context, state) {
-                        if (state.userFilterSettingUpdateStatus.isSuccess) {
-                          CustomNotification(
-                            context: context,
-                            notifyType: NotifyType.success,
-                            content: 'User filter saved successfully',
-                          ).showNotification();
-                          widget.onFilterSaved(state.userFilterUpdate.id);
-                        }
-                      },
-                      listenWhen: (previous, current) =>
-                          previous.userFilterSettingUpdateStatus !=
-                          current.userFilterSettingUpdateStatus,
-                      child: ElevatedButton(
-                        onPressed: state.isNew || state.isFilterUpdateNotFill
-                            ? null
-                            : () {
-                                if (Validation.isEmpty(
-                                    state.userFilterUpdate.filterName)) {
-                                  CustomNotification(
-                                    context: context,
-                                    notifyType: NotifyType.error,
-                                    content: 'Please fill the filter name',
-                                  ).showNotification();
-                                } else {
-                                  filterSettingBloc.add(
-                                      FilterSettingUserFilterSettingUpdated());
-                                }
-                              },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(3))),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: state.isFilterUpdateNotFill
-                          ? null
-                          : () {
-                              CustomAlert(
-                                context: context,
-                                width: MediaQuery.of(context).size.width / 4,
-                                title: 'Save as',
-                                description: 'Please enter the filter name.',
-                                btnOkText: state.saveAsButtonName,
-                                btnOkOnPress: () {
-                                  if (!Validation.isEmpty(saveAsName)) {
-                                    filterSettingBloc.add(
-                                        FilterSettingUserFilterSettingSavedAs(
-                                            saveAsName: saveAsName));
-                                  }
-                                },
-                                btnCancelOnPress: () {},
-                                body: Column(
-                                  children: [
-                                    Text(
-                                      'Please enter the filter name to ${state.saveAsButtonName.toLowerCase()}.',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    CustomTextField(
-                                      onChanged: (value) {
-                                        setState(() => saveAsName = value);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                dialogType: DialogType.info,
-                              ).show();
-                            },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(3))),
-                      child: Text(
-                        state.saveAsButtonName,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    BlocListener<FilterSettingBloc, FilterSettingState>(
-                      listener: (context, state) {
-                        if (state.userFilterSettingDeleteStatus.isSuccess) {
-                          CustomNotification(
-                            context: context,
-                            notifyType: NotifyType.success,
-                            content: 'User filter deleted successfully',
-                          ).showNotification();
-                        }
-                      },
-                      listenWhen: (previous, current) =>
-                          previous.userFilterSettingDeleteStatus !=
-                          current.userFilterSettingDeleteStatus,
-                      child: ElevatedButton(
-                        onPressed: state.isNew
-                            ? null
-                            : () {
-                                filterSettingBloc.add(
-                                    FilterSettingUserFilterSettingDeletedById(
-                                        filterId: state.userFilterUpdate.id));
-                              },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(3))),
-                        child: const Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.onFilterOptionClosed();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(3))),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          const SizedBox(width: 30),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ApplyButton(onFilterApplied: onFilterApplied),
+                const SizedBox(width: 20),
+                SaveButton(onFilterSaved: onFilterApplied),
+                const SizedBox(width: 20),
+                SaveAsButton(onFilterSaved: onFilterApplied),
+                const SizedBox(width: 20),
+                const DeleteButton(),
+                const SizedBox(width: 20),
+                CancelButton(onFilterOptionClosed: onFilterOptionClosed),
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
