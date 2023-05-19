@@ -33,6 +33,80 @@ class EntityHeader extends Equatable {
       EntityHeader.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+class FilteredEntity extends Equatable {
+  final String id;
+  final bool deleted;
+  final String createdOn;
+  final String createdBy;
+  final String lastModifiedOn;
+  final String lastModifiedByUserName;
+  const FilteredEntity({
+    this.id = '',
+    this.deleted = false,
+    this.createdOn = '',
+    this.createdBy = '',
+    this.lastModifiedOn = '',
+    this.lastModifiedByUserName = '',
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        deleted,
+        createdOn,
+        createdBy,
+        lastModifiedOn,
+        lastModifiedByUserName,
+      ];
+
+  factory FilteredEntity.fromMap(Map<String, dynamic> map) {
+    return FilteredEntity(
+      id: map['id'] as String,
+      deleted: map['deleted'] as bool,
+      createdOn: map['created_On'] as String,
+      createdBy: map['created_By'] as String,
+      lastModifiedOn: map['last_Modified_On'] ?? '',
+      lastModifiedByUserName: map['last_Modified_By'] ?? '',
+    );
+  }
+
+  factory FilteredEntity.fromJson(String source) =>
+      FilteredEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class FilteredEntityData<T extends FilteredEntity> extends Equatable {
+  final List<EntityHeader> headers;
+  final List<T> data;
+  const FilteredEntityData({
+    required this.headers,
+    required this.data,
+  });
+
+  @override
+  List<Object?> get props => [
+        headers,
+        data,
+      ];
+
+  factory FilteredEntityData.fromMap(Map<String, dynamic> map) {
+    return FilteredEntityData(
+      headers: List<EntityHeader>.from(
+        (map['headers']).map<EntityHeader>(
+          (x) => EntityHeader.fromMap(x),
+        ),
+      ),
+      data: List<T>.from(
+        (map['data']).map<T>(
+          (x) => T,
+        ),
+      ),
+    );
+  }
+
+  factory FilteredEntityData.fromJson(String source) =>
+      FilteredEntityData.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
 // standadized model, which other models inherit
 class Entity extends Equatable {
   final List<EntityHeader> headers;
