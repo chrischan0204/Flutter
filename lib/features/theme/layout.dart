@@ -97,7 +97,15 @@ class _LayoutState extends State<Layout> {
                                     selectedItemName: widget.selectedItemName,
                                   ),
                             Expanded(
-                              child: widget.body,
+                              child: Container(
+                                // padding: const EdgeInsets.symmetric(
+                                //   horizontal: 10,
+                                //   vertical: 20,
+                                // ),
+                                height: MediaQuery.of(context).size.height -
+                                    topbarHeight,
+                                child: widget.body,
+                              ),
                             ),
                           ],
                         ),

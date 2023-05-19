@@ -1,5 +1,6 @@
 import '/common_libraries.dart';
-import 'widgets/template_section.dart';
+import 'widgets/template_section/template_section.dart';
+import 'widgets/template_section_details/template_section_details.dart';
 
 class TemplateDesignerView extends StatefulWidget {
   final String templateId;
@@ -57,29 +58,26 @@ class TemplateDesignerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 20,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 20,
+      ),
+      child: Row(
+        children: [
+          Flexible(
+            flex: 1,
+            fit: FlexFit.tight,
+            child: TemplateSectionView(templateId: templateId),
           ),
-          child: Row(
-            children: [
-              Flexible(
-                flex: 1,
-                fit: FlexFit.tight,
-                child: TemplateSectionView(templateId: templateId),
-              ),
-              const SizedBox(width: 30),
-              Flexible(
-                flex: 2,
-                child: Container(),
-              )
-            ],
-          ),
-        ),
-      ],
+          const SizedBox(width: 30),
+          const Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: TemplateSectionDetails(),
+          )
+        ],
+      ),
     );
   }
 }
