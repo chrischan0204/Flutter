@@ -93,7 +93,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: state.isNew
+                      onPressed: state.isNew || state.isFilterUpdateNotFill
                           ? null
                           : () {
                               widget.onFilterApplied(state.userFilterUpdate.id);
@@ -127,7 +127,7 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                           previous.userFilterSettingUpdateStatus !=
                           current.userFilterSettingUpdateStatus,
                       child: ElevatedButton(
-                        onPressed: state.isNew
+                        onPressed: state.isNew || state.isFilterUpdateNotFill
                             ? null
                             : () {
                                 if (Validation.isEmpty(
@@ -154,38 +154,40 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
-                      onPressed: () {
-                        CustomAlert(
-                          context: context,
-                          width: MediaQuery.of(context).size.width / 4,
-                          title: 'Save as',
-                          description: 'Please enter the filter name.',
-                          btnOkText: state.saveAsButtonName,
-                          btnOkOnPress: () {
-                            if (!Validation.isEmpty(saveAsName)) {
-                              filterSettingBloc.add(
-                                  FilterSettingUserFilterSettingSavedAs(
-                                      saveAsName: saveAsName));
-                            }
-                          },
-                          btnCancelOnPress: () {},
-                          body: Column(
-                            children: [
-                              Text(
-                                'Please enter the filter name to ${state.saveAsButtonName.toLowerCase()}.',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              const SizedBox(width: 20),
-                              CustomTextField(
-                                onChanged: (value) {
-                                  setState(() => saveAsName = value);
+                      onPressed: state.isFilterUpdateNotFill
+                          ? null
+                          : () {
+                              CustomAlert(
+                                context: context,
+                                width: MediaQuery.of(context).size.width / 4,
+                                title: 'Save as',
+                                description: 'Please enter the filter name.',
+                                btnOkText: state.saveAsButtonName,
+                                btnOkOnPress: () {
+                                  if (!Validation.isEmpty(saveAsName)) {
+                                    filterSettingBloc.add(
+                                        FilterSettingUserFilterSettingSavedAs(
+                                            saveAsName: saveAsName));
+                                  }
                                 },
-                              ),
-                            ],
-                          ),
-                          dialogType: DialogType.info,
-                        ).show();
-                      },
+                                btnCancelOnPress: () {},
+                                body: Column(
+                                  children: [
+                                    Text(
+                                      'Please enter the filter name to ${state.saveAsButtonName.toLowerCase()}.',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    CustomTextField(
+                                      onChanged: (value) {
+                                        setState(() => saveAsName = value);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                dialogType: DialogType.info,
+                              ).show();
+                            },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(
@@ -210,11 +212,13 @@ class _FilterSettingFooterViewState extends State<FilterSettingFooterView> {
                           previous.userFilterSettingDeleteStatus !=
                           current.userFilterSettingDeleteStatus,
                       child: ElevatedButton(
-                        onPressed: () {
-                          filterSettingBloc.add(
-                              FilterSettingUserFilterSettingDeletedById(
-                                  filterId: state.userFilterUpdate.id));
-                        },
+                        onPressed: state.isNew
+                            ? null
+                            : () {
+                                filterSettingBloc.add(
+                                    FilterSettingUserFilterSettingDeletedById(
+                                        filterId: state.userFilterUpdate.id));
+                              },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
                             shape: RoundedRectangleBorder(

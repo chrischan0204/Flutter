@@ -60,7 +60,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     // debugPrint(
     //     'current update filter name: ${change.currentState.userFilterUpdate.filterName}');
     // debugPrint(
-    //     'next update filter name: ${change.nextState.userFilterUpdate.filterName}');
+    //     'next update filter name: ${change.nextState.userFilterUpdate.userFilterItems.map((e) => e.filterValue)}');
     if ((change.currentState.filterSettingListLoadStatus !=
                 change.nextState.filterSettingListLoadStatus &&
             change.nextState.filterSettingListLoadStatus.isSuccess) ||
@@ -83,7 +83,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
   @override
   void onEvent(FilterSettingEvent event) {
     super.onEvent(event);
-    debugPrint(event.toString());
+    // debugPrint(event.toString());
   }
 
   void _onFilterSettingInit(

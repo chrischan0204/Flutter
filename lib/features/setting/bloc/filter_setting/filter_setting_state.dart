@@ -57,6 +57,7 @@ class FilterSettingState extends Equatable {
         defaultFilterSetting,
         viewName,
         appliedUserFilterSetting,
+        isFilterUpdateNotFill,
       ];
 
   bool get isNew => saveAsButtonName != 'Save as';
@@ -73,6 +74,14 @@ class FilterSettingState extends Equatable {
               : userFilterSettingList[0];
         },
       );
+
+  bool get isFilterUpdateNotFill => userFilterUpdate.userFilterItems
+      .where((userFilterItem) =>
+          userFilterItem.filterValue.isEmpty ||
+          userFilterItem.filterValue
+              .where((value) => Validation.isEmpty(value))
+              .isNotEmpty)
+      .isNotEmpty;
 
   FilterSettingState copyWith({
     EntityStatus? filterSettingListLoadStatus,
@@ -111,7 +120,8 @@ class FilterSettingState extends Equatable {
       saveAsButtonName: saveAsButtonName ?? this.saveAsButtonName,
       includeDeleted: includeDeleted ?? this.includeDeleted,
       viewName: viewName ?? this.viewName,
-      appliedUserFilterSetting: appliedUserFilterSetting ?? this.appliedUserFilterSetting,
+      appliedUserFilterSetting:
+          appliedUserFilterSetting ?? this.appliedUserFilterSetting,
     );
   }
 }
