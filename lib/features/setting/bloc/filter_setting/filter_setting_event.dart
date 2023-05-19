@@ -203,12 +203,12 @@ class FilterSettingIncludeDeletedChanged extends FilterSettingEvent {
   List<Object> get props => [includeDeleted];
 }
 
-class FilterSettingAppliedFilterNameChanged extends FilterSettingEvent {
-  final String appliedFilterName;
-  const FilterSettingAppliedFilterNameChanged({
-    required this.appliedFilterName,
+class FilterSettingAppliedUserFilterSettingChanged extends FilterSettingEvent {
+  final UserFilterSetting appliedUserFilterSetting;
+  const FilterSettingAppliedUserFilterSettingChanged({
+    required this.appliedUserFilterSetting,
   });
 
   @override
-  List<Object> get props => [appliedFilterName];
+  List<Object> get props => [appliedUserFilterSetting];
 }

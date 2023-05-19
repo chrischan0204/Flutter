@@ -307,9 +307,9 @@ class _CrudState extends State<EntityListTemplate> {
                               state.selectedUserFilterSetting!.id);
 
                           filterSettingBloc.add(
-                              FilterSettingAppliedFilterNameChanged(
-                                  appliedFilterName: state
-                                      .selectedUserFilterSetting!.filterName));
+                              FilterSettingAppliedUserFilterSettingChanged(
+                                  appliedUserFilterSetting:
+                                      state.selectedUserFilterSetting!));
                         }
                       }
                     },
@@ -319,7 +319,7 @@ class _CrudState extends State<EntityListTemplate> {
                             current.selectedUserFilterSetting,
                     builder: (context, state) {
                       return Text(
-                        'Filter Name: ${state.appliedFilterName}',
+                        'Filter Name: ${state.appliedUserFilterSetting?.filterName ?? 'No filter'}',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

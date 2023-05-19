@@ -115,7 +115,7 @@ class _UsersListState extends State<UsersListWidget> {
     final FilterSettingBloc filterSettingBloc = context.read();
     userListBloc.add(UserListFiltered(
       filterId: filterId ??
-          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          filterSettingBloc.state.appliedUserFilterSetting?.id ??
           '00000000-0000-0000-0000-000000000000',
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
     ));
