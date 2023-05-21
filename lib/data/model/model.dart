@@ -7,8 +7,7 @@ export '/features/administration/masters/observation_types/data/model/observatio
 export '/features/administration/masters/awareness_groups/data/model/awareness_group.dart';
 export '/features/administration/masters/awareness_categories/data/model/awareness_category.dart';
 
-export '/features/administration/sites/data/model/site.dart';
-export '/features/administration/sites/data/model/audit_template.dart';
+export '/features/administration/sites/data/model/model.dart';
 
 export '/features/administration/projects/data/model/model.dart';
 

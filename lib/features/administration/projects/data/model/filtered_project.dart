@@ -28,7 +28,7 @@ class FilteredProject extends FilteredEntity {
     super.lastModifiedOn,
     super.lastModifiedByUserName,
     super.deleted,
-  }) : super();
+  });
 
   @override
   List<Object?> get props => [
