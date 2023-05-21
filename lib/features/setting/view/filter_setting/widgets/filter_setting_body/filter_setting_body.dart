@@ -1,6 +1,5 @@
-import '../filter_setting_item.dart';
-
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class FilterSettingBodyView extends StatefulWidget {
   final String viewName;
@@ -31,40 +30,7 @@ class _FilterSettingBodyViewState extends State<FilterSettingBodyView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26),
-                child: Row(
-                  children: const [
-                    SizedBox(width: 20),
-                    SizedBox(
-                      width: 100,
-                      child: Text('Action'),
-                    ),
-                    SizedBox(width: 5),
-                    SizedBox(
-                      width: 100,
-                      child: Text('And/Or'),
-                    ),
-                    SizedBox(width: 5),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      flex: 2,
-                      child: Text('Field'),
-                    ),
-                    SizedBox(width: 5),
-                    SizedBox(
-                      width: 150,
-                      child: Text('Operator'),
-                    ),
-                    SizedBox(width: 5),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      flex: 4,
-                      child: Text('Value'),
-                    ),
-                  ],
-                ),
-              ),
+              const FilterSettingItemHeader(),
               ...state.userFilterUpdate.undeletedUserFilterItems.map(
                 (userFilterItem) {
                   return FilterSettingItemView(

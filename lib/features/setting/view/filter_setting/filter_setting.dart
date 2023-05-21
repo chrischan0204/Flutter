@@ -1,8 +1,5 @@
-import 'widgets/filter_setting_body/filter_setting_body.dart';
-import 'widgets/filter_setting_footer/filter_setting_footer.dart';
-import 'widgets/filter_setting_header/filter_setting_header.dart';
-
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class FilterSettingView extends StatefulWidget {
   final String viewName;
@@ -112,7 +109,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           FilterSettingBodyView(viewName: widget.viewName),
-                          _buildAddClauseButton(),
+                          const AddClauseButton(),
                           const CustomDivider(),
                           FilterSettingFooterView(
                             viewName: widget.viewName,
@@ -131,36 +128,6 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
           ],
         );
       },
-    );
-  }
-
-  Padding _buildAddClauseButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      child: TextButton(
-        onPressed: () =>
-            filterSettingBloc.add(const FilterSettingUserFilterItemAdded()),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(
-              PhosphorIcons.plus,
-              size: 16,
-              color: Colors.green,
-            ),
-            SizedBox(width: 3),
-            Text(
-              'Add new clause',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 14,
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
