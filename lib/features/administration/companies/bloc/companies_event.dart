@@ -10,6 +10,21 @@ abstract class CompaniesEvent extends Equatable {
 
 class CompaniesRetrieved extends CompaniesEvent {}
 
+class CompanyListFiltered extends CompaniesEvent {
+  final String filterId;
+  final bool includeDeleted;
+  const CompanyListFiltered({
+    required this.filterId,
+    this.includeDeleted = false,
+  });
+
+  @override
+  List<Object> get props => [
+        filterId,
+        includeDeleted,
+      ];
+}
+
 class CompanySelected extends CompaniesEvent {
   final Company? selectedCompany;
   const CompanySelected({

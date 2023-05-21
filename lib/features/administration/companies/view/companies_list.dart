@@ -9,9 +9,6 @@ class CompaniesListView extends StatefulWidget {
 
 class _CompaniesListViewState extends State<CompaniesListView> {
   late CompaniesBloc companiesBloc;
-  late SitesBloc sitesBloc;
-  late RegionsBloc regionsBloc;
-  late ProjectsBloc projectsBloc;
 
   static String pageTitle = 'Companies';
   static String pageLabel = 'company';
@@ -20,10 +17,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
 
   @override
   void initState() {
-    companiesBloc = context.read<CompaniesBloc>()..add(CompaniesRetrieved());
-    sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
-    regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
-    projectsBloc = context.read<ProjectsBloc>()..add(ProjectsRetrieved());
+    companiesBloc = context.read<CompaniesBloc>();
 
     super.initState();
   }
@@ -43,6 +37,10 @@ class _CompaniesListViewState extends State<CompaniesListView> {
           entityRetrievedStatus: state.companiesRetrievedStatus,
           selectedEntity: state.selectedCompany,
           onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
+          onViewSettingApplied: () => _filterCompanies(),
+          onIncludeDeletedChanged: (value) => _filterCompanies(null, value),
+          onFilterSaved: _filterCompanies,
+          onFilterApplied: _filterCompanies,
         );
       },
     );
@@ -57,5 +55,18 @@ class _CompaniesListViewState extends State<CompaniesListView> {
 
   void _selectCompany(Entity selectedCompany) {
     companiesBloc.add(CompanySelectedById(companyId: selectedCompany.id!));
+  }
+
+  void _filterCompanies([
+    String? filterId,
+    bool? includeDeleted,
+  ]) {
+    final FilterSettingBloc filterSettingBloc = context.read();
+    companiesBloc.add(CompanyListFiltered(
+      filterId: filterId ??
+          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          '00000000-0000-0000-0000-000000000000',
+      includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    ));
   }
 }

@@ -61,10 +61,10 @@ class FilteredEntity extends Equatable {
 
   factory FilteredEntity.fromMap(Map<String, dynamic> map) {
     return FilteredEntity(
-      id: map['id'] as String,
-      deleted: map['deleted'] as bool,
-      createdOn: map['created_On'] as String,
-      createdBy: map['created_By'] as String,
+      id: map['id'] ?? '',
+      deleted: map['deleted'] ?? false,
+      createdOn: map['created_On'] ?? '',
+      createdBy: map['created_By'] ?? '',
       lastModifiedOn: map['last_Modified_On'] ?? '',
       lastModifiedByUserName: map['last_Modified_By'] ?? '',
     );
