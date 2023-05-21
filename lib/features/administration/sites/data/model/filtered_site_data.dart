@@ -6,7 +6,7 @@ import '/common_libraries.dart';
 
 class FilteredSiteData extends Equatable {
   final List<EntityHeader> headers;
-  final List<FilteredProject> data;
+  final List<FilteredSite> data;
   const FilteredSiteData({
     required this.headers,
     required this.data,
@@ -25,9 +25,9 @@ class FilteredSiteData extends Equatable {
           (x) => EntityHeader.fromMap(x),
         ),
       ),
-      data: List<FilteredProject>.from(
-        (map['data']).map<FilteredProject>(
-          (x) => FilteredProject.fromMap(x),
+      data: List<FilteredSite>.from(
+        (map['data']).map<FilteredSite>(
+          (x) => FilteredSite.fromMap(x),
         ),
       ),
     );

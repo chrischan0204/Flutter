@@ -9,6 +9,21 @@ abstract class SitesEvent extends Equatable {
 
 class SitesRetrieved extends SitesEvent {}
 
+class SiteListFiltered extends SitesEvent {
+  final String filterId;
+  final bool includeDeleted;
+  const SiteListFiltered({
+    required this.filterId,
+    this.includeDeleted = false,
+  });
+
+  @override
+  List<Object> get props => [
+        filterId,
+        includeDeleted,
+      ];
+}
+
 class SiteSelected extends SitesEvent {
   final Site? selectedSite;
   const SiteSelected({

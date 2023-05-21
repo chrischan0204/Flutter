@@ -20,7 +20,7 @@ class _SitesListViewState extends State<SitesListView> {
 
   @override
   void initState() {
-    sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
+    sitesBloc = context.read<SitesBloc>();
     super.initState();
   }
 
@@ -39,8 +39,25 @@ class _SitesListViewState extends State<SitesListView> {
           emptyMessage: emptyMessage,
           entityRetrievedStatus: state.sitesRetrievedStatus,
           selectedEntity: state.selectedSite,
+          onViewSettingApplied: () => _filterSites(),
+          onIncludeDeletedChanged: (value) => _filterSites(null, value),
+          onFilterSaved: _filterSites,
+          onFilterApplied: _filterSites,
         );
       },
     );
+  }
+
+  void _filterSites([
+    String? filterId,
+    bool? includeDeleted,
+  ]) {
+    final FilterSettingBloc filterSettingBloc = context.read();
+    sitesBloc.add(SiteListFiltered(
+      filterId: filterId ??
+          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          '00000000-0000-0000-0000-000000000000',
+      includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    ));
   }
 }

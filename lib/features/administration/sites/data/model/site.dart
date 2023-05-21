@@ -34,6 +34,7 @@ class Site extends Entity {
     super.createdOn,
     super.lastModifiedByUserName,
     super.lastModifiedOn,
+    super.columns,
   });
 
   @override
@@ -111,6 +112,7 @@ class Site extends Entity {
     String? createdByUserName,
     String? lastModifiedByUserName,
     String? lastModifiedOn,
+    List<String>? columns,
   }) {
     return Site(
       id: id ?? this.id,
@@ -133,6 +135,7 @@ class Site extends Entity {
       lastModifiedByUserName:
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
+      columns: columns ?? this.columns,
     );
   }
 
