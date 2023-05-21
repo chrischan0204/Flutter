@@ -12,8 +12,10 @@ class CustomTextField extends StatefulWidget {
   final Color suffixIconBackgroundColor;
   final double iconSize;
   final VoidCallback? onSuffixIconClick;
-  final double height;
+  final double? height;
   final Widget? suffixWidget;
+  final int? minLines;
+  final int? maxLines;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -28,6 +30,8 @@ class CustomTextField extends StatefulWidget {
     this.onSuffixIconClick,
     this.height = 36,
     this.suffixWidget,
+    this.minLines,
+    this.maxLines,
   });
 
   @override
@@ -133,6 +137,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         cursorColor: darkTeal,
         cursorWidth: 1,
+        minLines: widget.minLines,
+        maxLines: widget.maxLines,
       ),
     );
   }

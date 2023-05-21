@@ -1,4 +1,5 @@
 import '/common_libraries.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class NewSectionField extends StatefulWidget {
   final String templateId;
@@ -23,7 +24,7 @@ class _NewSectionFieldState extends State<NewSectionField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TemplateDesignerBloc, TemplateDesignerState>(
+    return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
       listener: (context, state) {
         sectionController.text = state.newSection;
         sectionController.selection =
@@ -31,9 +32,19 @@ class _NewSectionFieldState extends State<NewSectionField> {
       },
       listenWhen: (previous, current) =>
           previous.newSection != current.newSection,
-      child: CustomTextFieldWithIcon(
+      builder: (context, state) => CustomTextFieldWithIcon(
         hintText: 'Add new section',
-        suffixWidget: const Text('Add'),
+        suffixWidget: SizedBox(
+          width: 40,
+          child: Center(
+            child: state.templateSectionAddStatus.isLoading
+                ? LoadingAnimationWidget.inkDrop(
+                    color: Colors.blue,
+                    size: 20,
+                  )
+                : const Text('Add'),
+          ),
+        ),
         onSuffixClicked: () => templateDesignerBloc.add(
             TemplateDesignerTemplateSectionAdded(
                 templateId: widget.templateId)),

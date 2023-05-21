@@ -1,6 +1,5 @@
 import '/common_libraries.dart';
-import 'widgets/first_name_field.dart';
-import 'widgets/revision_date_picker.dart';
+import 'widgets/widgets.dart';
 
 class AddEditTemplateView extends StatefulWidget {
   final String? templateId;
@@ -100,8 +99,19 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditTemplateBloc, AddEditTemplateState>(
       listener: (context, addEditTemplateState) {
-        _checkCrudResult(addEditTemplateState, context);
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.success,
+          content: addEditTemplateState.message,
+        ).showNotification();
+        if (widget.templateId == null) {
+          GoRouter.of(context).go(
+              '/templates/designer/${addEditTemplateState.createdTemplateId}');
+        }
       },
+      listenWhen: (previous, current) =>
+          previous.templateAddStatus != current.templateAddStatus &&
+          current.templateAddStatus.isSuccess,
       builder: (context, addEditTemplateState) {
         return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, templateDetailState) {
@@ -125,18 +135,19 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 id: widget.templateId,
                 selectedEntity: templateDetailState.template,
                 addButtonName: addButtonName,
-                addEntity: () => _addTemplate(addEditTemplateState),
-                editEntity: () => _editTemplate(addEditTemplateState),
+                addEntity: () =>
+                    addEditTemplateBloc.add(AddEditTemplateTemplateAdded()),
+                editEntity: () => _editTemplate(),
                 crudStatus: addEditTemplateState.templateAddStatus,
                 isCrudDataFill: _checkFormDataFill(addEditTemplateState),
-                tabItems: _buildTabs(addEditTemplateState),
+                tabItems: _buildTabs(),
                 tabWidth: 500,
                 view: widget.view,
                 child: Column(
-                  children: [
-                    const FirstNameField(),
-                    const RevisionDatePicker(),
-                    _buildUsedInCheckBoxes(addEditTemplateState)
+                  children: const [
+                    FirstNameField(),
+                    RevisionDatePicker(),
+                    UsedInCheckBoxes()
                   ],
                 ),
               ),
@@ -153,7 +164,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
         : true;
   }
 
-  Map<String, Widget> _buildTabs(AddEditTemplateState addEditTemplateState) {
+  Map<String, Widget> _buildTabs() {
     if (widget.templateId != null) {
       return {
         'Template Details': Container(),
@@ -164,60 +175,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     return {};
   }
 
-  void _checkCrudResult(
-      AddEditTemplateState addEditTemplateState, BuildContext context) {
-    if (addEditTemplateState.templateAddStatus.isSuccess ||
-        addEditTemplateState.templateEditStatus.isSuccess) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.success,
-        content: addEditTemplateState.message,
-      ).showNotification();
-      if (widget.templateId == null) {
-        GoRouter.of(context).go(
-            '/templates/designer/${addEditTemplateState.createdTemplateId}');
-      }
-    }
-  }
-
-
-
-  FormItem _buildUsedInCheckBoxes(AddEditTemplateState addEditTemplateState) {
-    return FormItem(
-      label: 'Used in',
-      content: Row(
-        children: [
-          Checkbox(
-            value: addEditTemplateState.usedInAudit,
-            onChanged: (usedInAudit) =>
-                addEditTemplateBloc.add(AddEditTemplateUsedInAudit(
-              usedInAudit: usedInAudit!,
-            )),
-          ),
-          const SizedBox(width: 5),
-          const Text('Audits', style: TextStyle(fontSize: 12)),
-        ],
-      ),
-      sideContent: Row(
-        children: [
-          Checkbox(
-            value: addEditTemplateState.usedInInspection,
-            onChanged: (usedInInspection) =>
-                addEditTemplateBloc.add(AddEditTemplateUsedInInspection(
-              usedInInspection: usedInInspection!,
-            )),
-          ),
-          const SizedBox(width: 5),
-          const Text('Inspections', style: TextStyle(fontSize: 12)),
-        ],
-      ),
-    );
-  }
-
-  void _addTemplate(AddEditTemplateState addEditTemplateState) =>
-      addEditTemplateBloc.add(AddEditTemplateTemplateAdded());
-
-  void _editTemplate(AddEditTemplateState addEditTemplateState) {
+  void _editTemplate() {
     // addEditTemplateBloc
     //       .add(AddEditTemplateTemplateEdited(templateId: widget.templateId!))
   }
