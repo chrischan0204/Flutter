@@ -29,6 +29,14 @@ class CustomSwitch extends StatefulWidget {
 }
 
 class _CustomSwitchState extends State<CustomSwitch> {
+  late bool switchValue;
+
+  @override
+  void initState() {
+    switchValue = widget.switchValue;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -38,7 +46,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           width: 40,
           height: 20,
           toggleSize: 15.0,
-          value: widget.switchValue,
+          value: switchValue,
           borderRadius: 15.0,
           padding: 2.0,
           // toggleColor: Colors.transparent,
@@ -56,6 +64,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           ),
           showOnOff: false,
           onToggle: (val) {
+            setState(() => switchValue = !switchValue);
             if (widget.active) {
               widget.onChanged(val);
             }

@@ -88,29 +88,62 @@ class _ValueFieldState extends State<ValueField> {
                 );
               });
             case 'BooleanBox':
-              return Builder(
-                builder: (context) {
-                  Map<String, Entity> items = {};
-                  for (final item in ['Yes', 'No']) {
-                    items.addEntries(
-                        [MapEntry(item, Entity(id: item, name: item))]);
-                  }
-
-                  return CustomMultiSelect(
-                    items: items,
-                    selectedItems: widget.userFilterItem.filterValue
-                        .map((e) => Entity(id: e, name: e))
-                        .toList(),
-                    hint:
-                        'Select ${widget.userFilterItem.filterSetting.columnTitle}',
-                    onChanged: (projects) => filterSettingBloc
-                        .add(FilterSettingUserFilterItemValueChanged(
-                      userFilterItem: widget.userFilterItem,
-                      value: projects.map((e) => e.name!).toList(),
-                    )),
+              return widget.userFilterItem.filterValue.isNotEmpty
+                  ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: CustomSwitch(
+                        switchValue:
+                            widget.userFilterItem.filterValue[0] == 'True',
+                        trueString: 'Yes',
+                        falseString: 'No',
+                        textColor: darkTeal,
+                        onChanged: (value) => filterSettingBloc.add(
+                          FilterSettingUserFilterItemValueChanged(
+                            userFilterItem: widget.userFilterItem,
+                            value: [value ? 'True' : 'False'],
+                          ),
+                        ),
+                      ),
+                  )
+                  : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: CustomSwitch(
+                        switchValue: false,
+                        trueString: 'Yes',
+                        falseString: 'No',
+                        textColor: darkTeal,
+                        onChanged: (value) => filterSettingBloc.add(
+                          FilterSettingUserFilterItemValueChanged(
+                            userFilterItem: widget.userFilterItem,
+                            value: [value ? 'True' : 'False'],
+                          ),
+                        ),
+                      ),
                   );
-                },
-              );
+
+            // return Builder(
+            //   builder: (context) {
+            //     Map<String, Entity> items = {};
+            //     for (final item in ['Yes', 'No']) {
+            //       items.addEntries(
+            //           [MapEntry(item, Entity(id: item, name: item))]);
+            //     }
+
+            //     return CustomMultiSelect(
+            //       items: items,
+            //       selectedItems: widget.userFilterItem.filterValue
+            //           .map((e) => Entity(id: e, name: e))
+            //           .toList(),
+            //       hint:
+            //           'Select ${widget.userFilterItem.filterSetting.columnTitle}',
+            //       onChanged: (projects) => filterSettingBloc
+            //           .add(FilterSettingUserFilterItemValueChanged(
+            //         userFilterItem: widget.userFilterItem,
+            //         value: projects.map((e) => e.name!).toList(),
+            //       )),
+            //     );
+            //   },
+            // );
 
             case 'DateTimePicker':
               return CustomDatePicker(
