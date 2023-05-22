@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '/global_widgets/global_widget.dart';
-import '/data/bloc/bloc.dart';
+import '/common_libraries.dart';
 
 class SitesListView extends StatefulWidget {
   const SitesListView({super.key});
@@ -61,7 +58,7 @@ class _SitesListViewState extends State<SitesListView> {
     sitesBloc.add(SiteListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.selectedUserFilterSetting?.id ??
-          '00000000-0000-0000-0000-000000000000',
+          emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
     ));
   }

@@ -69,6 +69,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     try {
       List<Project> filteredProjectList = await projectsRepository
           .getFilteredProjectList(event.filterId, event.includeDeleted);
+          print(filteredProjectList);
       emit(state.copyWith(
         projects: filteredProjectList,
         projectsRetrievedStatus: EntityStatus.success,

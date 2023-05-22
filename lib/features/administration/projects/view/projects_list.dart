@@ -70,7 +70,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     projectsBloc.add(ProjectListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.selectedUserFilterSetting?.id ??
-          '00000000-0000-0000-0000-000000000000',
+          emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
     ));
   }

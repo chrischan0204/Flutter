@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import '/constants/constants.dart';
 import 'filter_setting.dart';
 
 class UserFilterItem extends Equatable {
@@ -12,7 +13,7 @@ class UserFilterItem extends Equatable {
   final List<String> filterValue;
   final bool deleted;
   const UserFilterItem({
-    this.id = '00000000-0000-0000-0000-000000000000',
+    this.id = emptyGuid,
     this.filterSetting = const FilterSetting(),
     this.booleanCondition = 'And',
     this.operator = '=',
@@ -31,7 +32,7 @@ class UserFilterItem extends Equatable {
         isNew,
       ];
 
-  bool get isNew => id == '00000000-0000-0000-0000-000000000000';
+  bool get isNew => id == emptyGuid;
 
   UserFilterItem copyWith({
     String? id,

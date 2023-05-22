@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/constants/constants.dart';
 import 'view_setting_column.dart';
 import 'view_setting_column_update.dart';
 
@@ -11,7 +12,7 @@ class ViewSettingItemData {
   final bool deleted;
   final Key key;
   ViewSettingItemData({
-    this.id = '00000000-0000-0000-0000-000000000000',
+    this.id = emptyGuid,
     this.selectedValue,
     required this.key,
     this.order = 0,

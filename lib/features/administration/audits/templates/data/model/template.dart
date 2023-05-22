@@ -8,6 +8,8 @@ class Template extends Entity {
   final bool usedInInspection;
   final bool locked;
   final int usedInAudits;
+  final int usedInSites;
+  final String templateSites;
 
   const Template({
     super.id,
@@ -17,6 +19,8 @@ class Template extends Entity {
     this.usedInInspection = false,
     this.locked = false,
     this.usedInAudits = 0,
+    this.usedInSites = 0,
+    this.templateSites = '',
     super.active,
     super.createdByUserName,
     super.createdOn,
@@ -30,6 +34,8 @@ class Template extends Entity {
         usedInInspection,
         locked,
         usedInAudits,
+        usedInSites,
+        templateSites,
       ];
 
   @override
@@ -50,13 +56,11 @@ class Template extends Entity {
       'Audits': usedInAudit,
       'Inspection': usedInInspection,
       'Active': active,
-      'Used at sites': 4,
+      'Used at sites': usedInSites,
       'Used in audits': usedInAudits,
       'Created on': createdOn,
       'Created by': createdByUserName,
-      'Sites using this template': {
-        'content': 'Raleigh, Bronx and City Center Dallas'
-      },
+      'Sites using this template': {'content': templateSites},
     };
   }
 
@@ -76,10 +80,12 @@ class Template extends Entity {
       id: entity.id,
       name: entity.name,
       revisionDate: map['revisionDate'] ?? '',
-      usedInAudit: map['usedInAudit'] as bool,
-      usedInInspection: map['usedInInspection'] as bool,
-      locked: map['locked'] as bool,
-      usedInAudits: map['usedInAudits'] as int,
+      usedInAudit: map['usedInAudit'] ?? false,
+      usedInInspection: map['usedInInspection'] ?? false,
+      locked: map['locked'] ?? false,
+      usedInAudits: map['usedInAudits'] ?? 0,
+      usedInSites: map['usedInSites'] ?? 0,
+      templateSites: map['templateSites'] ?? '',
       active: entity.active,
       createdByUserName: entity.createdByUserName,
       createdOn: entity.createdOn,

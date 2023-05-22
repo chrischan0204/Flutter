@@ -301,10 +301,11 @@ class _CrudState extends State<EntityListTemplate> {
                   BlocConsumer<FilterSettingBloc, FilterSettingState>(
                     listener: (context, state) {
                       if (widget.onFilterApplied != null) {
-                        widget.onFilterApplied!(state.defaultFilterSetting.id);
+                        widget.onFilterApplied!('');
                       }
                     },
                     listenWhen: (previous, current) =>
+                        previous.appliedUserFilterSetting != null &&
                         previous.appliedUserFilterSetting !=
                             current.appliedUserFilterSetting &&
                         current.appliedUserFilterSetting?.isNew == true,

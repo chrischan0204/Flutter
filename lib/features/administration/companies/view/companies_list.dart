@@ -25,7 +25,8 @@ class _CompaniesListViewState extends State<CompaniesListView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
-      builder: (context, state) => BlocBuilder<CompaniesBloc, CompaniesState>(
+      builder: (context, filterSettingState) =>
+          BlocBuilder<CompaniesBloc, CompaniesState>(
         builder: (context, state) {
           return EntityListTemplate(
             title: pageTitle,
@@ -36,7 +37,8 @@ class _CompaniesListViewState extends State<CompaniesListView> {
             onRowClick: (selectedCompany) => _selectCompany(selectedCompany),
             emptyMessage: emptyMessage,
             entityListLoadStatusLoading:
-                state.companiesRetrievedStatus.isLoading,
+                filterSettingState.filterSettingLoading ||
+                    state.companiesRetrievedStatus.isLoading,
             selectedEntity: state.selectedCompany,
             onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
             onViewSettingApplied: () => _filterCompanies(),
@@ -68,7 +70,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
     companiesBloc.add(CompanyListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.selectedUserFilterSetting?.id ??
-          '00000000-0000-0000-0000-000000000000',
+          emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
     ));
   }

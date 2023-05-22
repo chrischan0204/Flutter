@@ -121,7 +121,7 @@ class _UsersListState extends State<UsersListWidget> {
     userListBloc.add(UserListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
-          '00000000-0000-0000-0000-000000000000',
+          emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
     ));
   }

@@ -30,14 +30,27 @@ class _ApplyButtonState extends State<ApplyButton> {
               : () {
                   widget.onFilterApplied(state.userFilterUpdate.id);
                   filterSettingBloc.add(
-                      FilterSettingAppliedUserFilterSettingChanged(
-                          appliedUserFilterSetting:
-                              state.selectedUserFilterSetting!));
+                    FilterSettingAppliedUserFilterSettingChanged(
+                      appliedUserFilterSetting:
+                          state.selectedUserFilterSetting!,
+                    ),
+                  );
+
+                  if (!(state.selectedUserFilterSetting?.isNew ?? true)) {
+                    CustomNotification(
+                      context: context,
+                      notifyType: NotifyType.success,
+                      content:
+                          'Filter "${state.appliedUserFilterSetting?.filterName}" is applied.',
+                    ).showNotification();
+                  }
                 },
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3))),
+            backgroundColor: Colors.blue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
           child: const Text(
             'Apply',
             style: TextStyle(color: Colors.white),

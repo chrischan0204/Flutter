@@ -160,11 +160,11 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
                 userFilterSetting: null));
           }
         }
-        emit(state.copyWith(
-          userFilterSettingListLoadStatus: EntityStatus.success,
-          userFilterSettingList: userFilterSettingList,
-        ));
       }
+      emit(state.copyWith(
+        userFilterSettingListLoadStatus: EntityStatus.success,
+        userFilterSettingList: userFilterSettingList,
+      ));
     } catch (e) {
       emit(state.copyWith(
           userFilterSettingListLoadStatus: EntityStatus.failure));
@@ -282,11 +282,11 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     try {
       UserFilter updatedUserFilter = await settingsRepository
           .updateUserFilterSetting(state.userFilterUpdate.copyWith(
-              id: '00000000-0000-0000-0000-000000000000',
+              id: emptyGuid,
               filterName: event.saveAsName,
               userFilterItems: state.userFilterUpdate.userFilterItems
                   .map((e) => e.copyWith(
-                        id: '00000000-0000-0000-0000-000000000000',
+                        id: emptyGuid,
                       ))
                   .toList()));
       emit(state.copyWith(
@@ -356,12 +356,12 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       userFilterItems.insert(
           index,
           UserFilterItem(
-            id: '00000000-0000-0000-0000-000000000000',
+            id: emptyGuid,
             filterSetting: FilterSetting(id: const Uuid().v1()),
           ));
     } else {
       userFilterItems.add(UserFilterItem(
-        id: '00000000-0000-0000-0000-000000000000',
+        id: emptyGuid,
         filterSetting: FilterSetting(id: const Uuid().v1()),
       ));
     }
