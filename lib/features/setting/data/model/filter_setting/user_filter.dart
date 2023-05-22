@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:safety_eta/common_libraries.dart';
 
 import 'user_filter_item.dart';
 
@@ -33,6 +34,12 @@ class UserFilter extends Equatable {
 
   List<UserFilterItem> get undeletedUserFilterItems =>
       userFilterItems.where((element) => !element.deleted).toList();
+
+  UserFilterSetting get userFilterSetting => UserFilterSetting(
+        id: id,
+        filterName: filterName,
+        isDefault: isDefault,
+      );
 
   UserFilter copyWith({
     String? id,

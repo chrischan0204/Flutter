@@ -24,25 +24,28 @@ class _CompaniesListViewState extends State<CompaniesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CompaniesBloc, CompaniesState>(
-      builder: (context, state) {
-        return EntityListTemplate(
-          title: pageTitle,
-          label: pageLabel,
-          viewName: pageLabel,
-          entities: state.companies,
-          showTableHeaderButtons: true,
-          onRowClick: (selectedCompany) => _selectCompany(selectedCompany),
-          emptyMessage: emptyMessage,
-          entityRetrievedStatus: state.companiesRetrievedStatus,
-          selectedEntity: state.selectedCompany,
-          onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
-          onViewSettingApplied: () => _filterCompanies(),
-          onIncludeDeletedChanged: (value) => _filterCompanies(null, value),
-          onFilterSaved: _filterCompanies,
-          onFilterApplied: _filterCompanies,
-        );
-      },
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+      builder: (context, state) => BlocBuilder<CompaniesBloc, CompaniesState>(
+        builder: (context, state) {
+          return EntityListTemplate(
+            title: pageTitle,
+            label: pageLabel,
+            viewName: pageLabel,
+            entities: state.companies,
+            showTableHeaderButtons: true,
+            onRowClick: (selectedCompany) => _selectCompany(selectedCompany),
+            emptyMessage: emptyMessage,
+            entityListLoadStatusLoading:
+                state.companiesRetrievedStatus.isLoading,
+            selectedEntity: state.selectedCompany,
+            onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
+            onViewSettingApplied: () => _filterCompanies(),
+            onIncludeDeletedChanged: (value) => _filterCompanies(null, value),
+            onFilterSaved: _filterCompanies,
+            onFilterApplied: _filterCompanies,
+          );
+        },
+      ),
     );
   }
 

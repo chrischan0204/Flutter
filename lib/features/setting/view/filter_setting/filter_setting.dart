@@ -53,8 +53,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
 
   @override
   void initState() {
-    filterSettingBloc = context.read()
-      ..add(FilterSettingFilterSettingListLoaded(name: widget.viewName));
+    filterSettingBloc = context.read();
 
     super.initState();
   }
@@ -85,6 +84,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   FilterSettingHeaderView(
+                    viewName: widget.viewName,
                     onFilterOptionClosed: () =>
                         setState(() => widget.onFilterOptionClosed()),
                   ),
@@ -115,8 +115,9 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                             viewName: widget.viewName,
                             onFilterOptionClosed: widget.onFilterOptionClosed,
                             onFilterApplied: widget.onFilterApplied,
-                            onFilterSaved: (filterId) =>
-                                widget.onFilterSaved(filterId),
+                            onFilterSaved: (filterId) {
+                              widget.onFilterSaved(filterId);
+                            },
                           ),
                         ],
                       );

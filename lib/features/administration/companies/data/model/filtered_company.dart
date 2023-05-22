@@ -5,10 +5,12 @@ import '/common_libraries.dart';
 class FilteredCompany extends FilteredEntity {
   final String name;
   final String ein;
+  final bool active;
   const FilteredCompany({
     super.id,
     this.name = '',
     this.ein = '',
+    this.active = true,
     super.createdBy,
     super.createdOn,
     super.lastModifiedOn,
@@ -21,6 +23,7 @@ class FilteredCompany extends FilteredEntity {
         ...super.props,
         name,
         ein,
+        active,
       ];
 
   factory FilteredCompany.fromMap(Map<String, dynamic> map) {
@@ -29,6 +32,7 @@ class FilteredCompany extends FilteredEntity {
       id: entity.id,
       name: map['name'] ?? '',
       ein: map['ein'] ?? '',
+      active: map['active'] ?? true,
       createdBy: entity.createdBy,
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
@@ -45,10 +49,12 @@ class FilteredCompany extends FilteredEntity {
       id: id,
       name: name,
       einNumber: ein,
+      active: active,
       createdByUserName: createdBy,
       createdOn: createdOn,
       lastModifiedByUserName: lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn,
+      deleted: deleted,
     );
   }
 }

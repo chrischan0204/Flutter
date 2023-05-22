@@ -1,7 +1,11 @@
 import '/common_libraries.dart';
 
 class FilterSettingSelectField extends StatefulWidget {
-  const FilterSettingSelectField({super.key});
+  final String viewName;
+  const FilterSettingSelectField({
+    super.key,
+    required this.viewName,
+  });
 
   @override
   State<FilterSettingSelectField> createState() =>
@@ -31,22 +35,29 @@ class _FilterSettingSelectFieldState extends State<FilterSettingSelectField> {
           const SizedBox(width: 20),
           Builder(
             builder: (context) {
-              Map<String, UserFilterSetting> items = {};
+              Map<String, dynamic> items = {'Add New': 'Add New'};
               for (var userFilterSetting in state.userFilterSettingList) {
                 items.addEntries([
                   MapEntry(userFilterSetting.filterName, userFilterSetting)
                 ]);
               }
+              debugPrint(state.selectedUserFilterSetting?.filterName);
               return SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
                 child: CustomSingleSelect(
-                  selectedValue: state.selectedUserFilterSetting?.filterName,
+                  selectedValue: state.selectedUserFilterSetting?.filterName ?? 'Add New',
                   items: items,
                   hint: 'Select Filter',
                   onChanged: (value) {
-                    filterSettingBloc.add(
-                        FilterSettingUserFilterSettingSelected(
-                            userFilterSetting: value.value));
+                    if (value.value is UserFilterSetting) {
+                      filterSettingBloc.add(
+                          FilterSettingUserFilterSettingSelected(
+                              userFilterSetting: value.value));
+                    } else {
+                      filterSettingBloc.add(
+                          FilterSettingUserFilterSettingNewAdded(
+                              viewName: widget.viewName));
+                    }
                   },
                 ),
               );

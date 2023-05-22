@@ -24,25 +24,30 @@ class _ProjectsListViewState extends State<ProjectsListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectsBloc, ProjectsState>(
-      builder: (context, state) {
-        return EntityListTemplate(
-          title: pageTitle,
-          label: pageLabel,
-          viewName: pageLabel,
-          entities: state.projects,
-          showTableHeaderButtons: true,
-          onRowClick: (selectedProject) => _selectProject(selectedProject),
-          emptyMessage: emptyMessage,
-          entityRetrievedStatus: state.projectsRetrievedStatus,
-          selectedEntity: state.selectedProject,
-          onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
-          onViewSettingApplied: () => _filterProjects(),
-          onIncludeDeletedChanged: (value) => _filterProjects(null, value),
-          onFilterSaved: _filterProjects,
-          onFilterApplied: _filterProjects,
-        );
-      },
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+      builder: (context, filterSettingState) =>
+          BlocBuilder<ProjectsBloc, ProjectsState>(
+        builder: (context, state) {
+          return EntityListTemplate(
+            title: pageTitle,
+            label: pageLabel,
+            viewName: pageLabel,
+            entities: state.projects,
+            showTableHeaderButtons: true,
+            onRowClick: (selectedProject) => _selectProject(selectedProject),
+            emptyMessage: emptyMessage,
+            entityListLoadStatusLoading:
+                filterSettingState.filterSettingLoading ||
+                    state.projectsRetrievedStatus.isLoading,
+            selectedEntity: state.selectedProject,
+            onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
+            onViewSettingApplied: () => _filterProjects(),
+            onIncludeDeletedChanged: (value) => _filterProjects(null, value),
+            onFilterSaved: _filterProjects,
+            onFilterApplied: _filterProjects,
+          );
+        },
+      ),
     );
   }
 

@@ -31,6 +31,7 @@ class Project extends Entity {
     super.lastModifiedOn,
     super.lastModifiedByUserName,
     super.columns = const [],
+    super.deleted,
   });
 
   @override
@@ -162,6 +163,7 @@ class Project extends Entity {
     String? lastModifiedByUserName,
     String? lastModifiedOn,
     List<String>? columns,
+    bool? deleted,
   }) {
     return Project(
       id: id ?? this.id,
@@ -182,6 +184,7 @@ class Project extends Entity {
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
       columns: columns ?? this.columns,
+      deleted: deleted ?? this.deleted,
     );
   }
 }

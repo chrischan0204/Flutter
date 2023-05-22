@@ -36,7 +36,7 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
           title: pageTitle,
           label: pageLabel,
           emptyMessage: emtptyMessage,
-          entityRetrievedStatus: state.awarenessGroupsRetrievedStatus,
+          entityListLoadStatusLoading: state.awarenessGroupsRetrievedStatus.isLoading,
           onRowClick: (awarenessGroup) =>
               _selectAwarenessGroup(awarenessGroup as AwarenessGroup),
           selectedEntity: state.selectedAwarenessGroup,

@@ -38,7 +38,8 @@ class _RegionsState extends State<RegionsListView> {
           label: pageLabel,
           emptyMessage: emptyMessage,
           onRowClick: (region) => _selectRegion(region),
-          entityRetrievedStatus: state.assignedRegionsRetrievedStatus,
+          entityListLoadStatusLoading:
+              state.assignedRegionsRetrievedStatus.isLoading,
           selectedEntity: state.selectedRegion,
         );
       },

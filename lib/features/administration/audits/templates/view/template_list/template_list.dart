@@ -105,8 +105,8 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                     onRowClick: (selectedTemplate) =>
                         _selectTemplate(selectedTemplate),
                     emptyMessage: emptyMessage,
-                    entityRetrievedStatus:
-                        templateListState.templateListLoadStatus,
+                    entityListLoadStatusLoading:
+                        templateListState.templateListLoadStatus.isLoading,
                     selectedEntity: templateDetailState.template,
                     onTableSorted: (sortedTemplates) =>
                         _sortTemplates(sortedTemplates),

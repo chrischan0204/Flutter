@@ -79,6 +79,7 @@ class FilteredUser extends FilteredEntity {
       createdByUserName: createdBy,
       lastModifiedOn: lastModifiedOn,
       lastModifiedByUserName: lastModifiedByUserName,
+      deleted: deleted,
     );
   }
 }

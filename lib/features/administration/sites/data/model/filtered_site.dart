@@ -5,9 +5,11 @@ import '/common_libraries.dart';
 class FilteredSite extends FilteredEntity {
   final String name;
   final String siteCode;
+  final String siteType;
   final String referenceCode;
   final String region;
   final String timeZone;
+  final bool active;
   const FilteredSite({
     super.id,
     this.name = '',
@@ -15,6 +17,8 @@ class FilteredSite extends FilteredEntity {
     this.siteCode = '',
     this.referenceCode = '',
     this.timeZone = '',
+    this.active = true,
+    this.siteType = '',
     super.createdBy,
     super.createdOn,
     super.lastModifiedOn,
@@ -41,6 +45,8 @@ class FilteredSite extends FilteredEntity {
       siteCode: map['site_Code'] ?? '',
       referenceCode: map['reference_Code'] ?? '',
       timeZone: map['timezone'] ?? '',
+      siteType: map['site_Type'] ?? '',
+      active: map['active'] ?? true,
       createdBy: entity.createdBy,
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
@@ -60,10 +66,13 @@ class FilteredSite extends FilteredEntity {
       referenceCode: referenceCode,
       timeZone: timeZone,
       region: region,
+      siteType: siteType,
+      active: active,
       createdByUserName: createdBy,
       createdOn: createdOn,
       lastModifiedByUserName: lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn,
+      deleted: deleted,
     );
   }
 }

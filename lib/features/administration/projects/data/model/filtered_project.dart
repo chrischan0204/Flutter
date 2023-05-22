@@ -84,6 +84,7 @@ class FilteredProject extends FilteredEntity {
       createdOn: createdOn,
       lastModifiedByUserName: lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn,
+      deleted: deleted,
     );
   }
 }

@@ -33,6 +33,10 @@ class _SaveButtonState extends State<SaveButton> {
                 content: 'User filter saved successfully',
               ).showNotification();
               widget.onFilterSaved(state.userFilterUpdate.id);
+              filterSettingBloc.add(
+                  FilterSettingAppliedUserFilterSettingChanged(
+                      appliedUserFilterSetting:
+                          state.selectedUserFilterSetting!));
             }
           },
           listenWhen: (previous, current) =>
@@ -50,7 +54,7 @@ class _SaveButtonState extends State<SaveButton> {
                       ).showNotification();
                     } else {
                       filterSettingBloc
-                          .add(FilterSettingUserFilterSettingUpdated());
+                          .add(FilterSettingUserFilterSettingSaved());
                     }
                   },
             style: ElevatedButton.styleFrom(

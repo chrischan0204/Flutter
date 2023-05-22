@@ -63,9 +63,15 @@ class FilteredEntity extends Equatable {
     return FilteredEntity(
       id: map['id'] ?? '',
       deleted: map['deleted'] ?? false,
-      createdOn: map['created_On'] ?? '',
+      createdOn: map['created_On'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['created_On'] ?? '')
+              .formatDate
+          : '--',
       createdBy: map['created_By'] ?? '',
-      lastModifiedOn: map['last_Modified_On'] ?? '',
+      lastModifiedOn: map['last_Modified_On'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
+              .formatDate
+          : '--',
       lastModifiedByUserName: map['last_Modified_By'] ?? '',
     );
   }
@@ -120,6 +126,7 @@ class Entity extends Equatable {
   final String? lastModifiedByUserName;
   final String? lastModifiedOn;
   final List<String> columns;
+  final bool deleted;
 
   const Entity({
     this.columns = const [],
@@ -133,6 +140,7 @@ class Entity extends Equatable {
     this.createdOn,
     this.lastModifiedByUserName,
     this.lastModifiedOn,
+    this.deleted = false,
   });
 
   // constructor to create entity from map
@@ -157,7 +165,7 @@ class Entity extends Equatable {
       createdOn: map['createdOn'] != null
           ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
               .formatDate
-          : '',
+          : '--',
       lastModifiedOn: map['lastModifiedOn'] != null
           ? FormatDate(
                   format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
@@ -213,6 +221,7 @@ class Entity extends Equatable {
         createdOn,
         createdByUserName,
         columns,
+        deleted,
       ];
 }
 

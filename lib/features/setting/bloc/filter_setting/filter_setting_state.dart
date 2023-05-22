@@ -75,6 +75,10 @@ class FilterSettingState extends Equatable {
         },
       );
 
+  bool get filterSettingLoading =>
+      userFilterSettingListLoadStatus.isLoading ||
+      filterSettingListLoadStatus.isLoading;
+
   bool get isFilterUpdateNotFill => userFilterUpdate.userFilterItems
       .where((userFilterItem) =>
           userFilterItem.filterValue.isEmpty ||

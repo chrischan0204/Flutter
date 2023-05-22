@@ -4,9 +4,11 @@ import '/common_libraries.dart';
 
 class FilterSettingHeaderView extends StatelessWidget {
   final VoidCallback onFilterOptionClosed;
+  final String viewName;
   const FilterSettingHeaderView({
     super.key,
     required this.onFilterOptionClosed,
+    required this.viewName,
   });
 
   @override
@@ -17,12 +19,11 @@ class FilterSettingHeaderView extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: FilterSettingSelectField(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: FilterSettingSelectField(viewName: viewName),
           ),
           Container(
             alignment: Alignment.centerRight,

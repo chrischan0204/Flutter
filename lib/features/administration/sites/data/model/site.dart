@@ -35,6 +35,7 @@ class Site extends Entity {
     super.lastModifiedByUserName,
     super.lastModifiedOn,
     super.columns,
+    super.deleted,
   });
 
   @override
@@ -58,8 +59,10 @@ class Site extends Entity {
       'Name': name,
       'Site Code': siteCode,
       'Reference Code': referenceCode,
+      'Site Type': siteType,
       'Region': region,
       'Timezone': timeZone,
+      'Active': active,
     };
   }
 
@@ -113,6 +116,7 @@ class Site extends Entity {
     String? lastModifiedByUserName,
     String? lastModifiedOn,
     List<String>? columns,
+    bool? deleted,
   }) {
     return Site(
       id: id ?? this.id,
@@ -136,6 +140,7 @@ class Site extends Entity {
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
       columns: columns ?? this.columns,
+      deleted: deleted ?? this.deleted,
     );
   }
 

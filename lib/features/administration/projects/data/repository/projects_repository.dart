@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import '/data/repository/repository.dart';
-import '/data/model/model.dart';
+import '/common_libraries.dart';
 
 class ProjectsRepository extends BaseRepository {
   ProjectsRepository({
@@ -137,14 +136,15 @@ class ProjectsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<Project>> getFilteredProjectList(
-    String filterId,
-    bool includeDeleted,
-  ) async {
+  Future<List<Project>> getFilteredProjectList(String filterId,
+      [bool includeDeleted = false]) async {
     Map<String, String> queryParams = {
-      'includeDeleted': includeDeleted.toString(),
-      'filterId': filterId,
+      'includeDeleted': includeDeleted.toString()
     };
+
+    if (!Validation.isEmpty(filterId)) {
+      queryParams.addEntries([MapEntry('filterId', filterId)]);
+    }
     Response response = await super.get('$url/list', queryParams);
 
     if (response.statusCode == 200) {

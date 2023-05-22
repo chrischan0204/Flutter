@@ -71,30 +71,35 @@ class _UsersListState extends State<UsersListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserListBloc, UserListState>(
-      builder: (context, userListState) {
-        return BlocBuilder<UserDetailBloc, UserDetailState>(
-          builder: (context, userDetailState) {
-            return EntityListTemplate(
-              title: pageTitle,
-              label: pageLabel,
-              entities: userListState.userList,
-              showTableHeaderButtons: true,
-              onRowClick: (selectedUser) => _selectUser(selectedUser),
-              emptyMessage: emptyMessage,
-              entityRetrievedStatus: userListState.userListLoadStatus,
-              selectedEntity: userDetailState.user,
-              onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
-              onViewSettingApplied: () => _filterUsers(),
-              onIncludeDeletedChanged: (value) => _filterUsers(null, value),
-              viewName: 'user',
-              onFilterSaved: _filterUsers,
-              onFilterApplied: _filterUsers,
-              newIconData: PhosphorIcons.userPlus,
-            );
-          },
-        );
-      },
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+      builder: (context, filterSettingState) =>
+          BlocBuilder<UserListBloc, UserListState>(
+        builder: (context, userListState) {
+          return BlocBuilder<UserDetailBloc, UserDetailState>(
+            builder: (context, userDetailState) {
+              return EntityListTemplate(
+                title: pageTitle,
+                label: pageLabel,
+                entities: userListState.userList,
+                showTableHeaderButtons: true,
+                onRowClick: (selectedUser) => _selectUser(selectedUser),
+                emptyMessage: emptyMessage,
+                entityListLoadStatusLoading:
+                    filterSettingState.filterSettingLoading ||
+                        userListState.userListLoadStatus.isLoading,
+                selectedEntity: userDetailState.user,
+                onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
+                onViewSettingApplied: () => _filterUsers(),
+                onIncludeDeletedChanged: (value) => _filterUsers(null, value),
+                viewName: 'user',
+                onFilterSaved: _filterUsers,
+                onFilterApplied: _filterUsers,
+                newIconData: PhosphorIcons.userPlus,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 

@@ -21,6 +21,7 @@ class Company extends Entity {
     super.lastModifiedByUserName,
     super.lastModifiedOn,
     super.columns,
+    super.deleted,
   });
 
   @override
@@ -41,6 +42,7 @@ class Company extends Entity {
     String? lastModifiedByUserName,
     String? lastModifiedOn,
     List<String>? columns,
+    bool? deleted,
   }) {
     return Company(
       id: id ?? this.id,
@@ -55,6 +57,7 @@ class Company extends Entity {
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
       columns: columns ?? this.columns,
+      deleted: deleted ?? this.deleted,
     );
   }
 
@@ -100,8 +103,9 @@ class Company extends Entity {
     return {
       'Name': name,
       'EIN': einNumber,
-      'CreatedBy': createdByUserName,
+      'Created By': createdByUserName,
       'Created On': createdOn,
+      'Active': active,
     };
   }
 

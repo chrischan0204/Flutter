@@ -14,14 +14,16 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     on<FilterSettingInit>(_onFilterSettingInit);
     on<FilterSettingFilterSettingListLoaded>(
         _onFilterSettingFilterSettingListLoaded);
+    on<FilterSettingUserFilterSettingNewAdded>(
+        _onFilterSettingUserFilterSettingNewAdded);
     on<FilterSettingUserFilterSettingListLoaded>(
         _onFilterSettingUserFilterSettingListLoaded);
     on<FilterSettingUserFilterSettingLoadedById>(
         _onFilterSettingUserFilterSettingLoadedById);
     on<FilterSettingUserFilterSettingDeletedById>(
         _onFilterSettingUserFilterSettingDeletedById);
-    on<FilterSettingUserFilterSettingUpdated>(
-        _onFilterSettingUserFilterSettingUpdated);
+    on<FilterSettingUserFilterSettingSaved>(
+        _onFilterSettingUserFilterSettingSaved);
     on<FilterSettingUserFilterSettingSavedAs>(
         _onFilterSettingUserFilterSettingSavedAs);
     on<FilterSettingUserFilterNameChanged>(
@@ -46,7 +48,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     on<FilterSettingIncludeDeletedChanged>(
         _onFilterSettingIncludeDeletedChanged);
     on<FilterSettingAppliedUserFilterSettingChanged>(
-        _onFilterSettingAppliedFilterNameChanged);
+        _onFilterSettingAppliedUserFilterSettingChanged);
   }
 
   @override
@@ -142,16 +144,9 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
           await settingsRepository.getUserFilterSettingList(event.name);
 
       if (userFilterSettingList.isEmpty) {
-        emit(state.copyWith(
-          userFilterUpdate: UserFilter(
-            viewName: event.name,
-            userFilterItems: const [UserFilterItem()],
-          ),
-          selectedUserFilterSetting: const UserFilterSetting(),
-          saveAsButtonName: 'Add new',
-        ));
+        add(FilterSettingUserFilterSettingNewAdded(viewName: event.name));
       } else {
-        if (state.selectedUserFilterSetting == null || event.deleted) {
+        if ((state.selectedUserFilterSetting?.isNew ?? true) || event.deleted) {
           if (userFilterSettingList
                   .indexWhere((element) => element.isDefault) !=
               -1) {
@@ -159,8 +154,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
                 userFilterSetting: userFilterSettingList
                     .firstWhere((element) => element.isDefault)));
           } else if (userFilterSettingList.isNotEmpty) {
-            add(FilterSettingUserFilterSettingSelected(
-                userFilterSetting: userFilterSettingList[0]));
+            add(FilterSettingUserFilterSettingNewAdded(viewName: event.name));
           } else if (userFilterSettingList.isEmpty) {
             add(const FilterSettingUserFilterSettingSelected(
                 userFilterSetting: null));
@@ -175,6 +169,20 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       emit(state.copyWith(
           userFilterSettingListLoadStatus: EntityStatus.failure));
     }
+  }
+
+  void _onFilterSettingUserFilterSettingNewAdded(
+    FilterSettingUserFilterSettingNewAdded event,
+    Emitter<FilterSettingState> emit,
+  ) {
+    emit(state.copyWith(
+      userFilterUpdate: UserFilter(
+        viewName: event.viewName,
+        userFilterItems: const [UserFilterItem()],
+      ),
+      selectedUserFilterSetting: const UserFilterSetting(filterName: 'Add New'),
+      saveAsButtonName: 'Add new',
+    ));
   }
 
   Future<void> _onFilterSettingUserFilterSettingLoadedById(
@@ -229,8 +237,8 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     }
   }
 
-  Future<void> _onFilterSettingUserFilterSettingUpdated(
-    FilterSettingUserFilterSettingUpdated event,
+  Future<void> _onFilterSettingUserFilterSettingSaved(
+    FilterSettingUserFilterSettingSaved event,
     Emitter<FilterSettingState> emit,
   ) async {
     emit(state.copyWith(userFilterSettingUpdateStatus: EntityStatus.loading));
@@ -482,7 +490,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     emit(state.copyWith(includeDeleted: event.includeDeleted));
   }
 
-  void _onFilterSettingAppliedFilterNameChanged(
+  void _onFilterSettingAppliedUserFilterSettingChanged(
     FilterSettingAppliedUserFilterSettingChanged event,
     Emitter<FilterSettingState> emit,
   ) {

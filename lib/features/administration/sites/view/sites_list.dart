@@ -26,25 +26,30 @@ class _SitesListViewState extends State<SitesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SitesBloc, SitesState>(
-      builder: (context, state) {
-        return EntityListTemplate(
-          title: pageTitle,
-          label: pageLabel,
-          viewName: pageLabel,
-          entities: state.sites,
-          showTableHeaderButtons: true,
-          onRowClick: (selectedSite) =>
-              sitesBloc.add(SiteSelectedById(siteId: selectedSite.id!)),
-          emptyMessage: emptyMessage,
-          entityRetrievedStatus: state.sitesRetrievedStatus,
-          selectedEntity: state.selectedSite,
-          onViewSettingApplied: () => _filterSites(),
-          onIncludeDeletedChanged: (value) => _filterSites(null, value),
-          onFilterSaved: _filterSites,
-          onFilterApplied: _filterSites,
-        );
-      },
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+      builder: (context, filterSettingState) =>
+          BlocBuilder<SitesBloc, SitesState>(
+        builder: (context, state) {
+          return EntityListTemplate(
+            title: pageTitle,
+            label: pageLabel,
+            viewName: pageLabel,
+            entities: state.sites,
+            showTableHeaderButtons: true,
+            onRowClick: (selectedSite) =>
+                sitesBloc.add(SiteSelectedById(siteId: selectedSite.id!)),
+            emptyMessage: emptyMessage,
+            entityListLoadStatusLoading:
+                filterSettingState.filterSettingLoading ||
+                    state.sitesRetrievedStatus.isLoading,
+            selectedEntity: state.selectedSite,
+            onViewSettingApplied: () => _filterSites(),
+            onIncludeDeletedChanged: (value) => _filterSites(null, value),
+            onFilterSaved: _filterSites,
+            onFilterApplied: _filterSites,
+          );
+        },
+      ),
     );
   }
 

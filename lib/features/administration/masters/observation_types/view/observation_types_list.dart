@@ -36,7 +36,8 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
           title: title,
           label: label,
           emptyMessage: emptyMessage,
-          entityRetrievedStatus: state.observationTypesRetrievedStatus,
+          entityListLoadStatusLoading:
+              state.observationTypesRetrievedStatus.isLoading,
           onRowClick: (observationType) {
             observationTypesBloc.add(ObservationTypeSelected(
               observationType: observationType as ObservationType,
