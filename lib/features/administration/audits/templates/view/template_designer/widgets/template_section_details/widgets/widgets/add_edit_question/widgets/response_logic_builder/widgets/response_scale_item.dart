@@ -1,4 +1,4 @@
-import '../add_edit_question.dart';
+import '../../../add_edit_question.dart';
 import '/common_libraries.dart';
 import 'response_scale_item_icon.dart';
 

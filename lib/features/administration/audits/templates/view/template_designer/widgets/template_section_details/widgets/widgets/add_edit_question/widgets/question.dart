@@ -1,7 +1,11 @@
 import '/common_libraries.dart';
 
 class Question extends StatelessWidget {
-  const Question({super.key});
+  final String? question;
+  const Question({
+    super.key,
+    this.question,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +28,7 @@ class Question extends StatelessWidget {
               ),
               const CustomDivider(),
               CustomTextField(
+                initialValue: question,
                 height: 100,
                 minLines: 6,
                 onChanged: (value) {},

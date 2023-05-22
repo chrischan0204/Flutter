@@ -1,5 +1,5 @@
 import '/common_libraries.dart';
-import 'response_scale_item.dart';
+import 'widgets/widgets.dart';
 
 class ResponseLogicBuilder extends StatelessWidget {
   final bool followUpQuestion;
