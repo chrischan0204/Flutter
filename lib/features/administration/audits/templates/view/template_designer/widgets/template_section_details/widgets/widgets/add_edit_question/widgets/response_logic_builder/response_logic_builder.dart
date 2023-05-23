@@ -34,27 +34,27 @@ class ResponseLogicBuilder extends StatelessWidget {
                 'Yes/No response scale',
               ),
             ),
-            ResponseScaleItem(
+            ResponseScaleItemView(
               response: 'Yes',
               include: true,
               followUpQuestion: followUpQuestion,
             ),
-            ResponseScaleItem(
+            ResponseScaleItemView(
               response: 'No',
               include: true,
               followUpQuestion: followUpQuestion,
             ),
-            ResponseScaleItem(
+            ResponseScaleItemView(
               response: 'Maybe',
               include: false,
               followUpQuestion: followUpQuestion,
             ),
-            ResponseScaleItem(
+            ResponseScaleItemView(
               response: 'Not applicable',
               include: false,
               followUpQuestion: followUpQuestion,
             ),
-            ResponseScaleItem(
+            ResponseScaleItemView(
               response: 'Input Required',
               include: false,
               followUpQuestion: followUpQuestion,

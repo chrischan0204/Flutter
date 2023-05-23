@@ -15,6 +15,8 @@ class TemplateDesignerBloc
     on<TemplateDesignerTemplateSectionAdded>(
         _onTemplateDesignerTemplateSectionAdded);
     on<TemplateDesignerNewSectionChanged>(_onTemplateDesignerNewSectionChanged);
+    on<TemplateDesignerResponseScaleListLoaded>(
+        _onTemplateDesignerResponseScaleListLoaded);
   }
 
   @override
@@ -80,5 +82,12 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     emit(state.copyWith(newSection: event.newSection));
+  }
+
+  Future<void> _onTemplateDesignerResponseScaleListLoaded(
+    TemplateDesignerResponseScaleListLoaded event,
+    Emitter<TemplateDesignerState> state,
+  ) async {
+    
   }
 }

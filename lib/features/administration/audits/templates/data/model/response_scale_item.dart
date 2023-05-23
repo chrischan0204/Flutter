@@ -86,4 +86,10 @@ class ResponseScaleItem extends Equatable {
 
   factory ResponseScaleItem.fromJson(String source) =>
       ResponseScaleItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  static List<ResponseScaleItem> fromListJson(String source) {
+    return List.from(json.decode(source))
+        .map((e) => ResponseScaleItem.fromMap(e))
+        .toList();
+  }
 }

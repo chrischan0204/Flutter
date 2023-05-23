@@ -37,3 +37,5 @@ class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
   @override
   List<Object> get props => [newSection];
 }
+
+class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}

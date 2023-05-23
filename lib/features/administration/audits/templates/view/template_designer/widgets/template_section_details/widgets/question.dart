@@ -1,5 +1,5 @@
 import '/common_libraries.dart';
-import 'add_edit_question/add_edit_question.dart';
+import 'widgets/widgets.dart';
 
 class Question extends StatefulWidget {
   final String question;

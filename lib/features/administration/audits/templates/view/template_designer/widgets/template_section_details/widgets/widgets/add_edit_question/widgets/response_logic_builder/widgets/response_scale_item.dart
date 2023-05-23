@@ -2,11 +2,11 @@ import '../../../add_edit_question.dart';
 import '/common_libraries.dart';
 import 'response_scale_item_icon.dart';
 
-class ResponseScaleItem extends StatefulWidget {
+class ResponseScaleItemView extends StatefulWidget {
   final String response;
   final bool include;
   final bool followUpQuestion;
-  const ResponseScaleItem({
+  const ResponseScaleItemView({
     super.key,
     required this.response,
     required this.include,
@@ -14,10 +14,10 @@ class ResponseScaleItem extends StatefulWidget {
   });
 
   @override
-  State<ResponseScaleItem> createState() => _ResponseScaleItemState();
+  State<ResponseScaleItemView> createState() => _ResponseScaleItemViewState();
 }
 
-class _ResponseScaleItemState extends State<ResponseScaleItem> {
+class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
   late bool include;
   bool followUp = false;
 

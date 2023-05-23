@@ -350,7 +350,7 @@ class _CrudState extends State<EntityListTemplate> {
                             ? state.appliedUserFilterSetting!.filterName
                             : 'No filter applied',
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 14, 
                           fontWeight: FontWeight.w400,
                         ),
                       );

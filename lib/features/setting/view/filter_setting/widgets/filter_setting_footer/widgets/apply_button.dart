@@ -30,7 +30,7 @@ class _ApplyButtonState extends State<ApplyButton> {
               : () {
                   widget.onFilterApplied(state.userFilterUpdate.id);
                   filterSettingBloc.add(
-                    FilterSettingAppliedUserFilterSettingChanged(
+                    FilterSettingAppliedUserFilterSettingChanged( 
                       appliedUserFilterSetting:
                           state.selectedUserFilterSetting!,
                     ),
@@ -41,7 +41,7 @@ class _ApplyButtonState extends State<ApplyButton> {
                       context: context,
                       notifyType: NotifyType.success,
                       content:
-                          'Filter "${state.appliedUserFilterSetting?.filterName}" is applied.',
+                          'Filter "${state.selectedUserFilterSetting?.filterName}" is applied.',
                     ).showNotification();
                   }
                 },

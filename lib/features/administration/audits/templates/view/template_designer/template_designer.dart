@@ -49,13 +49,18 @@ class _TemplateDesignerViewState extends State<TemplateDesignerView> {
   }
 }
 
-class TemplateDesignerWidget extends StatelessWidget {
+class TemplateDesignerWidget extends StatefulWidget {
   final String templateId;
   const TemplateDesignerWidget({
     super.key,
     required this.templateId,
   });
 
+  @override
+  State<TemplateDesignerWidget> createState() => _TemplateDesignerWidgetState();
+}
+
+class _TemplateDesignerWidgetState extends State<TemplateDesignerWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,11 +69,12 @@ class TemplateDesignerWidget extends StatelessWidget {
         vertical: 20,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
             flex: 1,
             fit: FlexFit.tight,
-            child: TemplateSectionView(templateId: templateId),
+            child: TemplateSectionView(templateId: widget.templateId),
           ),
           const SizedBox(width: 30),
           const Flexible(
