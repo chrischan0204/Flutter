@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
 import 'package:safety_eta/common_libraries.dart';
 
 class TimeZonesRepository extends BaseRepository {

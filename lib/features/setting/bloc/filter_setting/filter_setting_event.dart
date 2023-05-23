@@ -8,6 +8,15 @@ abstract class FilterSettingEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class FilterSettingInit extends FilterSettingEvent {
+  final String viewName;
+  const FilterSettingInit({
+    required this.viewName,
+  });
+  @override
+  List<Object?> get props => [viewName];
+}
+
 class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
   const FilterSettingFilterSettingListLoaded({
@@ -20,8 +29,10 @@ class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
 
 class FilterSettingUserFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
+  final bool deleted;
   const FilterSettingUserFilterSettingListLoaded({
     required this.name,
+    this.deleted = false,
   });
 
   @override
@@ -68,7 +79,7 @@ class FilterSettingUserFilterIsDefaultChanged extends FilterSettingEvent {
   List<Object> get props => [isDefault];
 }
 
-class FilterSettingUserFilterSettingUpdated extends FilterSettingEvent {}
+class FilterSettingUserFilterSettingSaved extends FilterSettingEvent {}
 
 class FilterSettingUserFilterSettingSavedAs extends FilterSettingEvent {
   final String saveAsName;
@@ -190,4 +201,23 @@ class FilterSettingIncludeDeletedChanged extends FilterSettingEvent {
 
   @override
   List<Object> get props => [includeDeleted];
+}
+
+class FilterSettingAppliedUserFilterSettingChanged extends FilterSettingEvent {
+  final UserFilterSetting? appliedUserFilterSetting;
+  const FilterSettingAppliedUserFilterSettingChanged({
+    this.appliedUserFilterSetting,
+  });
+
+  @override
+  List<Object?> get props => [appliedUserFilterSetting];
+}
+
+class FilterSettingUserFilterSettingNewAdded extends FilterSettingEvent {
+  final String viewName;
+  const FilterSettingUserFilterSettingNewAdded({
+    required this.viewName,
+  });
+  @override
+  List<Object?> get props => [viewName];
 }

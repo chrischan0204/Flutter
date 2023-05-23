@@ -29,6 +29,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
   void _triggerEvents() {
     on<CompaniesRetrieved>(_onCompaniesRetrieved);
     on<AssignedCompanySitesRetrieved>(_onAssignedCompanySitesRetrieved);
+    on<CompanyListFiltered>(_onCompanyListFiltered);
     on<AssignedProjectCompaniesRetrieved>(_onAssignedProjectCompaniesRetrieved);
     on<UnassignedCompanySitesRetrieved>(_onUnassignedCompanySitesRetrieved);
     on<UnassignedProjectCompaniesRetrieved>(
@@ -61,6 +62,24 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       List<Company> companies = await companiesRepository.getCompanies();
       emit(state.copyWith(
         companies: companies,
+        companiesRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(companiesRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onCompanyListFiltered(
+    CompanyListFiltered event,
+    Emitter<CompaniesState> emit,
+  ) async {
+    emit(state.copyWith(companiesRetrievedStatus: EntityStatus.loading));
+
+    try {
+      List<Company> filteredCompanyList = await companiesRepository
+          .getFilteredCompanyList(event.filterId, event.includeDeleted);
+      emit(state.copyWith(
+        companies: filteredCompanyList,
         companiesRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {

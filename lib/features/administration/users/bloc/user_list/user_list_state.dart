@@ -4,33 +4,33 @@ part of 'user_list_bloc.dart';
 class UserListState extends Equatable {
   final List<User> userList;
   final EntityStatus userListLoadStatus;
-  final EntityStatus userLoadStatus;
+  final int totalRows;
   final String message;
   const UserListState({
     this.userList = const [],
     this.userListLoadStatus = EntityStatus.initial,
-    this.userLoadStatus = EntityStatus.initial,
     this.message = '',
+    this.totalRows = 0,
   });
 
   @override
   List<Object?> get props => [
         userList,
         userListLoadStatus,
-        userLoadStatus,
         message,
+        totalRows,
       ];
 
   UserListState copyWith({
     List<User>? userList,
     EntityStatus? userListLoadStatus,
-    User? selectedUser,
-    EntityStatus? userLoadStatus,
+    int? totalRows,
     String? message,
   }) {
     return UserListState(
       userList: userList ?? this.userList,
       userListLoadStatus: userListLoadStatus ?? this.userListLoadStatus,
+      totalRows: totalRows ?? this.totalRows,
       message: message ?? this.message,
     );
   }

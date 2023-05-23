@@ -9,6 +9,21 @@ abstract class ProjectsEvent extends Equatable {
 
 class ProjectsRetrieved extends ProjectsEvent {}
 
+class ProjectListFiltered extends ProjectsEvent {
+  final String filterId;
+  final bool includeDeleted;
+  const ProjectListFiltered({
+    required this.filterId,
+    this.includeDeleted = false,
+  });
+
+  @override
+  List<Object> get props => [
+        filterId,
+        includeDeleted,
+      ];
+}
+
 class ProjectSelected extends ProjectsEvent {
   final Project? selectedProject;
   const ProjectSelected({

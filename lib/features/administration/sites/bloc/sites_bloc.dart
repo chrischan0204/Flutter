@@ -24,6 +24,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
 
   void _triggerEvents() {
     on<SitesRetrieved>(_onSitesRetrieved);
+    on<SiteListFiltered>(_onSiteListFiltered);
     on<SiteSelected>(_onSiteSelected);
     on<SiteSelectedById>(_onSiteSelectedById);
     on<AuditTemplatesRetrieved>(_onAuditTemplatesRetrieved);
@@ -43,6 +44,24 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
       List<Site> sites = await sitesRepository.getSites();
       emit(state.copyWith(
         sites: sites,
+        sitesRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(sitesRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onSiteListFiltered(
+    SiteListFiltered event,
+    Emitter<SitesState> emit,
+  ) async {
+    emit(state.copyWith(sitesRetrievedStatus: EntityStatus.loading));
+
+    try {
+      List<Site> filteredSiteList = await sitesRepository.getFilteredSiteList(
+          event.filterId, event.includeDeleted);
+      emit(state.copyWith(
+        sites: filteredSiteList,
         sitesRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {

@@ -42,7 +42,7 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
               priorityLevel: priorityLevel as PriorityLevel,
             ));
           },
-          entityRetrievedStatus: state.priorityLevelsRetrievedStatus,
+          entityListLoadStatusLoading: state.priorityLevelsRetrievedStatus.isLoading,
           selectedEntity: state.selectedPriorityLevel,
         );
       },

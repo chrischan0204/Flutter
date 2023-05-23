@@ -2,15 +2,19 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import '/constants/constants.dart';
+
 class UserFilterSetting extends Equatable {
   final String id;
   final String filterName;
   final bool isDefault;
   const UserFilterSetting({
-    this.id = '',
+    this.id = emptyGuid,
     this.filterName = '',
     this.isDefault = false,
   });
+
+  bool get isNew => id == emptyGuid;
 
   @override
   List<Object?> get props => [

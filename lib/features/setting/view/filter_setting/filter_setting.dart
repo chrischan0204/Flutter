@@ -1,14 +1,11 @@
-import 'widgets/filter_setting_body/filter_setting_body.dart';
-import 'widgets/filter_setting_footer/filter_setting_footer.dart';
-import 'widgets/filter_setting_header/filter_setting_header.dart';
-
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class FilterSettingView extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
   final ValueChanged<String> onFilterSaved;
-  final VoidCallback onFilterApplied;
+  final ValueChanged<String> onFilterApplied;
   const FilterSettingView({
     super.key,
     required this.viewName,
@@ -25,36 +22,11 @@ class _FilterSettingViewState extends State<FilterSettingView> {
   String token = '';
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) =>
-          setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) =>
-          previous.authUser?.token != current.authUser?.token,
-      builder: (context, state) {
-        token = state.authUser?.token ?? '';
-        return MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-                create: (context) => SettingsRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => FilterSettingBloc(
-                      settingsRepository: RepositoryProvider.of(context))),
-            ],
-            child: FilterSettingWidget(
-              viewName: widget.viewName,
-              onFilterOptionClosed: widget.onFilterOptionClosed,
-              onFilterSaved: widget.onFilterSaved,
-              onFilterApplied: widget.onFilterApplied,
-            ),
-          ),
-        );
-      },
+    return FilterSettingWidget(
+      viewName: widget.viewName,
+      onFilterOptionClosed: widget.onFilterOptionClosed,
+      onFilterSaved: widget.onFilterSaved,
+      onFilterApplied: widget.onFilterApplied,
     );
   }
 }
@@ -63,7 +35,7 @@ class FilterSettingWidget extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
   final ValueChanged<String> onFilterSaved;
-  final VoidCallback onFilterApplied;
+  final ValueChanged<String> onFilterApplied;
   const FilterSettingWidget({
     super.key,
     required this.viewName,
@@ -81,24 +53,14 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
 
   @override
   void initState() {
-    filterSettingBloc = context.read()
-      ..add(FilterSettingFilterSettingListLoaded(name: widget.viewName));
+    filterSettingBloc = context.read();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-      listener: (context, state) {
-        if (state.filterSettingListLoadStatus.isSuccess) {
-          filterSettingBloc.add(
-              FilterSettingUserFilterSettingListLoaded(name: widget.viewName));
-        }
-      },
-      listenWhen: (previous, current) =>
-          previous.filterSettingListLoadStatus !=
-          current.filterSettingListLoadStatus,
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -122,6 +84,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   FilterSettingHeaderView(
+                    viewName: widget.viewName,
                     onFilterOptionClosed: () =>
                         setState(() => widget.onFilterOptionClosed()),
                   ),
@@ -146,14 +109,15 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           FilterSettingBodyView(viewName: widget.viewName),
-                          _buildAddClauseButton(),
+                          const AddClauseButton(),
                           const CustomDivider(),
                           FilterSettingFooterView(
                             viewName: widget.viewName,
                             onFilterOptionClosed: widget.onFilterOptionClosed,
-                            onFilterApplied: () => widget.onFilterApplied(),
-                            onFilterSaved: (filterId) =>
-                                widget.onFilterSaved(filterId),
+                            onFilterApplied: widget.onFilterApplied,
+                            onFilterSaved: (filterId) {
+                              widget.onFilterSaved(filterId);
+                            },
                           ),
                         ],
                       );
@@ -165,36 +129,6 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
           ],
         );
       },
-    );
-  }
-
-  Padding _buildAddClauseButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      child: TextButton(
-        onPressed: () =>
-            filterSettingBloc.add(const FilterSettingUserFilterItemAdded()),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(
-              PhosphorIcons.plus,
-              size: 16,
-              color: Colors.green,
-            ),
-            SizedBox(width: 3),
-            Text(
-              'Add new clause',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 14,
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

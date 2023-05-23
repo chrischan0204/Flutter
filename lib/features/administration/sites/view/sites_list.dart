@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '/data/model/model.dart';
-import '/global_widgets/global_widget.dart';
-import '/data/bloc/bloc.dart';
+import '/common_libraries.dart';
 
 class SitesListView extends StatefulWidget {
   const SitesListView({super.key});
@@ -21,26 +17,49 @@ class _SitesListViewState extends State<SitesListView> {
 
   @override
   void initState() {
-    sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
+    sitesBloc = context.read<SitesBloc>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SitesBloc, SitesState>(
-      builder: (context, state) {
-        return EntityListTemplate(
-          title: pageTitle,
-          label: pageLabel,
-          entities: state.sites,
-          showTableHeaderButtons: true,
-          onRowClick: (selectedSite) =>
-              sitesBloc.add(SiteSelectedById(siteId: selectedSite.id!)),
-          emptyMessage: emptyMessage,
-          entityRetrievedStatus: state.sitesRetrievedStatus,
-          selectedEntity: state.selectedSite,
-        );
-      },
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
+      builder: (context, filterSettingState) =>
+          BlocBuilder<SitesBloc, SitesState>(
+        builder: (context, state) {
+          return EntityListTemplate(
+            title: pageTitle,
+            label: pageLabel,
+            viewName: pageLabel,
+            entities: state.sites,
+            showTableHeaderButtons: true,
+            onRowClick: (selectedSite) =>
+                sitesBloc.add(SiteSelectedById(siteId: selectedSite.id!)),
+            emptyMessage: emptyMessage,
+            entityListLoadStatusLoading:
+                filterSettingState.filterSettingLoading ||
+                    state.sitesRetrievedStatus.isLoading,
+            selectedEntity: state.selectedSite,
+            onViewSettingApplied: () => _filterSites(),
+            onIncludeDeletedChanged: (value) => _filterSites(null, value),
+            onFilterSaved: _filterSites,
+            onFilterApplied: _filterSites,
+          );
+        },
+      ),
     );
+  }
+
+  void _filterSites([
+    String? filterId,
+    bool? includeDeleted,
+  ]) {
+    final FilterSettingBloc filterSettingBloc = context.read();
+    sitesBloc.add(SiteListFiltered(
+      filterId: filterId ??
+          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          emptyGuid,
+      includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    ));
   }
 }

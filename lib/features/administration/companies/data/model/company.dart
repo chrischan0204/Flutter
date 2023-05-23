@@ -20,6 +20,8 @@ class Company extends Entity {
     super.createdOn,
     super.lastModifiedByUserName,
     super.lastModifiedOn,
+    super.columns,
+    super.deleted,
   });
 
   @override
@@ -39,6 +41,8 @@ class Company extends Entity {
     String? createdByUserName,
     String? lastModifiedByUserName,
     String? lastModifiedOn,
+    List<String>? columns,
+    bool? deleted,
   }) {
     return Company(
       id: id ?? this.id,
@@ -52,6 +56,8 @@ class Company extends Entity {
       lastModifiedByUserName:
           lastModifiedByUserName ?? this.lastModifiedByUserName,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
+      columns: columns ?? this.columns,
+      deleted: deleted ?? this.deleted,
     );
   }
 
@@ -96,9 +102,10 @@ class Company extends Entity {
   Map<String, dynamic> tableItemsToMap() {
     return {
       'Name': name,
-      'EIN #': einNumber,
+      'EIN': einNumber,
       'Created By': createdByUserName,
       'Created On': createdOn,
+      'Active': active,
     };
   }
 

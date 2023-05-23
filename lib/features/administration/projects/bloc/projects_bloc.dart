@@ -26,6 +26,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
   void _triggerEvents() {
     on<ProjectsRetrieved>(_onProjectsRetrieved);
+    on<ProjectListFiltered>(_onProjectListFiltered);
     on<ProjectSelected>(_onProjectSelected);
     on<ProjectSelectedById>(_onProjectSelectedById);
     on<ProjectAdded>(_onProjectAdded);
@@ -52,6 +53,25 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       List<Project> projects = await projectsRepository.getProjects();
       emit(state.copyWith(
         projects: projects,
+        projectsRetrievedStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(projectsRetrievedStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onProjectListFiltered(
+    ProjectListFiltered event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(projectsRetrievedStatus: EntityStatus.loading));
+
+    try {
+      List<Project> filteredProjectList = await projectsRepository
+          .getFilteredProjectList(event.filterId, event.includeDeleted);
+          print(filteredProjectList);
+      emit(state.copyWith(
+        projects: filteredProjectList,
         projectsRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {

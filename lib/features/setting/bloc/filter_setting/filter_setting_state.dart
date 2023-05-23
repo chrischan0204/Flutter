@@ -18,19 +18,25 @@ class FilterSettingState extends Equatable {
   final String saveAsButtonName;
   final bool includeDeleted;
 
+  final UserFilterSetting? appliedUserFilterSetting;
+
+  final String viewName;
+
   const FilterSettingState({
     this.filterSettingListLoadStatus = EntityStatus.initial,
     this.filterSettingList = const [],
-    this.userFilterUpdate = const UserFilter(viewName: 'user'),
+    this.userFilterUpdate = const UserFilter(viewName: ''),
     this.selectedUserFilterSetting,
     this.userFilterSettingLoadStatus = EntityStatus.initial,
     this.userFilterSettingList = const [],
     this.userFilterSettingListLoadStatus = EntityStatus.initial,
     this.userFilterSettingUpdateStatus = EntityStatus.initial,
     this.userFilterSettingDeleteStatus = EntityStatus.initial,
-    this.addButtonName = 'Update',
+    this.addButtonName = 'Save',
     this.saveAsButtonName = 'Save as',
     this.includeDeleted = false,
+    this.viewName = '',
+    this.appliedUserFilterSetting,
   });
 
   @override
@@ -48,7 +54,10 @@ class FilterSettingState extends Equatable {
         saveAsButtonName,
         includeDeleted,
         isNew,
-        defaultFilterSettingId,
+        defaultFilterSetting,
+        viewName,
+        appliedUserFilterSetting,
+        isFilterUpdateNotFill,
       ];
 
   bool get isNew => saveAsButtonName != 'Save as';
@@ -56,14 +65,27 @@ class FilterSettingState extends Equatable {
   FilterSetting getFilterSettingById(String id) =>
       List.from(filterSettingList).firstWhere((element) => element.id == id);
 
-  String get defaultFilterSettingId => userFilterSettingList.firstWhere(
+  UserFilterSetting get defaultFilterSetting =>
+      userFilterSettingList.firstWhere(
         (element) => element.isDefault,
         orElse: () {
           return userFilterSettingList.isEmpty
               ? const UserFilterSetting()
               : userFilterSettingList[0];
         },
-      ).id;
+      );
+
+  bool get filterSettingLoading =>
+      userFilterSettingListLoadStatus.isLoading ||
+      filterSettingListLoadStatus.isLoading;
+
+  bool get isFilterUpdateNotFill => userFilterUpdate.userFilterItems
+      .where((userFilterItem) =>
+          userFilterItem.filterValue.isEmpty ||
+          userFilterItem.filterValue
+              .where((value) => Validation.isEmpty(value))
+              .isNotEmpty)
+      .isNotEmpty;
 
   FilterSettingState copyWith({
     EntityStatus? filterSettingListLoadStatus,
@@ -78,6 +100,8 @@ class FilterSettingState extends Equatable {
     String? addButtonName,
     String? saveAsButtonName,
     bool? includeDeleted,
+    String? viewName,
+    UserFilterSetting? appliedUserFilterSetting,
   }) {
     return FilterSettingState(
       filterSettingListLoadStatus:
@@ -99,6 +123,9 @@ class FilterSettingState extends Equatable {
       addButtonName: addButtonName ?? this.addButtonName,
       saveAsButtonName: saveAsButtonName ?? this.saveAsButtonName,
       includeDeleted: includeDeleted ?? this.includeDeleted,
+      viewName: viewName ?? this.viewName,
+      appliedUserFilterSetting:
+          appliedUserFilterSetting ?? this.appliedUserFilterSetting,
     );
   }
 }

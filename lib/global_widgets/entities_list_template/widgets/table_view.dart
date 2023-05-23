@@ -118,8 +118,8 @@ class _DataTableViewState extends State<DataTableView> {
           (entity) => DataRow(
             color: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
-              if (entity.tableItemsToMap().containsKey('Active') &&
-                  !entity.tableItemsToMap()['Active']) {
+              if ((entity.tableItemsToMap().containsKey('Active') &&
+                  !entity.tableItemsToMap()['Active']) || entity.deleted) {
                 return const Color(0xffe6e7e8);
               }
               return null; // Use the default value.

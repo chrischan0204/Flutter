@@ -1,10 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-
-import '/data/repository/repository.dart';
-import '/constants/uri.dart';
-import '/data/model/model.dart';
+import '/common_libraries.dart';
 
 class ProjectsRepository extends BaseRepository {
   ProjectsRepository({
@@ -136,6 +132,28 @@ class ProjectsRepository extends BaseRepository {
         );
       }
       return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
+
+  Future<List<Project>> getFilteredProjectList(String filterId,
+      [bool includeDeleted = false]) async {
+    Map<String, String> queryParams = {
+      'includeDeleted': includeDeleted.toString()
+    };
+
+    if (!Validation.isEmpty(filterId)) {
+      queryParams.addEntries([MapEntry('filterId', filterId)]);
+    }
+    Response response = await super.get('$url/list', queryParams);
+
+    if (response.statusCode == 200) {
+      final data = FilteredProjectData.fromJson(response.body);
+      final List<String> columns =
+          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
+      return data.data
+          .map((e) => e.toProject().copyWith(columns: columns))
+          .toList();
     }
     throw Exception();
   }

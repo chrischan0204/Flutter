@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import '/constants/constants.dart';
+
 class FilterSetting extends Equatable {
   final String id;
   final String viewName;
@@ -12,7 +14,7 @@ class FilterSetting extends Equatable {
   final String columnValueURL;
   final String controlType;
   const FilterSetting({
-    this.id = '00000000-0000-0000-0000-000000000000',
+    this.id = emptyGuid,
     this.viewName = '',
     this.columnName = '',
     this.columnType = '',
@@ -34,7 +36,7 @@ class FilterSetting extends Equatable {
         isNew
       ];
 
-  bool get isNew => id == '00000000-0000-0000-0000-000000000000';
+  bool get isNew => id == emptyGuid;
 
   FilterSetting copyWith({
     String? id,

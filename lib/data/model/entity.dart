@@ -1,7 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:safety_eta/common_libraries.dart';
 
 import 'package:safety_eta/utils/utils.dart';
 
@@ -34,6 +34,90 @@ class EntityHeader extends Equatable {
       EntityHeader.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+class FilteredEntity extends Equatable {
+  final String id;
+  final bool deleted;
+  final String createdOn;
+  final String createdBy;
+  final String lastModifiedOn;
+  final String lastModifiedByUserName;
+  final String createdById;
+  const FilteredEntity({
+    this.id = '',
+    this.deleted = false,
+    this.createdOn = '',
+    this.createdBy = '',
+    this.createdById = emptyGuid,
+    this.lastModifiedOn = '',
+    this.lastModifiedByUserName = '',
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        deleted,
+        createdOn,
+        createdBy,
+        createdById,
+        lastModifiedOn,
+        lastModifiedByUserName,
+      ];
+
+  factory FilteredEntity.fromMap(Map<String, dynamic> map) {
+    return FilteredEntity(
+      id: map['id'] ?? '',
+      deleted: map['deleted'] ?? false,
+      createdOn: map['created_On'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['created_On'] ?? '')
+              .formatDate
+          : '--',
+      createdBy: map['created_By'] ?? '',
+      createdById: map['created_By'] ?? emptyGuid,
+      lastModifiedOn: map['last_Modified_On'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
+              .formatDate
+          : '--',
+      lastModifiedByUserName: map['last_Modified_By'] ?? '',
+    );
+  }
+
+  factory FilteredEntity.fromJson(String source) =>
+      FilteredEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class FilteredEntityData<T extends FilteredEntity> extends Equatable {
+  final List<EntityHeader> headers;
+  final List<T> data;
+  const FilteredEntityData({
+    required this.headers,
+    required this.data,
+  });
+
+  @override
+  List<Object?> get props => [
+        headers,
+        data,
+      ];
+
+  factory FilteredEntityData.fromMap(Map<String, dynamic> map) {
+    return FilteredEntityData(
+      headers: List<EntityHeader>.from(
+        (map['headers']).map<EntityHeader>(
+          (x) => EntityHeader.fromMap(x),
+        ),
+      ),
+      data: List<T>.from(
+        (map['data']).map<T>(
+          (x) => T,
+        ),
+      ),
+    );
+  }
+
+  factory FilteredEntityData.fromJson(String source) =>
+      FilteredEntityData.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
 // standadized model, which other models inherit
 class Entity extends Equatable {
   final List<EntityHeader> headers;
@@ -47,6 +131,7 @@ class Entity extends Equatable {
   final String? lastModifiedByUserName;
   final String? lastModifiedOn;
   final List<String> columns;
+  final bool deleted;
 
   const Entity({
     this.columns = const [],
@@ -60,6 +145,7 @@ class Entity extends Equatable {
     this.createdOn,
     this.lastModifiedByUserName,
     this.lastModifiedOn,
+    this.deleted = false,
   });
 
   // constructor to create entity from map
@@ -84,7 +170,7 @@ class Entity extends Equatable {
       createdOn: map['createdOn'] != null
           ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
               .formatDate
-          : '',
+          : '--',
       lastModifiedOn: map['lastModifiedOn'] != null
           ? FormatDate(
                   format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
@@ -140,6 +226,7 @@ class Entity extends Equatable {
         createdOn,
         createdByUserName,
         columns,
+        deleted,
       ];
 }
 

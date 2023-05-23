@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safety_eta/features/administration/audits/templates/view/add_edit_template/add_edit_template.dart';
 
 import '/features/features.dart';
 
@@ -237,8 +238,63 @@ final GoRouter router = GoRouter(
       path: '/templates',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
+        child: const Layout(
+          body: TemplateListView(),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: TemplateListView(),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditTemplateView(),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/designer/:templateId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
         child: Layout(
-          body: Templates(),
+          body: TemplateDesignerView(
+            templateId: state.params['templateId']!,
+          ),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/edit/:templateId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditTemplateView(
+            templateId: state.params['templateId'],
+            view: state.queryParams['view'],
+          ),
+          selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/templates/show/:templateId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: TemplateDetailView(templateId: state.params['templateId']!),
           selectedItemName: 'templates',
         ),
       ),

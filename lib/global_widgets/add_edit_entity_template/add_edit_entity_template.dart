@@ -200,8 +200,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       ),
       child: widget.crudStatus.isLoading
           ? CustomButton(
-              backgroundColor: const Color(0xff059669),
-              hoverBackgroundColor: const Color(0xff05875f),
+              backgroundColor: successColor,
+              hoverBackgroundColor: successHoverColor,
               disabled: true,
               body: LoadingAnimationWidget.prograssiveDots(
                 color: Colors.white,
@@ -209,8 +209,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
               ),
             )
           : CustomButton(
-              backgroundColor: const Color(0xff059669),
-              hoverBackgroundColor: const Color(0xff05875f),
+              backgroundColor: successColor,
+              hoverBackgroundColor: successHoverColor,
               iconData: PhosphorIcons.arrowRight,
               text: widget.id == null
                   ? widget.addButtonName ?? 'Add ${camelize(widget.label)}'
@@ -256,8 +256,8 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   CustomButton _buildShowButton(BuildContext context) {
     return CustomButton(
-      backgroundColor: const Color(0xff8e70c1),
-      hoverBackgroundColor: const Color(0xff8065ae),
+      backgroundColor: purpleColor,
+      hoverBackgroundColor: purpleHoverColor,
       iconData: PhosphorIcons.notePencil,
       text: 'Show ${camelize(widget.label)}',
       onClick: () {

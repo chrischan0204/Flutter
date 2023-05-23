@@ -42,11 +42,18 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
     emit(state.copyWith(userListLoadStatus: EntityStatus.loading));
 
     try {
-      List<User> filteredUserList = await usersRepository.getFilteredUserList(
-          event.filterId, event.includeDeleted);
+      final filtereduserData = await usersRepository.getFilteredUserList(
+          event.filterId, event.includeDeleted, event.pageNum, event.pageSize);
+      final List<String> columns = List.from(filtereduserData.headers
+          .where((e) => !e.isHidden)
+          .map((e) => e.title));
+
       emit(state.copyWith(
-        userList: filteredUserList,
+        userList: filtereduserData.data
+            .map((e) => e.toUser().copyWith(columns: columns))
+            .toList(),
         userListLoadStatus: EntityStatus.success,
+        totalRows: filtereduserData.totalRows
       ));
     } catch (e) {
       emit(state.copyWith(userListLoadStatus: EntityStatus.failure));

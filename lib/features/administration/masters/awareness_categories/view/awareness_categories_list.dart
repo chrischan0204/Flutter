@@ -42,7 +42,8 @@ class _AwarenessCategoriesListViewState
           emptyMessage: emtptyMessage,
           onRowClick: (awarenessCategory) =>
               _selectAwarenessCategory(awarenessCategory as AwarenessCategory),
-          entityRetrievedStatus: state.awarenessCategoriesRetrievedStatus,
+          entityListLoadStatusLoading:
+              state.awarenessCategoriesRetrievedStatus.isLoading,
           selectedEntity: state.selectedAwarenessCategory,
         );
       },

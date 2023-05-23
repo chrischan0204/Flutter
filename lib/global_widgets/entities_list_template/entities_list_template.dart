@@ -1,16 +1,15 @@
 import 'package:flutter/gestures.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 import '/common_libraries.dart';
 import 'package:strings/strings.dart';
 
 class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
-  final Widget? viewSettingBody;
   final VoidCallback? onViewSettingApplied;
-  final VoidCallback? onViewSettingSliderOpened;
   final ValueChanged<String>? onFilterSaved;
-  final VoidCallback? onFilterApplied;
-  final EntityStatus entityRetrievedStatus;
+  final void Function([String?])? onFilterApplied;
+  final bool entityListLoadStatusLoading;
   final String title;
   final String description;
   final String label;
@@ -22,19 +21,19 @@ class EntityListTemplate extends StatefulWidget {
   final ValueChanged<List<Entity>>? onTableSorted;
   final IconData? newIconData;
   final List<String> columns;
-  final String viewName;
+  final String? viewName;
+  final void Function(int pageNum, int pageRow)? onPaginate;
+  final int totalRows;
   const EntityListTemplate({
     super.key,
     required this.title,
-    this.viewSettingBody,
     this.onViewSettingApplied,
-    this.onViewSettingSliderOpened,
     this.onFilterSaved,
     this.onFilterApplied,
     required this.label,
     required this.onRowClick,
     this.onIncludeDeletedChanged,
-    this.entityRetrievedStatus = EntityStatus.initial,
+    this.entityListLoadStatusLoading = true,
     this.entities = const [],
     this.selectedEntity,
     this.description = '',
@@ -43,7 +42,9 @@ class EntityListTemplate extends StatefulWidget {
     this.onTableSorted,
     this.newIconData,
     this.columns = const [],
-    this.viewName = 'user',
+    this.viewName,
+    this.onPaginate,
+    this.totalRows = 0,
   });
 
   @override
@@ -58,11 +59,19 @@ class _CrudState extends State<EntityListTemplate> {
   bool filterViewShow = false;
 
   late FilterSettingBloc filterSettingBloc;
+  late ViewSettingBloc viewSettingBloc;
+  late PaginationBloc paginationBloc;
+
+  String token = '';
 
   @override
   void initState() {
-    filterSettingBloc = context.read()
-      ..add(const FilterSettingUserFilterSettingListLoaded(name: 'user'));
+    filterSettingBloc = context.read();
+    viewSettingBloc = context.read();
+    paginationBloc = context.read();
+    if (widget.viewName != null) {
+      filterSettingBloc.add(FilterSettingInit(viewName: widget.viewName!));
+    }
     super.initState();
   }
 
@@ -75,38 +84,68 @@ class _CrudState extends State<EntityListTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height - topbarHeight - 20),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(),
-                widget.showTableHeaderButtons
-                    ? _buildTableHeader()
-                    : Container(),
-                filterViewShow
-                    ? FilterSettingView(
-                        viewName: widget.viewName,
-                        onFilterOptionClosed: () =>
-                            setState(() => filterViewShow = false),
-                        onFilterApplied: () => widget.onFilterApplied!(),
-                        onFilterSaved: (filterId) =>
-                            widget.onFilterSaved!(filterId),
-                      )
-                    : Container(),
-                _buildTableView()
-              ],
-            ),
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) =>
+          setState(() => token = state.authUser?.token ?? ''),
+      listenWhen: (previous, current) =>
+          previous.authUser?.token != current.authUser?.token,
+      builder: (context, state) {
+        token = state.authUser?.token ?? '';
+        return Container(
+          constraints: BoxConstraints(
+              minHeight:
+                  MediaQuery.of(context).size.height - topbarHeight - 20),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(),
+                    widget.showTableHeaderButtons
+                        ? _buildTableHeader()
+                        : Container(),
+                    filterViewShow && widget.viewName != null
+                        ? FilterSettingView(
+                            viewName: widget.viewName!,
+                            onFilterOptionClosed: () => _hideFilterView(),
+                            onFilterApplied: (filterId) {
+                              if (widget.onFilterApplied != null) {
+                                paginationBloc.add(
+                                    const PaginationSelectedPageNumChanged(
+                                        selectedPageNum: 1));
+                                widget.onFilterApplied!(filterId);
+                              }
+                            },
+                            onFilterSaved: (filterId) {
+                              if (widget.onFilterSaved != null) {
+                                paginationBloc.add(
+                                    const PaginationSelectedPageNumChanged(
+                                        selectedPageNum: 1));
+                                widget.onFilterSaved!(filterId);
+                              }
+                            },
+                          )
+                        : Container(),
+                    _buildTableView(),
+                    PaginationView(
+                      totalRows: widget.totalRows,
+                      onPaginate: (pageNum, pageRow) {
+                        if (widget.onPaginate != null) {
+                          widget.onPaginate!(pageNum, pageRow);
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ),
+              _buildDetailsSlider(context),
+              _buildViewSettingsSlider(context),
+            ],
           ),
-          _buildDetailsSlider(context),
-          _buildViewSettingsSlider(context),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -181,49 +220,48 @@ class _CrudState extends State<EntityListTemplate> {
                           ),
                         ),
                       ),
-                      child:
-                          widget.entityRetrievedStatus == EntityStatus.loading
-                              ? const Padding(
-                                  padding: EdgeInsets.only(top: 200.0),
-                                  child: Center(
-                                    child: Loader(),
-                                  ),
-                                )
-                              : DataTableView(
-                                  entities: widget.entities,
-                                  columns: widget.columns,
-                                  emptyMessage: widget.emptyMessage,
-                                  onTableSorted: widget.onTableSorted == null
-                                      ? null
-                                      : (MapEntry<String, bool> sortInfo) {
-                                          List<Entity> entities =
-                                              List.from(widget.entities);
+                      child: widget.entityListLoadStatusLoading
+                          ? const Padding(
+                              padding: EdgeInsets.only(top: 200.0),
+                              child: Center(
+                                child: Loader(),
+                              ),
+                            )
+                          : DataTableView(
+                              entities: widget.entities,
+                              columns: widget.columns,
+                              emptyMessage: widget.emptyMessage,
+                              onTableSorted: widget.onTableSorted == null
+                                  ? null
+                                  : (MapEntry<String, bool> sortInfo) {
+                                      List<Entity> entities =
+                                          List.from(widget.entities);
 
-                                          entities.sort(
-                                            (a, b) {
-                                              return (sortInfo.value ? 1 : -1) *
-                                                  (a
-                                                          .tableItemsToMap()[
-                                                              sortInfo.key]
-                                                          .toString()
-                                                          .toLowerCase())
-                                                      .compareTo(b
-                                                          .tableItemsToMap()[
-                                                              sortInfo.key]
-                                                          .toString()
-                                                          .toLowerCase());
-                                            },
-                                          );
-                                          widget.onTableSorted!(entities);
+                                      entities.sort(
+                                        (a, b) {
+                                          return (sortInfo.value ? 1 : -1) *
+                                              (a
+                                                      .tableItemsToMap()[
+                                                          sortInfo.key]
+                                                      .toString()
+                                                      .toLowerCase())
+                                                  .compareTo(b
+                                                      .tableItemsToMap()[
+                                                          sortInfo.key]
+                                                      .toString()
+                                                      .toLowerCase());
                                         },
-                                  onRowClick: (entity) {
-                                    _showDetailsSlider();
-                                    setState(() {
-                                      selectedId = entity.id!;
-                                    });
-                                    widget.onRowClick(entity);
-                                  },
-                                ),
+                                      );
+                                      widget.onTableSorted!(entities);
+                                    },
+                              onRowClick: (entity) {
+                                _showDetailsSlider();
+                                setState(() {
+                                  selectedId = entity.id!;
+                                });
+                                widget.onRowClick(entity);
+                              },
+                            ),
                     )
                   ],
                 ),
@@ -264,9 +302,8 @@ class _CrudState extends State<EntityListTemplate> {
                     label: 'View Settings',
                     color: warnColor,
                     onClick: () {
-                      if (widget.onViewSettingSliderOpened != null) {
-                        widget.onViewSettingSliderOpened!();
-                      }
+                      viewSettingBloc
+                          .add(ViewSettingLoaded(viewName: widget.viewName!));
                       _showViewSettingsSlider();
                     },
                   ),
@@ -285,10 +322,57 @@ class _CrudState extends State<EntityListTemplate> {
               ),
               Row(
                 children: [
-                  BlocBuilder<FilterSettingBloc, FilterSettingState>(
+                  BlocConsumer<FilterSettingBloc, FilterSettingState>(
+                    listener: (context, state) {
+                      if (widget.onFilterApplied != null) {
+                        widget.onFilterApplied!('');
+                      }
+                    },
+                    listenWhen: (previous, current) =>
+                        previous.appliedUserFilterSetting != null &&
+                        previous.appliedUserFilterSetting !=
+                            current.appliedUserFilterSetting &&
+                        current.appliedUserFilterSetting?.isNew == true,
+                    builder: (context, state) =>
+                        state.appliedUserFilterSetting != null &&
+                                !state.appliedUserFilterSetting!.isNew
+                            ? IconButton(
+                                onPressed: () => filterSettingBloc.add(
+                                    const FilterSettingAppliedUserFilterSettingChanged(
+                                        appliedUserFilterSetting:
+                                            UserFilterSetting())),
+                                icon: const Icon(
+                                  PhosphorIcons.x,
+                                  size: 20,
+                                  color: Colors.red,
+                                ),
+                              )
+                            : Container(),
+                  ),
+                  BlocConsumer<FilterSettingBloc, FilterSettingState>(
+                    listener: (context, state) {
+                      if (state.selectedUserFilterSetting != null) {
+                        if (widget.onFilterApplied != null) {
+                          widget.onFilterApplied!(
+                              state.selectedUserFilterSetting!.id);
+
+                          filterSettingBloc.add(
+                              FilterSettingAppliedUserFilterSettingChanged(
+                                  appliedUserFilterSetting:
+                                      state.selectedUserFilterSetting));
+                        }
+                      }
+                    },
+                    listenWhen: (previous, current) =>
+                        previous.selectedUserFilterSetting == null &&
+                        previous.selectedUserFilterSetting !=
+                            current.selectedUserFilterSetting,
                     builder: (context, state) {
                       return Text(
-                        state.selectedUserFilterSetting?.filterName ?? '',
+                        state.appliedUserFilterSetting != null &&
+                                !state.appliedUserFilterSetting!.isNew
+                            ? state.appliedUserFilterSetting!.filterName
+                            : 'No filter applied',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -304,6 +388,9 @@ class _CrudState extends State<EntityListTemplate> {
                         filterSettingBloc.add(
                             FilterSettingIncludeDeletedChanged(
                                 includeDeleted: value!));
+                        paginationBloc.add(
+                            const PaginationSelectedPageNumChanged(
+                                selectedPageNum: 1));
                         widget.onIncludeDeletedChanged!(value);
                       }
 
@@ -326,6 +413,9 @@ class _CrudState extends State<EntityListTemplate> {
                   IconButton(
                     onPressed: () {
                       if (widget.onIncludeDeletedChanged != null) {
+                        paginationBloc.add(
+                            const PaginationSelectedPageNumChanged(
+                                selectedPageNum: 1));
                         widget.onIncludeDeletedChanged!(includeDeleted);
                       }
                     },
@@ -336,7 +426,7 @@ class _CrudState extends State<EntityListTemplate> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -389,7 +479,7 @@ class _CrudState extends State<EntityListTemplate> {
                 ],
               ),
             ),
-            widget.viewSettingBody ?? Container(),
+            const ViewSettingView(),
             Divider(
               color: grey,
               height: 1,
@@ -399,17 +489,28 @@ class _CrudState extends State<EntityListTemplate> {
                 horizontal: 20,
                 vertical: 12,
               ),
-              child: CustomButton(
-                backgroundColor: const Color(0xff0c83ff),
-                hoverBackgroundColor: const Color(0xff0b76e6),
-                iconData: PhosphorIcons.arrowRight,
-                text: 'Apply',
-                onClick: () {
-                  _hideViewSettingsSlider();
+              child: BlocListener<ViewSettingBloc, ViewSettingState>(
+                listener: (context, viewSettingState) {
                   if (widget.onViewSettingApplied != null) {
                     widget.onViewSettingApplied!();
                   }
                 },
+                listenWhen: (previous, current) =>
+                    previous.viewSettingSaveStatus !=
+                    current.viewSettingSaveStatus,
+                child: CustomButton(
+                  backgroundColor: const Color(0xff0c83ff),
+                  hoverBackgroundColor: const Color(0xff0b76e6),
+                  iconData: PhosphorIcons.arrowRight,
+                  text: 'Apply',
+                  onClick: () {
+                    _hideViewSettingsSlider();
+                    if (widget.viewName != null) {
+                      viewSettingBloc
+                          .add(ViewSettingApplied(viewName: widget.viewName!));
+                    }
+                  },
+                ),
               ),
             ),
           ],
@@ -540,7 +641,7 @@ class _CrudState extends State<EntityListTemplate> {
 
   void _hideFilterView() {
     setState(() {
-      filterViewShow = true;
+      filterViewShow = false;
     });
   }
 
