@@ -22,6 +22,8 @@ class EntityListTemplate extends StatefulWidget {
   final IconData? newIconData;
   final List<String> columns;
   final String? viewName;
+  final void Function(int pageNum, int pageRow)? onPaginate;
+  final int totalRows;
   const EntityListTemplate({
     super.key,
     required this.title,
@@ -41,6 +43,8 @@ class EntityListTemplate extends StatefulWidget {
     this.newIconData,
     this.columns = const [],
     this.viewName,
+    this.onPaginate,
+    this.totalRows = 0,
   });
 
   @override
@@ -56,6 +60,7 @@ class _CrudState extends State<EntityListTemplate> {
 
   late FilterSettingBloc filterSettingBloc;
   late ViewSettingBloc viewSettingBloc;
+  late PaginationBloc paginationBloc;
 
   String token = '';
 
@@ -63,6 +68,7 @@ class _CrudState extends State<EntityListTemplate> {
   void initState() {
     filterSettingBloc = context.read();
     viewSettingBloc = context.read();
+    paginationBloc = context.read();
     if (widget.viewName != null) {
       filterSettingBloc.add(FilterSettingInit(viewName: widget.viewName!));
     }
@@ -106,26 +112,31 @@ class _CrudState extends State<EntityListTemplate> {
                             onFilterOptionClosed: () => _hideFilterView(),
                             onFilterApplied: (filterId) {
                               if (widget.onFilterApplied != null) {
+                                paginationBloc.add(
+                                    const PaginationSelectedPageNumChanged(
+                                        selectedPageNum: 1));
                                 widget.onFilterApplied!(filterId);
                               }
                             },
-                            onFilterSaved: (filterId) =>
-                                widget.onFilterSaved!(filterId),
+                            onFilterSaved: (filterId) {
+                              if (widget.onFilterSaved != null) {
+                                paginationBloc.add(
+                                    const PaginationSelectedPageNumChanged(
+                                        selectedPageNum: 1));
+                                widget.onFilterSaved!(filterId);
+                              }
+                            },
                           )
                         : Container(),
                     _buildTableView(),
-                    const CustomDivider(),
-                    // NumberPaginator(
-                    //   numberPages: 100,
-                    //   config: NumberPaginatorUIConfig(
-                    //     buttonShape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(3),
-                    //     ),
-                    //   ),
-                    //   onPageChange: (int index) {
-                    //     setState(() {},);
-                    //   },
-                    // ),
+                    PaginationView(
+                      totalRows: widget.totalRows,
+                      onPaginate: (pageNum, pageRow) {
+                        if (widget.onPaginate != null) {
+                          widget.onPaginate!(pageNum, pageRow);
+                        }
+                      },
+                    )
                   ],
                 ),
               ),
@@ -377,6 +388,9 @@ class _CrudState extends State<EntityListTemplate> {
                         filterSettingBloc.add(
                             FilterSettingIncludeDeletedChanged(
                                 includeDeleted: value!));
+                        paginationBloc.add(
+                            const PaginationSelectedPageNumChanged(
+                                selectedPageNum: 1));
                         widget.onIncludeDeletedChanged!(value);
                       }
 
@@ -399,6 +413,9 @@ class _CrudState extends State<EntityListTemplate> {
                   IconButton(
                     onPressed: () {
                       if (widget.onIncludeDeletedChanged != null) {
+                        paginationBloc.add(
+                            const PaginationSelectedPageNumChanged(
+                                selectedPageNum: 1));
                         widget.onIncludeDeletedChanged!(includeDeleted);
                       }
                     },

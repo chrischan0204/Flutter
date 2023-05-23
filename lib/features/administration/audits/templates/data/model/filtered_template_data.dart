@@ -7,9 +7,11 @@ import '/common_libraries.dart';
 class FilteredTemplateData extends Equatable {
   final List<EntityHeader> headers;
   final List<FilteredTemplate> data;
+  final int totalRows;
   const FilteredTemplateData({
     required this.headers,
     required this.data,
+    required this.totalRows,
   });
 
   @override
@@ -25,6 +27,7 @@ class FilteredTemplateData extends Equatable {
           (x) => EntityHeader.fromMap(x),
         ),
       ),
+      totalRows: map['totalRows'],
       data: List<FilteredTemplate>.from(
         (map['data']).map<FilteredTemplate>(
           (x) => FilteredTemplate.fromMap(x),

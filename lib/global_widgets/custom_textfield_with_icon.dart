@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/global_widgets/global_widget.dart';
+import 'global_widget.dart';
 
 class CustomTextFieldWithIcon extends StatelessWidget {
   final String hintText;

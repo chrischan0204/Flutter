@@ -14,13 +14,13 @@ void main() async {
     child: BlocProvider(
       create: (context) => AuthBloc(
           authRepository: RepositoryProvider.of<AuthRepository>(context)),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   ));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -165,6 +165,7 @@ class _MyAppState extends State<MyApp> {
                   rolesRepository: RepositoryProvider.of(context),
                 ),
               ),
+              BlocProvider(create: (context) => PaginationBloc())
             ],
             child: MaterialApp.router(
               title: 'Safety ETA',

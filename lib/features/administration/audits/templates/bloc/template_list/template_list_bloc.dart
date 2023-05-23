@@ -44,11 +44,20 @@ class TemplateListBloc extends Bloc<TemplateListEvent, TemplateListState> {
     emit(state.copyWith(templateListLoadStatus: EntityStatus.loading));
 
     try {
-      List<Template> filteredTemplateList = await templatesRepository
-          .getFilteredTemplateList(event.filterId, event.includeDeleted);
+      final filteredTemplateData =
+          await templatesRepository.getFilteredTemplateList(event.filterId,
+              event.includeDeleted, event.pageNum, event.pageSize);
+
+      final List<String> columns = List.from(filteredTemplateData.headers
+          .where((e) => !e.isHidden)
+          .map((e) => e.title));
+
       emit(state.copyWith(
-        templateList: filteredTemplateList,
+        templateList: filteredTemplateData.data
+            .map((e) => e.template.copyWith(columns: columns))
+            .toList(),
         templateListLoadStatus: EntityStatus.success,
+        totalRows: filteredTemplateData.totalRows,
       ));
     } catch (e) {
       emit(state.copyWith(templateListLoadStatus: EntityStatus.failure));

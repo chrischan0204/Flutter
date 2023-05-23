@@ -80,6 +80,7 @@ class _UsersListState extends State<UsersListWidget> {
               return EntityListTemplate(
                 title: pageTitle,
                 label: pageLabel,
+                viewName: pageLabel,
                 entities: userListState.userList,
                 showTableHeaderButtons: true,
                 onRowClick: (selectedUser) => _selectUser(selectedUser),
@@ -90,10 +91,13 @@ class _UsersListState extends State<UsersListWidget> {
                 selectedEntity: userDetailState.user,
                 onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
                 onViewSettingApplied: () => _filterUsers(),
-                onIncludeDeletedChanged: (value) => _filterUsers(null, value),
-                viewName: 'user',
-                onFilterSaved: _filterUsers,
-                onFilterApplied: _filterUsers,
+                onIncludeDeletedChanged: (value) =>
+                    _filterUsers(null, value, 1),
+                onFilterSaved: (value) => _filterUsers(value, null, 1),
+                onFilterApplied: ([value]) => _filterUsers(value, null, 1),
+                onPaginate: (pageNum, pageRow) =>
+                    _filterUsers(null, null, pageNum, pageRow),
+                totalRows: userListState.totalRows,
                 newIconData: PhosphorIcons.userPlus,
               );
             },
@@ -116,13 +120,18 @@ class _UsersListState extends State<UsersListWidget> {
   void _filterUsers([
     String? filterId,
     bool? includeDeleted,
+    int? pageNum,
+    int? rowPerPage,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
+    final PaginationBloc paginationBloc = context.read();
     userListBloc.add(UserListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+      pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
+      pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
     ));
   }
 }

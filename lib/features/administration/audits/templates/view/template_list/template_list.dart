@@ -90,9 +90,13 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                       _sortTemplates(sortedTemplates),
                   onViewSettingApplied: () => _filterTemplates(),
                   onIncludeDeletedChanged: (value) =>
-                      _filterTemplates(null, value),
-                  onFilterSaved: _filterTemplates,
-                  onFilterApplied: _filterTemplates,
+                      _filterTemplates(null, value, 1),
+                  onFilterSaved: (value) => _filterTemplates(value, null, 1),
+                  onFilterApplied: ([value]) =>
+                      _filterTemplates(value, null, 1),
+                  onPaginate: (pageNum, pageRow) =>
+                      _filterTemplates(null, null, pageNum, pageRow),
+                  totalRows: templateListState.totalRows,
                 );
               },
             );
@@ -117,13 +121,18 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
   void _filterTemplates([
     String? filterId,
     bool? includeDeleted,
+    int? pageNum,
+    int? rowPerPage,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
+    final PaginationBloc paginationBloc = context.read();
     templateListBloc.add(TemplateListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+      pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
+      pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
     ));
   }
 }

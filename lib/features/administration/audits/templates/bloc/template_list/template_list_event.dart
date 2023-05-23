@@ -4,7 +4,7 @@ abstract class TemplateListEvent extends Equatable {
   const TemplateListEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class TemplateListLoaded extends TemplateListEvent {}
@@ -18,14 +18,20 @@ class TemplateListSorted extends TemplateListEvent {
 class TemplateListFiltered extends TemplateListEvent {
   final String filterId;
   final bool includeDeleted;
+  final int? pageNum;
+  final int? pageSize;
   const TemplateListFiltered({
     required this.filterId,
     this.includeDeleted = false,
+    this.pageNum,
+    this.pageSize,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         filterId,
         includeDeleted,
+        pageNum,
+        pageSize,
       ];
 }
