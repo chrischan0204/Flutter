@@ -11,7 +11,7 @@ class TemplateListBloc extends Bloc<TemplateListEvent, TemplateListState> {
       : super(const TemplateListState()) {
     on<TemplateListLoaded>(_onTemplateListLoaded);
     on<TemplateListSorted>(_onTemplateListSorted);
-    // on<TemplateListFiltered>(_onTemplateListFiltered);
+    on<TemplateListFiltered>(_onTemplateListFiltered);
   }
 
   Future<void> _onTemplateListLoaded(
@@ -37,21 +37,21 @@ class TemplateListBloc extends Bloc<TemplateListEvent, TemplateListState> {
     emit(state.copyWith(templateList: event.sortedTemplateList));
   }
 
-  // Future<void> _onTemplateListFiltered(
-  //   TemplateListFiltered event,
-  //   Emitter<TemplateListState> emit,
-  // ) async {
-  //   emit(state.copyWith(templateListLoadStatus: EntityStatus.loading));
+  Future<void> _onTemplateListFiltered(
+    TemplateListFiltered event,
+    Emitter<TemplateListState> emit,
+  ) async {
+    emit(state.copyWith(templateListLoadStatus: EntityStatus.loading));
 
-  //   try {
-  //     List<Template> filteredTemplateList = await templatesRepository
-  //         .getFilteredTemplateList(event.filterId, event.includeDeleted);
-  //     emit(state.copyWith(
-  //       templateList: filteredTemplateList,
-  //       templateListLoadStatus: EntityStatus.success,
-  //     ));
-  //   } catch (e) {
-  //     emit(state.copyWith(templateListLoadStatus: EntityStatus.failure));
-  //   }
-  // }
+    try {
+      List<Template> filteredTemplateList = await templatesRepository
+          .getFilteredTemplateList(event.filterId, event.includeDeleted);
+      emit(state.copyWith(
+        templateList: filteredTemplateList,
+        templateListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(templateListLoadStatus: EntityStatus.failure));
+    }
+  }
 }

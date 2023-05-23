@@ -1,0 +1,38 @@
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+
+import '/common_libraries.dart';
+
+class FilteredTemplateData extends Equatable {
+  final List<EntityHeader> headers;
+  final List<FilteredTemplate> data;
+  const FilteredTemplateData({
+    required this.headers,
+    required this.data,
+  });
+
+  @override
+  List<Object?> get props => [
+        headers,
+        data,
+      ];
+
+  factory FilteredTemplateData.fromMap(Map<String, dynamic> map) {
+    return FilteredTemplateData(
+      headers: List<EntityHeader>.from(
+        (map['headers']).map<EntityHeader>(
+          (x) => EntityHeader.fromMap(x),
+        ),
+      ),
+      data: List<FilteredTemplate>.from(
+        (map['data']).map<FilteredTemplate>(
+          (x) => FilteredTemplate.fromMap(x),
+        ),
+      ),
+    );
+  }
+
+  factory FilteredTemplateData.fromJson(String source) =>
+      FilteredTemplateData.fromMap(json.decode(source) as Map<String, dynamic>);
+}

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:safety_eta/common_libraries.dart';
 
 import 'package:safety_eta/utils/utils.dart';
 
@@ -40,11 +41,13 @@ class FilteredEntity extends Equatable {
   final String createdBy;
   final String lastModifiedOn;
   final String lastModifiedByUserName;
+  final String createdById;
   const FilteredEntity({
     this.id = '',
     this.deleted = false,
     this.createdOn = '',
     this.createdBy = '',
+    this.createdById = emptyGuid,
     this.lastModifiedOn = '',
     this.lastModifiedByUserName = '',
   });
@@ -55,6 +58,7 @@ class FilteredEntity extends Equatable {
         deleted,
         createdOn,
         createdBy,
+        createdById,
         lastModifiedOn,
         lastModifiedByUserName,
       ];
@@ -68,6 +72,7 @@ class FilteredEntity extends Equatable {
               .formatDate
           : '--',
       createdBy: map['created_By'] ?? '',
+      createdById: map['created_By'] ?? emptyGuid,
       lastModifiedOn: map['last_Modified_On'] != null
           ? FormatDate(format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
               .formatDate

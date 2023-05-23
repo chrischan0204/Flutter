@@ -33,6 +33,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   multiselect: ^0.1.0
   nested: ^1.0.0
+  number_paginator: ^0.2.3
   phosphor_flutter: ^1.4.0
   star_menu: ^3.1.4
   strings: ^0.2.2

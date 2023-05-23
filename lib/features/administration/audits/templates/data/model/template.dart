@@ -24,6 +24,8 @@ class Template extends Entity {
     super.active,
     super.createdByUserName,
     super.createdOn,
+    super.columns,
+    super.deleted,
   });
 
   @override
@@ -41,12 +43,12 @@ class Template extends Entity {
   @override
   Map<String, dynamic> tableItemsToMap() {
     return {
-      'Template Name': name,
-      'Used in Audits': usedInAudits,
+      'Name': name,
       'Audit': usedInAudit,
       'Inspection': usedInInspection,
-      'Created at': createdOn,
-      'Created by': createdByUserName,
+      'Revision Date': revisionDate,
+      'Created On': createdOn,
+      'Created By': createdByUserName,
     };
   }
 
@@ -118,6 +120,8 @@ class Template extends Entity {
     bool? active,
     String? createdOn,
     String? createdByUserName,
+    bool? deleted,
+    List<String>? columns,
   }) {
     return Template(
       id: id ?? this.id,
@@ -130,6 +134,8 @@ class Template extends Entity {
       active: active ?? this.active,
       createdOn: createdOn ?? this.createdOn,
       createdByUserName: createdByUserName ?? this.createdByUserName,
+      deleted: deleted ?? this.deleted,
+      columns: columns ?? this.columns,
     );
   }
 }

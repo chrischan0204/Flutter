@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 import '/common_libraries.dart';
 import 'package:strings/strings.dart';
@@ -112,7 +113,19 @@ class _CrudState extends State<EntityListTemplate> {
                                 widget.onFilterSaved!(filterId),
                           )
                         : Container(),
-                    _buildTableView()
+                    _buildTableView(),
+                    const CustomDivider(),
+                    // NumberPaginator(
+                    //   numberPages: 100,
+                    //   config: NumberPaginatorUIConfig(
+                    //     buttonShape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(3),
+                    //     ),
+                    //   ),
+                    //   onPageChange: (int index) {
+                    //     setState(() {},);
+                    //   },
+                    // ),
                   ],
                 ),
               ),
@@ -350,7 +363,7 @@ class _CrudState extends State<EntityListTemplate> {
                             ? state.appliedUserFilterSetting!.filterName
                             : 'No filter applied',
                         style: const TextStyle(
-                          fontSize: 14, 
+                          fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),
                       );

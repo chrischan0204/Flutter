@@ -60,6 +60,28 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
+  Future<List<Template>> getFilteredTemplateList(String filterId,
+      [bool includeDeleted = false]) async {
+    Map<String, String> queryParams = {
+      'includeDeleted': includeDeleted.toString()
+    };
+
+    if (!Validation.isEmpty(filterId)) {
+      queryParams.addEntries([MapEntry('filterId', filterId)]);
+    }
+    Response response = await super.get('$url/list', queryParams);
+
+    if (response.statusCode == 200) {
+      final data = FilteredTemplateData.fromJson(response.body);
+      final List<String> columns =
+          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
+      return data.data
+          .map((e) => e.template.copyWith(columns: columns))
+          .toList();
+    }
+    throw Exception();
+  }
+
   Future<List<TemplateSection>> getTemplateSectionList(
       String templateId) async {
     Response response = await super.get('$url/$templateId/sections');

@@ -46,7 +46,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
           width: 40,
           height: 20,
           toggleSize: 15.0,
-          value: switchValue,
+          value: widget.switchValue,
           borderRadius: 15.0,
           padding: 2.0,
           // toggleColor: Colors.transparent,

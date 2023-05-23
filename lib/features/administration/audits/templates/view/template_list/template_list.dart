@@ -51,7 +51,7 @@ class TemplateListWidget extends StatefulWidget {
 }
 
 class _TemplateListWidgetState extends State<TemplateListWidget> {
-  late TemplateListBloc templatesListBloc;
+  late TemplateListBloc templateListBloc;
   late TemplateDetailBloc templateDetailBloc;
 
   static String pageTitle = 'Templates';
@@ -61,7 +61,7 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
 
   @override
   void initState() {
-    templatesListBloc = context.read()..add(TemplateListLoaded());
+    templateListBloc = context.read()..add(TemplateListLoaded());
     templateDetailBloc = context.read();
     super.initState();
   }
@@ -72,67 +72,27 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
       builder: (context, templateListState) {
         return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, templateDetailState) {
-            return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-              listener: (context, state) {
-                // if (state.selectedTemplateFilterSetting!.id.isNotEmpty) {
-                // templatesListBloc.add(TemplateListFiltered(
-                //   filterId: state.selectedTemplateFilterSetting!.id,
-                //   includeDeleted: state.includeDeleted,
-                // ));
-                // } else {
-                // templatesListBloc.add(TemplateListLoaded());
-                // }
-              },
-              // listenWhen: (previous, current) =>
-              //     previous.selectedTemplateFilterSetting !=
-              //     current.selectedTemplateFilterSetting,
+            return BlocBuilder<FilterSettingBloc, FilterSettingState>(
               builder: (context, state) {
-                return BlocListener<ViewSettingBloc, ViewSettingState>(
-                  listener: (context, viewSettingState) {
-                    // templatesListBloc.add(TemplateListFiltered(
-                    //   filterId: state.templateFilterUpdate.id,
-                    //   includeDeleted: state.includeDeleted,
-                    // ));
-                  },
-                  listenWhen: (previous, current) =>
-                      previous.viewSettingSaveStatus !=
-                      current.viewSettingSaveStatus,
-                  child: EntityListTemplate(
-                    title: pageTitle,
-                    label: pageLabel,
-                    entities: templateListState.templateList,
-                    showTableHeaderButtons: true,
-                    onRowClick: (selectedTemplate) =>
-                        _selectTemplate(selectedTemplate),
-                    emptyMessage: emptyMessage,
-                    entityListLoadStatusLoading:
-                        templateListState.templateListLoadStatus.isLoading,
-                    selectedEntity: templateDetailState.template,
-                    onTableSorted: (sortedTemplates) =>
-                        _sortTemplates(sortedTemplates),
-                    onViewSettingApplied: () {
-                      // viewSettingBloc
-                      //     .add(const ViewSettingApplied(viewName: 'template'));
-                      // templatesListBloc.add(TemplateListFiltered(
-                      //   filterId: state.templateFilterUpdate.id,
-                      //   includeDeleted: state.includeDeleted,
-                      // ));
-                    },
-                    onIncludeDeletedChanged: (value) {
-                      // templatesListBloc.add(TemplateListFiltered(
-                      //   filterId: state.templateFilterUpdate.id,
-                      //   includeDeleted: value,
-                      // ));
-                    },
-                    viewName: 'template',
-                    onFilterSaved: (filterId) {
-                      //       templatesListBloc.add(TemplateListFiltered(
-                      //   filterId: state.templateFilterUpdate.id,
-                      //   includeDeleted: state.includeDeleted,
-                      // ));
-                    },
-                    onFilterApplied: ([p0]) {},
-                  ),
+                return EntityListTemplate(
+                  title: pageTitle,
+                  label: pageLabel,
+                  viewName: pageLabel,
+                  entities: templateListState.templateList,
+                  showTableHeaderButtons: true,
+                  onRowClick: (selectedTemplate) =>
+                      _selectTemplate(selectedTemplate),
+                  emptyMessage: emptyMessage,
+                  entityListLoadStatusLoading: state.filterSettingLoading ||
+                      templateListState.templateListLoadStatus.isLoading,
+                  selectedEntity: templateDetailState.template,
+                  onTableSorted: (sortedTemplates) =>
+                      _sortTemplates(sortedTemplates),
+                  onViewSettingApplied: () => _filterTemplates(),
+                  onIncludeDeletedChanged: (value) =>
+                      _filterTemplates(null, value),
+                  onFilterSaved: _filterTemplates,
+                  onFilterApplied: _filterTemplates,
                 );
               },
             );
@@ -143,7 +103,7 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
   }
 
   void _sortTemplates(List<Entity> sortedTemplates) {
-    templatesListBloc.add(TemplateListSorted(
+    templateListBloc.add(TemplateListSorted(
         sortedTemplateList: sortedTemplates
             .map((sortedTemplate) => sortedTemplate as Template)
             .toList()));
@@ -152,5 +112,18 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
   void _selectTemplate(Entity selectedTemplate) {
     templateDetailBloc.add(
         TemplateDetailTemplateLoadedById(templateId: selectedTemplate.id!));
+  }
+
+  void _filterTemplates([
+    String? filterId,
+    bool? includeDeleted,
+  ]) {
+    final FilterSettingBloc filterSettingBloc = context.read();
+    templateListBloc.add(TemplateListFiltered(
+      filterId: filterId ??
+          filterSettingBloc.state.appliedUserFilterSetting?.id ??
+          emptyGuid,
+      includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+    ));
   }
 }
