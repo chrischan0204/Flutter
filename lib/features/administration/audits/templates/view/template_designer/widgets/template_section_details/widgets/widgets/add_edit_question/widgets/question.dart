@@ -1,8 +1,8 @@
 import '/common_libraries.dart';
 
-class Question extends StatelessWidget {
+class QuestionView extends StatelessWidget {
   final String? question;
-  const Question({
+  const QuestionView({
     super.key,
     this.question,
   });

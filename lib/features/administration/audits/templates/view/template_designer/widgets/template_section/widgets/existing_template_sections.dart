@@ -23,7 +23,7 @@ class _ExistingTemplateSectionsState extends State<ExistingTemplateSections> {
             return SingleChildScrollView(
               child: Column(
                 children: state.templateSectionList
-                    .map((templateSection) => TemplateSectionItem(
+                    .map((templateSection) => TemplateSectionItemView(
                           sectionName: templateSection.name,
                           templateSectionItemCount:
                               templateSection.templateSectionItemCount,

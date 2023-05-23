@@ -5,54 +5,54 @@ import 'package:equatable/equatable.dart';
 class ResponseScaleItem extends Equatable {
   final String id;
   final String name;
-  final String responseScaleId;
-  final int score;
-  final String colorCode;
-  final bool canComment;
-  final bool hasActionItem;
-  final bool hasFollowup;
+  final String responseScaleItemId;
+  final double score;
+  final bool commentRequiered;
+  final bool actionItemRequired;
+  final bool followUpRequired;
+  final int order;
   const ResponseScaleItem({
     required this.id,
     required this.name,
-    required this.responseScaleId,
+    required this.responseScaleItemId,
     required this.score,
-    required this.colorCode,
-    required this.canComment,
-    required this.hasActionItem,
-    required this.hasFollowup,
+    required this.commentRequiered,
+    required this.actionItemRequired,
+    required this.followUpRequired,
+    required this.order,
   });
 
   @override
   List<Object?> get props => [
         id,
         name,
-        responseScaleId,
+        responseScaleItemId,
         score,
-        colorCode,
-        canComment,
-        hasActionItem,
-        hasFollowup,
+        commentRequiered,
+        actionItemRequired,
+        followUpRequired,
+        order,
       ];
 
   ResponseScaleItem copyWith({
     String? id,
     String? name,
-    String? responseScaleId,
-    int? score,
-    String? colorCode,
-    bool? canComment,
-    bool? hasActionItem,
-    bool? hasFollowup,
+    String? responseScaleItemId,
+    double? score,
+    bool? commentRequiered,
+    bool? actionItemRequired,
+    bool? followUpRequired,
+    int? order,
   }) {
     return ResponseScaleItem(
       id: id ?? this.id,
       name: name ?? this.name,
-      responseScaleId: responseScaleId ?? this.responseScaleId,
+      responseScaleItemId: responseScaleItemId ?? this.responseScaleItemId,
       score: score ?? this.score,
-      colorCode: colorCode ?? this.colorCode,
-      canComment: canComment ?? this.canComment,
-      hasActionItem: hasActionItem ?? this.hasActionItem,
-      hasFollowup: hasFollowup ?? this.hasFollowup,
+      commentRequiered: commentRequiered ?? this.commentRequiered,
+      actionItemRequired: actionItemRequired ?? this.actionItemRequired,
+      followUpRequired: followUpRequired ?? this.followUpRequired,
+      order: order ?? this.order,
     );
   }
 
@@ -60,25 +60,24 @@ class ResponseScaleItem extends Equatable {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'responseScaleId': responseScaleId,
+      'responseScaleItemId': responseScaleItemId,
       'score': score,
-      'colorCode': colorCode,
-      'canComment': canComment,
-      'hasActionItem': hasActionItem,
-      'hasFollowup': hasFollowup,
+      'commentRequiered': commentRequiered,
+      'actionItemRequired': actionItemRequired,
+      'followUpRequired': followUpRequired,
     };
   }
 
   factory ResponseScaleItem.fromMap(Map<String, dynamic> map) {
     return ResponseScaleItem(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      responseScaleId: map['responseScaleId'] as String,
-      score: map['score'] as int,
-      colorCode: map['colorCode'] as String,
-      canComment: map['canComment'] as bool,
-      hasActionItem: map['hasActionItem'] as bool,
-      hasFollowup: map['hasFollowup'] as bool,
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      responseScaleItemId: map['responseScaleItemId'] ?? '',
+      score: map['score'] ?? 0,
+      commentRequiered: map['commentRequiered'] ?? '',
+      actionItemRequired: map['actionItemRequired'] ?? true,
+      followUpRequired: map['followUpRequired'] ?? true,
+      order: map['order'] ?? 0,
     );
   }
 

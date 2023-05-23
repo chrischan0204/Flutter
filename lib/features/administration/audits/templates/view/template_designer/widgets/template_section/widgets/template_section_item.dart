@@ -1,9 +1,9 @@
 import '/common_libraries.dart';
 
-class TemplateSectionItem extends StatelessWidget {
+class TemplateSectionItemView extends StatelessWidget {
   final String sectionName;
   final int templateSectionItemCount;
-  const TemplateSectionItem({
+  const TemplateSectionItemView({
     super.key,
     required this.sectionName,
     required this.templateSectionItemCount,

@@ -21,7 +21,7 @@ class AddEditQuestion extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Question(question: question),
+            QuestionView(question: question),
             const SizedBox(width: 5),
             const PossibleAnswersToQuestion(),
           ],

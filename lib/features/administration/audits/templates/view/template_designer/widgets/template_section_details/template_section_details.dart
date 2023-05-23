@@ -1,3 +1,5 @@
+import 'package:safety_eta/features/administration/audits/templates/view/template_designer/widgets/template_section_details/widgets/widgets/add_edit_question/widgets/widgets.dart';
+
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -54,12 +56,8 @@ class TemplateSectionDetails extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 50),
-          const Question(
+          const QuestionView(
               question: 'Are there any loose hanging wires from the ceiling?'),
-          const Question(
-              question: 'Is there any signs of any damage to circuit box?'),
-          const Question(
-              question: 'Are there any outlets that seem to be damaged?'),
         ],
       ),
     );
