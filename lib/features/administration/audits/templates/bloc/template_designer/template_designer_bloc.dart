@@ -29,6 +29,9 @@ class TemplateDesignerBloc
         _onTemplateDesignerTemplateSectionItemQuestionList);
     on<TemplateDesignerResponseScaleItemListLoaded>(
         _onTemplateDesignerResponseScaleItemListLoaded);
+    on<TemplateDesignerQuestionChanged>(_onTemplateDesignerQuestionChanged);
+    on<TemplateDesignerTemplateSectionItemCreated>(
+        _onTemplateDesignerTemplateSectionItemCreated);
 
     on<TemplateDesignerNewQuestionButtonClicked>(
         _onTemplateDesignerNewQuestionButtonClicked);
@@ -56,7 +59,7 @@ class TemplateDesignerBloc
     // print('current');
     // print(currentState.templateSectionItem);
     // print('next');
-    // print(nextState.templateSectionItem);
+    print(nextState.templateSectionItem);
 
     super.onChange(change);
   }
@@ -200,6 +203,7 @@ class TemplateDesignerBloc
             state.templateSectionItem!.copyWith(children: children);
       } else {
         newTemplateSection = state.templateSectionItem!.copyWith(
+            responseScaleId: event.responseScaleId,
             children: responseScaleItemList
                 .map((e) => TemplateSectionItem(
                       id: const Uuid().v1(),
@@ -225,7 +229,9 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     emit(state.copyWith(
-      templateSectionItem: const Nullable.value(TemplateSectionItem()),
+      templateSectionItem: Nullable.value(TemplateSectionItem(
+        templateSectionId: state.selectedTemplateSection!.id,
+      )),
     ));
   }
 
@@ -234,7 +240,65 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     emit(state.copyWith(
-      templateSectionItem: null,
+      templateSectionItem: const Nullable.value(null),
     ));
+  }
+
+  void _onTemplateDesignerQuestionChanged(
+    TemplateDesignerQuestionChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    late TemplateSectionItem newTemplateSection;
+    if (event.child) {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              question: Question(
+            name: event.question,
+            responseScaleId: event.responseScaleId,
+          )));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    } else {
+      newTemplateSection = state.templateSectionItem!.copyWith(
+          question: Question(
+        name: event.question,
+        responseScaleId: event.responseScaleId,
+        order: 0,
+      ));
+    }
+
+    emit(state.copyWith(
+      templateSectionItem: Nullable.value(newTemplateSection),
+      responseScaleItemListLoadStatus: EntityStatus.success,
+    ));
+  }
+
+  Future<void> _onTemplateDesignerTemplateSectionItemCreated(
+    TemplateDesignerTemplateSectionItemCreated event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    emit(state.copyWith(templateSectionItemCreateStatus: EntityStatus.loading));
+
+    try {
+      EntityResponse response = await sectionsRepository
+          .createTemplateSectionItem(state.templateSectionItem!);
+      emit(state.copyWith(
+        templateSectionItemCreateStatus:
+            response.isSuccess.toEntityStatusCode(),
+        message: response.message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          templateSectionItemCreateStatus: EntityStatus.failure));
+    }
   }
 }

@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class Question extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   final String responseScaleId;
-  final String order;
+  final int order;
   const Question({
-    required this.id,
+    this.id,
     required this.name,
     required this.responseScaleId,
-    required this.order,
+    this.order = 0,
   });
   @override
   List<Object?> get props => [
@@ -35,7 +35,7 @@ class Question extends Equatable {
       id: map['id'] as String,
       name: map['name'] as String,
       responseScaleId: map['responseScaleId'] as String,
-      order: map['order'] as String,
+      order: map['order'],
     );
   }
 
@@ -48,7 +48,7 @@ class Question extends Equatable {
     String? id,
     String? name,
     String? responseScaleId,
-    String? order,
+    int? order,
   }) {
     return Question(
       id: id ?? this.id,

@@ -1,12 +1,12 @@
 import '/common_libraries.dart';
 
 class PossibleAnswersToQuestion extends StatefulWidget {
-  final bool childQuestion;
+  final bool child;
   final String templateSectionItemId;
 
   const PossibleAnswersToQuestion({
     super.key,
-    required this.childQuestion,
+    required this.child,
     required this.templateSectionItemId,
   });
 
@@ -60,7 +60,7 @@ class _PossibleAnswersToQuestionState extends State<PossibleAnswersToQuestion> {
                       templateDesignerBloc.add(
                         TemplateDesignerResponseScaleItemListLoaded(
                           templateSectionItemId: widget.templateSectionItemId,
-                          child: widget.childQuestion,
+                          child: widget.child,
                           responseScaleId: (value.value as ResponseScale).id,
                         ),
                       );

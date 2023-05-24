@@ -3,10 +3,10 @@ import 'widgets/widgets.dart';
 
 class AddEditQuestionView extends StatelessWidget {
   final TemplateSectionItem templateSectionItem;
-  final bool childQuestion;
+  final bool child;
   const AddEditQuestionView({
     super.key,
-    this.childQuestion = false,
+    this.child = false,
     required this.templateSectionItem,
   });
 
@@ -21,21 +21,23 @@ class AddEditQuestionView extends StatelessWidget {
           children: [
             QuestionTextField(
               question: templateSectionItem.question?.name,
+              child: child,
+              templateSectionItemId: templateSectionItem.id ?? emptyGuid,
             ),
             const SizedBox(width: 5),
             PossibleAnswersToQuestion(
-              childQuestion: childQuestion,
+              child: child,
               templateSectionItemId: templateSectionItem.id ?? emptyGuid,
             ),
           ],
         ),
         const SizedBox(height: 30),
         ResponseLogicBuilder(
-          childQuestion: childQuestion,
+          child: child,
           templateSectionItemList: templateSectionItem.children,
         ),
         const SizedBox(height: 20),
-        childQuestion
+        child
             ? Container()
             : Row(
                 mainAxisSize: MainAxisSize.min,

@@ -89,12 +89,23 @@ class TemplateDesignerCancelCreateQuestionButtonClicked
 
 class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
   final String question;
+  final String templateSectionItemId;
+  final String responseScaleId;
+  final bool child;
   const TemplateDesignerQuestionChanged({
     required this.question,
+    required this.child,
+    required this.templateSectionItemId,
+    required this.responseScaleId,
   });
 
   @override
-  List<Object> get props => [question];
+  List<Object> get props => [
+        question,
+        templateSectionItemId,
+        responseScaleId,
+        child,
+      ];
 }
 
 class TemplateDesignerTemplateSectionItemCreated

@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 class ResponseScaleItem extends Equatable {
   final String id;
   final String name;
-  final String responseScaleItemId;
+  final String? responseScaleItemId;
   final double score;
   final bool commentRequiered;
   final bool actionItemRequired;
@@ -14,7 +14,7 @@ class ResponseScaleItem extends Equatable {
   const ResponseScaleItem({
     required this.id,
     required this.name,
-    required this.responseScaleItemId,
+    this.responseScaleItemId,
     required this.score,
     required this.commentRequiered,
     required this.actionItemRequired,
@@ -58,9 +58,8 @@ class ResponseScaleItem extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
-      'responseScaleItemId': responseScaleItemId,
+      'responseScaleItemId': id,
       'score': score,
       'commentRequiered': commentRequiered,
       'actionItemRequired': actionItemRequired,

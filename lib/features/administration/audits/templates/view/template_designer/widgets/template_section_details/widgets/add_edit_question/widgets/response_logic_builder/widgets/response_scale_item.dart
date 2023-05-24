@@ -6,13 +6,13 @@ class ResponseScaleItemView extends StatefulWidget {
   final TemplateSectionItem templateSectionItem;
   final String response;
   final bool include;
-  final bool childQuestion;
+  final bool child;
   const ResponseScaleItemView({
     super.key,
     required this.templateSectionItem,
     required this.response,
     required this.include,
-    this.childQuestion = false,
+    this.child = false,
   });
 
   @override
@@ -80,7 +80,7 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                           activeColor: const Color.fromRGBO(115, 117, 233, 1),
                         ),
                       ),
-                      ...(widget.childQuestion
+                      ...(widget.child
                           ? []
                           : [
                               Expanded(
@@ -128,7 +128,7 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                         ),
                         child: AddEditQuestionView(
                           templateSectionItem: widget.templateSectionItem,
-                          childQuestion: true,
+                          child: true,
                         ),
                       ),
                     ],

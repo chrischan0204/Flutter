@@ -1,9 +1,22 @@
 import '/common_libraries.dart';
 
-class SaveQuestionButton extends StatelessWidget {
+class SaveQuestionButton extends StatefulWidget {
   const SaveQuestionButton({
     super.key,
   });
+
+  @override
+  State<SaveQuestionButton> createState() => _SaveQuestionButtonState();
+}
+
+class _SaveQuestionButtonState extends State<SaveQuestionButton> {
+  late TemplateDesignerBloc templateDesignerBloc;
+
+  @override
+  void initState() {
+    templateDesignerBloc = context.read();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,8 @@ class SaveQuestionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      onPressed: () {},
+      onPressed: () => templateDesignerBloc
+          .add(TemplateDesignerTemplateSectionItemCreated()),
       child: const Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 20,

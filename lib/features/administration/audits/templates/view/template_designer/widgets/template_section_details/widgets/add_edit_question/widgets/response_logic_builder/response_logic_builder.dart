@@ -2,11 +2,11 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class ResponseLogicBuilder extends StatelessWidget {
-  final bool childQuestion;
+  final bool child;
   final List<TemplateSectionItem> templateSectionItemList;
   const ResponseLogicBuilder({
     super.key,
-    required this.childQuestion,
+    required this.child,
     this.templateSectionItemList = const [],
   });
 
@@ -42,7 +42,7 @@ class ResponseLogicBuilder extends StatelessWidget {
                     .map((templateSectionItem) => ResponseScaleItemView(
                           response: templateSectionItem.response?.name ?? '',
                           include: true,
-                          childQuestion: childQuestion,
+                          child: child,
                           templateSectionItem: templateSectionItem,
                         ))
                     .toList())
