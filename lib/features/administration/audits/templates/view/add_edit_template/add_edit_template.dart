@@ -110,8 +110,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
         }
       },
       listenWhen: (previous, current) =>
-          previous.templateAddStatus != current.templateAddStatus &&
-          current.templateAddStatus.isSuccess,
+          previous.templateAddEditStatus != current.templateAddEditStatus &&
+          current.templateAddEditStatus.isSuccess,
       builder: (context, addEditTemplateState) {
         return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, templateDetailState) {
@@ -135,10 +135,12 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 id: widget.templateId,
                 selectedEntity: templateDetailState.template,
                 addButtonName: addButtonName,
-                addEntity: () =>
-                    addEditTemplateBloc.add(AddEditTemplateTemplateAdded()),
-                editEntity: () => _editTemplate(),
-                crudStatus: addEditTemplateState.templateAddStatus,
+                addEntity: () => addEditTemplateBloc
+                    .add(const AddEditTemplateTemplateAddEdited()),
+                editEntity: () => addEditTemplateBloc.add(
+                    AddEditTemplateTemplateAddEdited(
+                        templateId: widget.templateId)),
+                crudStatus: addEditTemplateState.templateAddEditStatus,
                 isCrudDataFill: _checkFormDataFill(addEditTemplateState),
                 tabItems: _buildTabs(),
                 tabWidth: 500,
@@ -173,10 +175,5 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
       };
     }
     return {};
-  }
-
-  void _editTemplate() {
-    // addEditTemplateBloc
-    //       .add(AddEditTemplateTemplateEdited(templateId: widget.templateId!))
   }
 }

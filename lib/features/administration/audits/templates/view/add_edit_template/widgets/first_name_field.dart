@@ -28,8 +28,8 @@ class _FirstNameFieldState extends State<FirstNameField> {
         ).showNotification();
       },
       listenWhen: (previous, current) =>
-          previous.templateAddStatus != current.templateAddStatus &&
-          current.templateAddStatus.isFailure &&
+          previous.templateAddEditStatus != current.templateAddEditStatus &&
+          current.templateAddEditStatus.isFailure &&
           previous.message != current.message,
       builder: (context, state) => FormItem(
         label: 'Template Description (*)',

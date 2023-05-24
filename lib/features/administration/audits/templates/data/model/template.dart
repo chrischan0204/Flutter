@@ -68,12 +68,16 @@ class Template extends Entity {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = {
       'revisionDate': revisionDate,
       'name': name,
       'usedInInspection': usedInInspection,
       'usedInAudit': usedInAudit,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+    return map;
   }
 
   factory Template.fromMap(Map<String, dynamic> map) {
@@ -81,7 +85,10 @@ class Template extends Entity {
     return Template(
       id: entity.id,
       name: entity.name,
-      revisionDate: map['revisionDate'] ?? '',
+      revisionDate: map['revisionDate'] != null
+          ? FormatDate(format: 'd MMMM y', dateString: map['revisionDate'])
+              .formatDate
+          : '--',
       usedInAudit: map['usedInAudit'] ?? false,
       usedInInspection: map['usedInInspection'] ?? false,
       locked: map['locked'] ?? false,
