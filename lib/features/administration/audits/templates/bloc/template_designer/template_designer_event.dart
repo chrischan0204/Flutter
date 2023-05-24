@@ -108,5 +108,77 @@ class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
       ];
 }
 
+class TemplateDesignerCommentRequiredChanged extends TemplateDesignerEvent {
+  final bool commentRequired;
+  final String templateSectionItemId;
+  final bool child;
+  const TemplateDesignerCommentRequiredChanged({
+    required this.child,
+    required this.templateSectionItemId,
+    required this.commentRequired,
+  });
+
+  @override
+  List<Object> get props => [
+        templateSectionItemId,
+        child,
+        commentRequired,
+      ];
+}
+
+class TemplateDesignerActionItemChanged extends TemplateDesignerEvent {
+  final bool actionItemRequired;
+  final String templateSectionItemId;
+  final bool child;
+  const TemplateDesignerActionItemChanged({
+    required this.child,
+    required this.templateSectionItemId,
+    required this.actionItemRequired,
+  });
+
+  @override
+  List<Object> get props => [
+        templateSectionItemId,
+        child,
+        actionItemRequired,
+      ];
+}
+
+class TemplateDesignerFollowUpRequiredChanged extends TemplateDesignerEvent {
+  final bool followUpRequired;
+  final String templateSectionItemId;
+  final bool child;
+  const TemplateDesignerFollowUpRequiredChanged({
+    required this.child,
+    required this.templateSectionItemId,
+    required this.followUpRequired,
+  });
+
+  @override
+  List<Object> get props => [
+        templateSectionItemId,
+        child,
+        followUpRequired,
+      ];
+}
+
+class TemplateDesignerScoreChanged extends TemplateDesignerEvent {
+  final double score;
+  final String templateSectionItemId;
+  final bool child;
+  const TemplateDesignerScoreChanged({
+    required this.child,
+    required this.templateSectionItemId,
+    required this.score,
+  });
+
+  @override
+  List<Object> get props => [
+        templateSectionItemId,
+        child,
+        score,
+      ];
+}
+
 class TemplateDesignerTemplateSectionItemCreated
     extends TemplateDesignerEvent {}

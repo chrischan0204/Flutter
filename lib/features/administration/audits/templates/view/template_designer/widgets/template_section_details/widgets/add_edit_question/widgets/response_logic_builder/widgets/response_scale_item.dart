@@ -20,11 +20,14 @@ class ResponseScaleItemView extends StatefulWidget {
 }
 
 class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
+  late TemplateDesignerBloc templateDesignerBloc;
+
   late bool include;
   bool followUp = false;
 
   @override
   void initState() {
+    templateDesignerBloc = context.read();
     include = widget.include;
     super.initState();
   }
@@ -54,10 +57,17 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                     ),
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: SizedBox(
                     width: 70,
-                    child: CustomTextField(),
+                    child: CustomTextField(
+                      onChanged: (value) => templateDesignerBloc.add(
+                          TemplateDesignerScoreChanged(
+                              child: widget.child,
+                              templateSectionItemId:
+                                  widget.templateSectionItem.id!,
+                              score: double.parse(value))),
+                    ),
                   ),
                 ),
                 Flexible(
@@ -66,7 +76,17 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                     children: [
                       Expanded(
                         child: ResponseScaleItemIcon(
+                          onClick: (commentRequired) => templateDesignerBloc
+                              .add(TemplateDesignerCommentRequiredChanged(
+                            child: widget.child,
+                            templateSectionItemId:
+                                widget.templateSectionItem.id!,
+                            commentRequired: commentRequired,
+                          )),
                           include: include,
+                          active: widget.templateSectionItem.response
+                                  ?.commentRequiered ??
+                              false,
                           iconData: PhosphorIcons.chatCenteredDots,
                           label: 'Comment',
                           activeColor: const Color.fromRGBO(250, 110, 15, 1),
@@ -74,7 +94,17 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                       ),
                       Expanded(
                         child: ResponseScaleItemIcon(
+                          onClick: (actionItemRequired) => templateDesignerBloc
+                              .add(TemplateDesignerActionItemChanged(
+                            child: widget.child,
+                            templateSectionItemId:
+                                widget.templateSectionItem.id!,
+                            actionItemRequired: actionItemRequired,
+                          )),
                           include: include,
+                          active: widget.templateSectionItem.response
+                                  ?.actionItemRequired ??
+                              false,
                           iconData: PhosphorIcons.bellRinging,
                           label: 'Action Item',
                           activeColor: const Color.fromRGBO(115, 117, 233, 1),
@@ -85,9 +115,20 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                           : [
                               Expanded(
                                 child: ResponseScaleItemIcon(
+                                  active: widget.templateSectionItem.response
+                                          ?.followUpRequired ??
+                                      false,
                                   include: include,
-                                  onClick: () =>
-                                      setState(() => followUp = !followUp),
+                                  onClick: (followUpRequired) {
+                                    setState(() => followUp = !followUp);
+                                    templateDesignerBloc.add(
+                                        TemplateDesignerFollowUpRequiredChanged(
+                                      child: widget.child,
+                                      templateSectionItemId:
+                                          widget.templateSectionItem.id!,
+                                      followUpRequired: followUpRequired,
+                                    ));
+                                  },
                                   iconData: PhosphorIcons.bookmark,
                                   label: 'Follow up',
                                   activeColor:

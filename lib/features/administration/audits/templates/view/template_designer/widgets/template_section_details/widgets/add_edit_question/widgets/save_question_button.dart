@@ -24,13 +24,14 @@ class _SaveQuestionButtonState extends State<SaveQuestionButton> {
       listener: (context, state) {
         CustomNotification(
           context: context,
-          notifyType: NotifyType.info,
+          notifyType: NotifyType.success,
           content: state.message,
-        );
+        ).showNotification();
       },
       listenWhen: (previous, current) =>
           previous.templateSectionItemCreateStatus !=
-          current.templateSectionItemCreateStatus,
+              current.templateSectionItemCreateStatus &&
+          current.templateSectionItemCreateStatus.isSuccess,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: successColor,

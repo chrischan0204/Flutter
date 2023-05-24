@@ -5,7 +5,8 @@ class ResponseScaleItemIcon extends StatefulWidget {
   final IconData iconData;
   final String label;
   final Color activeColor;
-  final VoidCallback? onClick;
+  final ValueChanged<bool>? onClick;
+  final bool active;
   const ResponseScaleItemIcon({
     super.key,
     this.include = true,
@@ -13,6 +14,7 @@ class ResponseScaleItemIcon extends StatefulWidget {
     required this.label,
     required this.activeColor,
     this.onClick,
+    required this.active,
   });
 
   @override
@@ -20,7 +22,6 @@ class ResponseScaleItemIcon extends StatefulWidget {
 }
 
 class _ResponseScaleItemIconState extends State<ResponseScaleItemIcon> {
-  bool active = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,10 +30,8 @@ class _ResponseScaleItemIconState extends State<ResponseScaleItemIcon> {
         ElevatedButton(
           onPressed: () {
             if (widget.include) {
-              setState(() => active = !active);
-
               if (widget.onClick != null) {
-                widget.onClick!();
+                widget.onClick!(!widget.active);
               }
             } else {
               CustomAlert(
@@ -48,7 +47,7 @@ class _ResponseScaleItemIconState extends State<ResponseScaleItemIcon> {
           },
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
-            backgroundColor: active
+            backgroundColor: widget.active
                 ? widget.activeColor
                 : const Color.fromRGBO(153, 153, 153, 1),
           ),

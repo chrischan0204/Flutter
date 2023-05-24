@@ -32,7 +32,12 @@ class TemplateDesignerBloc
     on<TemplateDesignerQuestionChanged>(_onTemplateDesignerQuestionChanged);
     on<TemplateDesignerTemplateSectionItemCreated>(
         _onTemplateDesignerTemplateSectionItemCreated);
-
+    on<TemplateDesignerCommentRequiredChanged>(
+        _onTemplateDesignerCommentRequiredChanged);
+    on<TemplateDesignerActionItemChanged>(_onTemplateDesignerActionItemChanged);
+    on<TemplateDesignerFollowUpRequiredChanged>(
+        _onTemplateDesignerFollowUpRequiredChanged);
+    on<TemplateDesignerScoreChanged>(_onTemplateDesignerScoreChanged);
     on<TemplateDesignerNewQuestionButtonClicked>(
         _onTemplateDesignerNewQuestionButtonClicked);
     on<TemplateDesignerCancelCreateQuestionButtonClicked>(
@@ -56,9 +61,9 @@ class TemplateDesignerBloc
       add(TemplateDesignerTemplateSectionItemQuestionList(
           templateSectionId: nextState.selectedTemplateSection!.id));
     }
-    // print('current');
-    // print(currentState.templateSectionItem);
-    // print('next');
+    print('current');
+    print(currentState.templateSectionItem);
+    print('next');
     print(nextState.templateSectionItem);
 
     super.onChange(change);
@@ -274,6 +279,184 @@ class TemplateDesignerBloc
         responseScaleId: event.responseScaleId,
         order: 0,
       ));
+    }
+
+    emit(state.copyWith(
+      templateSectionItem: Nullable.value(newTemplateSection),
+      responseScaleItemListLoadStatus: EntityStatus.success,
+    ));
+  }
+
+  void _onTemplateDesignerCommentRequiredChanged(
+    TemplateDesignerCommentRequiredChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    late TemplateSectionItem newTemplateSection;
+    if (event.child) {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response
+                  ?.copyWith(commentRequiered: event.commentRequired)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    } else {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response
+                  ?.copyWith(commentRequiered: event.commentRequired)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    }
+
+    emit(state.copyWith(
+      templateSectionItem: Nullable.value(newTemplateSection),
+      responseScaleItemListLoadStatus: EntityStatus.success,
+    ));
+  }
+
+  void _onTemplateDesignerActionItemChanged(
+    TemplateDesignerActionItemChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    late TemplateSectionItem newTemplateSection;
+    if (event.child) {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response
+                  ?.copyWith(actionItemRequired: event.actionItemRequired)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    } else {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response
+                  ?.copyWith(actionItemRequired: event.actionItemRequired)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    }
+
+    emit(state.copyWith(
+      templateSectionItem: Nullable.value(newTemplateSection),
+      responseScaleItemListLoadStatus: EntityStatus.success,
+    ));
+  }
+
+  void _onTemplateDesignerFollowUpRequiredChanged(
+    TemplateDesignerFollowUpRequiredChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    late TemplateSectionItem newTemplateSection;
+    if (event.child) {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response
+                  ?.copyWith(followUpRequired: event.followUpRequired)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    } else {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response
+                  ?.copyWith(followUpRequired: event.followUpRequired)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    }
+
+    emit(state.copyWith(
+      templateSectionItem: Nullable.value(newTemplateSection),
+      responseScaleItemListLoadStatus: EntityStatus.success,
+    ));
+  }
+
+  void _onTemplateDesignerScoreChanged(
+    TemplateDesignerScoreChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    late TemplateSectionItem newTemplateSection;
+    if (event.child) {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response?.copyWith(score: event.score)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
+    } else {
+      final List<TemplateSectionItem> children =
+          List.from(state.templateSectionItem!.children);
+      final result = children
+          .firstWhere((element) => element.id == event.templateSectionItemId);
+      final index = children
+          .indexWhere((element) => element.id == event.templateSectionItemId);
+
+      children.removeAt(index);
+      children.insert(
+          index,
+          result.copyWith(
+              response: result.response?.copyWith(score: event.score)));
+      newTemplateSection =
+          state.templateSectionItem!.copyWith(children: children);
     }
 
     emit(state.copyWith(
