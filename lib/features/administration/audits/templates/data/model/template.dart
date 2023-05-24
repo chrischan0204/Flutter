@@ -40,6 +40,9 @@ class Template extends Entity {
         templateSites,
       ];
 
+  String get formatedRevisionDate => revisionDate.isNotEmpty ?
+      FormatDate(format: 'd MMMM y', dateString: revisionDate).formatDate : '--';
+
   @override
   Map<String, dynamic> tableItemsToMap() {
     return {
@@ -85,10 +88,7 @@ class Template extends Entity {
     return Template(
       id: entity.id,
       name: entity.name,
-      revisionDate: map['revisionDate'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['revisionDate'])
-              .formatDate
-          : '--',
+      revisionDate: map['revisionDate'] ?? '',
       usedInAudit: map['usedInAudit'] ?? false,
       usedInInspection: map['usedInInspection'] ?? false,
       locked: map['locked'] ?? false,

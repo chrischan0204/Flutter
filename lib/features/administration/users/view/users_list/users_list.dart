@@ -18,27 +18,18 @@ class _UsersListViewState extends State<UsersListView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
         token = state.authUser?.token ?? '';
-        return MultiRepositoryProvider(
+        return MultiBlocProvider(
           providers: [
-            RepositoryProvider(
-                create: (context) => UsersRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
+            BlocProvider(
+                create: (context) => UserListBloc(
+                    usersRepository:
+                        RepositoryProvider.of<UsersRepository>(context))),
+            BlocProvider(
+                create: (context) => UserDetailBloc(
+                    usersRepository:
+                        RepositoryProvider.of<UsersRepository>(context))),
           ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => UserListBloc(
-                      usersRepository:
-                          RepositoryProvider.of<UsersRepository>(context))),
-              BlocProvider(
-                  create: (context) => UserDetailBloc(
-                      usersRepository:
-                          RepositoryProvider.of<UsersRepository>(context))),
-            ],
-            child: const UsersListWidget(),
-          ),
+          child: const UsersListWidget(),
         );
       },
     );

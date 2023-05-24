@@ -181,7 +181,7 @@ class Entity extends Equatable {
               .formatDate
           : '--',
       lastModifiedByUserName:
-          map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '--',
+          map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '',
     );
   }
 

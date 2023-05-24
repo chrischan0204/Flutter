@@ -34,7 +34,7 @@ class TemplatesRepository extends BaseRepository {
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
-        return EntityResponse(isSuccess: true, message: response.body)
+        return EntityResponse.fromJson(response.body)
             .copyWith(statusCode: response.statusCode);
       }
       return EntityResponse.fromJson(response.body)

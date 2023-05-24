@@ -26,28 +26,22 @@ class _UserDetailViewState extends State<UserDetailView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
         token = state.authUser?.token ?? '';
-        return RepositoryProvider(
-          create: (context) => UsersRepository(
-            token: token,
-            authBloc: BlocProvider.of(context),
-          ),
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => UserDetailBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => AssignSiteToUserBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => NotificationSettingBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => UserInviteBloc(
-                      usersRepository: RepositoryProvider.of(context)))
-            ],
-            child: UserDetailWidget(userId: widget.userId),
-          ),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+                create: (context) => UserDetailBloc(
+                    usersRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => AssignSiteToUserBloc(
+                    usersRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => NotificationSettingBloc(
+                    usersRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => UserInviteBloc(
+                    usersRepository: RepositoryProvider.of(context)))
+          ],
+          child: UserDetailWidget(userId: widget.userId),
         );
       },
     );

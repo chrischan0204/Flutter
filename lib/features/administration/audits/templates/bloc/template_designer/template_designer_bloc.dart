@@ -298,7 +298,9 @@ class TemplateDesignerBloc
       ));
     } catch (e) {
       emit(state.copyWith(
-          templateSectionItemCreateStatus: EntityStatus.failure));
+        templateSectionItemCreateStatus: EntityStatus.failure,
+        message: 'Something went wrong',
+      ));
     }
   }
 }

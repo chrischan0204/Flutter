@@ -103,6 +103,34 @@ class _MyAppState extends State<MyApp> {
                 authBloc: BlocProvider.of(context),
               ),
             ),
+            RepositoryProvider(
+              create: (context) => TemplatesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+              create: (context) => SectionsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+              create: (context) => ResponseScalesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+                create: (context) => UsersRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
+            RepositoryProvider(
+                create: (context) => TimeZonesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
           ],
           child: MultiBlocProvider(
             providers: [

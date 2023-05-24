@@ -18,25 +18,16 @@ class _TemplateListViewState extends State<TemplateListView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
         token = state.authUser?.token ?? '';
-        return MultiRepositoryProvider(
+        return MultiBlocProvider(
           providers: [
-            RepositoryProvider(
-                create: (context) => TemplatesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
+            BlocProvider(
+                create: (context) => TemplateListBloc(
+                    templatesRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => TemplateDetailBloc(
+                    templatesRepository: RepositoryProvider.of(context))),
           ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => TemplateListBloc(
-                      templatesRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => TemplateDetailBloc(
-                      templatesRepository: RepositoryProvider.of(context))),
-            ],
-            child: const TemplateListWidget(),
-          ),
+          child: const TemplateListWidget(),
         );
       },
     );

@@ -25,28 +25,19 @@ class _AddEditTemplateViewState extends State<AddEditTemplateView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, addEditTemplateState) {
         token = addEditTemplateState.authUser?.token ?? '';
-        return MultiRepositoryProvider(
+        return MultiBlocProvider(
           providers: [
-            RepositoryProvider(
-                create: (context) => TemplatesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
+            BlocProvider(
+                create: (context) => AddEditTemplateBloc(
+                      templatesRepository: RepositoryProvider.of(context),
                     )),
+            BlocProvider(
+                create: (context) => TemplateDetailBloc(
+                    templatesRepository: RepositoryProvider.of(context))),
           ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => AddEditTemplateBloc(
-                        templatesRepository: RepositoryProvider.of(context),
-                      )),
-              BlocProvider(
-                  create: (context) => TemplateDetailBloc(
-                      templatesRepository: RepositoryProvider.of(context))),
-            ],
-            child: AddEditTemplateWidget(
-              templateId: widget.templateId,
-              view: widget.view,
-            ),
+          child: AddEditTemplateWidget(
+            templateId: widget.templateId,
+            view: widget.view,
           ),
         );
       },
@@ -104,10 +95,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
           notifyType: NotifyType.success,
           content: addEditTemplateState.message,
         ).showNotification();
-        if (widget.templateId == null) {
-          GoRouter.of(context).go(
-              '/templates/designer/${addEditTemplateState.createdTemplateId}');
-        }
+        GoRouter.of(context).go(
+            '/templates/designer/${addEditTemplateState.createdTemplateId}');
       },
       listenWhen: (previous, current) =>
           previous.templateAddEditStatus != current.templateAddEditStatus &&

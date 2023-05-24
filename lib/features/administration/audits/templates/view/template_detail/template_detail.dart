@@ -22,19 +22,13 @@ class _TemplateDetailViewState extends State<TemplateDetailView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
         token = state.authUser?.token ?? '';
-        return RepositoryProvider(
-          create: (context) => TemplatesRepository(
-            token: token,
-            authBloc: BlocProvider.of(context),
-          ),
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => TemplateDetailBloc(
-                      templatesRepository: RepositoryProvider.of(context))),
-            ],
-            child: TemplateDetailWidget(templateId: widget.templateId),
-          ),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+                create: (context) => TemplateDetailBloc(
+                    templatesRepository: RepositoryProvider.of(context))),
+          ],
+          child: TemplateDetailWidget(templateId: widget.templateId),
         );
       },
     );

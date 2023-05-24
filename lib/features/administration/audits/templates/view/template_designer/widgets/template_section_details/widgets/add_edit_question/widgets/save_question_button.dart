@@ -20,24 +20,36 @@ class _SaveQuestionButtonState extends State<SaveQuestionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: successColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+    return BlocListener<TemplateDesignerBloc, TemplateDesignerState>(
+      listener: (context, state) {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: state.message,
+        );
+      },
+      listenWhen: (previous, current) =>
+          previous.templateSectionItemCreateStatus !=
+          current.templateSectionItemCreateStatus,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: successColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
         ),
-      ),
-      onPressed: () => templateDesignerBloc
-          .add(TemplateDesignerTemplateSectionItemCreated()),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        child: Text(
-          'Save Question',
-          style: TextStyle(
-            color: Colors.white,
+        onPressed: () => templateDesignerBloc
+            .add(TemplateDesignerTemplateSectionItemCreated()),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
+          child: Text(
+            'Save Question',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       ),
