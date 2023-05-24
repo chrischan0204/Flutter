@@ -2,27 +2,27 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import 'model.dart';
+import '/common_libraries.dart';
 
 class TemplateSectionItem extends Equatable {
-  final String id;
+  final String? id;
   final String templateSectionId;
   final int itemTypeId;
   final String responseScaleId;
-  final String parentId;
-  final Question question;
-  final ResponseScaleItem response;
-  final List<dynamic> children;
+  final String? parentId;
+  final Question? question;
+  final ResponseScaleItem? response;
+  final List<TemplateSectionItem> children;
 
   const TemplateSectionItem({
-    required this.id,
-    required this.templateSectionId,
-    required this.itemTypeId,
-    required this.responseScaleId,
-    required this.parentId,
-    required this.question,
-    required this.response,
-    required this.children,
+    this.id,
+    this.templateSectionId = emptyGuid,
+    this.itemTypeId = 1,
+    this.responseScaleId = emptyGuid,
+    this.parentId,
+    this.question,
+    this.response,
+    this.children = const [],
   });
 
   @override
@@ -37,17 +37,29 @@ class TemplateSectionItem extends Equatable {
         children,
       ];
 
+  bool get isNotBlank =>
+      children.isNotEmpty ||
+      question != null ||
+      responseScaleId != emptyGuid ||
+      children.isNotEmpty;
+
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = {
       'id': id,
       'templateSectionId': templateSectionId,
       'itemTypeId': itemTypeId,
       'responseScaleId': responseScaleId,
       'parentId': parentId,
-      'question': question.toMap(),
-      'response': response.toMap(),
-      'children': children,
+      'question': question?.toMap(),
+      'response': response?.toMap(),
     };
+
+    if (children.isNotEmpty) {
+      map.addEntries(
+          [MapEntry('children', children.map((e) => e.toMap()).toList())]);
+    }
+
+    return map;
   }
 
   factory TemplateSectionItem.fromMap(Map<String, dynamic> map) {
@@ -77,7 +89,7 @@ class TemplateSectionItem extends Equatable {
     String? parentId,
     Question? question,
     ResponseScaleItem? response,
-    List<dynamic>? children,
+    List<TemplateSectionItem>? children,
   }) {
     return TemplateSectionItem(
       id: id ?? this.id,

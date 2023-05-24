@@ -1,16 +1,18 @@
-import '../../../add_edit_question.dart';
 import '/common_libraries.dart';
 import 'response_scale_item_icon.dart';
+import '../../../add_edit_question.dart';
 
 class ResponseScaleItemView extends StatefulWidget {
+  final TemplateSectionItem templateSectionItem;
   final String response;
   final bool include;
-  final bool followUpQuestion;
+  final bool childQuestion;
   const ResponseScaleItemView({
     super.key,
+    required this.templateSectionItem,
     required this.response,
     required this.include,
-    this.followUpQuestion = false,
+    this.childQuestion = false,
   });
 
   @override
@@ -78,7 +80,7 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                           activeColor: const Color.fromRGBO(115, 117, 233, 1),
                         ),
                       ),
-                      ...(widget.followUpQuestion
+                      ...(widget.childQuestion
                           ? []
                           : [
                               Expanded(
@@ -107,8 +109,8 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                   margin: const EdgeInsets.all(10),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Padding(
+                    children: [
+                      const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
                           'Follow up',
@@ -118,13 +120,16 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                           ),
                         ),
                       ),
-                      CustomDivider(),
+                      const CustomDivider(),
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 8.0,
                           horizontal: 100,
                         ),
-                        child: AddEditQuestion(followUpQuestion: true),
+                        child: AddEditQuestionView(
+                          templateSectionItem: widget.templateSectionItem,
+                          childQuestion: true,
+                        ),
                       ),
                     ],
                   ),

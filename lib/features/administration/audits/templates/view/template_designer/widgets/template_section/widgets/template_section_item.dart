@@ -1,13 +1,27 @@
 import '/common_libraries.dart';
 
-class TemplateSectionItemView extends StatelessWidget {
-  final String sectionName;
+class TemplateSectionItemView extends StatefulWidget {
+  final TemplateSection templateSection;
   final int templateSectionItemCount;
   const TemplateSectionItemView({
     super.key,
-    required this.sectionName,
+    required this.templateSection,
     required this.templateSectionItemCount,
   });
+
+  @override
+  State<TemplateSectionItemView> createState() =>
+      _TemplateSectionItemViewState();
+}
+
+class _TemplateSectionItemViewState extends State<TemplateSectionItemView> {
+  late TemplateDesignerBloc templateDesignerBloc;
+
+  @override
+  void initState() {
+    templateDesignerBloc = context.read();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +34,16 @@ class TemplateSectionItemView extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(sectionName,
+                  Text(widget.templateSection.name,
                       style: const TextStyle(fontSize: 14, color: Colors.blue)),
-                  Text(' - ($templateSectionItemCount question)',
+                  Text(' - (${widget.templateSectionItemCount} question)',
                       style: const TextStyle(fontSize: 11))
                 ],
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => templateDesignerBloc.add(
+                    TemplateDesignerTemplateSectionSelected(
+                        templateSection: widget.templateSection)),
                 icon: Icon(
                   PhosphorIcons.caretCircleDoubleRight,
                   size: 18,

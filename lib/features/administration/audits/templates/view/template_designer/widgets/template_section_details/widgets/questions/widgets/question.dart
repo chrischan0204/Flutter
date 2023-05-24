@@ -1,20 +1,18 @@
 import '/common_libraries.dart';
-import 'widgets/widgets.dart';
 
-class Question extends StatefulWidget {
+class QuestionView extends StatefulWidget {
   final String question;
 
-  const Question({
+  const QuestionView({
     super.key,
     required this.question,
   });
 
   @override
-  State<Question> createState() => _QuestionState();
+  State<QuestionView> createState() => _QuestionViewState();
 }
 
-class _QuestionState extends State<Question> {
-  bool editQuestion = false;
+class _QuestionViewState extends State<QuestionView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,13 +22,6 @@ class _QuestionState extends State<Question> {
           height: 30,
         ),
         Builder(builder: (context) {
-          if (editQuestion) {
-            return AddEditQuestion(
-              question: widget.question,
-              onMinimizeQuestion: () =>
-                  setState(() => editQuestion = !editQuestion),
-            );
-          }
           return Card(
             elevation: 3,
             shape: RoundedRectangleBorder(
@@ -77,8 +68,7 @@ class _QuestionState extends State<Question> {
                     width: 60,
                     child: Center(
                       child: IconButton(
-                        onPressed: () =>
-                            setState(() => editQuestion = !editQuestion),
+                        onPressed: () {},
                         icon: const Icon(
                           PhosphorIcons.caretCircleDoubleDown,
                           size: 20,

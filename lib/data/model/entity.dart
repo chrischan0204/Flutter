@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:safety_eta/common_libraries.dart';
 
-import 'package:safety_eta/utils/utils.dart';
+class Nullable<T> {
+  final T value;
+  const Nullable.value(this.value);
+}
 
 class EntityHeader extends Equatable {
   final String name;
@@ -74,7 +77,8 @@ class FilteredEntity extends Equatable {
       createdBy: map['created_By'] ?? '',
       createdById: map['created_By'] ?? emptyGuid,
       lastModifiedOn: map['last_Modified_On'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
+          ? FormatDate(
+                  format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
               .formatDate
           : '--',
       lastModifiedByUserName: map['last_Modified_By'] ?? '',

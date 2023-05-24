@@ -2,10 +2,12 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class ResponseLogicBuilder extends StatelessWidget {
-  final bool followUpQuestion;
+  final bool childQuestion;
+  final List<TemplateSectionItem> templateSectionItemList;
   const ResponseLogicBuilder({
     super.key,
-    required this.followUpQuestion,
+    required this.childQuestion,
+    this.templateSectionItemList = const [],
   });
 
   @override
@@ -34,31 +36,16 @@ class ResponseLogicBuilder extends StatelessWidget {
                 'Yes/No response scale',
               ),
             ),
-            ResponseScaleItemView(
-              response: 'Yes',
-              include: true,
-              followUpQuestion: followUpQuestion,
-            ),
-            ResponseScaleItemView(
-              response: 'No',
-              include: true,
-              followUpQuestion: followUpQuestion,
-            ),
-            ResponseScaleItemView(
-              response: 'Maybe',
-              include: false,
-              followUpQuestion: followUpQuestion,
-            ),
-            ResponseScaleItemView(
-              response: 'Not applicable',
-              include: false,
-              followUpQuestion: followUpQuestion,
-            ),
-            ResponseScaleItemView(
-              response: 'Input Required',
-              include: false,
-              followUpQuestion: followUpQuestion,
-            ),
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                children: templateSectionItemList
+                    .map((templateSectionItem) => ResponseScaleItemView(
+                          response: templateSectionItem.response?.name ?? '',
+                          include: true,
+                          childQuestion: childQuestion,
+                          templateSectionItem: templateSectionItem,
+                        ))
+                    .toList())
           ],
         ),
       ),

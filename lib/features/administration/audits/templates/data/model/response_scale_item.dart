@@ -74,7 +74,7 @@ class ResponseScaleItem extends Equatable {
       name: map['name'] ?? '',
       responseScaleItemId: map['responseScaleItemId'] ?? '',
       score: map['score'] ?? 0,
-      commentRequiered: map['commentRequiered'] ?? '',
+      commentRequiered: map['commentRequiered'] ?? true,
       actionItemRequired: map['actionItemRequired'] ?? true,
       followUpRequired: map['followUpRequired'] ?? true,
       order: map['order'] ?? 0,

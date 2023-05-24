@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
 
@@ -8,8 +9,13 @@ part 'template_designer_state.dart';
 class TemplateDesignerBloc
     extends Bloc<TemplateDesignerEvent, TemplateDesignerState> {
   final TemplatesRepository templatesRepository;
-  TemplateDesignerBloc({required this.templatesRepository})
-      : super(const TemplateDesignerState()) {
+  final ResponseScalesRepository responseScalesRepository;
+  final SectionsRepository sectionsRepository;
+  TemplateDesignerBloc({
+    required this.templatesRepository,
+    required this.responseScalesRepository,
+    required this.sectionsRepository,
+  }) : super(const TemplateDesignerState()) {
     on<TemplateDesignerTemplateSectionListLoaded>(
         _onTemplateDesignerTemplateSectionListLoaded);
     on<TemplateDesignerTemplateSectionAdded>(
@@ -17,16 +23,41 @@ class TemplateDesignerBloc
     on<TemplateDesignerNewSectionChanged>(_onTemplateDesignerNewSectionChanged);
     on<TemplateDesignerResponseScaleListLoaded>(
         _onTemplateDesignerResponseScaleListLoaded);
+    on<TemplateDesignerTemplateSectionSelected>(
+        _onTemplateDesignerTemplateSectionSelected);
+    on<TemplateDesignerTemplateSectionItemQuestionList>(
+        _onTemplateDesignerTemplateSectionItemQuestionList);
+    on<TemplateDesignerResponseScaleItemListLoaded>(
+        _onTemplateDesignerResponseScaleItemListLoaded);
+
+    on<TemplateDesignerNewQuestionButtonClicked>(
+        _onTemplateDesignerNewQuestionButtonClicked);
+    on<TemplateDesignerCancelCreateQuestionButtonClicked>(
+        _onTemplateDesignerCancelCreateQuestionButtonClicked);
   }
 
   @override
   void onChange(Change<TemplateDesignerState> change) {
-    if (change.currentState.templateSectionAddStatus !=
-            change.nextState.templateSectionAddStatus &&
-        change.nextState.templateSectionAddStatus.isSuccess) {
+    final currentState = change.currentState;
+    final nextState = change.nextState;
+    if (currentState.templateSectionAddStatus !=
+            nextState.templateSectionAddStatus &&
+        nextState.templateSectionAddStatus.isSuccess) {
       add(TemplateDesignerTemplateSectionListLoaded(
           templateId: state.templateId));
     }
+
+    if (currentState.selectedTemplateSection !=
+            nextState.selectedTemplateSection &&
+        nextState.selectedTemplateSection != null) {
+      add(TemplateDesignerTemplateSectionItemQuestionList(
+          templateSectionId: nextState.selectedTemplateSection!.id));
+    }
+    // print('current');
+    // print(currentState.templateSectionItem);
+    // print('next');
+    // print(nextState.templateSectionItem);
+
     super.onChange(change);
   }
 
@@ -86,8 +117,124 @@ class TemplateDesignerBloc
 
   Future<void> _onTemplateDesignerResponseScaleListLoaded(
     TemplateDesignerResponseScaleListLoaded event,
-    Emitter<TemplateDesignerState> state,
+    Emitter<TemplateDesignerState> emit,
   ) async {
-    
+    emit(state.copyWith(responseScaleListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<ResponseScale> responseScaleList =
+          await responseScalesRepository.getResponseScaleList();
+      emit(state.copyWith(
+        responseScaleList: responseScaleList,
+        responseScaleListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(responseScaleListLoadStatus: EntityStatus.failure));
+    }
+  }
+
+  void _onTemplateDesignerTemplateSectionSelected(
+    TemplateDesignerTemplateSectionSelected event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    emit(state.copyWith(
+      selectedTemplateSection: event.templateSection,
+      templateSectionItem: const Nullable.value(null),
+    ));
+  }
+
+  Future<void> _onTemplateDesignerTemplateSectionItemQuestionList(
+    TemplateDesignerTemplateSectionItemQuestionList event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    emit(state.copyWith(
+        sectionItemQuestionListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<ResponseScaleItem> sectionItemQuestionList =
+          await responseScalesRepository
+              .getResponseScaleItemList(event.templateSectionId);
+
+      emit(state.copyWith(
+        sectionItemQuestionList: sectionItemQuestionList,
+        sectionItemQuestionListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          sectionItemQuestionListLoadStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onTemplateDesignerResponseScaleItemListLoaded(
+    TemplateDesignerResponseScaleItemListLoaded event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    emit(state.copyWith(responseScaleItemListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<ResponseScaleItem> responseScaleItemList =
+          await responseScalesRepository
+              .getResponseScaleItemList(event.responseScaleId);
+      late TemplateSectionItem newTemplateSection;
+      if (event.child) {
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        final result = children
+            .firstWhere((element) => element.id == event.templateSectionItemId);
+        final index = children
+            .indexWhere((element) => element.id == event.templateSectionItemId);
+
+        children.removeAt(index);
+        children.insert(
+            index,
+            result.copyWith(
+                children: responseScaleItemList
+                    .map((e) => TemplateSectionItem(
+                          id: const Uuid().v1(),
+                          templateSectionId: state.selectedTemplateSection!.id,
+                          responseScaleId: event.responseScaleId,
+                          response: e,
+                        ))
+                    .toList()));
+        newTemplateSection =
+            state.templateSectionItem!.copyWith(children: children);
+      } else {
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: responseScaleItemList
+                .map((e) => TemplateSectionItem(
+                      id: const Uuid().v1(),
+                      templateSectionId: state.selectedTemplateSection!.id,
+                      responseScaleId: event.responseScaleId,
+                      response: e,
+                    ))
+                .toList());
+      }
+
+      emit(state.copyWith(
+        templateSectionItem: Nullable.value(newTemplateSection),
+        responseScaleItemListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          responseScaleItemListLoadStatus: EntityStatus.failure));
+    }
+  }
+
+  void _onTemplateDesignerNewQuestionButtonClicked(
+    TemplateDesignerNewQuestionButtonClicked event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    emit(state.copyWith(
+      templateSectionItem: const Nullable.value(TemplateSectionItem()),
+    ));
+  }
+
+  void _onTemplateDesignerCancelCreateQuestionButtonClicked(
+    TemplateDesignerCancelCreateQuestionButtonClicked event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    emit(state.copyWith(
+      templateSectionItem: null,
+    ));
   }
 }

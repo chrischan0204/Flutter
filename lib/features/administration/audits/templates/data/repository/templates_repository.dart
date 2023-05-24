@@ -107,7 +107,7 @@ class TemplatesRepository extends BaseRepository {
     String templateId,
   ) async {
     Response response =
-        await super.post('$url/section', body: templateSection.toJson());
+        await super.post('$url/sections', body: templateSection.toJson());
 
     return EntityResponse.fromJson(response.body)
         .copyWith(statusCode: response.statusCode);

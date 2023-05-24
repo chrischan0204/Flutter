@@ -27,17 +27,33 @@ class _TemplateDesignerViewState extends State<TemplateDesignerView> {
         return MultiRepositoryProvider(
           providers: [
             RepositoryProvider(
-                create: (context) => TemplatesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
+              create: (context) => TemplatesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+              create: (context) => SectionsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+              create: (context) => ResponseScalesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
           ],
           child: MultiBlocProvider(
             providers: [
               BlocProvider(
-                  create: (context) => TemplateDesignerBloc(
-                        templatesRepository: RepositoryProvider.of(context),
-                      )),
+                create: (context) => TemplateDesignerBloc(
+                  templatesRepository: RepositoryProvider.of(context),
+                  sectionsRepository: RepositoryProvider.of(context),
+                  responseScalesRepository: RepositoryProvider.of(context),
+                ),
+              ),
             ],
             child: TemplateDesignerWidget(
               templateId: widget.templateId,

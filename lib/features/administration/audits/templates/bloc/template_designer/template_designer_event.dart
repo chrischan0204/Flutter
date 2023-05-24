@@ -39,3 +39,63 @@ class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
 }
 
 class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
+
+class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
+  final TemplateSection templateSection;
+  const TemplateDesignerTemplateSectionSelected({
+    required this.templateSection,
+  });
+
+  @override
+  List<Object> get props => [templateSection];
+}
+
+class TemplateDesignerTemplateSectionItemQuestionList
+    extends TemplateDesignerEvent {
+  final String templateSectionId;
+
+  const TemplateDesignerTemplateSectionItemQuestionList({
+    required this.templateSectionId,
+  });
+
+  @override
+  List<Object> get props => [templateSectionId];
+}
+
+class TemplateDesignerResponseScaleItemListLoaded
+    extends TemplateDesignerEvent {
+  final String responseScaleId;
+  final bool child;
+  final String templateSectionItemId;
+
+  const TemplateDesignerResponseScaleItemListLoaded({
+    required this.responseScaleId,
+    required this.child,
+    required this.templateSectionItemId,
+  });
+
+  @override
+  List<Object> get props => [
+        responseScaleId,
+        child,
+        templateSectionItemId,
+      ];
+}
+
+class TemplateDesignerNewQuestionButtonClicked extends TemplateDesignerEvent {}
+
+class TemplateDesignerCancelCreateQuestionButtonClicked
+    extends TemplateDesignerEvent {}
+
+class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
+  final String question;
+  const TemplateDesignerQuestionChanged({
+    required this.question,
+  });
+
+  @override
+  List<Object> get props => [question];
+}
+
+class TemplateDesignerTemplateSectionItemCreated
+    extends TemplateDesignerEvent {}

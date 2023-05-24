@@ -12,4 +12,4 @@ export '/features/administration/users/data/repository/users_repository.dart';
 export '/features/auth/data/repository/auth_repository.dart';
 export 'base_repository.dart';
 export '/features/setting/data/repository/settings_repository.dart';
-export '/features/administration/audits/templates/data/repository/templates_repository.dart';
+export '/features/administration/audits/templates/data/repository/repository.dart';

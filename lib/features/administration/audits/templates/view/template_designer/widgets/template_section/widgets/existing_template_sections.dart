@@ -24,7 +24,7 @@ class _ExistingTemplateSectionsState extends State<ExistingTemplateSections> {
               child: Column(
                 children: state.templateSectionList
                     .map((templateSection) => TemplateSectionItemView(
-                          sectionName: templateSection.name,
+                          templateSection: templateSection,
                           templateSectionItemCount:
                               templateSection.templateSectionItemCount,
                         ))
