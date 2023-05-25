@@ -1,13 +1,13 @@
 import '/common_libraries.dart';
 
-class FirstNameField extends StatefulWidget {
-  const FirstNameField({super.key});
+class TemplateDescriptionField extends StatefulWidget {
+  const TemplateDescriptionField({super.key});
 
   @override
-  State<FirstNameField> createState() => _FirstNameFieldState();
+  State<TemplateDescriptionField> createState() => _TemplateDescriptionFieldState();
 }
 
-class _FirstNameFieldState extends State<FirstNameField> {
+class _TemplateDescriptionFieldState extends State<TemplateDescriptionField> {
   TextEditingController descriptionController = TextEditingController();
   late AddEditTemplateBloc addEditTemplateBloc;
 
@@ -33,14 +33,13 @@ class _FirstNameFieldState extends State<FirstNameField> {
           previous.message != current.message,
       builder: (context, state) => FormItem(
         label: 'Template Description (*)',
-        content: BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
+        content: BlocListener<TemplateDetailBloc, TemplateDetailState>(
           listener: (context, state) {
-            descriptionController.text = state.templateDescription;
-            descriptionController.selection = TextSelection.collapsed(
-                offset: state.templateDescription.length);
+            descriptionController.text = state.template!.name ?? '';
           },
           listenWhen: (previous, current) =>
-              previous.templateDescription != current.templateDescription,
+              previous.template != current.template &&
+              previous.template == null,
           child: CustomTextField(
             controller: descriptionController,
             hintText: 'Template description',

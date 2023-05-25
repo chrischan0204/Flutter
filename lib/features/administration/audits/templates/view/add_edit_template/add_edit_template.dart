@@ -15,32 +15,22 @@ class AddEditTemplateView extends StatefulWidget {
 }
 
 class _AddEditTemplateViewState extends State<AddEditTemplateView> {
-  String token = '';
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) =>
-          setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) =>
-          previous.authUser?.token != current.authUser?.token,
-      builder: (context, addEditTemplateState) {
-        token = addEditTemplateState.authUser?.token ?? '';
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-                create: (context) => AddEditTemplateBloc(
-                      templatesRepository: RepositoryProvider.of(context),
-                    )),
-            BlocProvider(
-                create: (context) => TemplateDetailBloc(
-                    templatesRepository: RepositoryProvider.of(context))),
-          ],
-          child: AddEditTemplateWidget(
-            templateId: widget.templateId,
-            view: widget.view,
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => AddEditTemplateBloc(
+                  templatesRepository: RepositoryProvider.of(context),
+                )),
+        BlocProvider(
+            create: (context) => TemplateDetailBloc(
+                templatesRepository: RepositoryProvider.of(context))),
+      ],
+      child: AddEditTemplateWidget(
+        templateId: widget.templateId,
+        view: widget.view,
+      ),
     );
   }
 }
@@ -62,16 +52,11 @@ class AddEditTemplateWidget extends StatefulWidget {
 class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   late AddEditTemplateBloc addEditTemplateBloc;
   late TemplateDetailBloc templateDetailBloc;
-  late RolesBloc rolesBloc;
-  late SitesBloc sitesBloc;
-  late TimeZonesBloc timeZoneBloc;
 
   TextEditingController descriptionController = TextEditingController();
 
   static String pageLabel = 'template';
   static String addButtonName = 'Add Items';
-
-  bool isFirstInit = true;
 
   @override
   void initState() {
@@ -96,7 +81,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
           content: addEditTemplateState.message,
         ).showNotification();
         GoRouter.of(context).go(
-            '/templates/designer/${addEditTemplateState.createdTemplateId}');
+            '/templates/designer/${widget.templateId ?? addEditTemplateState.createdTemplateId}');
       },
       listenWhen: (previous, current) =>
           previous.templateAddEditStatus != current.templateAddEditStatus &&
@@ -118,7 +103,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 }
               },
               listenWhen: (previous, current) =>
-                  previous.template != current.template,
+                  previous.template != current.template &&
+                  previous.template == null,
               child: AddEditEntityTemplate(
                 label: pageLabel,
                 id: widget.templateId,
@@ -136,7 +122,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 view: widget.view,
                 child: Column(
                   children: const [
-                    FirstNameField(),
+                    TemplateDescriptionField(),
                     RevisionDatePicker(),
                     UsedInCheckBoxes()
                   ],

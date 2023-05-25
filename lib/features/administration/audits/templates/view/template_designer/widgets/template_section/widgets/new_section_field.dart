@@ -24,15 +24,9 @@ class _NewSectionFieldState extends State<NewSectionField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
-      listener: (context, state) {
-        sectionController.text = state.newSection;
-        sectionController.selection =
-            TextSelection.collapsed(offset: state.newSection.length);
-      },
-      listenWhen: (previous, current) =>
-          previous.newSection != current.newSection,
+    return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
       builder: (context, state) => CustomTextFieldWithIcon(
+        key: ValueKey(widget.templateId),
         hintText: 'Add new section',
         suffixWidget: SizedBox(
           width: 40,
