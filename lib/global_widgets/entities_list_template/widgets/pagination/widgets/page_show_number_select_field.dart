@@ -28,6 +28,7 @@ class _PageShowNumberSelectFieldState extends State<PageShowNumberSelectField> {
           isSearchable: false,
           selectedValue: pagePerRow.toString(),
           items: const {
+            '2': '2',
             '5': '5',
             '10': '10',
             '20': '20',

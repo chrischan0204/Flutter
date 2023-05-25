@@ -19,22 +19,60 @@ class _PaginatorState extends State<Paginator> {
   NumberPaginatorController controller = NumberPaginatorController();
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PaginationBloc, PaginationState>(
+    return BlocConsumer<PaginationBloc, PaginationState>(
       listener: (context, state) => controller.currentPage = 0,
       listenWhen: (previous, current) =>
           previous.selectedPageNum != current.selectedPageNum &&
           current.selectedPageNum == 1,
-      child: NumberPaginator(
-        controller: controller,
-        numberPages: widget.numberPages,
-        config: NumberPaginatorUIConfig(
-          buttonShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(3),
-          ),
-        ),
-        onPageChange: (int index) {
-          widget.onPageChange(index + 1);
+      builder: (context, state) => CustomPagination(
+        numOfPages: widget.numberPages,
+        selectedPage: state.selectedPageNum,
+        pagesVisible: 10,
+        spacing: 10,
+        onPageChanged: (page) {
+          widget.onPageChange(page);
         },
+        nextIcon: const Icon(
+          Icons.chevron_right_rounded,
+          color: Colors.blueAccent,
+          size: 20,
+        ),
+        previousIcon: const Icon(
+          Icons.chevron_left_rounded,
+          color: Colors.blueAccent,
+          size: 20,
+        ),
+        activeTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
+        activeBtnStyle: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(3),
+            side: const BorderSide(
+              color: Colors.blueAccent,
+              width: 1,
+            ),
+          )),
+        ),
+        inactiveBtnStyle: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(3),
+            side: const BorderSide(
+              color: Colors.blueAccent,
+              width: 1,
+            ),
+          )),
+        ),
+        inactiveTextStyle: const TextStyle(
+          fontSize: 14,
+          color: Colors.blueAccent,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

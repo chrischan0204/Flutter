@@ -1,5 +1,3 @@
-import 'package:number_paginator/number_paginator.dart';
-
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -41,26 +39,14 @@ class _PaginationViewState extends State<PaginationView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Container(
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width / 2),
-                      child: Paginator(
-                        numberPages:
-                            (widget.totalRows / state.rowsPerPage).ceil(),
-                        onPageChange: (value) {
-                          paginationBloc.add(PaginationSelectedPageNumChanged(
-                              selectedPageNum: value));
-                          widget.onPaginate(value, state.rowsPerPage);
-                        },
-                      ),
-                    ),
+                  Paginator(
+                    numberPages: (widget.totalRows / state.rowsPerPage).ceil(),
+                    onPageChange: (value) {
+                      paginationBloc.add(PaginationSelectedPageNumChanged(
+                          selectedPageNum: value));
+                      widget.onPaginate(value, state.rowsPerPage);
+                    },
                   ),
-                  Expanded(
-                      child: Container(
-                    constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width / 5),
-                  )),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 5,
                     child: PageShowNumberSelectField(
