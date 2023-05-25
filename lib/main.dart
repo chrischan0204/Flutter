@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, state) {
         token = state.authUser?.token ?? '';
         return MultiRepositoryProvider(
+          key: UniqueKey(),
           providers: [
             RepositoryProvider(
               create: (context) => RegionsRepository(

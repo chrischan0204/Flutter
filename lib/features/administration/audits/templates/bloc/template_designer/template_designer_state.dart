@@ -56,6 +56,8 @@ class TemplateDesignerState extends Equatable {
         message,
       ];
 
+      
+
   TemplateDesignerState copyWith({
     String? newSection,
     List<TemplateSection>? templateSectionList,

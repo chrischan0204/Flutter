@@ -3,10 +3,12 @@ import 'widgets/widgets.dart';
 
 class ResponseLogicBuilder extends StatelessWidget {
   final bool child;
+  final TemplateSectionItem templateSectionItem;
   final List<TemplateSectionItem> templateSectionItemList;
   const ResponseLogicBuilder({
     super.key,
     required this.child,
+    required this.templateSectionItem,
     this.templateSectionItemList = const [],
   });
 
@@ -30,10 +32,23 @@ class ResponseLogicBuilder extends StatelessWidget {
               ),
             ),
             const CustomDivider(),
-            const Padding(
-              padding: EdgeInsets.all(8),
-              child: Text(
-                'Yes/No response scale',
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+                builder: (context, state) {
+                  return Text(
+                    state.responseScaleList
+                        .firstWhere(
+                          (element) =>
+                              element.id == templateSectionItem.responseScaleId,
+                          orElse: () => const ResponseScale(
+                              id: emptyGuid,
+                              name:
+                                  'Please choose possible answers to question to continue building response logic'),
+                        )
+                        .name,
+                  );
+                },
               ),
             ),
             Column(

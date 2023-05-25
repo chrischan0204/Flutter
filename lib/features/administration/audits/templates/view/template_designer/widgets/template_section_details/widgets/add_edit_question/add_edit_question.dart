@@ -33,6 +33,7 @@ class AddEditQuestionView extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         ResponseLogicBuilder(
+          templateSectionItem: templateSectionItem,
           child: child,
           templateSectionItemList: templateSectionItem.children,
         ),
