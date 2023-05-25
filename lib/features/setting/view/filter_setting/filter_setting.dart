@@ -62,71 +62,56 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            const CustomDivider(),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(1, 1),
-                    blurRadius: 1,
-                    spreadRadius: 1,
-                  )
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FilterSettingHeaderView(
-                    viewName: widget.viewName,
-                    onFilterOptionClosed: () =>
-                        setState(() => widget.onFilterOptionClosed()),
-                  ),
-                  const CustomDivider(),
-                  Builder(
-                    builder: (context) {
-                      if (state.userFilterSettingList.isEmpty &&
-                          state.userFilterUpdate.undeletedUserFilterItems
-                              .isEmpty) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12),
-                            child: Text(
-                              'There are no user filter settings. Please click Add Button to create new user filter setting',
-                              style: TextStyle(fontSize: 14),
-                            ),
+        return Card(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FilterSettingHeaderView(
+                  viewName: widget.viewName,
+                  onFilterOptionClosed: () =>
+                      setState(() => widget.onFilterOptionClosed()),
+                ),
+                const CustomDivider(),
+                Builder(
+                  builder: (context) {
+                    if (state.userFilterSettingList.isEmpty &&
+                        state.userFilterUpdate.undeletedUserFilterItems.isEmpty) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Text(
+                            'There are no user filter settings. Please click Add Button to create new user filter setting',
+                            style: TextStyle(fontSize: 14),
                           ),
-                        );
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FilterSettingBodyView(viewName: widget.viewName),
-                          const AddClauseButton(),
-                          const CustomDivider(),
-                          FilterSettingFooterView(
-                            viewName: widget.viewName,
-                            onFilterOptionClosed: widget.onFilterOptionClosed,
-                            onFilterApplied: widget.onFilterApplied,
-                            onFilterSaved: (filterId) {
-                              widget.onFilterSaved(filterId);
-                            },
-                          ),
-                        ],
+                        ),
                       );
-                    },
-                  ),
-                ],
-              ),
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FilterSettingBodyView(viewName: widget.viewName),
+                        const AddClauseButton(),
+                        const CustomDivider(),
+                        FilterSettingFooterView(
+                          viewName: widget.viewName,
+                          onFilterOptionClosed: widget.onFilterOptionClosed,
+                          onFilterApplied: widget.onFilterApplied,
+                          onFilterSaved: (filterId) {
+                            widget.onFilterSaved(filterId);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

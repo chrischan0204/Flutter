@@ -30,42 +30,38 @@ class _PaginationViewState extends State<PaginationView> {
     }
     return BlocBuilder<PaginationBloc, PaginationState>(
       builder: (context, state) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CustomDivider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Paginator(
-                    numberPages: (widget.totalRows / state.rowsPerPage).ceil(),
-                    onPageChange: (value) {
-                      paginationBloc.add(PaginationSelectedPageNumChanged(
-                          selectedPageNum: value));
-                      widget.onPaginate(value, state.rowsPerPage);
-                    },
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 5,
-                    child: PageShowNumberSelectField(
-                      totalRows: widget.totalRows,
-                      selectedPageNum: state.selectedPageNum,
-                      onPageRowChange: (value) {
-                        paginationBloc
-                          ..add(
-                              PaginationRowsPerPageChanged(rowsPerPage: value))
-                          ..add(const PaginationSelectedPageNumChanged(
-                              selectedPageNum: 1));
-                        widget.onPaginate(1, value);
-                      },
-                    ),
-                  ),
-                ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Paginator(
+                numberPages: (widget.totalRows / state.rowsPerPage).ceil(),
+                onPageChange: (value) {
+                  paginationBloc.add(
+                      PaginationSelectedPageNumChanged(selectedPageNum: value));
+                  widget.onPaginate(value, state.rowsPerPage);
+                },
               ),
-            )
-          ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 5,
+                child: PageShowNumberSelectField(
+                  totalRows: widget.totalRows,
+                  selectedPageNum: state.selectedPageNum,
+                  onPageRowChange: (value) {
+                    paginationBloc
+                      ..add(PaginationRowsPerPageChanged(rowsPerPage: value))
+                      ..add(const PaginationSelectedPageNumChanged(
+                          selectedPageNum: 1));
+                    widget.onPaginate(1, value);
+                  },
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

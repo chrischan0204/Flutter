@@ -101,34 +101,45 @@ class _CrudState extends State<EntityListTemplate> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(),
-                    widget.showTableHeaderButtons
-                        ? _buildTableHeader()
-                        : Container(),
-                    filterViewShow && widget.viewName != null
-                        ? FilterSettingView(
-                            viewName: widget.viewName!,
-                            onFilterOptionClosed: () => _hideFilterView(),
-                            onFilterApplied: (filterId) {
-                              if (widget.onFilterApplied != null) {
-                                paginationBloc.add(
-                                    const PaginationSelectedPageNumChanged(
-                                        selectedPageNum: 1));
-                                widget.onFilterApplied!(filterId);
-                              }
-                            },
-                            onFilterSaved: (filterId) {
-                              if (widget.onFilterSaved != null) {
-                                paginationBloc.add(
-                                    const PaginationSelectedPageNumChanged(
-                                        selectedPageNum: 1));
-                                widget.onFilterSaved!(filterId);
-                              }
-                            },
-                          )
-                        : Container(),
+                    Card(
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildHeader(),
+                            if (widget.showTableHeaderButtons)
+                              _buildTableHeader()
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (filterViewShow && widget.viewName != null)
+                      FilterSettingView(
+                        viewName: widget.viewName!,
+                        onFilterOptionClosed: () => _hideFilterView(),
+                        onFilterApplied: (filterId) {
+                          if (widget.onFilterApplied != null) {
+                            paginationBloc.add(
+                                const PaginationSelectedPageNumChanged(
+                                    selectedPageNum: 1));
+                            widget.onFilterApplied!(filterId);
+                          }
+                        },
+                        onFilterSaved: (filterId) {
+                          if (widget.onFilterSaved != null) {
+                            paginationBloc.add(
+                                const PaginationSelectedPageNumChanged(
+                                    selectedPageNum: 1));
+                            widget.onFilterSaved!(filterId);
+                          }
+                        },
+                      ),
                     _buildTableView(),
                     PaginationView(
                       totalRows: widget.totalRows,
@@ -162,8 +173,20 @@ class _CrudState extends State<EntityListTemplate> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              PageTitle(
-                title: widget.title,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PageTitle(
+                    title: widget.title,
+                  ),
+                  const SizedBox(width: 10),
+                  widget.description.isNotEmpty
+                      ? Description(
+                          description: widget.description,
+                        )
+                      : Container(),
+                ],
               ),
               CustomButton(
                 backgroundColor: warnColor,
@@ -186,90 +209,63 @@ class _CrudState extends State<EntityListTemplate> {
     );
   }
 
-  Expanded _buildTableView() {
+  Widget _buildTableView() {
     return Expanded(
-      child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-          PointerDeviceKind.touch,
-          PointerDeviceKind.mouse,
-        }),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              widget.description.isNotEmpty
-                  ? const CustomDivider()
-                  : const SizedBox(
-                      height: 12,
+      child: Card(
+        elevation: 3,
+        child: widget.entityListLoadStatusLoading
+            ? const Center(
+                child: Loader(),
+              )
+            : ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                }),
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 12,
                     ),
-              Container(
-                width: double.infinity,
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    widget.description.isNotEmpty
-                        ? Description(
-                            description: widget.description,
-                          )
-                        : Container(),
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            width: 1,
-                            color: Color(0xff9ca3af),
-                          ),
-                        ),
-                      ),
-                      child: widget.entityListLoadStatusLoading
-                          ? const Padding(
-                              padding: EdgeInsets.only(top: 200.0),
-                              child: Center(
-                                child: Loader(),
-                              ),
-                            )
-                          : DataTableView(
-                              entities: widget.entities,
-                              columns: widget.columns,
-                              emptyMessage: widget.emptyMessage,
-                              onTableSorted: widget.onTableSorted == null
-                                  ? null
-                                  : (MapEntry<String, bool> sortInfo) {
-                                      List<Entity> entities =
-                                          List.from(widget.entities);
+                    width: double.infinity,
+                    child: DataTableView(
+                      entities: widget.entities,
+                      columns: widget.columns,
+                      emptyMessage: widget.emptyMessage,
+                      onTableSorted: widget.onTableSorted == null
+                          ? null
+                          : (MapEntry<String, bool> sortInfo) {
+                              List<Entity> entities =
+                                  List.from(widget.entities);
 
-                                      entities.sort(
-                                        (a, b) {
-                                          return (sortInfo.value ? 1 : -1) *
-                                              (a
-                                                      .tableItemsToMap()[
-                                                          sortInfo.key]
-                                                      .toString()
-                                                      .toLowerCase())
-                                                  .compareTo(b
-                                                      .tableItemsToMap()[
-                                                          sortInfo.key]
-                                                      .toString()
-                                                      .toLowerCase());
-                                        },
-                                      );
-                                      widget.onTableSorted!(entities);
-                                    },
-                              onRowClick: (entity) {
-                                _showDetailsSlider();
-                                setState(() {
-                                  selectedId = entity.id!;
-                                });
-                                widget.onRowClick(entity);
-                              },
-                            ),
-                    )
-                  ],
+                              entities.sort(
+                                (a, b) {
+                                  return (sortInfo.value ? 1 : -1) *
+                                      (a
+                                              .tableItemsToMap()[sortInfo.key]
+                                              .toString()
+                                              .toLowerCase())
+                                          .compareTo(b
+                                              .tableItemsToMap()[sortInfo.key]
+                                              .toString()
+                                              .toLowerCase());
+                                },
+                              );
+                              widget.onTableSorted!(entities);
+                            },
+                      onRowClick: (entity) {
+                        _showDetailsSlider();
+                        setState(() {
+                          selectedId = entity.id!;
+                        });
+                        widget.onRowClick(entity);
+                      },
+                    ),
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -323,92 +319,143 @@ class _CrudState extends State<EntityListTemplate> {
               ),
               Row(
                 children: [
-                  BlocConsumer<FilterSettingBloc, FilterSettingState>(
-                    listener: (context, state) {
-                      if (widget.onFilterApplied != null) {
-                        widget.onFilterApplied!('');
-                      }
-                    },
-                    listenWhen: (previous, current) =>
-                        previous.appliedUserFilterSetting != null &&
-                        previous.appliedUserFilterSetting !=
-                            current.appliedUserFilterSetting &&
-                        current.appliedUserFilterSetting?.isNew == true,
-                    builder: (context, state) =>
-                        state.appliedUserFilterSetting != null &&
-                                !state.appliedUserFilterSetting!.isNew
-                            ? IconButton(
-                                onPressed: () => filterSettingBloc.add(
-                                    const FilterSettingAppliedUserFilterSettingChanged(
-                                        appliedUserFilterSetting:
-                                            UserFilterSetting())),
-                                icon: const Icon(
-                                  PhosphorIcons.x,
-                                  size: 20,
-                                  color: Colors.red,
-                                ),
-                              )
-                            : Container(),
-                  ),
-                  BlocConsumer<FilterSettingBloc, FilterSettingState>(
-                    listener: (context, state) {
-                      if (state.selectedUserFilterSetting != null) {
-                        if (widget.onFilterApplied != null) {
-                          widget.onFilterApplied!(
-                              state.selectedUserFilterSetting!.id);
-
-                          filterSettingBloc.add(
-                              FilterSettingAppliedUserFilterSettingChanged(
-                                  appliedUserFilterSetting:
-                                      state.selectedUserFilterSetting));
-                        }
-                      }
-                    },
-                    listenWhen: (previous, current) =>
-                        previous.selectedUserFilterSetting == null &&
-                        previous.selectedUserFilterSetting !=
-                            current.selectedUserFilterSetting,
+                  BlocBuilder<FilterSettingBloc, FilterSettingState>(
                     builder: (context, state) {
-                      return Text(
-                        state.appliedUserFilterSetting != null &&
-                                !state.appliedUserFilterSetting!.isNew
-                            ? state.appliedUserFilterSetting!.filterName
-                            : 'No filter applied',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                      final filterNotApplied =
+                          state.appliedUserFilterSetting != null &&
+                              !state.appliedUserFilterSetting!.isNew;
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        decoration: filterNotApplied
+                            ? BoxDecoration(
+                                color: Colors.blue.shade200,
+                                border: Border.all(
+                                  color: Colors.blue,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(3),
+                              )
+                            : null,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            BlocConsumer<FilterSettingBloc, FilterSettingState>(
+                              listener: (context, state) {
+                                if (state.selectedUserFilterSetting != null) {
+                                  if (widget.onFilterApplied != null) {
+                                    widget.onFilterApplied!(
+                                        state.selectedUserFilterSetting!.id);
+
+                                    filterSettingBloc.add(
+                                        FilterSettingAppliedUserFilterSettingChanged(
+                                            appliedUserFilterSetting: state
+                                                .selectedUserFilterSetting));
+                                  }
+                                }
+                              },
+                              listenWhen: (previous, current) =>
+                                  previous.selectedUserFilterSetting == null &&
+                                  previous.selectedUserFilterSetting !=
+                                      current.selectedUserFilterSetting,
+                              builder: (context, state) {
+                                if (!filterNotApplied) {
+                                  return Container();
+                                }
+                                return Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      PhosphorIcons.funnel,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      state
+                                          .appliedUserFilterSetting!.filterName,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: filterNotApplied
+                                            ? Colors.white
+                                            : Colors.blue,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 20),
+                            BlocConsumer<FilterSettingBloc, FilterSettingState>(
+                              listener: (context, state) {
+                                if (widget.onFilterApplied != null) {
+                                  widget.onFilterApplied!('');
+                                }
+                              },
+                              listenWhen: (previous, current) =>
+                                  previous.appliedUserFilterSetting != null &&
+                                  previous.appliedUserFilterSetting !=
+                                      current.appliedUserFilterSetting &&
+                                  current.appliedUserFilterSetting?.isNew ==
+                                      true,
+                              builder: (context, state) {
+                                return filterNotApplied
+                                    ? GestureDetector(
+                                        onTap: () => filterSettingBloc.add(
+                                          const FilterSettingAppliedUserFilterSettingChanged(
+                                              appliedUserFilterSetting:
+                                                  UserFilterSetting()),
+                                        ),
+                                        child: const Icon(
+                                          PhosphorIcons.x,
+                                          color: Colors.white,
+                                          size: 18,
+                                        ),
+                                      )
+                                    : Container();
+                              },
+                            ),
+                          ],
                         ),
                       );
                     },
                   ),
-                  const SizedBox(width: 3),
-                  Checkbox(
-                    value: includeDeleted,
-                    onChanged: (value) {
-                      if (widget.onIncludeDeletedChanged != null) {
-                        filterSettingBloc.add(
-                            FilterSettingIncludeDeletedChanged(
-                                includeDeleted: value!));
-                        paginationBloc.add(
-                            const PaginationSelectedPageNumChanged(
-                                selectedPageNum: 1));
-                        widget.onIncludeDeletedChanged!(value);
-                      }
+                  const SizedBox(width: 20),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Checkbox(
+                        value: includeDeleted,
+                        onChanged: (value) {
+                          if (widget.onIncludeDeletedChanged != null) {
+                            filterSettingBloc.add(
+                                FilterSettingIncludeDeletedChanged(
+                                    includeDeleted: value!));
+                            paginationBloc.add(
+                                const PaginationSelectedPageNumChanged(
+                                    selectedPageNum: 1));
+                            widget.onIncludeDeletedChanged!(value);
+                          }
 
-                      setState(() {
-                        includeDeleted = !includeDeleted;
-                      });
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3)),
-                  ),
-                  const SizedBox(width: 3),
-                  const Text(
-                    'Include Deleted',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                          setState(() {
+                            includeDeleted = !includeDeleted;
+                          });
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3)),
+                      ),
+                      const SizedBox(width: 3),
+                      const Text(
+                        'Include Deleted',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(width: 3),
                   IconButton(
@@ -441,80 +488,83 @@ class _CrudState extends State<EntityListTemplate> {
       right: positionRightForViewSettingsSlider,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 4,
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 75),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 30,
-        ),
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'View Settings',
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
+      child: Card(
+        elevation: 3,
+        child: Container(
+          width: MediaQuery.of(context).size.width / 4,
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height - 75),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 30,
+          ),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'View Settings',
+                      style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () => _hideViewSettingsSlider(),
-                    icon: const Icon(
-                      PhosphorIcons.arrowCircleRight,
-                      size: 20,
-                      color: Color(0xffef4444),
+                    IconButton(
+                      onPressed: () => _hideViewSettingsSlider(),
+                      icon: const Icon(
+                        PhosphorIcons.arrowCircleRight,
+                        size: 20,
+                        color: Color(0xffef4444),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const ViewSettingView(),
-            Divider(
-              color: grey,
-              height: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
-              ),
-              child: BlocListener<ViewSettingBloc, ViewSettingState>(
-                listener: (context, viewSettingState) {
-                  if (widget.onViewSettingApplied != null) {
-                    widget.onViewSettingApplied!();
-                  }
-                },
-                listenWhen: (previous, current) =>
-                    previous.viewSettingSaveStatus !=
-                    current.viewSettingSaveStatus,
-                child: CustomButton(
-                  backgroundColor: const Color(0xff0c83ff),
-                  hoverBackgroundColor: const Color(0xff0b76e6),
-                  iconData: PhosphorIcons.arrowRight,
-                  text: 'Apply',
-                  onClick: () {
-                    _hideViewSettingsSlider();
-                    if (widget.viewName != null) {
-                      viewSettingBloc
-                          .add(ViewSettingApplied(viewName: widget.viewName!));
-                    }
-                  },
+                  ],
                 ),
               ),
-            ),
-          ],
+              const ViewSettingView(),
+              Divider(
+                color: grey,
+                height: 1,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                child: BlocListener<ViewSettingBloc, ViewSettingState>(
+                  listener: (context, viewSettingState) {
+                    if (widget.onViewSettingApplied != null) {
+                      widget.onViewSettingApplied!();
+                    }
+                  },
+                  listenWhen: (previous, current) =>
+                      previous.viewSettingSaveStatus !=
+                      current.viewSettingSaveStatus,
+                  child: CustomButton(
+                    backgroundColor: const Color(0xff0c83ff),
+                    hoverBackgroundColor: const Color(0xff0b76e6),
+                    iconData: PhosphorIcons.arrowRight,
+                    text: 'Apply',
+                    onClick: () {
+                      _hideViewSettingsSlider();
+                      if (widget.viewName != null) {
+                        viewSettingBloc.add(
+                            ViewSettingApplied(viewName: widget.viewName!));
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -526,102 +576,109 @@ class _CrudState extends State<EntityListTemplate> {
       right: positionRightForDetailsSlider,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 4,
-        constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height - 75),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 30,
-        ),
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    widget.selectedEntity != null
-                        ? widget.selectedEntity!.name ?? ''
-                        : '',
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w600,
-                      color: darkTeal,
-                      fontSize: 14,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => _hideDetailsSlider(),
-                    icon: const Icon(
-                      PhosphorIcons.arrowCircleRight,
-                      size: 20,
-                      color: Color(0xffef4444),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ...widget.entityDetailLoadStatusLoading
-                ? [const Loader()]
-                : (widget.selectedEntity != null
-                    ? widget.selectedEntity!
-                        .sideDetailItemsToMap()
-                        .entries
-                        .map(
-                          (detail) => DetailItem(
-                            label: detail.key,
-                            isTwoLine: detail.value is Map,
-                            content: CustomDataCell(
-                              data: detail.value is Map
-                                  ? detail.value['content']
-                                  : detail.value,
+      child: Card(
+        elevation: 3,
+        child: Container(
+          width: MediaQuery.of(context).size.width / 4,
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 75),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 30,
+          ),
+          color: Colors.white,
+          child: widget.entityDetailLoadStatusLoading
+              ? const Center(
+                  child: Loader(),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.selectedEntity != null
+                                ? widget.selectedEntity!.name ?? ''
+                                : '',
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.w600,
+                              color: darkTeal,
+                              fontSize: 14,
                             ),
                           ),
-                        )
-                        .toList()
-                    : []),
-            widget.entityDetailLoadStatusLoading
-                ? Container()
-                : Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          color: grey,
-                          width: 1,
-                        ),
+                          IconButton(
+                            onPressed: () => _hideDetailsSlider(),
+                            icon: const Icon(
+                              PhosphorIcons.arrowCircleRight,
+                              size: 20,
+                              color: Color(0xffef4444),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-            widget.entityDetailLoadStatusLoading
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20.0,
-                      top: 12,
-                    ),
-                    child: CustomButton(
-                      backgroundColor: const Color(0xff0c83ff),
-                      hoverBackgroundColor: const Color(0xff0b76e6),
-                      iconData: PhosphorIcons.arrowRight,
-                      text: '${camelize(widget.label)} Details',
-                      onClick: () {
-                        String location = GoRouter.of(context).location;
-                        int index = location.indexOf('/index');
-                        if (index != -1) {
-                          location = location.replaceRange(index, null, '');
-                        }
+                    ...widget.selectedEntity != null
+                        ? widget.selectedEntity!
+                            .sideDetailItemsToMap()
+                            .entries
+                            .map(
+                              (detail) => DetailItem(
+                                label: detail.key,
+                                isTwoLine: detail.value is Map,
+                                content: CustomDataCell(
+                                  data: detail.value is Map
+                                      ? detail.value['content']
+                                      : detail.value,
+                                ),
+                              ),
+                            )
+                            .toList()
+                        : [],
+                    widget.entityDetailLoadStatusLoading
+                        ? Container()
+                        : Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: grey,
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                          ),
+                    widget.entityDetailLoadStatusLoading
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20.0,
+                              top: 12,
+                            ),
+                            child: CustomButton(
+                              backgroundColor: const Color(0xff0c83ff),
+                              hoverBackgroundColor: const Color(0xff0b76e6),
+                              iconData: PhosphorIcons.arrowRight,
+                              text: '${camelize(widget.label)} Details',
+                              onClick: () {
+                                String location = GoRouter.of(context).location;
+                                int index = location.indexOf('/index');
+                                if (index != -1) {
+                                  location =
+                                      location.replaceRange(index, null, '');
+                                }
 
-                        GoRouter.of(context).go('$location/show/$selectedId');
-                      },
-                    ),
-                  ),
-          ],
+                                GoRouter.of(context)
+                                    .go('$location/show/$selectedId');
+                              },
+                            ),
+                          ),
+                  ],
+                ),
         ),
       ),
     );
