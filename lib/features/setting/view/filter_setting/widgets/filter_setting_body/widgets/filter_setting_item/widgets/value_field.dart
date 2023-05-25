@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 import '/common_libraries.dart';
 
@@ -15,17 +15,10 @@ class ValueField extends StatefulWidget {
 
 class _ValueFieldState extends State<ValueField> {
   late FilterSettingBloc filterSettingBloc;
-  TextEditingController dateTimePickerController = TextEditingController();
 
   @override
   void initState() {
     filterSettingBloc = context.read();
-    if (widget.userFilterItem.filterSetting.controlType == 'DateTimePicker' &&
-        widget.userFilterItem.filterValue.isNotEmpty) {
-      dateTimePickerController.text = DateFormat('yyyy-MM-dd')
-          .format(DateTime.parse(widget.userFilterItem.filterValue[0]));
-    }
-
     super.initState();
   }
 
@@ -112,13 +105,25 @@ class _ValueFieldState extends State<ValueField> {
                     );
 
             case 'DateTimePicker':
-              return CustomDatePicker(
-                controller: dateTimePickerController,
-                initialSelectedDate:
-                    widget.userFilterItem.filterValue.isNotEmpty
-                        ? DateTime.parse(widget.userFilterItem.filterValue[0])
-                        : null,
-                onChanged: (date) => filterSettingBloc
+              return CustomDateTimePicker(
+                key: UniqueKey(),
+                initialValue: widget.userFilterItem.filterValue.isNotEmpty
+                    ? widget.userFilterItem.filterValue[0]
+                    : null,
+                onChange: (date) => filterSettingBloc
+                    .add(FilterSettingUserFilterItemValueChanged(
+                  userFilterItem: widget.userFilterItem,
+                  value: [date.toIso8601String()],
+                )),
+              );
+            case 'DatePicker':
+              return CustomDateTimePicker(
+                key: UniqueKey(),
+                dateTimePickerType: DateTimePickerType.date,
+                initialValue: widget.userFilterItem.filterValue.isNotEmpty
+                    ? widget.userFilterItem.filterValue[0]
+                    : null,
+                onChange: (date) => filterSettingBloc
                     .add(FilterSettingUserFilterItemValueChanged(
                   userFilterItem: widget.userFilterItem,
                   value: [date.toIso8601String()],

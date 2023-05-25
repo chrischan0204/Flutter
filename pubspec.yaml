@@ -13,6 +13,7 @@ dependencies:
   bloc: ^8.1.1
   cupertino_icons: ^1.0.2
   custom_pop_up_menu: ^1.2.4
+  date_time_picker: ^2.1.0
   dropdown_button2: ^2.0.0
   elegant_notification: ^1.8.1
   equatable: ^2.0.5

@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 import '/common_libraries.dart';
 
 class RevisionDatePicker extends StatefulWidget {
@@ -24,23 +22,20 @@ class _RevisionDatePickerState extends State<RevisionDatePicker> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditTemplateBloc, AddEditTemplateState>(
       listener: (context, state) {
-        textController.text = DateFormat('yyyy-MM-dd').format(state.date!);
+        textController.text = state.date!.toString();
       },
       listenWhen: (previous, current) => previous.date != current.date,
       builder: (context, state) {
         return FormItem(
           label: 'Date (*)',
-          content: CustomDatePicker(
-            key: UniqueKey(),
+          content: CustomDateTimePicker(
             controller: textController,
-            initialSelectedDate: state.date,
-            onChanged: (date) =>
+            onChange: (date) =>
                 addEditTemplateBloc.add(AddEditTemplateDateChanged(date: date)),
           ),
           message: state.dateValidationMesage,
         );
       },
     );
-    ;
   }
 }
