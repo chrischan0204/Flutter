@@ -32,16 +32,6 @@ class _PaginatorState extends State<Paginator> {
         onPageChanged: (page) {
           widget.onPageChange(page);
         },
-        nextIcon: const Icon(
-          Icons.chevron_right_rounded,
-          color: Colors.blueAccent,
-          size: 20,
-        ),
-        previousIcon: const Icon(
-          Icons.chevron_left_rounded,
-          color: Colors.blueAccent,
-          size: 20,
-        ),
         activeTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 14,

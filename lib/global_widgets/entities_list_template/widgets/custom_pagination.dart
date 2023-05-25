@@ -71,7 +71,6 @@ class CustomPagination extends StatelessWidget {
           activeTextStyle: activeTextStyle,
           inactiveTextStyle: inactiveTextStyle,
         ));
-        buttons.add(space);
       }
     } else if (selectedPage <= middle || selectedPage >= numOfPages - middle) {
       for (int i = 1; i <= middle + 1; i++) {
@@ -167,7 +166,19 @@ class CustomPagination extends StatelessWidget {
       children: [
         /// Previous button
         IconButton(
-          icon: previousIcon ?? const Icon(Icons.arrow_back_ios),
+          color: Colors.blue,
+          icon: previousIcon ??
+              const Icon(
+                PhosphorIcons.arrowFatLinesLeft,
+              ),
+          onPressed: selectedPage > 1 ? () => onPageChanged(1) : null,
+        ),
+        IconButton(
+          color: Colors.blue,
+          icon: previousIcon ??
+              const Icon(
+                PhosphorIcons.arrowFatLineLeft,
+              ),
           onPressed:
               selectedPage > 1 ? () => onPageChanged(selectedPage - 1) : null,
         ),
@@ -177,9 +188,23 @@ class CustomPagination extends StatelessWidget {
 
         /// Next button
         IconButton(
-          icon: nextIcon ?? const Icon(Icons.arrow_forward_ios),
+          color: Colors.blue,
+          icon: nextIcon ??
+              const Icon(
+                PhosphorIcons.arrowFatLineRight,
+              ),
           onPressed: selectedPage < numOfPages
               ? () => onPageChanged(selectedPage + 1)
+              : null,
+        ),
+        IconButton(
+          color: Colors.blue,
+          icon: nextIcon ??
+              const Icon(
+                PhosphorIcons.arrowFatLinesRight,
+              ),
+          onPressed: selectedPage < numOfPages
+              ? () => onPageChanged(numOfPages)
               : null,
         ),
       ],
