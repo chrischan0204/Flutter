@@ -27,8 +27,8 @@ class _PaginatorState extends State<Paginator> {
       builder: (context, state) => CustomPagination(
         numOfPages: widget.numberPages,
         selectedPage: state.selectedPageNum,
-        pagesVisible: 10,
-        spacing: 10,
+        pagesVisible: MediaQuery.of(context).size.width < 1400 ? 5 : 10,
+        spacing: 6,
         onPageChanged: (page) {
           widget.onPageChange(page);
         },

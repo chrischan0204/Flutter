@@ -52,6 +52,19 @@ class _LoginViewState extends State<LoginView> {
     return success;
   }
 
+  void _login(AuthState state) {
+    if (state is! AuthAuthenticateInProgress) {
+      if (_checkValidation()) {
+        _authBloc.add(AuthAuthenticated(
+            auth: Auth(
+          email: _usernameController.text,
+          password: _passwordController.text,
+        )));
+      }
+    }
+    ;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -77,210 +90,203 @@ class _LoginViewState extends State<LoginView> {
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+                child: BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthAuthenticateSuccess) {
+                      GoRouter.of(context).go('/dashboard');
+                    } else if (state is AuthAuthenticateFailure) {
+                      CustomNotification(
+                        context: context,
+                        notifyType: NotifyType.error,
+                        content: 'Invalid Credentials',
+                      ).showNotification();
+                    }
+                  },
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Icon(
-                          Icons.health_and_safety_sharp,
-                          size: 44,
-                          color: Colors.amberAccent,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Safety ETA',
-                          style: GoogleFonts.alumniSans(
-                            textStyle: const TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.health_and_safety_sharp,
+                              size: 44,
+                              color: Colors.amberAccent,
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome to Safety',
-                          style: GoogleFonts.amiko(
-                            textStyle: TextStyle(
-                              fontSize: width / 60,
-                              fontWeight: FontWeight.bold,
+                            const SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: width / 20,
-                        ),
-                        TextField(
-                          controller: _usernameController,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blueGrey[900],
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              usernameValidationMessage = '';
-                            });
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            focusColor: const Color(0xfffbfafb),
-                            fillColor: const Color(0xffeae8ea),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.person_2,
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                            hintText: 'Username',
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                          child: Text(
-                            usernameValidationMessage,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        TextField(
-                          controller: _passwordController,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blueGrey[900],
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              passwordValidationMessage = '';
-                            });
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            focusColor: const Color(0xfffbfafb),
-                            fillColor: const Color(0xffeae8ea),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.lock_open_outlined,
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isPassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                size: 20,
-                                color: Colors.grey,
+                            Text(
+                              'Safety ETA',
+                              style: GoogleFonts.alumniSans(
+                                textStyle: const TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              onPressed: () => setState(() {
-                                isPassword = !isPassword;
-                              }),
-                            ),
-                            hintText: 'Password',
-                          ),
-                          obscureText: isPassword,
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          height: width / 40,
-                          child: Text(
-                            passwordValidationMessage,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.red,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Welcome to Safety',
+                              style: GoogleFonts.amiko(
+                                textStyle: TextStyle(
+                                  fontSize: width / 60,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: BlocConsumer<AuthBloc, AuthState>(
-                            listener: (context, state) {
-                              if (state is AuthAuthenticateSuccess) {
-                                GoRouter.of(context).go('/dashboard');
-                              } else if (state is AuthAuthenticateFailure) {
-                                CustomNotification(
-                                  context: context,
-                                  notifyType: NotifyType.error,
-                                  content: 'Invalid Credentials',
-                                ).showNotification();
-                              }
-                            },
-                            builder: (context, state) => ElevatedButton(
-                              onPressed: () {
-                                if (state is! AuthAuthenticateInProgress) {
-                                  if (_checkValidation()) {
-                                    _authBloc.add(AuthAuthenticated(
-                                        auth: Auth(
-                                      email: _usernameController.text,
-                                      password: _passwordController.text,
-                                    )));
-                                  }
-                                }
+                            SizedBox(
+                              height: width / 20,
+                            ),
+                            TextField(
+                              controller: _usernameController,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueGrey[900],
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  usernameValidationMessage = '';
+                                });
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xff68767b),
-                                shape: RoundedRectangleBorder(
+                              decoration: InputDecoration(
+                                filled: true,
+                                focusColor: const Color(0xfffbfafb),
+                                fillColor: const Color(0xffeae8ea),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 24),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.person_2,
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                                hintText: 'Username',
                               ),
-                              child: state is AuthAuthenticateInProgress
-                                  ? LoadingAnimationWidget.staggeredDotsWave(
-                                      color: Colors.white,
-                                      size: 26,
-                                    )
-                                  : Text(
-                                      'Login',
-                                      style: GoogleFonts.amaranth(
-                                        textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: width / 70,
-                                          letterSpacing: 2,
+                            ),
+                            SizedBox(
+                              height: 30,
+                              child: Text(
+                                usernameValidationMessage,
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            TextField(
+                              controller: _passwordController,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueGrey[900],
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  passwordValidationMessage = '';
+                                });
+                              },
+                              onSubmitted: (value) => _login(state),
+                              decoration: InputDecoration(
+                                filled: true,
+                                focusColor: const Color(0xfffbfafb),
+                                fillColor: const Color(0xffeae8ea),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock_open_outlined,
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    isPassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () => setState(() {
+                                    isPassword = !isPassword;
+                                  }),
+                                ),
+                                hintText: 'Password',
+                              ),
+                              obscureText: isPassword,
+                            ),
+                            SizedBox(
+                              height: width / 40,
+                              child: Text(
+                                passwordValidationMessage,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () => _login(state),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff68767b),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 24),
+                                ),
+                                child: state is AuthAuthenticateInProgress
+                                    ? LoadingAnimationWidget.staggeredDotsWave(
+                                        color: Colors.white,
+                                        size: 26,
+                                      )
+                                    : Text(
+                                        'Login',
+                                        style: GoogleFonts.amaranth(
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width / 70,
+                                            letterSpacing: 2,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: width / 60,
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Forgot password?',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              height: width / 60,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Forgot password?',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        Container(),
                       ],
-                    ),
-                    Container(),
-                  ],
+                    );
+                  },
                 ),
               ),
             )

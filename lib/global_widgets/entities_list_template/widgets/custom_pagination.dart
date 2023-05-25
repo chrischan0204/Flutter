@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:safety_eta/common_libraries.dart';
+import '/common_libraries.dart';
 import 'package:star_menu/star_menu.dart';
 
 class CustomPagination extends StatelessWidget {
@@ -71,6 +70,9 @@ class CustomPagination extends StatelessWidget {
           activeTextStyle: activeTextStyle,
           inactiveTextStyle: inactiveTextStyle,
         ));
+        if (i != numOfPages) {
+          buttons.add(space);
+        }
       }
     } else if (selectedPage <= middle || selectedPage >= numOfPages - middle) {
       for (int i = 1; i <= middle + 1; i++) {
@@ -106,7 +108,9 @@ class CustomPagination extends StatelessWidget {
           activeTextStyle: activeTextStyle,
           inactiveTextStyle: inactiveTextStyle,
         ));
-        buttons.add(space);
+        if (i != numOfPages) {
+          buttons.add(space);
+        }
       }
     } else {
       buttons.add(PaginationButton(

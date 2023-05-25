@@ -39,7 +39,7 @@ class _PageShowNumberSelectFieldState extends State<PageShowNumberSelectField> {
             widget.onPageRowChange(pagePerRow);
           },
         ),
-        const SizedBox(width: 50),
+        const SizedBox(width: 20),
         Builder(builder: (context) {
           int start = pagePerRow * (widget.selectedPageNum - 1) + 1;
           int end = pagePerRow * widget.selectedPageNum;
