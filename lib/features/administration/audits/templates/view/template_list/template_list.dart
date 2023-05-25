@@ -76,6 +76,8 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
                   emptyMessage: emptyMessage,
                   entityListLoadStatusLoading: state.filterSettingLoading ||
                       templateListState.templateListLoadStatus.isLoading,
+                  entityDetailLoadStatusLoading:
+                      templateDetailState.templateLoadStatus.isLoading,
                   selectedEntity: templateDetailState.template,
                   onTableSorted: (sortedTemplates) =>
                       _sortTemplates(sortedTemplates),

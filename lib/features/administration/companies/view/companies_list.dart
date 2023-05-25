@@ -39,6 +39,8 @@ class _CompaniesListViewState extends State<CompaniesListView> {
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
                     state.companiesRetrievedStatus.isLoading,
+            entityDetailLoadStatusLoading:
+                state.companySelectedStatus.isLoading,
             selectedEntity: state.selectedCompany,
             onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
             onViewSettingApplied: () => _filterCompanies(),

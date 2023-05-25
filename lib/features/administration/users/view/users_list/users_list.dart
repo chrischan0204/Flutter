@@ -79,6 +79,8 @@ class _UsersListState extends State<UsersListWidget> {
                 entityListLoadStatusLoading:
                     filterSettingState.filterSettingLoading ||
                         userListState.userListLoadStatus.isLoading,
+                entityDetailLoadStatusLoading:
+                    userDetailState.userLoadStatus.isLoading,
                 selectedEntity: userDetailState.user,
                 onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
                 onViewSettingApplied: () => _filterUsers(),

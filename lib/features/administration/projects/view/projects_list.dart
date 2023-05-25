@@ -39,6 +39,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
                     state.projectsRetrievedStatus.isLoading,
+            entityDetailLoadStatusLoading:
+                state.projectSelectedStatus.isLoading,
             selectedEntity: state.selectedProject,
             onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
             onViewSettingApplied: () => _filterProjects(),

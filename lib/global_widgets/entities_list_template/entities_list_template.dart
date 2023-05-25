@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:number_paginator/number_paginator.dart';
 
 import '/common_libraries.dart';
 import 'package:strings/strings.dart';
@@ -10,6 +9,7 @@ class EntityListTemplate extends StatefulWidget {
   final ValueChanged<String>? onFilterSaved;
   final void Function([String?])? onFilterApplied;
   final bool entityListLoadStatusLoading;
+  final bool entityDetailLoadStatusLoading;
   final String title;
   final String description;
   final String label;
@@ -34,6 +34,7 @@ class EntityListTemplate extends StatefulWidget {
     required this.onRowClick,
     this.onIncludeDeletedChanged,
     this.entityListLoadStatusLoading = true,
+    this.entityDetailLoadStatusLoading = false,
     this.entities = const [],
     this.selectedEntity,
     this.description = '',
@@ -566,54 +567,60 @@ class _CrudState extends State<EntityListTemplate> {
                 ],
               ),
             ),
-            ...(widget.selectedEntity != null
-                ? widget.selectedEntity!
-                    .sideDetailItemsToMap()
-                    .entries
-                    .map(
-                      (detail) => DetailItem(
-                        label: detail.key,
-                        isTwoLine: detail.value is Map,
-                        content: CustomDataCell(
-                          data: detail.value is Map
-                              ? detail.value['content']
-                              : detail.value,
+            ...widget.entityDetailLoadStatusLoading
+                ? [const Loader()]
+                : (widget.selectedEntity != null
+                    ? widget.selectedEntity!
+                        .sideDetailItemsToMap()
+                        .entries
+                        .map(
+                          (detail) => DetailItem(
+                            label: detail.key,
+                            isTwoLine: detail.value is Map,
+                            content: CustomDataCell(
+                              data: detail.value is Map
+                                  ? detail.value['content']
+                                  : detail.value,
+                            ),
+                          ),
+                        )
+                        .toList()
+                    : []),
+            widget.entityDetailLoadStatusLoading
+                ? Container()
+                : Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: grey,
+                          width: 1,
                         ),
                       ),
-                    )
-                    .toList()
-                : []),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: grey,
-                    width: 1,
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                top: 12,
-              ),
-              child: CustomButton(
-                backgroundColor: const Color(0xff0c83ff),
-                hoverBackgroundColor: const Color(0xff0b76e6),
-                iconData: PhosphorIcons.arrowRight,
-                text: '${camelize(widget.label)} Details',
-                onClick: () {
-                  String location = GoRouter.of(context).location;
-                  int index = location.indexOf('/index');
-                  if (index != -1) {
-                    location = location.replaceRange(index, null, '');
-                  }
+            widget.entityDetailLoadStatusLoading
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20.0,
+                      top: 12,
+                    ),
+                    child: CustomButton(
+                      backgroundColor: const Color(0xff0c83ff),
+                      hoverBackgroundColor: const Color(0xff0b76e6),
+                      iconData: PhosphorIcons.arrowRight,
+                      text: '${camelize(widget.label)} Details',
+                      onClick: () {
+                        String location = GoRouter.of(context).location;
+                        int index = location.indexOf('/index');
+                        if (index != -1) {
+                          location = location.replaceRange(index, null, '');
+                        }
 
-                  GoRouter.of(context).go('$location/show/$selectedId');
-                },
-              ),
-            ),
+                        GoRouter.of(context).go('$location/show/$selectedId');
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
