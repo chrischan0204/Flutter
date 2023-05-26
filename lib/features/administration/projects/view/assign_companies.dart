@@ -68,7 +68,7 @@ class _AssignCompaniesToProjectViewState
   CustomButton _buildGoToListButton(BuildContext context) {
     return CustomButton(
       backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
+      hoverBackgroundColor: primaryHoverColor,
       iconData: PhosphorIcons.listNumbers,
       text: 'Projects List',
       onClick: () {

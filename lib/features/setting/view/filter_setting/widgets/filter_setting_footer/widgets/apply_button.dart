@@ -46,7 +46,7 @@ class _ApplyButtonState extends State<ApplyButton> {
                   }
                 },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.purple,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
             ),

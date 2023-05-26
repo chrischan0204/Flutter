@@ -64,52 +64,57 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
       builder: (context, state) {
         return Card(
           elevation: 3,
-          child: Padding(
+          child: Container(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 2 / 5),
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FilterSettingHeaderView(
-                  viewName: widget.viewName,
-                  onFilterOptionClosed: () =>
-                      setState(() => widget.onFilterOptionClosed()),
-                ),
-                const CustomDivider(),
-                Builder(
-                  builder: (context) {
-                    if (state.userFilterSettingList.isEmpty &&
-                        state.userFilterUpdate.undeletedUserFilterItems.isEmpty) {
-                      return const Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          child: Text(
-                            'There are no user filter settings. Please click Add Button to create new user filter setting',
-                            style: TextStyle(fontSize: 14),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FilterSettingHeaderView(
+                    viewName: widget.viewName,
+                    onFilterOptionClosed: () =>
+                        setState(() => widget.onFilterOptionClosed()),
+                  ),
+                  const CustomDivider(),
+                  Builder(
+                    builder: (context) {
+                      if (state.userFilterSettingList.isEmpty &&
+                          state.userFilterUpdate.undeletedUserFilterItems
+                              .isEmpty) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: Text(
+                              'There are no user filter settings. Please click Add Button to create new user filter setting',
+                              style: TextStyle(fontSize: 14),
+                            ),
                           ),
-                        ),
+                        );
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FilterSettingBodyView(viewName: widget.viewName),
+                          const AddClauseButton(),
+                          const CustomDivider(),
+                          FilterSettingFooterView(
+                            viewName: widget.viewName,
+                            onFilterOptionClosed: widget.onFilterOptionClosed,
+                            onFilterApplied: widget.onFilterApplied,
+                            onFilterSaved: (filterId) {
+                              widget.onFilterSaved(filterId);
+                            },
+                          ),
+                        ],
                       );
-                    }
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FilterSettingBodyView(viewName: widget.viewName),
-                        const AddClauseButton(),
-                        const CustomDivider(),
-                        FilterSettingFooterView(
-                          viewName: widget.viewName,
-                          onFilterOptionClosed: widget.onFilterOptionClosed,
-                          onFilterApplied: widget.onFilterApplied,
-                          onFilterSaved: (filterId) {
-                            widget.onFilterSaved(filterId);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );

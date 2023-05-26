@@ -170,18 +170,45 @@ class CustomPagination extends StatelessWidget {
       children: [
         /// Previous button
         IconButton(
-          color: Colors.blue,
+          color: primaryColor,
           icon: previousIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLinesLeft,
+                size: 16,
               ),
           onPressed: selectedPage > 1 ? () => onPageChanged(1) : null,
         ),
+
+        // ElevatedButton(
+        //   onPressed: () {},
+        //   child: Icon(Icons.menu, color: Colors.white),
+        //   style: ElevatedButton.styleFrom(
+        //     shape: CircleBorder(),
+        //     padding: EdgeInsets.all(20),
+        //     backgroundColor: Colors.blue, // <-- Button color
+        //     foregroundColor: Colors.red, // <-- Splash color
+        //   ),
+        // ),
+        // ElevatedButton(
+        //   onPressed: () {},
+        //   child: Icon(Icons.menu),
+        //   style: ButtonStyle(
+        //     shape: MaterialStateProperty.all(CircleBorder()),
+        //     padding: MaterialStateProperty.all(EdgeInsets.all(20)),
+        //     backgroundColor:
+        //         MaterialStateProperty.all(Colors.blue), // <-- Button color
+        //     overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+        //       if (states.contains(MaterialState.pressed))
+        //         return Colors.red; // <-- Splash color
+        //     }),
+        //   ),
+        // ),
         IconButton(
-          color: Colors.blue,
+          color: primaryColor,
           icon: previousIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLineLeft,
+                size: 16,
               ),
           onPressed:
               selectedPage > 1 ? () => onPageChanged(selectedPage - 1) : null,
@@ -192,20 +219,22 @@ class CustomPagination extends StatelessWidget {
 
         /// Next button
         IconButton(
-          color: Colors.blue,
+          color: primaryColor,
           icon: nextIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLineRight,
+                size: 16,
               ),
           onPressed: selectedPage < numOfPages
               ? () => onPageChanged(selectedPage + 1)
               : null,
         ),
         IconButton(
-          color: Colors.blue,
+          color: primaryColor,
           icon: nextIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLinesRight,
+                size: 16,
               ),
           onPressed: selectedPage < numOfPages
               ? () => onPageChanged(numOfPages)
@@ -238,7 +267,7 @@ class PaginationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(seconds: 3),
       child: TextButton(
         style: index == selectedIndex ? activeBtnStyle : inactiveBtnStyle,
         onPressed: () => onPageChanged(),
@@ -266,10 +295,9 @@ class MoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return StarMenu(
       params: StarMenuParameters.dropdown(context)
-          .copyWith(centerOffset: const Offset(0, 0)),
+          .copyWith(centerOffset: const Offset(0, -80)),
       items: [
         Container(
-          width: 50,
           constraints: const BoxConstraints(maxHeight: 200),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -277,12 +305,16 @@ class MoreButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 for (int i = start; i <= end; i++)
-                  TextButton(
-                    onPressed: () => onChange(i),
-                    child: Text(
-                      i.toString(),
-                      style: const TextStyle(
-                        fontSize: 14,
+                  InkWell(
+                    onTap: () => onChange(i),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 8,
+                      ),
+                      child: Text(
+                        i.toString(),
+                        style: TextStyle(fontSize: 14, color: primaryColor),
                       ),
                     ),
                   )
@@ -291,9 +323,9 @@ class MoreButton extends StatelessWidget {
           ),
         ),
       ],
-      child: const Icon(
+      child: Icon(
         PhosphorIcons.dotsThree,
-        color: Colors.blue,
+        color: primaryColor,
       ),
     );
   }

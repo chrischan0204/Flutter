@@ -35,33 +35,31 @@ class _PaginatorState extends State<Paginator> {
         activeTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 14,
-          fontWeight: FontWeight.w700,
         ),
         activeBtnStyle: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
+          backgroundColor: MaterialStateProperty.all(primaryColor),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(3),
-            side: const BorderSide(
-              color: Colors.blueAccent,
-              width: 1,
+            borderRadius: BorderRadius.circular(5),
+            side: BorderSide(
+              color: primaryColor,
+              width: 2,
             ),
           )),
         ),
         inactiveBtnStyle: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
           backgroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(3),
-            side: const BorderSide(
-              color: Colors.blueAccent,
-              width: 1,
-            ),
-          )),
+          // shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(3),
+          //   side: const BorderSide(
+          //     color: Colors.blueAccent,
+          //     width: 1,
+          //   ),
+          // )),
         ),
-        inactiveTextStyle: const TextStyle(
+        inactiveTextStyle: TextStyle(
           fontSize: 14,
-          color: Colors.blueAccent,
-          fontWeight: FontWeight.w700,
+          color: primaryColor,
         ),
       ),
     );

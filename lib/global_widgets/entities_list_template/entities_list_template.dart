@@ -78,8 +78,8 @@ class _CrudState extends State<EntityListTemplate> {
 
   @override
   void didChangeDependencies() {
-    positionRightForViewSettingsSlider =
-        positionRightForDetailsSlider = -MediaQuery.of(context).size.width / 4;
+    positionRightForViewSettingsSlider = positionRightForDetailsSlider =
+        -MediaQuery.of(context).size.width / 4 - 10;
     super.didChangeDependencies();
   }
 
@@ -225,6 +225,7 @@ class _CrudState extends State<EntityListTemplate> {
                 }),
                 child: SingleChildScrollView(
                   child: Container(
+                    constraints: const BoxConstraints(minHeight: 100),
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
                       horizontal: 12,
@@ -493,7 +494,7 @@ class _CrudState extends State<EntityListTemplate> {
         child: Container(
           width: MediaQuery.of(context).size.width / 4,
           constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height - 75),
+              maxHeight: MediaQuery.of(context).size.height - topbarHeight),
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 30,
@@ -581,7 +582,7 @@ class _CrudState extends State<EntityListTemplate> {
         child: Container(
           width: MediaQuery.of(context).size.width / 4,
           constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height - 75),
+              minHeight: MediaQuery.of(context).size.height - topbarHeight),
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 30,
@@ -693,7 +694,7 @@ class _CrudState extends State<EntityListTemplate> {
   void _hideViewSettingsSlider() {
     setState(() {
       positionRightForViewSettingsSlider =
-          -MediaQuery.of(context).size.width / 4;
+          -MediaQuery.of(context).size.width / 4 - 10;
     });
   }
 
@@ -713,7 +714,7 @@ class _CrudState extends State<EntityListTemplate> {
     setState(() {
       positionRightForDetailsSlider = 0;
       positionRightForViewSettingsSlider =
-          -MediaQuery.of(context).size.width / 4;
+          -MediaQuery.of(context).size.width / 4 - 10;
     });
   }
 

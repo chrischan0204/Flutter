@@ -30,25 +30,25 @@ class _PaginationViewState extends State<PaginationView> {
     }
     return BlocBuilder<PaginationBloc, PaginationState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 10,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Paginator(
-                numberPages: (widget.totalRows / state.rowsPerPage).ceil(),
-                onPageChange: (value) {
-                  paginationBloc.add(
-                      PaginationSelectedPageNumChanged(selectedPageNum: value));
-                  widget.onPaginate(value, state.rowsPerPage);
-                },
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 5,
-                child: PageShowNumberSelectField(
+        return Card(
+          elevation: 3,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 10,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Paginator(
+                  numberPages: (widget.totalRows / state.rowsPerPage).ceil(),
+                  onPageChange: (value) {
+                    paginationBloc.add(PaginationSelectedPageNumChanged(
+                        selectedPageNum: value));
+                    widget.onPaginate(value, state.rowsPerPage);
+                  },
+                ),
+                PageShowNumberSelectField(
                   totalRows: widget.totalRows,
                   selectedPageNum: state.selectedPageNum,
                   onPageRowChange: (value) {
@@ -59,8 +59,8 @@ class _PaginationViewState extends State<PaginationView> {
                     widget.onPaginate(1, value);
                   },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
