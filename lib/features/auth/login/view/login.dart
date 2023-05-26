@@ -1,5 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:neopop/neopop.dart';
 import '/common_libraries.dart';
 
 class LoginView extends StatefulWidget {
@@ -238,32 +239,70 @@ class _LoginViewState extends State<LoginView> {
                             ),
                             SizedBox(
                               width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () => _login(state),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff68767b),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                              child: NeoPopTiltedButton(
+                                isFloating: true,
+                                onTapUp: () => _login(state),
+                                decoration: NeoPopTiltedButtonDecoration(
+                                  color: const Color(0xff68767b),
+                                  plunkColor: primaryHoverColor,
+                                  shadowColor: Colors.grey,
+                                  border: Border.fromBorderSide(
+                                    BorderSide(
+                                      color: primaryColor,
+                                      width: 2,
+                                    ),
                                   ),
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 24),
                                 ),
-                                child: state is AuthAuthenticateInProgress
-                                    ? LoadingAnimationWidget.staggeredDotsWave(
-                                        color: Colors.white,
-                                        size: 26,
-                                      )
-                                    : Text(
-                                        'Login',
-                                        style: GoogleFonts.amaranth(
-                                          textStyle: TextStyle(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 70.0, vertical: 15),
+                                  child: Center(
+                                    child: state is AuthAuthenticateInProgress
+                                        ? LoadingAnimationWidget
+                                            .staggeredDotsWave(
                                             color: Colors.white,
-                                            fontSize: width / 70,
-                                            letterSpacing: 2,
+                                            size: 26,
+                                          )
+                                        : Text(
+                                            'Login',
+                                            style: GoogleFonts.amaranth(
+                                              textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: width / 70,
+                                                letterSpacing: 2,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                  ),
+                                ),
                               ),
+
+                              // ElevatedButton(
+                              //   onPressed: () => _login(state),
+                              //   style: ElevatedButton.styleFrom(
+                              //     backgroundColor: const Color(0xff68767b),
+                              //     shape: RoundedRectangleBorder(
+                              //       borderRadius: BorderRadius.circular(12),
+                              //     ),
+                              //     padding:
+                              //         const EdgeInsets.symmetric(vertical: 24),
+                              //   ),
+                              //   child: state is AuthAuthenticateInProgress
+                              //       ? LoadingAnimationWidget.staggeredDotsWave(
+                              //           color: Colors.white,
+                              //           size: 26,
+                              //         )
+                              //       : Text(
+                              //           'Login',
+                              //           style: GoogleFonts.amaranth(
+                              //             textStyle: TextStyle(
+                              //               color: Colors.white,
+                              //               fontSize: width / 70,
+                              //               letterSpacing: 2,
+                              //             ),
+                              //           ),
+                              //         ),
+                              // ),
                             ),
                             SizedBox(
                               height: width / 60,

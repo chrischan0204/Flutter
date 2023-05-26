@@ -332,9 +332,8 @@ class _CrudState extends State<EntityListTemplate> {
                         ),
                         decoration: filterNotApplied
                             ? BoxDecoration(
-                                color: Colors.blue.shade200,
                                 border: Border.all(
-                                  color: Colors.blue,
+                                  color: primaryColor,
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(3),
@@ -368,10 +367,12 @@ class _CrudState extends State<EntityListTemplate> {
                                 return Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       PhosphorIcons.funnel,
                                       size: 20,
-                                      color: Colors.white,
+                                      color: filterNotApplied
+                                          ? primaryColor
+                                          : Colors.white,
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
@@ -381,8 +382,8 @@ class _CrudState extends State<EntityListTemplate> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: filterNotApplied
-                                            ? Colors.white
-                                            : Colors.blue,
+                                            ? primaryColor
+                                            : Colors.white,
                                       ),
                                     ),
                                   ],
@@ -410,9 +411,9 @@ class _CrudState extends State<EntityListTemplate> {
                                               appliedUserFilterSetting:
                                                   UserFilterSetting()),
                                         ),
-                                        child: const Icon(
+                                        child: Icon(
                                           PhosphorIcons.x,
-                                          color: Colors.white,
+                                          color: warnColor,
                                           size: 18,
                                         ),
                                       )
