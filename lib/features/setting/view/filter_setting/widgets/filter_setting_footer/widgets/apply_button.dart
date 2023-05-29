@@ -24,36 +24,44 @@ class _ApplyButtonState extends State<ApplyButton> {
   Widget build(BuildContext context) {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
-        return ElevatedButton(
-          onPressed: state.isNew || state.isFilterUpdateNotFill
-              ? null
-              : () {
-                  widget.onFilterApplied(state.userFilterUpdate.id);
-                  filterSettingBloc.add(
-                    FilterSettingAppliedUserFilterSettingChanged( 
-                      appliedUserFilterSetting:
-                          state.selectedUserFilterSetting!,
-                    ),
-                  );
-
-                  if (!(state.selectedUserFilterSetting?.isNew ?? true)) {
-                    CustomNotification(
-                      context: context,
-                      notifyType: NotifyType.success,
-                      content:
-                          'Filter "${state.selectedUserFilterSetting?.filterName}" is applied.',
-                    ).showNotification();
-                  }
-                },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
+        return ButtonTheme(
+          minWidth: 120,
+          child: ElevatedButton(
+            onPressed: state.isNew || state.isFilterUpdateNotFill
+                ? null
+                : () {
+                    widget.onFilterApplied(state.userFilterUpdate.id);
+                    filterSettingBloc.add(
+                      FilterSettingAppliedUserFilterSettingChanged(
+                        appliedUserFilterSetting:
+                            state.selectedUserFilterSetting!,
+                      ),
+                    );
+        
+                    if (!(state.selectedUserFilterSetting?.isNew ?? true)) {
+                      CustomNotification(
+                        context: context,
+                        notifyType: NotifyType.success,
+                        content:
+                            'Filter "${state.selectedUserFilterSetting?.filterName}" is applied.',
+                      ).showNotification();
+                    }
+                  },
+            // style: ButtonStyle(
+            //   backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+            //   overlayColor: MaterialStateProperty.all<Color>(Colors.lightGreen),
+            // ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: lightGreen,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3),
+              ),
             ),
-          ),
-          child: const Text(
-            'Apply',
-            style: TextStyle(color: Colors.white),
+        
+            child: const Text(
+              'Apply',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         );
       },

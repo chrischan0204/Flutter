@@ -13,3 +13,6 @@ Color warnColor = const Color(0xfff58646);
 Color warnHoverColor = const Color(0xffdd793f);
 Color purpleColor = const Color(0xff8e70c1);
 Color purpleHoverColor = const Color(0xff8065ae);
+Color lightGreen = const Color(0xff3fdca5);
+Color lightRed = const Color(0xffef556d);
+Color lightBlue = const Color(0xff00bef6);

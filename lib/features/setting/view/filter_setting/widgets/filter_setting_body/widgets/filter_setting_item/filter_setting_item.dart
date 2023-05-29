@@ -1,3 +1,5 @@
+import 'package:flutter_animate/flutter_animate.dart';
+
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -29,9 +31,9 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: grey),
+        border: Border.all(color: const Color(0xfff2faff)),
         borderRadius: BorderRadius.circular(5),
-        color: lightTeal,
+        color: Color(0xfff2faff),
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 6,
@@ -62,6 +64,10 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
           ValueField(userFilterItem: widget.userFilterItem),
         ],
       ),
-    );
+    )
+        .animate()
+        .fadeIn(duration: 300.ms, delay: 100.ms)
+        .shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
+        .move(begin: const Offset(-8, 0), curve: Curves.easeOutQuad);
   }
 }

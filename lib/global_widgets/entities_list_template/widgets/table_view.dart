@@ -113,13 +113,64 @@ class _DataTableViewState extends State<DataTableView> {
     List<String> columns = widget.entities[0].columns.isNotEmpty
         ? widget.entities[0].columns
         : widget.entities[0].tableItemsToMap().keys.toList();
+    return List.generate(
+        widget.entities.length,
+        (index) => DataRow(
+              color: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if ((widget.entities[index]
+                            .tableItemsToMap()
+                            .containsKey('Active') &&
+                        !widget.entities[index].tableItemsToMap()['Active']) ||
+                    widget.entities[index].deleted) {
+                  return const Color(0xffe6e7e8);
+                }
+                if (index % 2 == 0) {
+                  return Color(0xfff8f9fc);
+                  return primaryColor.withOpacity(0.05);
+                }
+                return null; // Use the default value.
+              }),
+              cells: [
+                ...(columns.isEmpty
+                    ? widget.entities[index]
+                        .tableItemsToMap()
+                        .values
+                        .map((value) => DataCell(CustomDataCell(
+                              data: value,
+                            )))
+                        .toList()
+                    : columns
+                        .map((column) => DataCell(CustomDataCell(
+                              data: widget.entities[index]
+                                  .tableItemsToMap()[column],
+                            )))
+                        .toList()),
+                DataCell(
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        widget.onRowClick(widget.entities[index]);
+                      },
+                      child: Icon(
+                        PhosphorIcons.caretDoubleRight,
+                        size: 20,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ));
     return widget.entities
         .map(
           (entity) => DataRow(
             color: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
               if ((entity.tableItemsToMap().containsKey('Active') &&
-                  !entity.tableItemsToMap()['Active']) || entity.deleted) {
+                      !entity.tableItemsToMap()['Active']) ||
+                  entity.deleted) {
                 return const Color(0xffe6e7e8);
               }
               return null; // Use the default value.

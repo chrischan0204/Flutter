@@ -1,3 +1,5 @@
+import 'package:flutter_animate/flutter_animate.dart';
+
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -117,7 +119,10 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
               ),
             ),
           ),
-        );
+        )
+            .animate()
+            .fadeIn(duration: 600.ms, curve: Curves.easeOutQuad)
+            .slideY();
       },
     );
   }

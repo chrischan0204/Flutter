@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../data/model/model.dart';
 import '/common_libraries.dart';
@@ -42,7 +43,11 @@ class _SidebarState extends State<Sidebar> {
         ),
       );
     }
-    return subItemWidgets;
+    return subItemWidgets
+        .animate(interval: 200.ms)
+        .fadeIn(duration: 300.ms, delay: 100.ms)
+        .shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
+        .move(begin: const Offset(-8, 0), curve: Curves.easeOutQuad);
   }
 
   @override

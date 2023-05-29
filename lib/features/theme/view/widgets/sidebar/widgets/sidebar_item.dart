@@ -1,14 +1,10 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:just_the_tooltip/just_the_tooltip.dart';
-import 'package:safety_eta/common_libraries.dart';
 
-import '../../../../bloc/theme_bloc.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
+
+import '/common_libraries.dart';
 import '../../../../data/model/model.dart';
 import '../sidebar_style.dart';
-import '/constants/color.dart';
 
 class SidebarItem extends StatefulWidget {
   final IconData iconData;
