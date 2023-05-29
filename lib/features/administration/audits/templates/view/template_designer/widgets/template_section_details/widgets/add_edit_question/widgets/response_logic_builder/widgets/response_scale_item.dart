@@ -5,13 +5,11 @@ import '../../../add_edit_question.dart';
 class ResponseScaleItemView extends StatefulWidget {
   final TemplateSectionItem templateSectionItem;
   final String response;
-  final bool include;
   final bool child;
   const ResponseScaleItemView({
     super.key,
     required this.templateSectionItem,
     required this.response,
-    required this.include,
     this.child = false,
   });
 
@@ -22,33 +20,27 @@ class ResponseScaleItemView extends StatefulWidget {
 class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
   late TemplateDesignerBloc templateDesignerBloc;
 
-  late bool include;
   bool followUp = false;
 
   @override
   void initState() {
     templateDesignerBloc = context.read();
-    include = widget.include;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: include ? Colors.white : const Color.fromRGBO(242, 242, 242, 1),
+      color: Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Row(
               children: [
-                Expanded(
-                  child: Checkbox(
-                      value: include,
-                      onChanged: (value) => setState(() => include = !include)),
-                ),
-                Expanded(
+                Flexible(
+                  fit: FlexFit.tight,
                   child: Text(
                     widget.response,
                     style: const TextStyle(
@@ -57,21 +49,20 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    width: 70,
-                    child: CustomTextField(
-                      onChanged: (value) => templateDesignerBloc.add(
-                          TemplateDesignerScoreChanged(
-                              child: widget.child,
-                              templateSectionItemId:
-                                  widget.templateSectionItem.id!,
-                              score: double.parse(value))),
-                    ),
+                SizedBox(
+                  width: 60,
+                  child: CustomTextField(
+                    onChanged: (value) => templateDesignerBloc.add(
+                        TemplateDesignerScoreChanged(
+                            child: widget.child,
+                            templateSectionItemId:
+                                widget.templateSectionItem.id!,
+                            score: double.parse(value))),
                   ),
                 ),
                 Flexible(
                   flex: 4,
+                  fit: FlexFit.tight,
                   child: Row(
                     children: [
                       Expanded(
@@ -83,7 +74,6 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                                 widget.templateSectionItem.id!,
                             commentRequired: commentRequired,
                           )),
-                          include: include,
                           active: widget.templateSectionItem.response
                                   ?.commentRequiered ??
                               false,
@@ -101,7 +91,6 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                                 widget.templateSectionItem.id!,
                             actionItemRequired: actionItemRequired,
                           )),
-                          include: include,
                           active: widget.templateSectionItem.response
                                   ?.actionItemRequired ??
                               false,
@@ -118,7 +107,6 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                                   active: widget.templateSectionItem.response
                                           ?.followUpRequired ??
                                       false,
-                                  include: include,
                                   onClick: (followUpRequired) {
                                     setState(() => followUp = !followUp);
                                     templateDesignerBloc.add(
@@ -150,14 +138,16 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                   margin: const EdgeInsets.all(10),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
                           'Follow up',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 20,
                             color: Colors.blue,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

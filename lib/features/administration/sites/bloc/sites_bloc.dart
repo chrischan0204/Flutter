@@ -58,10 +58,16 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     emit(state.copyWith(sitesRetrievedStatus: EntityStatus.loading));
 
     try {
-      List<Site> filteredSiteList = await sitesRepository.getFilteredSiteList(
-          event.filterId, event.includeDeleted);
+      FilteredSiteData data = await sitesRepository.getFilteredSiteList(
+          event.filterId, event.includeDeleted, event.pageNum, event.pageSize);
+      final List<String> columns =
+          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
+
       emit(state.copyWith(
-        sites: filteredSiteList,
+        totalRows: data.totalRows,
+        sites: (data.data)
+            .map((e) => e.toSite().copyWith(columns: columns))
+            .toList(),
         sitesRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {

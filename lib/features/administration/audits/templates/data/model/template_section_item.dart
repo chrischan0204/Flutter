@@ -43,6 +43,8 @@ class TemplateSectionItem extends Equatable {
       responseScaleId != emptyGuid ||
       children.isNotEmpty;
 
+  bool get isNew => id == null;
+
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'id': id,

@@ -24,9 +24,26 @@ class _NewSectionFieldState extends State<NewSectionField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+    return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
+      listener: (context, state) {
+        if (state.templateSectionAddStatus.isSuccess) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+          sectionController.text = '';
+        } else if (state.templateSectionAddStatus.isFailure) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
+        }
+      },
+      listenWhen: (previous, current) =>
+          previous.templateSectionAddStatus != current.templateSectionAddStatus,
       builder: (context, state) => CustomTextFieldWithIcon(
-        key: ValueKey(widget.templateId),
         hintText: 'Add new section',
         suffixWidget: SizedBox(
           width: 40,

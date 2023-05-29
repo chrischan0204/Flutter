@@ -6,3 +6,4 @@ export 'filtered_template.dart';
 export 'filtered_template_data.dart';
 export 'question.dart';
 export 'template_section_item.dart';
+export 'template_section_question.dart';

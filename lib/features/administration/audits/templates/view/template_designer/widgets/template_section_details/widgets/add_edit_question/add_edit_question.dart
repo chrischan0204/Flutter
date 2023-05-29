@@ -45,7 +45,7 @@ class AddEditQuestionView extends StatelessWidget {
                 children: [
                   const SaveQuestionButton(),
                   const SizedBox(width: 10),
-                  templateSectionItem.question == null
+                  templateSectionItem.isNew
                       ? const CancelCreateQuestionButton()
                       : const MinimizeQuestionButton(),
                 ],

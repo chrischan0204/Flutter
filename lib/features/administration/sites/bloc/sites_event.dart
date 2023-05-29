@@ -4,7 +4,7 @@ abstract class SitesEvent extends Equatable {
   const SitesEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class SitesRetrieved extends SitesEvent {}
@@ -12,15 +12,21 @@ class SitesRetrieved extends SitesEvent {}
 class SiteListFiltered extends SitesEvent {
   final String filterId;
   final bool includeDeleted;
+  final int? pageNum;
+  final int? pageSize;
   const SiteListFiltered({
     required this.filterId,
     this.includeDeleted = false,
+    this.pageNum,
+    this.pageSize,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         filterId,
         includeDeleted,
+        pageNum,
+        pageSize,
       ];
 }
 

@@ -42,6 +42,7 @@ class _CancelCreateQuestionButtonState
                 btnOkText: 'OK',
                 btnOkOnPress: () => templateDesignerBloc
                     .add(TemplateDesignerCancelCreateQuestionButtonClicked()),
+                btnCancelOnPress: () {},
                 dialogType: DialogType.info,
               ).show();
             } else {

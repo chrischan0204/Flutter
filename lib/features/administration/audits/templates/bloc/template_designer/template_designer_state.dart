@@ -11,7 +11,7 @@ class TemplateDesignerState extends Equatable {
 
   final TemplateSection? selectedTemplateSection;
 
-  final List<ResponseScaleItem> sectionItemQuestionList;
+  final List<TemplateSectionQuestion> sectionItemQuestionList;
   final EntityStatus sectionItemQuestionListLoadStatus;
 
   final EntityStatus responseScaleItemListLoadStatus;
@@ -56,8 +56,6 @@ class TemplateDesignerState extends Equatable {
         message,
       ];
 
-      
-
   TemplateDesignerState copyWith({
     String? newSection,
     List<TemplateSection>? templateSectionList,
@@ -67,7 +65,7 @@ class TemplateDesignerState extends Equatable {
     EntityStatus? responseScaleListLoadStatus,
     TemplateSection? selectedTemplateSection,
     EntityStatus? sectionItemQuestionListLoadStatus,
-    List<ResponseScaleItem>? sectionItemQuestionList,
+    List<TemplateSectionQuestion>? sectionItemQuestionList,
     EntityStatus? responseScaleItemListLoadStatus,
     Nullable<TemplateSectionItem?>? templateSectionItem,
     EntityStatus? templateSectionItemCreateStatus,

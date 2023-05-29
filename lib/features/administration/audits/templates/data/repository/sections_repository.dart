@@ -8,12 +8,13 @@ class SectionsRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/audits/sections');
 
-  Future<List<ResponseScaleItem>> getSectionItemList(String sectionId) async {
+  Future<List<TemplateSectionQuestion>> getSectionItemList(
+      String sectionId) async {
     Response response = await super.get('$url/$sectionId/items');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
-          .map((e) => ResponseScaleItem.fromMap(e))
+          .map((e) => TemplateSectionQuestion.fromMap(e))
           .toList();
     }
 

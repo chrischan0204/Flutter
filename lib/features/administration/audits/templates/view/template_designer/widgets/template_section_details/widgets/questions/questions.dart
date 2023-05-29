@@ -13,14 +13,10 @@ class _QuestionsViewState extends State<QuestionsView> {
   Widget build(BuildContext context) {
     return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
       builder: (context, state) {
-        final sectionItemQuestionList =
-            List.from(state.sectionItemQuestionList);
-        sectionItemQuestionList.sort((a, b) => a.order - b.order);
-        
         return Column(
           mainAxisSize: MainAxisSize.min,
-          children: sectionItemQuestionList
-              .map((e) => QuestionView(question: e.name))
+          children: state.sectionItemQuestionList
+              .map((e) => QuestionView(question: e.title))
               .toList(),
         );
       },

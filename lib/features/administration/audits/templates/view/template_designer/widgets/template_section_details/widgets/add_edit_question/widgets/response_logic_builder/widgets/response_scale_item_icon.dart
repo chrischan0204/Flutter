@@ -1,7 +1,6 @@
 import '/common_libraries.dart';
 
 class ResponseScaleItemIcon extends StatefulWidget {
-  final bool include;
   final IconData iconData;
   final String label;
   final Color activeColor;
@@ -9,7 +8,6 @@ class ResponseScaleItemIcon extends StatefulWidget {
   final bool active;
   const ResponseScaleItemIcon({
     super.key,
-    this.include = true,
     required this.iconData,
     required this.label,
     required this.activeColor,
@@ -29,20 +27,8 @@ class _ResponseScaleItemIconState extends State<ResponseScaleItemIcon> {
       children: [
         ElevatedButton(
           onPressed: () {
-            if (widget.include) {
-              if (widget.onClick != null) {
-                widget.onClick!(!widget.active);
-              }
-            } else {
-              CustomAlert(
-                context: context,
-                width: MediaQuery.of(context).size.width / 4,
-                title: 'Notification',
-                description: 'Please enable row before invoking responses.',
-                btnOkText: 'OK',
-                btnOkOnPress: () {},
-                dialogType: DialogType.info,
-              ).show();
+            if (widget.onClick != null) {
+              widget.onClick!(!widget.active);
             }
           },
           style: ElevatedButton.styleFrom(

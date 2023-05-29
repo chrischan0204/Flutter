@@ -32,31 +32,16 @@ class ResponseLogicBuilder extends StatelessWidget {
               ),
             ),
             const CustomDivider(),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
-                builder: (context, state) {
-                  return Text(
-                    state.responseScaleList
-                        .firstWhere(
-                          (element) =>
-                              element.id == templateSectionItem.responseScaleId,
-                          orElse: () => const ResponseScale(
-                              id: emptyGuid,
-                              name:
-                                  'Please choose possible answers to question to continue building response logic'),
-                        )
-                        .name,
-                  );
-                },
-              ),
+            ResponseLogicBuilderNameView(
+              templateSectionItem: templateSectionItem,
             ),
+            if (templateSectionItemList.isNotEmpty)
+              const ResponseLogicBuilderHeader(),
             Column(
                 mainAxisSize: MainAxisSize.min,
                 children: templateSectionItemList
                     .map((templateSectionItem) => ResponseScaleItemView(
                           response: templateSectionItem.response?.name ?? '',
-                          include: true,
                           child: child,
                           templateSectionItem: templateSectionItem,
                         ))

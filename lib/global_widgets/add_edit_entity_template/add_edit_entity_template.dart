@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -151,12 +152,19 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             horizontal: 20.0,
             vertical: 6,
           ),
-          child: Text(
-            'Fill in the details below to create a ${widget.label}. Fields with (*) are required.',
+          child: DefaultTextStyle(
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               fontFamily: 'OpenSans',
+            ),
+            child: AnimatedTextKit(
+              totalRepeatCount: 1,
+              pause: const Duration(milliseconds: 300),
+              animatedTexts: [
+                TyperAnimatedText(
+                    'Fill in the details below to create a ${widget.label}. Fields with (*) are required.'),
+              ],
             ),
           ),
         ),

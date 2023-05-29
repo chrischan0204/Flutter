@@ -42,9 +42,12 @@ class _SitesListViewState extends State<SitesListView> {
             entityDetailLoadStatusLoading: state.siteSelectedStatus.isLoading,
             selectedEntity: state.selectedSite,
             onViewSettingApplied: () => _filterSites(),
-            onIncludeDeletedChanged: (value) => _filterSites(null, value),
-            onFilterSaved: _filterSites,
-            onFilterApplied: _filterSites,
+            onIncludeDeletedChanged: (value) => _filterSites(null, value, 1),
+            onFilterSaved: (value) => _filterSites(value, null, 1),
+            onFilterApplied: ([value]) => _filterSites(value, null, 1),
+            onPaginate: (pageNum, pageRow) =>
+                _filterSites(null, null, pageNum, pageRow),
+            totalRows: state.totalRows,
           );
         },
       ),
@@ -54,13 +57,18 @@ class _SitesListViewState extends State<SitesListView> {
   void _filterSites([
     String? filterId,
     bool? includeDeleted,
+    int? pageNum,
+    int? rowPerPage,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
+    final PaginationBloc paginationBloc = context.read();
     sitesBloc.add(SiteListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.selectedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+      pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
+      pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
     ));
   }
 }
