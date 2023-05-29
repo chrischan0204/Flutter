@@ -31,7 +31,6 @@ class UserListFiltered extends UserListEvent {
   List<Object?> get props => [
         filterId,
         includeDeleted,
-        pageNum,
-        pageSize,
+        
       ];
 }

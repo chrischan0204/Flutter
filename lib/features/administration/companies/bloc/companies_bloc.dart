@@ -76,10 +76,16 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     emit(state.copyWith(companiesRetrievedStatus: EntityStatus.loading));
 
     try {
-      List<Company> filteredCompanyList = await companiesRepository
-          .getFilteredCompanyList(event.filterId, event.includeDeleted);
-      emit(state.copyWith(
-        companies: filteredCompanyList,
+      FilteredCompanyData data =
+          await companiesRepository.getFilteredCompanyList(event.filterId,
+              event.includeDeleted, event.pageNum, event.pageSize);
+      final List<String> columns =
+          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
+      return emit(state.copyWith(
+        totalRows: data.totalRows,
+        companies: data.data
+            .map((e) => e.toCompany().copyWith(columns: columns))
+            .toList(),
         companiesRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {

@@ -13,15 +13,21 @@ class CompaniesRetrieved extends CompaniesEvent {}
 class CompanyListFiltered extends CompaniesEvent {
   final String filterId;
   final bool includeDeleted;
+  final int? pageNum;
+  final int? pageSize;
   const CompanyListFiltered({
     required this.filterId,
     this.includeDeleted = false,
+    this.pageNum,
+    this.pageSize,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         filterId,
         includeDeleted,
+        pageNum,
+        pageSize,
       ];
 }
 
