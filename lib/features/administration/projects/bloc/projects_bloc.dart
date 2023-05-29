@@ -67,11 +67,16 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     emit(state.copyWith(projectsRetrievedStatus: EntityStatus.loading));
 
     try {
-      List<Project> filteredProjectList = await projectsRepository
-          .getFilteredProjectList(event.filterId, event.includeDeleted);
-          print(filteredProjectList);
+      FilteredProjectData data =
+          await projectsRepository.getFilteredProjectList(event.filterId,
+              event.includeDeleted, event.pageNum, event.pageSize);
+      final List<String> columns =
+          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
       emit(state.copyWith(
-        projects: filteredProjectList,
+        totalRows: data.totalRows,
+        projects: data.data
+            .map((e) => e.toProject().copyWith(columns: columns))
+            .toList(),
         projectsRetrievedStatus: EntityStatus.success,
       ));
     } catch (e) {
