@@ -1,5 +1,4 @@
 import '/common_libraries.dart';
-import '/features/features.dart';
 import '/features/theme/view/widgets/topbar/topbar.dart';
 
 import 'view/widgets/sidebar/sidebar.dart';
@@ -67,50 +66,56 @@ class _LayoutState extends State<Layout> {
       builder: (context, state) => state.authUser == null
           ? const LoginView()
           : LayoutBuilder(
-              builder: (context, constraints) => Scaffold(
-                key: scaffoldKey,
-                backgroundColor: backgroundColor,
-                drawerEnableOpenDragGesture: false,
-                drawerScrimColor: Colors.transparent,
-                drawer: constraints.maxWidth < 1000
-                    ? Drawer(
-                        width: sidebarWidth,
-                        backgroundColor: sidebarColor,
-                        child: Sidebar(
-                          selectedItemName: widget.selectedItemName,
-                        ),
-                      )
-                    : null,
-                body: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    children: [
-                      const Topbar(),
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            constraints.maxWidth < 1000
-                                ? Container()
-                                : Sidebar(
-                                    selectedItemName: widget.selectedItemName,
-                                  ),
-                            Expanded(
-                              child: Container(
-                                // padding: const EdgeInsets.symmetric(
-                                //   horizontal: 10,
-                                //   vertical: 20,
-                                // ),
-                                height: MediaQuery.of(context).size.height -
-                                    topbarHeight,
-                                child: widget.body,
+              builder: (context, constraints) => InactivityDetectWidget(
+                onShouldNavigate: (p0) {
+                  _authBloc.add(const AuthUnauthenticated());
+                  CustomNotification(
+                    context: context,
+                    notifyType: NotifyType.info,
+                    content: 'Session has expired',
+                  ).showNotification();
+                },
+                child: Scaffold(
+                  key: scaffoldKey,
+                  backgroundColor: backgroundColor,
+                  drawerEnableOpenDragGesture: false,
+                  drawerScrimColor: Colors.transparent,
+                  drawer: constraints.maxWidth < 1000
+                      ? Drawer(
+                          width: sidebarWidth,
+                          backgroundColor: sidebarColor,
+                          child: Sidebar(
+                            selectedItemName: widget.selectedItemName,
+                          ),
+                        )
+                      : null,
+                  body: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      children: [
+                        const Topbar(),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              constraints.maxWidth < 1000
+                                  ? Container()
+                                  : Sidebar(
+                                      selectedItemName: widget.selectedItemName,
+                                    ),
+                              Expanded(
+                                child: SizedBox(
+                                  height: MediaQuery.of(context).size.height -
+                                      topbarHeight,
+                                  child: widget.body,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
