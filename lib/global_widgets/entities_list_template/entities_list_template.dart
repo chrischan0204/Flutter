@@ -217,54 +217,44 @@ class _CrudState extends State<EntityListTemplate> {
             ? const Center(
                 child: Loader(),
               )
-            : ScrollConfiguration(
-                behavior:
-                    ScrollConfiguration.of(context).copyWith(dragDevices: {
-                  PointerDeviceKind.touch,
-                  PointerDeviceKind.mouse,
-                }),
-                child: SingleChildScrollView(
-                  child: Container(
-                    constraints: const BoxConstraints(minHeight: 100),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 12,
-                    ),
-                    width: double.infinity,
-                    child: DataTableView(
-                      entities: widget.entities,
-                      columns: widget.columns,
-                      emptyMessage: widget.emptyMessage,
-                      onTableSorted: widget.onTableSorted == null
-                          ? null
-                          : (MapEntry<String, bool> sortInfo) {
-                              List<Entity> entities =
-                                  List.from(widget.entities);
+            : Container(
+                constraints: const BoxConstraints(minHeight: 200),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 12,
+                ),
+                width: double.infinity,
+                child: DataTableView(
+                  entities: widget.entities,
+                  columns: widget.columns,
+                  emptyMessage: widget.emptyMessage,
+                  onTableSorted: widget.onTableSorted == null
+                      ? null
+                      : (MapEntry<String, bool> sortInfo) {
+                          List<Entity> entities = List.from(widget.entities);
 
-                              entities.sort(
-                                (a, b) {
-                                  return (sortInfo.value ? 1 : -1) *
-                                      (a
-                                              .tableItemsToMap()[sortInfo.key]
-                                              .toString()
-                                              .toLowerCase())
-                                          .compareTo(b
-                                              .tableItemsToMap()[sortInfo.key]
-                                              .toString()
-                                              .toLowerCase());
-                                },
-                              );
-                              widget.onTableSorted!(entities);
+                          entities.sort(
+                            (a, b) {
+                              return (sortInfo.value ? 1 : -1) *
+                                  (a
+                                          .tableItemsToMap()[sortInfo.key]
+                                          .toString()
+                                          .toLowerCase())
+                                      .compareTo(b
+                                          .tableItemsToMap()[sortInfo.key]
+                                          .toString()
+                                          .toLowerCase());
                             },
-                      onRowClick: (entity) {
-                        _showDetailsSlider();
-                        setState(() {
-                          selectedId = entity.id!;
-                        });
-                        widget.onRowClick(entity);
-                      },
-                    ),
-                  ),
+                          );
+                          widget.onTableSorted!(entities);
+                        },
+                  onRowClick: (entity) {
+                    _showDetailsSlider();
+                    setState(() {
+                      selectedId = entity.id!;
+                    });
+                    widget.onRowClick(entity);
+                  },
                 ),
               ),
       ),
@@ -721,8 +711,8 @@ class _CrudState extends State<EntityListTemplate> {
 
   void _hideDetailsSlider() {
     setState(() {
-      positionRightForDetailsSlider = -MediaQuery.of(context).size.width / 4 - 10;
+      positionRightForDetailsSlider =
+          -MediaQuery.of(context).size.width / 4 - 10;
     });
   }
 }
-
