@@ -33,7 +33,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xfff2faff)),
         borderRadius: BorderRadius.circular(5),
-        color: Color(0xfff2faff),
+        color: const Color(0xfff2faff),
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 6,

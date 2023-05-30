@@ -31,7 +31,7 @@ class TimerService extends ChangeNotifier {
   void start() {
     if (_timer != null) return;
 
-    _timer = Timer.periodic(const Duration(minutes: 1), _logout);
+    _timer = Timer.periodic(const Duration(minutes: 100), _logout);
   }
 
   void stop() {
