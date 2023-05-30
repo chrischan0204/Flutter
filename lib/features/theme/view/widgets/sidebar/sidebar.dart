@@ -43,11 +43,11 @@ class _SidebarState extends State<Sidebar> {
         ),
       );
     }
-    return subItemWidgets
-        .animate(interval: 200.ms)
-        .fadeIn(duration: 300.ms, delay: 100.ms)
-        .shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
-        .move(begin: const Offset(-8, 0), curve: Curves.easeOutQuad);
+    return subItemWidgets;
+        // .animate(interval: 150.ms)
+        // .fadeIn(duration: 300.ms, delay: 100.ms)
+        // .shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
+        // .move(begin: const Offset(-8, 0), curve: Curves.easeOutQuad);
   }
 
   @override

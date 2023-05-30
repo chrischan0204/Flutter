@@ -170,7 +170,7 @@ class CustomPagination extends StatelessWidget {
       children: [
         /// Previous button
         IconButton(
-          color: primaryColor,
+          color: lightBlue,
           icon: previousIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLinesLeft,
@@ -204,7 +204,7 @@ class CustomPagination extends StatelessWidget {
         //   ),
         // ),
         IconButton(
-          color: primaryColor,
+          color: lightBlue,
           icon: previousIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLineLeft,
@@ -219,7 +219,7 @@ class CustomPagination extends StatelessWidget {
 
         /// Next button
         IconButton(
-          color: primaryColor,
+          color: lightBlue,
           icon: nextIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLineRight,
@@ -230,7 +230,7 @@ class CustomPagination extends StatelessWidget {
               : null,
         ),
         IconButton(
-          color: primaryColor,
+          color: lightBlue,
           icon: nextIcon ??
               const Icon(
                 PhosphorIcons.arrowFatLinesRight,
@@ -314,7 +314,7 @@ class MoreButton extends StatelessWidget {
                       ),
                       child: Text(
                         i.toString(),
-                        style: TextStyle(fontSize: 14, color: primaryColor),
+                        style: TextStyle(fontSize: 14, color: lightBlue),
                       ),
                     ),
                   )
@@ -325,7 +325,7 @@ class MoreButton extends StatelessWidget {
       ],
       child: Icon(
         PhosphorIcons.dotsThree,
-        color: primaryColor,
+        color: lightBlue,
       ),
     );
   }

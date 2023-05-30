@@ -37,11 +37,11 @@ class _PaginatorState extends State<Paginator> {
           fontSize: 14,
         ),
         activeBtnStyle: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(primaryColor),
+          backgroundColor: MaterialStateProperty.all(lightBlue),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
             side: BorderSide(
-              color: primaryColor,
+              color: lightBlue,
               width: 2,
             ),
           )),
@@ -59,7 +59,7 @@ class _PaginatorState extends State<Paginator> {
         ),
         inactiveTextStyle: TextStyle(
           fontSize: 14,
-          color: primaryColor,
+          color: lightBlue,
         ),
       ),
     );

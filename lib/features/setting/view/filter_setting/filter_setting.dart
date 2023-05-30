@@ -121,8 +121,8 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
           ),
         )
             .animate()
-            .fadeIn(duration: 600.ms, curve: Curves.easeOutQuad)
-            .slideY();
+            .fadeIn(duration: 400.ms, curve: Curves.easeOutQuad)
+            .slideY(begin: -.05);
       },
     );
   }
