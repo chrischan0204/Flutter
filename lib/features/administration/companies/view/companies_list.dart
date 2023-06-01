@@ -39,12 +39,18 @@ class _CompaniesListViewState extends State<CompaniesListView> {
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
                     state.companiesRetrievedStatus.isLoading,
+            entityDetailLoadStatusLoading:
+                state.companySelectedStatus.isLoading,
             selectedEntity: state.selectedCompany,
             onTableSorted: (sortedCompanies) => _sortCompanies(sortedCompanies),
             onViewSettingApplied: () => _filterCompanies(),
-            onIncludeDeletedChanged: (value) => _filterCompanies(null, value),
-            onFilterSaved: _filterCompanies,
-            onFilterApplied: _filterCompanies,
+            onIncludeDeletedChanged: (value) =>
+                _filterCompanies(null, value, 1),
+            onFilterSaved: (value) => _filterCompanies(value, null, 1),
+            onFilterApplied: ([value]) => _filterCompanies(value, null, 1),
+            onPaginate: (pageNum, pageRow) =>
+                _filterCompanies(null, null, pageNum, pageRow),
+            totalRows: state.totalRows,
           );
         },
       ),
@@ -65,13 +71,18 @@ class _CompaniesListViewState extends State<CompaniesListView> {
   void _filterCompanies([
     String? filterId,
     bool? includeDeleted,
+    int? pageNum,
+    int? rowPerPage,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
+    final PaginationBloc paginationBloc = context.read();
     companiesBloc.add(CompanyListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.selectedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+      pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
+      pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
     ));
   }
 }

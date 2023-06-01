@@ -12,15 +12,21 @@ class ProjectsRetrieved extends ProjectsEvent {}
 class ProjectListFiltered extends ProjectsEvent {
   final String filterId;
   final bool includeDeleted;
+  final int? pageNum;
+  final int? pageSize;
   const ProjectListFiltered({
     required this.filterId,
     this.includeDeleted = false,
+    this.pageNum,
+    this.pageSize,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         filterId,
         includeDeleted,
+        pageNum,
+        pageSize,
       ];
 }
 

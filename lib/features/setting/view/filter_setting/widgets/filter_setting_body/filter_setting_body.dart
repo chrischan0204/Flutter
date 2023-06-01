@@ -25,7 +25,7 @@ class _FilterSettingBodyViewState extends State<FilterSettingBodyView> {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) => Container(
         padding: const EdgeInsets.symmetric(vertical: 6),
-        height: 300,
+        // height: 300,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,

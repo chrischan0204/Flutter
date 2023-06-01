@@ -67,9 +67,7 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
   ReorderableList _buildSortingColumnList(BuildContext context) {
     return ReorderableList(
       onReorder: widget.onSortingColumnOrderChanged,
-      onReorderDone: (draggedItem) {
-        print(draggedItem.toString());
-      },
+      onReorderDone: (draggedItem) {},
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
@@ -88,7 +86,6 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                     isFirst: index == 1,
                     isLast: index == widget.viewSettingSortingColumnList.length,
                     columns: widget.columns,
-                    // displayColumnList: state.usedColumns,
                     selectedValue: widget
                         .viewSettingSortingColumnList[index - 1]
                         .selectedValue
@@ -140,7 +137,6 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                     isFirst: index == 1,
                     isLast: index == widget.viewSettingDisplayColumnList.length,
                     columns: widget.columns,
-                    // displayColumnList: state.usedColumns,
                     selectedValue: widget
                         .viewSettingDisplayColumnList[index - 1]
                         .selectedValue
@@ -170,29 +166,7 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
     return TextButton(
       onPressed: () => isDisplay
           ? widget.onDisplayColumnAdded()
-          : widget.onSortingColumnAdded()
-      // {
-      //   if (isDisplay) {
-      //     if (addedDisplayColumnCount <
-      //         widget.columns.length -
-      //             widget.viewSettingDisplayColumnList
-      //                 .where((element) => element.selectedValue != null)
-      //                 .length) {
-      //       addedDisplayColumnCount++;
-      //       widget.onDisplayColumnAdded();
-      //     }
-      //   } else {
-      //     if (addedSortingColumnCount <
-      //         widget.columns.length -
-      //             widget.viewSettingSortingColumnList
-      //                 .where((element) => element.selectedValue != null)
-      //                 .length) {
-      //       addedSortingColumnCount++;
-      //       widget.onSortingColumnAdded();
-      //     }
-      //   }
-      // }
-      ,
+          : widget.onSortingColumnAdded(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

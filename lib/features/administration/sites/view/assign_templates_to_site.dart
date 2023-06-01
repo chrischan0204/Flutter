@@ -69,7 +69,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
   CustomButton _buildGoToListButton(BuildContext context) {
     return CustomButton(
       backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
+      hoverBackgroundColor: primaryHoverColor,
       iconData: PhosphorIcons.listNumbers,
       text: 'Sites List',
       onClick: () {

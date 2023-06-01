@@ -26,10 +26,11 @@ class _DeleteFilterSettingItemButtonState
   Widget build(BuildContext context) {
     return SizedBox(
       width: 50,
-      child: IconButton(
-        onPressed: () => filterSettingBloc.add(
-            FilterSettingUserFilterItemDeleted(
-                userFilterItem: widget.userFilterItem)),
+      child: CustomIconButton(
+        onClick: () => filterSettingBloc.add(
+          FilterSettingUserFilterItemDeleted(
+              userFilterItem: widget.userFilterItem),
+        ),
         icon: const Icon(
           PhosphorIcons.x,
           color: Colors.red,

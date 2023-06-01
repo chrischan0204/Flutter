@@ -39,12 +39,17 @@ class _ProjectsListViewState extends State<ProjectsListView> {
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
                     state.projectsRetrievedStatus.isLoading,
+            entityDetailLoadStatusLoading:
+                state.projectSelectedStatus.isLoading,
             selectedEntity: state.selectedProject,
             onTableSorted: (sortedProjects) => _sortProjects(sortedProjects),
             onViewSettingApplied: () => _filterProjects(),
-            onIncludeDeletedChanged: (value) => _filterProjects(null, value),
-            onFilterSaved: _filterProjects,
-            onFilterApplied: _filterProjects,
+            onIncludeDeletedChanged: (value) => _filterProjects(null, value, 1),
+            onFilterSaved: (value) => _filterProjects(value, null, 1),
+            onFilterApplied: ([value]) => _filterProjects(value, null, 1),
+            onPaginate: (pageNum, pageRow) =>
+                _filterProjects(null, null, pageNum, pageRow),
+            totalRows: state.totalRows,
           );
         },
       ),
@@ -65,13 +70,18 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   void _filterProjects([
     String? filterId,
     bool? includeDeleted,
+    int? pageNum,
+    int? rowPerPage,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
+    final PaginationBloc paginationBloc = context.read();
     projectsBloc.add(ProjectListFiltered(
       filterId: filterId ??
           filterSettingBloc.state.selectedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
+      pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
+      pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
     ));
   }
 }

@@ -17,7 +17,9 @@ class BaseRepository {
           'Content-Type': 'application/json',
           'accept': '*/*',
           'Authorization': 'Bearer $token'
-        };
+        } {
+          print(token);
+        }
 
   Future<http.Response> get(String encodedPath,
       [Map<String, dynamic>? queryParams]) async {

@@ -4,7 +4,7 @@ abstract class AddEditTemplateEvent extends Equatable {
   const AddEditTemplateEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AddEditTemplateDescriptionChanged extends AddEditTemplateEvent {
@@ -47,4 +47,12 @@ class AddEditTemplateUsedInAudit extends AddEditTemplateEvent {
   List<Object> get props => [usedInAudit];
 }
 
-class AddEditTemplateTemplateAdded extends AddEditTemplateEvent {}
+class AddEditTemplateTemplateAddEdited extends AddEditTemplateEvent {
+  final String? templateId;
+  const AddEditTemplateTemplateAddEdited({
+    this.templateId,
+  });
+
+  @override
+  List<Object?> get props => [templateId];
+}

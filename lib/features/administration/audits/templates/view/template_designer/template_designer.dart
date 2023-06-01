@@ -24,24 +24,18 @@ class _TemplateDesignerViewState extends State<TemplateDesignerView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, addEditTemplateState) {
         token = addEditTemplateState.authUser?.token ?? '';
-        return MultiRepositoryProvider(
+        return MultiBlocProvider(
           providers: [
-            RepositoryProvider(
-                create: (context) => TemplatesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => TemplateDesignerBloc(
-                        templatesRepository: RepositoryProvider.of(context),
-                      )),
-            ],
-            child: TemplateDesignerWidget(
-              templateId: widget.templateId,
+            BlocProvider(
+              create: (context) => TemplateDesignerBloc(
+                templatesRepository: RepositoryProvider.of(context),
+                sectionsRepository: RepositoryProvider.of(context),
+                responseScalesRepository: RepositoryProvider.of(context),
+              ),
             ),
+          ],
+          child: TemplateDesignerWidget(
+            templateId: widget.templateId,
           ),
         );
       },

@@ -17,7 +17,7 @@ class AddEditTemplateBloc
     on<AddEditTemplateDateChanged>(_onAddEditTemplateDateChanged);
     on<AddEditTemplateUsedInInspection>(_onAddEditTemplateUsedInInspection);
     on<AddEditTemplateUsedInAudit>(_onAddEditTemplateUsedInAudit);
-    on<AddEditTemplateTemplateAdded>(_onAddEditTemplateTemplateAdded);
+    on<AddEditTemplateTemplateAddEdited>(_onAddEditTemplateTemplateAddEdited);
   }
 
   void _onAddEditTemplateDescriptionChanged(
@@ -54,8 +54,8 @@ class AddEditTemplateBloc
     emit(state.copyWith(usedInAudit: event.usedInAudit));
   }
 
-  Future<void> _onAddEditTemplateTemplateAdded(
-    AddEditTemplateTemplateAdded event,
+  Future<void> _onAddEditTemplateTemplateAddEdited(
+    AddEditTemplateTemplateAddEdited event,
     Emitter<AddEditTemplateState> emit,
   ) async {
     bool success = true;
@@ -72,20 +72,23 @@ class AddEditTemplateBloc
     }
 
     if (success) {
-      emit(state.copyWith(templateAddStatus: EntityStatus.loading));
+      emit(state.copyWith(templateAddEditStatus: EntityStatus.loading));
 
       try {
-        EntityResponse response =
-            await templatesRepository.addTemplate(Template(
+        final template = Template(
           name: state.templateDescription,
           usedInAudit: state.usedInAudit,
           usedInInspection: state.usedInInspection,
           revisionDate: state.date!.toIso8601String(),
-        ));
+        );
+        EntityResponse response = event.templateId == null
+            ? await templatesRepository.addTemplate(template)
+            : await templatesRepository
+                .editTemplate(template.copyWith(id: event.templateId!));
 
         if (response.isSuccess) {
           emit(state.copyWith(
-            templateAddStatus: EntityStatus.success,
+            templateAddEditStatus: EntityStatus.success,
             createdTemplateId: response.data?.id,
             message: response.message,
           ));
@@ -95,17 +98,17 @@ class AddEditTemplateBloc
         if (response.statusCode == 409) {
           emit(state.copyWith(
             templateDescriptionValidationMessage: response.message,
-            templateAddStatus: response.isSuccess.toEntityStatusCode(),
+            templateAddEditStatus: response.isSuccess.toEntityStatusCode(),
           ));
         } else {
           emit(state.copyWith(
-            templateAddStatus: response.isSuccess.toEntityStatusCode(),
+            templateAddEditStatus: response.isSuccess.toEntityStatusCode(),
             message: response.message,
           ));
         }
       } catch (e) {
         emit(state.copyWith(
-          templateAddStatus: EntityStatus.failure,
+          templateAddEditStatus: EntityStatus.failure,
           message: templateAddErrorMessage,
         ));
       }

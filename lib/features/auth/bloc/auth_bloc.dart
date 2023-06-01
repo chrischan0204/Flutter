@@ -12,6 +12,13 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     on<AuthUnauthenticated>(_onAuthUnauthenticated);
   }
 
+  @override
+  void onChange(Change<AuthState> change) {
+    // print(change.currentState);
+    // print(change.nextState);
+    super.onChange(change);
+  }
+
   Future<void> _onAuthAuthenticated(
     AuthAuthenticated event,
     Emitter<AuthState> emit,

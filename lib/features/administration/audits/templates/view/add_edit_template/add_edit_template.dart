@@ -15,41 +15,22 @@ class AddEditTemplateView extends StatefulWidget {
 }
 
 class _AddEditTemplateViewState extends State<AddEditTemplateView> {
-  String token = '';
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) =>
-          setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) =>
-          previous.authUser?.token != current.authUser?.token,
-      builder: (context, addEditTemplateState) {
-        token = addEditTemplateState.authUser?.token ?? '';
-        return MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-                create: (context) => TemplatesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => AddEditTemplateBloc(
-                        templatesRepository: RepositoryProvider.of(context),
-                      )),
-              BlocProvider(
-                  create: (context) => TemplateDetailBloc(
-                      templatesRepository: RepositoryProvider.of(context))),
-            ],
-            child: AddEditTemplateWidget(
-              templateId: widget.templateId,
-              view: widget.view,
-            ),
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => AddEditTemplateBloc(
+                  templatesRepository: RepositoryProvider.of(context),
+                )),
+        BlocProvider(
+            create: (context) => TemplateDetailBloc(
+                templatesRepository: RepositoryProvider.of(context))),
+      ],
+      child: AddEditTemplateWidget(
+        templateId: widget.templateId,
+        view: widget.view,
+      ),
     );
   }
 }
@@ -71,16 +52,11 @@ class AddEditTemplateWidget extends StatefulWidget {
 class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   late AddEditTemplateBloc addEditTemplateBloc;
   late TemplateDetailBloc templateDetailBloc;
-  late RolesBloc rolesBloc;
-  late SitesBloc sitesBloc;
-  late TimeZonesBloc timeZoneBloc;
 
   TextEditingController descriptionController = TextEditingController();
 
   static String pageLabel = 'template';
   static String addButtonName = 'Add Items';
-
-  bool isFirstInit = true;
 
   @override
   void initState() {
@@ -104,14 +80,12 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
           notifyType: NotifyType.success,
           content: addEditTemplateState.message,
         ).showNotification();
-        if (widget.templateId == null) {
-          GoRouter.of(context).go(
-              '/templates/designer/${addEditTemplateState.createdTemplateId}');
-        }
+        GoRouter.of(context).go(
+            '/templates/designer/${widget.templateId ?? addEditTemplateState.createdTemplateId}');
       },
       listenWhen: (previous, current) =>
-          previous.templateAddStatus != current.templateAddStatus &&
-          current.templateAddStatus.isSuccess,
+          previous.templateAddEditStatus != current.templateAddEditStatus &&
+          current.templateAddEditStatus.isSuccess,
       builder: (context, addEditTemplateState) {
         return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, templateDetailState) {
@@ -129,23 +103,26 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 }
               },
               listenWhen: (previous, current) =>
-                  previous.template != current.template,
+                  previous.template != current.template &&
+                  previous.template == null,
               child: AddEditEntityTemplate(
                 label: pageLabel,
                 id: widget.templateId,
                 selectedEntity: templateDetailState.template,
                 addButtonName: addButtonName,
-                addEntity: () =>
-                    addEditTemplateBloc.add(AddEditTemplateTemplateAdded()),
-                editEntity: () => _editTemplate(),
-                crudStatus: addEditTemplateState.templateAddStatus,
+                addEntity: () => addEditTemplateBloc
+                    .add(const AddEditTemplateTemplateAddEdited()),
+                editEntity: () => addEditTemplateBloc.add(
+                    AddEditTemplateTemplateAddEdited(
+                        templateId: widget.templateId)),
+                crudStatus: addEditTemplateState.templateAddEditStatus,
                 isCrudDataFill: _checkFormDataFill(addEditTemplateState),
                 tabItems: _buildTabs(),
                 tabWidth: 500,
                 view: widget.view,
                 child: Column(
                   children: const [
-                    FirstNameField(),
+                    TemplateDescriptionField(),
                     RevisionDatePicker(),
                     UsedInCheckBoxes()
                   ],
@@ -173,10 +150,5 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
       };
     }
     return {};
-  }
-
-  void _editTemplate() {
-    // addEditTemplateBloc
-    //       .add(AddEditTemplateTemplateEdited(templateId: widget.templateId!))
   }
 }

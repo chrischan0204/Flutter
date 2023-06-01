@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:safety_eta/common_libraries.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import '/common_libraries.dart';
 
 import 'router.dart';
 
@@ -9,12 +11,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadEnv();
   await setupHydratedLocalStorage();
-  runApp(RepositoryProvider(
-    create: (context) => AuthRepository(),
-    child: BlocProvider(
-      create: (context) => AuthBloc(
-          authRepository: RepositoryProvider.of<AuthRepository>(context)),
-      child: const MyApp(),
+  runApp(TimerServiceProvider(
+    service: TimerService(),
+    child: RepositoryProvider(
+      create: (context) => AuthRepository(),
+      child: BlocProvider(
+        create: (context) => AuthBloc(
+            authRepository: RepositoryProvider.of<AuthRepository>(context)),
+        child: const MyApp(),
+      ),
     ),
   ));
 }
@@ -42,6 +47,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, state) {
         token = state.authUser?.token ?? '';
         return MultiRepositoryProvider(
+          key: UniqueKey(),
           providers: [
             RepositoryProvider(
               create: (context) => RegionsRepository(
@@ -103,6 +109,34 @@ class _MyAppState extends State<MyApp> {
                 authBloc: BlocProvider.of(context),
               ),
             ),
+            RepositoryProvider(
+              create: (context) => TemplatesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+              create: (context) => SectionsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+              create: (context) => ResponseScalesRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
+            RepositoryProvider(
+                create: (context) => UsersRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
+            RepositoryProvider(
+                create: (context) => TimeZonesRepository(
+                      token: token,
+                      authBloc: BlocProvider.of(context),
+                    )),
           ],
           child: MultiBlocProvider(
             providers: [
@@ -177,6 +211,12 @@ class _MyAppState extends State<MyApp> {
               routerConfig: router,
               // navigatorObservers: [FlutterSmartDialog.observer],
               builder: FlutterSmartDialog.init(),
+              localizationsDelegates: const [
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [Locale('en', 'US')],
             ),
           ),
         );

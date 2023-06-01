@@ -14,6 +14,7 @@ class ProjectsState extends Equatable {
   final EntityStatus projectCrudStatus;
   final String message;
   final String filterText;
+  final int totalRows;
   const ProjectsState({
     this.projects = const [],
     this.unassignedCompanyProjects = const [],
@@ -28,6 +29,7 @@ class ProjectsState extends Equatable {
     this.unassignedCompanyProjectsRetrievedStatus = EntityStatus.initial,
     this.message = '',
     this.filterText = '',
+    this.totalRows = 0,
   });
 
   @override
@@ -45,6 +47,7 @@ class ProjectsState extends Equatable {
         companyFromProjectUnassignedStatus,
         message,
         filterText,
+        totalRows,
       ];
 
   bool get deletable => assignedCompanyProjects.isEmpty;
@@ -63,31 +66,33 @@ class ProjectsState extends Equatable {
     EntityStatus? companyFromProjectUnassignedStatus,
     String? message,
     String? filterText,
+    int? totalRows,
   }) {
     return ProjectsState(
-      projects: projects ?? this.projects,
-      assignedCompanyProjects:
-          assignedCompanyProjects ?? this.assignedCompanyProjects,
-      unassignedCompanyProjects:
-          unassignedCompanyProjects ?? this.unassignedCompanyProjects,
-      selectedProject: selectedProject ?? this.selectedProject,
-      projectsRetrievedStatus:
-          projectsRetrievedStatus ?? this.projectsRetrievedStatus,
-      projectSelectedStatus:
-          projectSelectedStatus ?? this.projectSelectedStatus,
-      projectCrudStatus: projectCrudStatus ?? this.projectCrudStatus,
-      assignedCompanyProjectsRetrievedStatus:
-          assignedCompanyProjectsRetrievedStatus ??
-              this.assignedCompanyProjectsRetrievedStatus,
-      unassignedCompanyProjectsRetrievedStatus:
-          unassignedCompanyProjectsRetrievedStatus ??
-              this.unassignedCompanyProjectsRetrievedStatus,
-      companyToProjectAssignedStatus:
-          companyToProjectAssignedStatus ?? this.companyToProjectAssignedStatus,
-      companyFromProjectUnassignedStatus: companyFromProjectUnassignedStatus ??
-          this.companyFromProjectUnassignedStatus,
-      message: message ?? this.message,
-      filterText: filterText ?? this.filterText,
-    );
+        projects: projects ?? this.projects,
+        assignedCompanyProjects:
+            assignedCompanyProjects ?? this.assignedCompanyProjects,
+        unassignedCompanyProjects:
+            unassignedCompanyProjects ?? this.unassignedCompanyProjects,
+        selectedProject: selectedProject ?? this.selectedProject,
+        projectsRetrievedStatus:
+            projectsRetrievedStatus ?? this.projectsRetrievedStatus,
+        projectSelectedStatus:
+            projectSelectedStatus ?? this.projectSelectedStatus,
+        projectCrudStatus: projectCrudStatus ?? this.projectCrudStatus,
+        assignedCompanyProjectsRetrievedStatus:
+            assignedCompanyProjectsRetrievedStatus ??
+                this.assignedCompanyProjectsRetrievedStatus,
+        unassignedCompanyProjectsRetrievedStatus:
+            unassignedCompanyProjectsRetrievedStatus ??
+                this.unassignedCompanyProjectsRetrievedStatus,
+        companyToProjectAssignedStatus: companyToProjectAssignedStatus ??
+            this.companyToProjectAssignedStatus,
+        companyFromProjectUnassignedStatus:
+            companyFromProjectUnassignedStatus ??
+                this.companyFromProjectUnassignedStatus,
+        message: message ?? this.message,
+        filterText: filterText ?? this.filterText,
+        totalRows: totalRows ?? this.totalRows);
   }
 }

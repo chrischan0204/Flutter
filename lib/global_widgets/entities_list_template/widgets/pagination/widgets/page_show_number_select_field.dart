@@ -28,17 +28,19 @@ class _PageShowNumberSelectFieldState extends State<PageShowNumberSelectField> {
           isSearchable: false,
           selectedValue: pagePerRow.toString(),
           items: const {
+            '2': '2',
             '5': '5',
             '10': '10',
             '20': '20',
             '50': '50',
+            '100': '100',
           },
           onChanged: (value) {
             setState(() => pagePerRow = int.parse(value.key));
             widget.onPageRowChange(pagePerRow);
           },
         ),
-        const SizedBox(width: 50),
+        const SizedBox(width: 20),
         Builder(builder: (context) {
           int start = pagePerRow * (widget.selectedPageNum - 1) + 1;
           int end = pagePerRow * widget.selectedPageNum;

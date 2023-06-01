@@ -1,5 +1,3 @@
-import 'package:number_paginator/number_paginator.dart';
-
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -32,54 +30,38 @@ class _PaginationViewState extends State<PaginationView> {
     }
     return BlocBuilder<PaginationBloc, PaginationState>(
       builder: (context, state) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CustomDivider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width / 2),
-                      child: Paginator(
-                        numberPages:
-                            (widget.totalRows / state.rowsPerPage).ceil(),
-                        onPageChange: (value) {
-                          paginationBloc.add(PaginationSelectedPageNumChanged(
-                              selectedPageNum: value));
-                          widget.onPaginate(value, state.rowsPerPage);
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                      child: Container(
-                    constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width / 5),
-                  )),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 5,
-                    child: PageShowNumberSelectField(
-                      totalRows: widget.totalRows,
-                      selectedPageNum: state.selectedPageNum,
-                      onPageRowChange: (value) {
-                        paginationBloc
-                          ..add(
-                              PaginationRowsPerPageChanged(rowsPerPage: value))
-                          ..add(const PaginationSelectedPageNumChanged(
-                              selectedPageNum: 1));
-                        widget.onPaginate(1, value);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
+        return Card(
+          elevation: 3,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 10,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Paginator(
+                  numberPages: (widget.totalRows / state.rowsPerPage).ceil(),
+                  onPageChange: (value) {
+                    paginationBloc.add(PaginationSelectedPageNumChanged(
+                        selectedPageNum: value));
+                    widget.onPaginate(value, state.rowsPerPage);
+                  },
+                ),
+                PageShowNumberSelectField(
+                  totalRows: widget.totalRows,
+                  selectedPageNum: state.selectedPageNum,
+                  onPageRowChange: (value) {
+                    paginationBloc
+                      ..add(PaginationRowsPerPageChanged(rowsPerPage: value))
+                      ..add(const PaginationSelectedPageNumChanged(
+                          selectedPageNum: 1));
+                    widget.onPaginate(1, value);
+                  },
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

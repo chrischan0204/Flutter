@@ -42,7 +42,7 @@ class _DeleteButtonState extends State<DeleteButton> {
                             filterId: state.userFilterUpdate.id));
                   },
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: lightRed,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3))),
             child: const Text(

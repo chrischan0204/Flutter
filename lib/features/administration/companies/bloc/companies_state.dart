@@ -23,6 +23,7 @@ class CompaniesState extends Equatable {
   final String filterText;
   final String filterSiteId;
   final String message;
+  final int totalRows;
   const CompaniesState({
     this.companies = const [],
     this.assignedCompanySites = const [],
@@ -46,6 +47,7 @@ class CompaniesState extends Equatable {
     this.filterText = '',
     this.filterSiteId = '',
     this.message = '',
+    this.totalRows = 0,
   });
 
   @override
@@ -72,6 +74,7 @@ class CompaniesState extends Equatable {
         message,
         filterText,
         filterSiteId,
+        totalRows,
       ];
 
   bool get deletable => assignedCompanySites.isEmpty;
@@ -99,6 +102,7 @@ class CompaniesState extends Equatable {
     String? message,
     String? filterText,
     String? filterSiteId,
+    int? totalRows,
   }) {
     return CompaniesState(
       companies: companies ?? this.companies,
@@ -141,6 +145,7 @@ class CompaniesState extends Equatable {
       message: message ?? this.message,
       filterText: filterText ?? this.filterText,
       filterSiteId: filterSiteId ?? this.filterSiteId,
+      totalRows: totalRows ?? this.totalRows,
     );
   }
 }

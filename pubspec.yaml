@@ -8,16 +8,20 @@ environment:
   sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
+  animate_do: ^3.0.2
   animate_icons: ^2.0.0
+  animated_text_kit: ^4.2.2
   awesome_dialog: ^3.0.2
   bloc: ^8.1.1
   cupertino_icons: ^1.0.2
   custom_pop_up_menu: ^1.2.4
+  date_time_picker: ^2.1.0
   dropdown_button2: ^2.0.0
   elegant_notification: ^1.8.1
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_animate: ^4.1.1+1
   flutter_bloc: ^8.1.2
   flutter_colorpicker: ^1.0.3
   flutter_dotenv: ^5.0.2
@@ -32,11 +36,13 @@ dependencies:
   just_the_tooltip: ^0.0.12
   loading_animation_widget: ^1.2.0+4
   multiselect: ^0.1.0
+  neopop: ^1.0.2
   nested: ^1.0.0
   number_paginator: ^0.2.3
   phosphor_flutter: ^1.4.0
   star_menu: ^3.1.4
   strings: ^0.2.2
+  syncfusion_flutter_datagrid: ^21.2.6
   syncfusion_flutter_datepicker: ^21.2.3
   uuid: ^3.0.7
   web_smooth_scroll: ^1.1.0

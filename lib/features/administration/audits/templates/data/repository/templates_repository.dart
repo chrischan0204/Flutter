@@ -43,6 +43,20 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
+  Future<EntityResponse> editTemplate(Template template) async {
+    Response response = await super.put(url, body: template.toJson());
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(isSuccess: true, message: response.body)
+            .copyWith(statusCode: response.statusCode);
+      }
+      return EntityResponse.fromJson(response.body)
+          .copyWith(statusCode: response.statusCode);
+    }
+    throw Exception();
+  }
+
   Future<EntityResponse> deleteTemplate(String templateId) async {
     Response response = await super.delete('$url/$templateId');
 
@@ -107,7 +121,7 @@ class TemplatesRepository extends BaseRepository {
     String templateId,
   ) async {
     Response response =
-        await super.post('$url/section', body: templateSection.toJson());
+        await super.post('$url/sections', body: templateSection.toJson());
 
     return EntityResponse.fromJson(response.body)
         .copyWith(statusCode: response.statusCode);

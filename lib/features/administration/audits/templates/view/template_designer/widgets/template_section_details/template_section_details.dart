@@ -1,67 +1,52 @@
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class TemplateSectionDetails extends StatelessWidget {
+class TemplateSectionDetails extends StatefulWidget {
   const TemplateSectionDetails({super.key});
 
   @override
+  State<TemplateSectionDetails> createState() => _TemplateSectionDetailsState();
+}
+
+class _TemplateSectionDetailsState extends State<TemplateSectionDetails> {
+  late TemplateDesignerBloc templateDesignerBloc;
+
+  @override
+  void initState() {
+    templateDesignerBloc = context.read()
+      ..add(TemplateDesignerResponseScaleListLoaded());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'Template section details',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          const CustomDivider(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+    return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+      builder: (context, state) {
+        if (state.selectedTemplateSection == null) {
+          return Container();
+        }
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Visual Wiring Inspection',
-                style: TextStyle(fontSize: 22),
+              const TemplateSectionDetailsHeader(),
+              const SizedBox(height: 50),
+              BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+                builder: (context, state) {
+                  if (state.templateSectionItem == null) {
+                    return Container();
+                  }
+                  return AddEditQuestionView(
+                    templateSectionItem: state.templateSectionItem!,
+                  );
+                },
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Text(
-                    'New Question',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+              const QuestionsView(),
             ],
           ),
-          const SizedBox(height: 50),
-          const Question(
-              question: 'Are there any loose hanging wires from the ceiling?'),
-          const Question(
-              question: 'Is there any signs of any damage to circuit box?'),
-          const Question(
-              question: 'Are there any outlets that seem to be damaged?'),
-        ],
-      ),
+        );
+      },
     );
   }
 }

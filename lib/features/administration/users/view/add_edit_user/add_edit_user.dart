@@ -28,61 +28,37 @@ class _AddEditUserViewState extends State<AddEditUserView> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, addEditUserState) {
         token = addEditUserState.authUser?.token ?? '';
-        return MultiRepositoryProvider(
+        return MultiBlocProvider(
           providers: [
-            RepositoryProvider(
-                create: (context) => UsersRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
+            BlocProvider(
+                create: (context) => AddEditUserBloc(
+                      usersRepository: RepositoryProvider.of(context),
                     )),
-            RepositoryProvider(
-                create: (context) => SitesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-            RepositoryProvider(
-                create: (context) => RolesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
-            RepositoryProvider(
-                create: (context) => TimeZonesRepository(
-                      token: token,
-                      authBloc: BlocProvider.of(context),
-                    )),
+            BlocProvider(
+                create: (context) => UserDetailBloc(
+                    usersRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => UserInviteBloc(
+                    usersRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) =>
+                    RolesBloc(rolesRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) =>
+                    SitesBloc(sitesRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => TimeZonesBloc(
+                    timeZonesRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => AssignSiteToUserBloc(
+                    usersRepository: RepositoryProvider.of(context))),
+            BlocProvider(
+                create: (context) => NotificationSettingBloc(
+                    usersRepository: RepositoryProvider.of(context))),
           ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => AddEditUserBloc(
-                        usersRepository: RepositoryProvider.of(context),
-                      )),
-              BlocProvider(
-                  create: (context) => UserDetailBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => UserInviteBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => RolesBloc(
-                      rolesRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => SitesBloc(
-                      sitesRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => TimeZonesBloc(
-                      timeZonesRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => AssignSiteToUserBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-              BlocProvider(
-                  create: (context) => NotificationSettingBloc(
-                      usersRepository: RepositoryProvider.of(context))),
-            ],
-            child: AddEditUserWidget(
-              userId: widget.userId,
-              view: widget.view,
-            ),
+          child: AddEditUserWidget(
+            userId: widget.userId,
+            view: widget.view,
           ),
         );
       },

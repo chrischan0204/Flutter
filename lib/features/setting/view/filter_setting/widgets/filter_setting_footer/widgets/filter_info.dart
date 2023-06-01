@@ -15,7 +15,7 @@ class _FilterInfoState extends State<FilterInfo> {
     filterSettingBloc = context.read();
     filterNameController.text =
         filterSettingBloc.state.userFilterUpdate.filterName;
-        
+
     super.initState();
   }
 
@@ -28,15 +28,7 @@ class _FilterInfoState extends State<FilterInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterSettingBloc, FilterSettingState>(
-      listener: (context, state) {
-        filterNameController.text = state.userFilterUpdate.filterName;
-        filterNameController.selection = TextSelection.collapsed(
-            offset: state.userFilterUpdate.filterName.length);
-      },
-      listenWhen: (previous, current) =>
-          previous.userFilterUpdate.filterName !=
-          current.userFilterUpdate.filterName,
+    return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
         return Row(
           children: [
@@ -44,7 +36,9 @@ class _FilterInfoState extends State<FilterInfo> {
             const SizedBox(width: 20),
             Expanded(
               child: CustomTextField(
-                  controller: filterNameController,
+                  key: ValueKey(state.userFilterUpdate.id),
+                  initialValue: state.userFilterUpdate.filterName,
+                  // controller: filterNameController,
                   onChanged: (value) => filterSettingBloc.add(
                       FilterSettingUserFilterNameChanged(filterName: value))),
             ),

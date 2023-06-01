@@ -26,12 +26,23 @@ class _NewSectionFieldState extends State<NewSectionField> {
   Widget build(BuildContext context) {
     return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
       listener: (context, state) {
-        sectionController.text = state.newSection;
-        sectionController.selection =
-            TextSelection.collapsed(offset: state.newSection.length);
+        if (state.templateSectionAddStatus.isSuccess) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+          sectionController.text = '';
+        } else if (state.templateSectionAddStatus.isFailure) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
+        }
       },
       listenWhen: (previous, current) =>
-          previous.newSection != current.newSection,
+          previous.templateSectionAddStatus != current.templateSectionAddStatus,
       builder: (context, state) => CustomTextFieldWithIcon(
         hintText: 'Add new section',
         suffixWidget: SizedBox(

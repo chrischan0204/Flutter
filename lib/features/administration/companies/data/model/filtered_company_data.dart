@@ -7,15 +7,18 @@ import '/common_libraries.dart';
 class FilteredCompanyData extends Equatable {
   final List<EntityHeader> headers;
   final List<FilteredCompany> data;
+  final int totalRows;
   const FilteredCompanyData({
     required this.headers,
     required this.data,
+    required this.totalRows,
   });
 
   @override
   List<Object?> get props => [
         headers,
         data,
+        totalRows,
       ];
 
   factory FilteredCompanyData.fromMap(Map<String, dynamic> map) {
@@ -25,6 +28,7 @@ class FilteredCompanyData extends Equatable {
           (x) => EntityHeader.fromMap(x),
         ),
       ),
+      totalRows: map['totalRows'] ?? 0,
       data: List<FilteredCompany>.from(
         (map['data']).map<FilteredCompany>(
           (x) => FilteredCompany.fromMap(x),

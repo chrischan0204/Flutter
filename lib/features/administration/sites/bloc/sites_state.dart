@@ -9,9 +9,11 @@ class SitesState extends Equatable {
   final EntityStatus siteSelectedStatus;
   final EntityStatus siteCrudStatus;
   final String message;
+  final int totalRows;
 
   const SitesState({
     this.sites = const [],
+    this.totalRows = 0,
     this.selectedSite,
     this.message = '',
     this.templates = const [],
@@ -29,6 +31,7 @@ class SitesState extends Equatable {
         sitesRetrievedStatus,
         siteSelectedStatus,
         siteCrudStatus,
+        totalRows,
       ];
 
   SitesState copyWith({
@@ -39,6 +42,7 @@ class SitesState extends Equatable {
     EntityStatus? sitesRetrievedStatus,
     EntityStatus? siteSelectedStatus,
     EntityStatus? siteCrudStatus,
+    int? totalRows,
   }) {
     return SitesState(
       sites: sites ?? this.sites,
@@ -48,6 +52,7 @@ class SitesState extends Equatable {
       sitesRetrievedStatus: sitesRetrievedStatus ?? this.sitesRetrievedStatus,
       siteSelectedStatus: siteSelectedStatus ?? this.siteSelectedStatus,
       siteCrudStatus: siteCrudStatus ?? this.siteCrudStatus,
+      totalRows: totalRows ?? this.totalRows,
     );
   }
 }

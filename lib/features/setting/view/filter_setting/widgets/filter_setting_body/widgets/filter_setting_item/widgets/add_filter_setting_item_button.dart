@@ -26,8 +26,8 @@ class _AddFilterSettingItemButtonState
   Widget build(BuildContext context) {
     return SizedBox(
       width: 50,
-      child: IconButton(
-        onPressed: () => filterSettingBloc.add(FilterSettingUserFilterItemAdded(
+      child: CustomIconButton(
+        onClick: () => filterSettingBloc.add(FilterSettingUserFilterItemAdded(
             userFilterItem: widget.userFilterItem)),
         icon: const Icon(
           PhosphorIcons.plus,

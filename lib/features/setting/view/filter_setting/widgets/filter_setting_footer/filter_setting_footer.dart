@@ -25,13 +25,11 @@ class FilterSettingFooterView extends StatelessWidget {
         children: [
           const Flexible(
             fit: FlexFit.tight,
-            flex: 3,
             child: FilterInfo(),
           ),
           const SizedBox(width: 30),
           Flexible(
             fit: FlexFit.tight,
-            flex: 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

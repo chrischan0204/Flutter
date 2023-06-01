@@ -242,7 +242,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
   CustomButton _buildGoToListButton(BuildContext context) {
     return CustomButton(
       backgroundColor: primaryColor,
-      hoverBackgroundColor: primarHoverColor,
+      hoverBackgroundColor: primaryHoverColor,
       iconData: PhosphorIcons.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {

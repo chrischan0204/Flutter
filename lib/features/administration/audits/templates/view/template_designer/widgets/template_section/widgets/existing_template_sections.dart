@@ -1,5 +1,6 @@
 import '/common_libraries.dart';
 import 'template_section_item.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 
 class ExistingTemplateSections extends StatefulWidget {
   const ExistingTemplateSections({super.key});
@@ -20,15 +21,37 @@ class _ExistingTemplateSectionsState extends State<ExistingTemplateSections> {
         ),
         child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
           builder: (context, state) {
-            return SingleChildScrollView(
-              child: Column(
-                children: state.templateSectionList
-                    .map((templateSection) => TemplateSectionItem(
-                          sectionName: templateSection.name,
-                          templateSectionItemCount:
-                              templateSection.templateSectionItemCount,
-                        ))
-                    .toList(),
+            return ReorderableList(
+              onReorder: (_, __) {
+                return true;
+              },
+              onReorderDone: (draggedItem) {
+                print(draggedItem.toString());
+              },
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverPadding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).padding.bottom),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return TemplateSectionItemView(
+                            key: ValueKey(state.templateSectionList[index].id),
+                            templateSection: state.templateSectionList[index],
+                            templateSectionItemCount: state
+                                .templateSectionList[index]
+                                .templateSectionItemCount,
+                            isFirst: index == 0,
+                            isLast:
+                                index == state.templateSectionList.length - 1,
+                          );
+                        },
+                        childCount: state.templateSectionList.length,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },

@@ -40,6 +40,9 @@ class Template extends Entity {
         templateSites,
       ];
 
+  String get formatedRevisionDate => revisionDate.isNotEmpty ?
+      FormatDate(format: 'd MMMM y', dateString: revisionDate).formatDate : '--';
+
   @override
   Map<String, dynamic> tableItemsToMap() {
     return {
@@ -68,12 +71,16 @@ class Template extends Entity {
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = {
       'revisionDate': revisionDate,
       'name': name,
       'usedInInspection': usedInInspection,
       'usedInAudit': usedInAudit,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+    return map;
   }
 
   factory Template.fromMap(Map<String, dynamic> map) {

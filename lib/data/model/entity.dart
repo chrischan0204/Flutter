@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:safety_eta/common_libraries.dart';
 
-import 'package:safety_eta/utils/utils.dart';
+class Nullable<T> {
+  final T value;
+  const Nullable.value(this.value);
+}
 
 class EntityHeader extends Equatable {
   final String name;
@@ -63,6 +66,24 @@ class FilteredEntity extends Equatable {
         lastModifiedByUserName,
       ];
 
+  // FilteredEntity.fromMap(Map<String, dynamic> map)
+  //     : id = map['id'] ?? '',
+  //       deleted = map['deleted'] ?? false,
+  //       createdOn = map['created_On'] != null
+  //           ? FormatDate(
+  //                   format: 'd MMMM y', dateString: map['created_On'] ?? '')
+  //               .formatDate
+  //           : '--',
+  //       createdBy = map['created_By'] ?? '',
+  //       createdById = map['created_By'] ?? emptyGuid,
+  //       lastModifiedOn = map['last_Modified_On'] != null
+  //           ? FormatDate(
+  //                   format: 'd MMMM y',
+  //                   dateString: map['last_Modified_On'] ?? '')
+  //               .formatDate
+  //           : '--',
+  //       lastModifiedByUserName = map['last_Modified_By'] ?? '';
+
   factory FilteredEntity.fromMap(Map<String, dynamic> map) {
     return FilteredEntity(
       id: map['id'] ?? '',
@@ -74,7 +95,8 @@ class FilteredEntity extends Equatable {
       createdBy: map['created_By'] ?? '',
       createdById: map['created_By'] ?? emptyGuid,
       lastModifiedOn: map['last_Modified_On'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
+          ? FormatDate(
+                  format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
               .formatDate
           : '--',
       lastModifiedByUserName: map['last_Modified_By'] ?? '',
@@ -85,38 +107,46 @@ class FilteredEntity extends Equatable {
       FilteredEntity.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
-class FilteredEntityData<T extends FilteredEntity> extends Equatable {
-  final List<EntityHeader> headers;
-  final List<T> data;
-  const FilteredEntityData({
-    required this.headers,
-    required this.data,
-  });
+// EntityHeader.fromMap(Map<String, dynamic> map)
+//       : isHidden = map['isHidden'],
+//         name = map['name'],
+//         title = map['title'];
 
-  @override
-  List<Object?> get props => [
-        headers,
-        data,
-      ];
+// class FilteredEntityData extends Equatable {
+//   final List<EntityHeader> headers;
+//   final List<FilteredEntity> data;
+//   final int totalRows;
+//   const FilteredEntityData({
+//     required this.headers,
+//     required this.data,
+//     required this.totalRows,
+//   });
 
-  factory FilteredEntityData.fromMap(Map<String, dynamic> map) {
-    return FilteredEntityData(
-      headers: List<EntityHeader>.from(
-        (map['headers']).map<EntityHeader>(
-          (x) => EntityHeader.fromMap(x),
-        ),
-      ),
-      data: List<T>.from(
-        (map['data']).map<T>(
-          (x) => T,
-        ),
-      ),
-    );
-  }
+//   @override
+//   List<Object?> get props => [
+//         headers,
+//         data,
+//       ];
 
-  factory FilteredEntityData.fromJson(String source) =>
-      FilteredEntityData.fromMap(json.decode(source) as Map<String, dynamic>);
-}
+//   factory FilteredEntityData.fromMap(Map<String, dynamic> map) {
+//     return FilteredEntityData(
+//       headers: List<EntityHeader>.from(
+//         (map['headers']).map<EntityHeader>(
+//           (x) => EntityHeader.fromMap(x),
+//         ),
+//       ),
+//       totalRows: map['totalRows'] ?? 0,
+//       data: List.from(
+//         (map['data']).map(
+//           (x) => FilteredEntity.fromMap(x),
+//         ),
+//       ),
+//     );
+//   }
+
+//   factory FilteredEntityData.fromJson(String source) =>
+//       FilteredEntityData.fromMap(json.decode(source) as Map<String, dynamic>);
+// }
 
 // standadized model, which other models inherit
 class Entity extends Equatable {
@@ -177,7 +207,7 @@ class Entity extends Equatable {
               .formatDate
           : '--',
       lastModifiedByUserName:
-          map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '--',
+          map['lastModifiedByUserName'] ?? map['updatedByUserName'] ?? '',
     );
   }
 

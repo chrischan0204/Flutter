@@ -3,8 +3,6 @@ import 'dart:convert';
 import '/data/repository/repository.dart';
 
 import '/data/model/model.dart';
-import '/constants/uri.dart';
-import 'package:http/http.dart';
 
 class RegionsRepository extends BaseRepository {
   RegionsRepository({

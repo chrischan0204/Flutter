@@ -58,7 +58,7 @@ class _SaveButtonState extends State<SaveButton> {
                     }
                   },
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3))),
             child: const Text(

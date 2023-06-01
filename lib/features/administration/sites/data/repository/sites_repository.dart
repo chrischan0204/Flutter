@@ -70,10 +70,12 @@ class SitesRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<Site>> getFilteredSiteList(
-    String filterId,
-    bool includeDeleted,
-  ) async {
+  Future<FilteredSiteData> getFilteredSiteList(
+    String filterId, [
+    bool includeDeleted = false,
+    int? pageNum,
+    int? pageSize,
+  ]) async {
     Map<String, String> queryParams = {
       'includeDeleted': includeDeleted.toString()
     };
@@ -81,15 +83,20 @@ class SitesRepository extends BaseRepository {
     if (!Validation.isEmpty(filterId)) {
       queryParams.addEntries([MapEntry('filterId', filterId)]);
     }
+
+    if (pageNum != null) {
+      queryParams.addEntries([MapEntry('pageNum', pageNum.toString())]);
+    }
+
+    if (pageSize != null) {
+      queryParams.addEntries([MapEntry('pageSize', pageSize.toString())]);
+    }
+
     Response response = await super.get('$url/list', queryParams);
 
     if (response.statusCode == 200) {
       final data = FilteredSiteData.fromJson(response.body);
-      final List<String> columns =
-          List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
-      return data.data
-          .map((e) => e.toSite().copyWith(columns: columns))
-          .toList();
+      return data;
     }
     throw Exception();
   }

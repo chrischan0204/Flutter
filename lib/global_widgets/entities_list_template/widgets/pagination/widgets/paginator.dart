@@ -19,22 +19,48 @@ class _PaginatorState extends State<Paginator> {
   NumberPaginatorController controller = NumberPaginatorController();
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PaginationBloc, PaginationState>(
+    return BlocConsumer<PaginationBloc, PaginationState>(
       listener: (context, state) => controller.currentPage = 0,
       listenWhen: (previous, current) =>
           previous.selectedPageNum != current.selectedPageNum &&
           current.selectedPageNum == 1,
-      child: NumberPaginator(
-        controller: controller,
-        numberPages: widget.numberPages,
-        config: NumberPaginatorUIConfig(
-          buttonShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(3),
-          ),
-        ),
-        onPageChange: (int index) {
-          widget.onPageChange(index + 1);
+      builder: (context, state) => CustomPagination(
+        numOfPages: widget.numberPages,
+        selectedPage: state.selectedPageNum,
+        pagesVisible: MediaQuery.of(context).size.width < 1400 ? 5 : 10,
+        spacing: 6,
+        onPageChanged: (page) {
+          widget.onPageChange(page);
         },
+        activeTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+        activeBtnStyle: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(lightBlue),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+            side: BorderSide(
+              color: lightBlue,
+              width: 2,
+            ),
+          )),
+        ),
+        inactiveBtnStyle: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          // shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(3),
+          //   side: const BorderSide(
+          //     color: Colors.blueAccent,
+          //     width: 1,
+          //   ),
+          // )),
+        ),
+        inactiveTextStyle: TextStyle(
+          fontSize: 14,
+          color: lightBlue,
+        ),
       ),
     );
   }
