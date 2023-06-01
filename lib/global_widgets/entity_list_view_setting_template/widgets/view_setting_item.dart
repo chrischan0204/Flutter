@@ -133,21 +133,29 @@ class _ItemState extends State<ViewSettingItem> {
   IconButton _buildDeleteButton() {
     return IconButton(
       onPressed: () {
-        if (widget.isFirst && widget.isLast) {
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: 'You should display at least one column!',
-          ).showNotification();
-        } else {
+        if (!(widget.isFirst && widget.isLast)) {
           widget.deleteItem();
         }
       },
-      icon: const Icon(
-        PhosphorIcons.x,
-        color: Colors.red,
-        size: 20,
-      ),
+      icon: widget.isFirst && widget.isLast
+          ? const Tooltip(
+              height: 20,
+              message: 'At least one column is required.',
+              padding: EdgeInsets.symmetric(
+                vertical: 14,
+                horizontal: 10,
+              ),
+              child: Icon(
+                PhosphorIcons.info,
+                color: Colors.blue,
+                size: 20,
+              ),
+            )
+          : const Icon(
+              PhosphorIcons.x,
+              color: Colors.red,
+              size: 20,
+            ),
     );
   }
 
