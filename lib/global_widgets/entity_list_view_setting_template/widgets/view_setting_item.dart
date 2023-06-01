@@ -37,15 +37,11 @@ class ViewSettingItem extends StatefulWidget {
 class _ItemState extends State<ViewSettingItem> {
   bool isHover = false;
   String? selectedValue;
-  // String sortDirection = 'asc';
 
   final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
 
   @override
   void initState() {
-    // setState(() {
-    //   sortDirection = widget.sortDirection;
-    // });
     super.initState();
   }
 
@@ -58,14 +54,15 @@ class _ItemState extends State<ViewSettingItem> {
     } else {
       bool placeholder = state == ReorderableItemState.placeholder;
       decoration = BoxDecoration(
-          border: Border(
-              top: widget.isFirst && !placeholder
-                  ? Divider.createBorderSide(context) //
-                  : BorderSide.none,
-              bottom: widget.isLast && placeholder
-                  ? BorderSide.none //
-                  : Divider.createBorderSide(context)),
-          color: placeholder ? null : Colors.white);
+        border: Border(
+            top: widget.isFirst && !placeholder
+                ? Divider.createBorderSide(context) //
+                : BorderSide.none,
+            bottom: widget.isLast && placeholder
+                ? BorderSide.none //
+                : Divider.createBorderSide(context)),
+        color: placeholder ? null : Colors.white,
+      );
     }
 
     Widget content = Container(
@@ -74,7 +71,6 @@ class _ItemState extends State<ViewSettingItem> {
         top: false,
         bottom: false,
         child: Opacity(
-          // hide content for placeholder
           opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
           child: IntrinsicHeight(
             child: ReorderableListener(
@@ -105,8 +101,6 @@ class _ItemState extends State<ViewSettingItem> {
     return widget.canSort
         ? IconButton(
             onPressed: () {
-              // setState(() =>
-              //     sortDirection = sortDirection == 'asc' ? 'desc' : 'asc');
               if (widget.onSortChanged != null) {
                 widget.onSortChanged!(
                     widget.sortDirection == 'asc' ? 'desc' : 'asc');
@@ -138,7 +132,17 @@ class _ItemState extends State<ViewSettingItem> {
 
   IconButton _buildDeleteButton() {
     return IconButton(
-      onPressed: () => widget.deleteItem(),
+      onPressed: () {
+        if (widget.isFirst && widget.isLast) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: 'You should display at least one column!',
+          ).showNotification();
+        } else {
+          widget.deleteItem();
+        }
+      },
       icon: const Icon(
         PhosphorIcons.x,
         color: Colors.red,
@@ -162,15 +166,11 @@ class _ItemState extends State<ViewSettingItem> {
               hint: 'Select Column',
               selectedValue: widget.selectedValue,
               onChanged: (value) {
-                // widget.onChange(value.key);
                 setState(() {
                   selectedValue = value.key;
                 });
                 if (widget.displayColumnList.isNotEmpty &&
-                    widget.displayColumnList.contains(value.key)) {
-                  // tooltipkey.currentState
-                  //     ?.ensureTooltipVisible();
-                }
+                    widget.displayColumnList.contains(value.key)) {}
                 widget.onChange(value.value);
               },
             );

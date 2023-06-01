@@ -1,19 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:safety_eta/constants/color.dart';
+import '/common_libraries.dart';
 
-class CustomDataCell extends StatelessWidget {
+class CustomDataCell extends StatefulWidget {
   final dynamic data;
+  final VoidCallback? onRowClick;
   const CustomDataCell({
     super.key,
     required this.data,
+    this.onRowClick,
   });
 
   @override
+  State<CustomDataCell> createState() => _CustomDataCellState();
+}
+
+class _CustomDataCellState extends State<CustomDataCell> {
+  bool isHover = false;
+  @override
   Widget build(BuildContext context) {
-    String content = data.toString();
-    if (data is bool) {
-      content = data ? 'Yes' : 'No';
-    } else if (data is Color) {
+    String content = widget.data.toString();
+    if (widget.data is bool) {
+      content = widget.data ? 'Yes' : 'No';
+    } else if (widget.data is Color) {
       return Container(
         constraints: const BoxConstraints(
           maxWidth: 300,
@@ -21,28 +28,41 @@ class CustomDataCell extends StatelessWidget {
         width: double.infinity,
         height: 20,
         decoration: BoxDecoration(
-          color: data,
+          color: widget.data,
           border: Border.all(
-            color: data == Colors.white ? grey : Colors.transparent,
+            color: widget.data == Colors.white ? grey : Colors.transparent,
             width: 1,
           ),
         ),
       );
-    } else if (data is List) {
-      content = data.join(', ');
+    } else if (widget.data is List) {
+      content = widget.data.join(', ');
     }
 
-    return Text(
-      content,
-      style: const TextStyle(
-        fontSize: 12,
-        color: Color(0xff1f2937),
-        fontWeight: FontWeight.w400,
-        fontFamily: 'OpenSans',
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHover = true),
+      onExit: (event) => setState(() => isHover = false),
+      child: GestureDetector(
+        onTap: () {
+          if (widget.onRowClick != null) {
+            widget.onRowClick!();
+          }
+        },
+        child: Text(
+          content,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            decoration: isHover ? TextDecoration.underline : null,
+            decorationStyle: isHover ? TextDecorationStyle.dotted : null,
+            decorationColor: primaryColor,
+            decorationThickness: 3,
+          ),
+          maxLines: 3,
+          softWrap: true,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
-      maxLines: 3,
-      softWrap: true,
-      overflow: TextOverflow.ellipsis,
     );
   }
 }

@@ -218,7 +218,7 @@ class _CrudState extends State<EntityListTemplate> {
                 child: Loader(),
               )
             : Container(
-                constraints: const BoxConstraints(minHeight: 200),
+                constraints: const BoxConstraints(minHeight: 300),
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
                   horizontal: 12,

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '/common_libraries.dart';
 
 class TimerServiceProvider extends InheritedWidget {
@@ -31,7 +33,9 @@ class TimerService extends ChangeNotifier {
   void start() {
     if (_timer != null) return;
 
-    _timer = Timer.periodic(const Duration(minutes: 100), _logout);
+    _timer = Timer.periodic(
+        Duration(minutes: int.parse(dotenv.env['EXPIRATION_TIME'] ?? '120')),
+        _logout);
   }
 
   void stop() {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -56,21 +55,21 @@ class _DataTableViewState extends State<DataTableView> {
             ),
           )
           .toList(),
-      GridColumn(
-        columnName: 'Details',
-        label: Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: const Text(
-            'Details',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              fontFamily: 'OpenSans',
-            ),
-          ),
-        ),
-      )
+      // GridColumn(
+      //   columnName: 'Details',
+      //   label: Container(
+      //     alignment: Alignment.centerLeft,
+      //     padding: const EdgeInsets.symmetric(horizontal: 12),
+      //     child: const Text(
+      //       'Details',
+      //       style: TextStyle(
+      //         fontWeight: FontWeight.w600,
+      //         fontSize: 12,
+      //         fontFamily: 'OpenSans',
+      //       ),
+      //     ),
+      //   ),
+      // )
     ];
   }
 
@@ -125,21 +124,6 @@ class EntityDataSource extends DataGridSource {
     _entityData = List.generate(
       entityData.length,
       (index) => DataGridRow(
-        // color: MaterialStateProperty.resolveWith<Color?>(
-        //     (Set<MaterialState> states) {
-        //   if ((entityData[index]
-        //               .tableItemsToMap()
-        //               .containsKey('Active') &&
-        //           !entityData[index].tableItemsToMap()['Active']) ||
-        //       entityData[index].deleted) {
-        //     return const Color(0xffe6e7e8);
-        //   }
-        //   if (index % 2 == 0) {
-        //     return Color(0xfff8f9fc);
-        //     return primaryColor.withOpacity(0.05);
-        //   }
-        //   return null; // Use the default value.
-        // }),
         cells: [
           ...(columns.isEmpty
               ? entityData[index]
@@ -148,7 +132,13 @@ class EntityDataSource extends DataGridSource {
                   .map(
                     (value) => DataGridCell(
                       columnName: value.key,
-                      value: value.value,
+                      value: {
+                        'value': CustomDataCell(
+                          data: value.value,
+                          onRowClick: () => onRowClick(entityData[index]),
+                        ),
+                        'deleted': entityData[index].deleted,
+                      },
                     ),
                   )
                   .toList()
@@ -156,27 +146,33 @@ class EntityDataSource extends DataGridSource {
                   .map(
                     (column) => DataGridCell(
                       columnName: column,
-                      value: entityData[index].tableItemsToMap()[column],
+                      value: {
+                        'value': CustomDataCell(
+                          data: entityData[index].tableItemsToMap()[column],
+                          onRowClick: () => onRowClick(entityData[index]),
+                        ),
+                        'deleted': entityData[index].deleted,
+                      },
                     ),
                   )
                   .toList()),
-          DataGridCell(
-            columnName: 'Details',
-            value: {
-              'value': MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () => onRowClick(entityData[index]),
-                  child: Icon(
-                    PhosphorIcons.caretDoubleRight,
-                    size: 20,
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-              'deleted': entityData[index].deleted,
-            },
-          ),
+          // DataGridCell(
+          //   columnName: 'Details',
+          //   value: {
+          //     'value': MouseRegion(
+          //       cursor: SystemMouseCursors.click,
+          //       child: GestureDetector(
+          //         onTap: () => onRowClick(entityData[index]),
+          //         child: Icon(
+          //           PhosphorIcons.caretDoubleRight,
+          //           size: 20,
+          //           color: primaryColor,
+          //         ),
+          //       ),
+          //     ),
+          //     'deleted': entityData[index].deleted,
+          //   },
+          // ),
         ],
       ),
     );
@@ -207,11 +203,7 @@ class EntityDataSource extends DataGridSource {
           return Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: e.value is Widget
-                ? e.value
-                : e.value is! Map
-                    ? CustomDataCell(data: e.value)
-                    : e.value['value'],
+            child: e.value['value'],
           );
         }).toList());
   }
