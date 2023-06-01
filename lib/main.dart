@@ -232,8 +232,25 @@ setupHydratedLocalStorage() async {
 }
 
 loadEnv() async {
+  String environment = const String.fromEnvironment(
+    'ENVIRONMENT',
+    defaultValue: 'DEV',
+  );
+
+  String envFileName = '';
+
+  switch (environment) {
+    case 'DEV':
+      envFileName = 'env.dev';
+      break;
+    case 'UAT':
+      envFileName = 'env.uat';
+      break;
+    case 'PRODUCTION':
+      envFileName = 'env.production';
+  }
   await dotenv.load(
-      fileName: kReleaseMode ? '.env' : '../.env',
+      fileName: kReleaseMode ? envFileName : '../$envFileName',
       mergeWith: {
         'TEST_VAR': '5',
       });
