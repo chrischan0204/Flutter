@@ -241,13 +241,13 @@ loadEnv() async {
 
   switch (environment) {
     case 'DEV':
-      envFileName = 'env.dev';
+      envFileName = 'envs/env.dev';
       break;
     case 'UAT':
-      envFileName = 'env.uat';
+      envFileName = 'envs/env.uat';
       break;
     case 'PRODUCTION':
-      envFileName = 'env.production';
+      envFileName = 'envs/env.production';
   }
   await dotenv.load(
       fileName: kReleaseMode ? envFileName : '../$envFileName',

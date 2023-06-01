@@ -1,1 +1,0 @@
-flutter build web --web-renderer canvaskit --dart-define=ENVIRONMENT=PRODUCTION
