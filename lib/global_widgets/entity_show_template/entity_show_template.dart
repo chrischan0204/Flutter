@@ -198,7 +198,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
         : CustomButton(
             backgroundColor: const Color(0xffef4444),
             hoverBackgroundColor: const Color(0xffd73d3d),
-            iconData: PhosphorIcons.gear,
+            iconData: PhosphorIcons.trash,
             text: 'Delete ${camelize(widget.label)}',
             onClick: () {
               if (widget.deletable) {
