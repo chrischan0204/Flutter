@@ -55,21 +55,6 @@ class _DataTableViewState extends State<DataTableView> {
             ),
           )
           .toList(),
-      // GridColumn(
-      //   columnName: 'Details',
-      //   label: Container(
-      //     alignment: Alignment.centerLeft,
-      //     padding: const EdgeInsets.symmetric(horizontal: 12),
-      //     child: const Text(
-      //       'Details',
-      //       style: TextStyle(
-      //         fontWeight: FontWeight.w600,
-      //         fontSize: 12,
-      //         fontFamily: 'OpenSans',
-      //       ),
-      //     ),
-      //   ),
-      // )
     ];
   }
 
@@ -86,6 +71,12 @@ class _DataTableViewState extends State<DataTableView> {
                 entityData: widget.entities,
                 onRowClick: widget.onRowClick,
               ),
+              onCellTap: (details) {
+                int rowIndex = details.rowColumnIndex.rowIndex;
+                if (rowIndex > 0) {
+                  widget.onRowClick(widget.entities[rowIndex - 1]);
+                }
+              },
               columnWidthMode: ColumnWidthMode.fill,
               gridLinesVisibility: GridLinesVisibility.none,
               headerGridLinesVisibility: GridLinesVisibility.none,
@@ -156,23 +147,6 @@ class EntityDataSource extends DataGridSource {
                     ),
                   )
                   .toList()),
-          // DataGridCell(
-          //   columnName: 'Details',
-          //   value: {
-          //     'value': MouseRegion(
-          //       cursor: SystemMouseCursors.click,
-          //       child: GestureDetector(
-          //         onTap: () => onRowClick(entityData[index]),
-          //         child: Icon(
-          //           PhosphorIcons.caretDoubleRight,
-          //           size: 20,
-          //           color: primaryColor,
-          //         ),
-          //       ),
-          //     ),
-          //     'deleted': entityData[index].deleted,
-          //   },
-          // ),
         ],
       ),
     );

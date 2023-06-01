@@ -40,8 +40,16 @@ class _CustomDataCellState extends State<CustomDataCell> {
     }
 
     return MouseRegion(
-      onEnter: (_) => setState(() => isHover = true),
-      onExit: (event) => setState(() => isHover = false),
+      onEnter: (_) {
+        if (widget.onRowClick != null) {
+          setState(() => isHover = true);
+        }
+      },
+      onExit: (_) {
+        if (widget.onRowClick != null) {
+          setState(() => isHover = false);
+        }
+      },
       child: GestureDetector(
         onTap: () {
           if (widget.onRowClick != null) {
