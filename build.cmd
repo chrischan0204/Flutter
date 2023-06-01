@@ -1,1 +1,1 @@
-flutter build web --web-renderer canvaskit --dart-define=ENVIRONMENT=UAT
+flutter build web --web-renderer canvaskit --dart-define=ENVIRONMENT=DEV
