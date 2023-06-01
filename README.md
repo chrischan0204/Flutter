@@ -5,7 +5,7 @@ Safety ETA Web Application
 1. Install Flutter. You can refer this url. https://docs.flutter.dev/get-started/install
 2. Excute the following command in the root folder.
     flutter pub get
-3. Run the app with following command
+3. Run the app with following command.
     flutter run -d chrome
 
 # Build and Test
