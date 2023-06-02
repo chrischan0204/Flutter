@@ -76,7 +76,7 @@ class _UserDetailWidgetState extends State<UserDetailWidget> {
     assignSiteToUserBloc = context.read()
       ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId));
     notificationSettingBloc = context.read()
-      ..add(NotificationSettingNotificationListLoaded(userId: widget.userId));
+      ..add(NotificationSettingUserSiteNotificationLoaded(userId: widget.userId));
 
     super.initState();
   }

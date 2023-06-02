@@ -7,47 +7,35 @@ class UserNotificationSettingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationSettingBloc, NotificationSettingState>(
         builder: (context, state) {
-      var rows = state.userSiteNotificationList
+      var rows = state.userSiteNotification.data.sites
           .map(
             (userSiteNotification) => DataRow(
               cells: [
                 DataCell(CustomDataCell(data: userSiteNotification.siteName)),
-                DataCell(CustomDataCell(data: userSiteNotification.goodCatch)),
-                DataCell(CustomDataCell(data: userSiteNotification.nearMiss)),
-                DataCell(CustomDataCell(data: userSiteNotification.safe)),
-                DataCell(CustomDataCell(data: userSiteNotification.unsafe)),
+                ...userSiteNotification.observationTypes
+                    .map((observationType) => DataCell(
+                        CustomDataCell(data: observationType.sendNotification)))
+                    .toList()
               ],
             ),
           )
           .toList();
-      var columns = const [
-        DataColumn(
+      var columns = [
+        const DataColumn(
           label: Text(
             'Site Name',
           ),
         ),
-        DataColumn(
-          label: Text(
-            'Good Catch',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Near Miss',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Safe',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Unsafe',
-          ),
-        ),
+        ...List.generate(
+            state.userSiteNotification.headers.length,
+            (index) => DataColumn(
+                  label: Text(
+                    state.userSiteNotification.headers[index]
+                        .observationTypeName,
+                  ),
+                ))
       ];
-      return state.userSiteNotificationListLoadStatus == EntityStatus.loading
+      return state.userSiteNotificationLoadStatus == EntityStatus.loading
           ? const Padding(
               padding: EdgeInsets.only(top: 300),
               child: Center(child: Loader()),
@@ -55,7 +43,7 @@ class UserNotificationSettingView extends StatelessWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                state.userSiteNotificationList.isNotEmpty
+                state.userSiteNotification.data.sites.isNotEmpty
                     ? const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
@@ -68,11 +56,11 @@ class UserNotificationSettingView extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                state.userSiteNotificationList.isNotEmpty
+                state.userSiteNotification.data.sites.isNotEmpty
                     ? const CustomDivider()
                     : Container(),
                 Container(
-                  child: state.userSiteNotificationList.isNotEmpty
+                  child: state.userSiteNotification.data.sites.isNotEmpty
                       ? TableView(
                           height: MediaQuery.of(context).size.height - 337,
                           columns: columns,

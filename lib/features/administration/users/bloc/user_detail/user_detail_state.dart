@@ -26,8 +26,8 @@ class UserDetailState extends Equatable {
     EntityStatus? userLoadStatus,
     List<UserSite>? userSiteAssignmentList,
     EntityStatus? userSiteAssignmentListLoadStatus,
-    List<UserSiteNotification>? userSiteNotificationList,
-    EntityStatus? userSiteNotificationListLoadStatus,
+    List<UserSiteNotification>? userSiteNotification,
+    EntityStatus? userSiteNotificationLoadStatus,
     EntityStatus? userDeleteStatus,
     String? message,
   }) {

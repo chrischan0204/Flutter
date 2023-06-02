@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '/common_libraries.dart';
 
 part 'notification_setting_event.dart';
@@ -10,8 +8,8 @@ class NotificationSettingBloc
   final UsersRepository usersRepository;
   NotificationSettingBloc({required this.usersRepository})
       : super(const NotificationSettingState()) {
-    on<NotificationSettingNotificationListLoaded>(
-        _onNotificationSettingNotificationListLoaded);
+    on<NotificationSettingUserSiteNotificationLoaded>(
+        _onNotificationSettingUserSiteNotificationLoaded);
     on<NotificationSettingNotificationUpdated>(
         _onNotificationSettingNotificationUpdated);
     on<NotificationSettingAllChanged>(_onNotificationSettingAllChanged);
@@ -23,23 +21,21 @@ class NotificationSettingBloc
     on<NotificationSettingUnsafeChanged>(_onNotificationSettingUnsafeChanged);
   }
 
-  Future<void> _onNotificationSettingNotificationListLoaded(
-    NotificationSettingNotificationListLoaded event,
+  Future<void> _onNotificationSettingUserSiteNotificationLoaded(
+    NotificationSettingUserSiteNotificationLoaded event,
     Emitter<NotificationSettingState> emit,
   ) async {
-    emit(state.copyWith(
-        userSiteNotificationListLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(userSiteNotificationLoadStatus: EntityStatus.loading));
     try {
-      List<UserSiteNotification> userSiteNotificationList =
-          await usersRepository
-              .getSiteNotificationSettingsByUserId(event.userId);
+      UserSiteNotification userSiteNotification =
+          await usersRepository.getUserSiteNotificationByUserId(event.userId);
       emit(state.copyWith(
-        userSiteNotificationListLoadStatus: EntityStatus.success,
-        userSiteNotificationList: userSiteNotificationList,
+        userSiteNotificationLoadStatus: EntityStatus.success,
+        userSiteNotification: userSiteNotification,
       ));
     } catch (e) {
-      emit(state.copyWith(
-          userSiteNotificationListLoadStatus: EntityStatus.failure));
+      emit(
+          state.copyWith(userSiteNotificationLoadStatus: EntityStatus.failure));
     }
   }
 
@@ -50,7 +46,7 @@ class NotificationSettingBloc
     emit(state.copyWith(siteNotificationUpdateStatus: EntityStatus.loading));
     try {
       EntityResponse response = await usersRepository
-          .updateUserSiteNotificationSetting(event.userSiteNotification);
+          .updateUserSiteNotificationSetting(event.userSiteNotificationSetting);
       emit(state.copyWith(
         siteNotificationUpdateStatus: response.isSuccess.toEntityStatusCode(),
         message: response.message,
@@ -64,64 +60,64 @@ class NotificationSettingBloc
     NotificationSettingAllChanged event,
     Emitter<NotificationSettingState> emit,
   ) async {
-    final result = state.userSiteNotificationList.firstWhere(
-        (userSiteNotification) =>
-            userSiteNotification.id == event.userSiteNotificationId);
-    add(NotificationSettingNotificationUpdated(
-      userSiteNotification: result.copyWith(
-        goodCatch: event.all,
-        nearMiss: event.all,
-        safe: event.all,
-        unsafe: event.all,
-      ),
-    ));
+    // final result = state.userSiteNotification.firstWhere(
+    //     (userSiteNotification) =>
+    //         userSiteNotification.id == event.userSiteNotificationId);
+    // add(NotificationSettingNotificationUpdated(
+    //   userSiteNotification: result.copyWith(
+    //     goodCatch: event.all,
+    //     nearMiss: event.all,
+    //     safe: event.all,
+    //     unsafe: event.all,
+    //   ),
+    // ));
   }
 
   void _onNotificationSettingGoodCatchChanged(
     NotificationSettingGoodCatchChanged event,
     Emitter<NotificationSettingState> emit,
   ) async {
-    final result = state.userSiteNotificationList.firstWhere(
-        (userSiteNotification) =>
-            userSiteNotification.id == event.userSiteNotificationId);
-    add(NotificationSettingNotificationUpdated(
-      userSiteNotification: result.copyWith(goodCatch: event.goodCatch),
-    ));
+    // final result = state.userSiteNotification.firstWhere(
+    //     (userSiteNotification) =>
+    //         userSiteNotification.id == event.userSiteNotificationId);
+    // add(NotificationSettingNotificationUpdated(
+    //   userSiteNotification: result.copyWith(goodCatch: event.goodCatch),
+    // ));
   }
 
   void _onNotificationSettingNearMissChanged(
     NotificationSettingNearMissChanged event,
     Emitter<NotificationSettingState> emit,
   ) async {
-    final result = state.userSiteNotificationList.firstWhere(
-        (userSiteNotification) =>
-            userSiteNotification.id == event.userSiteNotificationId);
-    add(NotificationSettingNotificationUpdated(
-      userSiteNotification: result.copyWith(nearMiss: event.nearMiss),
-    ));
+    // final result = state.userSiteNotification.firstWhere(
+    //     (userSiteNotification) =>
+    //         userSiteNotification.id == event.userSiteNotificationId);
+    // add(NotificationSettingNotificationUpdated(
+    //   userSiteNotification: result.copyWith(nearMiss: event.nearMiss),
+    // ));
   }
 
   void _onNotificationSettingSafeChanged(
     NotificationSettingSafeChanged event,
     Emitter<NotificationSettingState> emit,
   ) async {
-    final result = state.userSiteNotificationList.firstWhere(
-        (userSiteNotification) =>
-            userSiteNotification.id == event.userSiteNotificationId);
-    add(NotificationSettingNotificationUpdated(
-      userSiteNotification: result.copyWith(safe: event.safe),
-    ));
+    // final result = state.userSiteNotification.firstWhere(
+    //     (userSiteNotification) =>
+    //         userSiteNotification.id == event.userSiteNotificationId);
+    // add(NotificationSettingNotificationUpdated(
+    //   userSiteNotification: result.copyWith(safe: event.safe),
+    // ));
   }
 
   void _onNotificationSettingUnsafeChanged(
     NotificationSettingUnsafeChanged event,
     Emitter<NotificationSettingState> emit,
   ) async {
-    final result = state.userSiteNotificationList.firstWhere(
-        (userSiteNotification) =>
-            userSiteNotification.id == event.userSiteNotificationId);
-    add(NotificationSettingNotificationUpdated(
-      userSiteNotification: result.copyWith(unsafe: event.unsafe),
-    ));
+    // final result = state.userSiteNotification.firstWhere(
+    //     (userSiteNotification) =>
+    //         userSiteNotification.id == event.userSiteNotificationId);
+    // add(NotificationSettingNotificationUpdated(
+    //   userSiteNotification: result.copyWith(unsafe: event.unsafe),
+    // ));
   }
 }

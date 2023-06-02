@@ -1,11 +1,11 @@
 import '/common_libraries.dart';
 
 class UserSiteNotification extends Equatable {
-  final String headers;
+  final List<ObservationTypeInfo> headers;
   final SiteNotification data;
   const UserSiteNotification({
-    required this.headers,
-    required this.data,
+    this.headers = const [],
+    this.data = const SiteNotification(),
   });
 
   @override
@@ -15,7 +15,7 @@ class UserSiteNotification extends Equatable {
       ];
 
   UserSiteNotification copyWith({
-    String? headers,
+    List<ObservationTypeInfo>? headers,
     SiteNotification? data,
   }) {
     return UserSiteNotification(
@@ -26,11 +26,42 @@ class UserSiteNotification extends Equatable {
 
   factory UserSiteNotification.fromMap(Map<String, dynamic> map) {
     return UserSiteNotification(
-      headers: map['headers'] as String,
+      headers: List.from(map['headers'])
+          .map((e) => ObservationTypeInfo.fromMap(e))
+          .toList(),
       data: SiteNotification.fromMap(map['data'] as Map<String, dynamic>),
     );
   }
 
-  factory UserSiteNotification.fromJson(String source) =>
-      UserSiteNotification.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserSiteNotification.fromJson(String source) {
+    String src =
+        source.replaceAll('\\', '').replaceAll('"[', '[').replaceAll(']"', ']');
+    return UserSiteNotification.fromMap(
+        json.decode(src) as Map<String, dynamic>);
+  }
+}
+
+class ObservationTypeInfo extends Equatable {
+  final String observationTypeId;
+  final String observationTypeName;
+  const ObservationTypeInfo({
+    required this.observationTypeId,
+    required this.observationTypeName,
+  });
+
+  @override
+  List<Object?> get props => [
+        observationTypeId,
+        observationTypeName,
+      ];
+
+  factory ObservationTypeInfo.fromMap(Map<String, dynamic> map) {
+    return ObservationTypeInfo(
+      observationTypeId: map['ObservationTypeId'] as String,
+      observationTypeName: map['ObservationTypeName'] as String,
+    );
+  }
+
+  factory ObservationTypeInfo.fromJson(String source) =>
+      ObservationTypeInfo.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -7,24 +7,24 @@ abstract class NotificationSettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class NotificationSettingNotificationListLoaded
+class NotificationSettingUserSiteNotificationLoaded
     extends NotificationSettingEvent {
   final String userId;
 
-  const NotificationSettingNotificationListLoaded({required this.userId});
+  const NotificationSettingUserSiteNotificationLoaded({required this.userId});
 
   @override
   List<Object> get props => [userId];
 }
 
 class NotificationSettingNotificationUpdated extends NotificationSettingEvent {
-  final UserSiteNotification userSiteNotification;
+  final UserSiteNotificationSetting userSiteNotificationSetting;
   const NotificationSettingNotificationUpdated({
-    required this.userSiteNotification,
+    required this.userSiteNotificationSetting,
   });
 
   @override
-  List<Object> get props => [userSiteNotification];
+  List<Object> get props => [userSiteNotificationSetting];
 }
 
 class NotificationSettingAllChanged extends NotificationSettingEvent {

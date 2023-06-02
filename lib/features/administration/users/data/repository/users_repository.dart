@@ -155,21 +155,18 @@ class UsersRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<UserSiteNotification>> getSiteNotificationSettingsByUserId(
+  Future<UserSiteNotification> getUserSiteNotificationByUserId(
       String userId) async {
     Response response = await super.get('$url/$userId/notifications');
 
     if (response.statusCode == 200) {
-      return List.from(json.decode(response.body))
-          .map((notificationMap) =>
-              UserSiteNotification.fromMap(notificationMap))
-          .toList();
+      return UserSiteNotification.fromJson(response.body);
     }
     throw Exception();
   }
 
   Future<EntityResponse> updateUserSiteNotificationSetting(
-      UserSiteNotification userSiteNotification) async {
+      UserSiteNotificationSetting userSiteNotification) async {
     Response response = await super.put(
       '$url/notifications',
       body: userSiteNotification.toJson(),

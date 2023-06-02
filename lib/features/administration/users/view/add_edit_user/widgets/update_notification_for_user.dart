@@ -19,7 +19,8 @@ class _UpdateNotificationForUserViewState
   @override
   void initState() {
     notificationSettingBloc = context.read()
-      ..add(NotificationSettingNotificationListLoaded(userId: widget.userId));
+      ..add(
+          NotificationSettingUserSiteNotificationLoaded(userId: widget.userId));
     super.initState();
   }
 
@@ -34,7 +35,7 @@ class _UpdateNotificationForUserViewState
               content: state.message,
             ).showNotification();
             notificationSettingBloc.add(
-                NotificationSettingNotificationListLoaded(
+                NotificationSettingUserSiteNotificationLoaded(
                     userId: widget.userId));
           } else if (state.siteNotificationUpdateStatus.isFailure) {
             CustomNotification(
@@ -48,52 +49,54 @@ class _UpdateNotificationForUserViewState
             previous.siteNotificationUpdateStatus !=
             current.siteNotificationUpdateStatus,
         builder: (context, state) {
-          var rows = state.userSiteNotificationList
+          var rows = state.userSiteNotification.data.sites
               .map(
-                (userSiteNotification) => DataRow(cells: [
-                  DataCell(Checkbox(
-                    value: userSiteNotification.all,
-                    onChanged: (all) => notificationSettingBloc
-                        .add(NotificationSettingAllChanged(
-                      all: all!,
-                      userSiteNotificationId: userSiteNotification.id,
-                    )),
-                  )),
-                  DataCell(
-                    CustomDataCell(data: userSiteNotification.siteName),
-                  ),
-                  DataCell(Checkbox(
-                    value: userSiteNotification.goodCatch,
-                    onChanged: (goodCatch) => notificationSettingBloc
-                        .add(NotificationSettingGoodCatchChanged(
-                      goodCatch: goodCatch!,
-                      userSiteNotificationId: userSiteNotification.id,
-                    )),
-                  )),
-                  DataCell(Checkbox(
-                    value: userSiteNotification.nearMiss,
-                    onChanged: (nearMiss) => notificationSettingBloc
-                        .add(NotificationSettingNearMissChanged(
-                      nearMiss: nearMiss!,
-                      userSiteNotificationId: userSiteNotification.id,
-                    )),
-                  )),
-                  DataCell(Checkbox(
-                    value: userSiteNotification.safe,
-                    onChanged: (safe) => notificationSettingBloc
-                        .add(NotificationSettingSafeChanged(
-                      safe: safe!,
-                      userSiteNotificationId: userSiteNotification.id,
-                    )),
-                  )),
-                  DataCell(Checkbox(
-                    value: userSiteNotification.unsafe,
-                    onChanged: (unsafe) => notificationSettingBloc
-                        .add(NotificationSettingUnsafeChanged(
-                      unsafe: unsafe!,
-                      userSiteNotificationId: userSiteNotification.id,
-                    )),
-                  )),
+                (site) => DataRow(cells: [
+                  // DataCell(Checkbox(
+                  //   value: site.,
+                  //   onChanged: (all) {
+                  //   //   notificationSettingBloc
+                  //   //     .add(NotificationSettingAllChanged(
+                  //   //   all: all!,
+                  //   //   userSiteNotificationId: site.observationTypes,
+                  //   // ));
+                  //   },
+                  // )),
+                  // DataCell(
+                  //   CustomDataCell(data: site.siteName),
+                  // ),
+                  // DataCell(Checkbox(
+                  //   value: site.goodCatch,
+                  //   onChanged: (goodCatch) => notificationSettingBloc
+                  //       .add(NotificationSettingGoodCatchChanged(
+                  //     goodCatch: goodCatch!,
+                  //     userSiteNotificationId: site.id,
+                  //   )),
+                  // )),
+                  // DataCell(Checkbox(
+                  //   value: site.nearMiss,
+                  //   onChanged: (nearMiss) => notificationSettingBloc
+                  //       .add(NotificationSettingNearMissChanged(
+                  //     nearMiss: nearMiss!,
+                  //     userSiteNotificationId: site.id,
+                  //   )),
+                  // )),
+                  // DataCell(Checkbox(
+                  //   value: site.safe,
+                  //   onChanged: (safe) => notificationSettingBloc
+                  //       .add(NotificationSettingSafeChanged(
+                  //     safe: safe!,
+                  //     userSiteNotificationId: site.id,
+                  //   )),
+                  // )),
+                  // DataCell(Checkbox(
+                  //   value: site.unsafe,
+                  //   onChanged: (unsafe) => notificationSettingBloc
+                  //       .add(NotificationSettingUnsafeChanged(
+                  //     unsafe: unsafe!,
+                  //     userSiteNotificationId: userSiteNotification.id,
+                  //   )),
+                  // )),
                 ]),
               )
               .toList();
@@ -129,18 +132,10 @@ class _UpdateNotificationForUserViewState
               ),
             ),
           ];
-          return
-              // state.userSiteNotificationListLoadStatus ==
-              //         EntityStatus.loading
-              //     ? const Padding(
-              //         padding: EdgeInsets.only(top: 300),
-              //         child: Center(child: Loader()),
-              //       )
-              //     :
-              Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              state.userSiteNotificationList.isNotEmpty
+              state.userSiteNotification.data.sites.isNotEmpty
                   ? const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
@@ -153,11 +148,11 @@ class _UpdateNotificationForUserViewState
                       ),
                     )
                   : Container(),
-              state.userSiteNotificationList.isNotEmpty
+              state.userSiteNotification.data.sites.isNotEmpty
                   ? const CustomDivider()
                   : Container(),
               Container(
-                child: state.userSiteNotificationList.isNotEmpty
+                child: state.userSiteNotification.data.sites.isNotEmpty
                     ? TableView(
                         height: MediaQuery.of(context).size.height - 337,
                         columns: columns,
