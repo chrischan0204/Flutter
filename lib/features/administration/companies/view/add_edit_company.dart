@@ -113,7 +113,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   bool _checkEinNumber(String einNumber) {
-    final numericSpecialReg = RegExp(r'^[0-9. /\\]+$');
+    final numericSpecialReg = RegExp(r'^[0-9. -]+$');
     return numericSpecialReg.hasMatch(einNumber);
   }
 
