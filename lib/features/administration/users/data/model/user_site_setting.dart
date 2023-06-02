@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class UserSiteSetting extends Equatable {
@@ -12,6 +9,10 @@ class UserSiteSetting extends Equatable {
     required this.siteName,
     required this.observationTypes,
   });
+
+  bool get allSendNotification => observationTypes
+      .map((e) => e.sendNotification)
+      .every((element) => element);
 
   @override
   List<Object?> get props => [

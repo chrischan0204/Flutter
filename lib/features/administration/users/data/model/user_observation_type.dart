@@ -16,12 +16,21 @@ class UserObservationType extends Equatable {
         sendNotification,
       ];
 
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'observationTypeId': observationTypeId,
+      'sendNotification': sendNotification,
+    };
+  }
+
   factory UserObservationType.fromMap(Map<String, dynamic> map) {
     return UserObservationType(
       observationTypeId: map['observationTypeId'] as String,
       sendNotification: map['sendNotification'] as bool,
     );
   }
+
+  String toJson() => json.encode(toMap());
 
   factory UserObservationType.fromJson(String source) =>
       UserObservationType.fromMap(json.decode(source) as Map<String, dynamic>);

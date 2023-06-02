@@ -3,7 +3,7 @@ import '/common_libraries.dart';
 class UserSiteNotificationSetting extends Equatable {
   final String siteId;
   final String userId;
-  final List<ObservationType> observationTypes;
+  final List<UserObservationType> observationTypes;
   const UserSiteNotificationSetting({
     required this.siteId,
     required this.userId,
@@ -26,4 +26,16 @@ class UserSiteNotificationSetting extends Equatable {
   }
 
   String toJson() => json.encode(toMap());
+
+  UserSiteNotificationSetting copyWith({
+    String? siteId,
+    String? userId,
+    List<UserObservationType>? observationTypes,
+  }) {
+    return UserSiteNotificationSetting(
+      siteId: siteId ?? this.siteId,
+      userId: userId ?? this.userId,
+      observationTypes: observationTypes ?? this.observationTypes,
+    );
+  }
 }

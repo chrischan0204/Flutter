@@ -22,9 +22,7 @@ class UserNotificationSettingView extends StatelessWidget {
           .toList();
       var columns = [
         const DataColumn(
-          label: Text(
-            'Site Name',
-          ),
+          label: Text('Site Name'),
         ),
         ...List.generate(
             state.userSiteNotification.headers.length,

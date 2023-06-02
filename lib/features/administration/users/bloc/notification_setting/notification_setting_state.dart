@@ -3,6 +3,7 @@ part of 'notification_setting_bloc.dart';
 class NotificationSettingState extends Equatable {
   final UserSiteNotification userSiteNotification;
   final EntityStatus userSiteNotificationLoadStatus;
+  // final UserSiteNotificationSetting userSiteNotificationSetting;
   final EntityStatus siteNotificationUpdateStatus;
   final String message;
   const NotificationSettingState({

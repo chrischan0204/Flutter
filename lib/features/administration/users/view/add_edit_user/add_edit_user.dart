@@ -1,8 +1,8 @@
 import 'widgets/invite_details.dart';
 import 'widgets/assign_sites_to_user.dart';
-import 'widgets/update_notification_for_user.dart';
 
 import '/common_libraries.dart';
+import 'widgets/update_notification_for_user/update_notification_for_user.dart';
 
 class AddEditUserView extends StatefulWidget {
   final String? userId;
