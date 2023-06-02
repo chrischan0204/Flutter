@@ -289,6 +289,10 @@ class _SidebarItemState extends State<SidebarItem>
           setState(() {
             isSidebarItemExtended = !isSidebarItemExtended;
           });
+
+          context.read<ThemeBloc>().add(
+                ThemeSidebarHovered(hoveredItemName: widget.label),
+              );
         }
       },
       child: MouseRegion(

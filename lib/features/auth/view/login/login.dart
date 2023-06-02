@@ -80,15 +80,11 @@ class _LoginViewState extends State<LoginView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const DecorationText(),
-                              SizedBox(
-                                height: width / 20,
-                              ),
+                              SizedBox(height: width / 20),
                               const UsernameField(),
                               const PasswordField(),
                               const LoginButton(),
-                              SizedBox(
-                                height: width / 60,
-                              ),
+                              SizedBox(height: width / 60),
                               const ForgotPasswordButton(),
                             ],
                           ),
