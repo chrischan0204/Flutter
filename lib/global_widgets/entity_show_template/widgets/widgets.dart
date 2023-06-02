@@ -1,2 +1,1 @@
-export 'show_item.dart';
-export 'custom_tab.dart';
+export 'details/widgets/show_item.dart';

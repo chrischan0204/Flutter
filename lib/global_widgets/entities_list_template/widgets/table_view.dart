@@ -78,6 +78,8 @@ class _DataTableViewState extends State<DataTableView> {
                 }
               },
               columnWidthMode: ColumnWidthMode.fill,
+              columnResizeMode: ColumnResizeMode.onResize,
+              allowColumnsResizing: true,
               gridLinesVisibility: GridLinesVisibility.none,
               headerGridLinesVisibility: GridLinesVisibility.none,
               headerRowHeight: 52,

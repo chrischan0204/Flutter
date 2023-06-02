@@ -1,5 +1,3 @@
-import 'package:flutter/gestures.dart';
-
 import '/common_libraries.dart';
 import 'package:strings/strings.dart';
 
