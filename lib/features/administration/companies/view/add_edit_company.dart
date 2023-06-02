@@ -1,6 +1,4 @@
 import '/common_libraries.dart';
-import 'assign_projects_to_company.dart';
-import 'assign_sites_to_company.dart';
 
 class AddEditCompanyView extends StatefulWidget {
   final String? companyId;
@@ -21,8 +19,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   late RolesBloc rolesBloc;
   TextEditingController companyNameController = TextEditingController(text: '');
   TextEditingController einNumberController = TextEditingController(text: '');
-
-  String companyNameValidationMessage = '';
+                      String companyNameValidationMessage = '';
   String einNumberValidationMessage = '';
 
   bool isFirstInit = true;
@@ -116,7 +113,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   bool _checkEinNumber(String einNumber) {
-    final numericSpecialReg = RegExp(r'^[A-Za-z0-9.-/\\]+$');
+    final numericSpecialReg = RegExp(r'^[0-9. /\\]+$');
     return numericSpecialReg.hasMatch(einNumber);
   }
 
@@ -140,9 +137,8 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           einNumberValidationMessage = state.message;
           companyNameValidationMessage = '';
         });
-      }
-      else if (state.message.contains('Our team')) {
-        CustomNotification( 
+      } else if (state.message.contains('Our team')) {
+        CustomNotification(
           context: context,
           notifyType: NotifyType.error,
           content: state.message,

@@ -26,6 +26,7 @@ class AddEditUserState extends Equatable {
 
   final String timeZoneId;
   final String? timeZoneName;
+  final String timeZoneValidationMessage;
 
   final List<Role> userRoleList;
   final EntityStatus userRoleListLoadStatus;
@@ -53,6 +54,7 @@ class AddEditUserState extends Equatable {
     this.defaultSiteValidationMessage = '',
     this.timeZoneId = '',
     this.timeZoneName = '',
+    this.timeZoneValidationMessage = '',
     this.userRoleList = const [],
     this.userRoleListLoadStatus = EntityStatus.initial,
     this.userAddStatus = EntityStatus.initial,
@@ -80,6 +82,7 @@ class AddEditUserState extends Equatable {
         defaultSiteValidationMessage,
         timeZoneId,
         timeZoneName,
+        timeZoneValidationMessage,
         userAddStatus,
         userEditStatus,
         userRoleList,
@@ -115,6 +118,7 @@ class AddEditUserState extends Equatable {
     String? defaultSiteValidationMessage,
     String? timeZoneId,
     String? timeZoneName,
+    String? timeZoneValidationMessage,
     List<Role>? userRoleList,
     EntityStatus? userRoleListLoadStatus,
     EntityStatus? userAddStatus,
@@ -145,6 +149,8 @@ class AddEditUserState extends Equatable {
           defaultSiteValidationMessage ?? this.defaultSiteValidationMessage,
       timeZoneId: timeZoneId ?? this.timeZoneId,
       timeZoneName: timeZoneName ?? this.timeZoneName,
+      timeZoneValidationMessage:
+          timeZoneValidationMessage ?? this.timeZoneValidationMessage,
       userRoleList: userRoleList ?? this.userRoleList,
       userRoleListLoadStatus:
           userRoleListLoadStatus ?? this.userRoleListLoadStatus,

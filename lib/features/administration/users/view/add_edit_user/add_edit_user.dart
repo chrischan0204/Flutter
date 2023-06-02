@@ -81,7 +81,7 @@ class AddEditUserWidget extends StatefulWidget {
 }
 
 class _AddEditUserWidgetState extends State<AddEditUserWidget> {
-  late AddEditUserBloc addEditUserBloc;
+  late AddEditUserBloc _addEditUserBloc;
   late UserDetailBloc userDetailBloc;
   late RolesBloc rolesBloc;
   late SitesBloc sitesBloc;
@@ -101,7 +101,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
 
   @override
   void initState() {
-    addEditUserBloc = context.read<AddEditUserBloc>()
+    _addEditUserBloc = context.read<AddEditUserBloc>()
       ..add(AddEditUserRoleListLoaded());
     userDetailBloc = context.read<UserDetailBloc>();
     timeZoneBloc = context.read<TimeZonesBloc>()..add(TimeZoneListLoaded());
@@ -126,7 +126,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
             return BlocListener<UserDetailBloc, UserDetailState>(
               listener: (context, state) {
                 if (state.user != null) {
-                  addEditUserBloc
+                  _addEditUserBloc
                       .add(AddEditUserDetailsInited(user: state.user!));
                   _initFields(state);
                 }
@@ -203,7 +203,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
         notifyType: NotifyType.success,
         content: addEditUserState.message,
       ).showNotification();
-      addEditUserBloc.add(AddEditUserStatusInited());
+      _addEditUserBloc.add(AddEditUserStatusInited());
       if (widget.userId == null) {
         GoRouter.of(context)
             .go('/users/edit/${addEditUserState.createdUserId!}?view=created');
@@ -217,7 +217,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
           content: addEditUserState.message,
         ).showNotification();
       }
-      addEditUserBloc.add(AddEditUserStatusInited());
+      _addEditUserBloc.add(AddEditUserStatusInited());
     }
   }
 
@@ -227,7 +227,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
       content: CustomTextField(
         controller: firstNameController,
         hintText: 'First Name(required)',
-        onChanged: (firstName) => addEditUserBloc
+        onChanged: (firstName) => _addEditUserBloc
             .add(AddEditUserFirstNameChanged(firstName: firstName)),
       ),
       message: addEditUserState.firstNameValidationMessage,
@@ -240,8 +240,8 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
       content: CustomTextField(
         controller: lastNameController,
         hintText: 'Last Name(required)',
-        onChanged: (lastName) =>
-            addEditUserBloc.add(AddEditUserLastNameChanged(lastName: lastName)),
+        onChanged: (lastName) => _addEditUserBloc
+            .add(AddEditUserLastNameChanged(lastName: lastName)),
       ),
       message: addEditUserState.lastNameValidationMessage,
     );
@@ -254,7 +254,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
         controller: titleController,
         hintText: 'User Title',
         onChanged: (title) =>
-            addEditUserBloc.add(AddEditUserTitleChanged(title: title)),
+            _addEditUserBloc.add(AddEditUserTitleChanged(title: title)),
       ),
       message: '',
     );
@@ -262,12 +262,12 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
 
   FormItem _buildEmailField(AddEditUserState addEditUserState) {
     return FormItem(
-      label: 'Email',
+      label: 'Email (*)',
       content: CustomTextField(
         controller: emailController,
         hintText: 'Email',
         onChanged: (email) =>
-            addEditUserBloc.add(AddEditUserEmailChanged(email: email)),
+            _addEditUserBloc.add(AddEditUserEmailChanged(email: email)),
       ),
       message: addEditUserState.emailValidationMessage,
     );
@@ -279,7 +279,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
       content: CustomTextField(
         controller: mobileNumberController,
         hintText: 'Cell Phone',
-        onChanged: (mobilePhone) => addEditUserBloc
+        onChanged: (mobilePhone) => _addEditUserBloc
             .add(AddEditUserMobilePhoneChanged(mobilePhone: mobilePhone)),
       ),
       message: '',
@@ -296,7 +296,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
         items: items,
         hint: 'Select Role',
         selectedValue: addEditUserState.roleName,
-        onChanged: (role) => addEditUserBloc.add(AddEditUserRoleChanged(
+        onChanged: (role) => _addEditUserBloc.add(AddEditUserRoleChanged(
           roleId: role.value,
           roleName: role.key,
         )),
@@ -318,7 +318,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
             hint: 'Select Default Site',
             selectedValue: addEditUserState.defaultSiteName,
             onChanged: (defaultSite) =>
-                addEditUserBloc.add(AddEditUserDefaultSiteChanged(
+                _addEditUserBloc.add(AddEditUserDefaultSiteChanged(
               defaultSiteId: defaultSite.value,
               defaultSiteName: defaultSite.key,
             )),
@@ -337,26 +337,26 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
             .timeZoneList
             .map((timeZone) => MapEntry(timeZone.name!, timeZone.id!)));
         return FormItem(
-          label: 'Time Zone',
+          label: 'Time Zone (*)',
           content: CustomSingleSelect(
             items: items,
             hint: 'Select Timezone',
             selectedValue: addEditUserState.timeZoneName,
             onChanged: (timeZone) =>
-                addEditUserBloc.add(AddEditUserTimeZoneChanged(
+                _addEditUserBloc.add(AddEditUserTimeZoneChanged(
               timeZoneId: timeZone.value,
               timeZoneName: timeZone.key,
             )),
           ),
-          message: '',
+          message: addEditUserState.timeZoneValidationMessage,
         );
       },
     );
   }
 
   void _addUser(AddEditUserState addEditUserState) =>
-      addEditUserBloc.add(AddEditUserUserAdded());
+      _addEditUserBloc.add(AddEditUserUserAdded());
 
   void _editUser(AddEditUserState addEditUserState) =>
-      addEditUserBloc.add(AddEditUserUserEdited(userId: widget.userId!));
+      _addEditUserBloc.add(AddEditUserUserEdited(userId: widget.userId!));
 }

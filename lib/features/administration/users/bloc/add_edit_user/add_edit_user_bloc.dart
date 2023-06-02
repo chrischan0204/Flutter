@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '/common_libraries.dart';
 
 part 'add_edit_user_event.dart';
@@ -12,6 +10,9 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
   static String lastNameValidationMessage = 'Last name is required.';
   static String roleValidationMessage = 'Role is required.';
   static String defaultSiteValidationMessage = 'Default site is required.';
+  static String timeZoneValidationMessage = 'Time Zone is required.';
+  static String emailValidationMessage = 'Email is required.';
+
   AddEditUserBloc({
     required this.usersRepository,
   }) : super(const AddEditUserState()) {
@@ -122,6 +123,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     emit(state.copyWith(
       timeZoneId: event.timeZoneId,
       timeZoneName: event.timeZoneName,
+      timeZoneValidationMessage: '',
     ));
   }
 
@@ -201,6 +203,17 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     if (Validation.isEmpty(state.lastName)) {
       emit(
           state.copyWith(lastNameValidationMessage: lastNameValidationMessage));
+      success = false;
+    }
+
+    if (Validation.isEmpty(state.email)) {
+      emit(state.copyWith(emailValidationMessage: emailValidationMessage));
+      success = false;
+    }
+
+    if (Validation.isEmpty(state.timeZoneId)) {
+      emit(
+          state.copyWith(timeZoneValidationMessage: timeZoneValidationMessage));
       success = false;
     }
 
