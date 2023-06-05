@@ -80,10 +80,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
           customDetailWidget: Card(
             elevation: 3,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 30,
-                horizontal: 10
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [

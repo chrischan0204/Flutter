@@ -80,8 +80,10 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
           notifyType: NotifyType.success,
           content: addEditTemplateState.message,
         ).showNotification();
-        GoRouter.of(context).go(
-            '/templates/designer/${widget.templateId ?? addEditTemplateState.createdTemplateId}');
+        if (widget.templateId == null) {
+          GoRouter.of(context).go(
+              '/templates/edit/${widget.templateId ?? addEditTemplateState.createdTemplateId}?view=created');
+        }
       },
       listenWhen: (previous, current) =>
           previous.templateAddEditStatus != current.templateAddEditStatus &&
@@ -145,7 +147,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     if (widget.templateId != null) {
       return {
         'Template Details': Container(),
-        'Categories/Items': Container(),
+        'Template Items': Container(),
         '': Container(),
       };
     }

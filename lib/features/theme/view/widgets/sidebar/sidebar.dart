@@ -1,3 +1,5 @@
+import 'package:flutter_animate/flutter_animate.dart';
+
 import '../../../data/model/model.dart';
 import '/common_libraries.dart';
 
@@ -42,6 +44,10 @@ class _SidebarState extends State<Sidebar> {
       );
     }
     return subItemWidgets;
+    // .animate(interval: 150.ms)
+    // .fadeIn(duration: 300.ms, delay: 100.ms)
+    // .shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
+    // .move(begin: const Offset(-8, 0), curve: Curves.easeOutQuad);
   }
 
   @override
@@ -50,6 +56,8 @@ class _SidebarState extends State<Sidebar> {
       builder: (context, authState) {
         return BlocBuilder<ThemeBloc, ThemeState>(
           builder: (ctx, state) {
+            final isSidebarExtended =
+                context.read<ThemeBloc>().state.isExtended(context);
             return Stack(
               children: [
                 Container(
@@ -62,17 +70,15 @@ class _SidebarState extends State<Sidebar> {
                   padding: const EdgeInsets.symmetric(
                     vertical: 10,
                   ),
-                  width: state.isSidebarExtended
-                      ? sidebarWidth
-                      : shrinkSidebarWidth,
+                  width: isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
                   child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: state.isSidebarExtended
+                      crossAxisAlignment: isSidebarExtended
                           ? CrossAxisAlignment.start
                           : CrossAxisAlignment.center,
                       children: [
                         Header(
-                          isSidebarExtended: state.isSidebarExtended,
+                          isSidebarExtended: isSidebarExtended,
                           userName: authState.authUser?.name ?? '',
                         ),
                         Divider(
@@ -83,14 +89,14 @@ class _SidebarState extends State<Sidebar> {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: Criteria(
-                            isSidebarExtended: state.isSidebarExtended,
+                            isSidebarExtended: isSidebarExtended,
                             label: 'MAIN',
                           ),
                         ),
                         ..._buildSidebarItems(
                           SidebarRepsitory.mainItems,
                           widget.selectedItemName,
-                          state.isSidebarExtended,
+                          isSidebarExtended,
                         ),
                         Divider(
                           color: backgroundColor,
@@ -100,14 +106,14 @@ class _SidebarState extends State<Sidebar> {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: Criteria(
-                            isSidebarExtended: state.isSidebarExtended,
+                            isSidebarExtended: isSidebarExtended,
                             label: 'ADMINISTRATION',
                           ),
                         ),
                         ..._buildSidebarItems(
                           SidebarRepsitory.administrationItems,
                           widget.selectedItemName,
-                          state.isSidebarExtended,
+                          isSidebarExtended,
                         ),
                         Divider(
                           color: backgroundColor,
@@ -116,7 +122,7 @@ class _SidebarState extends State<Sidebar> {
                         ..._buildSidebarItems(
                           SidebarRepsitory.profileItems,
                           widget.selectedItemName,
-                          state.isSidebarExtended,
+                          isSidebarExtended,
                         )
                       ],
                     ),
@@ -124,7 +130,7 @@ class _SidebarState extends State<Sidebar> {
                 ),
                 // _buildBody(state),
                 CollapseButton(
-                  isSidebarExtended: state.isSidebarExtended,
+                  isSidebarExtended: isSidebarExtended,
                 ),
               ],
             );
@@ -139,7 +145,7 @@ class _SidebarState extends State<Sidebar> {
   //     duration: const Duration(milliseconds: 200),
   //     child: Container(
   //       margin: EdgeInsets.only(
-  //         left: state.isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
+  //         left: isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
   //       ),
   //       decoration: BoxDecoration(
   //         color: sidebarColor,

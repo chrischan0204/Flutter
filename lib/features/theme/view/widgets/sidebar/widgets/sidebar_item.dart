@@ -33,9 +33,9 @@ class SidebarItem extends StatefulWidget {
 
 class _SidebarItemState extends State<SidebarItem>
     with TickerProviderStateMixin {
-  late AnimationController animationController;
-  late Animation<double> anim;
-  late Animation<Color?> color;
+  // late AnimationController animationController;
+  // late Animation<double> anim;
+  // late Animation<Color?> color;
   bool isHover = false;
   bool isSidebarItemExtended = false;
   CustomPopupMenuController customPopupMenuController =
@@ -50,51 +50,54 @@ class _SidebarItemState extends State<SidebarItem>
             widget.selectedItemName,
           );
     });
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        milliseconds: 350,
-      ),
-    );
+    // animationController = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(
+    //     milliseconds: 350,
+    //   ),
+    // );
 
-    anim = Tween(
-      begin: context.read<ThemeBloc>().state.isSidebarExtended
-          ? sidebarWidth
-          : shrinkSidebarWidth,
-      end: 0.0,
-    ).animate(animationController);
+    // anim = Tween(
+    //   begin: widget.isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
+    //   end: 0.0,
+    // ).animate(animationController);
 
-    color = ColorTween(
-      end: widget.color,
-      begin: backgroundColor,
-    ).animate(animationController);
+    // color = ColorTween(
+    //   end: widget.color,
+    //   begin: backgroundColor,
+    // ).animate(animationController);
 
-    animationController.addListener(() {
-      setState(() {});
-    });
-    if (widget.selectedItemName != widget.path) {
-      animationController.reverse();
-    } else {
-      animationController.forward();
-    }
+    // animationController.addListener(() {
+    //   setState(() {});
+    // });
+    // if (widget.selectedItemName != widget.path) {
+    //   animationController.reverse();
+    // } else {
+    //   animationController.forward();
+    // }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
+    // animationController.dispose();
     customPopupMenuController.dispose();
     tooltipController.dispose();
     super.dispose();
   }
 
   void _showPopupMenu(ThemeState state) {
-    if (widget.subItems.isNotEmpty && !state.isSidebarExtended) {
+    if (widget.subItems.isNotEmpty && !widget.isSidebarExtended) {
       customPopupMenuController.showMenu();
     }
   }
 
   void _hidePopupMenu(ThemeState state) {
-    if (widget.subItems.isNotEmpty && !state.isSidebarExtended) {
+    if (widget.subItems.isNotEmpty && !widget.isSidebarExtended) {
       customPopupMenuController.hideMenu();
     }
   }
@@ -103,13 +106,11 @@ class _SidebarItemState extends State<SidebarItem>
   Widget build(BuildContext context) {
     return BlocConsumer<ThemeBloc, ThemeState>(
       listener: (context, state) {
-        animationController.duration = const Duration(milliseconds: 400);
-        anim = Tween(
-          begin: context.read<ThemeBloc>().state.isSidebarExtended
-              ? sidebarWidth
-              : shrinkSidebarWidth,
-          end: 0.0,
-        ).animate(animationController);
+        // animationController.duration = const Duration(milliseconds: 400);
+        // anim = Tween(
+        //   begin: widget.isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
+        //   end: 0.0,
+        // ).animate(animationController);
 
         if (state.hoveredItemName != widget.label) {
           _hidePopupMenu(state);
@@ -173,7 +174,7 @@ class _SidebarItemState extends State<SidebarItem>
                 child: _buildItemBody(state),
               ),
             ),
-            ...(state.isSidebarExtended && isSidebarItemExtended
+            ...(widget.isSidebarExtended && isSidebarItemExtended
                 ? _buildSubItemsMenu()
                 : []),
           ],
@@ -183,8 +184,6 @@ class _SidebarItemState extends State<SidebarItem>
   }
 
   List<Widget> _buildSubItemsMenu() {
-    final state = context.read<ThemeBloc>().state;
-
     return widget.subItems
         .map(
           (subItem) => SidebarItem(
@@ -193,7 +192,7 @@ class _SidebarItemState extends State<SidebarItem>
             path: subItem.path,
             selectedItemName: widget.selectedItemName,
             color: subItem.color,
-            isSidebarExtended: state.isSidebarExtended,
+            isSidebarExtended: widget.isSidebarExtended,
             isSubItem: true,
           ),
         )
@@ -201,7 +200,7 @@ class _SidebarItemState extends State<SidebarItem>
   }
 
   Widget _buildExtendIcon(ThemeState state) {
-    return state.isSidebarExtended && widget.subItems.isNotEmpty
+    return widget.isSidebarExtended && widget.subItems.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Icon(
@@ -276,7 +275,7 @@ class _SidebarItemState extends State<SidebarItem>
     return GestureDetector(
       onTap: () {
         if (widget.path.contains('logout')) {
-          context.read<AuthBloc>().add(AuthUnauthenticated());
+          context.read<AuthBloc>().add(const AuthUnauthenticated());
         } else {
           if (widget.path.isNotEmpty) {
             if ('/${widget.path}' == GoRouter.of(context).location) {
@@ -289,10 +288,6 @@ class _SidebarItemState extends State<SidebarItem>
           setState(() {
             isSidebarItemExtended = !isSidebarItemExtended;
           });
-
-          context.read<ThemeBloc>().add(
-                ThemeSidebarHovered(hoveredItemName: widget.label),
-              );
         }
       },
       child: MouseRegion(
@@ -308,31 +303,35 @@ class _SidebarItemState extends State<SidebarItem>
           color: Colors.transparent,
           child: Stack(
             children: [
-              state.isSidebarExtended
-                  ? CustomPaint(
-                      painter: CurvePainter(
-                        animValue: anim.value,
-                        width: sidebarWidth,
-                      ),
-                    )
-                  : widget.isSubItem
-                      ? SizedBox(
-                          width: sidebarWidth,
-                        )
-                      : CustomPaint(
-                          painter: CurvePainter(
-                            animValue: anim.value,
-                            width: shrinkSidebarWidth,
-                          ),
-                        ),
+              // widget.isSidebarExtended
+              //     ? CustomPaint(
+              //         painter: CurvePainter(
+              //           animValue: anim.value,
+              //           width: sidebarWidth,
+              //         ),
+              //       )
+              //     : widget.isSubItem
+              //         ? SizedBox(
+              //             width: sidebarWidth,
+              //           )
+              //         : CustomPaint(
+              //             painter: CurvePainter(
+              //               animValue: anim.value,
+              //               width: shrinkSidebarWidth,
+              //             ),
+              //           ),
               Container(
-                color: isHover ? darkGrey : Colors.transparent,
+                color: widget.selectedItemName == widget.path
+                    ? darkGrey
+                    : isHover
+                        ? darkGrey
+                        : Colors.transparent,
                 height: sidebarItemHeight,
                 width: sidebarWidth,
                 alignment: Alignment.center,
                 child: Container(
                   padding: EdgeInsets.only(
-                    left: (state.isSidebarExtended ? 30 : 17) +
+                    left: (widget.isSidebarExtended ? 30 : 17) +
                         (widget.isSubItem ? 15 : 0),
                   ),
                   child: Row(
