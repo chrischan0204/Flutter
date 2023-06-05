@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'theme_bloc.dart';
 
 class ThemeEvent extends Equatable {
@@ -10,7 +9,11 @@ class ThemeEvent extends Equatable {
 
 class ThemeSidebarItemExtended extends ThemeEvent {
   final String collapsedItem;
-  const ThemeSidebarItemExtended({required this.collapsedItem});
+  final bool force;
+  const ThemeSidebarItemExtended({
+    required this.collapsedItem,
+    this.force = false,
+  });
   @override
   List<Object> get props => [collapsedItem];
 }

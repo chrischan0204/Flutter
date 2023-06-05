@@ -9,12 +9,13 @@ class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
       (event, emit) {
         final List<String> collapsedItems = List.from(state.collapsedItems);
         if (collapsedItems.contains(event.collapsedItem)) {
-          collapsedItems.remove(event.collapsedItem);
+          if (!event.force) {
+            collapsedItems.remove(event.collapsedItem);
+          }
         } else {
           collapsedItems.add(event.collapsedItem);
         }
         emit(state.copyWith(collapsedItems: collapsedItems));
-        print(collapsedItems);
       },
     );
 

@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '/data/model/entity.dart';
-import '/constants/color.dart';
-import '/global_widgets/global_widget.dart';
+import '/common_libraries.dart';
 
 class EntityShowTemplate extends StatefulWidget {
   final String title;
@@ -34,11 +30,6 @@ class EntityShowTemplate extends StatefulWidget {
 
 class _EntityShowTemplateState extends State<EntityShowTemplate> {
   late int selectedTabIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +111,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
   }
 
   Widget _buildEntityDetails() {
-    return SingleChildScrollView(
+    return CustomScrollViewWithBackButton(
       child: widget.customDetailWidget ??
           (widget.entity != null
               ? Builder(
@@ -128,16 +119,15 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
                     Map<String, dynamic> detailsMap =
                         widget.entity!.detailItemsToMap();
                     return Column(
-                      children: detailsMap.entries
-                          .map(
-                            (detail) => ShowItem(
-                              label: detail.key,
-                              content: CustomDataCell(
-                                data: detail.value,
-                              ),
+                      children: [
+                        for (final detail in detailsMap.entries)
+                          ShowItem(
+                            label: detail.key,
+                            content: CustomDataCell(
+                              data: detail.value,
                             ),
-                          )
-                          .toList(),
+                          ),
+                      ],
                     );
                   },
                 )

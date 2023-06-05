@@ -63,9 +63,47 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    _collapseSidebar();
+    super.didChangeDependencies();
+  }
+
+  _collapseSidebar() {
+    final pathSegments = Uri.parse(GoRouter.of(context).location).pathSegments;
+    String second = '';
+    if (pathSegments.length > 1 && pathSegments[1] != 'index') {
+      second = '/${pathSegments[1]}';
+    }
+    context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
+          collapsedItem: '${pathSegments[0]}$second',
+          force: true,
+        ));
+  }
+
   _deleteTemplate(TemplateDetailState state) {
     templatesBloc
         .add(TemplateDetailTemplateDeleted(templateId: widget.templateId));
+  }
+
+  void _checkDeleteTemplateStatus(
+      TemplateDetailState state, BuildContext context) {
+    if (state.templateDeleteStatus.isSuccess) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification();
+
+      GoRouter.of(context).go('/templates');
+    }
+    if (state.templateDeleteStatus.isFailure) {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.error,
+        content: state.message,
+      ).showNotification();
+    }
   }
 
   @override
@@ -96,25 +134,5 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
         );
       },
     );
-  }
-
-  void _checkDeleteTemplateStatus(
-      TemplateDetailState state, BuildContext context) {
-    if (state.templateDeleteStatus.isSuccess) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.success,
-        content: state.message,
-      ).showNotification();
-
-      GoRouter.of(context).go('/templates');
-    }
-    if (state.templateDeleteStatus.isFailure) {
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.error,
-        content: state.message,
-      ).showNotification();
-    }
   }
 }
