@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class Template extends Entity {
@@ -40,8 +38,9 @@ class Template extends Entity {
         templateSites,
       ];
 
-  String get formatedRevisionDate => revisionDate.isNotEmpty ?
-      FormatDate(format: 'd MMMM y', dateString: revisionDate).formatDate : '--';
+  String get formatedRevisionDate => revisionDate.isNotEmpty
+      ? FormatDate(format: 'd MMMM y', dateString: revisionDate).formatDate
+      : '--';
 
   @override
   Map<String, dynamic> tableItemsToMap() {

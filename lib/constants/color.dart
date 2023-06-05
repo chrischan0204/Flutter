@@ -16,3 +16,5 @@ Color purpleHoverColor = const Color(0xff8065ae);
 Color lightGreen = const Color(0xff3fdca5);
 Color lightRed = const Color(0xffef556d);
 Color lightBlue = const Color(0xff00bef6);
+Color lightBlueAccent = const Color(0xffD0EFFF);
+Color darkGreyAccent = const Color(0xff898989);

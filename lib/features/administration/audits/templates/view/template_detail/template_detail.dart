@@ -1,4 +1,5 @@
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class TemplateDetailView extends StatefulWidget {
   final String templateId;
@@ -76,21 +77,28 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
           title: pageTitle,
           label: pageLabel,
           deleteEntity: () => _deleteTemplate(state),
-          tabItems: _buildTabs(state),
+          customDetailWidget: Card(
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 30,
+                horizontal: 10
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  TemplateView(),
+                  QuestionsView(),
+                ],
+              ),
+            ),
+          ),
           entity: state.template,
           crudStatus: state.templateDeleteStatus,
           descriptionForDelete: descriptionForDelete,
         );
       },
     );
-  }
-
-  Map<String, Widget> _buildTabs(TemplateDetailState state) {
-    return {
-      'Template Details': Container(),
-      'Categories/Items': Container(),
-      '': Container(),
-    };
   }
 
   void _checkDeleteTemplateStatus(

@@ -1,3 +1,5 @@
+import 'package:date_time_picker/date_time_picker.dart';
+
 import '/common_libraries.dart';
 
 class RevisionDatePicker extends StatefulWidget {
@@ -29,6 +31,7 @@ class _RevisionDatePickerState extends State<RevisionDatePicker> {
         return FormItem(
           label: 'Date (*)',
           content: CustomDateTimePicker(
+            dateTimePickerType: DateTimePickerType.date,
             controller: textController,
             onChange: (date) =>
                 addEditTemplateBloc.add(AddEditTemplateDateChanged(date: date)),

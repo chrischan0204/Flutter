@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
-
 import '/common_libraries.dart';
 
 class TemplateSectionItem extends Equatable {
