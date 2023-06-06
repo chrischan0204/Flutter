@@ -176,10 +176,13 @@ class EntityDataSource extends DataGridSource {
     return DataGridRowAdapter(
         color: getBackgroundColor(),
         cells: row.getCells().map<Widget>((e) {
-          return Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: e.value['value'],
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: e.value['value'],
+            ),
           );
         }).toList());
   }

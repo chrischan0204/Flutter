@@ -30,6 +30,7 @@ class _FilterSettingItemViewState extends State<FilterSettingItemView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 35,
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xfff2faff)),
         borderRadius: BorderRadius.circular(5),

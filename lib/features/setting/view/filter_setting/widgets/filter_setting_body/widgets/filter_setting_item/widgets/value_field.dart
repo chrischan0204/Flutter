@@ -133,7 +133,7 @@ class _ValueFieldState extends State<ValueField> {
             default:
               return Container(
                 width: double.infinity,
-                color: Colors.grey,
+                color: Colors.white,
               );
           }
         },

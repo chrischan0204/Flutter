@@ -165,7 +165,7 @@ class _CrudState extends State<EntityListTemplate> {
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 15,
-            vertical: 10,
+            // vertical: 10,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,11 +179,8 @@ class _CrudState extends State<EntityListTemplate> {
                     title: widget.title,
                   ),
                   const SizedBox(width: 10),
-                  widget.description.isNotEmpty
-                      ? Description(
-                          description: widget.description,
-                        )
-                      : Container(),
+                  if (widget.description.isNotEmpty)
+                    Description(description: widget.description)
                 ],
               ),
               CustomButton(

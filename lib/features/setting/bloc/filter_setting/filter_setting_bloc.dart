@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 import '/common_libraries.dart';
 
