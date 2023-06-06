@@ -68,24 +68,26 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTitle(),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    _buildCrudButtons(context)
-                  ],
+              Card(
+                elevation: 3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _buildTitle(),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      _buildCrudButtons(context)
+                    ],
+                  ),
                 ),
               ),
-              const CustomDivider(),
               Card(
                 elevation: 3,
                 child: widget.tabItems.isNotEmpty && widget.id != null

@@ -79,7 +79,13 @@ class FilterSettingUserFilterIsDefaultChanged extends FilterSettingEvent {
   List<Object> get props => [isDefault];
 }
 
-class FilterSettingUserFilterSettingSaved extends FilterSettingEvent {}
+class FilterSettingUserFilterSettingSaved extends FilterSettingEvent {
+  // final String viewName;
+  const FilterSettingUserFilterSettingSaved();
+
+  // @override
+  // List<Object> get props => [viewName];
+}
 
 class FilterSettingUserFilterSettingSavedAs extends FilterSettingEvent {
   final String saveAsName;

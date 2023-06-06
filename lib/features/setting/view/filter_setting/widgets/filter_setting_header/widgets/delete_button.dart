@@ -45,9 +45,19 @@ class _DeleteButtonState extends State<DeleteButton> {
                 backgroundColor: lightRed,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3))),
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.white),
+            child: Row(
+              children: const [
+                Icon(
+                  PhosphorIcons.trash,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                SizedBox(width: 5),
+                Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ),
         );

@@ -64,9 +64,19 @@ class _SaveAsButtonState extends State<SaveAsButton> {
               backgroundColor: lightBlue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(3))),
-          child: Text(
-            state.saveAsButtonName,
-            style: const TextStyle(color: Colors.white),
+          child: Row(
+            children: [
+              const Icon(
+                PhosphorIcons.floppyDiskBack,
+                color: Colors.white,
+                size: 18,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                state.saveAsButtonName,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
           ),
         );
       },

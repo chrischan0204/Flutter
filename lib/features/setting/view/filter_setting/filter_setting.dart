@@ -78,6 +78,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                   children: [
                     FilterSettingHeaderView(
                       viewName: widget.viewName,
+                      onFilterApplied: widget.onFilterApplied,
                       onFilterOptionClosed: () =>
                           setState(() => widget.onFilterOptionClosed()),
                     ),
@@ -103,15 +104,14 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                           children: [
                             FilterSettingBodyView(viewName: widget.viewName),
                             const AddClauseButton(),
-                            const CustomDivider(),
-                            FilterSettingFooterView(
-                              viewName: widget.viewName,
-                              onFilterOptionClosed: widget.onFilterOptionClosed,
-                              onFilterApplied: widget.onFilterApplied,
-                              onFilterSaved: (filterId) {
-                                widget.onFilterSaved(filterId);
-                              },
-                            ),
+                            // const CustomDivider(),
+                            // FilterSettingFooterView(
+                            //   viewName: widget.viewName,
+                            //   onFilterOptionClosed: widget.onFilterOptionClosed,
+                            //   onFilterSaved: (filterId) {
+                            //     widget.onFilterSaved(filterId);
+                            //   },
+                            // ),
                           ],
                         );
                       },

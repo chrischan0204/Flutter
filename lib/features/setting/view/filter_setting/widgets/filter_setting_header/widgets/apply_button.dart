@@ -37,7 +37,7 @@ class _ApplyButtonState extends State<ApplyButton> {
                             state.selectedUserFilterSetting!,
                       ),
                     );
-        
+
                     if (!(state.selectedUserFilterSetting?.isNew ?? true)) {
                       CustomNotification(
                         context: context,
@@ -57,10 +57,20 @@ class _ApplyButtonState extends State<ApplyButton> {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-        
-            child: const Text(
-              'Apply',
-              style: TextStyle(color: Colors.white),
+
+            child: Row(
+              children: const [
+                Icon(
+                  PhosphorIcons.check,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                SizedBox(width: 5),
+                Text(
+                  'Apply',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ),
         );

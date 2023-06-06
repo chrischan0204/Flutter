@@ -49,7 +49,6 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               descriptionForDelete: widget.descriptionForDelete,
               deleteEntity: widget.deleteEntity,
             ),
-            const CustomDivider(),
             Expanded(
               child: Card(
                 elevation: 3,

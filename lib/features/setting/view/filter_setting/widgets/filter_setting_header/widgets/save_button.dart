@@ -54,16 +54,26 @@ class _SaveButtonState extends State<SaveButton> {
                       ).showNotification();
                     } else {
                       filterSettingBloc
-                          .add(FilterSettingUserFilterSettingSaved());
+                          .add(const FilterSettingUserFilterSettingSaved());
                     }
                   },
             style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3))),
-            child: const Text(
-              'Save',
-              style: TextStyle(color: Colors.white),
+            child: Row(
+              children: const [
+                Icon(
+                  PhosphorIcons.floppyDisk,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                SizedBox(width: 5),
+                Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ),
         );

@@ -22,34 +22,37 @@ class HeaderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 15,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            '$title - $name',
-            style: TextStyle(
-              color: darkTeal,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'OpenSans',
+    return Card(
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '$title - $name',
+              style: TextStyle(
+                color: darkTeal,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'OpenSans',
+              ),
             ),
-          ),
-          const SizedBox(
-            width: 15,
-          ),
-          CrudButtonsView(
-            label: label,
-            deletable: deletable,
-            deleting: deleting,
-            descriptionForDelete: descriptionForDelete,
-            deleteEntity: deleteEntity,
-          ),
-        ],
+            const SizedBox(
+              width: 15,
+            ),
+            CrudButtonsView(
+              label: label,
+              deletable: deletable,
+              deleting: deleting,
+              descriptionForDelete: descriptionForDelete,
+              deleteEntity: deleteEntity,
+            ),
+          ],
+        ),
       ),
     );
   }

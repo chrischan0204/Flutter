@@ -25,8 +25,6 @@ class _FilterSettingSelectFieldState extends State<FilterSettingSelectField> {
   Widget build(BuildContext context) {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) => Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
             'Select Filter',
@@ -41,11 +39,14 @@ class _FilterSettingSelectFieldState extends State<FilterSettingSelectField> {
                   MapEntry(userFilterSetting.filterName, userFilterSetting)
                 ]);
               }
-              debugPrint(state.selectedUserFilterSetting?.filterName);
-              return SizedBox(
-                width: MediaQuery.of(context).size.width / 3,
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width / 4,
+                  minWidth: 150,
+                ),
                 child: CustomSingleSelect(
-                  selectedValue: state.selectedUserFilterSetting?.filterName ?? 'Add New',
+                  selectedValue:
+                      state.selectedUserFilterSetting?.filterName ?? 'Add New',
                   items: items,
                   hint: 'Select Filter',
                   onChanged: (value) {
