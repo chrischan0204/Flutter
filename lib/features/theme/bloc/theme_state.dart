@@ -25,8 +25,17 @@ class ThemeState extends Equatable {
     );
   }
 
-  bool isExtended(context) => !collapsedItems.any((element) =>
-      Uri.parse(GoRouter.of(context).location).path.contains(element));
+  bool isExtended(context) {
+    final pathSegments = Uri.parse(GoRouter.of(context).location).pathSegments;
+    String path = pathSegments[0] +
+        (pathSegments.length > 1
+            ? pathSegments[1] == 'index'
+                ? ''
+                : '/${pathSegments[1]}'
+            : '');
+
+    return !collapsedItems.any((element) => path == element);
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

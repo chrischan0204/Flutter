@@ -1,18 +1,18 @@
 import '/common_libraries.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class NewSectionField extends StatefulWidget {
+class AddNewSectionField extends StatefulWidget {
   final String templateId;
-  const NewSectionField({
+  const AddNewSectionField({
     super.key,
     required this.templateId,
   });
 
   @override
-  State<NewSectionField> createState() => _NewSectionFieldState();
+  State<AddNewSectionField> createState() => _AddNewSectionFieldState();
 }
 
-class _NewSectionFieldState extends State<NewSectionField> {
+class _AddNewSectionFieldState extends State<AddNewSectionField> {
   TextEditingController sectionController = TextEditingController();
   late TemplateDesignerBloc templateDesignerBloc;
 
@@ -43,29 +43,32 @@ class _NewSectionFieldState extends State<NewSectionField> {
       },
       listenWhen: (previous, current) =>
           previous.templateSectionAddStatus != current.templateSectionAddStatus,
-      builder: (context, state) => CustomTextFieldWithIcon(
-        hintText: 'Add new section',
-        suffixWidget: SizedBox(
-          width: 40,
-          child: Center(
-            child: state.templateSectionAddStatus.isLoading
-                ? LoadingAnimationWidget.inkDrop(
-                    color: Colors.blue,
-                    size: 20,
-                  )
-                : Icon(
-                    PhosphorIcons.arrowCircleRight,
-                    color: textColor,
-                    size: 18,
-                  ),
+      builder: (context, state) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        child: CustomTextFieldWithIcon(
+          hintText: 'Add new section',
+          suffixWidget: SizedBox(
+            width: 40,
+            child: Center(
+              child: state.templateSectionAddStatus.isLoading
+                  ? LoadingAnimationWidget.inkDrop(
+                      color: Colors.blue,
+                      size: 20,
+                    )
+                  : Icon(
+                      PhosphorIcons.arrowCircleRight,
+                      color: textColor,
+                      size: 18,
+                    ),
+            ),
           ),
+          onSuffixClicked: () => templateDesignerBloc.add(
+              TemplateDesignerTemplateSectionAdded(
+                  templateId: widget.templateId)),
+          onChange: (value) => templateDesignerBloc
+              .add(TemplateDesignerNewSectionChanged(newSection: value)),
+          controller: sectionController,
         ),
-        onSuffixClicked: () => templateDesignerBloc.add(
-            TemplateDesignerTemplateSectionAdded(
-                templateId: widget.templateId)),
-        onChange: (value) => templateDesignerBloc
-            .add(TemplateDesignerNewSectionChanged(newSection: value)),
-        controller: sectionController,
       ),
     );
   }

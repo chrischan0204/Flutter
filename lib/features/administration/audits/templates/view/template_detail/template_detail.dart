@@ -81,7 +81,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
         ));
   }
 
-  _deleteTemplate(TemplateDetailState state) {
+  void _deleteTemplate(TemplateDetailState state) {
     templatesBloc
         .add(TemplateDetailTemplateDeleted(templateId: widget.templateId));
   }
@@ -106,6 +106,14 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
     }
   }
 
+  Widget _buildCustomDetailWidget() => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          TemplateView(),
+          QuestionsView(),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TemplateDetailBloc, TemplateDetailState>(
@@ -115,16 +123,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
           title: pageTitle,
           label: pageLabel,
           deleteEntity: () => _deleteTemplate(state),
-          customDetailWidget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                TemplateView(),
-                QuestionsView(),
-              ],
-            ),
-          ),
+          customDetailWidget: _buildCustomDetailWidget(),
           entity: state.template,
           crudStatus: state.templateDeleteStatus,
           descriptionForDelete: descriptionForDelete,

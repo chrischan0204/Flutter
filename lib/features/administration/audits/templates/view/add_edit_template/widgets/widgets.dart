@@ -1,3 +1,2 @@
-export 'template_description.dart';
-export 'revision_date_picker.dart';
-export 'used_in_checkboxes.dart';
+export 'details/details.dart';
+export 'template_items/template_items.dart';

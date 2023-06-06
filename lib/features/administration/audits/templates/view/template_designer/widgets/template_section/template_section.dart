@@ -27,35 +27,30 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
   Widget build(BuildContext context) {
     return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TemplateSectionHeader(),
-            const CustomDivider(height: 30),
-            Expanded(
-              child: Card(
-                elevation: 3,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 25,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AddNewSectionHeader(),
-                      const CustomDivider(),
-                      NewSectionField(templateId: widget.templateId),
-                      const CustomDivider(),
-                      const ExistingTemplateSectionHeader(),
-                      const CustomDivider(),
-                      const ExistingTemplateSections(),
-                    ],
-                  ),
-                ),
+        return Container(
+          decoration: BoxDecoration(
+              color: const Color(0xffF9FCFC),
+              border: Border.all(
+                color: const Color(0xffC8E5E4),
               ),
-            ),
-          ],
+              borderRadius: BorderRadius.circular(5)),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 25,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const TemplateSectionHeader(),
+              const CustomDivider(),
+              NewSectionField(templateId: widget.templateId),
+              const CustomDivider(),
+              const ExistingTemplateSectionHeader(),
+              const CustomDivider(),
+              // const ExistingTemplateSections(),
+            ],
+          ),
         );
       },
     );

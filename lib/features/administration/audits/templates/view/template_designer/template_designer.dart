@@ -62,20 +62,33 @@ class _TemplateDesignerWidgetState extends State<TemplateDesignerWidget> {
         horizontal: 10,
         vertical: 20,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: TemplateSectionView(templateId: widget.templateId),
+          const Text(
+            'A page to define a template. A template\'s sections, questions and other composition can be defined here.',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          const SizedBox(width: 30),
-          const Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: TemplateSectionDetails(),
-          )
+          const CustomDivider(),
+          Expanded(
+              child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 1,
+                fit: FlexFit.tight,
+                child: TemplateSectionView(templateId: widget.templateId),
+              ),
+              const SizedBox(width: 30),
+              const Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: TemplateSectionDetails(),
+              )
+            ],
+          ))
         ],
       ),
     );

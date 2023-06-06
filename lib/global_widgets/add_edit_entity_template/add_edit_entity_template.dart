@@ -57,48 +57,47 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height - topbarHeight - 20),
-      height: MediaQuery.of(context).size.height - topbarHeight - 20,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Card(
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildTitle(),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    _buildCrudButtons(context)
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Card(
                 elevation: 3,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _buildTitle(),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      _buildCrudButtons(context)
-                    ],
+                  padding: const EdgeInsets.all(20.0),
+                  child: CustomScrollViewWithBackButton(
+                    child: widget.tabItems.isNotEmpty && widget.id != null
+                        ? _buildTab()
+                        : _buildEditEntityView(),
                   ),
                 ),
               ),
-              Card(
-                elevation: 3,
-                child: widget.tabItems.isNotEmpty && widget.id != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: _buildTab(),
-                      )
-                    : _buildEditEntityView(),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

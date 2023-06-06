@@ -13,49 +13,45 @@ class ExistingTemplateSections extends StatefulWidget {
 class _ExistingTemplateSectionsState extends State<ExistingTemplateSections> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 20,
-        ),
-        child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
-          builder: (context, state) {
-            return ReorderableList(
-              onReorder: (_, __) {
-                return true;
-              },
-              onReorderDone: (draggedItem) {
-                print(draggedItem.toString());
-              },
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverPadding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).padding.bottom),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return TemplateSectionItemView(
-                            key: ValueKey(state.templateSectionList[index].id),
-                            templateSection: state.templateSectionList[index],
-                            templateSectionItemCount: state
-                                .templateSectionList[index]
-                                .templateSectionItemCount,
-                            isFirst: index == 0,
-                            isLast:
-                                index == state.templateSectionList.length - 1,
-                          );
-                        },
-                        childCount: state.templateSectionList.length,
-                      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 20,
+      ),
+      child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+        builder: (context, state) {
+          return ReorderableList(
+            onReorder: (_, __) {
+              return true;
+            },
+            onReorderDone: (draggedItem) {
+            },
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return TemplateSectionItemView(
+                          key: ValueKey(state.templateSectionList[index].id),
+                          templateSection: state.templateSectionList[index],
+                          templateSectionItemCount: state
+                              .templateSectionList[index]
+                              .templateSectionItemCount,
+                          isFirst: index == 0,
+                          isLast: index == state.templateSectionList.length - 1,
+                        );
+                      },
+                      childCount: state.templateSectionList.length,
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

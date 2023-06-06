@@ -52,13 +52,13 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
             Expanded(
               child: Card(
                 elevation: 3,
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: CustomScrollViewWithBackButton(
+                    child: widget.tabItems.isNotEmpty
+                        ? _buildTab()
+                        : _buildEntityDetails(),
                   ),
-                  child: widget.tabItems.isNotEmpty
-                      ? _buildTab()
-                      : _buildEntityDetails(),
                 ),
               ),
             ),
@@ -76,32 +76,27 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
   }
 
   Widget _buildEntityDetails() {
-    return CustomScrollViewWithBackButton(
-      child: widget.customDetailWidget ??
-          (widget.entity != null
-              ? Builder(
-                  builder: (context) {
-                    Map<String, dynamic> detailsMap =
-                        widget.entity!.detailItemsToMap();
-                    return Column(
-                      children: [
-                        for (final detail in detailsMap.entries)
-                          ShowItem(
-                            label: detail.key,
-                            content: CustomDataCell(
-                              data: detail.value,
-                            ),
+    return widget.customDetailWidget ??
+        (widget.entity != null
+            ? Builder(
+                builder: (context) {
+                  Map<String, dynamic> detailsMap =
+                      widget.entity!.detailItemsToMap();
+                  return Column(
+                    children: [
+                      for (final detail in detailsMap.entries)
+                        ShowItem(
+                          label: detail.key,
+                          content: CustomDataCell(
+                            data: detail.value,
                           ),
-                      ],
-                    );
-                  },
-                )
-              : const Padding(
-                  padding: EdgeInsets.only(top: 200.0),
-                  child: Center(
-                    child: Loader(),
-                  ),
-                )),
-    );
+                        ),
+                    ],
+                  );
+                },
+              )
+            : const Center(
+                child: Loader(),
+              ));
   }
 }

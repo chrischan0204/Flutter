@@ -26,6 +26,13 @@ class _AddEditTemplateViewState extends State<AddEditTemplateView> {
         BlocProvider(
             create: (context) => TemplateDetailBloc(
                 templatesRepository: RepositoryProvider.of(context))),
+        BlocProvider(
+          create: (context) => TemplateDesignerBloc(
+            templatesRepository: RepositoryProvider.of(context),
+            responseScalesRepository: RepositoryProvider.of(context),
+            sectionsRepository: RepositoryProvider.of(context),
+          ),
+        ),
       ],
       child: AddEditTemplateWidget(
         templateId: widget.templateId,
@@ -122,13 +129,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 tabItems: _buildTabs(),
                 tabWidth: 500,
                 view: widget.view,
-                child: Column(
-                  children: const [
-                    TemplateDescriptionField(),
-                    RevisionDatePicker(),
-                    UsedInCheckBoxes()
-                  ],
-                ),
+                child: const AddEditTemplateDetailsView(),
               ),
             );
           },
@@ -146,7 +147,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   Map<String, Widget> _buildTabs() {
     if (widget.templateId != null) {
       return {
-        'Template Items': Container(),
+        'Template Items': TemplateItemsView(templateId: widget.templateId!),
       };
     }
     return {};
