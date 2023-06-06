@@ -51,26 +51,16 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
             ),
             const CustomDivider(),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(
-                  top: 50,
+              child: Card(
+                elevation: 3,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                  ),
+                  child: widget.tabItems.isNotEmpty
+                      ? _buildTab()
+                      : _buildEntityDetails(),
                 ),
-                child: widget.tabItems.isNotEmpty
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildTab(),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          selectedTabIndex != 0
-                              ? widget.tabItems.entries
-                                  .toList()[selectedTabIndex]
-                                  .value
-                              : _buildEntityDetails(),
-                        ],
-                      )
-                    : _buildEntityDetails(),
               ),
             ),
           ],
@@ -79,34 +69,10 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
     );
   }
 
-  CustomTab _buildTab() {
-    return CustomTab(
-      initialIndex: 0,
-      onSelect: (int index) => setState(() {
-        selectedTabIndex = index;
-      }),
-      containerBorderRadius: 6,
-      containerColor: Colors.transparent,
-      slidersBorder: Border.all(color: grey),
-      slidersColors: const [
-        Colors.white,
-      ],
-      containerHeight: 42,
-      containerWidth: 550,
-      borderColor: grey,
-      children: widget.tabItems.entries
-          .map(
-            (tabItem) => Text(
-              tabItem.key,
-              style: TextStyle(
-                fontSize: 12,
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.w400,
-                color: darkTeal,
-              ),
-            ),
-          )
-          .toList(),
+  Widget _buildTab() {
+    return CustomTabBar(
+      activeIndex: selectedTabIndex,
+      tabs: {'Details': _buildEntityDetails(), ...widget.tabItems},
     );
   }
 

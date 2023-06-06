@@ -105,13 +105,11 @@ class _UserDetailWidgetState extends State<UserDetailWidget> {
 
   Map<String, Widget> _buildTabs(UserDetailState state) {
     return {
-      'User Details': Container(),
       'Site Access': UserSiteAccessView(username: state.user?.name ?? ''),
       'Notifications': const UserNotificationSettingView(),
       'Invite Details': UserInviteDetailsView(
         userId: widget.userId,
       ),
-      '': Container(),
     };
   }
 

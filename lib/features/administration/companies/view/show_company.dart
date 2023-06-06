@@ -54,11 +54,9 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
 
   Map<String, Widget> _buildTabs(CompaniesState state) {
     return {
-      'Details': Container(),
       'Sites': _buildAssociatedSites(state),
       'Projects': _buildAssociatedProjects(state),
       'Audit Trail': _builAuditTrails(state),
-      '': Container(),
     };
   }
 

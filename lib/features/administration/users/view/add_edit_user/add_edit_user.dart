@@ -180,7 +180,6 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
   Map<String, Widget> _buildTabs(AddEditUserState addEditUserState) {
     if (widget.userId != null) {
       return {
-        'User Details': Container(),
         'Site Access': AssignSitesToUserView(userId: widget.userId!),
         'Notifications': UpdateNotificationForUserView(
           userId: widget.userId!,
@@ -188,7 +187,6 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
         'Invite Details': InviteDetailView(
           userId: widget.userId!,
         ),
-        '': Container(),
       };
     }
     return {};

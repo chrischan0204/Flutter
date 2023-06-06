@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomTabBar extends StatefulWidget {
   final int activeIndex;
-  final List<String> nameList;
+  final Map<String, Widget> tabs;
   const CustomTabBar({
     super.key,
     required this.activeIndex,
-    required this.nameList,
+    required this.tabs,
   });
 
   @override
@@ -23,15 +23,27 @@ class _CustomTabBarState extends State<CustomTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(
-        widget.nameList.length,
-        (index) => CustomTabBarItem(
-          active: index == _activeIndex,
-          name: widget.nameList[index],
-          onClick: () => setState(() => _activeIndex = index),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: List.generate(
+              widget.tabs.length,
+              (index) => CustomTabBarItem(
+                active: index == _activeIndex,
+                name: widget.tabs.keys.toList()[index],
+                onClick: () => setState(() => _activeIndex = index),
+              ),
+            ),
+          ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: widget.tabs[widget.tabs.keys.toList()[_activeIndex]],
+        ),
+      ],
     );
   }
 }
@@ -57,31 +69,56 @@ class _CustomTabBarItemState extends State<CustomTabBarItem> {
   Color _getBorderColor() {
     if (widget.active) {
       return Colors.black;
-    } else if (widget.active && _hover) {
+    } else if (!widget.active && _hover) {
       return Colors.black.withOpacity(0.6);
     }
     return Colors.transparent;
   }
 
+  FontWeight _getTextFontWeight() {
+    if (widget.active) {
+      return FontWeight.bold;
+    }
+    return FontWeight.normal;
+  }
+
+  Color _getTextColor() {
+    if (widget.active) {
+      return Colors.black;
+    } else if (!widget.active && _hover) {
+      return Colors.black.withOpacity(0.9);
+    }
+    return Colors.black.withOpacity(0.6);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onClick,
-      onHover: (value) => setState(() => _hover = value),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: _getBorderColor(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: InkWell(
+        hoverColor: Colors.transparent,
+        onTap: widget.onClick,
+        onHover: (value) => setState(() => _hover = value),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: _getBorderColor(),
+                width: 2,
+              ),
             ),
           ),
-        ),
-        curve: Curves.bounceOut,
-        child: Text(
-          widget.name,
-          style: TextStyle(
-              fontWeight: widget.active ? FontWeight.w600 : FontWeight.normal),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Text(
+              widget.name,
+              style: TextStyle(
+                fontWeight: _getTextFontWeight(),
+                color: _getTextColor(),
+              ),
+            ),
+          ),
         ),
       ),
     );

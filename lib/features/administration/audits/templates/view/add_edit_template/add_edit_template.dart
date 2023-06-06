@@ -146,9 +146,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   Map<String, Widget> _buildTabs() {
     if (widget.templateId != null) {
       return {
-        'Template Details': Container(),
         'Template Items': Container(),
-        '': Container(),
       };
     }
     return {};

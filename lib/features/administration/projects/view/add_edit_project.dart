@@ -90,13 +90,11 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       return {};
     }
     return {
-      'Details': Container(),
       'Companies': AssignCompaniesToProjectView(
         projectId: widget.projectId!,
         projectName: state.selectedProject?.name ?? '',
         view: widget.view,
       ),
-      '': Container(),
     };
   }
 

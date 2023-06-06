@@ -115,17 +115,14 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
           title: pageTitle,
           label: pageLabel,
           deleteEntity: () => _deleteTemplate(state),
-          customDetailWidget: Card(
-            elevation: 3,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  TemplateView(),
-                  QuestionsView(),
-                ],
-              ),
+          customDetailWidget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                TemplateView(),
+                QuestionsView(),
+              ],
             ),
           ),
           entity: state.template,

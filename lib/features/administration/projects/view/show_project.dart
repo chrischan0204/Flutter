@@ -60,9 +60,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
 
   Map<String, Widget> _buildTabs(ProjectsState state) {
     return {
-      'Project Details': Container(),
       'Associated Companies': _buildAssociatedCompanies(state),
-      '': Container(),
     };
   }
 

@@ -86,25 +86,15 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                 ),
               ),
               const CustomDivider(),
-              widget.tabItems.isNotEmpty && widget.id != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 50.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildTab(),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          selectedTabIndex != 0
-                              ? widget.tabItems.entries
-                                  .toList()[selectedTabIndex]
-                                  .value
-                              : _buildEditEntityView(),
-                        ],
-                      ),
-                    )
-                  : _buildEditEntityView(),
+              Card(
+                elevation: 3,
+                child: widget.tabItems.isNotEmpty && widget.id != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: _buildTab(),
+                      )
+                    : _buildEditEntityView(),
+              ),
             ],
           ),
         ),
@@ -112,34 +102,10 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     );
   }
 
-  CustomTab _buildTab() {
-    return CustomTab(
-      initialIndex: selectedTabIndex,
-      onSelect: (int index) => setState(() {
-        selectedTabIndex = index;
-      }),
-      containerBorderRadius: 6,
-      containerColor: Colors.transparent,
-      slidersBorder: Border.all(color: grey),
-      slidersColors: const [
-        Colors.white,
-      ],
-      containerHeight: 42,
-      containerWidth: widget.tabWidth,
-      borderColor: grey,
-      children: widget.tabItems.entries
-          .map(
-            (tabItem) => Text(
-              tabItem.key,
-              style: TextStyle(
-                fontSize: 12,
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.w400,
-                color: darkTeal,
-              ),
-            ),
-          )
-          .toList(),
+  Widget _buildTab() {
+    return CustomTabBar(
+      activeIndex: selectedTabIndex,
+      tabs: {'Details': _buildEditEntityView(), ...widget.tabItems},
     );
   }
 

@@ -19,7 +19,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   late RolesBloc rolesBloc;
   TextEditingController companyNameController = TextEditingController(text: '');
   TextEditingController einNumberController = TextEditingController(text: '');
-                      String companyNameValidationMessage = '';
+  String companyNameValidationMessage = '';
   String einNumberValidationMessage = '';
 
   bool isFirstInit = true;
@@ -74,7 +74,6 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   Map<String, Widget> _buildTabs(CompaniesState state) {
     if (widget.companyId != null) {
       return {
-        'Details': Container(),
         'Sites': AssignSitesToCompanyView(
           companyId: widget.companyId!,
           companyName: state.selectedCompany?.name ?? '',
@@ -85,7 +84,6 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           companyName: state.selectedCompany?.name ?? '',
           view: widget.view,
         ),
-        '': Container(),
       };
     }
     return {};
