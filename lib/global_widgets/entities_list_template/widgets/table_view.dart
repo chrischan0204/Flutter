@@ -6,10 +6,10 @@ import '/constants/constants.dart';
 import '../../custom_data_cell.dart';
 import '/data/model/entity.dart';
 
-class DataTableView extends StatefulWidget {
-  final List<Entity> entities;
+class DataTableView<T extends Entity> extends StatefulWidget {
+  final List<T> entities;
   final List<String> columns;
-  final ValueChanged<Entity> onRowClick;
+  final ValueChanged<T> onRowClick;
   final String emptyMessage;
   final ValueChanged<MapEntry<String, bool>>? onTableSorted;
   const DataTableView({

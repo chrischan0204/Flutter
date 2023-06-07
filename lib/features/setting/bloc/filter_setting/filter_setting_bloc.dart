@@ -470,8 +470,10 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       userFilterItems.remove(event.userFilterItem);
       userFilterItems.insert(
           index,
-          event.userFilterItem
-              .copyWith(filterSetting: event.column, filterValue: []));
+          event.userFilterItem.copyWith(
+              filterSetting: event.column,
+              filterValue:
+                  event.column.controlType == 'BooleanBox' ? ['False'] : []));
 
       emit(state.copyWith(
         userFilterUpdate:

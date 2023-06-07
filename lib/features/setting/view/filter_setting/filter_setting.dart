@@ -71,8 +71,6 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                 maxHeight: MediaQuery.of(context).size.height / 3),
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Stack(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisSize: MainAxisSize.min,
               children: [
                 Positioned(
                   top: 0,

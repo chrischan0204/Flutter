@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
@@ -6,8 +5,7 @@ import '/common_libraries.dart';
 part 'view_setting_event.dart';
 part 'view_setting_state.dart';
 
-class ViewSettingBloc
-    extends Bloc<ViewSettingEvent, ViewSettingState> {
+class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
   final SettingsRepository settingsRepository;
 
   ViewSettingBloc({required this.settingsRepository})
@@ -16,23 +14,17 @@ class ViewSettingBloc
     on<ViewSettingLoaded>(_onViewSettingLoaded);
     on<ViewSettingDisplayColumnOrderChanged>(
         _onViewSettingDisplayColumnOrderChanged);
-    on<ViewSettingDisplayColumnSelected>(
-        _onViewSettingDisplayColumnSelected);
-    on<ViewSettingDisplayColumnAdded>(
-        _onViewSettingDisplayColumnAdded);
-    on<ViewSettingDisplayColumnDeleted>(
-        _onViewSettingDisplayColumnDeleted);
+    on<ViewSettingDisplayColumnSelected>(_onViewSettingDisplayColumnSelected);
+    on<ViewSettingDisplayColumnAdded>(_onViewSettingDisplayColumnAdded);
+    on<ViewSettingDisplayColumnDeleted>(_onViewSettingDisplayColumnDeleted);
 
     on<ViewSettingSortingColumnOrderChanged>(
         _onViewSettingSortingColumnOrderChanged);
     on<ViewSettingSortingColumnSortDirectionChanged>(
         _onViewSettingSortingColumnSortDirectionChanged);
-    on<ViewSettingSortingColumnSelected>(
-        _onViewSettingSortingColumnSelected);
-    on<ViewSettingSortingColumnAdded>(
-        _onViewSettingSortingColumnAdded);
-    on<ViewSettingSortingColumnDeleted>(
-        _onViewSettingSortingColumnDeleted);
+    on<ViewSettingSortingColumnSelected>(_onViewSettingSortingColumnSelected);
+    on<ViewSettingSortingColumnAdded>(_onViewSettingSortingColumnAdded);
+    on<ViewSettingSortingColumnDeleted>(_onViewSettingSortingColumnDeleted);
   }
 
   Future<void> _onViewSettingApplied(
@@ -145,8 +137,6 @@ class ViewSettingBloc
   ) {
     List<ViewSettingItemData> viewSettingDisplayColumnList =
         List.from(state.viewSettingDisplayColumnList);
-    final deletedViewSettingDisplayColumnList = List.from(
-        state.viewSettingDisplayColumnList.where((element) => element.deleted));
 
     int index = state.viewSettingDisplayColumnList.indexWhere((element) =>
         element.selectedValue?.viewSettingId ==
@@ -188,24 +178,30 @@ class ViewSettingBloc
     ViewSettingDisplayColumnAdded event,
     Emitter<ViewSettingState> emit,
   ) {
-    emit(state.copyWith(viewSettingDisplayColumnList: [
-      ...state.viewSettingDisplayColumnList,
-      ViewSettingItemData(
-        key: ValueKey(const Uuid().v1()),
-      )
-    ]));
+    if (state.undeletedViewSettingDisplayColumnList.length <
+        state.columns.length) {
+      emit(state.copyWith(viewSettingDisplayColumnList: [
+        ...state.viewSettingDisplayColumnList,
+        ViewSettingItemData(
+          key: ValueKey(const Uuid().v1()),
+        )
+      ]));
+    }
   }
 
   void _onViewSettingSortingColumnAdded(
     ViewSettingSortingColumnAdded event,
     Emitter<ViewSettingState> emit,
   ) {
-    emit(state.copyWith(viewSettingSortingColumnList: [
-      ...state.viewSettingSortingColumnList,
-      ViewSettingItemData(
-        key: ValueKey(const Uuid().v1()),
-      )
-    ]));
+    if (state.undeletedViewSettingSortingColumnList.length <
+        state.columns.length) {
+      emit(state.copyWith(viewSettingSortingColumnList: [
+        ...state.viewSettingSortingColumnList,
+        ViewSettingItemData(
+          key: ValueKey(const Uuid().v1()),
+        )
+      ]));
+    }
   }
 
   void _onViewSettingDisplayColumnDeleted(
