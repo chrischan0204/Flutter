@@ -15,7 +15,7 @@ class CustomTextField extends StatefulWidget {
   final double? height;
   final Widget? suffixWidget;
   final int? minLines;
-  final int? maxLines;
+  final int maxLines;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -31,7 +31,7 @@ class CustomTextField extends StatefulWidget {
     this.height = 36,
     this.suffixWidget,
     this.minLines,
-    this.maxLines,
+    this.maxLines = 1,
   });
 
   @override

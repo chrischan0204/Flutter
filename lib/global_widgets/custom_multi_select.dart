@@ -32,9 +32,8 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
         dropdownSearchData: widget.isSearchable
             ? DropdownSearchData<String>(
                 searchController: textEditingController,
-                searchInnerWidgetHeight: 50,
+                searchInnerWidgetHeight: 40,
                 searchInnerWidget: Container(
-                  height: 50,
                   padding: const EdgeInsets.only(
                     top: 8,
                     bottom: 4,
@@ -42,8 +41,6 @@ class _CustomMultiSelectState extends State<CustomMultiSelect> {
                     left: 8,
                   ),
                   child: TextFormField(
-                    expands: true,
-                    maxLines: null,
                     controller: textEditingController,
                     decoration: InputDecoration(
                       isDense: true,

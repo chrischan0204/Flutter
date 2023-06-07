@@ -25,7 +25,7 @@ class _CustomDataCellState extends State<CustomDataCell> {
         constraints: const BoxConstraints(
           maxWidth: 300,
         ),
-        width: double.infinity,
+        // width: double.infinity,
         height: 20,
         decoration: BoxDecoration(
           color: widget.data,

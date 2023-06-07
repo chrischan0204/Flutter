@@ -28,35 +28,45 @@ class DataTableView extends StatefulWidget {
 class _DataTableViewState extends State<DataTableView> {
   int? selectedColumnIndex;
   bool sortType = true;
+  Map<String, double> columnWidths = {};
+  List<String> columns = [];
 
-  List<GridColumn> _buildColumns() {
-    List<String> columns = widget.entities[0].columns.isNotEmpty
+  @override
+  void initState() {
+    columns = widget.entities[0].columns.isNotEmpty
         ? widget.entities[0].columns
         : widget.entities[0].tableItemsToMap().keys.toList();
-    return [
-      ...columns
-          .map(
-            (column) => GridColumn(
-              columnName: column,
-              label: Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  column,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    fontFamily: 'OpenSans',
+
+    for (final column in columns) {
+      columnWidths.addEntries([MapEntry(column, double.nan)]);
+    }
+    super.initState();
+  }
+
+  List<GridColumn> _buildColumns() => [
+        ...columns
+            .map(
+              (column) => GridColumn(
+                columnName: column,
+                width: columnWidths[column]!,
+                label: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    column,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      fontFamily: 'OpenSans',
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-            ),
-          )
-          .toList(),
-    ];
-  }
+            )
+            .toList(),
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +89,12 @@ class _DataTableViewState extends State<DataTableView> {
               },
               columnWidthMode: ColumnWidthMode.fill,
               columnResizeMode: ColumnResizeMode.onResize,
+              onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
+                setState(() {
+                  columnWidths[details.column.columnName] = details.width;
+                });
+                return true;
+              },
               allowColumnsResizing: true,
               gridLinesVisibility: GridLinesVisibility.none,
               headerGridLinesVisibility: GridLinesVisibility.none,

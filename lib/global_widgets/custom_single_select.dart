@@ -38,9 +38,8 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
           dropdownSearchData: widget.isSearchable
               ? DropdownSearchData<String>(
                   searchController: textEditingController,
-                  searchInnerWidgetHeight: 50,
+                  searchInnerWidgetHeight: 40,
                   searchInnerWidget: Container(
-                    height: 50,
                     padding: const EdgeInsets.only(
                       top: 8,
                       bottom: 4,
@@ -48,14 +47,12 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
                       left: 8,
                     ),
                     child: TextFormField(
-                      expands: true,
-                      maxLines: null,
                       controller: textEditingController,
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10,
-                          vertical: 8,
+                          vertical: 12,
                         ),
                         hintText: 'Search...',
                         hintStyle: const TextStyle(fontSize: 12),
@@ -63,6 +60,7 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ),
                   searchMatchFn: (item, searchValue) {
