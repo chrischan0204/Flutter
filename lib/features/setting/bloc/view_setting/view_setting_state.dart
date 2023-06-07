@@ -33,6 +33,12 @@ class ViewSettingState extends Equatable {
           .where((element) => !element.deleted)
           .toList();
 
+  bool get displayColumnAllFill => undeletedViewSettingDisplayColumnList
+      .every((element) => element.selectedValue != null);
+
+  bool get sortingColumnAllFill => undeletedViewSettingSortingColumnList
+      .every((element) => element.selectedValue != null);
+
   int indexOfViewSettingDisplayColumnList(Key key) {
     return viewSettingDisplayColumnList.indexWhere((d) => d.key == key);
   }

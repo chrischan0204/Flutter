@@ -244,11 +244,13 @@ class _CrudState extends State<EntityListTemplate> {
                           widget.onTableSorted!(entities);
                         },
                   onRowClick: (entity) {
-                    _showDetailsSlider();
-                    setState(() {
-                      selectedId = entity.id!;
-                    });
-                    widget.onRowClick(entity);
+                    if (!entity.deleted) {
+                      _showDetailsSlider();
+                      setState(() {
+                        selectedId = entity.id!;
+                      });
+                      widget.onRowClick(entity);
+                    }
                   },
                 ),
               ),
@@ -526,7 +528,7 @@ class _CrudState extends State<EntityListTemplate> {
                   horizontal: 20,
                   vertical: 12,
                 ),
-                child: BlocListener<ViewSettingBloc, ViewSettingState>(
+                child: BlocConsumer<ViewSettingBloc, ViewSettingState>(
                   listener: (context, viewSettingState) {
                     if (widget.onViewSettingApplied != null) {
                       widget.onViewSettingApplied!();
@@ -535,16 +537,31 @@ class _CrudState extends State<EntityListTemplate> {
                   listenWhen: (previous, current) =>
                       previous.viewSettingSaveStatus !=
                       current.viewSettingSaveStatus,
-                  child: CustomButton(
+                  builder: (context, state) => CustomButton(
                     backgroundColor: const Color(0xff0c83ff),
                     hoverBackgroundColor: const Color(0xff0b76e6),
                     iconData: PhosphorIcons.regular.arrowRight,
                     text: 'Apply',
                     onClick: () {
-                      _hideViewSettingsSlider();
-                      if (widget.viewName != null) {
-                        viewSettingBloc.add(
-                            ViewSettingApplied(viewName: widget.viewName!));
+                      if (!state.displayColumnAllFill) {
+                        CustomNotification(
+                                context: context,
+                                notifyType: NotifyType.error,
+                                content: 'Please select display column')
+                            .showNotification();
+                      } else if (!state.sortingColumnAllFill) {
+                        CustomNotification(
+                                context: context,
+                                notifyType: NotifyType.error,
+                                content: 'Please select sorting column')
+                            .showNotification();
+                      } else if (state.displayColumnAllFill &&
+                          state.sortingColumnAllFill) {
+                        _hideViewSettingsSlider();
+                        if (widget.viewName != null) {
+                          viewSettingBloc.add(
+                              ViewSettingApplied(viewName: widget.viewName!));
+                        }
                       }
                     },
                   ),
