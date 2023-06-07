@@ -30,18 +30,15 @@ class _FilterSettingBodyViewState extends State<FilterSettingBodyView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const FilterSettingItemHeader(),
-              ...state.userFilterUpdate.undeletedUserFilterItems.map(
-                (userFilterItem) {
-                  return FilterSettingItemView(
-                    isFirst: state.userFilterUpdate.undeletedUserFilterItems
-                            .indexOf(userFilterItem) ==
-                        0,
-                    filterSettingList: state.filterSettingList,
-                    userFilterItem: userFilterItem,
-                  );
-                },
-              ).toList()
+              for (final userFilterItem
+                  in state.userFilterUpdate.undeletedUserFilterItems)
+                FilterSettingItemView(
+                  isFirst: state.userFilterUpdate.undeletedUserFilterItems
+                          .indexOf(userFilterItem) ==
+                      0,
+                  filterSettingList: state.filterSettingList,
+                  userFilterItem: userFilterItem,
+                )
             ],
           ),
         ),

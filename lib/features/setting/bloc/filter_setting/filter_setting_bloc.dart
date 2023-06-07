@@ -355,24 +355,28 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
   ) {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
-    if (event.userFilterItem != null) {
-      final index = userFilterItems.indexOf(event.userFilterItem!);
-      userFilterItems.insert(
-          index,
-          UserFilterItem(
-            id: emptyGuid,
-            filterSetting: FilterSetting(id: const Uuid().v1()),
-          ));
-    } else {
-      userFilterItems.add(UserFilterItem(
-        id: emptyGuid,
-        filterSetting: FilterSetting(id: const Uuid().v1()),
-      ));
-    }
 
-    emit(state.copyWith(
-        userFilterUpdate:
-            state.userFilterUpdate.copyWith(userFilterItems: userFilterItems)));
+    if (state.userFilterUpdate.undeletedUserFilterItems.length <
+        state.filterSettingList.length) {
+      if (event.userFilterItem != null) {
+        final index = userFilterItems.indexOf(event.userFilterItem!);
+        userFilterItems.insert(
+            index,
+            UserFilterItem(
+              id: emptyGuid,
+              filterSetting: FilterSetting(id: const Uuid().v1()),
+            ));
+      } else {
+        userFilterItems.add(UserFilterItem(
+          id: emptyGuid,
+          filterSetting: FilterSetting(id: const Uuid().v1()),
+        ));
+      }
+
+      emit(state.copyWith(
+          userFilterUpdate: state.userFilterUpdate
+              .copyWith(userFilterItems: userFilterItems)));
+    }
   }
 
   void _onFilterSettingUserFilterItemDeleted(

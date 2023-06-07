@@ -64,67 +64,75 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<FilterSettingBloc, FilterSettingState>(
       builder: (context, state) {
-        return Expanded(
-          child: Card(
-            elevation: 3,
-            child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height / 3),
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FilterSettingHeaderView(
-                      viewName: widget.viewName,
-                      onFilterApplied: widget.onFilterApplied,
-                      onFilterOptionClosed: () =>
-                          setState(() => widget.onFilterOptionClosed()),
-                    ),
-                    const CustomDivider(),
-                    Builder(
-                      builder: (context) {
-                        if (state.userFilterSettingList.isEmpty &&
-                            state.userFilterUpdate.undeletedUserFilterItems
-                                .isEmpty) {
-                          return const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 12),
-                              child: Text(
-                                'There are no user filter settings. Please click Add Button to create new user filter setting',
-                                style: TextStyle(fontSize: 14),
-                              ),
+        return Card(
+          elevation: 3,
+          child: Container(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height / 3),
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Stack(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisSize: MainAxisSize.min,
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      FilterSettingHeaderView(
+                        viewName: widget.viewName,
+                        onFilterApplied: widget.onFilterApplied,
+                        onFilterOptionClosed: () =>
+                            setState(() => widget.onFilterOptionClosed()),
+                      ),
+                      const CustomDivider(),
+                      const FilterSettingItemHeader(),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 80,
+                  left: 0,
+                  right: 0,
+                  bottom: 20,
+                  child: Builder(
+                    builder: (context) {
+                      if (state.userFilterSettingList.isEmpty &&
+                          state.userFilterUpdate.undeletedUserFilterItems
+                              .isEmpty) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: Text(
+                              'There are no user filter settings. Please click Add Button to create new user filter setting',
+                              style: TextStyle(fontSize: 14),
                             ),
-                          );
-                        }
-                        return Column(
+                          ),
+                        );
+                      }
+                      return SingleChildScrollView(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             FilterSettingBodyView(viewName: widget.viewName),
                             const AddClauseButton(),
-                            // const CustomDivider(),
-                            // FilterSettingFooterView(
-                            //   viewName: widget.viewName,
-                            //   onFilterOptionClosed: widget.onFilterOptionClosed,
-                            //   onFilterSaved: (filterId) {
-                            //     widget.onFilterSaved(filterId);
-                            //   },
-                            // ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
-          )
-              .animate()
-              .fadeIn(duration: 400.ms, curve: Curves.easeOutQuad)
-              .slideY(begin: -.05),
-        );
+          ),
+        )
+            .animate()
+            .fadeIn(duration: 400.ms, curve: Curves.easeOutQuad)
+            .slideY(begin: -.05);
       },
     );
   }
