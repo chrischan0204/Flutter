@@ -35,7 +35,7 @@ class _FilterTextFieldState extends State<FilterTextField> {
       },
       controller: filterController,
       suffixIconData:
-          filtered ? PhosphorIcons.arrowCounterClockwise : PhosphorIcons.funnel,
+          filtered ? PhosphorIcons.regular.arrowCounterClockwise : PhosphorIcons.regular.funnel,
       suffixIconColor: filtered ? Colors.red : const Color(0xff0c81ff),
       onSuffixIconClick: () async {
         if (filterController.text.trim().length > 1 || widget.canFilter) {

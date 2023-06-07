@@ -30,7 +30,7 @@ class Topbar extends StatelessWidget {
                         builder: (context) => // Ensure Scaffold is in context
                             IconButton(
                           icon: Icon(
-                            PhosphorIcons.list,
+                            PhosphorIcons.regular.list,
                             color: backgroundColor,
                             size: 20,
                           ),

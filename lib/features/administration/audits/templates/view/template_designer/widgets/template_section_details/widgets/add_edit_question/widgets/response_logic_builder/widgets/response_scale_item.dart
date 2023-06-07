@@ -77,7 +77,7 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                           active: widget.templateSectionItem.response
                                   ?.commentRequiered ??
                               false,
-                          iconData: PhosphorIcons.chatCenteredDots,
+                          iconData: PhosphorIcons.regular.chatCenteredDots,
                           label: 'Comment',
                           activeColor: const Color.fromRGBO(250, 110, 15, 1),
                         ),
@@ -94,7 +94,7 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                           active: widget.templateSectionItem.response
                                   ?.actionItemRequired ??
                               false,
-                          iconData: PhosphorIcons.bellRinging,
+                          iconData: PhosphorIcons.regular.bellRinging,
                           label: 'Action Item',
                           activeColor: const Color.fromRGBO(115, 117, 233, 1),
                         ),
@@ -117,7 +117,7 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                                       followUpRequired: followUpRequired,
                                     ));
                                   },
-                                  iconData: PhosphorIcons.bookmark,
+                                  iconData: PhosphorIcons.regular.bookmark,
                                   label: 'Follow up',
                                   activeColor:
                                       const Color.fromRGBO(21, 169, 252, 1),

@@ -58,7 +58,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
     return CustomButton(
       backgroundColor: const Color(0xff8e70c1),
       hoverBackgroundColor: const Color(0xff8065ae),
-      iconData: PhosphorIcons.notePencil,
+      iconData: PhosphorIcons.regular.notePencil,
       text: 'Show Site',
       onClick: () {
         GoRouter.of(context).go('/sites/show/${widget.siteId}');
@@ -70,7 +70,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
     return CustomButton(
       backgroundColor: primaryColor,
       hoverBackgroundColor: primaryHoverColor,
-      iconData: PhosphorIcons.listNumbers,
+      iconData: PhosphorIcons.regular.listNumbers,
       text: 'Sites List',
       onClick: () {
         GoRouter.of(context).go('/sites');
@@ -241,7 +241,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                             hintText: 'Filter unassigned sites by name..',
                             onChanged: (value) {},
                             controller: filterController,
-                            suffixIconData: PhosphorIcons.funnel,
+                            suffixIconData: PhosphorIcons.regular.funnel,
                           ),
                         ),
                         const CustomDivider(),

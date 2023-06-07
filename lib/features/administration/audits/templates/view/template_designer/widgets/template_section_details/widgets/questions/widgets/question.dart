@@ -69,8 +69,8 @@ class _QuestionViewState extends State<QuestionView> {
                     child: Center(
                       child: IconButton(
                         onPressed: () {},
-                        icon: const Icon(
-                          PhosphorIcons.caretCircleDoubleDown,
+                        icon: Icon(
+                          PhosphorIcons.regular.caretCircleDoubleDown,
                           size: 20,
                           color: Colors.blue,
                         ),

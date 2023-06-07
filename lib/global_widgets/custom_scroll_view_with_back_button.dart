@@ -59,8 +59,8 @@ class _CustomScrollViewWithBackButtonState
                 mini: true,
                 backgroundColor: const Color(0xff247297),
                 onPressed: _scrollToTop,
-                child: const Icon(
-                  PhosphorIcons.arrowUp,
+                child: Icon(
+                  PhosphorIcons.regular.arrowUp,
                   size: 20,
                   color: Colors.white,
                 ),

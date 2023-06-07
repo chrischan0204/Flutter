@@ -186,7 +186,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
           : CustomButton(
               backgroundColor: successColor,
               hoverBackgroundColor: successHoverColor,
-              iconData: PhosphorIcons.arrowRight,
+              iconData: PhosphorIcons.regular.arrowRight,
               text: widget.id == null
                   ? widget.addButtonName ?? 'Add ${camelize(widget.label)}'
                   : widget.editButtonName ?? 'Edit ${camelize(widget.label)}',
@@ -233,7 +233,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return CustomButton(
       backgroundColor: purpleColor,
       hoverBackgroundColor: purpleHoverColor,
-      iconData: PhosphorIcons.notePencil,
+      iconData: PhosphorIcons.regular.notePencil,
       text: 'Show ${camelize(widget.label)}',
       onClick: () {
         String location = GoRouter.of(context).location;
@@ -248,7 +248,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return CustomButton(
       backgroundColor: primaryColor,
       hoverBackgroundColor: primaryHoverColor,
-      iconData: PhosphorIcons.listNumbers,
+      iconData: PhosphorIcons.regular.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {
         if (widget.isCrudDataFill && widget.id == null) {

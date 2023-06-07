@@ -44,10 +44,10 @@ class FilterItem extends StatelessWidget {
                         ),
                   last
                       ? Container()
-                      : const Icon(
-                          PhosphorIcons.plusCircle,
+                      : Icon(
+                          PhosphorIcons.regular.plusCircle,
                           size: 20,
-                          color: Color(0xff059668),
+                          color: const Color(0xff059668),
                         ),
                 ],
               ),

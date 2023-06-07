@@ -29,8 +29,8 @@ class _AddFilterSettingItemButtonState
       child: CustomIconButton(
         onClick: () => filterSettingBloc.add(FilterSettingUserFilterItemAdded(
             userFilterItem: widget.userFilterItem)),
-        icon: const Icon(
-          PhosphorIcons.plus,
+        icon:  Icon(
+          PhosphorIcons.regular.plus,
           color: Colors.green,
           size: 20,
         ),

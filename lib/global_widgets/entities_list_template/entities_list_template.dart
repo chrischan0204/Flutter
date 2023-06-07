@@ -186,7 +186,7 @@ class _CrudState extends State<EntityListTemplate> {
               CustomButton(
                 backgroundColor: warnColor,
                 hoverBackgroundColor: warnHoverColor,
-                iconData: widget.newIconData ?? PhosphorIcons.plus,
+                iconData: widget.newIconData ?? PhosphorIcons.regular.plus,
                 text: 'New ${camelize(widget.label)}',
                 onClick: () {
                   String location = GoRouter.of(context).location;
@@ -270,7 +270,7 @@ class _CrudState extends State<EntityListTemplate> {
               Row(
                 children: [
                   HeaderButton(
-                    iconData: PhosphorIcons.funnel,
+                    iconData: PhosphorIcons.regular.funnel,
                     label: 'Filters',
                     color: const Color(0xff0c83ff),
                     onClick: () {
@@ -281,7 +281,7 @@ class _CrudState extends State<EntityListTemplate> {
                     width: 50,
                   ),
                   HeaderButton(
-                    iconData: PhosphorIcons.slidersHorizontal,
+                    iconData: PhosphorIcons.regular.slidersHorizontal,
                     label: 'View Settings',
                     color: warnColor,
                     onClick: () {
@@ -294,7 +294,7 @@ class _CrudState extends State<EntityListTemplate> {
                     width: 50,
                   ),
                   HeaderButton(
-                    iconData: PhosphorIcons.chartBar,
+                    iconData: PhosphorIcons.regular.chartBar,
                     label: 'Dashboard',
                     color: const Color(0xff0c83ff),
                     onClick: () => GoRouter.of(context).go(
@@ -353,7 +353,7 @@ class _CrudState extends State<EntityListTemplate> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
-                                      PhosphorIcons.funnel,
+                                      PhosphorIcons.regular.funnel,
                                       size: 20,
                                       color: filterNotApplied
                                           ? primaryColor
@@ -397,7 +397,7 @@ class _CrudState extends State<EntityListTemplate> {
                                                   UserFilterSetting()),
                                         ),
                                         child: Icon(
-                                          PhosphorIcons.x,
+                                          PhosphorIcons.regular.x,
                                           color: warnColor,
                                           size: 18,
                                         ),
@@ -454,8 +454,8 @@ class _CrudState extends State<EntityListTemplate> {
                         widget.onIncludeDeletedChanged!(includeDeleted);
                       }
                     },
-                    icon: const Icon(
-                      PhosphorIcons.arrowsClockwise,
+                    icon: Icon(
+                      PhosphorIcons.regular.arrowsClockwise,
                       size: 20,
                       color: Colors.blue,
                     ),
@@ -507,10 +507,10 @@ class _CrudState extends State<EntityListTemplate> {
                     ),
                     IconButton(
                       onPressed: () => _hideViewSettingsSlider(),
-                      icon: const Icon(
-                        PhosphorIcons.arrowCircleRight,
+                      icon: Icon(
+                        PhosphorIcons.regular.arrowCircleRight,
                         size: 20,
-                        color: Color(0xffef4444),
+                        color: const Color(0xffef4444),
                       ),
                     ),
                   ],
@@ -538,7 +538,7 @@ class _CrudState extends State<EntityListTemplate> {
                   child: CustomButton(
                     backgroundColor: const Color(0xff0c83ff),
                     hoverBackgroundColor: const Color(0xff0b76e6),
-                    iconData: PhosphorIcons.arrowRight,
+                    iconData: PhosphorIcons.regular.arrowRight,
                     text: 'Apply',
                     onClick: () {
                       _hideViewSettingsSlider();
@@ -601,10 +601,10 @@ class _CrudState extends State<EntityListTemplate> {
                           ),
                           IconButton(
                             onPressed: () => _hideDetailsSlider(),
-                            icon: const Icon(
-                              PhosphorIcons.arrowCircleRight,
+                            icon: Icon(
+                              PhosphorIcons.regular.arrowCircleRight,
                               size: 20,
-                              color: Color(0xffef4444),
+                              color: const Color(0xffef4444),
                             ),
                           ),
                         ],
@@ -649,7 +649,7 @@ class _CrudState extends State<EntityListTemplate> {
                             child: CustomButton(
                               backgroundColor: const Color(0xff0c83ff),
                               hoverBackgroundColor: const Color(0xff0b76e6),
-                              iconData: PhosphorIcons.arrowRight,
+                              iconData: PhosphorIcons.regular.arrowRight,
                               text: '${camelize(widget.label)} Details',
                               onClick: () {
                                 String location = GoRouter.of(context).location;

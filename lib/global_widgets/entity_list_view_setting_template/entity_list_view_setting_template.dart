@@ -170,13 +170,13 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          children: const [
+          children: [
             Icon(
-              PhosphorIcons.plus,
+              PhosphorIcons.regular.plus,
               size: 26,
             ),
-            SizedBox(width: 5),
-            Text('Add a column'),
+            const SizedBox(width: 5),
+            const Text('Add a column'),
           ],
         ),
       ),

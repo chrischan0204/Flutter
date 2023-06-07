@@ -66,8 +66,8 @@ class _SaveAsButtonState extends State<SaveAsButton> {
                   borderRadius: BorderRadius.circular(3))),
           child: Row(
             children: [
-              const Icon(
-                PhosphorIcons.floppyDiskBack,
+              Icon(
+                PhosphorIcons.regular.floppyDiskBack,
                 color: Colors.white,
                 size: 18,
               ),

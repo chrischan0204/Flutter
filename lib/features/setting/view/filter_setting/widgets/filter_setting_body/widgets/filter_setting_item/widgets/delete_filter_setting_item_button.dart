@@ -31,8 +31,8 @@ class _DeleteFilterSettingItemButtonState
           FilterSettingUserFilterItemDeleted(
               userFilterItem: widget.userFilterItem),
         ),
-        icon: const Icon(
-          PhosphorIcons.x,
+        icon: Icon(
+          PhosphorIcons.regular.x,
           color: Colors.red,
           size: 20,
         ),

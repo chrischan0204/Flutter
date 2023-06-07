@@ -66,8 +66,8 @@ class _CollapseButtonState extends State<CollapseButton> {
             cursor: SystemMouseCursors.click,
             child: Icon(
               MediaQuery.of(context).size.width < 1000
-                  ? PhosphorIcons.x
-                  : PhosphorIcons.arrowsLeftRight,
+                  ? PhosphorIcons.regular.x
+                  : PhosphorIcons.regular.arrowsLeftRight,
               size: 16,
               weight: 400,
               color: sidebarColor,

@@ -53,6 +53,7 @@ class SectionQuestionsView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Flexible(
                         flex: 1,

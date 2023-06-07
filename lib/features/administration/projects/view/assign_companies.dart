@@ -57,7 +57,7 @@ class _AssignCompaniesToProjectViewState
     return CustomButton(
       backgroundColor: const Color(0xff8e70c1),
       hoverBackgroundColor: const Color(0xff8065ae),
-      iconData: PhosphorIcons.notePencil,
+      iconData: PhosphorIcons.regular.notePencil,
       text: 'Project Details',
       onClick: () {
         GoRouter.of(context).go('/projects/show/${widget.projectId}');
@@ -69,7 +69,7 @@ class _AssignCompaniesToProjectViewState
     return CustomButton(
       backgroundColor: primaryColor,
       hoverBackgroundColor: primaryHoverColor,
-      iconData: PhosphorIcons.listNumbers,
+      iconData: PhosphorIcons.regular.listNumbers,
       text: 'Projects List',
       onClick: () {
         GoRouter.of(context).go('/projects');
@@ -239,7 +239,7 @@ class _AssignCompaniesToProjectViewState
               //               hintText: 'Filter unassigned sites by name..',
               //               onChanged: (value) {},
               //               controller: filterController,
-              //               suffixIconData: PhosphorIcons.funnel,
+              //               suffixIconData: PhosphorIcons.regular.funnel,
               //             ),
               //           ),
               //           const CustomDivider(),

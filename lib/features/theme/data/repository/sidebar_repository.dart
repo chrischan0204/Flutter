@@ -7,25 +7,25 @@ class SidebarRepsitory {
   
   static List<SidebarItemModel> mainItems = <SidebarItemModel>[
     SidebarItemModel(
-      iconData: PhosphorIcons.command,
+      iconData: PhosphorIcons.regular.command,
       color: Colors.purple,
       label: 'Dashboard',
       path: 'dashboard',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.circlesThreePlus,
+      iconData: PhosphorIcons.regular.circlesThreePlus,
       color: Colors.pink,
       label: 'Observations',
       path: 'observations',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.scan,
+      iconData: PhosphorIcons.regular.scan,
       color: const Color(0xffe34343),
       label: 'Audits  ',
       path: 'audits1',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.barcode,
+      iconData: PhosphorIcons.regular.barcode,
       color: const Color(0xff26a196),
       label: 'Action Items',
       path: 'action-items',
@@ -34,36 +34,36 @@ class SidebarRepsitory {
 
   static List<SidebarItemModel> administrationItems = <SidebarItemModel>[
     SidebarItemModel(
-      iconData: PhosphorIcons.buildings,
+      iconData: PhosphorIcons.regular.buildings,
       color: Colors.purple,
       label: 'Sites',
       path: 'sites',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.infinity,
+      iconData: PhosphorIcons.regular.infinity,
       color: Colors.greenAccent[700]!,
       label: 'Companies',
       path: 'companies',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.notePencil,
+      iconData: PhosphorIcons.regular.notePencil,
       color: Colors.yellow[600]!,
       label: 'Projects',
       path: 'projects',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.plusMinus,
+      iconData: PhosphorIcons.regular.plusMinus,
       color: Colors.teal,
       label: 'Audits',
       subItems: <SidebarItemModel>[
         SidebarItemModel(
-          iconData: PhosphorIcons.clipboardText,
+          iconData: PhosphorIcons.regular.clipboardText,
           color: Colors.teal,
           label: 'Templates',
           path: 'templates',
         ),
         SidebarItemModel(
-          iconData: PhosphorIcons.plusMinus,
+          iconData: PhosphorIcons.regular.plusMinus,
           color: Colors.teal,
           label: 'Audits ',
           path: 'audits',
@@ -71,43 +71,43 @@ class SidebarRepsitory {
       ],
     ),
     SidebarItemModel(
-        iconData: PhosphorIcons.aperture,
+        iconData: PhosphorIcons.regular.aperture,
         color: Colors.teal,
         label: 'Masters',
         subItems: [
           SidebarItemModel(
-            iconData: PhosphorIcons.globeHemisphereWest,
+            iconData: PhosphorIcons.regular.globeHemisphereWest,
             color: Colors.teal,
             label: 'Regions',
             path: 'regions',
           ),
           SidebarItemModel(
-            iconData: PhosphorIcons.bellRinging,
+            iconData: PhosphorIcons.regular.bellRinging,
             color: Colors.redAccent,
             label: 'Priority Levels',
             path: 'priority-levels',
           ),
           SidebarItemModel(
-            iconData: PhosphorIcons.circlesFour,
+            iconData: PhosphorIcons.regular.circlesFour,
             color: Colors.blueAccent,
             label: 'Observation Types',
             path: 'observation-types',
           ),
           SidebarItemModel(
-            iconData: PhosphorIcons.circlesThree,
+            iconData: PhosphorIcons.regular.circlesThree,
             color: Colors.redAccent,
             label: 'Awareness Groups',
             path: 'awareness-groups',
           ),
           SidebarItemModel(
-            iconData: PhosphorIcons.checkSquareOffset,
+            iconData: PhosphorIcons.regular.checkSquareOffset,
             color: Colors.blueAccent,
             label: 'Awareness Categories',
             path: 'awareness-categories',
           ),
         ]),
     SidebarItemModel(
-      iconData: PhosphorIcons.usersThree,
+      iconData: PhosphorIcons.regular.usersThree,
       color: Colors.blueAccent,
       label: 'Users',
       path: 'users',
@@ -116,13 +116,13 @@ class SidebarRepsitory {
 
   static List<SidebarItemModel> profileItems = <SidebarItemModel>[
     SidebarItemModel(
-      iconData: PhosphorIcons.user,
+      iconData: PhosphorIcons.regular.user,
       color: Colors.pink,
       label: 'My Page',
       path: 'my-page',
     ),
     SidebarItemModel(
-      iconData: PhosphorIcons.power,
+      iconData: PhosphorIcons.regular.power,
       color: Colors.pink,
       label: 'Logout',
       path: 'logout',

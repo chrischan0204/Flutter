@@ -62,14 +62,14 @@ class _SaveButtonState extends State<SaveButton> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3))),
             child: Row(
-              children: const [
+              children: [
                 Icon(
-                  PhosphorIcons.floppyDisk,
+                  PhosphorIcons.regular.floppyDisk,
                   color: Colors.white,
                   size: 18,
                 ),
-                SizedBox(width: 5),
-                Text(
+                const SizedBox(width: 5),
+                const Text(
                   'Save',
                   style: TextStyle(color: Colors.white),
                 ),

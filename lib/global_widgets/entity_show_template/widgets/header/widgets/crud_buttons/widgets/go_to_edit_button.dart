@@ -14,7 +14,7 @@ class GoToEditButton extends StatelessWidget {
     return CustomButton(
       backgroundColor: warnColor,
       hoverBackgroundColor: warnHoverColor,
-      iconData: PhosphorIcons.gear,
+      iconData: PhosphorIcons.regular.gear,
       text: 'Edit ${camelize(label)}',
       onClick: () => GoRouter.of(context).go(
         GoRouter.of(context).location.replaceAll('show', 'edit'),

@@ -33,7 +33,7 @@ class DeleteButton extends StatelessWidget {
         : CustomButton(
             backgroundColor: const Color(0xffef4444),
             hoverBackgroundColor: const Color(0xffd73d3d),
-            iconData: PhosphorIcons.trash,
+            iconData: PhosphorIcons.regular.trash,
             text: 'Delete ${camelize(label)}',
             onClick: () {
               if (deletable) {

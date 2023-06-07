@@ -108,8 +108,8 @@ class _ItemState extends State<ViewSettingItem> {
             },
             icon: Icon(
               widget.sortDirection == 'asc'
-                  ? PhosphorIcons.arrowUp
-                  : PhosphorIcons.arrowDown,
+                  ? PhosphorIcons.regular.arrowUp
+                  : PhosphorIcons.regular.arrowDown,
               size: 20,
               color: Colors.blue,
             ))
@@ -122,9 +122,9 @@ class _ItemState extends State<ViewSettingItem> {
             width: 30,
             alignment: Alignment.center,
             color: const Color(0x08000000),
-            child: const Center(
-              child:
-                  Icon(PhosphorIcons.dotsSixVertical, color: Color(0xFF888888)),
+            child: Center(
+              child: Icon(PhosphorIcons.regular.dotsSixVertical,
+                  color: const Color(0xFF888888)),
             ),
           )
         : Container(width: 30);
@@ -138,21 +138,21 @@ class _ItemState extends State<ViewSettingItem> {
         }
       },
       icon: widget.isFirst && widget.isLast
-          ? const Tooltip(
+          ? Tooltip(
               height: 20,
               message: 'At least one column is required.',
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 14,
                 horizontal: 10,
               ),
               child: Icon(
-                PhosphorIcons.info,
+                PhosphorIcons.regular.info,
                 color: Colors.blue,
                 size: 20,
               ),
             )
-          : const Icon(
-              PhosphorIcons.x,
+          :  Icon(
+              PhosphorIcons.regular.x,
               color: Colors.red,
               size: 20,
             ),

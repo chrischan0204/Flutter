@@ -28,14 +28,14 @@ class FeedbackOptionView extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: Row(
                   children: [
-                    const Icon(
-                      PhosphorIcons.caretCircleRight,
+                    Icon(
+                      PhosphorIcons.regular.caretCircleRight,
                       color: Colors.red,
                     ),
                     const SizedBox(width: 5),
                     if (l2)
-                      const Icon(
-                        PhosphorIcons.caretCircleRight,
+                      Icon(
+                        PhosphorIcons.regular.caretCircleRight,
                         color: Colors.red,
                       ),
                     if (l2) const SizedBox(width: 5),

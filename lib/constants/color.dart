@@ -11,6 +11,7 @@ Color successColor = const Color(0xff059669);
 Color successHoverColor = const Color(0xff059669);
 Color warnColor = const Color(0xfff58646);
 Color warnHoverColor = const Color(0xffdd793f);
+Color dangerColor = Colors.red;
 Color purpleColor = const Color(0xff8e70c1);
 Color purpleHoverColor = const Color(0xff8065ae);
 Color lightGreen = const Color(0xff3fdca5);

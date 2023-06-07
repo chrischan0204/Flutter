@@ -70,13 +70,17 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
   }
 
   _collapseSidebar() {
-    final pathSegments = Uri.parse(GoRouter.of(context).location).pathSegments;
-    String second = '';
-    if (pathSegments.length > 1 && pathSegments[1] != 'index') {
-      second = '/${pathSegments[1]}';
-    }
-    context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-          collapsedItem: '${pathSegments[0]}$second',
+    // final pathSegments = Uri.parse(GoRouter.of(context).location).pathSegments;
+    // String second = '';
+    // if (pathSegments.length > 1 && pathSegments[1] != 'index') {
+    //   second = '/${pathSegments[1]}';
+    // }
+    // context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
+    //       collapsedItem: '${pathSegments[0]}$second',
+    //       force: true,
+    //     ));
+    context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
+          collapsedItem: 'templates/show',
           force: true,
         ));
   }

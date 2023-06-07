@@ -14,7 +14,7 @@ class GoToListButton extends StatelessWidget {
     return CustomButton(
       backgroundColor: primaryColor,
       hoverBackgroundColor: primaryHoverColor,
-      iconData: PhosphorIcons.listNumbers,
+      iconData: PhosphorIcons.regular.listNumbers,
       text: '${camelize(label)} List',
       onClick: () {
         String location = GoRouter.of(context).location;

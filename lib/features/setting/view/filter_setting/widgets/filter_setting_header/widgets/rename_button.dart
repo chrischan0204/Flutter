@@ -78,18 +78,18 @@ class _RenameButtonState extends State<RenameButton> {
                   ).show();
                 },
           style: ElevatedButton.styleFrom(
-              backgroundColor: purpleColor,
+              backgroundColor: warnColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(3))),
           child: Row(
-            children: const [
+            children: [
               Icon(
-                PhosphorIcons.pencil,
+                PhosphorIcons.regular.pencil,
                 color: Colors.white,
                 size: 18,
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 'Rename',
                 style: TextStyle(color: Colors.white),
               ),

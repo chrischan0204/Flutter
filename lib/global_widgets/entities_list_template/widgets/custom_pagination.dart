@@ -172,8 +172,8 @@ class CustomPagination extends StatelessWidget {
         IconButton(
           color: lightBlue,
           icon: previousIcon ??
-              const Icon(
-                PhosphorIcons.arrowFatLinesLeft,
+              Icon(
+                PhosphorIcons.regular.arrowFatLinesLeft,
                 size: 16,
               ),
           onPressed: selectedPage > 1 ? () => onPageChanged(1) : null,
@@ -206,8 +206,8 @@ class CustomPagination extends StatelessWidget {
         IconButton(
           color: lightBlue,
           icon: previousIcon ??
-              const Icon(
-                PhosphorIcons.arrowFatLineLeft,
+              Icon(
+                PhosphorIcons.regular.arrowFatLineLeft,
                 size: 16,
               ),
           onPressed:
@@ -221,8 +221,8 @@ class CustomPagination extends StatelessWidget {
         IconButton(
           color: lightBlue,
           icon: nextIcon ??
-              const Icon(
-                PhosphorIcons.arrowFatLineRight,
+              Icon(
+                PhosphorIcons.regular.arrowFatLineRight,
                 size: 16,
               ),
           onPressed: selectedPage < numOfPages
@@ -232,8 +232,8 @@ class CustomPagination extends StatelessWidget {
         IconButton(
           color: lightBlue,
           icon: nextIcon ??
-              const Icon(
-                PhosphorIcons.arrowFatLinesRight,
+              Icon(
+                PhosphorIcons.regular.arrowFatLinesRight,
                 size: 16,
               ),
           onPressed: selectedPage < numOfPages
@@ -324,7 +324,7 @@ class MoreButton extends StatelessWidget {
         ),
       ],
       child: Icon(
-        PhosphorIcons.dotsThree,
+        PhosphorIcons.regular.dotsThree,
         color: lightBlue,
       ),
     );

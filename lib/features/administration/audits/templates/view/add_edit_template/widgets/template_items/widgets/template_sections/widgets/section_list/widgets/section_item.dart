@@ -38,7 +38,7 @@ class _SectionItemViewState extends State<SectionItemView> {
                     color: Colors.white,
                     child: Center(
                       child: Icon(
-                        PhosphorIcons.dotsThreeVertical,
+                        PhosphorIcons.regular.dotsThreeVertical,
                         size: 22,
                         color: primaryColor,
                       ),

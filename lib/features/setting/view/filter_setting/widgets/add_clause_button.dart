@@ -28,14 +28,14 @@ class _AddClauseButtonState extends State<AddClauseButton> {
             filterSettingBloc.add(const FilterSettingUserFilterItemAdded()),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             Icon(
-              PhosphorIcons.plus,
+              PhosphorIcons.regular.plus,
               size: 16,
               color: Colors.green,
             ),
-            SizedBox(width: 3),
-            Text(
+            const SizedBox(width: 3),
+            const Text(
               'Add new clause',
               style: TextStyle(
                 color: Colors.blue,

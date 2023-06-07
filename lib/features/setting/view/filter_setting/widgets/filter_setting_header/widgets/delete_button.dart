@@ -42,18 +42,18 @@ class _DeleteButtonState extends State<DeleteButton> {
                             filterId: state.userFilterUpdate.id));
                   },
             style: ElevatedButton.styleFrom(
-                backgroundColor: lightRed,
+                backgroundColor: dangerColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3))),
             child: Row(
-              children: const [
+              children: [
                 Icon(
-                  PhosphorIcons.trash,
+                  PhosphorIcons.regular.trash,
                   color: Colors.white,
                   size: 18,
                 ),
-                SizedBox(width: 5),
-                Text(
+                const SizedBox(width: 5),
+                const Text(
                   'Delete',
                   style: TextStyle(color: Colors.white),
                 ),

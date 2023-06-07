@@ -91,7 +91,7 @@ class _UsersListState extends State<UsersListWidget> {
                 onPaginate: (pageNum, pageRow) =>
                     _filterUsers(null, null, pageNum, pageRow),
                 totalRows: userListState.totalRows,
-                newIconData: PhosphorIcons.userPlus,
+                newIconData: PhosphorIcons.regular.userPlus,
               );
             },
           );

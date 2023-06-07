@@ -17,14 +17,14 @@ class CancelButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(3))),
       child: Row(
-        children: const [
+        children: [
           Icon(
-            PhosphorIcons.floppyDiskBack,
+            PhosphorIcons.regular.floppyDiskBack,
             color: Colors.white,
             size: 18,
           ),
-          SizedBox(width: 5),
-          Text(
+          const SizedBox(width: 5),
+          const Text(
             'Cancel',
             style: TextStyle(color: Colors.white),
           ),

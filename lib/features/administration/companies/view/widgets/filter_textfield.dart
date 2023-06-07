@@ -34,7 +34,7 @@ class _TextFieldWithIconState extends State<TextFieldWithIcon> {
       onChanged: (value) => widget.onChange(value),
       controller: widget.filterController,
       suffixIconData:
-          filtered ? PhosphorIcons.arrowCounterClockwise : PhosphorIcons.funnel,
+          filtered ? PhosphorIcons.regular.arrowCounterClockwise : PhosphorIcons.regular.funnel,
       suffixIconColor: filtered ? Colors.red : const Color(0xff0c81ff),
       onSuffixIconClick: () async {
         if (widget.filterController.text.trim().length > 1 ||

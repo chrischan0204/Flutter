@@ -85,7 +85,7 @@ class _ItemState extends State<TemplateSectionItemView> {
                             TemplateDesignerTemplateSectionSelected(
                                 templateSection: widget.templateSection)),
                         icon: Icon(
-                          PhosphorIcons.caretCircleDoubleRight,
+                          PhosphorIcons.regular.caretCircleDoubleRight,
                           size: 18,
                           color: warnColor,
                         ),
@@ -157,7 +157,7 @@ class _ItemState extends State<TemplateSectionItemView> {
 //                     TemplateDesignerTemplateSectionSelected(
 //                         templateSection: widget.templateSection)),
 //                 icon: Icon(
-//                   PhosphorIcons.caretCircleDoubleRight,
+//                   PhosphorIcons.regular.caretCircleDoubleRight,
 //                   size: 18,
 //                   color: warnColor,
 //                 ),

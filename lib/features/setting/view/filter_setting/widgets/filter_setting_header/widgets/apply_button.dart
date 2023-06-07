@@ -47,26 +47,21 @@ class _ApplyButtonState extends State<ApplyButton> {
                       ).showNotification();
                     }
                   },
-            // style: ButtonStyle(
-            //   backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-            //   overlayColor: MaterialStateProperty.all<Color>(Colors.lightGreen),
-            // ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: lightGreen,
+              backgroundColor: successColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-
             child: Row(
-              children: const [
+              children: [
                 Icon(
-                  PhosphorIcons.check,
+                  PhosphorIcons.regular.check,
                   color: Colors.white,
                   size: 18,
                 ),
-                SizedBox(width: 5),
-                Text(
+                const SizedBox(width: 5),
+                const Text(
                   'Apply',
                   style: TextStyle(color: Colors.white),
                 ),

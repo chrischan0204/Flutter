@@ -43,14 +43,14 @@ class _SearchFieldState extends State<SearchField> {
             fontSize: 16,
           ),
           prefixIcon: Icon(
-            PhosphorIcons.magnifyingGlass,
+            PhosphorIcons.regular.magnifyingGlass,
             size: 20,
             color: backgroundColor,
           ),
           suffixIcon: InkWell(
             onTap: () {},
             child: Icon(
-              PhosphorIcons.fadersHorizontal,
+              PhosphorIcons.regular.fadersHorizontal,
               size: 20,
               color: backgroundColor,
             ),

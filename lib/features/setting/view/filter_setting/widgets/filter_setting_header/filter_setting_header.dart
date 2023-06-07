@@ -45,7 +45,7 @@ class FilterSettingHeaderView extends StatelessWidget {
               const SizedBox(width: 20),
               IconButton(
                   onPressed: () => onFilterOptionClosed(),
-                  icon: const Icon(PhosphorIcons.x, size: 14))
+                  icon: Icon(PhosphorIcons.regular.x, size: 14))
             ],
           ),
         ],
