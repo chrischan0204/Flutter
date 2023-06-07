@@ -78,7 +78,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
     final PaginationBloc paginationBloc = context.read();
     companiesBloc.add(CompanyListFiltered(
       filterId: filterId ??
-          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,

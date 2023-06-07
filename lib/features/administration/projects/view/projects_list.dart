@@ -77,7 +77,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     final PaginationBloc paginationBloc = context.read();
     projectsBloc.add(ProjectListFiltered(
       filterId: filterId ??
-          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,

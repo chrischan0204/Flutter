@@ -64,7 +64,7 @@ class _SitesListViewState extends State<SitesListView> {
     final PaginationBloc paginationBloc = context.read();
     sitesBloc.add(SiteListFiltered(
       filterId: filterId ??
-          filterSettingBloc.state.selectedUserFilterSetting?.id ??
+          filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
