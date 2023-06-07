@@ -33,9 +33,11 @@ class _DataTableViewState extends State<DataTableView> {
 
   @override
   void initState() {
-    columns = widget.entities[0].columns.isNotEmpty
-        ? widget.entities[0].columns
-        : widget.entities[0].tableItemsToMap().keys.toList();
+    columns = widget.entities.isNotEmpty
+        ? (widget.entities[0].columns.isNotEmpty
+            ? widget.entities[0].columns
+            : widget.entities[0].tableItemsToMap().keys.toList())
+        : [];
 
     for (final column in columns) {
       columnWidths.addEntries([MapEntry(column, double.nan)]);
@@ -127,9 +129,11 @@ class EntityDataSource extends DataGridSource {
     required List<Entity> entityData,
     required this.onRowClick,
   }) {
-    List<String> columns = entityData[0].columns.isNotEmpty
-        ? entityData[0].columns
-        : entityData[0].tableItemsToMap().keys.toList();
+    List<String> columns = entityData.isNotEmpty
+        ? (entityData[0].columns.isNotEmpty
+            ? entityData[0].columns
+            : entityData[0].tableItemsToMap().keys.toList())
+        : [];
     _entityData = List.generate(
       entityData.length,
       (index) => DataGridRow(
