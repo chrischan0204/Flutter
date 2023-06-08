@@ -28,3 +28,5 @@ class LoginPasswordChanged extends LoginEvent {
 }
 
 class LoginValidationChecked extends LoginEvent {}
+
+class LoginValidationInited extends LoginEvent {}

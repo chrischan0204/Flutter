@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '/common_libraries.dart';
 
 part 'login_event.dart';
@@ -9,6 +8,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginUsernameChanged>(_onLoginUsernameChanged);
     on<LoginPasswordChanged>(_onLoginPasswordChanged);
     on<LoginValidationChecked>(_onLoginValidationChecked);
+    on<LoginValidationInited>(_onLoginValidationInited);
   }
 
   void _onLoginUsernameChanged(
@@ -48,5 +48,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
 
     emit(state.copyWith(valid: success));
+  }
+
+  void _onLoginValidationInited(
+    LoginValidationInited event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(state.copyWith(valid: false));
   }
 }

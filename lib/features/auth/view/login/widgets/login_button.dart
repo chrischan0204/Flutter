@@ -23,11 +23,14 @@ class _LoginButtonState extends State<LoginButton> {
 
   void _validate() => _loginBloc.add(LoginValidationChecked());
 
-  void _login(LoginState state) => _authBloc.add(AuthAuthenticated(
-          auth: Auth(
-        email: state.username,
-        password: state.password,
-      )));
+  void _login(LoginState state) {
+    _authBloc.add(AuthAuthenticated(
+        auth: Auth(
+      email: state.username,
+      password: state.password,
+    )));
+    _loginBloc.add(LoginValidationInited());
+  }
 
   @override
   Widget build(BuildContext context) {
