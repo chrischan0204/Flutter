@@ -1,1 +1,2 @@
-export 'response_scale_item/response_scale_item.dart';
+export 'response_scale_item.dart';
+export 'header.dart';

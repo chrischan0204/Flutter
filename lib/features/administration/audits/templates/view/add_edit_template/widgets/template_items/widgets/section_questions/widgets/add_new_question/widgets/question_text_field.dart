@@ -24,7 +24,8 @@ class QuestionTextField extends StatelessWidget {
     return CustomTextField(
       hintText: getHintText(),
       height: 100,
-      minLines: 6,
+      minLines: 3,
+      maxLines: 100,
       onChanged: (value) => context.read<TemplateDesignerBloc>().add(
             TemplateDesignerQuestionChanged(
               level: level,

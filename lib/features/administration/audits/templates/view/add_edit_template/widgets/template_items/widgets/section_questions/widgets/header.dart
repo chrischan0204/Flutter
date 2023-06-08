@@ -23,16 +23,24 @@ class SectionQuestionsHeaderView extends StatelessWidget {
               ),
               if (state.selectedTemplateSection != null)
                 ElevatedButton(
-                  onPressed: () => context.read<TemplateDesignerBloc>().add(
-                      const TemplateDesignerAddNewQuestionViewShowed(
-                          showAddNewQuestionView: true)),
+                  onPressed: () {
+                    context.read<TemplateDesignerBloc>().add(
+                        const TemplateDesignerAddNewQuestionViewShowed(
+                            showAddNewQuestionView: true));
+                    context
+                        .read<TemplateDesignerBloc>()
+                        .add(TemplateDesignerNewQuestionButtonClicked());
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 8,
+                      vertical: 15,
+                      horizontal: 10,
                     ),
                   ),
-                  child: const Text('Add Question'),
+                  child: const Text(
+                    'Add Question',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
             ],
           ),

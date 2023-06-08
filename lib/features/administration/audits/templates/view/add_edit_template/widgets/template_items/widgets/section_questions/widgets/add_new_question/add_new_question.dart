@@ -1,8 +1,25 @@
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class AddNewQuestionView extends StatelessWidget {
-  const AddNewQuestionView({super.key});
+class AddNewQuestionView extends StatefulWidget {
+  final TemplateSectionItem templateSectionItem;
+  const AddNewQuestionView({
+    super.key,
+    required this.templateSectionItem,
+  });
+
+  @override
+  State<AddNewQuestionView> createState() => _AddNewQuestionViewState();
+}
+
+class _AddNewQuestionViewState extends State<AddNewQuestionView> {
+  @override
+  void initState() {
+    context
+        .read<TemplateDesignerBloc>()
+        .add(TemplateDesignerResponseScaleListLoaded());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +32,11 @@ class AddNewQuestionView extends StatelessWidget {
             children: [
               const AddNewQuestionHeaderView(),
               const QuestionTextField(),
+              const ResponseScaleSelectFieldView(),
+              ResponseScaleItemListView(
+                level: 0,
+                templateSectionItemList: widget.templateSectionItem.children,
+              )
             ],
           ),
         ),

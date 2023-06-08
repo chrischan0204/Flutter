@@ -16,6 +16,7 @@ class QuestionsForSectionView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Text(
                   'Question',
@@ -29,17 +30,19 @@ class QuestionsForSectionView extends StatelessWidget {
             ),
           ),
           const CustomDivider(),
-          const QuestionItemView(
-            name: 'Are there any visible loose wires hanging from the ceiling?',
-            score: '10 + 3',
-          ),
-          const QuestionItemView(
-            name: 'Are there any visible signs of damage to the circuit box?',
-            score: '2 + 0',
-          ),
-          const QuestionItemView(
-            name: 'Are there any visible loose wires hanging from the ceiling?',
-            score: '10 + 3',
+          BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: state.sectionItemQuestionList
+                    .map((e) => QuestionItemView(
+                          name: e.title,
+                          score: '10 + 3',
+                        ))
+                    .toList(),
+              );
+            },
           ),
         ],
       ),

@@ -5,7 +5,7 @@ class CustomTextField extends StatefulWidget {
   final String? hintText;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
-  final bool isDisabled;
+  final bool? isDisabled;
   final TextEditingController? controller;
   final IconData? suffixIconData;
   final Color suffixIconColor;
@@ -21,7 +21,7 @@ class CustomTextField extends StatefulWidget {
     this.hintText,
     this.initialValue,
     this.onChanged,
-    this.isDisabled = false,
+    this.isDisabled,
     this.controller,
     this.suffixIconData,
     this.suffixIconColor = const Color(0xff0c81ff),
@@ -52,7 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         key: widget.key,
         initialValue: widget.initialValue,
         controller: widget.controller,
-        enabled: !widget.isDisabled,
+        enabled: !(widget.isDisabled ?? false),
         onChanged: widget.onChanged,
         style: const TextStyle(
           fontSize: 12,

@@ -21,3 +21,4 @@ Color textBlue = const Color(0xff14B0FF);
 Color lightBlue = const Color(0xff00bef6);
 Color lightBlueAccent = const Color(0xffD0EFFF);
 Color darkGreyAccent = const Color(0xff898989);
+Color disableColor = const Color(0xfff3f4f6);

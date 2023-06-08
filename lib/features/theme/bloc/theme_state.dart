@@ -2,7 +2,10 @@ part of 'theme_bloc.dart';
 
 class ThemeState extends Equatable {
   const ThemeState({
-    this.collapsedItems = const [],
+    this.collapsedItems = const [
+      'templates/show',
+      'templates/edit',
+    ],
     this.hoveredItemName = '',
   });
   final String hoveredItemName;

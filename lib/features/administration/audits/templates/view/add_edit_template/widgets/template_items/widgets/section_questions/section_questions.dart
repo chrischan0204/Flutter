@@ -34,7 +34,14 @@ class _SectionQuestionsViewState extends State<SectionQuestionsView> {
                 if (state.selectedTemplateSection == null) {
                   return const SummarySectionView();
                 } else if (state.showAddNewQuestionView) {
-                  return const AddNewQuestionView();
+                  return BlocBuilder<TemplateDesignerBloc,
+                      TemplateDesignerState>(
+                    builder: (context, state) {
+                      return AddNewQuestionView(
+                        templateSectionItem: state.templateSectionItem!,
+                      );
+                    },
+                  );
                 } else {
                   return const QuestionsForSectionView();
                 }
