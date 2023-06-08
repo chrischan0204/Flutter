@@ -4,11 +4,12 @@ class QuestionTextField extends StatefulWidget {
   final String? question;
   final bool child;
   final String templateSectionItemId;
-  const QuestionTextField(
-      {super.key,
-      this.question,
-      required this.child,
-      required this.templateSectionItemId});
+  const QuestionTextField({
+    super.key,
+    this.question,
+    required this.child,
+    required this.templateSectionItemId,
+  });
 
   @override
   State<QuestionTextField> createState() => _QuestionTextFieldState();
@@ -47,14 +48,14 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
                 initialValue: widget.question,
                 height: 100,
                 minLines: 6,
-                onChanged: (value) => templateDesignerBloc.add(
-                  TemplateDesignerQuestionChanged(
-                    child: widget.child,
-                    templateSectionItemId: widget.templateSectionItemId,
-                    responseScaleId: emptyGuid,
-                    question: value,
-                  ),
-                ),
+                // onChanged: (value) => templateDesignerBloc.add(
+                //   TemplateDesignerQuestionChanged(
+                //     child: widget.child,
+                //     templateSectionItemId: widget.templateSectionItemId,
+                //     responseScaleId: emptyGuid,
+                //     question: value,
+                //   ),
+                // ),
               ),
             ],
           ),

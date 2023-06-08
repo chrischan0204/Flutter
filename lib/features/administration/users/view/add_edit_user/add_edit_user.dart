@@ -119,6 +119,8 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     return BlocConsumer<AddEditUserBloc, AddEditUserState>(
       listener: (context, addEditUserState) {
         _checkCrudResult(addEditUserState, context);
+        context.read<FormDirtyBloc>().add(
+            FormDirtyChanged(isDirty: _checkFormDataFill(addEditUserState)));
       },
       builder: (context, addEditUserState) {
         return BlocBuilder<UserDetailBloc, UserDetailState>(
@@ -128,6 +130,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
                 if (state.user != null) {
                   _addEditUserBloc
                       .add(AddEditUserDetailsInited(user: state.user!));
+
                   _initFields(state);
                 }
               },

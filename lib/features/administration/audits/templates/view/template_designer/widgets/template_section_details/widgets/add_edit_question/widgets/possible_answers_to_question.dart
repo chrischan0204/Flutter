@@ -57,13 +57,13 @@ class _PossibleAnswersToQuestionState extends State<PossibleAnswersToQuestion> {
                     items: items,
                     onChanged: (value) {
                       setState(() => selectedValue = value.key);
-                      templateDesignerBloc.add(
-                        TemplateDesignerResponseScaleItemListLoaded(
-                          templateSectionItemId: widget.templateSectionItemId,
-                          child: widget.child,
-                          responseScaleId: (value.value as ResponseScale).id,
-                        ),
-                      );
+                      // templateDesignerBloc.add(
+                      //   TemplateDesignerResponseScaleItemListLoaded(
+                      //     templateSectionItemId: widget.templateSectionItemId,
+                      //     child: widget.child,
+                      //     responseScaleId: (value.value as ResponseScale).id,
+                      //   ),
+                      // );
                     },
                   );
                 },

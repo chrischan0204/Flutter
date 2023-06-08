@@ -274,20 +274,55 @@ class _SidebarItemState extends State<SidebarItem>
   Widget _buildItemBody(ThemeState state) {
     return GestureDetector(
       onTap: () {
-        if (widget.path.contains('logout')) {
-          context.read<AuthBloc>().add(const AuthUnauthenticated());
-        } else {
-          if (widget.path.isNotEmpty) {
-            if ('/${widget.path}' == GoRouter.of(context).location) {
-              GoRouter.of(context).go('/${widget.path}/index');
-            } else {
-              GoRouter.of(context).go('/${widget.path}');
-            }
-          }
+        if (context.read<FormDirtyBloc>().state.isDirty) {
+          CustomAlert(
+            context: context,
+            width: MediaQuery.of(context).size.width / 4,
+            title: 'Notification',
+            description: 'Data that was entered will be lost ..... Proceed?',
+            btnOkText: 'Proceed',
+            btnOkOnPress: () {
+              if (widget.path.contains('logout')) {
+                context.read<AuthBloc>().add(const AuthUnauthenticated());
+              } else {
+                if (widget.path.isNotEmpty) {
+                  if ('/${widget.path}' == GoRouter.of(context).location) {
+                    GoRouter.of(context).go('/${widget.path}/index');
+                  } else {
+                    GoRouter.of(context).go('/${widget.path}');
+                  }
+                }
 
-          setState(() {
-            isSidebarItemExtended = !isSidebarItemExtended;
-          });
+                setState(() {
+                  isSidebarItemExtended = !isSidebarItemExtended;
+                });
+              }
+              context
+                  .read<FormDirtyBloc>()
+                  .add(const FormDirtyChanged(isDirty: false));
+            },
+            btnCancelOnPress: () {},
+            dialogType: DialogType.info,
+          ).show();
+        } else {
+          if (widget.path.contains('logout')) {
+            context.read<AuthBloc>().add(const AuthUnauthenticated());
+          } else {
+            if (widget.path.isNotEmpty) {
+              if ('/${widget.path}' == GoRouter.of(context).location) {
+                GoRouter.of(context).go('/${widget.path}/index');
+              } else {
+                GoRouter.of(context).go('/${widget.path}');
+              }
+            }
+
+            setState(() {
+              isSidebarItemExtended = !isSidebarItemExtended;
+            });
+          }
+          context
+              .read<FormDirtyBloc>()
+              .add(const FormDirtyChanged(isDirty: false));
         }
       },
       child: MouseRegion(

@@ -60,6 +60,9 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       listener: (context, state) {
         _changeFormData(state);
         _checkCrudResult(state, context);
+        context
+            .read<FormDirtyBloc>()
+            .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
       },
       builder: (context, state) {
         return AddEditEntityTemplate(

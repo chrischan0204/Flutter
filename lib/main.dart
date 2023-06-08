@@ -141,6 +141,9 @@ class _MyAppState extends State<MyApp> {
           child: MultiBlocProvider(
             providers: [
               BlocProvider(
+                create: (context) => FormDirtyBloc(),
+              ),
+              BlocProvider(
                 create: (context) => ThemeBloc(),
               ),
               BlocProvider(

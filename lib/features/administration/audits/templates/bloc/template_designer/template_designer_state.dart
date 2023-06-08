@@ -21,6 +21,8 @@ class TemplateDesignerState extends Equatable {
 
   final String message;
   final String templateId;
+
+  final bool showAddNewQuestionView;
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -36,6 +38,7 @@ class TemplateDesignerState extends Equatable {
     this.templateSectionItemCreateStatus = EntityStatus.initial,
     this.templateSectionItem,
     this.message = '',
+    this.showAddNewQuestionView = false,
   });
 
   @override
@@ -54,6 +57,7 @@ class TemplateDesignerState extends Equatable {
         templateSectionItem,
         templateSectionItemCreateStatus,
         message,
+        showAddNewQuestionView,
       ];
 
   TemplateDesignerState copyWith({
@@ -71,6 +75,7 @@ class TemplateDesignerState extends Equatable {
     EntityStatus? templateSectionItemCreateStatus,
     String? message,
     String? templateId,
+    bool? showAddNewQuestionView,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -98,6 +103,8 @@ class TemplateDesignerState extends Equatable {
           this.templateSectionItemCreateStatus,
       message: message ?? this.message,
       templateId: templateId ?? this.templateId,
+      showAddNewQuestionView:
+          showAddNewQuestionView ?? this.showAddNewQuestionView,
     );
   }
 }

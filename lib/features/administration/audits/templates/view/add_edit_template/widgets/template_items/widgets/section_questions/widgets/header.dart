@@ -1,11 +1,7 @@
 import '/common_libraries.dart';
 
 class SectionQuestionsHeaderView extends StatelessWidget {
-  final VoidCallback onClick;
-  const SectionQuestionsHeaderView({
-    super.key,
-    required this.onClick,
-  });
+  const SectionQuestionsHeaderView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +23,9 @@ class SectionQuestionsHeaderView extends StatelessWidget {
               ),
               if (state.selectedTemplateSection != null)
                 ElevatedButton(
-                  onPressed: onClick,
+                  onPressed: () => context.read<TemplateDesignerBloc>().add(
+                      const TemplateDesignerAddNewQuestionViewShowed(
+                          showAddNewQuestionView: true)),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,

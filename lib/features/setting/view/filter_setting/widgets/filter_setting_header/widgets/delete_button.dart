@@ -37,9 +37,20 @@ class _DeleteButtonState extends State<DeleteButton> {
             onPressed: state.isNew
                 ? null
                 : () {
-                    filterSettingBloc.add(
-                        FilterSettingUserFilterSettingDeletedById(
-                            filterId: state.userFilterUpdate.id));
+                    CustomAlert(
+                      context: context,
+                      width: MediaQuery.of(context).size.width / 4,
+                      title: 'Confirm',
+                      description: 'Do you really want to delete this filter?',
+                      btnOkText: 'Remove',
+                      btnCancelOnPress: () {},
+                      btnOkOnPress: () {
+                        filterSettingBloc.add(
+                            FilterSettingUserFilterSettingDeletedById(
+                                filterId: state.userFilterUpdate.id));
+                      },
+                      dialogType: DialogType.question,
+                    ).show();
                   },
             style: ElevatedButton.styleFrom(
                 backgroundColor: dangerColor,

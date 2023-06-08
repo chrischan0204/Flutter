@@ -17,8 +17,7 @@ class _SectionQuestionsViewState extends State<SectionQuestionsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionQuestionsHeaderView(
-              onClick: () => setState(() => showAddNewQuestionView = true)),
+          const SectionQuestionsHeaderView(),
           Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -34,7 +33,7 @@ class _SectionQuestionsViewState extends State<SectionQuestionsView> {
               builder: (context, state) {
                 if (state.selectedTemplateSection == null) {
                   return const SummarySectionView();
-                } else if (showAddNewQuestionView) {
+                } else if (state.showAddNewQuestionView) {
                   return const AddNewQuestionView();
                 } else {
                   return const QuestionsForSectionView();

@@ -52,12 +52,12 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                 SizedBox(
                   width: 60,
                   child: CustomTextField(
-                    onChanged: (value) => templateDesignerBloc.add(
-                        TemplateDesignerScoreChanged(
-                            child: widget.child,
-                            templateSectionItemId:
-                                widget.templateSectionItem.id!,
-                            score: double.parse(value))),
+                    // onChanged: (value) => templateDesignerBloc.add(
+                    //     TemplateDesignerScoreChanged(
+                    //         child: widget.child,
+                    //         templateSectionItemId:
+                    //             widget.templateSectionItem.id!,
+                    //         score: double.parse(value))),
                   ),
                 ),
                 Flexible(
@@ -67,13 +67,13 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                     children: [
                       Expanded(
                         child: ResponseScaleItemIcon(
-                          onClick: (commentRequired) => templateDesignerBloc
-                              .add(TemplateDesignerCommentRequiredChanged(
-                            child: widget.child,
-                            templateSectionItemId:
-                                widget.templateSectionItem.id!,
-                            commentRequired: commentRequired,
-                          )),
+                          // onClick: (commentRequired) => templateDesignerBloc
+                          //     .add(TemplateDesignerCommentRequiredChanged(
+                          //   child: widget.child,
+                          //   templateSectionItemId:
+                          //       widget.templateSectionItem.id!,
+                          //   commentRequired: commentRequired,
+                          // )),
                           active: widget.templateSectionItem.response
                                   ?.commentRequiered ??
                               false,
@@ -84,13 +84,13 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                       ),
                       Expanded(
                         child: ResponseScaleItemIcon(
-                          onClick: (actionItemRequired) => templateDesignerBloc
-                              .add(TemplateDesignerActionItemChanged(
-                            child: widget.child,
-                            templateSectionItemId:
-                                widget.templateSectionItem.id!,
-                            actionItemRequired: actionItemRequired,
-                          )),
+                          // onClick: (actionItemRequired) => templateDesignerBloc
+                          //     .add(TemplateDesignerActionItemChanged(
+                          //   child: widget.child,
+                          //   templateSectionItemId:
+                          //       widget.templateSectionItem.id!,
+                          //   actionItemRequired: actionItemRequired,
+                          // )),
                           active: widget.templateSectionItem.response
                                   ?.actionItemRequired ??
                               false,
@@ -109,13 +109,13 @@ class _ResponseScaleItemViewState extends State<ResponseScaleItemView> {
                                       false,
                                   onClick: (followUpRequired) {
                                     setState(() => followUp = !followUp);
-                                    templateDesignerBloc.add(
-                                        TemplateDesignerFollowUpRequiredChanged(
-                                      child: widget.child,
-                                      templateSectionItemId:
-                                          widget.templateSectionItem.id!,
-                                      followUpRequired: followUpRequired,
-                                    ));
+                                    // templateDesignerBloc.add(
+                                    //     TemplateDesignerFollowUpRequiredChanged(
+                                    //   child: widget.child,
+                                    //   templateSectionItemId:
+                                    //       widget.templateSectionItem.id!,
+                                    //   followUpRequired: followUpRequired,
+                                    // ));
                                   },
                                   iconData: PhosphorIcons.regular.bookmark,
                                   label: 'Follow up',

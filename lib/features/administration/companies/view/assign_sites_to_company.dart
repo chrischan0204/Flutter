@@ -40,11 +40,11 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildAssignedSitesView(state, context),
+                  _buildUnassignedSitesView(state),
                   const SizedBox(
                     width: 150,
                   ),
-                  _buildUnassignedSitesView(state)
+                  _buildAssignedSitesView(state, context),
                 ],
               ),
             ],
@@ -146,18 +146,23 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           dataTextStyle: tableDataTextStyle,
           columns: const [
             DataColumn(
-              label: Text('Assigned?'),
-            ),
-            DataColumn(
               label: Text(
                 'Site Name',
               ),
+            ),
+            DataColumn(
+              label: Text('Assigned?'),
             ),
           ],
           rows: state.unassignedCompanySites
               .map(
                 (unassignedCompanySite) => DataRow(
                   cells: [
+                    DataCell(
+                      CustomDataCell(
+                        data: unassignedCompanySite.siteName,
+                      ),
+                    ),
                     DataCell(
                       CustomSwitch(
                         trueString: 'Yes',
@@ -167,11 +172,6 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                         onChanged: (value) {
                           _assignSiteToCompany(unassignedCompanySite);
                         },
-                      ),
-                    ),
-                    DataCell(
-                      CustomDataCell(
-                        data: unassignedCompanySite.siteName,
                       ),
                     ),
                   ],
@@ -213,18 +213,23 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           dataTextStyle: tableDataTextStyle,
           columns: const [
             DataColumn(
-              label: Text('Assigned?'),
-            ),
-            DataColumn(
               label: Text(
                 'Site Name',
               ),
+            ),
+            DataColumn(
+              label: Text('Assigned?'),
             ),
           ],
           rows: List<CompanySite>.from(state.assignedCompanySites)
               .map(
                 (assignedCompanySite) => DataRow(
                   cells: [
+                    DataCell(
+                      CustomDataCell(
+                        data: assignedCompanySite.siteName,
+                      ),
+                    ),
                     DataCell(
                       CustomSwitch(
                         switchValue: assignedCompanySite.assigned,
@@ -233,11 +238,6 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                         textColor: darkTeal,
                         onChanged: (value) =>
                             _unassignFromCompany(assignedCompanySite.id!),
-                      ),
-                    ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedCompanySite.siteName,
                       ),
                     ),
                   ],

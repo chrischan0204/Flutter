@@ -48,11 +48,11 @@ class _AssignProjectsToCompanyViewState
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildAssignedProjectsView(state, context),
+                        _buildUnassignedProjectsView(state),
                         const SizedBox(
                           width: 150,
                         ),
-                        _buildUnassignedProjectsView(state),
+                        _buildAssignedProjectsView(state, context),
                       ],
                     ),
                   ],
@@ -135,16 +135,6 @@ class _AssignProjectsToCompanyViewState
                 (assignedprojectCompany) => DataRow(
                   cells: [
                     DataCell(
-                      CustomSwitch(
-                        switchValue: assignedprojectCompany.assigned,
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        onChanged: (value) => _unassignProjectFromCompany(
-                            assignedprojectCompany.id),
-                      ),
-                    ),
-                    DataCell(
                       CustomDataCell(
                         data: assignedprojectCompany.projectName,
                       ),
@@ -157,6 +147,16 @@ class _AssignProjectsToCompanyViewState
                     DataCell(
                       CustomDataCell(
                         data: assignedprojectCompany.roleName,
+                      ),
+                    ),
+                    DataCell(
+                      CustomSwitch(
+                        switchValue: assignedprojectCompany.assigned,
+                        trueString: 'Yes',
+                        falseString: 'No',
+                        textColor: darkTeal,
+                        onChanged: (value) => _unassignProjectFromCompany(
+                            assignedprojectCompany.id),
                       ),
                     ),
                   ],
@@ -204,16 +204,6 @@ class _AssignProjectsToCompanyViewState
                     (unassignedProjectCompany) => DataRow(
                       cells: [
                         DataCell(
-                          CustomSwitch(
-                            trueString: 'Yes',
-                            falseString: 'No',
-                            textColor: darkTeal,
-                            switchValue: unassignedProjectCompany.assigned,
-                            onChanged: (value) => _assignProjectToCompany(
-                                unassignedProjectCompany),
-                          ),
-                        ),
-                        DataCell(
                           CustomDataCell(
                               data: unassignedProjectCompany.projectName),
                         ),
@@ -241,6 +231,16 @@ class _AssignProjectsToCompanyViewState
                             ),
                           ),
                         ),
+                        DataCell(
+                          CustomSwitch(
+                            trueString: 'Yes',
+                            falseString: 'No',
+                            textColor: darkTeal,
+                            switchValue: unassignedProjectCompany.assigned,
+                            onChanged: (value) => _assignProjectToCompany(
+                                unassignedProjectCompany),
+                          ),
+                        ),
                       ],
                     ),
                   )
@@ -255,9 +255,6 @@ class _AssignProjectsToCompanyViewState
   List<DataColumn> get tableColumns {
     return const [
       DataColumn(
-        label: Text('Assigned?'),
-      ),
-      DataColumn(
         label: Text(
           'Project Name',
         ),
@@ -271,6 +268,9 @@ class _AssignProjectsToCompanyViewState
         label: Text(
           'Role',
         ),
+      ),
+      DataColumn(
+        label: Text('Assigned?'),
       ),
     ];
   }
