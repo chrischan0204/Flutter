@@ -10,6 +10,8 @@ class TemplateSectionItem extends Equatable {
   final ResponseScaleItem? response;
   final List<TemplateSectionItem> children;
 
+  static TemplateSectionItem empty = const TemplateSectionItem();
+
   const TemplateSectionItem({
     this.id,
     this.templateSectionId = emptyGuid,

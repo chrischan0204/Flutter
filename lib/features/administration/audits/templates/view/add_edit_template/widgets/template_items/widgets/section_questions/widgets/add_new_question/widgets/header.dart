@@ -14,9 +14,7 @@ class AddNewQuestionHeaderView extends StatelessWidget {
         children: [
           Text(
             'Add Question',
-            style: TextStyle(
-              color: textBlue,
-            ),
+            style: textNormal18.copyWith(color: textBlue),
           ),
           TextButton(
             onPressed: () => context.read<TemplateDesignerBloc>().add(
@@ -24,7 +22,7 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                     showAddNewQuestionView: false)),
             child: Text(
               'Back to list',
-              style: TextStyle(
+              style: textNormal12.copyWith(
                 color: lightBlue,
                 decoration: TextDecoration.underline,
                 decorationColor: lightBlue,

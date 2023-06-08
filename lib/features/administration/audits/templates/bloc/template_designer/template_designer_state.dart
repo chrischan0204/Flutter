@@ -23,6 +23,9 @@ class TemplateDesignerState extends Equatable {
   final String templateId;
 
   final bool showAddNewQuestionView;
+
+  final String? currentTemplateSectionItemId;
+  final int level;
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -39,7 +42,29 @@ class TemplateDesignerState extends Equatable {
     this.templateSectionItem,
     this.message = '',
     this.showAddNewQuestionView = false,
+    this.level = 0,
+    this.currentTemplateSectionItemId,
   });
+
+  TemplateSectionItem currentTemplateSectionItem(
+      int level, String templateSectionItemId) {
+    switch (level) {
+      case 0:
+        return templateSectionItem!;
+      case 1:
+        return templateSectionItem!.children
+            .firstWhere((element) => element.id == templateSectionItemId);
+      default:
+        for (final i in templateSectionItem!.children) {
+          for (final j in i.children) {
+            if (j.id == templateSectionItemId) {
+              return j;
+            }
+          }
+        }
+        return TemplateSectionItem.empty;
+    }
+  }
 
   @override
   List<Object?> get props => [
@@ -58,6 +83,8 @@ class TemplateDesignerState extends Equatable {
         templateSectionItemCreateStatus,
         message,
         showAddNewQuestionView,
+        level,
+        currentTemplateSectionItemId,
       ];
 
   TemplateDesignerState copyWith({
@@ -76,6 +103,8 @@ class TemplateDesignerState extends Equatable {
     String? message,
     String? templateId,
     bool? showAddNewQuestionView,
+    int? level,
+    String? currentTemplateSectionItemId,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -105,6 +134,9 @@ class TemplateDesignerState extends Equatable {
       templateId: templateId ?? this.templateId,
       showAddNewQuestionView:
           showAddNewQuestionView ?? this.showAddNewQuestionView,
+      level: level ?? this.level,
+      currentTemplateSectionItemId:
+          currentTemplateSectionItemId ?? this.currentTemplateSectionItemId,
     );
   }
 }

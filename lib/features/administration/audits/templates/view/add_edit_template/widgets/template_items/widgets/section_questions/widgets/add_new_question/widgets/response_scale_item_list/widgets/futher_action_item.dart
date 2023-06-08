@@ -23,7 +23,7 @@ class FutherActionItemView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
-          color: active ? primaryColor : disableColor,
+          color: active ? activeColor : disableColor,
           border: Border.all(color: grey),
         ),
         child: Text(

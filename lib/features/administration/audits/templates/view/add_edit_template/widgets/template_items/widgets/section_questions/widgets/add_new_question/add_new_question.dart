@@ -31,15 +31,16 @@ class _AddNewQuestionViewState extends State<AddNewQuestionView> {
           child: Column(
             children: [
               const AddNewQuestionHeaderView(),
-              const QuestionTextField(),
+              QuestionTextField(
+                templateSectionItem: widget.templateSectionItem,
+              ),
               const ResponseScaleSelectFieldView(),
-              ResponseScaleItemListView(
-                level: 0,
-                templateSectionItemList: widget.templateSectionItem.children,
-              )
             ],
           ),
         ),
+        ResponseScaleItemListView(
+          templateSectionItemList: widget.templateSectionItem.children,
+        )
       ],
     );
   }

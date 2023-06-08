@@ -38,7 +38,9 @@ class _SectionQuestionsViewState extends State<SectionQuestionsView> {
                       TemplateDesignerState>(
                     builder: (context, state) {
                       return AddNewQuestionView(
-                        templateSectionItem: state.templateSectionItem!,
+                        templateSectionItem: state.currentTemplateSectionItem(
+                            state.level,
+                            state.currentTemplateSectionItemId ?? emptyGuid),
                       );
                     },
                   );

@@ -1,10 +1,8 @@
 import '/common_libraries.dart';
 
 class ResponseScaleSelectFieldView extends StatefulWidget {
-  final int level;
   const ResponseScaleSelectFieldView({
     super.key,
-    this.level = 0,
   });
 
   @override
@@ -19,7 +17,9 @@ class _ResponseScaleSelectFieldViewState
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+      child: BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
+        listener: (context, state) => setState(() => selectedValue = null),
+        listenWhen: (previous, current) => previous.level != current.level,
         builder: (context, state) {
           Map<String, ResponseScale> items = {};
 
@@ -34,7 +34,7 @@ class _ResponseScaleSelectFieldViewState
               context.read<TemplateDesignerBloc>().add(
                     TemplateDesignerResponseScaleItemListLoaded(
                       responseScaleId: (value.value as ResponseScale).id,
-                      level: widget.level,
+                      level: state.level,
                     ),
                   );
             },

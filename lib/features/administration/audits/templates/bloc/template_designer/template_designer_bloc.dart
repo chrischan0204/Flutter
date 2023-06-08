@@ -43,6 +43,10 @@ class TemplateDesignerBloc
         _onTemplateDesignerCancelCreateQuestionButtonClicked);
     on<TemplateDesignerAddNewQuestionViewShowed>(
         _onTemplateDesignerAddNewQuestionViewShowed);
+    on<TemplateDesignerIncludedChanged>(_onTemplateDesignerIncludedChanged);
+    on<TemplateDesignerLevelChanged>(_onTemplateDesignerLevelChanged);
+    on<TemplateDesignerCurrentTemplateSectionItemChanged>(
+        _onTemplateDesignerCurrentTemplateSectionItemChanged);
   }
 
   @override
@@ -63,9 +67,9 @@ class TemplateDesignerBloc
           templateSectionId: nextState.selectedTemplateSection!.id));
     }
     print('current');
-    print(currentState.templateSectionItem);
+    print(currentState.templateSectionItem?.toMap());
     print('next');
-    print(nextState.templateSectionItem);
+    print(nextState.templateSectionItem?.toMap());
 
     super.onChange(change);
   }
@@ -203,40 +207,60 @@ class TemplateDesignerBloc
         case 0:
           newTemplateSection = state.templateSectionItem!.copyWith(
               responseScaleId: event.responseScaleId,
-              children: responseScaleItemList
-                  .map((e) => TemplateSectionItem(
-                        id: const Uuid().v1(),
-                        templateSectionId: state.selectedTemplateSection!.id,
-                        responseScaleId: event.responseScaleId,
-                        response: e,
-                      ))
-                  .toList());
+              children: responseScaleItemList.map((e) {
+                return TemplateSectionItem(
+                  id: const Uuid().v1(),
+                  templateSectionId: state.selectedTemplateSection!.id,
+                  responseScaleId: event.responseScaleId,
+                  response: e,
+                );
+              }).toList());
           break;
         case 1:
+          final children = state.templateSectionItem!.children;
+
+          newTemplateSection = state.templateSectionItem!.copyWith(
+              children: children
+                  .map((e) => e.id == state.currentTemplateSectionItemId
+                      ? e.copyWith(
+                          responseScaleId: event.responseScaleId,
+                          children: responseScaleItemList
+                              .map((e) => TemplateSectionItem(
+                                    id: const Uuid().v1(),
+                                    templateSectionId:
+                                        state.selectedTemplateSection!.id,
+                                    responseScaleId: event.responseScaleId,
+                                    response: e,
+                                  ))
+                              .toList())
+                      : e)
+                  .toList());
+          break;
+        case 2:
           final List<TemplateSectionItem> children =
               List.from(state.templateSectionItem!.children);
-          final result = children.firstWhere(
-              (element) => element.id == state.selectedTemplateSection!.id);
-          final index = children.indexWhere(
-              (element) => element.id == state.selectedTemplateSection!.id);
-
-          children.removeAt(index);
-          children.insert(
-              index,
-              result.copyWith(
-                  responseScaleId: event.responseScaleId,
-                  children: responseScaleItemList
-                      .map((e) => TemplateSectionItem(
-                            id: const Uuid().v1(),
-                            templateSectionId:
-                                state.selectedTemplateSection!.id,
-                            responseScaleId: event.responseScaleId,
-                            response: e,
-                          ))
-                      .toList()));
-          newTemplateSection =
-              state.templateSectionItem!.copyWith(children: children);
-          break;
+          newTemplateSection = state.templateSectionItem!.copyWith(
+              children: children
+                  .map((e) => e.copyWith(
+                      children: e.children
+                          .map((child) =>
+                              child.id == state.currentTemplateSectionItemId
+                                  ? child.copyWith(
+                                      responseScaleId: event.responseScaleId,
+                                      children: responseScaleItemList
+                                          .map((e) => TemplateSectionItem(
+                                                id: const Uuid().v1(),
+                                                templateSectionId: state
+                                                    .selectedTemplateSection!
+                                                    .id,
+                                                responseScaleId:
+                                                    event.responseScaleId,
+                                                response: e,
+                                              ))
+                                          .toList())
+                                  : child)
+                          .toList()))
+                  .toList());
       }
 
       emit(state.copyWith(
@@ -261,10 +285,12 @@ class TemplateDesignerBloc
     TemplateDesignerNewQuestionButtonClicked event,
     Emitter<TemplateDesignerState> emit,
   ) {
+    final newTemplateSectionItem = Nullable.value(TemplateSectionItem(
+      templateSectionId: state.selectedTemplateSection!.id,
+    ));
     emit(state.copyWith(
-      templateSectionItem: Nullable.value(TemplateSectionItem(
-        templateSectionId: state.selectedTemplateSection!.id,
-      )),
+      templateSectionItem: newTemplateSectionItem,
+      level: 0,
     ));
   }
 
@@ -283,7 +309,7 @@ class TemplateDesignerBloc
   ) {
     late TemplateSectionItem newTemplateSection;
 
-    switch (event.level) {
+    switch (state.level) {
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             question: Question(
@@ -293,25 +319,36 @@ class TemplateDesignerBloc
         ));
         break;
       case 1:
-        final List<TemplateSectionItem> children =
-            List.from(state.templateSectionItem!.children);
-        final result = children.firstWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-        final index = children.indexWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
+        final children = state.templateSectionItem!.children;
 
-        children.removeAt(index);
-        children.insert(
-            index,
-            result.copyWith(
-                question: Question(
-              name: event.question,
-              responseScaleId: event.responseScaleId,
-            )));
-        newTemplateSection =
-            state.templateSectionItem!.copyWith(children: children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.id == state.currentTemplateSectionItemId
+                    ? e.copyWith(
+                        question: Question(
+                        name: event.question,
+                        responseScaleId: event.responseScaleId,
+                      ))
+                    : e)
+                .toList());
         break;
       case 2:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) =>
+                            child.id == state.currentTemplateSectionItemId
+                                ? child.copyWith(
+                                    question: Question(
+                                    name: event.question,
+                                    responseScaleId: event.responseScaleId,
+                                  ))
+                                : child)
+                        .toList()))
+                .toList());
         break;
     }
 
@@ -329,21 +366,16 @@ class TemplateDesignerBloc
 
     switch (event.level) {
       case 0:
-        final List<TemplateSectionItem> children =
-            List.from(state.templateSectionItem!.children);
-        final result = children.firstWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-        final index = children.indexWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
+        final children = state.templateSectionItem!.children;
 
-        children.removeAt(index);
-        children.insert(
-            index,
-            result.copyWith(
-                response: result.response
-                    ?.copyWith(commentRequiered: event.commentRequired)));
-        newTemplateSection =
-            state.templateSectionItem!.copyWith(children: children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.id == event.templateSectionItemId
+                    ? e.copyWith(
+                        response: e.response
+                            ?.copyWith(commentRequiered: event.commentRequired))
+                    : e)
+                .toList());
         break;
       case 1:
         final List<TemplateSectionItem> children =
@@ -352,8 +384,7 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.copyWith(
                     children: e.children
-                        .map((child) => child.id ==
-                                state.selectedTemplateSection!.id
+                        .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
                                 response: child.response?.copyWith(
                                     commentRequiered: event.commentRequired))
@@ -362,6 +393,23 @@ class TemplateDesignerBloc
                 .toList());
         break;
       case 2:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.copyWith(
+                            children: child.children
+                                .map((e) => e.id == event.templateSectionItemId
+                                    ? e.copyWith(
+                                        response: e.response?.copyWith(
+                                            commentRequiered:
+                                                event.commentRequired))
+                                    : e)
+                                .toList()))
+                        .toList()))
+                .toList());
         break;
     }
 
@@ -379,21 +427,16 @@ class TemplateDesignerBloc
 
     switch (event.level) {
       case 0:
-        final List<TemplateSectionItem> children =
-            List.from(state.templateSectionItem!.children);
-        final result = children.firstWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-        final index = children.indexWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
+        final children = state.templateSectionItem!.children;
 
-        children.removeAt(index);
-        children.insert(
-            index,
-            result.copyWith(
-                response: result.response
-                    ?.copyWith(actionItemRequired: event.actionItemRequired)));
-        newTemplateSection =
-            state.templateSectionItem!.copyWith(children: children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.id == event.templateSectionItemId
+                    ? e.copyWith(
+                        response: e.response?.copyWith(
+                            actionItemRequired: event.actionItemRequired))
+                    : e)
+                .toList());
         break;
       case 1:
         final List<TemplateSectionItem> children =
@@ -402,17 +445,33 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.copyWith(
                     children: e.children
-                        .map((child) =>
-                            child.id == state.selectedTemplateSection!.id
-                                ? child.copyWith(
-                                    response: child.response?.copyWith(
-                                        actionItemRequired:
-                                            event.actionItemRequired))
-                                : child)
+                        .map((child) => child.id == event.templateSectionItemId
+                            ? child.copyWith(
+                                response: child.response?.copyWith(
+                                    actionItemRequired:
+                                        event.actionItemRequired))
+                            : child)
                         .toList()))
                 .toList());
         break;
       case 2:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.copyWith(
+                            children: child.children
+                                .map((e) => e.id == event.templateSectionItemId
+                                    ? e.copyWith(
+                                        response: e.response?.copyWith(
+                                            actionItemRequired:
+                                                event.actionItemRequired))
+                                    : e)
+                                .toList()))
+                        .toList()))
+                .toList());
         break;
     }
 
@@ -430,40 +489,50 @@ class TemplateDesignerBloc
 
     switch (event.level) {
       case 0:
-        final List<TemplateSectionItem> children =
-            List.from(state.templateSectionItem!.children);
-        final result = children.firstWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-        final index = children.indexWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
+        final children = state.templateSectionItem!.children;
 
-        children.removeAt(index);
-        children.insert(
-            index,
-            result.copyWith(
-                response: result.response
-                    ?.copyWith(followUpRequired: event.followUpRequired)));
-        newTemplateSection =
-            state.templateSectionItem!.copyWith(children: children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.id == event.templateSectionItemId
+                    ? e.copyWith(
+                        response: e.response?.copyWith(
+                            followUpRequired: event.followUpRequired))
+                    : e)
+                .toList());
         break;
       case 1:
         final List<TemplateSectionItem> children =
             List.from(state.templateSectionItem!.children);
-        final result = children.firstWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-        final index = children.indexWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-
-        children.removeAt(index);
-        children.insert(
-            index,
-            result.copyWith(
-                response: result.response
-                    ?.copyWith(followUpRequired: event.followUpRequired)));
-        newTemplateSection =
-            state.templateSectionItem!.copyWith(children: children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.id == event.templateSectionItemId
+                            ? child.copyWith(
+                                response: child.response?.copyWith(
+                                    followUpRequired: event.followUpRequired))
+                            : child)
+                        .toList()))
+                .toList());
         break;
       case 2:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.copyWith(
+                            children: child.children
+                                .map((e) => e.id == event.templateSectionItemId
+                                    ? e.copyWith(
+                                        response: e.response?.copyWith(
+                                            followUpRequired:
+                                                event.followUpRequired))
+                                    : e)
+                                .toList()))
+                        .toList()))
+                .toList());
         break;
     }
 
@@ -481,20 +550,15 @@ class TemplateDesignerBloc
 
     switch (event.level) {
       case 0:
-        final List<TemplateSectionItem> children =
-            List.from(state.templateSectionItem!.children);
-        final result = children.firstWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
-        final index = children.indexWhere(
-            (element) => element.id == state.selectedTemplateSection!.id);
+        final children = state.templateSectionItem!.children;
 
-        children.removeAt(index);
-        children.insert(
-            index,
-            result.copyWith(
-                response: result.response?.copyWith(score: event.score)));
-        newTemplateSection =
-            state.templateSectionItem!.copyWith(children: children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.id == event.templateSectionItemId
+                    ? e.copyWith(
+                        response: e.response?.copyWith(score: event.score))
+                    : e)
+                .toList());
         break;
       case 1:
         final List<TemplateSectionItem> children =
@@ -503,16 +567,90 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.copyWith(
                     children: e.children
-                        .map((child) =>
-                            child.id == state.selectedTemplateSection!.id
-                                ? child.copyWith(
-                                    response: child.response
-                                        ?.copyWith(score: event.score))
-                                : child)
+                        .map((child) => child.id == event.templateSectionItemId
+                            ? child.copyWith(
+                                response: child.response
+                                    ?.copyWith(score: event.score))
+                            : child)
                         .toList()))
                 .toList());
         break;
       case 2:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.copyWith(
+                            children: child.children
+                                .map((e) => e.id == event.templateSectionItemId
+                                    ? e.copyWith(
+                                        response: e.response
+                                            ?.copyWith(score: event.score))
+                                    : e)
+                                .toList()))
+                        .toList()))
+                .toList());
+        break;
+    }
+
+    emit(state.copyWith(
+      templateSectionItem: Nullable.value(newTemplateSection),
+      responseScaleItemListLoadStatus: EntityStatus.success,
+    ));
+  }
+
+  void _onTemplateDesignerIncludedChanged(
+    TemplateDesignerIncludedChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    late TemplateSectionItem newTemplateSection;
+
+    switch (event.level) {
+      case 0:
+        final children = state.templateSectionItem!.children;
+
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.id == event.templateSectionItemId
+                    ? e.copyWith(
+                        response: e.response?.copyWith(included: event.include))
+                    : e)
+                .toList());
+        break;
+      case 1:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.id == event.templateSectionItemId
+                            ? child.copyWith(
+                                response: child.response
+                                    ?.copyWith(included: event.include))
+                            : child)
+                        .toList()))
+                .toList());
+        break;
+      case 2:
+        final List<TemplateSectionItem> children =
+            List.from(state.templateSectionItem!.children);
+        newTemplateSection = state.templateSectionItem!.copyWith(
+            children: children
+                .map((e) => e.copyWith(
+                    children: e.children
+                        .map((child) => child.copyWith(
+                            children: child.children
+                                .map((c) => c.id == event.templateSectionItemId
+                                    ? c.copyWith(
+                                        response: c.response
+                                            ?.copyWith(included: event.include))
+                                    : c)
+                                .toList()))
+                        .toList()))
+                .toList());
         break;
     }
 
@@ -549,5 +687,20 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     emit(state.copyWith(showAddNewQuestionView: event.showAddNewQuestionView));
+  }
+
+  void _onTemplateDesignerLevelChanged(
+    TemplateDesignerLevelChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    emit(state.copyWith(level: event.level));
+  }
+
+  void _onTemplateDesignerCurrentTemplateSectionItemChanged(
+    TemplateDesignerCurrentTemplateSectionItemChanged event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    emit(state.copyWith(
+        currentTemplateSectionItemId: event.templateSectionItemId));
   }
 }

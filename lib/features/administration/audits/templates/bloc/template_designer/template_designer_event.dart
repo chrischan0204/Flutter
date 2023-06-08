@@ -92,91 +92,109 @@ class TemplateDesignerCancelCreateQuestionButtonClicked
 
 class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
   final String question;
-  // final String templateSectionItemId;
+  final String templateSectionItemId;
   final String responseScaleId;
-  final int level;
-  // final bool child;
   const TemplateDesignerQuestionChanged({
     required this.question,
-    // required this.child,
-    // required this.templateSectionItemId,
-    this.level = 0,
+    required this.templateSectionItemId,
     required this.responseScaleId,
   });
 
   @override
   List<Object> get props => [
         question,
-        // templateSectionItemId,
+        templateSectionItemId,
         responseScaleId,
-        level,
-        // child,
       ];
 }
 
 class TemplateDesignerCommentRequiredChanged extends TemplateDesignerEvent {
   final bool commentRequired;
   final int level;
+  final String templateSectionItemId;
   const TemplateDesignerCommentRequiredChanged({
     this.level = 0,
     required this.commentRequired,
+    required this.templateSectionItemId,
   });
 
   @override
   List<Object> get props => [
         level,
         commentRequired,
+        templateSectionItemId,
       ];
 }
 
 class TemplateDesignerActionItemChanged extends TemplateDesignerEvent {
   final bool actionItemRequired;
   final int level;
+  final String templateSectionItemId;
   const TemplateDesignerActionItemChanged({
     this.level = 0,
     required this.actionItemRequired,
+    required this.templateSectionItemId,
   });
 
   @override
   List<Object> get props => [
         level,
         actionItemRequired,
+        templateSectionItemId,
       ];
 }
 
 class TemplateDesignerFollowUpRequiredChanged extends TemplateDesignerEvent {
   final bool followUpRequired;
   final int level;
+  final String templateSectionItemId;
   const TemplateDesignerFollowUpRequiredChanged({
     this.level = 0,
     required this.followUpRequired,
+    required this.templateSectionItemId,
   });
 
   @override
   List<Object> get props => [
         level,
         followUpRequired,
+        templateSectionItemId,
       ];
 }
 
 class TemplateDesignerScoreChanged extends TemplateDesignerEvent {
   final double score;
   final int level;
-  // final String templateSectionItemId;
-  // final bool child;
+  final String templateSectionItemId;
   const TemplateDesignerScoreChanged({
-    // required this.child,
-    // required this.templateSectionItemId,
     this.level = 0,
     required this.score,
+    required this.templateSectionItemId,
   });
 
   @override
   List<Object> get props => [
-        // templateSectionItemId,
-        // child,
         level,
         score,
+        templateSectionItemId,
+      ];
+}
+
+class TemplateDesignerIncludedChanged extends TemplateDesignerEvent {
+  final bool include;
+  final int level;
+  final String templateSectionItemId;
+  const TemplateDesignerIncludedChanged({
+    this.level = 0,
+    required this.include,
+    required this.templateSectionItemId,
+  });
+
+  @override
+  List<Object> get props => [
+        level,
+        include,
+        templateSectionItemId,
       ];
 }
 
@@ -191,4 +209,25 @@ class TemplateDesignerAddNewQuestionViewShowed extends TemplateDesignerEvent {
 
   @override
   List<Object> get props => [showAddNewQuestionView];
+}
+
+class TemplateDesignerLevelChanged extends TemplateDesignerEvent {
+  final int level;
+  const TemplateDesignerLevelChanged({
+    required this.level,
+  });
+
+  @override
+  List<Object> get props => [level];
+}
+
+class TemplateDesignerCurrentTemplateSectionItemChanged
+    extends TemplateDesignerEvent {
+  final String templateSectionItemId;
+  const TemplateDesignerCurrentTemplateSectionItemChanged({
+    required this.templateSectionItemId,
+  });
+
+  @override
+  List<Object> get props => [templateSectionItemId];
 }

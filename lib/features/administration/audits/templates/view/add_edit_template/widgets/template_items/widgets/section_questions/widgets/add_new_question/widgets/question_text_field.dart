@@ -1,38 +1,66 @@
 import '/common_libraries.dart';
 
-class QuestionTextField extends StatelessWidget {
-  final int level;
+class QuestionTextField extends StatefulWidget {
+  final TemplateSectionItem templateSectionItem;
 
   const QuestionTextField({
     super.key,
-    this.level = 0,
+    required this.templateSectionItem,
   });
 
   @override
+  State<QuestionTextField> createState() => _QuestionTextFieldState();
+}
+
+class _QuestionTextFieldState extends State<QuestionTextField> {
+  TextEditingController questionController = TextEditingController();
+
+  @override
+  void dispose() {
+    questionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String getHintText() {
+    String getHintText(int level) {
       switch (level) {
         case 0:
           return 'Type question here.....';
         case 1:
           return 'Type L1 Follow up question here.....';
         default:
-          return 'Type L1 Follow up question here.....';
+          return 'Type Feedback Level two question here.....';
       }
     }
 
-    return CustomTextField(
-      hintText: getHintText(),
-      height: 100,
-      minLines: 3,
-      maxLines: 100,
-      onChanged: (value) => context.read<TemplateDesignerBloc>().add(
-            TemplateDesignerQuestionChanged(
-              level: level,
-              responseScaleId: emptyGuid,
-              question: value,
-            ),
-          ),
+    return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
+      listener: (context, state) {
+        questionController.text = state
+                .currentTemplateSectionItem(
+                    state.level, 'templateSectionItemId')
+                .question
+                ?.name ??
+            '';
+      },
+      listenWhen: (previous, current) => previous.level != current.level,
+      builder: (context, state) {
+        return CustomTextField(
+          controller: questionController,
+          hintText: getHintText(state.level),
+          height: 100,
+          minLines: 3,
+          maxLines: 100,
+          onChanged: (value) => context.read<TemplateDesignerBloc>().add(
+                TemplateDesignerQuestionChanged(
+                  responseScaleId: emptyGuid,
+                  question: value,
+                  templateSectionItemId:
+                      widget.templateSectionItem.id ?? emptyGuid,
+                ),
+              ),
+        );
+      },
     );
   }
 }
