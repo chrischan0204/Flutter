@@ -1,11 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'template_designer_bloc.dart';
 
 abstract class TemplateDesignerEvent extends Equatable {
   const TemplateDesignerEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class TemplateDesignerTemplateSectionListLoaded extends TemplateDesignerEvent {
@@ -41,13 +40,13 @@ class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
 class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
 
 class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
-  final TemplateSection templateSection;
+  final TemplateSection? templateSection;
   const TemplateDesignerTemplateSectionSelected({
-    required this.templateSection,
+    this.templateSection,
   });
 
   @override
-  List<Object> get props => [templateSection];
+  List<Object?> get props => [templateSection];
 }
 
 class TemplateDesignerTemplateSectionItemQuestionList

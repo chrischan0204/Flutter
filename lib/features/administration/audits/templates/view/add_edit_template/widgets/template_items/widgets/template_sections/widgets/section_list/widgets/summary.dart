@@ -13,7 +13,9 @@ class _SummaryViewState extends State<SummaryView> {
   Widget build(BuildContext context) {
     return InkWell(
       hoverColor: Colors.transparent,
-      onTap: () {},
+      onTap: () => context
+          .read<TemplateDesignerBloc>()
+          .add(const TemplateDesignerTemplateSectionSelected()),
       onHover: (value) => setState(() => _hover = value),
       child: Container(
         color: _hover ? const Color(0xfff7fdf1) : const Color(0xffecfadc),

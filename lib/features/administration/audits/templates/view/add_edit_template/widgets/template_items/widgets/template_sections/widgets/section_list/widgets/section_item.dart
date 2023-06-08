@@ -1,7 +1,7 @@
 import '/common_libraries.dart';
 
 class SectionItemView extends StatefulWidget {
-  final String section;
+  final TemplateSection section;
   final bool first;
   const SectionItemView({
     super.key,
@@ -18,6 +18,9 @@ class _SectionItemViewState extends State<SectionItemView> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: () => context.read<TemplateDesignerBloc>().add(
+          TemplateDesignerTemplateSectionSelected(
+              templateSection: widget.section)),
       onHover: (value) => setState(() => _hover = value),
       child: Container(
         color: _hover ? const Color(0xfff7fdf1) : Colors.transparent,
@@ -46,7 +49,7 @@ class _SectionItemViewState extends State<SectionItemView> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    widget.section,
+                    widget.section.name,
                     style: TextStyle(
                       color: primaryColor,
                       fontSize: 14,

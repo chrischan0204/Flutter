@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
@@ -154,11 +153,14 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     emit(state.copyWith(
-      selectedTemplateSection: event.templateSection,
+      selectedTemplateSection: Nullable.value(event.templateSection),
       templateSectionItem: const Nullable.value(null),
     ));
-    add(TemplateDesignerTemplateSectionItemQuestionList(
-        templateSectionId: event.templateSection.id));
+
+    if (event.templateSection != null) {
+      add(TemplateDesignerTemplateSectionItemQuestionList(
+          templateSectionId: event.templateSection!.id));
+    }
   }
 
   Future<void> _onTemplateDesignerTemplateSectionItemQuestionList(

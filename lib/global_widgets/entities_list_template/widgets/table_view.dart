@@ -11,14 +11,16 @@ class DataTableView<T extends Entity> extends StatefulWidget {
   final List<String> columns;
   final ValueChanged<T> onRowClick;
   final String emptyMessage;
-  final ValueChanged<MapEntry<String, bool>>? onTableSorted;
+  final Map<String, double> columnWidths;
+  final ValueChanged<MapEntry<String, double>> onColumnSizedUpated;
   const DataTableView({
     super.key,
     this.entities = const [],
     this.columns = const [],
+    required this.columnWidths,
     required this.onRowClick,
     this.emptyMessage = '',
-    this.onTableSorted,
+    required this.onColumnSizedUpated,
   });
 
   @override
@@ -28,29 +30,13 @@ class DataTableView<T extends Entity> extends StatefulWidget {
 class _DataTableViewState extends State<DataTableView> {
   int? selectedColumnIndex;
   bool sortType = true;
-  Map<String, double> columnWidths = {};
-  List<String> columns = [];
-
-  @override
-  void initState() {
-    columns = widget.entities.isNotEmpty
-        ? (widget.entities[0].columns.isNotEmpty
-            ? widget.entities[0].columns
-            : widget.entities[0].tableItemsToMap().keys.toList())
-        : [];
-
-    for (final column in columns) {
-      columnWidths.addEntries([MapEntry(column, double.nan)]);
-    }
-    super.initState();
-  }
 
   List<GridColumn> _buildColumns() => [
-        ...columns
+        ...widget.columns
             .map(
               (column) => GridColumn(
                 columnName: column,
-                width: columnWidths[column]!,
+                width: widget.columnWidths[column]!,
                 label: Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -81,6 +67,7 @@ class _DataTableViewState extends State<DataTableView> {
             child: SfDataGrid(
               source: EntityDataSource(
                 entityData: widget.entities,
+                columns: widget.columns,
                 onRowClick: widget.onRowClick,
               ),
               onCellTap: (details) {
@@ -92,9 +79,8 @@ class _DataTableViewState extends State<DataTableView> {
               columnWidthMode: ColumnWidthMode.fill,
               columnResizeMode: ColumnResizeMode.onResize,
               onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-                setState(() {
-                  columnWidths[details.column.columnName] = details.width;
-                });
+                widget.onColumnSizedUpated(
+                    MapEntry(details.column.columnName, details.width));
                 return true;
               },
               allowColumnsResizing: true,
@@ -127,13 +113,10 @@ class EntityDataSource extends DataGridSource {
   final ValueChanged<Entity> onRowClick;
   EntityDataSource({
     required List<Entity> entityData,
+    required List<String> columns,
     required this.onRowClick,
   }) {
-    List<String> columns = entityData.isNotEmpty
-        ? (entityData[0].columns.isNotEmpty
-            ? entityData[0].columns
-            : entityData[0].tableItemsToMap().keys.toList())
-        : [];
+    print(columns);
     _entityData = List.generate(
       entityData.length,
       (index) => DataGridRow(
@@ -183,7 +166,7 @@ class EntityDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     Color getBackgroundColor() {
       if (row.getCells().last.value['deleted']) {
-        return const Color(0xffe6e7e8);
+        return const Color(0x6fF98B85);
       }
       int index = effectiveRows.indexOf(row);
       if (index % 2 == 0) {

@@ -63,6 +63,9 @@ class _CrudState extends State<EntityListTemplate> {
 
   String token = '';
 
+  Map<String, double> columnWidths = {};
+  List<String> columns = [];
+
   @override
   void initState() {
     filterSettingBloc = context.read();
@@ -71,6 +74,17 @@ class _CrudState extends State<EntityListTemplate> {
     if (widget.viewName != null) {
       filterSettingBloc.add(FilterSettingInit(viewName: widget.viewName!));
     }
+
+    columns = widget.entities.isNotEmpty
+        ? (widget.entities[0].columns.isNotEmpty
+            ? widget.entities[0].columns
+            : widget.entities[0].tableItemsToMap().keys.toList())
+        : [];
+
+    for (final column in columns) {
+      columnWidths.addEntries([MapEntry(column, double.nan)]);
+    }
+
     super.initState();
   }
 
@@ -205,6 +219,17 @@ class _CrudState extends State<EntityListTemplate> {
   }
 
   Widget _buildTableView() {
+    columns = widget.entities.isNotEmpty
+        ? (widget.entities[0].columns.isNotEmpty
+            ? widget.entities[0].columns
+            : widget.entities[0].tableItemsToMap().keys.toList())
+        : [];
+
+    for (final column in columns) {
+      if (!columnWidths.containsKey(column)) {
+        columnWidths.addEntries([MapEntry(column, double.nan)]);
+      }
+    }
     return Expanded(
       child: Card(
         elevation: 3,
@@ -221,28 +246,12 @@ class _CrudState extends State<EntityListTemplate> {
                 width: double.infinity,
                 child: DataTableView(
                   entities: widget.entities,
-                  columns: widget.columns,
+                  columns: columns,
                   emptyMessage: widget.emptyMessage,
-                  onTableSorted: widget.onTableSorted == null
-                      ? null
-                      : (MapEntry<String, bool> sortInfo) {
-                          List<Entity> entities = List.from(widget.entities);
-
-                          entities.sort(
-                            (a, b) {
-                              return (sortInfo.value ? 1 : -1) *
-                                  (a
-                                          .tableItemsToMap()[sortInfo.key]
-                                          .toString()
-                                          .toLowerCase())
-                                      .compareTo(b
-                                          .tableItemsToMap()[sortInfo.key]
-                                          .toString()
-                                          .toLowerCase());
-                            },
-                          );
-                          widget.onTableSorted!(entities);
-                        },
+                  columnWidths: columnWidths,
+                  onColumnSizedUpated: (value) {
+                    setState(() => columnWidths[value.key] = value.value);
+                  },
                   onRowClick: (entity) {
                     if (!entity.deleted) {
                       _showDetailsSlider();

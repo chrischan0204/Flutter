@@ -63,7 +63,7 @@ class TemplateDesignerState extends Equatable {
     EntityStatus? templateSectionAddStatus,
     List<ResponseScale>? responseScaleList,
     EntityStatus? responseScaleListLoadStatus,
-    TemplateSection? selectedTemplateSection,
+    Nullable<TemplateSection?>? selectedTemplateSection,
     EntityStatus? sectionItemQuestionListLoadStatus,
     List<TemplateSectionQuestion>? sectionItemQuestionList,
     EntityStatus? responseScaleItemListLoadStatus,
@@ -82,8 +82,9 @@ class TemplateDesignerState extends Equatable {
       responseScaleList: responseScaleList ?? this.responseScaleList,
       responseScaleListLoadStatus:
           responseScaleListLoadStatus ?? this.responseScaleListLoadStatus,
-      selectedTemplateSection:
-          selectedTemplateSection ?? this.selectedTemplateSection,
+      selectedTemplateSection: selectedTemplateSection != null
+          ? selectedTemplateSection.value
+          : this.selectedTemplateSection,
       sectionItemQuestionList:
           sectionItemQuestionList ?? this.sectionItemQuestionList,
       sectionItemQuestionListLoadStatus: sectionItemQuestionListLoadStatus ??
