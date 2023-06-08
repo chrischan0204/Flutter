@@ -147,7 +147,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   bool _checkFormDataFill(AddEditTemplateState addEditTemplateState) {
     return widget.templateId == null
         ? addEditTemplateState.templateDetailFilled
-        : true;
+        : false;
   }
 
   Map<String, Widget> _buildTabs() {

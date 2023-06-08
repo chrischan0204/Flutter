@@ -107,8 +107,10 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     timeZoneBloc = context.read<TimeZonesBloc>()..add(TimeZoneListLoaded());
     rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
     sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
+
     if (widget.userId != null) {
       userDetailBloc.add(UserDetailUserLoadedById(userId: widget.userId!));
+      context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     }
 
     super.initState();
@@ -177,7 +179,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
   }
 
   bool _checkFormDataFill(AddEditUserState addEditUserState) {
-    return widget.userId == null ? addEditUserState.isUserDataFill : true;
+    return widget.userId == null ? addEditUserState.isUserDataFill : false;
   }
 
   Map<String, Widget> _buildTabs(AddEditUserState addEditUserState) {

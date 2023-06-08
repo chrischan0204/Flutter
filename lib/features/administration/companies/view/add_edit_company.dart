@@ -97,7 +97,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     return widget.companyId == null
         ? companyNameController.text.trim().isNotEmpty ||
             einNumberController.text.trim().isNotEmpty
-        : true;
+        : false;
   }
 
   // change form data whenever the state changes

@@ -139,7 +139,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
             (siteType != null && siteType!.isNotEmpty) ||
             siteCodeController.text.trim().isNotEmpty ||
             referenceCodeController.text.trim().isNotEmpty
-        : true;
+        : false;
   }
 
   void _checkCrudResult(SitesState state, BuildContext context) {

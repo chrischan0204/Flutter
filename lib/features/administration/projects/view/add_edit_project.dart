@@ -108,7 +108,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
             referenceNameController.text.trim().isNotEmpty ||
             referenceNumberController.text.trim().isNotEmpty ||
             (site != null && site!.isNotEmpty)
-        : true;
+        : false;
   }
 
   // change form data whenever the state changes
