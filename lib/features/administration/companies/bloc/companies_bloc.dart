@@ -79,8 +79,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
 
     try {
       FilteredCompanyData data =
-          await companiesRepository.getFilteredCompanyList(event.filterId,
-              event.includeDeleted, event.pageNum, event.pageSize);
+          await companiesRepository.getFilteredCompanyList(event.option);
       final List<String> columns =
           List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
       return emit(state.copyWith(

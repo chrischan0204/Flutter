@@ -199,28 +199,8 @@ class CompaniesRepository extends BaseRepository {
   }
 
   Future<FilteredCompanyData> getFilteredCompanyList(
-    String filterId, [
-    bool includeDeleted = false,
-    int? pageNum,
-    int? pageSize,
-  ]) async {
-    Map<String, String> queryParams = {
-      'includeDeleted': includeDeleted.toString()
-    };
-
-    if (!Validation.isEmpty(filterId)) {
-      queryParams.addEntries([MapEntry('filterId', filterId)]);
-    }
-
-    if (pageNum != null) {
-      queryParams.addEntries([MapEntry('pageNum', pageNum.toString())]);
-    }
-
-    if (pageSize != null) {
-      queryParams.addEntries([MapEntry('pageSize', pageSize.toString())]);
-    }
-
-    Response response = await super.get('$url/list', queryParams);
+      FilteredTableParameter option) async {
+    Response response = await super.filter(option);
 
     if (response.statusCode == 200) {
       final data = FilteredCompanyData.fromJson(response.body);

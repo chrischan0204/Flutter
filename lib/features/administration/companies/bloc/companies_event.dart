@@ -11,27 +11,11 @@ abstract class CompaniesEvent extends Equatable {
 class CompaniesRetrieved extends CompaniesEvent {}
 
 class CompanyListFiltered extends CompaniesEvent {
-  final String filterId;
-  final bool includeDeleted;
-  final int? pageNum;
-  final int? pageSize;
-  final bool withoutSave;
-  const CompanyListFiltered({
-    required this.filterId,
-    this.includeDeleted = false,
-    this.pageNum,
-    this.pageSize,
-    this.withoutSave = false,
-  });
+  final FilteredTableParameter option;
+  const CompanyListFiltered({required this.option});
 
   @override
-  List<Object?> get props => [
-        filterId,
-        includeDeleted,
-        pageNum,
-        pageSize,
-        withoutSave,
-      ];
+  List<Object?> get props => [option];
 }
 
 class CompanySelected extends CompaniesEvent {
