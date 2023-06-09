@@ -13,7 +13,8 @@ class ProjectsState extends Equatable {
   final EntityStatus projectSelectedStatus;
   final EntityStatus projectCrudStatus;
   final String message;
-  final String filterText;
+  final String filterTextForAssignedCompany;
+  final String filterTextForUnassignedCompany;
   final int totalRows;
   const ProjectsState({
     this.projects = const [],
@@ -28,7 +29,8 @@ class ProjectsState extends Equatable {
     this.assignedCompanyProjectsRetrievedStatus = EntityStatus.initial,
     this.unassignedCompanyProjectsRetrievedStatus = EntityStatus.initial,
     this.message = '',
-    this.filterText = '',
+    this.filterTextForAssignedCompany = '',
+    this.filterTextForUnassignedCompany = '',
     this.totalRows = 0,
   });
 
@@ -46,7 +48,8 @@ class ProjectsState extends Equatable {
         companyToProjectAssignedStatus,
         companyFromProjectUnassignedStatus,
         message,
-        filterText,
+        filterTextForAssignedCompany,
+        filterTextForUnassignedCompany,
         totalRows,
       ];
 
@@ -65,34 +68,38 @@ class ProjectsState extends Equatable {
     EntityStatus? companyToProjectAssignedStatus,
     EntityStatus? companyFromProjectUnassignedStatus,
     String? message,
-    String? filterText,
+    String? filterTextForAssignedCompany,
+    String? filterTextForUnassignedCompany,
     int? totalRows,
   }) {
     return ProjectsState(
-        projects: projects ?? this.projects,
-        assignedCompanyProjects:
-            assignedCompanyProjects ?? this.assignedCompanyProjects,
-        unassignedCompanyProjects:
-            unassignedCompanyProjects ?? this.unassignedCompanyProjects,
-        selectedProject: selectedProject ?? this.selectedProject,
-        projectsRetrievedStatus:
-            projectsRetrievedStatus ?? this.projectsRetrievedStatus,
-        projectSelectedStatus:
-            projectSelectedStatus ?? this.projectSelectedStatus,
-        projectCrudStatus: projectCrudStatus ?? this.projectCrudStatus,
-        assignedCompanyProjectsRetrievedStatus:
-            assignedCompanyProjectsRetrievedStatus ??
-                this.assignedCompanyProjectsRetrievedStatus,
-        unassignedCompanyProjectsRetrievedStatus:
-            unassignedCompanyProjectsRetrievedStatus ??
-                this.unassignedCompanyProjectsRetrievedStatus,
-        companyToProjectAssignedStatus: companyToProjectAssignedStatus ??
-            this.companyToProjectAssignedStatus,
-        companyFromProjectUnassignedStatus:
-            companyFromProjectUnassignedStatus ??
-                this.companyFromProjectUnassignedStatus,
-        message: message ?? this.message,
-        filterText: filterText ?? this.filterText,
-        totalRows: totalRows ?? this.totalRows);
+      projects: projects ?? this.projects,
+      assignedCompanyProjects:
+          assignedCompanyProjects ?? this.assignedCompanyProjects,
+      unassignedCompanyProjects:
+          unassignedCompanyProjects ?? this.unassignedCompanyProjects,
+      selectedProject: selectedProject ?? this.selectedProject,
+      projectsRetrievedStatus:
+          projectsRetrievedStatus ?? this.projectsRetrievedStatus,
+      projectSelectedStatus:
+          projectSelectedStatus ?? this.projectSelectedStatus,
+      projectCrudStatus: projectCrudStatus ?? this.projectCrudStatus,
+      assignedCompanyProjectsRetrievedStatus:
+          assignedCompanyProjectsRetrievedStatus ??
+              this.assignedCompanyProjectsRetrievedStatus,
+      unassignedCompanyProjectsRetrievedStatus:
+          unassignedCompanyProjectsRetrievedStatus ??
+              this.unassignedCompanyProjectsRetrievedStatus,
+      companyToProjectAssignedStatus:
+          companyToProjectAssignedStatus ?? this.companyToProjectAssignedStatus,
+      companyFromProjectUnassignedStatus: companyFromProjectUnassignedStatus ??
+          this.companyFromProjectUnassignedStatus,
+      message: message ?? this.message,
+      filterTextForAssignedCompany:
+          filterTextForAssignedCompany ?? this.filterTextForAssignedCompany,
+      filterTextForUnassignedCompany:
+          filterTextForUnassignedCompany ?? this.filterTextForUnassignedCompany,
+      totalRows: totalRows ?? this.totalRows,
+    );
   }
 }

@@ -117,9 +117,21 @@ class UnassignedCompanyProjectsRetrieved extends ProjectsEvent {
 
 class ProjectsStatusInited extends ProjectsEvent {}
 
-class FilterTextForCompanyChanged extends ProjectsEvent {
+class FilterTextForUnassignedCompanyChanged extends ProjectsEvent {
   final String filterText;
-  const FilterTextForCompanyChanged({
+  const FilterTextForUnassignedCompanyChanged({
+    required this.filterText,
+  });
+
+  @override
+  List<Object?> get props => [
+        filterText,
+      ];
+}
+
+class FilterTextForAssignedCompanyChanged extends ProjectsEvent {
+  final String filterText;
+  const FilterTextForAssignedCompanyChanged({
     required this.filterText,
   });
 

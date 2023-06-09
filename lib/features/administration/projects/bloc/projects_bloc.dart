@@ -37,7 +37,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     on<UnassignedCompanyProjectsRetrieved>(
         _onUnassignedCompanyProjectsRetrieved);
     on<ProjectsStatusInited>(_onProjectsStatusInited);
-    on<FilterTextForCompanyChanged>(_onFilterTextForCompanyChanged);
+    on<FilterTextForUnassignedCompanyChanged>(
+        _onFilterTextForUnassignedCompanyChanged);
+    on<FilterTextForAssignedCompanyChanged>(
+        _onFilterTextForAssignedCompanyChanged);
     on<CompanyToProjectAssigned>(_onCompanyToProjectAssigned);
     on<CompanyFromProjectUnassigned>(_onCompanyFromProjectUnassigned);
     on<UnAssignedCompanyProjectRoleSelected>(
@@ -343,10 +346,17 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     emit(state.copyWith(unassignedCompanyProjects: unassignedCompanyProjects));
   }
 
-  void _onFilterTextForCompanyChanged(
-    FilterTextForCompanyChanged event,
+  void _onFilterTextForUnassignedCompanyChanged(
+    FilterTextForUnassignedCompanyChanged event,
     Emitter<ProjectsState> emit,
   ) async {
-    emit(state.copyWith(filterText: event.filterText));
+    emit(state.copyWith(filterTextForUnassignedCompany: event.filterText));
+  }
+
+  void _onFilterTextForAssignedCompanyChanged(
+    FilterTextForAssignedCompanyChanged event,
+    Emitter<ProjectsState> emit,
+  ) async {
+    emit(state.copyWith(filterTextForAssignedCompany: event.filterText));
   }
 }

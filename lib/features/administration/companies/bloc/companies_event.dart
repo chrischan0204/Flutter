@@ -129,14 +129,17 @@ class UnassignedCompanySitesRetrieved extends CompaniesEvent {
 class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
   final String companyId;
   final String? name;
+  final String? siteId;
   const AssignedProjectCompaniesRetrieved({
     required this.companyId,
     this.name,
+    this.siteId,
   });
   @override
   List<Object?> get props => [
         companyId,
         name,
+        siteId,
       ];
 }
 
@@ -216,40 +219,44 @@ class UnAssignedProjectCompanyRoleSelected extends CompaniesEvent {
       ];
 }
 
-class FilterTextChangedForAssigned extends CompaniesEvent {
+class FilterTextForAssignedChanged extends CompaniesEvent {
   final String filterText;
-  const FilterTextChangedForAssigned({
+  const FilterTextForAssignedChanged({
     required this.filterText,
   });
 
   @override
-  List<Object?> get props => [
-        filterText,
-      ];
+  List<Object?> get props => [filterText];
 }
 
-class FilterTextChangedForUnassigned extends CompaniesEvent {
+class FilterTextForUnassignedChanged extends CompaniesEvent {
   final String filterText;
-  const FilterTextChangedForUnassigned({
+  const FilterTextForUnassignedChanged({
     required this.filterText,
   });
 
   @override
-  List<Object?> get props => [
-        filterText,
-      ];
+  List<Object?> get props => [filterText];
 }
 
-class FilterSiteIdChanged extends CompaniesEvent {
+class FilterSiteIdForUnassignedChanged extends CompaniesEvent {
   final String siteId;
-  const FilterSiteIdChanged({
+  const FilterSiteIdForUnassignedChanged({
     required this.siteId,
   });
 
   @override
-  List<Object?> get props => [
-        siteId,
-      ];
+  List<Object?> get props => [siteId];
+}
+
+class FilterSiteIdForAssignedChanged extends CompaniesEvent {
+  final String siteId;
+  const FilterSiteIdForAssignedChanged({
+    required this.siteId,
+  });
+
+  @override
+  List<Object?> get props => [siteId];
 }
 
 class AuditTrailsRetrievedByCompanyId extends CompaniesEvent {
@@ -259,7 +266,5 @@ class AuditTrailsRetrievedByCompanyId extends CompaniesEvent {
   });
 
   @override
-  List<Object?> get props => [
-        companyId,
-      ];
+  List<Object?> get props => [companyId];
 }

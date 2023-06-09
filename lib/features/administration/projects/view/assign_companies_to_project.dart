@@ -26,10 +26,26 @@ class _AssignCompaniesToProjectViewState
     extends State<AssignCompaniesToProjectView> {
   late ProjectsBloc projectsBloc;
 
+  List<DataColumn> get tableColumns => const [
+        DataColumn(
+          label: Text(
+            'Company Name',
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Role',
+          ),
+        ),
+        DataColumn(
+          label: Text('Assigned?'),
+        ),
+      ];
+
   @override
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()
-      ..add(const FilterTextForCompanyChanged(filterText: ''))
+      ..add(const FilterTextForUnassignedCompanyChanged(filterText: ''))
       ..add(AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
       ..add(UnassignedCompanyProjectsRetrieved(projectId: widget.projectId));
     super.initState();
@@ -51,19 +67,6 @@ class _AssignCompaniesToProjectViewState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildAssignedCompaniesTableViewHeader(state),
-                        const CustomDivider(),
-                        _buildAssignedCompaniesTableView(state, context),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 150,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
                         const Text(
                           'Sites can be assigned to this company by selecting from the list below.',
                           style: TextStyle(
@@ -72,9 +75,22 @@ class _AssignCompaniesToProjectViewState
                           ),
                         ),
                         const CustomDivider(),
-                        _buildFilterTextField(state),
+                        _buildFilterTextFieldForUnassignedCompany(state),
                         const CustomDivider(),
                         _buildUnassignedSitesTableView(state),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 150),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildAssignedCompaniesTableViewHeader(state),
+                        const CustomDivider(),
+                        _buildFilterTextFieldForAssignedCompany(state),
+                        const CustomDivider(),
+                        _buildAssignedCompaniesTableView(state, context),
                       ],
                     ),
                   ),
@@ -97,13 +113,6 @@ class _AssignCompaniesToProjectViewState
             fontWeight: FontWeight.w400,
           ),
           children: <TextSpan>[
-            // TextSpan(
-            //   text:
-            //       'The project \'${widget.projectName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
-            //   style: const TextStyle(
-            //     fontWeight: FontWeight.w600,
-            //   ),
-            // ),
             TextSpan(
               text:
                   'Companies can be assigned from list on left. Once assigned they will show here in this list below.',
@@ -128,7 +137,7 @@ class _AssignCompaniesToProjectViewState
                   notifyType: NotifyType.success,
                   content: state.message,
                 ).showNotification();
-                _refetchProjectCompanies(state.filterText);
+                _refetchProjectCompanies(state);
               } else if (state.companyFromProjectUnassignedStatus ==
                   EntityStatus.failure) {
                 CustomNotification(
@@ -148,16 +157,6 @@ class _AssignCompaniesToProjectViewState
                   .map(
                     (unassignedProjectCompany) => DataRow(
                       cells: [
-                        DataCell(
-                          CustomSwitch(
-                            trueString: 'Yes',
-                            falseString: 'No',
-                            textColor: darkTeal,
-                            switchValue: unassignedProjectCompany.assigned,
-                            onChanged: (value) => _assignCompanyToProject(
-                                unassignedProjectCompany),
-                          ),
-                        ),
                         DataCell(
                           CustomDataCell(
                             data: unassignedProjectCompany.companyName,
@@ -183,6 +182,16 @@ class _AssignCompaniesToProjectViewState
                             ),
                           ),
                         ),
+                        DataCell(
+                          CustomSwitch(
+                            trueString: 'Yes',
+                            falseString: 'No',
+                            textColor: darkTeal,
+                            switchValue: unassignedProjectCompany.assigned,
+                            onChanged: (value) => _assignCompanyToProject(
+                                unassignedProjectCompany),
+                          ),
+                        ),
                       ],
                     ),
                   )
@@ -193,22 +202,6 @@ class _AssignCompaniesToProjectViewState
       ),
     );
   }
-
-  List<DataColumn> get tableColumns => const [
-        DataColumn(
-          label: Text('Assigned?'),
-        ),
-        DataColumn(
-          label: Text(
-            'Company Name',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Role',
-          ),
-        ),
-      ];
 
   Widget _buildAssignedCompaniesTableView(
       ProjectsState state, BuildContext context) {
@@ -222,7 +215,7 @@ class _AssignCompaniesToProjectViewState
                 notifyType: NotifyType.success,
                 content: state.message,
               ).showNotification();
-              _refetchProjectCompanies(state.filterText);
+              _refetchProjectCompanies(state);
             } else if (state.companyToProjectAssignedStatus ==
                 EntityStatus.failure) {
               CustomNotification(
@@ -243,16 +236,6 @@ class _AssignCompaniesToProjectViewState
                   (assignedProjectCompany) => DataRow(
                     cells: [
                       DataCell(
-                        CustomSwitch(
-                          switchValue: assignedProjectCompany.assigned,
-                          trueString: 'Yes',
-                          falseString: 'No',
-                          textColor: darkTeal,
-                          onChanged: (value) =>
-                              _unassignFromCompany(assignedProjectCompany.id),
-                        ),
-                      ),
-                      DataCell(
                         CustomDataCell(
                           data: assignedProjectCompany.companyName,
                         ),
@@ -260,6 +243,16 @@ class _AssignCompaniesToProjectViewState
                       DataCell(
                         CustomDataCell(
                           data: assignedProjectCompany.roleName,
+                        ),
+                      ),
+                      DataCell(
+                        CustomSwitch(
+                          switchValue: assignedProjectCompany.assigned,
+                          trueString: 'Yes',
+                          falseString: 'No',
+                          textColor: darkTeal,
+                          onChanged: (value) =>
+                              _unassignFromCompany(assignedProjectCompany.id),
                         ),
                       ),
                     ],
@@ -305,7 +298,7 @@ class _AssignCompaniesToProjectViewState
     ).show();
   }
 
-  Padding _buildFilterTextField(ProjectsState state) {
+  Padding _buildFilterTextFieldForUnassignedCompany(ProjectsState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FilterTextField(
@@ -313,36 +306,58 @@ class _AssignCompaniesToProjectViewState
         label: 'sites',
         filterIconClick: (filtered) {
           if (filtered) {
-            _onFilterApplied(state);
+            projectsBloc.add(UnassignedCompanyProjectsRetrieved(
+              projectId: widget.projectId,
+              name: state.filterTextForUnassignedCompany,
+            ));
           } else {
-            _cancelFilter();
+            projectsBloc
+              ..add(UnassignedCompanyProjectsRetrieved(
+                  projectId: widget.projectId))
+              ..add(
+                  const FilterTextForUnassignedCompanyChanged(filterText: ''));
           }
         },
-        onChange: (value) =>
-            projectsBloc.add(FilterTextForCompanyChanged(filterText: value)),
+        onChange: (value) => projectsBloc
+            .add(FilterTextForUnassignedCompanyChanged(filterText: value)),
       ),
     );
   }
 
-  _onFilterApplied(ProjectsState state) {
-    projectsBloc.add(UnassignedCompanyProjectsRetrieved(
-      projectId: widget.projectId,
-      name: state.filterText,
-    ));
+  Padding _buildFilterTextFieldForAssignedCompany(ProjectsState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: FilterTextField(
+        hintText: 'Filter assigned companies by name.',
+        label: 'sites',
+        filterIconClick: (filtered) {
+          if (filtered) {
+            projectsBloc.add(AssignedCompanyProjectsRetrieved(
+              projectId: widget.projectId,
+              name: state.filterTextForAssignedCompany,
+            ));
+          } else {
+            projectsBloc
+              ..add(
+                  AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
+              ..add(const FilterTextForAssignedCompanyChanged(filterText: ''));
+          }
+        },
+        onChange: (value) => projectsBloc
+            .add(FilterTextForAssignedCompanyChanged(filterText: value)),
+      ),
+    );
   }
 
-  _cancelFilter() {
+  _refetchProjectCompanies(ProjectsState state) {
     projectsBloc
-      ..add(UnassignedCompanyProjectsRetrieved(projectId: widget.projectId))
-      ..add(const FilterTextForCompanyChanged(filterText: ''));
-  }
-
-  _refetchProjectCompanies(String filterText) {
-    projectsBloc
-      ..add(AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
+      ..add(AssignedCompanyProjectsRetrieved(
+        projectId: widget.projectId,
+        name: state.filterTextForAssignedCompany,
+      ))
       ..add(UnassignedCompanyProjectsRetrieved(
         projectId: widget.projectId,
-        name: filterText,
+        name: state.filterTextForUnassignedCompany,
       ));
   }
 }

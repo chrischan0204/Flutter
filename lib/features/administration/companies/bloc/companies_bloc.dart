@@ -47,9 +47,10 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<UnAssignedProjectCompanyRoleSelected>(
         _onUnAssignedProjectCompanyRoleSelected);
     on<CompaniesStatusInited>(_onCompaniesStatusInited);
-    on<FilterTextChangedForAssigned>(_onFilterTextAssignedChanged);
-    on<FilterTextChangedForUnassigned>(_onFilterTextUnassignedChanged);
-    on<FilterSiteIdChanged>(_onFilterSiteIdChanged);
+    on<FilterTextForAssignedChanged>(_onFilterTextAssignedChanged);
+    on<FilterTextForUnassignedChanged>(_onFilterTextUnassignedChanged);
+    on<FilterSiteIdForUnassignedChanged>(_onFilterSiteIdForUnassignedChanged);
+    on<FilterSiteIdForAssignedChanged>(_onFilterSiteIdForAssignedChanged);
     on<AuditTrailsRetrievedByCompanyId>(_onAuditTrailsRetrievedByCompanyId);
   }
 
@@ -143,7 +144,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
         assignedProjectCompaniesRetrievedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> projectCompanies = await companiesRepository
-          .getProjectCompanies(event.companyId, true, event.name);
+          .getProjectCompanies(event.companyId, true, event.name, event.siteId);
       emit(state.copyWith(
         assignedProjectCompanies: projectCompanies,
         assignedProjectCompaniesRetrievedStatus: EntityStatus.success,
@@ -482,25 +483,33 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
 
   /// change the filter text
   void _onFilterTextAssignedChanged(
-    FilterTextChangedForAssigned event,
+    FilterTextForAssignedChanged event,
     Emitter<CompaniesState> emit,
   ) {
     emit(state.copyWith(filterTextForAssigned: event.filterText));
   }
 
   void _onFilterTextUnassignedChanged(
-    FilterTextChangedForUnassigned event,
+    FilterTextForUnassignedChanged event,
     Emitter<CompaniesState> emit,
   ) {
     emit(state.copyWith(filterTextForUnassigned: event.filterText));
   }
 
-  // change the filter site id
-  void _onFilterSiteIdChanged(
-    FilterSiteIdChanged event,
+  // change the filter site id for assigned project
+  void _onFilterSiteIdForAssignedChanged(
+    FilterSiteIdForAssignedChanged event,
     Emitter<CompaniesState> emit,
   ) {
-    emit(state.copyWith(filterSiteId: event.siteId));
+    emit(state.copyWith(filterSiteIdForAssigned: event.siteId));
+  }
+
+  // change the filter site id
+  void _onFilterSiteIdForUnassignedChanged(
+    FilterSiteIdForUnassignedChanged event,
+    Emitter<CompaniesState> emit,
+  ) {
+    emit(state.copyWith(filterSiteIdForUnassigned: event.siteId));
   }
 
   void _onAuditTrailsRetrievedByCompanyId(

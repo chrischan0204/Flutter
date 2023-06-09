@@ -22,7 +22,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
-      ..add(const FilterTextChangedForAssigned(filterText: ''))
+      ..add(const FilterTextForAssignedChanged(filterText: ''))
+      ..add(const FilterTextForUnassignedChanged(filterText: ''))
       ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
       ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
     super.initState();
@@ -276,11 +277,11 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             companiesBloc
               ..add(
                   UnassignedCompanySitesRetrieved(companyId: widget.companyId))
-              ..add(const FilterTextChangedForUnassigned(filterText: ''));
+              ..add(const FilterTextForUnassignedChanged(filterText: ''));
           }
         },
         onChange: (value) => companiesBloc
-            .add(FilterTextChangedForUnassigned(filterText: value)),
+            .add(FilterTextForUnassignedChanged(filterText: value)),
       ),
     );
   }
@@ -300,11 +301,11 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
           } else {
             companiesBloc
               ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-              ..add(const FilterTextChangedForAssigned(filterText: ''));
+              ..add(const FilterTextForAssignedChanged(filterText: ''));
           }
         },
         onChange: (value) =>
-            companiesBloc.add(FilterTextChangedForAssigned(filterText: value)),
+            companiesBloc.add(FilterTextForAssignedChanged(filterText: value)),
       ),
     );
   }

@@ -19,13 +19,16 @@ class AssignProjectsToCompanyView extends StatefulWidget {
 class _AssignProjectsToCompanyViewState
     extends State<AssignProjectsToCompanyView> {
   late CompaniesBloc companiesBloc;
-  late String? selectedFilterSiteName = null;
+  late String? selectedFilterSiteNameForUnassign = null;
+  late String? selectedFilterSiteNameForAssign = null;
 
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
-      ..add(const FilterTextChangedForAssigned(filterText: ''))
-      ..add(const FilterSiteIdChanged(siteId: ''))
+      ..add(const FilterTextForAssignedChanged(filterText: ''))
+      ..add(const FilterSiteIdForAssignedChanged(siteId: ''))
+      ..add(const FilterTextForUnassignedChanged(filterText: ''))
+      ..add(const FilterSiteIdForUnassignedChanged(siteId: ''))
       ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
       ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId));
     super.initState();
@@ -69,7 +72,7 @@ class _AssignProjectsToCompanyViewState
         children: [
           _buildUnassignedProjectsTableViewHeader(),
           const CustomDivider(),
-          _buildFilterProjectView(state),
+          _buildFilterProjectViewForUnassigned(state),
           const CustomDivider(),
           _buildUnassignedProjectsTableView(state),
         ],
@@ -84,6 +87,8 @@ class _AssignProjectsToCompanyViewState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildAssignedProjectsTableViewHeader(),
+          const CustomDivider(),
+          _buildFilterProjectViewForAssigned(state),
           const CustomDivider(),
           _buildAssignedProjectsTableView(state, context),
         ],
@@ -275,42 +280,53 @@ class _AssignProjectsToCompanyViewState
     ];
   }
 
-  Widget _buildFilterProjectView(CompaniesState state) {
+  Widget _buildFilterProjectViewForUnassigned(CompaniesState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          _buildFilterProjectTextField(state),
+          _buildFilterProjectTextFieldForUnassigned(state),
           const SizedBox(
             width: 50,
           ),
-          _buildSiteSelectField(state),
+          _buildSiteSelectFieldForUnassigned(state),
         ],
       ),
     );
   }
 
-  Expanded _buildFilterProjectTextField(CompaniesState state) {
+  Expanded _buildFilterProjectTextFieldForUnassigned(CompaniesState state) {
     return Expanded(
       flex: 2,
       child: FilterTextField(
         hintText: 'Filter unassigned projects by name.',
         label: 'sites',
-        canFilter: state.filterSiteId.isNotEmpty,
+        canFilter: state.filterSiteIdForUnassigned.isNotEmpty,
         filterIconClick: (filtered) {
           if (filtered) {
-            _onFilterApplied(state);
+            companiesBloc.add(UnassignedProjectCompaniesRetrieved(
+              companyId: widget.companyId,
+              name: state.filterTextForUnassigned,
+              siteId: state.filterSiteIdForUnassigned,
+            ));
           } else {
-            _cancelFilter();
+            companiesBloc
+              ..add(UnassignedProjectCompaniesRetrieved(
+                  companyId: widget.companyId))
+              ..add(const FilterTextForUnassignedChanged(filterText: ''))
+              ..add(const FilterSiteIdForUnassignedChanged(siteId: ''));
+            setState(() {
+              selectedFilterSiteNameForUnassign = null;
+            });
           }
         },
-        onChange: (value) =>
-            companiesBloc.add(FilterTextChangedForAssigned(filterText: value)),
+        onChange: (value) => companiesBloc
+            .add(FilterTextForUnassignedChanged(filterText: value)),
       ),
     );
   }
 
-  Widget _buildSiteSelectField(CompaniesState state) {
+  Widget _buildSiteSelectFieldForUnassigned(CompaniesState state) {
     return BlocBuilder<CompaniesBloc, CompaniesState>(
       builder: (context, state) {
         return Expanded(
@@ -321,13 +337,85 @@ class _AssignProjectsToCompanyViewState
                     unassignedProjectCompany.siteId))),
             hint: 'Filter by site',
             selectedValue: state.unassignedProjectCompanies.isNotEmpty
-                ? selectedFilterSiteName
+                ? selectedFilterSiteNameForUnassign
                 : null,
             onChanged: (site) {
-              companiesBloc.add(FilterSiteIdChanged(siteId: site.value));
-              // filterSites = sites.map((site) => site as Site).toList();
+              companiesBloc
+                  .add(FilterSiteIdForUnassignedChanged(siteId: site.value));
               setState(() {
-                selectedFilterSiteName = site.key;
+                selectedFilterSiteNameForUnassign = site.key;
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterProjectViewForAssigned(CompaniesState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        children: [
+          _buildFilterProjectTextFieldForAssigned(state),
+          const SizedBox(
+            width: 50,
+          ),
+          _buildSiteSelectFieldForAssigned(state),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildFilterProjectTextFieldForAssigned(CompaniesState state) {
+    return Expanded(
+      flex: 2,
+      child: FilterTextField(
+        hintText: 'Filter assigned projects by name.',
+        label: 'sites',
+        canFilter: state.filterSiteIdForAssigned.isNotEmpty,
+        filterIconClick: (filtered) {
+          if (filtered) {
+            companiesBloc.add(AssignedProjectCompaniesRetrieved(
+              companyId: widget.companyId,
+              name: state.filterTextForAssigned,
+              siteId: state.filterSiteIdForAssigned,
+            ));
+          } else {
+            companiesBloc
+              ..add(AssignedProjectCompaniesRetrieved(
+                  companyId: widget.companyId))
+              ..add(const FilterTextForAssignedChanged(filterText: ''))
+              ..add(const FilterSiteIdForAssignedChanged(siteId: ''));
+            setState(() {
+              selectedFilterSiteNameForAssign = null;
+            });
+          }
+        },
+        onChange: (value) =>
+            companiesBloc.add(FilterTextForAssignedChanged(filterText: value)),
+      ),
+    );
+  }
+
+  Widget _buildSiteSelectFieldForAssigned(CompaniesState state) {
+    return BlocBuilder<CompaniesBloc, CompaniesState>(
+      builder: (context, state) {
+        return Expanded(
+          child: CustomSingleSelect(
+            items: {}..addEntries(state.assignedProjectCompanies.map(
+                (assignedProjectCompany) => MapEntry(
+                    assignedProjectCompany.siteName,
+                    assignedProjectCompany.siteId))),
+            hint: 'Filter by site',
+            selectedValue: state.assignedProjectCompanies.isNotEmpty
+                ? selectedFilterSiteNameForAssign
+                : null,
+            onChanged: (site) {
+              companiesBloc
+                  .add(FilterSiteIdForAssignedChanged(siteId: site.value));
+              setState(() {
+                selectedFilterSiteNameForAssign = site.key;
               });
             },
           ),
@@ -348,12 +436,6 @@ class _AssignProjectsToCompanyViewState
             fontFamily: 'OpenSans',
           ),
           children: <TextSpan>[
-            // TextSpan(
-            //   text: 'Projects can be assigned to \' ${widget.companyName} \'',
-            //   style: const TextStyle(
-            //     fontWeight: FontWeight.w600,
-            //   ),
-            // ),
             TextSpan(
               text:
                   '  Projects are listed as per the sites assigned to this company.',
@@ -399,31 +481,17 @@ class _AssignProjectsToCompanyViewState
     ).show();
   }
 
-  _onFilterApplied(CompaniesState state) {
-    companiesBloc.add(UnassignedProjectCompaniesRetrieved(
-      companyId: widget.companyId,
-      name: state.filterTextForUnassigned,
-      siteId: state.filterSiteId,
-    ));
-  }
-
-  _cancelFilter() {
-    companiesBloc
-      ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId))
-      ..add(const FilterTextChangedForAssigned(filterText: ''))
-      ..add(const FilterSiteIdChanged(siteId: ''));
-    setState(() {
-      selectedFilterSiteName = null;
-    });
-  }
-
   _refetchProjectCompanies(CompaniesState state) {
     companiesBloc
-      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
+      ..add(AssignedProjectCompaniesRetrieved(
+        companyId: widget.companyId,
+        name: state.filterTextForAssigned,
+        siteId: state.filterSiteIdForAssigned,
+      ))
       ..add(UnassignedProjectCompaniesRetrieved(
         companyId: widget.companyId,
         name: state.filterTextForUnassigned,
-        siteId: state.filterSiteId,
+        siteId: state.filterSiteIdForUnassigned,
       ));
   }
 }
