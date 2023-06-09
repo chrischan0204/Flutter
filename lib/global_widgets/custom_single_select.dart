@@ -72,6 +72,11 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
                 )
               : null,
           isExpanded: true,
+          onMenuStateChange: (isOpen) {
+            if (!isOpen) {
+              textEditingController.clear();
+            }
+          },
           hint: widget.hint == null
               ? null
               : Text(
@@ -114,6 +119,7 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
             MapEntry<String, dynamic> entry =
                 MapEntry<String, dynamic>(val!, widget.items[val]! as dynamic);
             widget.onChanged(entry);
+            textEditingController.clear();
             // setState(() {
             //   value = val;
             // });
