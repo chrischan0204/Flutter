@@ -10,24 +10,11 @@ abstract class SitesEvent extends Equatable {
 class SitesRetrieved extends SitesEvent {}
 
 class SiteListFiltered extends SitesEvent {
-  final String filterId;
-  final bool includeDeleted;
-  final int? pageNum;
-  final int? pageSize;
-  const SiteListFiltered({
-    required this.filterId,
-    this.includeDeleted = false,
-    this.pageNum,
-    this.pageSize,
-  });
+  final FilteredTableParameter option;
+  const SiteListFiltered({required this.option});
 
   @override
-  List<Object?> get props => [
-        filterId,
-        includeDeleted,
-        pageNum,
-        pageSize,
-      ];
+  List<Object?> get props => [option];
 }
 
 class SiteSelected extends SitesEvent {

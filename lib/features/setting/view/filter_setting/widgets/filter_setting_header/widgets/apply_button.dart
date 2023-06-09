@@ -1,7 +1,7 @@
 import '/common_libraries.dart';
 
 class ApplyButton extends StatefulWidget {
-  final ValueChanged<String> onFilterApplied;
+  final Function(String, [bool?]) onFilterApplied;
   const ApplyButton({
     super.key,
     required this.onFilterApplied,
@@ -30,7 +30,7 @@ class _ApplyButtonState extends State<ApplyButton> {
             onPressed: state.isNew || state.isFilterUpdateNotFill
                 ? null
                 : () {
-                    widget.onFilterApplied(state.userFilterUpdate.id);
+                    widget.onFilterApplied(state.userFilterUpdate.id, true);
                     filterSettingBloc.add(
                       FilterSettingAppliedUserFilterSettingChanged(
                         appliedUserFilterSetting:

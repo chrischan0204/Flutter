@@ -20,11 +20,13 @@ class TemplateListFiltered extends TemplateListEvent {
   final bool includeDeleted;
   final int? pageNum;
   final int? pageSize;
+  final bool withoutSave;
   const TemplateListFiltered({
     required this.filterId,
     this.includeDeleted = false,
     this.pageNum,
     this.pageSize,
+    this.withoutSave = false,
   });
 
   @override
@@ -33,5 +35,6 @@ class TemplateListFiltered extends TemplateListEvent {
         includeDeleted,
         pageNum,
         pageSize,
+        withoutSave,
       ];
 }

@@ -7,7 +7,7 @@ class FilterSettingView extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
   final ValueChanged<String> onFilterSaved;
-  final ValueChanged<String> onFilterApplied;
+  final Function(String, [bool?]) onFilterApplied;
   const FilterSettingView({
     super.key,
     required this.viewName,
@@ -37,7 +37,7 @@ class FilterSettingWidget extends StatefulWidget {
   final String viewName;
   final VoidCallback onFilterOptionClosed;
   final ValueChanged<String> onFilterSaved;
-  final ValueChanged<String> onFilterApplied;
+  final Function(String, [bool?]) onFilterApplied;
   const FilterSettingWidget({
     super.key,
     required this.viewName,

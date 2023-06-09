@@ -47,7 +47,8 @@ class _CompaniesListViewState extends State<CompaniesListView> {
             onIncludeDeletedChanged: (value) =>
                 _filterCompanies(null, value, 1),
             onFilterSaved: (value) => _filterCompanies(value, null, 1),
-            onFilterApplied: ([value]) => _filterCompanies(value, null, 1),
+            onFilterApplied: ([value, withoutSave]) =>
+                _filterCompanies(value, null, 1, null, withoutSave),
             onPaginate: (pageNum, pageRow) =>
                 _filterCompanies(null, null, pageNum, pageRow),
             totalRows: state.totalRows,
@@ -73,6 +74,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
     bool? includeDeleted,
     int? pageNum,
     int? rowPerPage,
+    bool? withoutSave,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
@@ -83,6 +85,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
+      withoutSave: withoutSave ?? false,
     ));
   }
 }

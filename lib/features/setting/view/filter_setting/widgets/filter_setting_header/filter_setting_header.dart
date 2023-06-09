@@ -6,7 +6,7 @@ import 'widgets/widgets.dart';
 class FilterSettingHeaderView extends StatelessWidget {
   final VoidCallback onFilterOptionClosed;
   final String viewName;
-  final ValueChanged<String> onFilterApplied;
+  final Function(String, [bool?]) onFilterApplied;
   const FilterSettingHeaderView({
     super.key,
     required this.onFilterOptionClosed,

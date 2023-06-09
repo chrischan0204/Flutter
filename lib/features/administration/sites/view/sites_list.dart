@@ -44,7 +44,8 @@ class _SitesListViewState extends State<SitesListView> {
             onViewSettingApplied: () => _filterSites(),
             onIncludeDeletedChanged: (value) => _filterSites(null, value, 1),
             onFilterSaved: (value) => _filterSites(value, null, 1),
-            onFilterApplied: ([value]) => _filterSites(value, null, 1),
+            onFilterApplied: ([value, withoutSave]) =>
+                _filterSites(value, null, 1, null, withoutSave),
             onPaginate: (pageNum, pageRow) =>
                 _filterSites(null, null, pageNum, pageRow),
             totalRows: state.totalRows,
@@ -59,16 +60,19 @@ class _SitesListViewState extends State<SitesListView> {
     bool? includeDeleted,
     int? pageNum,
     int? rowPerPage,
+    bool? withoutSave,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
     sitesBloc.add(SiteListFiltered(
+        option: FilteredTableParameter(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-    ));
+      filterOption: withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
+    )));
   }
 }

@@ -14,11 +14,13 @@ class ProjectListFiltered extends ProjectsEvent {
   final bool includeDeleted;
   final int? pageNum;
   final int? pageSize;
+  final bool withoutSave;
   const ProjectListFiltered({
     required this.filterId,
     this.includeDeleted = false,
     this.pageNum,
     this.pageSize,
+    this.withoutSave = false,
   });
 
   @override
@@ -27,6 +29,7 @@ class ProjectListFiltered extends ProjectsEvent {
         includeDeleted,
         pageNum,
         pageSize,
+        withoutSave,
       ];
 }
 

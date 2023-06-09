@@ -5,7 +5,7 @@ class EntityListTemplate extends StatefulWidget {
   final List<Entity> entities;
   final VoidCallback? onViewSettingApplied;
   final ValueChanged<String>? onFilterSaved;
-  final void Function([String?])? onFilterApplied;
+  final void Function([String?, bool?])? onFilterApplied;
   final bool entityListLoadStatusLoading;
   final bool entityDetailLoadStatusLoading;
   final String title;
@@ -135,12 +135,12 @@ class _CrudState extends State<EntityListTemplate> {
                       FilterSettingView(
                         viewName: widget.viewName!,
                         onFilterOptionClosed: () => _hideFilterView(),
-                        onFilterApplied: (filterId) {
+                        onFilterApplied: (filterId, [withoutSave]) {
                           if (widget.onFilterApplied != null) {
                             paginationBloc.add(
                                 const PaginationSelectedPageNumChanged(
                                     selectedPageNum: 1));
-                            widget.onFilterApplied!(filterId);
+                            widget.onFilterApplied!(filterId, withoutSave);
                           }
                         },
                         onFilterSaved: (filterId) {

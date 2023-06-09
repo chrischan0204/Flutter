@@ -15,11 +15,13 @@ class CompanyListFiltered extends CompaniesEvent {
   final bool includeDeleted;
   final int? pageNum;
   final int? pageSize;
+  final bool withoutSave;
   const CompanyListFiltered({
     required this.filterId,
     this.includeDeleted = false,
     this.pageNum,
     this.pageSize,
+    this.withoutSave = false,
   });
 
   @override
@@ -28,6 +30,7 @@ class CompanyListFiltered extends CompaniesEvent {
         includeDeleted,
         pageNum,
         pageSize,
+        withoutSave,
       ];
 }
 

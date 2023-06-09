@@ -87,7 +87,8 @@ class _UsersListState extends State<UsersListWidget> {
                 onIncludeDeletedChanged: (value) =>
                     _filterUsers(null, value, 1),
                 onFilterSaved: (value) => _filterUsers(value, null, 1),
-                onFilterApplied: ([value]) => _filterUsers(value, null, 1),
+                onFilterApplied: ([value, withoutSave]) =>
+                    _filterUsers(value, null, 1, null, withoutSave),
                 onPaginate: (pageNum, pageRow) =>
                     _filterUsers(null, null, pageNum, pageRow),
                 totalRows: userListState.totalRows,
@@ -115,16 +116,19 @@ class _UsersListState extends State<UsersListWidget> {
     bool? includeDeleted,
     int? pageNum,
     int? rowPerPage,
+    bool? withoutSave,
   ]) {
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
     userListBloc.add(UserListFiltered(
+        option: FilteredTableParameter(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-    ));
+      filterOption: withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
+    )));
   }
 }

@@ -16,22 +16,11 @@ class UserListSorted extends UserListEvent {
 }
 
 class UserListFiltered extends UserListEvent {
-  final String filterId;
-  final bool includeDeleted;
-  final int? pageNum;
-  final int? pageSize;
+  final FilteredTableParameter option;
   const UserListFiltered({
-    required this.filterId,
-    this.includeDeleted = false,
-    this.pageNum,
-    this.pageSize,
+    required this.option,
   });
 
   @override
-  List<Object?> get props => [
-        filterId,
-        includeDeleted,
-        pageNum,
-        pageSize,
-      ];
+  List<Object?> get props => [option];
 }

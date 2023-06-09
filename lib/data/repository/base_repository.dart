@@ -18,8 +18,8 @@ class BaseRepository {
           'accept': '*/*',
           'Authorization': 'Bearer $token'
         } {
-          print(token);
-        }
+    print(token);
+  }
 
   Future<http.Response> get(String encodedPath,
       [Map<String, dynamic>? queryParams]) async {
@@ -85,6 +85,34 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
+    } catch (e) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
+    }
+    return response;
+  }
+
+  Future<http.Response> filter(FilteredTableParameter option) async {
+    late http.Response response;
+    try {
+      if (option.filterOption == null) {
+        Map<String, String> queryParams = {
+          'includeDeleted': option.includeDeleted.toString()
+        };
+
+        if (!Validation.isEmpty(option.filterId)) {
+          queryParams.addEntries([MapEntry('filterId', option.filterId)]);
+        }
+
+        queryParams
+            .addEntries([MapEntry('pageNum', option.pageNum.toString())]);
+
+        queryParams
+            .addEntries([MapEntry('pageSize', option.pageSize.toString())]);
+
+        response = await get('$url/list', queryParams);
+      } else {
+        response = await post('$url/list', body: option.toJson());
+      }
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
