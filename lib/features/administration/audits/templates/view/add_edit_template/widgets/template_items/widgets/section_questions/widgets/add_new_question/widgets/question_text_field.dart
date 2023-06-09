@@ -47,9 +47,13 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
         return CustomTextField(
           controller: questionController,
           hintText: getHintText(state.level),
-          height: 100,
           minLines: 3,
+          height: null,
           maxLines: 100,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 10,
+          ),
           onChanged: (value) => context.read<TemplateDesignerBloc>().add(
                 TemplateDesignerQuestionChanged(
                   responseScaleId: emptyGuid,

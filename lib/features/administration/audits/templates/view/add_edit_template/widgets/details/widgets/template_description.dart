@@ -4,17 +4,25 @@ class TemplateDescriptionField extends StatefulWidget {
   const TemplateDescriptionField({super.key});
 
   @override
-  State<TemplateDescriptionField> createState() => _TemplateDescriptionFieldState();
+  State<TemplateDescriptionField> createState() =>
+      _TemplateDescriptionFieldState();
 }
 
 class _TemplateDescriptionFieldState extends State<TemplateDescriptionField> {
-  TextEditingController descriptionController = TextEditingController();
+  late TextEditingController descriptionController;
   late AddEditTemplateBloc addEditTemplateBloc;
 
   @override
   void initState() {
     addEditTemplateBloc = context.read();
+    descriptionController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,19 +41,16 @@ class _TemplateDescriptionFieldState extends State<TemplateDescriptionField> {
           previous.message != current.message,
       builder: (context, state) => FormItem(
         label: 'Template Description (*)',
-        content: BlocListener<TemplateDetailBloc, TemplateDetailState>(
-          listener: (context, state) {
-            descriptionController.text = state.template!.name ?? '';
+        content: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+          builder: (context, state) {
+            return CustomTextField(
+              key: ValueKey(state.template?.name),
+              initialValue: state.template?.name,
+              hintText: 'Template description',
+              onChanged: (description) => addEditTemplateBloc.add(
+                  AddEditTemplateDescriptionChanged(description: description)),
+            );
           },
-          listenWhen: (previous, current) =>
-              previous.template != current.template &&
-              previous.template == null,
-          child: CustomTextField(
-            controller: descriptionController,
-            hintText: 'Template description',
-            onChanged: (firstName) => addEditTemplateBloc
-                .add(AddEditTemplateDescriptionChanged(description: firstName)),
-          ),
         ),
         message: state.templateDescriptionValidationMessage,
       ),

@@ -10,31 +10,39 @@ class RevisionDatePicker extends StatefulWidget {
 }
 
 class _RevisionDatePickerState extends State<RevisionDatePicker> {
-  TextEditingController textController = TextEditingController();
+  late TextEditingController textController;
 
   late AddEditTemplateBloc addEditTemplateBloc;
 
   @override
   void initState() {
     addEditTemplateBloc = context.read();
+    textController = TextEditingController();
     super.initState();
   }
 
   @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddEditTemplateBloc, AddEditTemplateState>(
-      listener: (context, state) {
-        textController.text = state.date!.toString();
-      },
-      listenWhen: (previous, current) => previous.date != current.date,
+    return BlocBuilder<AddEditTemplateBloc, AddEditTemplateState>(
       builder: (context, state) {
         return FormItem(
           label: 'Date (*)',
-          content: CustomDateTimePicker(
-            dateTimePickerType: DateTimePickerType.date,
-            controller: textController,
-            onChange: (date) =>
-                addEditTemplateBloc.add(AddEditTemplateDateChanged(date: date)),
+          content: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+            builder: (context, state) {
+              return CustomDateTimePicker(
+                key: ValueKey(state.template?.revisionDate.toString()),
+                initialValue: state.template?.revisionDate.toString(),
+                dateTimePickerType: DateTimePickerType.date,
+                onChange: (date) => addEditTemplateBloc
+                    .add(AddEditTemplateDateChanged(date: date)),
+              );
+            },
           ),
           message: state.dateValidationMesage,
         );

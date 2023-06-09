@@ -55,8 +55,14 @@ class TemplateSectionItem extends Equatable {
     };
 
     if (children.isNotEmpty) {
-      map.addEntries(
-          [MapEntry('children', children.map((e) => e.toMap()).toList())]);
+      map.addEntries([
+        MapEntry(
+            'children',
+            children
+                .where((element) => element.response?.included == true)
+                .map((e) => e.toMap())
+                .toList())
+      ]);
     }
 
     return map;
@@ -87,8 +93,8 @@ class TemplateSectionItem extends Equatable {
     int? itemTypeId,
     String? responseScaleId,
     String? parentId,
-    Question? question,
-    ResponseScaleItem? response,
+    Nullable<Question?>? question,
+    Nullable<ResponseScaleItem?>? response,
     List<TemplateSectionItem>? children,
   }) {
     return TemplateSectionItem(
@@ -97,8 +103,8 @@ class TemplateSectionItem extends Equatable {
       itemTypeId: itemTypeId ?? this.itemTypeId,
       responseScaleId: responseScaleId ?? this.responseScaleId,
       parentId: parentId ?? this.parentId,
-      question: question ?? this.question,
-      response: response ?? this.response,
+      question: question != null ? question.value : this.question,
+      response: response != null ? response.value : this.response,
       children: children ?? this.children,
     );
   }

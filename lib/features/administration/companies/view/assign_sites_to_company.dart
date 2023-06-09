@@ -109,7 +109,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             // ),
             TextSpan(
               text:
-                  'Sites can be assigned from list on right. Once assigned they will show here in this list below.',
+                  'Sites can be assigned from list on left. Once assigned they will show here in this list below.',
             ),
           ],
         ),

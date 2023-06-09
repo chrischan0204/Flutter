@@ -16,6 +16,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? suffixWidget;
   final int? minLines;
   final int maxLines;
+  final EdgeInsets contentPadding;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -30,8 +31,12 @@ class CustomTextField extends StatefulWidget {
     this.onSuffixIconClick,
     this.height = 36,
     this.suffixWidget,
-    this.minLines,
+    this.minLines = 1,
     this.maxLines = 1,
+    this.contentPadding = const EdgeInsets.symmetric(
+      vertical: 6,
+      horizontal: 10,
+    ),
   });
 
   @override
@@ -61,10 +66,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         decoration: InputDecoration(
           hintText: widget.hintText,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 6,
-            horizontal: 10,
-          ),
+          contentPadding: widget.contentPadding,
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               Radius.circular(5),

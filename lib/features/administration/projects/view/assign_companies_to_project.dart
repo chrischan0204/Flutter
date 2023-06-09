@@ -106,7 +106,7 @@ class _AssignCompaniesToProjectViewState
             // ),
             TextSpan(
               text:
-                  ' Companies can be assigned from list on right. Once assigned they will show here in this list below.',
+                  'Companies can be assigned from list on left. Once assigned they will show here in this list below.',
             ),
           ],
         ),

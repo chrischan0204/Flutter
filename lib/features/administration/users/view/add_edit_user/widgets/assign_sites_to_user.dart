@@ -103,7 +103,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
           children: <TextSpan>[
             TextSpan(
               text:
-                  ' Sites can be assigned from list on right. Once assigned they will show here in this list.',
+                  'Sites can be assigned from list on left. Once assigned they will show here in this list.',
             ),
           ],
         ),

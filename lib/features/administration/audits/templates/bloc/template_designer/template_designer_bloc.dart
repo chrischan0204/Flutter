@@ -206,6 +206,7 @@ class TemplateDesignerBloc
       switch (event.level) {
         case 0:
           newTemplateSection = state.templateSectionItem!.copyWith(
+              itemTypeId: 2,
               responseScaleId: event.responseScaleId,
               children: responseScaleItemList.map((e) {
                 return TemplateSectionItem(
@@ -223,6 +224,7 @@ class TemplateDesignerBloc
               children: children
                   .map((e) => e.id == state.currentLevel1TemplateSectionItemId
                       ? e.copyWith(
+                          itemTypeId: 3,
                           responseScaleId: event.responseScaleId,
                           children: responseScaleItemList
                               .map((e) => TemplateSectionItem(
@@ -246,6 +248,7 @@ class TemplateDesignerBloc
                           .map((child) => child.id ==
                                   state.currentLevel2TemplateSectionItemId
                               ? child.copyWith(
+                                  itemTypeId: 3,
                                   responseScaleId: event.responseScaleId,
                                   children: responseScaleItemList
                                       .map((e) => TemplateSectionItem(
@@ -265,12 +268,12 @@ class TemplateDesignerBloc
       emit(state.copyWith(
         templateSectionItem: Nullable.value(newTemplateSection.copyWith(
           question: newTemplateSection.question != null
-              ? newTemplateSection.question!
-                  .copyWith(responseScaleId: event.responseScaleId)
-              : Question(
+              ? Nullable.value(newTemplateSection.question!
+                  .copyWith(responseScaleId: event.responseScaleId))
+              : Nullable.value(Question(
                   name: '',
                   responseScaleId: event.responseScaleId,
-                ),
+                )),
         )),
         responseScaleItemListLoadStatus: EntityStatus.success,
       ));
@@ -284,20 +287,25 @@ class TemplateDesignerBloc
     TemplateDesignerNewQuestionButtonClicked event,
     Emitter<TemplateDesignerState> emit,
   ) {
-    final newTemplateSectionItem = Nullable.value(TemplateSectionItem(
-      templateSectionId: state.selectedTemplateSection!.id,
-    ));
-    emit(state.copyWith(
-      templateSectionItem: newTemplateSectionItem,
-      level: 0,
-    ));
+    if (state.templateSectionItem != null) {
+      add(TemplateDesignerTemplateSectionItemCreated());
+    } else {
+      final newTemplateSectionItem = Nullable.value(TemplateSectionItem(
+        templateSectionId: state.selectedTemplateSection!.id,
+        itemTypeId: 1,
+      ));
+      emit(state.copyWith(
+        templateSectionItem: newTemplateSectionItem,
+        level: 0,
+      ));
+    }
   }
 
   void _onTemplateDesignerCancelCreateQuestionButtonClicked(
     TemplateDesignerCancelCreateQuestionButtonClicked event,
     Emitter<TemplateDesignerState> emit,
   ) {
-    emit(state.copyWith(
+    emit(state.copyWith(  
       templateSectionItem: const Nullable.value(null),
     ));
   }
@@ -311,11 +319,15 @@ class TemplateDesignerBloc
     switch (state.level) {
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
-            question: Question(
-          name: event.question,
-          responseScaleId: event.responseScaleId,
-          order: 0,
-        ));
+          itemTypeId: 1,
+          question: Nullable.value(
+            Question(
+              name: event.question,
+              responseScaleId: event.responseScaleId,
+              order: 0,
+            ),
+          ),
+        );
         break;
       case 1:
         final children = state.templateSectionItem!.children;
@@ -324,10 +336,14 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.id == state.currentLevel1TemplateSectionItemId
                     ? e.copyWith(
-                        question: Question(
-                        name: event.question,
-                        responseScaleId: event.responseScaleId,
-                      ))
+                        itemTypeId: 1,
+                        question: Nullable.value(
+                          Question(
+                            name: event.question,
+                            responseScaleId: event.responseScaleId,
+                          ),
+                        ),
+                      )
                     : e)
                 .toList());
         break;
@@ -341,10 +357,12 @@ class TemplateDesignerBloc
                         .map((child) =>
                             child.id == state.currentLevel2TemplateSectionItemId
                                 ? child.copyWith(
-                                    question: Question(
-                                    name: event.question,
-                                    responseScaleId: event.responseScaleId,
-                                  ))
+                                    itemTypeId: 1,
+                                    question: Nullable.value(Question(
+                                      name: event.question,
+                                      responseScaleId: event.responseScaleId,
+                                    )),
+                                  )
                                 : child)
                         .toList()))
                 .toList());
@@ -371,8 +389,8 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.id == event.templateSectionItemId
                     ? e.copyWith(
-                        response: e.response
-                            ?.copyWith(commentRequiered: event.commentRequired))
+                        response: Nullable.value(e.response?.copyWith(
+                            commentRequiered: event.commentRequired)))
                     : e)
                 .toList());
         break;
@@ -385,8 +403,10 @@ class TemplateDesignerBloc
                     children: e.children
                         .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
-                                response: child.response?.copyWith(
-                                    commentRequiered: event.commentRequired))
+                                response: Nullable.value(child.response
+                                    ?.copyWith(
+                                        commentRequiered:
+                                            event.commentRequired)))
                             : child)
                         .toList()))
                 .toList());
@@ -402,9 +422,10 @@ class TemplateDesignerBloc
                             children: child.children
                                 .map((e) => e.id == event.templateSectionItemId
                                     ? e.copyWith(
-                                        response: e.response?.copyWith(
-                                            commentRequiered:
-                                                event.commentRequired))
+                                        response: Nullable.value(e.response
+                                            ?.copyWith(
+                                                commentRequiered:
+                                                    event.commentRequired)))
                                     : e)
                                 .toList()))
                         .toList()))
@@ -432,8 +453,8 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.id == event.templateSectionItemId
                     ? e.copyWith(
-                        response: e.response?.copyWith(
-                            actionItemRequired: event.actionItemRequired))
+                        response: Nullable.value(e.response?.copyWith(
+                            actionItemRequired: event.actionItemRequired)))
                     : e)
                 .toList());
         break;
@@ -446,9 +467,10 @@ class TemplateDesignerBloc
                     children: e.children
                         .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
-                                response: child.response?.copyWith(
-                                    actionItemRequired:
-                                        event.actionItemRequired))
+                                response: Nullable.value(child.response
+                                    ?.copyWith(
+                                        actionItemRequired:
+                                            event.actionItemRequired)))
                             : child)
                         .toList()))
                 .toList());
@@ -464,9 +486,10 @@ class TemplateDesignerBloc
                             children: child.children
                                 .map((e) => e.id == event.templateSectionItemId
                                     ? e.copyWith(
-                                        response: e.response?.copyWith(
-                                            actionItemRequired:
-                                                event.actionItemRequired))
+                                        response: Nullable.value(e.response
+                                            ?.copyWith(
+                                                actionItemRequired:
+                                                    event.actionItemRequired)))
                                     : e)
                                 .toList()))
                         .toList()))
@@ -494,8 +517,8 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.id == event.templateSectionItemId
                     ? e.copyWith(
-                        response: e.response?.copyWith(
-                            followUpRequired: event.followUpRequired))
+                        response: Nullable.value(e.response?.copyWith(
+                            followUpRequired: event.followUpRequired)))
                     : e)
                 .toList());
         break;
@@ -508,8 +531,10 @@ class TemplateDesignerBloc
                     children: e.children
                         .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
-                                response: child.response?.copyWith(
-                                    followUpRequired: event.followUpRequired))
+                                response: Nullable.value(child.response
+                                    ?.copyWith(
+                                        followUpRequired:
+                                            event.followUpRequired)))
                             : child)
                         .toList()))
                 .toList());
@@ -525,9 +550,10 @@ class TemplateDesignerBloc
                             children: child.children
                                 .map((e) => e.id == event.templateSectionItemId
                                     ? e.copyWith(
-                                        response: e.response?.copyWith(
-                                            followUpRequired:
-                                                event.followUpRequired))
+                                        response: Nullable.value(e.response
+                                            ?.copyWith(
+                                                followUpRequired:
+                                                    event.followUpRequired)))
                                     : e)
                                 .toList()))
                         .toList()))
@@ -555,7 +581,8 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.id == event.templateSectionItemId
                     ? e.copyWith(
-                        response: e.response?.copyWith(score: event.score))
+                        response: Nullable.value(
+                            e.response?.copyWith(score: event.score)))
                     : e)
                 .toList());
         break;
@@ -568,8 +595,8 @@ class TemplateDesignerBloc
                     children: e.children
                         .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
-                                response: child.response
-                                    ?.copyWith(score: event.score))
+                                response: Nullable.value(
+                                    e.response?.copyWith(score: event.score)))
                             : child)
                         .toList()))
                 .toList());
@@ -585,8 +612,8 @@ class TemplateDesignerBloc
                             children: child.children
                                 .map((e) => e.id == event.templateSectionItemId
                                     ? e.copyWith(
-                                        response: e.response
-                                            ?.copyWith(score: event.score))
+                                        response: Nullable.value(e.response
+                                            ?.copyWith(score: event.score)))
                                     : e)
                                 .toList()))
                         .toList()))
@@ -614,7 +641,8 @@ class TemplateDesignerBloc
             children: children
                 .map((e) => e.id == event.templateSectionItemId
                     ? e.copyWith(
-                        response: e.response?.copyWith(included: event.include))
+                        response: Nullable.value(
+                            e.response?.copyWith(included: event.include)))
                     : e)
                 .toList());
         break;
@@ -627,8 +655,8 @@ class TemplateDesignerBloc
                     children: e.children
                         .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
-                                response: child.response
-                                    ?.copyWith(included: event.include))
+                                response: Nullable.value(child.response
+                                    ?.copyWith(included: event.include)))
                             : child)
                         .toList()))
                 .toList());
@@ -644,8 +672,9 @@ class TemplateDesignerBloc
                             children: child.children
                                 .map((c) => c.id == event.templateSectionItemId
                                     ? c.copyWith(
-                                        response: c.response
-                                            ?.copyWith(included: event.include))
+                                        response: Nullable.value(c.response
+                                            ?.copyWith(
+                                                included: event.include)))
                                     : c)
                                 .toList()))
                         .toList()))

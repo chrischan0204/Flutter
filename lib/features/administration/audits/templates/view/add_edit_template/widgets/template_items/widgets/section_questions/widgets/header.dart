@@ -22,24 +22,45 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                 ),
               ),
               if (state.selectedTemplateSection != null)
-                ElevatedButton(
-                  onPressed: () {
-                    context.read<TemplateDesignerBloc>().add(
-                        const TemplateDesignerAddNewQuestionViewShowed(
-                            showAddNewQuestionView: true));
-                    context
-                        .read<TemplateDesignerBloc>()
-                        .add(TemplateDesignerNewQuestionButtonClicked());
+                BlocListener<TemplateDesignerBloc, TemplateDesignerState>(
+                  listener: (context, state) {
+                    if (state.templateSectionItemCreateStatus.isSuccess) {
+                      CustomNotification(
+                        context: context,
+                        notifyType: NotifyType.success,
+                        content: state.message,
+                      ).showNotification();
+                    } else if (state
+                        .templateSectionItemCreateStatus.isFailure) {
+                      CustomNotification(
+                        context: context,
+                        notifyType: NotifyType.error,
+                        content: state.message,
+                      ).showNotification();
+                    }
                   },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 10,
+                  listenWhen: (previous, current) =>
+                      previous.templateSectionItemCreateStatus !=
+                      current.templateSectionItemCreateStatus,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.read<TemplateDesignerBloc>().add(
+                          const TemplateDesignerAddNewQuestionViewShowed(
+                              showAddNewQuestionView: true));
+                      context
+                          .read<TemplateDesignerBloc>()
+                          .add(TemplateDesignerNewQuestionButtonClicked());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 10,
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    'Add Question',
-                    style: TextStyle(fontSize: 12),
+                    child: const Text(
+                      'Add Question',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
                 ),
             ],

@@ -1,9 +1,30 @@
-import 'package:flutter/material.dart';
+import '/common_libraries.dart';
 
 import 'widgets/widgets.dart';
 
-class AddEditTemplateDetailsView extends StatelessWidget {
-  const AddEditTemplateDetailsView({super.key});
+class AddEditTemplateDetailsView extends StatefulWidget {
+  final String? templateId;
+  const AddEditTemplateDetailsView({
+    super.key,
+    required this.templateId,
+  });
+
+  @override
+  State<AddEditTemplateDetailsView> createState() =>
+      _AddEditTemplateDetailsViewState();
+}
+
+class _AddEditTemplateDetailsViewState
+    extends State<AddEditTemplateDetailsView> {
+  @override
+  void initState() {
+    print('init');
+    if (widget.templateId != null) {
+      context.read<TemplateDetailBloc>().add(
+          TemplateDetailTemplateLoadedById(templateId: widget.templateId!));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

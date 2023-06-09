@@ -77,8 +77,6 @@ class AddEditTemplateBloc
       try {
         final template = Template(
           name: state.templateDescription,
-          usedInAudit: state.usedInAudit,
-          usedInInspection: state.usedInInspection,
           revisionDate: state.date!.toIso8601String(),
         );
         EntityResponse response = event.templateId == null

@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '/common_libraries.dart';
 
 part 'template_detail_event.dart';

@@ -2,8 +2,6 @@ import '/common_libraries.dart';
 
 class Template extends Entity {
   final String revisionDate;
-  final bool usedInAudit;
-  final bool usedInInspection;
   final bool locked;
   final int usedInAudits;
   final int usedInSites;
@@ -13,8 +11,6 @@ class Template extends Entity {
     super.id,
     super.name,
     this.revisionDate = '',
-    this.usedInAudit = false,
-    this.usedInInspection = false,
     this.locked = false,
     this.usedInAudits = 0,
     this.usedInSites = 0,
@@ -30,8 +26,6 @@ class Template extends Entity {
   List<Object?> get props => [
         ...super.props,
         revisionDate,
-        usedInAudit,
-        usedInInspection,
         locked,
         usedInAudits,
         usedInSites,
@@ -46,8 +40,6 @@ class Template extends Entity {
   Map<String, dynamic> tableItemsToMap() {
     return {
       'Name': name,
-      'Audit': usedInAudit,
-      'Inspection': usedInInspection,
       'Revision Date': revisionDate,
       'Created On': createdOn,
       'Created By': createdByUserName,
@@ -57,8 +49,6 @@ class Template extends Entity {
   @override
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
-      'Audits': usedInAudit,
-      'Inspection': usedInInspection,
       'Active': active,
       'Used at sites': usedInSites,
       'Used in audits': usedInAudits,
@@ -86,8 +76,6 @@ class Template extends Entity {
       id: entity.id,
       name: entity.name,
       revisionDate: map['revisionDate'] ?? '',
-      usedInAudit: map['usedInAudit'] ?? false,
-      usedInInspection: map['usedInInspection'] ?? false,
       locked: map['locked'] ?? false,
       usedInAudits: map['usedInAudits'] ?? 0,
       usedInSites: map['usedInSites'] ?? 0,
@@ -103,8 +91,6 @@ class Template extends Entity {
     return {
       'Template Description': name,
       'Revision Date': revisionDate,
-      'Used in audits?': usedInAudit,
-      'Used in inspections?': usedInInspection,
     };
   }
 
@@ -131,8 +117,6 @@ class Template extends Entity {
       id: id ?? this.id,
       name: name ?? this.name,
       revisionDate: revisionDate ?? this.revisionDate,
-      usedInAudit: usedInAudit ?? this.usedInAudit,
-      usedInInspection: usedInInspection ?? this.usedInInspection,
       locked: locked ?? this.locked,
       usedInAudits: usedInAudits ?? this.usedInAudits,
       active: active ?? this.active,

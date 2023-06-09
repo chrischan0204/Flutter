@@ -70,10 +70,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     addEditTemplateBloc = context.read();
     templateDetailBloc = context.read();
 
-    if (widget.templateId != null) {
-      templateDetailBloc.add(
-          TemplateDetailTemplateLoadedById(templateId: widget.templateId!));
-    }
+    if (widget.templateId != null) {}
 
     super.initState();
   }
@@ -105,10 +102,6 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                       date: DateTime.parse(state.template!.revisionDate)));
                   addEditTemplateBloc.add(AddEditTemplateDescriptionChanged(
                       description: state.template!.name!));
-                  addEditTemplateBloc.add(AddEditTemplateUsedInAudit(
-                      usedInAudit: state.template!.usedInAudit));
-                  addEditTemplateBloc.add(AddEditTemplateUsedInInspection(
-                      usedInInspection: state.template!.usedInInspection));
                 }
               },
               listenWhen: (previous, current) =>
@@ -134,7 +127,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                     context.read<FormDirtyBloc>().add(FormDirtyChanged(
                         isDirty: _checkFormDataFill(addEditTemplateState)));
                   },
-                  child: const AddEditTemplateDetailsView(),
+                  child:
+                      AddEditTemplateDetailsView(templateId: widget.templateId),
                 ),
               ),
             );
@@ -145,9 +139,6 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   }
 
   bool _checkFormDataFill(AddEditTemplateState addEditTemplateState) {
-    print(widget.templateId == null
-        ? addEditTemplateState.templateDetailFilled
-        : false);
     return widget.templateId == null
         ? addEditTemplateState.templateDetailFilled
         : false;

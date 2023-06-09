@@ -25,10 +25,7 @@ class _SectionQuestionsViewState extends State<SectionQuestionsView> {
                 width: 0.5,
               ),
             ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
               builder: (context, state) {
                 if (state.selectedTemplateSection == null) {

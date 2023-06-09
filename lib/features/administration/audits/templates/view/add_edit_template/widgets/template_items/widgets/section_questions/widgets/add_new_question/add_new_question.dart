@@ -27,7 +27,7 @@ class _AddNewQuestionViewState extends State<AddNewQuestionView> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               const AddNewQuestionHeaderView(),

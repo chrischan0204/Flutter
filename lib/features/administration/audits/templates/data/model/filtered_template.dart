@@ -71,8 +71,6 @@ class FilteredTemplate extends FilteredEntity {
   Template get template => Template(
         id: id,
         name: name,
-        usedInAudit: audit,
-        usedInInspection: inspection,
         revisionDate: revisionDate,
         createdByUserName: createdBy,
         createdOn: createdOn,
