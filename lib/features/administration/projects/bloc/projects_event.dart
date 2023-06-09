@@ -10,27 +10,11 @@ abstract class ProjectsEvent extends Equatable {
 class ProjectsRetrieved extends ProjectsEvent {}
 
 class ProjectListFiltered extends ProjectsEvent {
-  final String filterId;
-  final bool includeDeleted;
-  final int? pageNum;
-  final int? pageSize;
-  final bool withoutSave;
-  const ProjectListFiltered({
-    required this.filterId,
-    this.includeDeleted = false,
-    this.pageNum,
-    this.pageSize,
-    this.withoutSave = false,
-  });
+  final FilteredTableParameter option;
+  const ProjectListFiltered({required this.option});
 
   @override
-  List<Object?> get props => [
-        filterId,
-        includeDeleted,
-        pageNum,
-        pageSize,
-        withoutSave,
-      ];
+  List<Object?> get props => [option];
 }
 
 class ProjectSelected extends ProjectsEvent {

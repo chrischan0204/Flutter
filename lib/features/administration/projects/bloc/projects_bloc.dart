@@ -71,8 +71,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
     try {
       FilteredProjectData data =
-          await projectsRepository.getFilteredProjectList(event.filterId,
-              event.includeDeleted, event.pageNum, event.pageSize);
+          await projectsRepository.getFilteredProjectList(event.option);
       final List<String> columns =
           List.from(data.headers.where((e) => !e.isHidden).map((e) => e.title));
       emit(state.copyWith(

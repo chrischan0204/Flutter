@@ -46,7 +46,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
             onViewSettingApplied: () => _filterProjects(),
             onIncludeDeletedChanged: (value) => _filterProjects(null, value, 1),
             onFilterSaved: (value) => _filterProjects(value, null, 1),
-            onFilterApplied: ([value, withoutSave]) => _filterProjects(value, null, 1, null, withoutSave),
+            onFilterApplied: ([value, withoutSave]) =>
+                _filterProjects(value, null, 1, null, withoutSave),
             onPaginate: (pageNum, pageRow) =>
                 _filterProjects(null, null, pageNum, pageRow),
             totalRows: state.totalRows,
@@ -77,13 +78,15 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
     projectsBloc.add(ProjectListFiltered(
+        option: FilteredTableParameter(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-      withoutSave: withoutSave ?? false,
-    ));
+      filterOption:
+          withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
+    )));
   }
 }
