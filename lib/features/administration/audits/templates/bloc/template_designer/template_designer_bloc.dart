@@ -221,7 +221,7 @@ class TemplateDesignerBloc
 
           newTemplateSection = state.templateSectionItem!.copyWith(
               children: children
-                  .map((e) => e.id == state.currentTemplateSectionItemId
+                  .map((e) => e.id == state.currentLevel1TemplateSectionItemId
                       ? e.copyWith(
                           responseScaleId: event.responseScaleId,
                           children: responseScaleItemList
@@ -243,22 +243,21 @@ class TemplateDesignerBloc
               children: children
                   .map((e) => e.copyWith(
                       children: e.children
-                          .map((child) =>
-                              child.id == state.currentTemplateSectionItemId
-                                  ? child.copyWith(
-                                      responseScaleId: event.responseScaleId,
-                                      children: responseScaleItemList
-                                          .map((e) => TemplateSectionItem(
-                                                id: const Uuid().v1(),
-                                                templateSectionId: state
-                                                    .selectedTemplateSection!
-                                                    .id,
-                                                responseScaleId:
-                                                    event.responseScaleId,
-                                                response: e,
-                                              ))
-                                          .toList())
-                                  : child)
+                          .map((child) => child.id ==
+                                  state.currentLevel2TemplateSectionItemId
+                              ? child.copyWith(
+                                  responseScaleId: event.responseScaleId,
+                                  children: responseScaleItemList
+                                      .map((e) => TemplateSectionItem(
+                                            id: const Uuid().v1(),
+                                            templateSectionId: state
+                                                .selectedTemplateSection!.id,
+                                            responseScaleId:
+                                                event.responseScaleId,
+                                            response: e,
+                                          ))
+                                      .toList())
+                              : child)
                           .toList()))
                   .toList());
       }
@@ -323,7 +322,7 @@ class TemplateDesignerBloc
 
         newTemplateSection = state.templateSectionItem!.copyWith(
             children: children
-                .map((e) => e.id == state.currentTemplateSectionItemId
+                .map((e) => e.id == state.currentLevel1TemplateSectionItemId
                     ? e.copyWith(
                         question: Question(
                         name: event.question,
@@ -340,7 +339,7 @@ class TemplateDesignerBloc
                 .map((e) => e.copyWith(
                     children: e.children
                         .map((child) =>
-                            child.id == state.currentTemplateSectionItemId
+                            child.id == state.currentLevel2TemplateSectionItemId
                                 ? child.copyWith(
                                     question: Question(
                                     name: event.question,
@@ -700,7 +699,12 @@ class TemplateDesignerBloc
     TemplateDesignerCurrentTemplateSectionItemChanged event,
     Emitter<TemplateDesignerState> emit,
   ) {
-    emit(state.copyWith(
-        currentTemplateSectionItemId: event.templateSectionItemId));
+    if (state.level == 0) {
+      emit(state.copyWith(
+          currentLevel1TemplateSectionItemId: event.templateSectionItemId));
+    } else if (state.level == 1) {
+      emit(state.copyWith(
+          currentLevel2TemplateSectionItemId: event.templateSectionItemId));
+    }
   }
 }

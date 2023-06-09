@@ -37,8 +37,7 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
     return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
       listener: (context, state) {
         questionController.text = state
-                .currentTemplateSectionItem(
-                    state.level, state.currentTemplateSectionItemId!)
+                .currentTemplateSectionItemByLevel(state.level)
                 .question
                 ?.name ??
             '';

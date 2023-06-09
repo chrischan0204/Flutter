@@ -65,6 +65,9 @@ class ResponseScaleItemView extends StatelessWidget {
                           Flexible(
                             fit: FlexFit.tight,
                             child: CustomTextField(
+                              key: ValueKey(templateSectionItem.id),
+                              initialValue: templateSectionItem.response?.score
+                                  .toString(),
                               isDisabled: disabled,
                               onChanged: (value) => context
                                   .read<TemplateDesignerBloc>()
@@ -150,13 +153,13 @@ class ResponseScaleItemView extends StatelessWidget {
                                   false,
                               onClick: (followUpRequired) {
                                 context.read<TemplateDesignerBloc>()
-                                  ..add(TemplateDesignerLevelChanged(
-                                    level: state.level + 1,
-                                  ))
                                   ..add(
                                       TemplateDesignerCurrentTemplateSectionItemChanged(
                                           templateSectionItemId:
-                                              templateSectionItem.id!));
+                                              templateSectionItem.id!))
+                                  ..add(TemplateDesignerLevelChanged(
+                                    level: state.level + 1,
+                                  ));
                               },
                               disabled: disabled,
                               title: 'Add L${state.level + 1} Follow up',
