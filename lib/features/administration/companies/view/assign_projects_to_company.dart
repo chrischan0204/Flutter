@@ -340,21 +340,21 @@ class _AssignProjectsToCompanyViewState
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(
-        text: TextSpan(
-          style: const TextStyle(
+        text: const TextSpan(
+          style: TextStyle(
             fontSize: 12,
             color: Colors.black,
             fontWeight: FontWeight.w400,
             fontFamily: 'OpenSans',
           ),
           children: <TextSpan>[
+            // TextSpan(
+            //   text: 'Projects can be assigned to \' ${widget.companyName} \'',
+            //   style: const TextStyle(
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            // ),
             TextSpan(
-              text: 'Projects can be assigned to \' ${widget.companyName} \'',
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const TextSpan(
               text:
                   '  Projects are listed as per the sites assigned to this company.',
             ),

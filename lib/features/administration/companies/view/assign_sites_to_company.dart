@@ -92,24 +92,24 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(
-        text: TextSpan(
-          style: const TextStyle(
+        text: const TextSpan(
+          style: TextStyle(
             fontSize: 12,
             color: Colors.black,
             fontWeight: FontWeight.w400,
             fontFamily: 'OpenSans',
           ),
           children: <TextSpan>[
+            // TextSpan(
+            //   text:
+            //       'The company \'${widget.companyName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
+            //   style: const TextStyle(
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            // ),
             TextSpan(
               text:
-                  'The company \'${widget.companyName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const TextSpan(
-              text:
-                  ' Sites can be assigned from list on right. Once assigned they will show here in this list below.',
+                  'Sites can be assigned from list on right. Once assigned they will show here in this list below.',
             ),
           ],
         ),

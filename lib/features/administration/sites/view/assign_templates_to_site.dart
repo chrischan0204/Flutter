@@ -112,27 +112,116 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const Text(
+                          'Templates can be assigned to this site by selecting from the list below.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const CustomDivider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: CustomTextField(
+                            hintText: 'Filter unassigned sites by name..',
+                            onChanged: (value) {},
+                            controller: filterController,
+                            suffixIconData: PhosphorIcons.regular.funnel,
+                          ),
+                        ),
+                        const CustomDivider(),
+                        SizedBox(
+                          child: DataTable(
+                            headingTextStyle: tableHeadingTextStyle,
+                            dataTextStyle: tableDataTextStyle,
+                            columns: const [
+                              DataColumn(
+                                label: Text('Assigned?'),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Template Name',
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Created By',
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Last Revised on',
+                                ),
+                              ),
+                            ],
+                            rows: state.templates
+                                .where(
+                                    (auditTemplate) => !auditTemplate.assigned)
+                                .map(
+                                  (auditTemplate) => DataRow(
+                                    cells: [
+                                      DataCell(
+                                        CustomSwitch(
+                                          trueString: 'Yes',
+                                          falseString: 'No',
+                                          textColor: darkTeal,
+                                          switchValue: auditTemplate.assigned,
+                                          onChanged: (value) {
+                                            sitesBloc.add(
+                                              AuditTemplateAssignedToSite(
+                                                auditTemplateId:
+                                                    auditTemplate.id,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      ...auditTemplate
+                                          .toTableDetailMap()
+                                          .values
+                                          .map(
+                                            (detail) => DataCell(
+                                              CustomDataCell(data: detail),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 150,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
+                            text: const TextSpan(
+                              style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'OpenSans',
                               ),
                               children: <TextSpan>[
+                                // TextSpan(
+                                //   text:
+                                //       'The site \' ${widget.siteName} \' has been created.',
+                                //   style: const TextStyle(
+                                //     fontWeight: FontWeight.w600,
+                                //   ),
+                                // ),
                                 TextSpan(
                                   text:
-                                      'The site \' ${widget.siteName} \' has been created.',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text:
-                                      ' Sites can be assigned from list on right. Once assigned they will show here in this list below.',
+                                      'Sites can be assigned from list on right. Once assigned they will show here in this list below.',
                                 ),
                               ],
                             ),
@@ -220,95 +309,6 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 150,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Templates can be assigned to this site by selecting from the list below.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const CustomDivider(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: CustomTextField(
-                            hintText: 'Filter unassigned sites by name..',
-                            onChanged: (value) {},
-                            controller: filterController,
-                            suffixIconData: PhosphorIcons.regular.funnel,
-                          ),
-                        ),
-                        const CustomDivider(),
-                        SizedBox(
-                          child: DataTable(
-                            headingTextStyle: tableHeadingTextStyle,
-                            dataTextStyle: tableDataTextStyle,
-                            columns: const [
-                              DataColumn(
-                                label: Text('Assigned?'),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Template Name',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Created By',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Last Revised on',
-                                ),
-                              ),
-                            ],
-                            rows: state.templates
-                                .where(
-                                    (auditTemplate) => !auditTemplate.assigned)
-                                .map(
-                                  (auditTemplate) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        CustomSwitch(
-                                          trueString: 'Yes',
-                                          falseString: 'No',
-                                          textColor: darkTeal,
-                                          switchValue: auditTemplate.assigned,
-                                          onChanged: (value) {
-                                            sitesBloc.add(
-                                              AuditTemplateAssignedToSite(
-                                                auditTemplateId:
-                                                    auditTemplate.id,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      ...auditTemplate
-                                          .toTableDetailMap()
-                                          .values
-                                          .map(
-                                            (detail) => DataCell(
-                                              CustomDataCell(data: detail),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ],

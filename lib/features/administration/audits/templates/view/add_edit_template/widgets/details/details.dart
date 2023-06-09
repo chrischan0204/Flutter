@@ -11,7 +11,7 @@ class AddEditTemplateDetailsView extends StatelessWidget {
       children: const [
         TemplateDescriptionField(),
         RevisionDatePicker(),
-        UsedInCheckBoxes()
+        // UsedInCheckBoxes()
       ],
     );
   }

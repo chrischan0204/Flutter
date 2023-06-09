@@ -91,20 +91,20 @@ class _AssignCompaniesToProjectViewState
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(
-        text: TextSpan(
-          style: const TextStyle(
+        text: const TextSpan(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
           ),
           children: <TextSpan>[
+            // TextSpan(
+            //   text:
+            //       'The project \'${widget.projectName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
+            //   style: const TextStyle(
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            // ),
             TextSpan(
-              text:
-                  'The project \'${widget.projectName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const TextSpan(
               text:
                   ' Companies can be assigned from list on right. Once assigned they will show here in this list below.',
             ),

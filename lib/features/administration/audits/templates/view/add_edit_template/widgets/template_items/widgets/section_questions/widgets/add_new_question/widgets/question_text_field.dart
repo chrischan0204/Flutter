@@ -38,7 +38,7 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
       listener: (context, state) {
         questionController.text = state
                 .currentTemplateSectionItem(
-                    state.level, 'templateSectionItemId')
+                    state.level, state.currentTemplateSectionItemId!)
                 .question
                 ?.name ??
             '';

@@ -73,8 +73,6 @@ class Template extends Entity {
     Map<String, dynamic> map = {
       'revisionDate': revisionDate,
       'name': name,
-      'usedInInspection': usedInInspection,
-      'usedInAudit': usedInAudit,
     };
     if (id != null) {
       map.addEntries([MapEntry('id', id)]);
