@@ -4,8 +4,7 @@ class ViewSettingView extends StatefulWidget {
   const ViewSettingView({super.key});
 
   @override
-  State<ViewSettingView> createState() =>
-      _ViewSettingViewState();
+  State<ViewSettingView> createState() => _ViewSettingViewState();
 }
 
 class _ViewSettingViewState extends State<ViewSettingView> {
@@ -20,8 +19,8 @@ class _ViewSettingViewState extends State<ViewSettingView> {
   bool _reorderDisplayColumnCallback(Key item, Key newPosition) {
     int draggingIndex =
         viewSettingBloc.state.indexOfViewSettingDisplayColumnList(item);
-    int newPositionIndex = viewSettingBloc.state
-        .indexOfViewSettingDisplayColumnList(newPosition);
+    int newPositionIndex =
+        viewSettingBloc.state.indexOfViewSettingDisplayColumnList(newPosition);
 
     viewSettingBloc.add(ViewSettingDisplayColumnOrderChanged(
       draggingIndex: draggingIndex,
@@ -33,8 +32,8 @@ class _ViewSettingViewState extends State<ViewSettingView> {
   bool _reorderSortingColumnCallback(Key item, Key newPosition) {
     int draggingIndex =
         viewSettingBloc.state.indexOfViewSettingSortingColumnList(item);
-    int newPositionIndex = viewSettingBloc.state
-        .indexOfViewSettingSortingColumnList(newPosition);
+    int newPositionIndex =
+        viewSettingBloc.state.indexOfViewSettingSortingColumnList(newPosition);
 
     viewSettingBloc.add(ViewSettingSortingColumnOrderChanged(
       draggingIndex: draggingIndex,
@@ -65,11 +64,11 @@ class _ViewSettingViewState extends State<ViewSettingView> {
           );
         }
         return EntityListViewSettingView(
-          onDisplayColumnAdded: () => viewSettingBloc
-              .add(ViewSettingDisplayColumnAdded()),
+          onDisplayColumnAdded: () =>
+              viewSettingBloc.add(ViewSettingDisplayColumnAdded()),
           onDisplayColumnOrderChanged: _reorderDisplayColumnCallback,
-          onDisplayColumnSelected: (column, value) => viewSettingBloc
-              .add(ViewSettingDisplayColumnSelected(
+          onDisplayColumnSelected: (column, value) =>
+              viewSettingBloc.add(ViewSettingDisplayColumnSelected(
             column: column,
             selectedValue: value,
           )),
@@ -80,18 +79,20 @@ class _ViewSettingViewState extends State<ViewSettingView> {
           viewSettingSortingColumnList:
               state.undeletedViewSettingSortingColumnList,
           columns: state.columns,
-          onSortingColumnAdded: () => viewSettingBloc
-              .add(ViewSettingSortingColumnAdded()),
+          usefulDisplayColumns: state.usefulDisplayColumns,
+          usefulSortingColumns: state.usefulSortingColumns,
+          onSortingColumnAdded: () =>
+              viewSettingBloc.add(ViewSettingSortingColumnAdded()),
           onSortingColumnDeleted: (column) => viewSettingBloc
               .add(ViewSettingSortingColumnDeleted(column: column)),
           onSortingColumnOrderChanged: _reorderSortingColumnCallback,
-          onSortingColumnSelected: (column, value) => viewSettingBloc
-              .add(ViewSettingSortingColumnSelected(
+          onSortingColumnSelected: (column, value) =>
+              viewSettingBloc.add(ViewSettingSortingColumnSelected(
             column: column,
             selectedValue: value,
           )),
-          onSortDirectionChanged: (column, value) => viewSettingBloc
-              .add(ViewSettingSortingColumnSortDirectionChanged(
+          onSortDirectionChanged: (column, value) =>
+              viewSettingBloc.add(ViewSettingSortingColumnSortDirectionChanged(
             column: column,
             sortDirection: value,
           )),

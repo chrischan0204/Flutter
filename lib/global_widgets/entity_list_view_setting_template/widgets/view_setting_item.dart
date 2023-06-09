@@ -12,6 +12,7 @@ class ViewSettingItem extends StatefulWidget {
     required this.onChange,
     this.selectedValue,
     this.columns = const [],
+    this.usefulColumns = const [],
     this.displayColumnList = const [],
     this.canSort = false,
     this.onSortChanged,
@@ -23,8 +24,9 @@ class ViewSettingItem extends StatefulWidget {
   final bool isLast;
   final VoidCallback deleteItem;
   final ValueChanged<ViewSettingColumn> onChange;
-  final String? selectedValue;
+  final ViewSettingColumn? selectedValue;
   final List<ViewSettingColumn> columns;
+  final List<ViewSettingColumn> usefulColumns;
   final List<String> displayColumnList;
   final bool canSort;
   final ValueChanged<String>? onSortChanged;
@@ -151,7 +153,7 @@ class _ItemState extends State<ViewSettingItem> {
                 size: 20,
               ),
             )
-          :  Icon(
+          : Icon(
               PhosphorIcons.regular.x,
               color: Colors.red,
               size: 20,
@@ -166,13 +168,19 @@ class _ItemState extends State<ViewSettingItem> {
         child: Builder(
           builder: (context) {
             Map<String, dynamic> items = {};
-            for (var column in widget.columns) {
+            for (var column in widget.usefulColumns) {
               items.addEntries([MapEntry(column.title, column)]);
             }
+            if (widget.selectedValue != null) {
+              items.addEntries([
+                MapEntry(widget.selectedValue!.title, widget.selectedValue!)
+              ]);
+            }
+
             return CustomSingleSelect(
               items: items,
               hint: 'Select Column',
-              selectedValue: widget.selectedValue,
+              selectedValue: widget.selectedValue?.title,
               onChanged: (value) {
                 setState(() {
                   selectedValue = value.key;

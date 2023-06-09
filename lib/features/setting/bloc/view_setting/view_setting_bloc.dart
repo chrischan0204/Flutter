@@ -79,8 +79,27 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
     try {
       ViewSetting viewSetting =
           await settingsRepository.getViewSetting(event.viewName);
+
+      final List<ViewSettingColumn> usefulDisplayColumns =
+          List.from(viewSetting.columnList);
+
+      for (final viewSettingDisplayColumn in viewSetting.displayColumnList) {
+        usefulDisplayColumns.removeWhere((element) =>
+            element.viewSettingId == viewSettingDisplayColumn.viewSettingId);
+      }
+
+      final List<ViewSettingColumn> usefulSortingColumns =
+          List.from(viewSetting.columnList);
+
+      for (final viewSettingSortingColumn in viewSetting.sortingColumnList) {
+        usefulSortingColumns.removeWhere((element) =>
+            element.viewSettingId == viewSettingSortingColumn.viewSettingId);
+      }
+
       emit(state.copyWith(
         columns: viewSetting.columnList,
+        usefulDisplayColumns: usefulDisplayColumns,
+        usefulSortingColumns: usefulSortingColumns,
         viewSettingDisplayColumnList: viewSetting.displayColumnList
             .map((e) => ViewSettingItemData(
                   id: e.id,
@@ -152,8 +171,17 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
         item.copyWith(
           selectedValue: event.selectedValue,
         ));
+
+    // update useful display columns
+    final List<ViewSettingColumn> usefulDisplayColumns =
+        List.from(state.usefulDisplayColumns);
+    usefulDisplayColumns.removeWhere((element) =>
+        element.viewSettingId == event.selectedValue.viewSettingId);
+
     emit(state.copyWith(
-        viewSettingDisplayColumnList: viewSettingDisplayColumnList));
+      viewSettingDisplayColumnList: viewSettingDisplayColumnList,
+      usefulDisplayColumns: usefulDisplayColumns,
+    ));
   }
 
   void _onViewSettingSortingColumnSelected(
@@ -170,8 +198,17 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
         item.copyWith(
           selectedValue: event.selectedValue,
         ));
+
+    // update useful sorting columns
+    final List<ViewSettingColumn> usefulSortingColumns =
+        List.from(state.usefulSortingColumns);
+    usefulSortingColumns.removeWhere((element) =>
+        element.viewSettingId == event.selectedValue.viewSettingId);
+
     emit(state.copyWith(
-        viewSettingSortingColumnList: viewSettingSortingColumnList));
+      viewSettingSortingColumnList: viewSettingSortingColumnList,
+      usefulSortingColumns: usefulSortingColumns,
+    ));
   }
 
   void _onViewSettingDisplayColumnAdded(
@@ -214,8 +251,17 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
     final item = viewSettingDisplayColumnList.removeAt(index);
     viewSettingDisplayColumnList.insert(index, item.copyWith(deleted: true));
 
+    // add deleted column to useful sorting columns list
+    final List<ViewSettingColumn> usefulDisplayColumns =
+        List.from(state.usefulDisplayColumns);
+    if (event.column.selectedValue != null) {
+      usefulDisplayColumns.add(event.column.selectedValue!);
+    }
+
     emit(state.copyWith(
-        viewSettingDisplayColumnList: viewSettingDisplayColumnList));
+      viewSettingDisplayColumnList: viewSettingDisplayColumnList,
+      usefulDisplayColumns: usefulDisplayColumns,
+    ));
   }
 
   void _onViewSettingSortingColumnDeleted(
@@ -229,8 +275,17 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
     final item = viewSettingSortingColumnList.removeAt(index);
     viewSettingSortingColumnList.insert(index, item.copyWith(deleted: true));
 
+    // add deleted column to useful sorting columns list
+    final List<ViewSettingColumn> usefulSortingColumns =
+        List.from(state.usefulSortingColumns);
+    if (event.column.selectedValue != null) {
+      usefulSortingColumns.add(event.column.selectedValue!);
+    }
+
     emit(state.copyWith(
-        viewSettingSortingColumnList: viewSettingSortingColumnList));
+      viewSettingSortingColumnList: viewSettingSortingColumnList,
+      usefulSortingColumns: usefulSortingColumns,
+    ));
   }
 
   void _onViewSettingSortingColumnSortDirectionChanged(

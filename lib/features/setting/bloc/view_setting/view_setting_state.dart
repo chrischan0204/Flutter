@@ -6,12 +6,16 @@ class ViewSettingState extends Equatable {
   final List<ViewSettingItemData> viewSettingDisplayColumnList;
   final List<ViewSettingItemData> viewSettingSortingColumnList;
   final List<ViewSettingColumn> columns;
+  final List<ViewSettingColumn> usefulDisplayColumns;
+  final List<ViewSettingColumn> usefulSortingColumns;
   const ViewSettingState({
     this.viewSettingLoadStatus = EntityStatus.initial,
     this.viewSettingSaveStatus = EntityStatus.initial,
     this.viewSettingDisplayColumnList = const [],
     this.viewSettingSortingColumnList = const [],
     this.columns = const [],
+    this.usefulDisplayColumns = const [],
+    this.usefulSortingColumns = const [],
   });
 
   @override
@@ -21,6 +25,8 @@ class ViewSettingState extends Equatable {
         viewSettingDisplayColumnList,
         viewSettingSortingColumnList,
         columns,
+        usefulDisplayColumns,
+        usefulSortingColumns,
       ];
 
   List<ViewSettingItemData> get undeletedViewSettingDisplayColumnList =>
@@ -53,6 +59,8 @@ class ViewSettingState extends Equatable {
     List<ViewSettingItemData>? viewSettingDisplayColumnList,
     List<ViewSettingItemData>? viewSettingSortingColumnList,
     List<ViewSettingColumn>? columns,
+    List<ViewSettingColumn>? usefulDisplayColumns,
+    List<ViewSettingColumn>? usefulSortingColumns,
   }) {
     return ViewSettingState(
       viewSettingLoadStatus:
@@ -64,6 +72,8 @@ class ViewSettingState extends Equatable {
       viewSettingSortingColumnList:
           viewSettingSortingColumnList ?? this.viewSettingSortingColumnList,
       columns: columns ?? this.columns,
+      usefulDisplayColumns: usefulDisplayColumns ?? this.usefulDisplayColumns,
+      usefulSortingColumns: usefulSortingColumns ?? this.usefulSortingColumns,
     );
   }
 }

@@ -18,6 +18,8 @@ class EntityListViewSettingView extends StatefulWidget {
   final List<ViewSettingItemData> viewSettingDisplayColumnList;
   final List<ViewSettingItemData> viewSettingSortingColumnList;
   final List<ViewSettingColumn> columns;
+  final List<ViewSettingColumn> usefulDisplayColumns;
+  final List<ViewSettingColumn> usefulSortingColumns;
   final void Function(ViewSettingItemData, String) onSortDirectionChanged;
   const EntityListViewSettingView({
     super.key,
@@ -32,6 +34,8 @@ class EntityListViewSettingView extends StatefulWidget {
     required this.viewSettingDisplayColumnList,
     required this.viewSettingSortingColumnList,
     required this.columns,
+    required this.usefulDisplayColumns,
+    required this.usefulSortingColumns,
     required this.onSortDirectionChanged,
   });
 
@@ -87,12 +91,11 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                     isLast: index == widget.viewSettingSortingColumnList.length,
                     columns: widget.columns,
                     selectedValue: widget
-                        .viewSettingSortingColumnList[index - 1]
-                        .selectedValue
-                        ?.title,
+                        .viewSettingSortingColumnList[index - 1].selectedValue,
                     canSort: true,
                     sortDirection: widget
                         .viewSettingSortingColumnList[index - 1].sortDirection,
+                    usefulColumns: widget.usefulSortingColumns,
                     onSortChanged: widget
                                 .viewSettingSortingColumnList[index - 1]
                                 .selectedValue ==
@@ -137,10 +140,9 @@ class _EntityListViewSettingViewState extends State<EntityListViewSettingView> {
                     isFirst: index == 1,
                     isLast: index == widget.viewSettingDisplayColumnList.length,
                     columns: widget.columns,
+                    usefulColumns: widget.usefulDisplayColumns,
                     selectedValue: widget
-                        .viewSettingDisplayColumnList[index - 1]
-                        .selectedValue
-                        ?.title,
+                        .viewSettingDisplayColumnList[index - 1].selectedValue,
                     onChange: (value) => widget.onDisplayColumnSelected(
                         widget.viewSettingDisplayColumnList[index - 1], value),
                     deleteItem: () => widget.onDisplayColumnDeleted(
