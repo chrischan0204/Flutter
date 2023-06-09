@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '/common_libraries.dart';
 
 part 'template_list_event.dart';
@@ -45,8 +43,7 @@ class TemplateListBloc extends Bloc<TemplateListEvent, TemplateListState> {
 
     try {
       final filteredTemplateData =
-          await templatesRepository.getFilteredTemplateList(event.filterId,
-              event.includeDeleted, event.pageNum, event.pageSize);
+          await templatesRepository.getFilteredTemplateList(event.option);
 
       final List<String> columns = List.from(filteredTemplateData.headers
           .where((e) => !e.isHidden)

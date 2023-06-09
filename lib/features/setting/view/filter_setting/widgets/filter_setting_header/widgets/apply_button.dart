@@ -27,7 +27,7 @@ class _ApplyButtonState extends State<ApplyButton> {
         return ButtonTheme(
           minWidth: 120,
           child: ElevatedButton(
-            onPressed: state.isNew || state.isFilterUpdateNotFill
+            onPressed: state.isFilterUpdateNotFill
                 ? null
                 : () {
                     widget.onFilterApplied(state.userFilterUpdate.id, true);

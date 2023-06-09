@@ -121,13 +121,15 @@ class _TemplateListWidgetState extends State<TemplateListWidget> {
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
     templateListBloc.add(TemplateListFiltered(
+        option: FilteredTableParameter(
       filterId: filterId ??
           filterSettingBloc.state.appliedUserFilterSetting?.id ??
           emptyGuid,
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-      withoutSave: withoutSave ?? false,
-    ));
+      filterOption:
+          withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
+    )));
   }
 }
