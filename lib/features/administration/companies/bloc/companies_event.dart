@@ -216,9 +216,21 @@ class UnAssignedProjectCompanyRoleSelected extends CompaniesEvent {
       ];
 }
 
-class FilterTextChanged extends CompaniesEvent {
+class FilterTextChangedForAssigned extends CompaniesEvent {
   final String filterText;
-  const FilterTextChanged({
+  const FilterTextChangedForAssigned({
+    required this.filterText,
+  });
+
+  @override
+  List<Object?> get props => [
+        filterText,
+      ];
+}
+
+class FilterTextChangedForUnassigned extends CompaniesEvent {
+  final String filterText;
+  const FilterTextChangedForUnassigned({
     required this.filterText,
   });
 

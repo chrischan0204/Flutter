@@ -47,7 +47,8 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<UnAssignedProjectCompanyRoleSelected>(
         _onUnAssignedProjectCompanyRoleSelected);
     on<CompaniesStatusInited>(_onCompaniesStatusInited);
-    on<FilterTextChanged>(_onFilterTextChanged);
+    on<FilterTextChangedForAssigned>(_onFilterTextAssignedChanged);
+    on<FilterTextChangedForUnassigned>(_onFilterTextUnassignedChanged);
     on<FilterSiteIdChanged>(_onFilterSiteIdChanged);
     on<AuditTrailsRetrievedByCompanyId>(_onAuditTrailsRetrievedByCompanyId);
   }
@@ -479,12 +480,19 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
         state.copyWith(unassignedProjectCompanies: unassignedProjectCompanies));
   }
 
-  // change the filter text
-  void _onFilterTextChanged(
-    FilterTextChanged event,
+  /// change the filter text
+  void _onFilterTextAssignedChanged(
+    FilterTextChangedForAssigned event,
     Emitter<CompaniesState> emit,
   ) {
-    emit(state.copyWith(filterText: event.filterText));
+    emit(state.copyWith(filterTextForAssigned: event.filterText));
+  }
+
+  void _onFilterTextUnassignedChanged(
+    FilterTextChangedForUnassigned event,
+    Emitter<CompaniesState> emit,
+  ) {
+    emit(state.copyWith(filterTextForUnassigned: event.filterText));
   }
 
   // change the filter site id

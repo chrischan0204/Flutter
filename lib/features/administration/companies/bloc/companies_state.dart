@@ -20,7 +20,8 @@ class CompaniesState extends Equatable {
   final Company? selectedCompany;
   final EntityStatus companySelectedStatus;
   final EntityStatus companyCrudStatus;
-  final String filterText;
+  final String filterTextForAssigned;
+  final String filterTextForUnassigned;
   final String filterSiteId;
   final String message;
   final int totalRows;
@@ -44,7 +45,8 @@ class CompaniesState extends Equatable {
     this.auditTrailsRerievedStatus = EntityStatus.initial,
     this.companyCrudStatus = EntityStatus.initial,
     this.companySelectedStatus = EntityStatus.initial,
-    this.filterText = '',
+    this.filterTextForAssigned = '',
+    this.filterTextForUnassigned = '',
     this.filterSiteId = '',
     this.message = '',
     this.totalRows = 0,
@@ -72,7 +74,8 @@ class CompaniesState extends Equatable {
         companyCrudStatus,
         companySelectedStatus,
         message,
-        filterText,
+        filterTextForAssigned,
+        filterTextForUnassigned,
         filterSiteId,
         totalRows,
       ];
@@ -100,7 +103,8 @@ class CompaniesState extends Equatable {
     EntityStatus? unassignedCompanySitesRetrievedStatus,
     EntityStatus? auditTrailsRerievedStatus,
     String? message,
-    String? filterText,
+    String? filterTextForAssigned,
+    String? filterTextForUnassigned,
     String? filterSiteId,
     int? totalRows,
   }) {
@@ -143,7 +147,10 @@ class CompaniesState extends Equatable {
       projectFromCompanyUnassignedStatus: projectFromCompanyUnassignedStatus ??
           this.projectFromCompanyUnassignedStatus,
       message: message ?? this.message,
-      filterText: filterText ?? this.filterText,
+      filterTextForAssigned:
+          filterTextForAssigned ?? this.filterTextForAssigned,
+      filterTextForUnassigned:
+          filterTextForUnassigned ?? this.filterTextForUnassigned,
       filterSiteId: filterSiteId ?? this.filterSiteId,
       totalRows: totalRows ?? this.totalRows,
     );

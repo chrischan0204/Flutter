@@ -22,7 +22,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   @override
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
-      ..add(const FilterTextChanged(filterText: ''))
+      ..add(const FilterTextChangedForAssigned(filterText: ''))
       ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
       ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
     super.initState();
@@ -67,7 +67,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             ),
           ),
           const CustomDivider(),
-          _buildFilterTextField(state),
+          _buildFilterTextFieldForUnassignedSites(state),
           const CustomDivider(),
           _buildUnassignedSitesTableView(state),
         ],
@@ -82,6 +82,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         children: [
           _buildAssignedSitesTableViewHeader(state),
           const CustomDivider(),
+          _buildFilterTextFieldForAssignedSites(state),
+          const CustomDivider(),
           _buildAssignedSitesTableView(state, context),
         ],
       ),
@@ -89,29 +91,15 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   }
 
   Padding _buildAssignedSitesTableViewHeader(CompaniesState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: RichText(
-        text: const TextSpan(
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'OpenSans',
-          ),
-          children: <TextSpan>[
-            // TextSpan(
-            //   text:
-            //       'The company \'${widget.companyName}\' has been ${widget.view == 'created' ? 'created' : 'updated'}.',
-            //   style: const TextStyle(
-            //     fontWeight: FontWeight.w600,
-            //   ),
-            // ),
-            TextSpan(
-              text:
-                  'Sites can be assigned from list on left. Once assigned they will show here in this list below.',
-            ),
-          ],
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        'Sites can be assigned from list on left. Once assigned they will show here in this list below.',
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.black,
+          fontWeight: FontWeight.w400,
+          fontFamily: 'OpenSans',
         ),
       ),
     );
@@ -128,7 +116,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
-            _refetchCompanySites(state.filterText);
+            _refetchCompanySites(
+                state.filterTextForAssigned, state.filterTextForUnassigned);
           } else if (state.siteFromCompanyUnassignedStatus ==
               EntityStatus.failure) {
             CustomNotification(
@@ -195,7 +184,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
-            _refetchCompanySites(state.filterText);
+            _refetchCompanySites(
+                state.filterTextForAssigned, state.filterTextForUnassigned);
           } else if (state.siteToCompanyAssignedStatus ==
               EntityStatus.failure) {
             CustomNotification(
@@ -270,7 +260,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     ).show();
   }
 
-  Padding _buildFilterTextField(CompaniesState state) {
+  Padding _buildFilterTextFieldForUnassignedSites(CompaniesState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FilterTextField(
@@ -278,36 +268,55 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         label: 'sites',
         filterIconClick: (filtered) {
           if (filtered) {
-            _onFilterApplied(state);
+            companiesBloc.add(UnassignedCompanySitesRetrieved(
+              companyId: widget.companyId,
+              name: state.filterTextForUnassigned,
+            ));
           } else {
-            _cancelFilter();
+            companiesBloc
+              ..add(
+                  UnassignedCompanySitesRetrieved(companyId: widget.companyId))
+              ..add(const FilterTextChangedForUnassigned(filterText: ''));
           }
         },
-        onChange: (value) =>
-            companiesBloc.add(FilterTextChanged(filterText: value)),
+        onChange: (value) => companiesBloc
+            .add(FilterTextChangedForUnassigned(filterText: value)),
       ),
     );
   }
 
-  _onFilterApplied(CompaniesState state) {
-    companiesBloc.add(UnassignedCompanySitesRetrieved(
-      companyId: widget.companyId,
-      name: state.filterText,
-    ));
+  Padding _buildFilterTextFieldForAssignedSites(CompaniesState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: FilterTextField(
+        hintText: 'Filter assigned sites by name.',
+        label: 'sites',
+        filterIconClick: (filtered) {
+          if (filtered) {
+            companiesBloc.add(AssignedCompanySitesRetrieved(
+              companyId: widget.companyId,
+              name: state.filterTextForAssigned,
+            ));
+          } else {
+            companiesBloc
+              ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+              ..add(const FilterTextChangedForAssigned(filterText: ''));
+          }
+        },
+        onChange: (value) =>
+            companiesBloc.add(FilterTextChangedForAssigned(filterText: value)),
+      ),
+    );
   }
 
-  _cancelFilter() {
+  _refetchCompanySites(
+      String filterTextForAssigned, String filterTextForUnassigned) {
     companiesBloc
-      ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(const FilterTextChanged(filterText: ''));
-  }
-
-  _refetchCompanySites(String filterText) {
-    companiesBloc
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+      ..add(AssignedCompanySitesRetrieved(
+          companyId: widget.companyId, name: filterTextForAssigned))
       ..add(UnassignedCompanySitesRetrieved(
         companyId: widget.companyId,
-        name: filterText,
+        name: filterTextForUnassigned,
       ));
   }
 }
