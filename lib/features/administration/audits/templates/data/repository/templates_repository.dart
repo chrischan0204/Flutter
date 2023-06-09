@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class TemplatesRepository extends BaseRepository {
@@ -105,5 +103,14 @@ class TemplatesRepository extends BaseRepository {
 
     return EntityResponse.fromJson(response.body)
         .copyWith(statusCode: response.statusCode);
+  }
+
+  Future<List<TemplateSnapshot>> getTemplateSnapshotList(
+      String templateId) async {
+    Response response = await super.get('$url/$templateId/snapshots');
+
+    return List.from(json.decode(response.body))
+        .map((e) => TemplateSnapshot.fromMap(e))
+        .toList();
   }
 }

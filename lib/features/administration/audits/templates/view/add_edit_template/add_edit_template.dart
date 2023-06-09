@@ -70,8 +70,6 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     addEditTemplateBloc = context.read();
     templateDetailBloc = context.read();
 
-    if (widget.templateId != null) {}
-
     super.initState();
   }
 

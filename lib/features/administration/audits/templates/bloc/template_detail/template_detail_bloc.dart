@@ -13,6 +13,7 @@ class TemplateDetailBloc
       : super(const TemplateDetailState()) {
     on<TemplateDetailTemplateLoadedById>(_onTemplateDetailTemplateLoadedById);
     on<TemplateDetailTemplateDeleted>(_onTemplateDetailTemplateDeleted);
+    on<TemplateDetailSnapshotLoaded>(_onTemplateDetailSnapshotLoaded);
   }
 
   Future<void> _onTemplateDetailTemplateLoadedById(
@@ -52,6 +53,25 @@ class TemplateDetailBloc
         templateDeleteStatus: EntityStatus.failure,
         message: deleteErrorMessage,
       ));
+    }
+  }
+
+  Future<void> _onTemplateDetailSnapshotLoaded(
+    TemplateDetailSnapshotLoaded event,
+    Emitter<TemplateDetailState> emit,
+  ) async {
+    emit(state.copyWith(templateSnapshotListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<TemplateSnapshot> templateSnapshotList =
+          await templatesRepository.getTemplateSnapshotList(event.templateId);
+      emit(state.copyWith(
+        templateSnapshotList: templateSnapshotList,
+        templateSnapshotListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(
+          state.copyWith(templateSnapshotListLoadStatus: EntityStatus.failure));
     }
   }
 }

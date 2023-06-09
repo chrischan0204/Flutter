@@ -1,15 +1,10 @@
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class SectionQuestionsView extends StatefulWidget {
-  const SectionQuestionsView({super.key});
+class SectionQuestionsView extends StatelessWidget {
+  final String templateId;
+  const SectionQuestionsView({super.key, required this.templateId});
 
-  @override
-  State<SectionQuestionsView> createState() => _SectionQuestionsViewState();
-}
-
-class _SectionQuestionsViewState extends State<SectionQuestionsView> {
-  bool showAddNewQuestionView = false;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -29,7 +24,7 @@ class _SectionQuestionsViewState extends State<SectionQuestionsView> {
             child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
               builder: (context, state) {
                 if (state.selectedTemplateSection == null) {
-                  return const SummarySectionView();
+                  return SummarySectionView(templateId: templateId);
                 } else if (state.showAddNewQuestionView) {
                   return BlocBuilder<TemplateDesignerBloc,
                       TemplateDesignerState>(

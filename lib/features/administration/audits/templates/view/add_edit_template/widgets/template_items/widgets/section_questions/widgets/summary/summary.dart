@@ -2,8 +2,22 @@ import '../../../../../../../template_detail/widgets/template_view/widgets/widge
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class SummarySectionView extends StatelessWidget {
-  const SummarySectionView({super.key});
+class SummarySectionView extends StatefulWidget {
+  final String templateId;
+  const SummarySectionView({super.key, required this.templateId});
+
+  @override
+  State<SummarySectionView> createState() => _SummarySectionViewState();
+}
+
+class _SummarySectionViewState extends State<SummarySectionView> {
+  @override
+  void initState() {
+    context
+        .read<TemplateDetailBloc>()
+        .add(TemplateDetailSnapshotLoaded(templateId: widget.templateId));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

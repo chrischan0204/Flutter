@@ -30,10 +30,10 @@ class TemplateItemsView extends StatelessWidget {
               child: TemplateSectionsView(templateId: templateId),
             ),
             const SizedBox(width: 10),
-            const Flexible(
+            Flexible(
               flex: 8,
               fit: FlexFit.tight,
-              child: SectionQuestionsView(),
+              child: SectionQuestionsView(templateId: templateId),
             )
           ],
         )

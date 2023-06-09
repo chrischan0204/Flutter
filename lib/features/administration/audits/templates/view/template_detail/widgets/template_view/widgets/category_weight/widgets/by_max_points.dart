@@ -22,34 +22,39 @@ class _ByQuestionCountViewState extends State<ByMaxPointsView> {
 
   @override
   Widget build(BuildContext context) {
-    return SfCircularChart(
-      title: ChartTitle(text: 'By Question Count'),
-      series: _getDefaultPieSeries(),
-      tooltipBehavior: _tooltipBehavior,
+    return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+      builder: (context, state) {
+        return SfCircularChart(
+          title: ChartTitle(text: 'By Question Count'),
+          series: _getDefaultPieSeries(state.templateSnapshotList),
+          tooltipBehavior: _tooltipBehavior,
+        );
+      },
     );
   }
 
-  List<PieSeries<ChartSampleData, String>> _getDefaultPieSeries() {
+  List<PieSeries<ChartSampleData, String>> _getDefaultPieSeries(
+      List<TemplateSnapshot> templateSnapshotList) {
     return <PieSeries<ChartSampleData, String>>[
       PieSeries<ChartSampleData, String>(
         explode: false,
         explodeIndex: 0,
         explodeOffset: '10%',
-        dataSource: <ChartSampleData>[
-          ChartSampleData(x: 'Cafe Supplies', y: 23, text: ''),
-          ChartSampleData(x: 'Housekeeping', y: 14, text: ''),
-          ChartSampleData(x: 'Electric', y: 35, text: ''),
-          ChartSampleData(x: 'Signage', y: 28, text: ''),
-        ],
+        dataSource: templateSnapshotList
+            .map((templateSnapshot) => ChartSampleData(
+                x: templateSnapshot.name,
+                y: templateSnapshot.maxScore,
+                text: ''))
+            .toList(),
         xValueMapper: (ChartSampleData data, _) => data.x as String,
-        yValueMapper: (ChartSampleData data, _) => data.y,
-        dataLabelMapper: (ChartSampleData data, _) => data.x as String,
+        yValueMapper: (ChartSampleData data, _) => data.y == 0 ? 1 : data.y,
+        dataLabelMapper: (ChartSampleData data, _) => ' ',
         startAngle: 90,
         endAngle: 90,
         dataLabelSettings: DataLabelSettings(
           margin: EdgeInsets.zero,
           isVisible: true,
-          labelPosition: ChartDataLabelPosition.outside,
+          labelPosition: ChartDataLabelPosition.inside,
           connectorLineSettings: const ConnectorLineSettings(
               type: ConnectorType.curve, length: '20%'),
           labelIntersectAction: _labelIntersectAction,

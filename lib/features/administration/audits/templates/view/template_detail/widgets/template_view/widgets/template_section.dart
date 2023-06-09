@@ -1,4 +1,5 @@
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
 
@@ -47,68 +48,49 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 400,
-      child: SfDataGrid(
-        source: EntityDataSource(
-            // entityData: ,
-            ),
-        columnWidthMode: ColumnWidthMode.fill,
-        columnResizeMode: ColumnResizeMode.onResize,
-        allowColumnsResizing: true,
-        gridLinesVisibility: GridLinesVisibility.none,
-        headerGridLinesVisibility: GridLinesVisibility.none,
-        headerRowHeight: 52,
-        rowHeight: 46,
-        columns: _buildColumns(),
+      child: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+        builder: (context, state) {
+          return SfDataGrid(
+            source: EntityDataSource(
+                templateSnapshotList: state.templateSnapshotList),
+            columnWidthMode: ColumnWidthMode.fill,
+            columnResizeMode: ColumnResizeMode.onResize,
+            allowColumnsResizing: true,
+            gridLinesVisibility: GridLinesVisibility.none,
+            headerGridLinesVisibility: GridLinesVisibility.none,
+            headerRowHeight: 52,
+            rowHeight: 46,
+            columns: _buildColumns(),
+          );
+        },
       ),
     );
   }
 }
 
 class EntityDataSource extends DataGridSource {
-  EntityDataSource() {
-    _entityData = [
-      DataGridRow(
-        cells: [
-          DataGridCell(columnName: 'Section', value: 'Electric Inspection'),
-          DataGridCell(columnName: 'Questions', value: 8),
-          DataGridCell(columnName: 'Max Score', value: 32),
-          DataGridCell(columnName: 'Legend', value: Color(0xffff6384)),
-        ],
-      ),
-      DataGridRow(
-        cells: [
-          DataGridCell(columnName: 'Section', value: 'Signage Inspection'),
-          DataGridCell(columnName: 'Questions', value: 12),
-          DataGridCell(columnName: 'Max Score', value: 41),
-          DataGridCell(columnName: 'Legend', value: Color(0xffFF9F40)),
-        ],
-      ),
-      DataGridRow(
-        cells: [
-          DataGridCell(columnName: 'Section', value: 'Housekeeping interviews'),
-          DataGridCell(columnName: 'Questions', value: 4),
-          DataGridCell(columnName: 'Max Score', value: 20),
-          DataGridCell(columnName: 'Legend', value: Color(0xffFFCD56)),
-        ],
-      ),
-      DataGridRow(
-        cells: [
-          DataGridCell(
-              columnName: 'Section', value: 'Cafe supplies inspection'),
-          DataGridCell(columnName: 'Questions', value: 11),
-          DataGridCell(columnName: 'Max Score', value: 28),
-          DataGridCell(columnName: 'Legend', value: Color(0xff4bc0c0)),
-        ],
-      ),
-      DataGridRow(
-        cells: [
-          DataGridCell(columnName: 'Section', value: 'Total:'),
-          DataGridCell(columnName: 'Questions', value: 33),
-          DataGridCell(columnName: 'Max Score', value: 112),
-          DataGridCell(columnName: 'Legend', value: ''),
-        ],
-      ),
-    ];
+  final List<TemplateSnapshot> templateSnapshotList;
+
+  EntityDataSource({required this.templateSnapshotList}) {
+    _entityData = templateSnapshotList
+        .map((templateSnapshot) => DataGridRow(
+              cells: [
+                DataGridCell(
+                    columnName: 'Section', value: templateSnapshot.name),
+                DataGridCell(
+                    columnName: 'Questions', value: templateSnapshot.questions),
+                DataGridCell(
+                    columnName: 'Max Score', value: templateSnapshot.maxScore),
+                DataGridCell(
+                    columnName: 'Legend',
+                    value: Color.fromARGB(
+                        255,
+                        Uuid.parse(templateSnapshot.id)[1],
+                        Uuid.parse(templateSnapshot.id)[2],
+                        Uuid.parse(templateSnapshot.id)[3])),
+              ],
+            ))
+        .toList();
   }
 
   List<DataGridRow> _entityData = [];

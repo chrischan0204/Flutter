@@ -17,9 +17,14 @@ class TemplateDetailTemplateLoadedById extends TemplateDetailEvent {
 
 class TemplateDetailTemplateDeleted extends TemplateDetailEvent {
   final String templateId;
-  const TemplateDetailTemplateDeleted({
-    required this.templateId,
-  });
+  const TemplateDetailTemplateDeleted({required this.templateId});
+  @override
+  List<Object> get props => [templateId];
+}
+
+class TemplateDetailSnapshotLoaded extends TemplateDetailEvent {
+  final String templateId;
+  const TemplateDetailSnapshotLoaded({required this.templateId});
   @override
   List<Object> get props => [templateId];
 }
