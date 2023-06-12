@@ -9,7 +9,7 @@ class ResponseScaleItem extends Equatable {
   final bool isRequired;
   final bool included;
   final double score;
-  final bool commentRequiered;
+  final bool commentRequired;
   final bool actionItemRequired;
   final bool followUpRequired;
   final int order;
@@ -20,7 +20,7 @@ class ResponseScaleItem extends Equatable {
     required this.isRequired,
     required this.included,
     required this.score,
-    required this.commentRequiered,
+    required this.commentRequired,
     required this.actionItemRequired,
     required this.followUpRequired,
     required this.order,
@@ -34,7 +34,7 @@ class ResponseScaleItem extends Equatable {
         isRequired,
         included,
         score,
-        commentRequiered,
+        commentRequired,
         actionItemRequired,
         followUpRequired,
         order,
@@ -45,7 +45,7 @@ class ResponseScaleItem extends Equatable {
       'name': name,
       'responseScaleItemId': id,
       'score': score,
-      'commentRequiered': commentRequiered,
+      'commentRequired': commentRequired,
       'actionItemRequired': actionItemRequired,
       'followUpRequired': followUpRequired,
     };
@@ -56,10 +56,11 @@ class ResponseScaleItem extends Equatable {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       isRequired: map['isRequired'] ?? false,
-      included: map['included'] ?? false,
+      included:
+          (map['isRequired'] as bool) == true ? true : map['included'] ?? false,
       responseScaleItemId: map['responseScaleItemId'] ?? '',
       score: map['score'] ?? 0,
-      commentRequiered: map['commentRequiered'] ?? false,
+      commentRequired: map['commentRequired'] ?? false,
       actionItemRequired: map['actionItemRequired'] ?? false,
       followUpRequired: map['followUpRequired'] ?? false,
       order: map['order'] ?? 0,
@@ -84,7 +85,7 @@ class ResponseScaleItem extends Equatable {
     bool? isRequired,
     bool? included,
     double? score,
-    bool? commentRequiered,
+    bool? commentRequired,
     bool? actionItemRequired,
     bool? followUpRequired,
     int? order,
@@ -96,7 +97,7 @@ class ResponseScaleItem extends Equatable {
       isRequired: isRequired ?? this.isRequired,
       included: included ?? this.included,
       score: score ?? this.score,
-      commentRequiered: commentRequiered ?? this.commentRequiered,
+      commentRequired: commentRequired ?? this.commentRequired,
       actionItemRequired: actionItemRequired ?? this.actionItemRequired,
       followUpRequired: followUpRequired ?? this.followUpRequired,
       order: order ?? this.order,

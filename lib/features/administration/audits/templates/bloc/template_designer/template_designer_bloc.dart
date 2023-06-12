@@ -390,7 +390,7 @@ class TemplateDesignerBloc
                 .map((e) => e.id == event.templateSectionItemId
                     ? e.copyWith(
                         response: Nullable.value(e.response?.copyWith(
-                            commentRequiered: event.commentRequired)))
+                            commentRequired: event.commentRequired)))
                     : e)
                 .toList());
         break;
@@ -405,7 +405,7 @@ class TemplateDesignerBloc
                             ? child.copyWith(
                                 response: Nullable.value(child.response
                                     ?.copyWith(
-                                        commentRequiered:
+                                        commentRequired:
                                             event.commentRequired)))
                             : child)
                         .toList()))
@@ -424,7 +424,7 @@ class TemplateDesignerBloc
                                     ? e.copyWith(
                                         response: Nullable.value(e.response
                                             ?.copyWith(
-                                                commentRequiered:
+                                                commentRequired:
                                                     event.commentRequired)))
                                     : e)
                                 .toList()))

@@ -32,7 +32,9 @@ class ResponseScaleItemView extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       width: 100,
                       child: Checkbox(
-                        value: templateSectionItem.response?.included,
+                        value: templateSectionItem.response?.isRequired == true
+                            ? true
+                            : templateSectionItem.response?.included,
                         onChanged:
                             templateSectionItem.response?.isRequired == true
                                 ? null
@@ -102,9 +104,9 @@ class ResponseScaleItemView extends StatelessWidget {
                                       templateSectionItem.id!,
                                 )),
                             disabled: disabled,
-                            active: templateSectionItem
-                                    .response?.commentRequiered ??
-                                false,
+                            active:
+                                templateSectionItem.response?.commentRequired ??
+                                    false,
                             title: 'Comment',
                             activeColor: primaryColor,
                           ),

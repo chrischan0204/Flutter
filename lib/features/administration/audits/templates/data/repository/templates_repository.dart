@@ -56,7 +56,7 @@ class TemplatesRepository extends BaseRepository {
   }
 
   Future<EntityResponse> deleteTemplate(String templateId) async {
-    Response response = await super.delete('$url/$templateId');
+    Response response = await super.delete('/api/audits/$templateId');
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {
