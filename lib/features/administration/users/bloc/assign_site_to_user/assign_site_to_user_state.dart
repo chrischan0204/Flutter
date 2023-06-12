@@ -7,7 +7,8 @@ class AssignSiteToUserState extends Equatable {
   final EntityStatus unassignedUserSiteListLoadStatus;
   final EntityStatus assignStatus;
   final EntityStatus unassignStatus;
-  final String filterText;
+  final String filterTextForAssigned;
+  final String filterTextForUnassigned;
   final String message;
   const AssignSiteToUserState({
     this.assignedUserSiteList = const [],
@@ -16,7 +17,8 @@ class AssignSiteToUserState extends Equatable {
     this.unassignedUserSiteListLoadStatus = EntityStatus.initial,
     this.assignStatus = EntityStatus.initial,
     this.unassignStatus = EntityStatus.initial,
-    this.filterText = '',
+    this.filterTextForAssigned = '',
+    this.filterTextForUnassigned = '',
     this.message = '',
   });
 
@@ -28,7 +30,8 @@ class AssignSiteToUserState extends Equatable {
         unassignedUserSiteListLoadStatus,
         assignStatus,
         unassignStatus,
-        filterText,
+        filterTextForAssigned,
+        filterTextForUnassigned,
         message,
       ];
 
@@ -39,19 +42,24 @@ class AssignSiteToUserState extends Equatable {
     EntityStatus? unassignedUserSiteListLoadStatus,
     EntityStatus? assignStatus,
     EntityStatus? unassignStatus,
-    String? filterText,
+    String? filterTextForAssigned,
+    String? filterTextForUnassigned,
     String? message,
   }) {
     return AssignSiteToUserState(
       assignedUserSiteList: assignedUserSiteList ?? this.assignedUserSiteList,
       assignedUserSiteListLoadStatus:
           assignedUserSiteListLoadStatus ?? this.assignedUserSiteListLoadStatus,
-      unassignedUserSiteList: unassignedUserSiteList ?? this.unassignedUserSiteList,
-      unassignedUserSiteListLoadStatus:
-          unassignedUserSiteListLoadStatus ?? this.unassignedUserSiteListLoadStatus,
+      unassignedUserSiteList:
+          unassignedUserSiteList ?? this.unassignedUserSiteList,
+      unassignedUserSiteListLoadStatus: unassignedUserSiteListLoadStatus ??
+          this.unassignedUserSiteListLoadStatus,
       assignStatus: assignStatus ?? this.assignStatus,
       unassignStatus: unassignStatus ?? this.unassignStatus,
-      filterText: filterText ?? this.filterText,
+      filterTextForAssigned:
+          filterTextForAssigned ?? this.filterTextForAssigned,
+      filterTextForUnassigned:
+          filterTextForUnassigned ?? this.filterTextForUnassigned,
       message: message ?? this.message,
     );
   }

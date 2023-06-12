@@ -25,6 +25,7 @@ class CustomTextFieldWithIcon extends StatelessWidget {
       onChanged: (val) {
         onChange(val);
       },
+      onSubmitted: (_) => onSuffixClicked(),
       controller: controller,
       suffixWidget: suffixWidget,
       onSuffixIconClick: onSuffixClicked,

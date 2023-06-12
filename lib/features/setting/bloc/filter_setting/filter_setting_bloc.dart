@@ -356,8 +356,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     final List<UserFilterItem> userFilterItems =
         List.from(state.userFilterUpdate.userFilterItems);
 
-    if (state.userFilterUpdate.undeletedUserFilterItems.length <
-        state.filterSettingList.length) {
+    if (state.userFilterUpdate.undeletedUserFilterItems.length < 25) {
       if (event.userFilterItem != null) {
         final index = userFilterItems.indexOf(event.userFilterItem!);
         userFilterItems.insert(

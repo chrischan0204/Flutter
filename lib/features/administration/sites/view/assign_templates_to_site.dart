@@ -82,6 +82,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
   Widget build(BuildContext context) {
     return BlocBuilder<SitesBloc, SitesState>(
       builder: (context, state) {
+        return Container();
         return Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -112,11 +113,14 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Templates can be assigned to this site by selecting from the list below.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'Templates can be assigned to this site by selecting from the list below.',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                         const CustomDivider(),
@@ -212,13 +216,6 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                 fontFamily: 'OpenSans',
                               ),
                               children: <TextSpan>[
-                                // TextSpan(
-                                //   text:
-                                //       'The site \' ${widget.siteName} \' has been created.',
-                                //   style: const TextStyle(
-                                //     fontWeight: FontWeight.w600,
-                                //   ),
-                                // ),
                                 TextSpan(
                                   text:
                                       'Sites can be assigned from list on left. Once assigned they will show here in this list below.',

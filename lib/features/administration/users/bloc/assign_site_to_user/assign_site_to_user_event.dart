@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'assign_site_to_user_bloc.dart';
 
 abstract class AssignSiteToUserEvent extends Equatable {
@@ -10,13 +9,18 @@ abstract class AssignSiteToUserEvent extends Equatable {
 
 class AssignSiteToUserAssignedUserSiteListLoaded extends AssignSiteToUserEvent {
   final String userId;
-  const AssignSiteToUserAssignedUserSiteListLoaded({required this.userId});
+  final String? name;
+  const AssignSiteToUserAssignedUserSiteListLoaded({
+    required this.userId,
+    this.name,
+  });
 
   @override
   List<Object?> get props => [userId];
 }
 
-class AssignSiteToUserUnassignedUserSiteListLoaded extends AssignSiteToUserEvent {
+class AssignSiteToUserUnassignedUserSiteListLoaded
+    extends AssignSiteToUserEvent {
   final String userId;
   final String? name;
   const AssignSiteToUserUnassignedUserSiteListLoaded({
@@ -51,11 +55,21 @@ class AssignSiteToUserSiteUnassigned extends AssignSiteToUserEvent {
   List<Object?> get props => [userSiteAssignmentId];
 }
 
-class AssignSiteToUserFilterTextChanged extends AssignSiteToUserEvent {
+class AssignSiteToUserFilterTextForUnassignedChanged
+    extends AssignSiteToUserEvent {
   final String filterText;
-  const AssignSiteToUserFilterTextChanged({
-    required this.filterText,
-  });
+  const AssignSiteToUserFilterTextForUnassignedChanged(
+      {required this.filterText});
+
+  @override
+  List<Object?> get props => [filterText];
+}
+
+class AssignSiteToUserFilterTextForAssignedChanged
+    extends AssignSiteToUserEvent {
+  final String filterText;
+  const AssignSiteToUserFilterTextForAssignedChanged(
+      {required this.filterText});
 
   @override
   List<Object?> get props => [filterText];

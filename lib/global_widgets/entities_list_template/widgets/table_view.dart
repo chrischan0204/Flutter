@@ -37,6 +37,7 @@ class _DataTableViewState extends State<DataTableView> {
               (column) => GridColumn(
                 columnName: column,
                 width: widget.columnWidths[column]!,
+                minimumWidth: 60.0,
                 label: Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -39,6 +39,13 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                children: [
+                  Expanded(child: _buildUnassignedSitesTableHeaderView()),
+                  const SizedBox(width: 150),
+                  Expanded(child: _buildAssignedSitesTableViewHeader()),
+                ],
+              ),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildUnassignedSitesView(state),
@@ -60,13 +67,6 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Sites can be assigned to this company by selecting from the list below.',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
           const CustomDivider(),
           _buildFilterTextFieldForUnassignedSites(state),
           const CustomDivider(),
@@ -76,12 +76,24 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
+  Padding _buildUnassignedSitesTableHeaderView() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
+        'Sites can be assigned to this company by selecting from the list below.',
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+    );
+  }
+
   Expanded _buildAssignedSitesView(CompaniesState state, BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildAssignedSitesTableViewHeader(state),
           const CustomDivider(),
           _buildFilterTextFieldForAssignedSites(state),
           const CustomDivider(),
@@ -91,7 +103,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     );
   }
 
-  Padding _buildAssignedSitesTableViewHeader(CompaniesState state) {
+  Padding _buildAssignedSitesTableViewHeader() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Text(

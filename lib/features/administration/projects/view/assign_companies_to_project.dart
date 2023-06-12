@@ -61,19 +61,19 @@ class _AssignCompaniesToProjectViewState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                children: [
+                  Expanded(child: _buildUnassignedCompaniesTableViewHeader()),
+                  const SizedBox(width: 150),
+                  Expanded(child: _buildAssignedCompaniesTableViewHeader()),
+                ],
+              ),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Sites can be assigned to this company by selecting from the list below.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
                         const CustomDivider(),
                         _buildFilterTextFieldForUnassignedCompany(state),
                         const CustomDivider(),
@@ -86,7 +86,6 @@ class _AssignCompaniesToProjectViewState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildAssignedCompaniesTableViewHeader(state),
                         const CustomDivider(),
                         _buildFilterTextFieldForAssignedCompany(state),
                         const CustomDivider(),
@@ -103,7 +102,20 @@ class _AssignCompaniesToProjectViewState
     );
   }
 
-  Padding _buildAssignedCompaniesTableViewHeader(ProjectsState state) {
+  Padding _buildUnassignedCompaniesTableViewHeader() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        'Sites can be assigned to this company by selecting from the list below.',
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+    );
+  }
+
+  Padding _buildAssignedCompaniesTableViewHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(

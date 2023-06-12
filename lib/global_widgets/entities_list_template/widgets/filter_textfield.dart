@@ -26,6 +26,22 @@ class FilterTextField extends StatefulWidget {
 class _FilterTextFieldState extends State<FilterTextField> {
   bool filtered = false;
   TextEditingController filterController = TextEditingController();
+
+  void onClick() {
+    if (filterController.text.trim().length > 1 || widget.canFilter) {
+      setState(() {
+        filtered = !filtered;
+      });
+      widget.filterIconClick(filtered);
+      if (filtered) {
+        filterController.text =
+            "Showing ${widget.label} matching '${filterController.text}' below.";
+      } else {
+        filterController.clear();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
@@ -33,23 +49,14 @@ class _FilterTextFieldState extends State<FilterTextField> {
       onChanged: (val) {
         widget.onChange(val);
       },
+      onSubmitted: (value) => onClick(),
       controller: filterController,
-      suffixIconData:
-          filtered ? PhosphorIcons.regular.arrowCounterClockwise : PhosphorIcons.regular.funnel,
+      suffixIconData: filtered
+          ? PhosphorIcons.regular.arrowCounterClockwise
+          : PhosphorIcons.regular.funnel,
       suffixIconColor: filtered ? Colors.red : const Color(0xff0c81ff),
-      onSuffixIconClick: () async {
-        if (filterController.text.trim().length > 1 || widget.canFilter) {
-          setState(() {
-            filtered = !filtered;
-          });
-          widget.filterIconClick(filtered);
-          if (filtered) {
-            filterController.text =
-                "Showing ${widget.label} matching '${filterController.text}' below.";
-          } else {
-            filterController.clear();
-          }
-        }
+      onSuffixIconClick: () {
+        onClick();
       },
     );
   }

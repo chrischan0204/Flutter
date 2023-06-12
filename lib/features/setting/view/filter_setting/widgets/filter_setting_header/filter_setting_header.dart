@@ -17,36 +17,36 @@ class FilterSettingHeaderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               FilterSettingSelectField(viewName: viewName),
-              const SizedBox(width: 30),
+              const SizedBox(width: 20),
               const IsDefaultSwitch(),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ApplyButton(onFilterApplied: onFilterApplied),
-              const SizedBox(width: 20),
-              SaveButton(onFilterSaved: onFilterApplied),
-              const SizedBox(width: 20),
-              SaveAsButton(onFilterSaved: onFilterApplied),
-              const SizedBox(width: 20),
-              RenameButton(onFilterSaved: onFilterApplied),
-              const SizedBox(width: 20),
-              const DeleteButton(),
-              const SizedBox(width: 20),
-              IconButton(
-                  onPressed: () => onFilterOptionClosed(),
-                  icon: Icon(PhosphorIcons.regular.x, size: 14))
-            ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ApplyButton(onFilterApplied: onFilterApplied),
+                const SizedBox(width: 10),
+                SaveButton(onFilterSaved: onFilterApplied),
+                const SizedBox(width: 10),
+                SaveAsButton(onFilterSaved: onFilterApplied),
+                const SizedBox(width: 10),
+                RenameButton(onFilterSaved: onFilterApplied),
+                const SizedBox(width: 10),
+                const DeleteButton(),
+                const SizedBox(width: 10),
+                InkWell(
+                  onTap: () => onFilterOptionClosed(),
+                  child: Icon(PhosphorIcons.regular.x, size: 14),
+                )
+              ],
+            ),
           ),
         ],
       ),

@@ -38,12 +38,17 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                children: [
+                  Expanded(child: _buildUnassignedSitesTableHeaderView()),
+                  const SizedBox(width: 150),
+                  Expanded(child: _buildAssignedSitesTableViewHeader()),
+                ],
+              ),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildAssignedSitesView(state, context),
-                  const SizedBox(
-                    width: 150,
-                  ),
+                  const SizedBox(width: 150),
                   _buildUnassignedSitesView(state)
                 ],
               ),
@@ -59,18 +64,24 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Sites can be assigned to this project by selecting from the list below.',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
           const CustomDivider(),
-          _buildFilterTextField(state),
+          _buildFilterTextFieldForUnassigned(state),
           const CustomDivider(),
           _buildUnassignedSitesTableView(state),
         ],
+      ),
+    );
+  }
+
+  Padding _buildUnassignedSitesTableHeaderView() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
+        'Sites can be assigned to this project by selecting from the list below.',
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
@@ -81,7 +92,8 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildAssignedSitesTableViewHeader(state),
+          const CustomDivider(),
+          _buildFilterTextFieldForAssigned(state),
           const CustomDivider(),
           _buildAssignedSitesTableView(state, context),
         ],
@@ -89,7 +101,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
     );
   }
 
-  Padding _buildAssignedSitesTableViewHeader(AssignSiteToUserState state) {
+  Padding _buildAssignedSitesTableViewHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: RichText(
@@ -122,7 +134,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
-            _refetchUserSites(state.filterText);
+            _refetchUserSites(state);
           } else if (state.unassignStatus == EntityStatus.failure) {
             CustomNotification(
               context: context,
@@ -138,12 +150,12 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
           dataTextStyle: tableDataTextStyle,
           columns: const [
             DataColumn(
-              label: Text('Assigned?'),
-            ),
-            DataColumn(
               label: Text(
                 'Site Name',
               ),
+            ),
+            DataColumn(
+              label: Text('Assigned?'),
             ),
           ],
           rows: state.unassignedUserSiteList
@@ -187,7 +199,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
-            _refetchUserSites(state.filterText);
+            _refetchUserSites(state);
           } else if (state.assignStatus == EntityStatus.failure) {
             CustomNotification(
               context: context,
@@ -203,18 +215,12 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
           dataTextStyle: tableDataTextStyle,
           columns: const [
             DataColumn(
-              label: Text('Assigned?'),
+              label: Text('Site Name'),
             ),
             DataColumn(
-              label: Text(
-                'Site Name',
-              ),
+              label: Text('Default'),
             ),
-            DataColumn(
-              label: Text(
-                'Default',
-              ),
-            ),
+            DataColumn(label: Text('Assigned?')),
           ],
           rows: List<UserSite>.from(state.assignedUserSiteList)
               .map(
@@ -272,7 +278,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
     ).show();
   }
 
-  Padding _buildFilterTextField(AssignSiteToUserState state) {
+  Padding _buildFilterTextFieldForUnassigned(AssignSiteToUserState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FilterTextField(
@@ -280,36 +286,61 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
         label: 'sites',
         filterIconClick: (filtered) {
           if (filtered) {
-            _onFilterApplied(state);
+            addEditUserBloc.add(AssignSiteToUserUnassignedUserSiteListLoaded(
+              userId: widget.userId,
+              name: state.filterTextForUnassigned,
+            ));
           } else {
-            _cancelFilter();
+            addEditUserBloc
+              ..add(AssignSiteToUserUnassignedUserSiteListLoaded(
+                  userId: widget.userId))
+              ..add(const AssignSiteToUserFilterTextForUnassignedChanged(
+                  filterText: ''));
           }
         },
-        onChange: (filterText) => addEditUserBloc
-            .add(AssignSiteToUserFilterTextChanged(filterText: filterText)),
+        onChange: (filterText) => addEditUserBloc.add(
+            AssignSiteToUserFilterTextForUnassignedChanged(
+                filterText: filterText)),
       ),
     );
   }
 
-  _onFilterApplied(AssignSiteToUserState state) {
-    addEditUserBloc.add(AssignSiteToUserUnassignedUserSiteListLoaded(
-      userId: widget.userId,
-      name: state.filterText,
-    ));
+  Padding _buildFilterTextFieldForAssigned(AssignSiteToUserState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: FilterTextField(
+        hintText: 'Filter assigned sites by name.',
+        label: 'sites',
+        filterIconClick: (filtered) {
+          if (filtered) {
+            addEditUserBloc.add(AssignSiteToUserAssignedUserSiteListLoaded(
+              userId: widget.userId,
+              name: state.filterTextForAssigned,
+            ));
+          } else {
+            addEditUserBloc
+              ..add(AssignSiteToUserAssignedUserSiteListLoaded(
+                  userId: widget.userId))
+              ..add(const AssignSiteToUserFilterTextForAssignedChanged(
+                  filterText: ''));
+          }
+        },
+        onChange: (filterText) => addEditUserBloc.add(
+            AssignSiteToUserFilterTextForAssignedChanged(
+                filterText: filterText)),
+      ),
+    );
   }
 
-  _cancelFilter() {
+  _refetchUserSites(AssignSiteToUserState state) {
     addEditUserBloc
-      ..add(AssignSiteToUserUnassignedUserSiteListLoaded(userId: widget.userId))
-      ..add(const AssignSiteToUserFilterTextChanged(filterText: ''));
-  }
-
-  _refetchUserSites(String filterText) {
-    addEditUserBloc
-      ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId))
+      ..add(AssignSiteToUserAssignedUserSiteListLoaded(
+        userId: widget.userId,
+        name: state.filterTextForAssigned,
+      ))
       ..add(AssignSiteToUserUnassignedUserSiteListLoaded(
         userId: widget.userId,
-        name: filterText,
+        name: state.filterTextForUnassigned,
       ));
   }
 }

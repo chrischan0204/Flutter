@@ -164,17 +164,23 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
       viewSettingDisplayColumnList.removeAt(index);
     }
 
+    // update useful display columns
+    final List<ViewSettingColumn> usefulDisplayColumns =
+        List.from(state.usefulDisplayColumns);
+
     index = viewSettingDisplayColumnList.indexOf(event.column);
     final item = viewSettingDisplayColumnList.removeAt(index);
+
+    if (item.selectedValue != null) {
+      usefulDisplayColumns.add(item.selectedValue!);
+    }
+
     viewSettingDisplayColumnList.insert(
         index,
         item.copyWith(
           selectedValue: event.selectedValue,
         ));
 
-    // update useful display columns
-    final List<ViewSettingColumn> usefulDisplayColumns =
-        List.from(state.usefulDisplayColumns);
     usefulDisplayColumns.removeWhere((element) =>
         element.viewSettingId == event.selectedValue.viewSettingId);
 
@@ -191,7 +197,16 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
     List<ViewSettingItemData> viewSettingSortingColumnList =
         List.from(state.viewSettingSortingColumnList);
     final int index = viewSettingSortingColumnList.indexOf(event.column);
+
+    // update useful sorting columns
+    final List<ViewSettingColumn> usefulSortingColumns =
+        List.from(state.usefulSortingColumns);
+
     final item = viewSettingSortingColumnList.removeAt(index);
+
+    if (item.selectedValue != null) {
+      usefulSortingColumns.add(item.selectedValue!);
+    }
 
     viewSettingSortingColumnList.insert(
         index,
@@ -199,9 +214,6 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
           selectedValue: event.selectedValue,
         ));
 
-    // update useful sorting columns
-    final List<ViewSettingColumn> usefulSortingColumns =
-        List.from(state.usefulSortingColumns);
     usefulSortingColumns.removeWhere((element) =>
         element.viewSettingId == event.selectedValue.viewSettingId);
 

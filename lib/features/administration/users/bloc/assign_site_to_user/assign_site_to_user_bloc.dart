@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:safety_eta/common_libraries.dart';
+import '/common_libraries.dart';
 
 part 'assign_site_to_user_event.dart';
 part 'assign_site_to_user_state.dart';
@@ -15,7 +14,10 @@ class AssignSiteToUserBloc
         _onAssignSiteToUserUnassignedUserSiteListLoaded);
     on<AssignSiteToUserSiteAssigned>(_onAssignSiteToUserSiteAssigned);
     on<AssignSiteToUserSiteUnassigned>(_onAssignSiteToUserSiteUnassigned);
-    on<AssignSiteToUserFilterTextChanged>(_onAssignSiteToUserFilterTextChanged);
+    on<AssignSiteToUserFilterTextForUnassignedChanged>(
+        _onAssignSiteToUserFilterTextForUnassignedChanged);
+    on<AssignSiteToUserFilterTextForAssignedChanged>(
+        _onAssignSiteToUserFilterTextForAssignedChanged);
   }
 
   Future<void> _onAssignSiteToUserAssignedUserSiteListLoaded(
@@ -25,7 +27,7 @@ class AssignSiteToUserBloc
     emit(state.copyWith(assignedUserSiteListLoadStatus: EntityStatus.loading));
     try {
       List<UserSite> assignedUserSiteList = await usersRepository
-          .getUserSitesByUserId(event.userId, assigned: true);
+          .getUserSitesByUserId(event.userId, assigned: true, name: event.name);
       emit(state.copyWith(
         assignedUserSiteList: assignedUserSiteList,
         assignedUserSiteListLoadStatus: EntityStatus.success,
@@ -111,10 +113,17 @@ class AssignSiteToUserBloc
     }
   }
 
-  void _onAssignSiteToUserFilterTextChanged(
-    AssignSiteToUserFilterTextChanged event,
+  void _onAssignSiteToUserFilterTextForUnassignedChanged(
+    AssignSiteToUserFilterTextForUnassignedChanged event,
     Emitter<AssignSiteToUserState> emit,
   ) {
-    emit(state.copyWith(filterText: event.filterText));
+    emit(state.copyWith(filterTextForUnassigned: event.filterText));
+  }
+
+  void _onAssignSiteToUserFilterTextForAssignedChanged(
+    AssignSiteToUserFilterTextForAssignedChanged event,
+    Emitter<AssignSiteToUserState> emit,
+  ) {
+    emit(state.copyWith(filterTextForAssigned: event.filterText));
   }
 }

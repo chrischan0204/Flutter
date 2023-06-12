@@ -49,6 +49,15 @@ class _AssignProjectsToCompanyViewState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      children: [
+                        Expanded(
+                            child: _buildUnassignedProjectsTableViewHeader()),
+                        const SizedBox(width: 150),
+                        Expanded(
+                            child: _buildAssignedProjectsTableViewHeader()),
+                      ],
+                    ),
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildUnassignedProjectsView(state),
@@ -70,7 +79,6 @@ class _AssignProjectsToCompanyViewState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildUnassignedProjectsTableViewHeader(),
           const CustomDivider(),
           _buildFilterProjectViewForUnassigned(state),
           const CustomDivider(),
@@ -86,7 +94,6 @@ class _AssignProjectsToCompanyViewState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildAssignedProjectsTableViewHeader(),
           const CustomDivider(),
           _buildFilterProjectViewForAssigned(state),
           const CustomDivider(),
@@ -96,12 +103,15 @@ class _AssignProjectsToCompanyViewState
     );
   }
 
-  Text _buildUnassignedProjectsTableViewHeader() {
-    return const Text(
-      'Projects can be assigned to this company by selecting from the list below. Projects list can be filtered by name or by site.',
-      style: TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+  Padding _buildUnassignedProjectsTableViewHeader() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
+        'Projects can be assigned to this company by selecting from the list below. Projects list can be filtered by name or by site.',
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
