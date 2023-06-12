@@ -26,6 +26,7 @@ class SectionListView extends StatelessWidget {
                   index++)
                 SectionItemView(
                   section: state.templateSectionList[index],
+                  active: state.selectedTemplateSection == state.templateSectionList[index],
                   first: index == 0,
                 )
             ],

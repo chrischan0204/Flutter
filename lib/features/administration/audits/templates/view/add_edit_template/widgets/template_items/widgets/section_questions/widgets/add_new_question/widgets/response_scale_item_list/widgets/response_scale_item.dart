@@ -23,7 +23,7 @@ class ResponseScaleItemView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: inset20,
+            padding: inset10,
             child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
               builder: (context, state) {
                 return Row(

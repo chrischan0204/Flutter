@@ -1,4 +1,5 @@
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
 
@@ -25,9 +26,10 @@ class _ByQuestionCountViewState extends State<ByQuestionCountView> {
     return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
       builder: (context, state) {
         return SfCircularChart(
-            title: ChartTitle(text: 'By Question Count'),
-            series: _getDefaultPieSeries(state.templateSnapshotList),
-            tooltipBehavior: _tooltipBehavior);
+          title: ChartTitle(text: 'By Question Count'),
+          series: _getDefaultPieSeries(state.templateSnapshotList),
+          tooltipBehavior: _tooltipBehavior,
+        );
       },
     );
   }
@@ -41,10 +43,18 @@ class _ByQuestionCountViewState extends State<ByQuestionCountView> {
         explodeOffset: '10%',
         dataSource: templateSnapList
             .map((templateSnapshot) => ChartSampleData(
-                x: templateSnapshot.name,
-                y: templateSnapshot.questions,
-                text: ''))
+                  pointColor: Color.fromARGB(
+                    255,
+                    Uuid.parse(templateSnapshot.id)[1],
+                    Uuid.parse(templateSnapshot.id)[2],
+                    Uuid.parse(templateSnapshot.id)[3],
+                  ),
+                  x: templateSnapshot.name,
+                  y: templateSnapshot.questions,
+                  text: '',
+                ))
             .toList(),
+        pointColorMapper: (datum, index) => datum.pointColor,
         xValueMapper: (ChartSampleData data, _) => data.x as String,
         yValueMapper: (ChartSampleData data, _) => data.y,
         dataLabelMapper: (ChartSampleData data, _) => ' ',
@@ -52,9 +62,11 @@ class _ByQuestionCountViewState extends State<ByQuestionCountView> {
         endAngle: 90,
         dataLabelSettings: DataLabelSettings(
           margin: EdgeInsets.zero,
-          isVisible: true,
+          isVisible: false,
           connectorLineSettings: const ConnectorLineSettings(
-              type: ConnectorType.curve, length: '20%'),
+            type: ConnectorType.curve,
+            length: '20%',
+          ),
           labelIntersectAction: _labelIntersectAction,
         ),
       ),

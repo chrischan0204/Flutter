@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '/common_libraries.dart';
 
 part 'add_edit_template_event.dart';

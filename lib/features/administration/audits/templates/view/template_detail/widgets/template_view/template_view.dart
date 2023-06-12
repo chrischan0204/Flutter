@@ -11,7 +11,11 @@ class TemplateView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const TemplateDetailHeaderView(title: 'Template for Crown project'),
+        BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+          builder: (context, state) {
+            return TemplateDetailHeaderView(title: 'Template for ${state.template?.name}');
+          },
+        ),
         const CustomDivider(),
         LayoutBuilder(builder: (context, constraints) {
           return Row(

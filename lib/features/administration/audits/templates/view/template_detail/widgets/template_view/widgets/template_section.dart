@@ -52,7 +52,8 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
         builder: (context, state) {
           return SfDataGrid(
             source: EntityDataSource(
-                templateSnapshotList: state.templateSnapshotList),
+              templateSnapshotList: state.templateSnapshotList,
+            ),
             columnWidthMode: ColumnWidthMode.fill,
             columnResizeMode: ColumnResizeMode.onResize,
             allowColumnsResizing: true,
@@ -91,6 +92,27 @@ class EntityDataSource extends DataGridSource {
               ],
             ))
         .toList();
+
+    _entityData.add(DataGridRow(
+      cells: [
+        const DataGridCell(columnName: 'Section', value: 'Total:'),
+        DataGridCell(
+            columnName: 'Questions',
+            value: templateSnapshotList.isNotEmpty
+                ? templateSnapshotList
+                    .map((e) => e.questions)
+                    .reduce((value, element) => value + element)
+                : ''),
+        DataGridCell(
+            columnName: 'Max Score',
+            value: templateSnapshotList.isNotEmpty
+                ? templateSnapshotList
+                    .map((e) => e.maxScore)
+                    .reduce((value, element) => value + element)
+                : ''),
+        const DataGridCell(columnName: 'Legend', value: ''),
+      ],
+    ));
   }
 
   List<DataGridRow> _entityData = [];
@@ -131,7 +153,7 @@ class TemplateSectionItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value is int || value is String) {
+    if (value is int || value is String || value is double) {
       return Text(
         value.toString(),
         style: const TextStyle(

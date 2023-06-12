@@ -26,6 +26,14 @@ class TemplateDetailState extends Equatable {
         message,
       ];
 
+  int get totalQuestions => templateSnapshotList
+      .map((e) => e.questions)
+      .reduce((value, element) => value + element);
+
+  double get totalMaxScore => templateSnapshotList
+      .map((e) => e.maxScore)
+      .reduce((value, element) => value + element);
+
   TemplateDetailState copyWith({
     Template? template,
     List<TemplateSnapshot>? templateSnapshotList,
