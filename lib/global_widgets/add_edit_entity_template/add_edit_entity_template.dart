@@ -1,14 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:strings/strings.dart';
 
-import '/constants/color.dart';
-import '/data/model/entity.dart';
-import '/global_widgets/global_widget.dart';
+import '/common_libraries.dart';
+import 'package:strings/strings.dart';
 
 class AddEditEntityTemplate extends StatefulWidget {
   final String label;
@@ -106,6 +100,9 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return CustomTabBar(
       activeIndex: selectedTabIndex,
       tabs: {'Details': _buildEditEntityView(), ...widget.tabItems},
+      onTabClick: () => context
+          .read<FormDirtyBloc>()
+          .add(const FormDirtyChanged(isDirty: false)),
     );
   }
 

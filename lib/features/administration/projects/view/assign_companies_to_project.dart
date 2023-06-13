@@ -34,6 +34,8 @@ class _AssignCompaniesToProjectViewState
       ..add(const FilterTextForUnassignedCompanyChanged(filterText: ''))
       ..add(AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
       ..add(UnassignedCompanyProjectsRetrieved(projectId: widget.projectId));
+
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
   }
 

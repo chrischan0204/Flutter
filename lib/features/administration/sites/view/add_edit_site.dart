@@ -51,14 +51,10 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       ..add(AssignedRegionsRetrieved());
     sitesBloc.add(const SiteSelected(selectedSite: null));
     if (widget.siteId != null) {
-      sitesBloc.add(
-        SiteSelectedById(siteId: widget.siteId!),
-      );
+      sitesBloc.add(SiteSelectedById(siteId: widget.siteId!));
     } else {
       sitesBloc.add(
-        SiteSelected(
-          selectedSite: Site(id: const Uuid().v1()),
-        ),
+        SiteSelected(selectedSite: Site(id: const Uuid().v1())),
       );
     }
 

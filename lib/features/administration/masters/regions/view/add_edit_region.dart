@@ -211,6 +211,10 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
 
   void _checkCrudStatus(RegionsState state, BuildContext context) {
     if (state.regionCrudStatus == EntityStatus.success) {
+      setState(() {
+        regionName = null;
+        selectedTimeZones = [];
+      });
       regionsBloc.add(const RegionsStatusInited());
       CustomNotification(
         context: context,

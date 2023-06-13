@@ -29,6 +29,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
   @override
   void initState() {
     sitesBloc = context.read<SitesBloc>()..add(AuditTemplatesRetrieved());
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
   }
 
@@ -145,8 +146,8 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                                 'Assigned?'
                               ],
                               rows: state.templates
-                                  .where(
-                                      (auditTemplate) => !auditTemplate.assigned)
+                                  .where((auditTemplate) =>
+                                      !auditTemplate.assigned)
                                   .map(
                                     (auditTemplate) => [
                                       ...auditTemplate

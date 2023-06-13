@@ -390,7 +390,7 @@ class _CrudState extends State<EntityListTemplate> {
                             BlocConsumer<FilterSettingBloc, FilterSettingState>(
                               listener: (context, state) {
                                 if (widget.onFilterApplied != null) {
-                                  widget.onFilterApplied!('');
+                                  // widget.onFilterApplied!(emptyGuid);
                                 }
                               },
                               listenWhen: (previous, current) =>
@@ -545,7 +545,8 @@ class _CrudState extends State<EntityListTemplate> {
                   },
                   listenWhen: (previous, current) =>
                       previous.viewSettingSaveStatus !=
-                      current.viewSettingSaveStatus,
+                          current.viewSettingSaveStatus &&
+                      current.viewSettingSaveStatus.isSuccess,
                   builder: (context, state) => CustomButton(
                     backgroundColor: const Color(0xff0c83ff),
                     hoverBackgroundColor: const Color(0xff0b76e6),

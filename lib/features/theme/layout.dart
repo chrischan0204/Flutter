@@ -19,6 +19,32 @@ class Layout extends StatefulWidget {
 }
 
 class _LayoutState extends State<Layout> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => FormDirtyBloc(),
+      child: LayoutWidget(
+        body: widget.body,
+        selectedItemName: widget.selectedItemName,
+      ),
+    );
+  }
+}
+
+class LayoutWidget extends StatefulWidget {
+  final Widget body;
+  final String selectedItemName;
+  const LayoutWidget({
+    super.key,
+    required this.body,
+    required this.selectedItemName,
+  });
+
+  @override
+  State<LayoutWidget> createState() => _LayoutWidgetState();
+}
+
+class _LayoutWidgetState extends State<LayoutWidget> {
   late ScrollController _scrollController;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 

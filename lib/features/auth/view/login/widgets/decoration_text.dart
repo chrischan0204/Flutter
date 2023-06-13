@@ -8,13 +8,15 @@ class DecorationText extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Text(
-      'Welcome to Safety',
-      style: GoogleFonts.amiko(
+      'Empowerment through Awareness',
+      style: GoogleFonts.actor(
         textStyle: TextStyle(
           fontSize: width / 60,
           fontWeight: FontWeight.bold,
+          
         ),
       ),
+      textAlign: TextAlign.center,
     );
   }
 }

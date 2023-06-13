@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class CustomTabBar extends StatefulWidget {
   final int activeIndex;
   final Map<String, Widget> tabs;
+  final VoidCallback onTabClick;
   const CustomTabBar({
     super.key,
     required this.activeIndex,
     required this.tabs,
+    required this.onTabClick,
   });
 
   @override
@@ -34,7 +36,10 @@ class _CustomTabBarState extends State<CustomTabBar> {
               (index) => CustomTabBarItem(
                 active: index == _activeIndex,
                 name: widget.tabs.keys.toList()[index],
-                onClick: () => setState(() => _activeIndex = index),
+                onClick: () {
+                  setState(() => _activeIndex = index);
+                  widget.onTabClick();
+                },
               ),
             ),
           ),

@@ -94,25 +94,25 @@ class BaseRepository {
   Future<http.Response> filter(FilteredTableParameter option) async {
     late http.Response response;
     try {
-      if (option.filterOption == null) {
-        Map<String, String> queryParams = {
-          'includeDeleted': option.includeDeleted.toString()
-        };
+      // if (option.filterOption == null) {
+      //   Map<String, String> queryParams = {
+      //     'includeDeleted': option.includeDeleted.toString()
+      //   };
 
-        if (!Validation.isEmpty(option.filterId)) {
-          queryParams.addEntries([MapEntry('filterId', option.filterId)]);
-        }
+      //   if (!Validation.isEmpty(option.filterId)) {
+      //     queryParams.addEntries([MapEntry('filterId', option.filterId)]);
+      //   }
 
-        queryParams
-            .addEntries([MapEntry('pageNum', option.pageNum.toString())]);
+      //   queryParams
+      //       .addEntries([MapEntry('pageNum', option.pageNum.toString())]);
 
-        queryParams
-            .addEntries([MapEntry('pageSize', option.pageSize.toString())]);
+      //   queryParams
+      //       .addEntries([MapEntry('pageSize', option.pageSize.toString())]);
 
-        response = await get('$url/list', queryParams);
-      } else {
-        response = await post('$url/list', body: option.toJson());
-      }
+      //   response = await get('$url/list', queryParams);
+      // } else {
+      response = await post('$url/list', body: option.toJson());
+      // }
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }

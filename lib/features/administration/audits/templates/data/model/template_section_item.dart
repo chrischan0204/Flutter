@@ -46,7 +46,8 @@ class TemplateSectionItem extends Equatable {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'id': id,
-      'templateSectionId': templateSectionId,
+      'templateSectionId':
+          templateSectionId == emptyGuid ? null : templateSectionId,
       'itemTypeId': itemTypeId,
       'responseScaleId': responseScaleId,
       'parentId': parentId,

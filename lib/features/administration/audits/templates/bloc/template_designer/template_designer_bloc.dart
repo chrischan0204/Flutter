@@ -206,12 +206,19 @@ class TemplateDesignerBloc
       switch (event.level) {
         case 0:
           newTemplateSection = state.templateSectionItem!.copyWith(
+              question: state.templateSectionItem!.question != null
+                  ? Nullable.value(state.templateSectionItem!.question!
+                      .copyWith(responseScaleId: event.responseScaleId))
+                  : Nullable.value(Question(
+                      name: '',
+                      responseScaleId: event.responseScaleId,
+                    )),
               responseScaleId: event.responseScaleId,
               children: responseScaleItemList.map((e) {
                 return TemplateSectionItem(
                   id: const Uuid().v1(),
                   itemTypeId: 2,
-                  templateSectionId: state.selectedTemplateSection!.id,
+                  // templateSectionId: state.selectedTemplateSection!.id,
                   responseScaleId: event.responseScaleId,
                   response: e,
                 );
@@ -226,12 +233,19 @@ class TemplateDesignerBloc
                       ? e.copyWith(
                           itemTypeId: 2,
                           responseScaleId: event.responseScaleId,
+                          question: e.question != null
+                              ? Nullable.value(e.question!.copyWith(
+                                  responseScaleId: event.responseScaleId))
+                              : Nullable.value(Question(
+                                  name: '',
+                                  responseScaleId: event.responseScaleId,
+                                )),
                           children: responseScaleItemList
                               .map((e) => TemplateSectionItem(
                                     id: const Uuid().v1(),
-                                    templateSectionId:
-                                        state.selectedTemplateSection!.id,
-                                    responseScaleId: event.responseScaleId,
+                                    // templateSectionId:
+                                    //     state.selectedTemplateSection!.id,
+                                    // responseScaleId: event.responseScaleId,
                                     response: e,
                                   ))
                               .toList())
@@ -250,11 +264,20 @@ class TemplateDesignerBloc
                               ? child.copyWith(
                                   itemTypeId: 2,
                                   responseScaleId: event.responseScaleId,
+                                  question: e.question != null
+                                      ? Nullable.value(e.question!.copyWith(
+                                          responseScaleId:
+                                              event.responseScaleId))
+                                      : Nullable.value(Question(
+                                          name: '',
+                                          responseScaleId:
+                                              event.responseScaleId,
+                                        )),
                                   children: responseScaleItemList
                                       .map((e) => TemplateSectionItem(
                                             id: const Uuid().v1(),
-                                            templateSectionId: state
-                                                .selectedTemplateSection!.id,
+                                            // templateSectionId: state
+                                            //     .selectedTemplateSection!.id,
                                             responseScaleId:
                                                 event.responseScaleId,
                                             response: e,
@@ -267,15 +290,7 @@ class TemplateDesignerBloc
       }
 
       emit(state.copyWith(
-        templateSectionItem: Nullable.value(newTemplateSection.copyWith(
-          question: newTemplateSection.question != null
-              ? Nullable.value(newTemplateSection.question!
-                  .copyWith(responseScaleId: event.responseScaleId))
-              : Nullable.value(Question(
-                  name: '',
-                  responseScaleId: event.responseScaleId,
-                )),
-        )),
+        templateSectionItem: Nullable.value(newTemplateSection),
         responseScaleItemListLoadStatus: EntityStatus.success,
       ));
     } catch (e) {
@@ -596,8 +611,8 @@ class TemplateDesignerBloc
                     children: e.children
                         .map((child) => child.id == event.templateSectionItemId
                             ? child.copyWith(
-                                response: Nullable.value(
-                                    e.response?.copyWith(score: event.score)))
+                                response: Nullable.value(child.response
+                                    ?.copyWith(score: event.score)))
                             : child)
                         .toList()))
                 .toList());

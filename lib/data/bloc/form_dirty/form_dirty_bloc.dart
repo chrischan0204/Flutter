@@ -9,6 +9,19 @@ class FormDirtyBloc extends Bloc<FormDirtyEvent, FormDirtyState> {
     on<FormDirtyChanged>(_onFormDirtyChanged);
   }
 
+  @override
+  void onChange(Change<FormDirtyState> change) {
+    final currentState = change.currentState;
+    final nextState = change.nextState;
+
+    print('current');
+    print(currentState.isDirty);
+    print('next');
+    print(nextState.isDirty);
+
+    super.onChange(change);
+  }
+
   void _onFormDirtyChanged(
     FormDirtyChanged event,
     Emitter<FormDirtyState> emit,

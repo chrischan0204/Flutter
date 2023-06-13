@@ -83,14 +83,21 @@ class _UsersListState extends State<UsersListWidget> {
                     userDetailState.userLoadStatus.isLoading,
                 selectedEntity: userDetailState.user,
                 onTableSorted: (sortedUsers) => _sortUsers(sortedUsers),
-                onViewSettingApplied: () => _filterUsers(),
-                onIncludeDeletedChanged: (value) =>
-                    _filterUsers(null, value, 1),
-                onFilterSaved: (value) => _filterUsers(value, null, 1),
-                onFilterApplied: ([value, withoutSave]) =>
-                    _filterUsers(value, null, 1, null, withoutSave),
-                onPaginate: (pageNum, pageRow) =>
-                    _filterUsers(null, null, pageNum, pageRow),
+                onViewSettingApplied: () {
+                  _filterUsers();
+                },
+                onIncludeDeletedChanged: (value) {
+                  _filterUsers(null, value, 1);
+                },
+                onFilterSaved: (value) {
+                  _filterUsers(value, null, 1);
+                },
+                onFilterApplied: ([value, withoutSave]) {
+                  _filterUsers(value, null, 1, null, withoutSave);
+                },
+                onPaginate: (pageNum, pageRow) {
+                  _filterUsers(null, null, pageNum, pageRow);
+                },
                 totalRows: userListState.totalRows,
                 newIconData: PhosphorIcons.regular.userPlus,
               );
@@ -118,6 +125,7 @@ class _UsersListState extends State<UsersListWidget> {
     int? rowPerPage,
     bool? withoutSave,
   ]) {
+    print('filter users');
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
     userListBloc.add(UserListFiltered(
@@ -128,7 +136,8 @@ class _UsersListState extends State<UsersListWidget> {
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-      filterOption: withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
+      filterOption:
+          withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
     )));
   }
 }

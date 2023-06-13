@@ -25,6 +25,8 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
       ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId))
       ..add(
           AssignSiteToUserUnassignedUserSiteListLoaded(userId: widget.userId));
+
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
   }
 

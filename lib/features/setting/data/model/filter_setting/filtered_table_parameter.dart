@@ -11,7 +11,7 @@ class FilteredTableParameter extends Equatable {
     required this.includeDeleted,
     required this.pageNum,
     required this.pageSize,
-    required this.filterOption,
+    this.filterOption,
   });
   @override
   List<Object?> get props => [
@@ -44,7 +44,7 @@ class FilteredTableParameter extends Equatable {
       'includeDeleted': includeDeleted,
       'pageNum': pageNum,
       'pageSize': pageSize,
-      'filterOption': filterOption == null ? {} : filterOption!.toMap(),
+      'filterOption': filterOption?.toMap(),
     };
   }
 

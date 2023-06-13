@@ -31,6 +31,12 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
     };
     switch (widget.userFilterItem.filterSetting.controlType) {
       case 'Textbox':
+        if (widget.userFilterItem.filterSetting.columnType == 'Numeric') {
+          return {
+            ...map,
+            'IN': 'IN',
+          };
+        }
         return {
           ...map,
           'Contains': 'Contains',
@@ -43,6 +49,7 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
       case 'DatePicker':
         return map;
     }
+
     return {
       ...map,
       'Contains': 'Contains',

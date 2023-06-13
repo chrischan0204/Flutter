@@ -26,6 +26,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
       ..add(const FilterTextForUnassignedChanged(filterText: ''))
       ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
       ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
+
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
   }
 

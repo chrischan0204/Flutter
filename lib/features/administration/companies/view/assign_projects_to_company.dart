@@ -31,6 +31,8 @@ class _AssignProjectsToCompanyViewState
       ..add(const FilterSiteIdForUnassignedChanged(siteId: ''))
       ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
       ..add(UnassignedProjectCompaniesRetrieved(companyId: widget.companyId));
+
+      context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
   }
 
@@ -259,11 +261,9 @@ class _AssignProjectsToCompanyViewState
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          _buildFilterProjectTextFieldForUnassigned(state),
-          const SizedBox(
-            width: 50,
-          ),
           _buildSiteSelectFieldForUnassigned(state),
+          const SizedBox(width: 50),
+          _buildFilterProjectTextFieldForUnassigned(state),
         ],
       ),
     );
@@ -316,6 +316,11 @@ class _AssignProjectsToCompanyViewState
             onChanged: (site) {
               companiesBloc
                   .add(FilterSiteIdForUnassignedChanged(siteId: site.value));
+              companiesBloc.add(UnassignedProjectCompaniesRetrieved(
+                companyId: widget.companyId,
+                name: state.filterTextForUnassigned,
+                siteId: site.value,
+              ));
               setState(() {
                 selectedFilterSiteNameForUnassign = site.key;
               });
@@ -331,11 +336,9 @@ class _AssignProjectsToCompanyViewState
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          _buildFilterProjectTextFieldForAssigned(state),
-          const SizedBox(
-            width: 50,
-          ),
           _buildSiteSelectFieldForAssigned(state),
+          const SizedBox(width: 50),
+          _buildFilterProjectTextFieldForAssigned(state),
         ],
       ),
     );
@@ -388,6 +391,11 @@ class _AssignProjectsToCompanyViewState
             onChanged: (site) {
               companiesBloc
                   .add(FilterSiteIdForAssignedChanged(siteId: site.value));
+              companiesBloc.add(AssignedProjectCompaniesRetrieved(
+                companyId: widget.companyId,
+                name: state.filterTextForAssigned,
+                siteId: site.value,
+              ));
               setState(() {
                 selectedFilterSiteNameForAssign = site.key;
               });
