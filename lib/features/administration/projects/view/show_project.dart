@@ -67,41 +67,16 @@ class _ShowProjectViewState extends State<ShowProjectView> {
   Widget _buildAssociatedCompanies(ProjectsState state) {
     var rows = state.assignedCompanyProjects
         .map(
-          (projectCompany) => DataRow(
-            cells: projectCompany
-                .toTableDetailMap()
-                .values
-                .map(
-                  (detail) => DataCell(
-                    CustomDataCell(data: detail),
-                  ),
-                )
-                .toList(),
-          ),
+          (projectCompany) => projectCompany
+              .toTableDetailMap()
+              .values
+              .map(
+                (detail) => CustomDataCell(data: detail),
+              )
+              .toList(),
         )
         .toList();
-    var columns = const [
-      DataColumn(
-        label: Text(
-          'Company Name',
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Role',
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Added By',
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Added on',
-        ),
-      ),
-    ];
+    var columns = const ['Company Name', 'Role', 'Added By', 'Added on'];
     return state.assignedCompanyProjectsRetrievedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
@@ -129,7 +104,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
               Container(
                 child: state.assignedCompanyProjects.isNotEmpty
                     ? TableView(
-                        height: MediaQuery.of(context).size.height - 340,
+                        height: MediaQuery.of(context).size.height - 460,
                         columns: columns,
                         rows: rows,
                       )

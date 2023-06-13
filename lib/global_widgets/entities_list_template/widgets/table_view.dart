@@ -31,31 +31,30 @@ class _DataTableViewState extends State<DataTableView> {
   int? selectedColumnIndex;
   bool sortType = true;
 
-  List<GridColumn> _buildColumns() => [
-        ...widget.columns
-            .map(
-              (column) => GridColumn(
-                columnName: column,
-                width: widget.columnWidths[column]!,
-                minimumWidth: 60.0,
-                label: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    column,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      fontFamily: 'OpenSans',
-                    ),
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+  List<GridColumn> _buildColumns() => widget.columns
+      .map(
+        (column) => GridColumn(
+          columnName: column,
+          width: widget.columnWidths[column]!,
+          minimumWidth: 60.0,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              column,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                fontFamily: 'OpenSans',
               ),
-            )
-            .toList(),
-      ];
+              softWrap: false,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +116,6 @@ class EntityDataSource extends DataGridSource {
     required List<String> columns,
     required this.onRowClick,
   }) {
-    print(columns);
     _entityData = List.generate(
       entityData.length,
       (index) => DataGridRow(

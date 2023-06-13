@@ -41,7 +41,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
               Row(
                 children: [
                   Expanded(child: _buildUnassignedSitesTableHeaderView()),
-                  const SizedBox(width: 150),
+                  const SizedBox(width: 100),
                   Expanded(child: _buildAssignedSitesTableViewHeader()),
                 ],
               ),
@@ -49,9 +49,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildUnassignedSitesView(state),
-                  const SizedBox(
-                    width: 150,
-                  ),
+                  const SizedBox(width: 100),
                   _buildAssignedSitesView(state, context),
                 ],
               ),
@@ -143,41 +141,25 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         listenWhen: (previous, current) =>
             previous.siteFromCompanyUnassignedStatus !=
             current.siteFromCompanyUnassignedStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
-          columns: const [
-            DataColumn(
-              label: Text(
-                'Site Name',
-              ),
-            ),
-            DataColumn(
-              label: Text('Assigned?'),
-            ),
-          ],
+        child: TableView(
+          height: MediaQuery.of(context).size.height - 460,
+          columns: const ['Site Name', 'Assigned?'],
           rows: state.unassignedCompanySites
               .map(
-                (unassignedCompanySite) => DataRow(
-                  cells: [
-                    DataCell(
-                      CustomDataCell(
-                        data: unassignedCompanySite.siteName,
-                      ),
-                    ),
-                    DataCell(
-                      CustomSwitch(
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        switchValue: unassignedCompanySite.assigned,
-                        onChanged: (value) {
-                          _assignSiteToCompany(unassignedCompanySite);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                (unassignedCompanySite) => [
+                  CustomDataCell(
+                    data: unassignedCompanySite.siteName,
+                  ),
+                  CustomSwitch(
+                    trueString: 'Yes',
+                    falseString: 'No',
+                    textColor: darkTeal,
+                    switchValue: unassignedCompanySite.assigned,
+                    onChanged: (value) {
+                      _assignSiteToCompany(unassignedCompanySite);
+                    },
+                  ),
+                ],
               )
               .toList(),
         ),
@@ -211,40 +193,24 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         listenWhen: (previous, current) =>
             previous.siteToCompanyAssignedStatus !=
             current.siteToCompanyAssignedStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
-          columns: const [
-            DataColumn(
-              label: Text(
-                'Site Name',
-              ),
-            ),
-            DataColumn(
-              label: Text('Assigned?'),
-            ),
-          ],
+        child: TableView(
+          height: MediaQuery.of(context).size.height - 460,
+          columns: const ['Site Name', 'Assigned?'],
           rows: List<CompanySite>.from(state.assignedCompanySites)
               .map(
-                (assignedCompanySite) => DataRow(
-                  cells: [
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedCompanySite.siteName,
-                      ),
-                    ),
-                    DataCell(
-                      CustomSwitch(
-                        switchValue: assignedCompanySite.assigned,
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        onChanged: (value) =>
-                            _unassignFromCompany(assignedCompanySite.id!),
-                      ),
-                    ),
-                  ],
-                ),
+                (assignedCompanySite) => [
+                  CustomDataCell(
+                    data: assignedCompanySite.siteName,
+                  ),
+                  CustomSwitch(
+                    switchValue: assignedCompanySite.assigned,
+                    trueString: 'Yes',
+                    falseString: 'No',
+                    textColor: darkTeal,
+                    onChanged: (value) =>
+                        _unassignFromCompany(assignedCompanySite.id!),
+                  ),
+                ],
               )
               .toList(),
         ),

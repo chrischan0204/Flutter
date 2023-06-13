@@ -9,29 +9,21 @@ class UserNotificationSettingView extends StatelessWidget {
         builder: (context, state) {
       var rows = state.userSiteNotification.data.sites
           .map(
-            (userSiteNotification) => DataRow(
-              cells: [
-                DataCell(CustomDataCell(data: userSiteNotification.siteName)),
-                ...userSiteNotification.observationTypes
-                    .map((observationType) => DataCell(
-                        CustomDataCell(data: observationType.sendNotification)))
-                    .toList()
-              ],
-            ),
+            (userSiteNotification) => [
+              CustomDataCell(data: userSiteNotification.siteName),
+              ...userSiteNotification.observationTypes
+                  .map((observationType) =>
+                      CustomDataCell(data: observationType.sendNotification))
+                  .toList()
+            ],
           )
           .toList();
       var columns = [
-        const DataColumn(
-          label: Text('Site Name'),
-        ),
+        'Site Name',
         ...List.generate(
             state.userSiteNotification.headers.length,
-            (index) => DataColumn(
-                  label: Text(
-                    state.userSiteNotification.headers[index]
-                        .observationTypeName,
-                  ),
-                ))
+            (index) =>
+                state.userSiteNotification.headers[index].observationTypeName)
       ];
       return state.userSiteNotificationLoadStatus == EntityStatus.loading
           ? const Padding(
@@ -60,7 +52,7 @@ class UserNotificationSettingView extends StatelessWidget {
                 Container(
                   child: state.userSiteNotification.data.sites.isNotEmpty
                       ? TableView(
-                          height: MediaQuery.of(context).size.height - 337,
+                          height: MediaQuery.of(context).size.height - 360,
                           columns: columns,
                           rows: rows,
                         )

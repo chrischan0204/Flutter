@@ -18,51 +18,35 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
         builder: (context, state) {
       var rows = state.assignedUserSiteList
           .map(
-            (userSite) => DataRow(
-              cells: [
-                DataCell(
-                  RichText(
-                    text: TextSpan(
-                      text: userSite.siteName,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.normal,
-                        color: textColor,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: userSite.isDefault ? ' (default)' : '',
-                          style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              color: Color.fromARGB(
-                                  (0.75 * 255).toInt(), 31, 41, 55)),
-                        )
-                      ],
-                    ),
+            (userSite) => [
+              RichText(
+                text: TextSpan(
+                  text: userSite.siteName,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                    color: textColor,
                   ),
+                  children: [
+                    TextSpan(
+                      text: userSite.isDefault ? ' (default)' : '',
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color:
+                              Color.fromARGB((0.75 * 255).toInt(), 31, 41, 55)),
+                    )
+                  ],
                 ),
-                DataCell(CustomDataCell(data: userSite.createdByUserName)),
-                DataCell(CustomDataCell(data: userSite.createdOn)),
-              ],
-            ),
+              ),
+              CustomDataCell(data: userSite.createdByUserName),
+              CustomDataCell(data: userSite.createdOn),
+            ],
           )
           .toList();
       var columns = const [
-        DataColumn(
-          label: Text(
-            'Site Name',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Access granted by',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Access granted on',
-          ),
-        ),
+        'Site Name',
+        'Access granted by',
+        'Access granted on'
       ];
       return state.assignedUserSiteListLoadStatus == EntityStatus.loading
           ? const Padding(
@@ -91,7 +75,7 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
                 Container(
                   child: state.assignedUserSiteList.isNotEmpty
                       ? TableView(
-                          height: MediaQuery.of(context).size.height - 337,
+                          height: MediaQuery.of(context).size.height - 360,
                           columns: columns,
                           rows: rows,
                         )

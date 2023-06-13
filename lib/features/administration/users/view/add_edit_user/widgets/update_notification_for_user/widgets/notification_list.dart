@@ -73,8 +73,8 @@ class _NotificationListViewState extends State<NotificationListView> {
           builder: (context, state) {
             var rows = state.userSiteNotification.data.sites
                 .map(
-                  (site) => DataRow(cells: [
-                    DataCell(Checkbox(
+                  (site) => [
+                    Checkbox(
                       value: site.allSendNotification,
                       onChanged: (sendNotification) =>
                           _updateUserNotificationSetting(
@@ -83,12 +83,10 @@ class _NotificationListViewState extends State<NotificationListView> {
                         observationTypes: site.observationTypes,
                         all: true,
                       ),
-                    )),
-                    DataCell(
-                      CustomDataCell(data: site.siteName),
                     ),
+                    CustomDataCell(data: site.siteName),
                     ...site.observationTypes
-                        .map((observationType) => DataCell(Checkbox(
+                        .map((observationType) => Checkbox(
                               value: observationType.sendNotification,
                               onChanged: (sendNotification) =>
                                   _updateUserNotificationSetting(
@@ -98,29 +96,21 @@ class _NotificationListViewState extends State<NotificationListView> {
                                 sendNotification: sendNotification!,
                                 observationTypes: site.observationTypes,
                               ),
-                            )))
+                            ))
                         .toList()
-                  ]),
+                  ],
                 )
                 .toList();
             var columns = [
-              const DataColumn(
-                label: Text('All'),
-              ),
-              const DataColumn(
-                label: Text('Site Name'),
-              ),
+              'All',
+              'Site Name',
               ...List.generate(
                   state.userSiteNotification.headers.length,
-                  (index) => DataColumn(
-                        label: Text(
-                          state.userSiteNotification.headers[index]
-                              .observationTypeName,
-                        ),
-                      ))
+                  (index) => state
+                      .userSiteNotification.headers[index].observationTypeName)
             ];
             return TableView(
-              height: MediaQuery.of(context).size.height - 337,
+              height: MediaQuery.of(context).size.height - 360,
               columns: columns,
               rows: rows,
             );

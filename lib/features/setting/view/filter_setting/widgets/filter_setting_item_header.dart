@@ -27,7 +27,7 @@ class FilterSettingItemHeader extends StatelessWidget {
           ),
           SizedBox(width: 5),
           SizedBox(
-            width: 150,
+            width: 100,
             child: Text('Operator'),
           ),
           SizedBox(width: 5),

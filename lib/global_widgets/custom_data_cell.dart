@@ -67,7 +67,7 @@ class _CustomDataCellState extends State<CustomDataCell> {
             decorationThickness: 3,
           ),
           maxLines: 3,
-          softWrap: true,
+          softWrap: false,
           overflow: TextOverflow.ellipsis,
         ),
       ),

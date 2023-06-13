@@ -52,7 +52,7 @@ class _AssignProjectsToCompanyViewState
                       children: [
                         Expanded(
                             child: _buildUnassignedProjectsTableViewHeader()),
-                        const SizedBox(width: 150),
+                        const SizedBox(width: 100),
                         Expanded(
                             child: _buildAssignedProjectsTableViewHeader()),
                       ],
@@ -62,7 +62,7 @@ class _AssignProjectsToCompanyViewState
                       children: [
                         _buildUnassignedProjectsView(state),
                         const SizedBox(
-                          width: 150,
+                          width: 100,
                         ),
                         _buildAssignedProjectsView(state, context),
                       ],
@@ -143,39 +143,29 @@ class _AssignProjectsToCompanyViewState
             previous.projectFromCompanyUnassignedStatus !=
             current.projectFromCompanyUnassignedStatus,
         child: TableView(
-          height: MediaQuery.of(context).size.height - 357,
+          height: MediaQuery.of(context).size.height - 460,
           columns: tableColumns,
           rows: state.assignedProjectCompanies
               .map(
-                (assignedprojectCompany) => DataRow(
-                  cells: [
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedprojectCompany.projectName,
-                      ),
-                    ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedprojectCompany.siteName,
-                      ),
-                    ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedprojectCompany.roleName,
-                      ),
-                    ),
-                    DataCell(
-                      CustomSwitch(
-                        switchValue: assignedprojectCompany.assigned,
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        onChanged: (value) => _unassignProjectFromCompany(
-                            assignedprojectCompany.id),
-                      ),
-                    ),
-                  ],
-                ),
+                (assignedprojectCompany) => [
+                  CustomDataCell(
+                    data: assignedprojectCompany.projectName,
+                  ),
+                  CustomDataCell(
+                    data: assignedprojectCompany.siteName,
+                  ),
+                  CustomDataCell(
+                    data: assignedprojectCompany.roleName,
+                  ),
+                  CustomSwitch(
+                    switchValue: assignedprojectCompany.assigned,
+                    trueString: 'Yes',
+                    falseString: 'No',
+                    textColor: darkTeal,
+                    onChanged: (value) =>
+                        _unassignProjectFromCompany(assignedprojectCompany.id),
+                  ),
+                ],
               )
               .toList(),
         ),
@@ -210,54 +200,42 @@ class _AssignProjectsToCompanyViewState
             listenWhen: (previous, current) =>
                 previous.projectToCompanyAssignedStatus !=
                 current.projectToCompanyAssignedStatus,
-            child: DataTable(
-              headingTextStyle: tableHeadingTextStyle,
-              dataTextStyle: tableDataTextStyle,
+            child: TableView(
+              height: MediaQuery.of(context).size.height - 460,
               columns: tableColumns,
               rows: state.unassignedProjectCompanies
                   .map(
-                    (unassignedProjectCompany) => DataRow(
-                      cells: [
-                        DataCell(
-                          CustomDataCell(
-                              data: unassignedProjectCompany.projectName),
-                        ),
-                        DataCell(
-                          CustomDataCell(
-                              data: unassignedProjectCompany.siteName),
-                        ),
-                        DataCell(
-                          CustomSingleSelect(
-                            items: {}..addEntries(rolesState.roles
-                                .map((role) => MapEntry(role.name, role))),
-                            hint: 'Select Role',
-                            selectedValue: rolesState.roles.isNotEmpty
-                                ? unassignedProjectCompany.roleName.isNotEmpty
-                                    ? unassignedProjectCompany.roleName
-                                    : null
-                                : null,
-                            onChanged: (role) => companiesBloc.add(
-                              UnAssignedProjectCompanyRoleSelected(
-                                role: role.value,
-                                projectCompanyIndex: state
-                                    .unassignedProjectCompanies
-                                    .indexOf(unassignedProjectCompany),
-                              ),
-                            ),
+                    (unassignedProjectCompany) => [
+                      CustomDataCell(
+                          data: unassignedProjectCompany.projectName),
+                      CustomDataCell(data: unassignedProjectCompany.siteName),
+                      CustomSingleSelect(
+                        items: {}..addEntries(rolesState.roles
+                            .map((role) => MapEntry(role.name, role))),
+                        hint: 'Select Role',
+                        selectedValue: rolesState.roles.isNotEmpty
+                            ? unassignedProjectCompany.roleName.isNotEmpty
+                                ? unassignedProjectCompany.roleName
+                                : null
+                            : null,
+                        onChanged: (role) => companiesBloc.add(
+                          UnAssignedProjectCompanyRoleSelected(
+                            role: role.value,
+                            projectCompanyIndex: state
+                                .unassignedProjectCompanies
+                                .indexOf(unassignedProjectCompany),
                           ),
                         ),
-                        DataCell(
-                          CustomSwitch(
-                            trueString: 'Yes',
-                            falseString: 'No',
-                            textColor: darkTeal,
-                            switchValue: unassignedProjectCompany.assigned,
-                            onChanged: (value) => _assignProjectToCompany(
-                                unassignedProjectCompany),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      CustomSwitch(
+                        trueString: 'Yes',
+                        falseString: 'No',
+                        textColor: darkTeal,
+                        switchValue: unassignedProjectCompany.assigned,
+                        onChanged: (value) =>
+                            _assignProjectToCompany(unassignedProjectCompany),
+                      ),
+                    ],
                   )
                   .toList(),
             ),
@@ -267,26 +245,12 @@ class _AssignProjectsToCompanyViewState
     );
   }
 
-  List<DataColumn> get tableColumns {
+  List<String> get tableColumns {
     return const [
-      DataColumn(
-        label: Text(
-          'Project Name',
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Site',
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Role',
-        ),
-      ),
-      DataColumn(
-        label: Text('Assigned?'),
-      ),
+      'Project Name',
+      'Site',
+      'Role',
+      'Assigned?',
     ];
   }
 

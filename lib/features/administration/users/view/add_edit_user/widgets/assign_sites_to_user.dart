@@ -40,7 +40,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
               Row(
                 children: [
                   Expanded(child: _buildUnassignedSitesTableHeaderView()),
-                  const SizedBox(width: 150),
+                  const SizedBox(width: 100),
                   Expanded(child: _buildAssignedSitesTableViewHeader()),
                 ],
               ),
@@ -48,7 +48,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildAssignedSitesView(state, context),
-                  const SizedBox(width: 150),
+                  const SizedBox(width: 100),
                   _buildUnassignedSitesView(state)
                 ],
               ),
@@ -77,7 +77,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        'Sites can be assigned to this project by selecting from the list below.',
+        'Sites can be assigned to this user by selecting from the list below.',
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
@@ -145,42 +145,24 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
         },
         listenWhen: (previous, current) =>
             previous.unassignStatus != current.unassignStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
-          columns: const [
-            DataColumn(
-              label: Text(
-                'Site Name',
-              ),
-            ),
-            DataColumn(
-              label: Text('Assigned?'),
-            ),
-          ],
+        child: TableView(
+          height: MediaQuery.of(context).size.height - 460,
+          columns: const ['Site Name', 'Assigned?'],
           rows: state.unassignedUserSiteList
-              .map(
-                (unassignedUserSite) => DataRow(
-                  cells: [
-                    DataCell(
-                      CustomSwitch(
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        switchValue: unassignedUserSite.isAssigned,
-                        onChanged: (value) {
-                          _assignSiteToUser(unassignedUserSite);
-                        },
-                      ),
+              .map((unassignedUserSite) => [
+                    CustomDataCell(
+                      data: unassignedUserSite.siteName,
                     ),
-                    DataCell(
-                      CustomDataCell(
-                        data: unassignedUserSite.siteName,
-                      ),
+                    CustomSwitch(
+                      trueString: 'Yes',
+                      falseString: 'No',
+                      textColor: darkTeal,
+                      switchValue: unassignedUserSite.isAssigned,
+                      onChanged: (value) {
+                        _assignSiteToUser(unassignedUserSite);
+                      },
                     ),
-                  ],
-                ),
-              )
+                  ])
               .toList(),
         ),
       ),
@@ -210,46 +192,27 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
         },
         listenWhen: (previous, current) =>
             previous.assignStatus != current.assignStatus,
-        child: DataTable(
-          headingTextStyle: tableHeadingTextStyle,
-          dataTextStyle: tableDataTextStyle,
-          columns: const [
-            DataColumn(
-              label: Text('Site Name'),
-            ),
-            DataColumn(
-              label: Text('Default'),
-            ),
-            DataColumn(label: Text('Assigned?')),
-          ],
+        child: TableView(
+          height: MediaQuery.of(context).size.height - 460,
+          columns: const ['Site Name', 'Default', 'Assigned?'],
           rows: List<UserSite>.from(state.assignedUserSiteList)
-              .map(
-                (assignedUserSite) => DataRow(
-                  cells: [
-                    DataCell(
-                      CustomSwitch(
-                        switchValue: assignedUserSite.isAssigned,
-                        active: !assignedUserSite.isDefault,
-                        trueString: 'Yes',
-                        falseString: 'No',
-                        textColor: darkTeal,
-                        onChanged: (value) =>
-                            _unassignFromUser(assignedUserSite.id!),
-                      ),
+              .map((assignedUserSite) => [
+                    CustomDataCell(
+                      data: assignedUserSite.siteName,
                     ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedUserSite.siteName,
-                      ),
+                    CustomDataCell(
+                      data: assignedUserSite.isDefault ? 'Yes' : '--',
                     ),
-                    DataCell(
-                      CustomDataCell(
-                        data: assignedUserSite.isDefault ? 'Yes' : '--',
-                      ),
+                    CustomSwitch(
+                      switchValue: assignedUserSite.isAssigned,
+                      active: !assignedUserSite.isDefault,
+                      trueString: 'Yes',
+                      falseString: 'No',
+                      textColor: darkTeal,
+                      onChanged: (value) =>
+                          _unassignFromUser(assignedUserSite.id!),
                     ),
-                  ],
-                ),
-              )
+                  ])
               .toList(),
         ),
       ),

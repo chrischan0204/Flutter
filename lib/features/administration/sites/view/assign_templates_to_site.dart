@@ -82,7 +82,6 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
   Widget build(BuildContext context) {
     return BlocBuilder<SitesBloc, SitesState>(
       builder: (context, state) {
-        return Container();
         return Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -135,71 +134,51 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                         ),
                         const CustomDivider(),
                         SizedBox(
-                          child: DataTable(
-                            headingTextStyle: tableHeadingTextStyle,
-                            dataTextStyle: tableDataTextStyle,
-                            columns: const [
-                              DataColumn(
-                                label: Text('Assigned?'),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Template Name',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Created By',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Last Revised on',
-                                ),
-                              ),
-                            ],
-                            rows: state.templates
-                                .where(
-                                    (auditTemplate) => !auditTemplate.assigned)
-                                .map(
-                                  (auditTemplate) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        CustomSwitch(
-                                          trueString: 'Yes',
-                                          falseString: 'No',
-                                          textColor: darkTeal,
-                                          switchValue: auditTemplate.assigned,
-                                          onChanged: (value) {
-                                            sitesBloc.add(
-                                              AuditTemplateAssignedToSite(
-                                                auditTemplateId:
-                                                    auditTemplate.id,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TableView(
+                              height: MediaQuery.of(context).size.height - 460,
+                              columns: const [
+                                'Template Name',
+                                'Created By',
+                                'Last Revised on',
+                                'Assigned?'
+                              ],
+                              rows: state.templates
+                                  .where(
+                                      (auditTemplate) => !auditTemplate.assigned)
+                                  .map(
+                                    (auditTemplate) => [
                                       ...auditTemplate
                                           .toTableDetailMap()
                                           .values
-                                          .map(
-                                            (detail) => DataCell(
-                                              CustomDataCell(data: detail),
-                                            ),
-                                          )
+                                          .map((detail) =>
+                                              CustomDataCell(data: detail))
                                           .toList(),
+                                      CustomSwitch(
+                                        trueString: 'Yes',
+                                        falseString: 'No',
+                                        textColor: darkTeal,
+                                        switchValue: auditTemplate.assigned,
+                                        onChanged: (value) {
+                                          sitesBloc.add(
+                                            AuditTemplateAssignedToSite(
+                                              auditTemplateId: auditTemplate.id,
+                                            ),
+                                          );
+                                        },
+                                      )
                                     ],
-                                  ),
-                                )
-                                .toList(),
+                                  )
+                                  .toList(),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(
-                    width: 150,
+                    width: 100,
                   ),
                   Expanded(
                     child: Column(
@@ -227,78 +206,55 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                         const CustomDivider(),
                         SizedBox(
                           width: double.infinity,
-                          child: DataTable(
-                            headingTextStyle: tableHeadingTextStyle,
-                            dataTextStyle: tableDataTextStyle,
+                          child: TableView(
+                            height: MediaQuery.of(context).size.height - 460,
                             columns: const [
-                              DataColumn(
-                                label: Text('Assigned?'),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Template Name',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Created By',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Last Revised on',
-                                ),
-                              ),
+                              'Template Name',
+                              'Created By',
+                              'Last Revised on',
+                              'Assigned?'
                             ],
                             rows: List<AuditTemplate>.from(state.templates)
                                 .where(
                                     (auditTemplate) => auditTemplate.assigned)
                                 .map(
-                                  (auditTemplate) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        CustomSwitch(
-                                          switchValue: auditTemplate.assigned,
-                                          trueString: 'Yes',
-                                          falseString: 'No',
-                                          textColor: darkTeal,
-                                          onChanged: (value) {
-                                            CustomAlert(
-                                              context: context,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4,
-                                              title: 'Confirm',
-                                              description:
-                                                  'Do you really want to remove this template from site?',
-                                              btnOkText: 'Remove',
-                                              btnOkOnPress: () {
-                                                sitesBloc.add(
-                                                  AuditTemplateAssignedToSite(
-                                                    auditTemplateId:
-                                                        auditTemplate.id,
-                                                  ),
-                                                );
-                                              },
-                                              dialogType: DialogType.question,
+                                  (auditTemplate) => [
+                                    ...List.from(auditTemplate
+                                            .toTableDetailMap()
+                                            .values)
+                                        .map((detail) => CustomDataCell(
+                                              data: detail,
+                                            ))
+                                        .toList(),
+                                    CustomSwitch(
+                                      switchValue: auditTemplate.assigned,
+                                      trueString: 'Yes',
+                                      falseString: 'No',
+                                      textColor: darkTeal,
+                                      onChanged: (value) {
+                                        CustomAlert(
+                                          context: context,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
+                                          title: 'Confirm',
+                                          description:
+                                              'Do you really want to remove this template from site?',
+                                          btnOkText: 'Remove',
+                                          btnOkOnPress: () {
+                                            sitesBloc.add(
+                                              AuditTemplateAssignedToSite(
+                                                auditTemplateId:
+                                                    auditTemplate.id,
+                                              ),
                                             );
                                           },
-                                        ),
-                                      ),
-                                      ...List.from(auditTemplate
-                                              .toTableDetailMap()
-                                              .values)
-                                          .map(
-                                            (detail) => DataCell(
-                                              CustomDataCell(
-                                                data: detail,
-                                              ),
-                                            ),
-                                          )
-                                          .toList()
-                                    ],
-                                  ),
+                                          dialogType: DialogType.question,
+                                        );
+                                      },
+                                    )
+                                  ],
                                 )
                                 .toList(),
                           ),

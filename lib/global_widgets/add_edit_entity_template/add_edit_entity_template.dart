@@ -6,7 +6,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:strings/strings.dart';
 
-import '/constants/style.dart';
 import '/constants/color.dart';
 import '/data/model/entity.dart';
 import '/global_widgets/global_widget.dart';
