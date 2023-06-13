@@ -110,7 +110,6 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
 
     if (widget.userId != null) {
       userDetailBloc.add(UserDetailUserLoadedById(userId: widget.userId!));
-      context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     }
 
     super.initState();
@@ -121,8 +120,9 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     return BlocConsumer<AddEditUserBloc, AddEditUserState>(
       listener: (context, addEditUserState) {
         _checkCrudResult(addEditUserState, context);
-        context.read<FormDirtyBloc>().add(
-            FormDirtyChanged(isDirty: _checkFormDataFill(addEditUserState)));
+        context
+            .read<FormDirtyBloc>()
+            .add(FormDirtyChanged(isDirty: addEditUserState.isUserDataFill));
       },
       builder: (context, addEditUserState) {
         return BlocBuilder<UserDetailBloc, UserDetailState>(
@@ -146,7 +146,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
                 addEntity: () => _addUser(addEditUserState),
                 editEntity: () => _editUser(addEditUserState),
                 crudStatus: addEditUserState.userAddStatus,
-                isCrudDataFill: _checkFormDataFill(addEditUserState),
+                isCrudDataFill: addEditUserState.isUserDataFill,
                 tabItems: _buildTabs(addEditUserState),
                 tabWidth: 500,
                 view: widget.view,
@@ -176,10 +176,6 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     titleController.text = state.user!.title;
     emailController.text = state.user!.email;
     mobileNumberController.text = state.user!.mobileNumber;
-  }
-
-  bool _checkFormDataFill(AddEditUserState addEditUserState) {
-    return widget.userId == null ? addEditUserState.isUserDataFill : false;
   }
 
   Map<String, Widget> _buildTabs(AddEditUserState addEditUserState) {

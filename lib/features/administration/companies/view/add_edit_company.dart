@@ -94,10 +94,8 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
 
   // check if some of fields are filled
   bool _checkFormDataFill() {
-    return widget.companyId == null
-        ? companyNameController.text.trim().isNotEmpty ||
-            einNumberController.text.trim().isNotEmpty
-        : false;
+    return companyNameController.text.trim().isNotEmpty ||
+        einNumberController.text.trim().isNotEmpty;
   }
 
   // change form data whenever the state changes

@@ -103,12 +103,10 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
 
   // check if some of fields are filled
   bool _checkFormDataFill() {
-    return widget.projectId == null
-        ? projectNameController.text.trim().isNotEmpty ||
-            referenceNameController.text.trim().isNotEmpty ||
-            referenceNumberController.text.trim().isNotEmpty ||
-            (site != null && site!.isNotEmpty)
-        : false;
+    return projectNameController.text.trim().isNotEmpty ||
+        referenceNameController.text.trim().isNotEmpty ||
+        referenceNumberController.text.trim().isNotEmpty ||
+        (site != null && site!.isNotEmpty);
   }
 
   // change form data whenever the state changes

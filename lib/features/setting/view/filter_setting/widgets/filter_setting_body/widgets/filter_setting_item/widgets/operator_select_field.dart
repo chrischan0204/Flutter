@@ -20,24 +20,45 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
     super.initState();
   }
 
+  Map<String, String> _getOperator() {
+    Map<String, String> map = const {
+      '=': '=',
+      '<': '<',
+      '<=': '<=',
+      '>': '>',
+      '>=': '>=',
+      '!=': '!=',
+    };
+    switch (widget.userFilterItem.filterSetting.controlType) {
+      case 'Textbox':
+        return {
+          ...map,
+          'Contains': 'Contains',
+          'Not Contains': 'Not Contains',
+          'IN': 'IN',
+          'Not In': 'Not In',
+        };
+      case 'DateTimePicker':
+        return map;
+      case 'DatePicker':
+        return map;
+    }
+    return {
+      ...map,
+      'Contains': 'Contains',
+      'Not Contains': 'Not Contains',
+      'IN': 'IN',
+      'Not In': 'Not In',
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 100,
       child: CustomSingleSelect(
         selectedValue: widget.userFilterItem.operator,
-        items: const {
-          '=': '=',
-          '<': '<',
-          '<=': '<=',
-          '>': '>',
-          '>=': '>=',
-          '!=': '!=',
-          'Contains': 'Contains',
-          'Not Contains': 'Not Contains',
-          'IN': 'IN',
-          'Not In': 'Not In',
-        },
+        items: _getOperator(),
         onChanged: (value) => filterSettingBloc.add(
             FilterSettingUserFilterItemOperatorChanged(
                 operator: value.value, userFilterItem: widget.userFilterItem)),

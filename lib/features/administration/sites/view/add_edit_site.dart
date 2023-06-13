@@ -132,14 +132,12 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   }
 
   bool _checkFormDataFill() {
-    return widget.siteId == null
-        ? siteNameController.text.trim().isNotEmpty ||
-            (region != null && region!.isNotEmpty) ||
-            (timeZone != null && timeZone!.isNotEmpty) ||
-            (siteType != null && siteType!.isNotEmpty) ||
-            siteCodeController.text.trim().isNotEmpty ||
-            referenceCodeController.text.trim().isNotEmpty
-        : false;
+    return siteNameController.text.trim().isNotEmpty ||
+        (region != null && region!.isNotEmpty) ||
+        (timeZone != null && timeZone!.isNotEmpty) ||
+        (siteType != null && siteType!.isNotEmpty) ||
+        siteCodeController.text.trim().isNotEmpty ||
+        referenceCodeController.text.trim().isNotEmpty;
   }
 
   void _checkCrudResult(SitesState state, BuildContext context) {

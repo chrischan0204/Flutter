@@ -116,14 +116,14 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                     AddEditTemplateTemplateAddEdited(
                         templateId: widget.templateId)),
                 crudStatus: addEditTemplateState.templateAddEditStatus,
-                isCrudDataFill: _checkFormDataFill(addEditTemplateState),
+                isCrudDataFill: addEditTemplateState.templateDetailFilled,
                 tabItems: _buildTabs(),
                 tabWidth: 500,
                 view: widget.view,
                 child: BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
                   listener: (context, state) {
                     context.read<FormDirtyBloc>().add(FormDirtyChanged(
-                        isDirty: _checkFormDataFill(addEditTemplateState)));
+                        isDirty: addEditTemplateState.templateDetailFilled));
                   },
                   child:
                       AddEditTemplateDetailsView(templateId: widget.templateId),
@@ -134,12 +134,6 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
         );
       },
     );
-  }
-
-  bool _checkFormDataFill(AddEditTemplateState addEditTemplateState) {
-    return widget.templateId == null
-        ? addEditTemplateState.templateDetailFilled
-        : false;
   }
 
   Map<String, Widget> _buildTabs() {

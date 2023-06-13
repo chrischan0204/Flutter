@@ -29,6 +29,7 @@ class _LayoutState extends State<Layout> {
     _scrollController = ScrollController();
     scaffoldKey.currentState?.openDrawer();
     _authBloc = context.read<AuthBloc>();
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
 
     super.initState();
   }
