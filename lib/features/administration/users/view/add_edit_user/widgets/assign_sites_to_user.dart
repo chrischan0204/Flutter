@@ -105,7 +105,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
 
   Padding _buildAssignedSitesTableViewHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: RichText(
         text: const TextSpan(
           style: TextStyle(
@@ -245,23 +245,22 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
 
   Padding _buildFilterTextFieldForUnassigned(AssignSiteToUserState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter unassigned sites by name.',
         label: 'sites',
-        filterIconClick: (filtered) {
-          if (filtered) {
-            addEditUserBloc.add(AssignSiteToUserUnassignedUserSiteListLoaded(
-              userId: widget.userId,
-              name: state.filterTextForUnassigned,
-            ));
-          } else {
-            addEditUserBloc
-              ..add(AssignSiteToUserUnassignedUserSiteListLoaded(
-                  userId: widget.userId))
-              ..add(const AssignSiteToUserFilterTextForUnassignedChanged(
-                  filterText: ''));
-          }
+        applyFilter: () {
+          addEditUserBloc.add(AssignSiteToUserUnassignedUserSiteListLoaded(
+            userId: widget.userId,
+            name: state.filterTextForUnassigned,
+          ));
+        },
+        clearFilter: () {
+          addEditUserBloc
+            ..add(AssignSiteToUserUnassignedUserSiteListLoaded(
+                userId: widget.userId))
+            ..add(const AssignSiteToUserFilterTextForUnassignedChanged(
+                filterText: ''));
         },
         onChange: (filterText) => addEditUserBloc.add(
             AssignSiteToUserFilterTextForUnassignedChanged(
@@ -272,23 +271,22 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
 
   Padding _buildFilterTextFieldForAssigned(AssignSiteToUserState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter assigned sites by name.',
         label: 'sites',
-        filterIconClick: (filtered) {
-          if (filtered) {
-            addEditUserBloc.add(AssignSiteToUserAssignedUserSiteListLoaded(
-              userId: widget.userId,
-              name: state.filterTextForAssigned,
-            ));
-          } else {
-            addEditUserBloc
-              ..add(AssignSiteToUserAssignedUserSiteListLoaded(
-                  userId: widget.userId))
-              ..add(const AssignSiteToUserFilterTextForAssignedChanged(
-                  filterText: ''));
-          }
+        applyFilter: () {
+          addEditUserBloc.add(AssignSiteToUserAssignedUserSiteListLoaded(
+            userId: widget.userId,
+            name: state.filterTextForAssigned,
+          ));
+        },
+        clearFilter: () {
+          addEditUserBloc
+            ..add(AssignSiteToUserAssignedUserSiteListLoaded(
+                userId: widget.userId))
+            ..add(const AssignSiteToUserFilterTextForAssignedChanged(
+                filterText: ''));
         },
         onChange: (filterText) => addEditUserBloc.add(
             AssignSiteToUserFilterTextForAssignedChanged(

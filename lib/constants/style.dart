@@ -75,6 +75,24 @@ EdgeInsets inset20 = const EdgeInsets.all(20);
 EdgeInsets inset30 = const EdgeInsets.all(30);
 EdgeInsets inset40 = const EdgeInsets.all(40);
 
+EdgeInsets insetx4 = const EdgeInsets.all(4);
+EdgeInsets insetx8 = const EdgeInsets.all(8);
+EdgeInsets insetx10 = const EdgeInsets.all(10);
+EdgeInsets insetx12 = const EdgeInsets.all(12);
+EdgeInsets insetx16 = const EdgeInsets.all(16);
+EdgeInsets insetx20 = const EdgeInsets.all(20);
+EdgeInsets insetx30 = const EdgeInsets.all(30);
+EdgeInsets insetx40 = const EdgeInsets.all(40);
+
+EdgeInsets insety4 = const EdgeInsets.all(4);
+EdgeInsets insety8 = const EdgeInsets.all(8);
+EdgeInsets insety10 = const EdgeInsets.all(10);
+EdgeInsets insety12 = const EdgeInsets.all(12);
+EdgeInsets insety16 = const EdgeInsets.all(16);
+EdgeInsets insety20 = const EdgeInsets.all(20);
+EdgeInsets insety30 = const EdgeInsets.all(30);
+EdgeInsets insety40 = const EdgeInsets.all(40);
+
 EdgeInsets insetx10y20 = const EdgeInsets.symmetric(
   horizontal: 10,
   vertical: 20,

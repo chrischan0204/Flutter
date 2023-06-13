@@ -125,7 +125,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                         ),
                         const CustomDivider(),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: insetx20,
                           child: CustomTextField(
                             hintText: 'Filter unassigned sites by name..',
                             onChanged: (value) {},
@@ -186,7 +186,7 @@ class _AssignTemplatesToSiteViewState extends State<AssignTemplatesToSiteView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: insetx20,
                           child: RichText(
                             text: const TextSpan(
                               style: TextStyle(

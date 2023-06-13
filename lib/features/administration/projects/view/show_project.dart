@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import '/utils/custom_notification.dart';
-import '/data/model/model.dart';
-import '/global_widgets/global_widget.dart';
-import '/data/bloc/bloc.dart';
+import '/common_libraries.dart';
 
 class ShowProjectView extends StatefulWidget {
   final String projectId;
@@ -86,8 +80,8 @@ class _ShowProjectViewState extends State<ShowProjectView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               state.assignedCompanyProjects.isNotEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  ? Padding(
+                      padding: insetx20,
                       child: Text(
                         'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
                         style: TextStyle(
@@ -110,10 +104,10 @@ class _ShowProjectViewState extends State<ShowProjectView> {
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children:  [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
+                            padding: insetx20,
+                            child: const Text(
                               'This project has no companies assigned to it yet.',
                               style: TextStyle(
                                 fontSize: 14,
@@ -122,10 +116,10 @@ class _ShowProjectViewState extends State<ShowProjectView> {
                               ),
                             ),
                           ),
-                          CustomDivider(),
+                          const CustomDivider(),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
+                            padding: insetx20,
+                            child: const Text(
                               'Companies can be assigned by editing the project and going to the companies tab to select from available companies',
                               style: TextStyle(
                                 fontSize: 14,
@@ -134,7 +128,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
                               ),
                             ),
                           ),
-                          CustomDivider(),
+                          const CustomDivider(),
                         ],
                       ),
               ),

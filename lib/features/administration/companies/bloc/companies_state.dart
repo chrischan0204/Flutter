@@ -8,8 +8,10 @@ class CompaniesState extends Equatable {
   final List<CompanySite> unassignedCompanySites;
   final EntityStatus unassignedCompanySitesRetrievedStatus;
   final List<ProjectCompany> assignedProjectCompanies;
+  final List<ProjectCompany> assignedProjectCompaniesForFilter;
   final EntityStatus assignedProjectCompaniesRetrievedStatus;
   final List<ProjectCompany> unassignedProjectCompanies;
+  final List<ProjectCompany> unassignedProjectCompaniesForFilter;
   final EntityStatus unassignedProjectCompaniesRetrievedStatus;
   final List<AuditTrail> auditTrails;
   final EntityStatus auditTrailsRerievedStatus;
@@ -32,6 +34,8 @@ class CompaniesState extends Equatable {
     this.unassignedCompanySites = const [],
     this.assignedProjectCompanies = const [],
     this.unassignedProjectCompanies = const [],
+    this.assignedProjectCompaniesForFilter = const [],
+    this.unassignedProjectCompaniesForFilter = const [],
     this.auditTrails = const [],
     this.selectedCompany,
     this.companiesRetrievedStatus = EntityStatus.initial,
@@ -85,6 +89,8 @@ class CompaniesState extends Equatable {
         filterSiteIdForAssigned,
         filterSiteIdForUnassigned,
         totalRows,
+        assignedProjectCompaniesForFilter,
+        unassignedProjectCompaniesForFilter,
       ];
 
   bool get deletable => assignedCompanySites.isEmpty;
@@ -95,6 +101,8 @@ class CompaniesState extends Equatable {
     List<ProjectCompany>? assignedProjectCompanies,
     List<CompanySite>? unassignedCompanySites,
     List<ProjectCompany>? unassignedProjectCompanies,
+    List<ProjectCompany>? assignedProjectCompaniesForFilter,
+    List<ProjectCompany>? unassignedProjectCompaniesForFilter,
     List<AuditTrail>? auditTrails,
     Company? selectedCompany,
     EntityStatus? companiesRetrievedStatus,
@@ -121,6 +129,11 @@ class CompaniesState extends Equatable {
       assignedCompanySites: assignedCompanySites ?? this.assignedCompanySites,
       assignedProjectCompanies:
           assignedProjectCompanies ?? this.assignedProjectCompanies,
+      assignedProjectCompaniesForFilter: assignedProjectCompaniesForFilter ??
+          this.assignedProjectCompaniesForFilter,
+      unassignedProjectCompaniesForFilter:
+          unassignedProjectCompaniesForFilter ??
+              this.unassignedProjectCompaniesForFilter,
       unassignedCompanySites:
           unassignedCompanySites ?? this.unassignedCompanySites,
       auditTrails: auditTrails ?? this.auditTrails,

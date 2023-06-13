@@ -58,7 +58,7 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
               children: [
                 state.assignedUserSiteList.isNotEmpty
                     ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: insetx20,
                         child: Text(
                           '${widget.username} has access to the following sites. Site access can be changed by editing this user',
                           style: const TextStyle(
@@ -81,10 +81,10 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: const [
+                          children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
+                              padding: insetx20,
+                              child: const Text(
                                 'This user has no sites assigned to it yet.',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -93,10 +93,10 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
                                 ),
                               ),
                             ),
-                            CustomDivider(),
+                            const CustomDivider(),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
+                              padding: insetx20,
+                              child: const Text(
                                 'Sites can be assigned by editing the user and going to the sites tab to select from available users',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -104,7 +104,7 @@ class _UserSiteAccessViewState extends State<UserSiteAccessView> {
                                 ),
                               ),
                             ),
-                            CustomDivider(),
+                            const CustomDivider(),
                           ],
                         ),
                 ),

@@ -8,3 +8,4 @@ export 'question.dart';
 export 'template_section_item.dart';
 export 'template_section_question.dart';
 export 'template_snapshot.dart';
+export 'question_detail.dart';

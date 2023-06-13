@@ -7,10 +7,10 @@ class EmptyMessageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
+      children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text(
+          padding: insetx20,
+          child: const Text(
             'This user has no sites assigned to it yet.',
             style: TextStyle(
               fontSize: 12,
@@ -19,10 +19,10 @@ class EmptyMessageView extends StatelessWidget {
             ),
           ),
         ),
-        CustomDivider(),
+        const CustomDivider(),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text(
+          padding: insetx20,
+          child: const Text(
             'Sites can be assigned by editing the user and going to the sites tab to select from available users',
             style: TextStyle(
               fontSize: 12,
@@ -30,7 +30,7 @@ class EmptyMessageView extends StatelessWidget {
             ),
           ),
         ),
-        CustomDivider(),
+        const CustomDivider(),
       ],
     );
   }

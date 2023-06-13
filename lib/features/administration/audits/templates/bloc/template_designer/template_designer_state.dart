@@ -28,6 +28,9 @@ class TemplateDesignerState extends Equatable {
   final String? currentLevel2TemplateSectionItemId;
 
   final int level;
+
+  final EntityStatus questionDetailLoadStatus;
+
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -47,6 +50,7 @@ class TemplateDesignerState extends Equatable {
     this.level = 0,
     this.currentLevel1TemplateSectionItemId,
     this.currentLevel2TemplateSectionItemId,
+    this.questionDetailLoadStatus = EntityStatus.initial,
   });
 
   TemplateSectionItem currentTemplateSectionItemByLevel(int level) {
@@ -90,6 +94,7 @@ class TemplateDesignerState extends Equatable {
         level,
         currentLevel1TemplateSectionItemId,
         currentLevel2TemplateSectionItemId,
+        questionDetailLoadStatus,
       ];
 
   TemplateDesignerState copyWith({
@@ -111,6 +116,7 @@ class TemplateDesignerState extends Equatable {
     int? level,
     String? currentLevel1TemplateSectionItemId,
     String? currentLevel2TemplateSectionItemId,
+    EntityStatus? questionDetailLoadStatus,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -145,6 +151,8 @@ class TemplateDesignerState extends Equatable {
           this.currentLevel1TemplateSectionItemId,
       currentLevel2TemplateSectionItemId: currentLevel2TemplateSectionItemId ??
           this.currentLevel2TemplateSectionItemId,
+      questionDetailLoadStatus:
+          questionDetailLoadStatus ?? this.questionDetailLoadStatus,
     );
   }
 }

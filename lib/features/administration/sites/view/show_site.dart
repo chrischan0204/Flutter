@@ -90,10 +90,10 @@ class _SiteShowViewState extends State<SiteShowView> {
   Column _buildAuditTemplatesTableView() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
+      children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text(
+          padding: insetx20,
+          child: const Text(
             'The following templates are associated with this site. Edit site to associate/ remove templates from this site',
             style: TextStyle(
               fontSize: 14,
@@ -102,10 +102,10 @@ class _SiteShowViewState extends State<SiteShowView> {
             ),
           ),
         ),
-        CustomDivider(),
-        SizedBox(
+        const CustomDivider(),
+        const SizedBox(
           child: TableView(
-            columns: const [
+            columns:  [
               'Template Name',
               'Created By',
               'Last Revised on',

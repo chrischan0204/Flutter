@@ -34,9 +34,9 @@ class UserNotificationSettingView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 state.userSiteNotification.data.sites.isNotEmpty
-                    ? const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text(
+                    ? Padding(
+                        padding: insetx20,
+                        child: const Text(
                           'The user gets notifications for the following sites/ awareness categories.',
                           style: TextStyle(
                             fontSize: 12,
@@ -58,10 +58,10 @@ class UserNotificationSettingView extends StatelessWidget {
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: const [
+                          children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
+                              padding: insetx20,
+                              child: const Text(
                                 'This user does not get any notifications for any awareness categories.',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -70,10 +70,10 @@ class UserNotificationSettingView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            CustomDivider(),
+                            const CustomDivider(),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
+                              padding: insetx20,
+                              child: const Text(
                                 'Notifications can be set for the user by editing the user.',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -81,7 +81,7 @@ class UserNotificationSettingView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            CustomDivider(),
+                            const CustomDivider(),
                           ],
                         ),
                 ),

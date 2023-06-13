@@ -1,9 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:safety_eta/common_libraries.dart';
-
-import '/data/repository/repository.dart';
-import '/data/model/model.dart';
+import '/common_libraries.dart';
 
 part 'companies_event.dart';
 part 'companies_state.dart';
@@ -148,6 +143,8 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       emit(state.copyWith(
         assignedProjectCompanies: projectCompanies,
         assignedProjectCompaniesRetrievedStatus: EntityStatus.success,
+        assignedProjectCompaniesForFilter:
+            event.forFilter ? projectCompanies : null,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -169,6 +166,8 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       emit(state.copyWith(
         unassignedProjectCompanies: projectCompanies,
         unassignedProjectCompaniesRetrievedStatus: EntityStatus.success,
+        unassignedProjectCompaniesForFilter:
+            event.forFilter ? projectCompanies : null,
       ));
     } catch (e) {
       emit(state.copyWith(

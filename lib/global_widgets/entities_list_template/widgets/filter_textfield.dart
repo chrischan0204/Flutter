@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-
-import '/global_widgets/global_widget.dart';
+import '/common_libraries.dart';
 
 class FilterTextField extends StatefulWidget {
   final String hintText;
   final String label;
-  final ValueChanged<bool> filterIconClick;
+  final VoidCallback applyFilter;
+  final VoidCallback clearFilter;
   final ValueChanged<String> onChange;
   final bool canFilter;
 
@@ -14,7 +12,8 @@ class FilterTextField extends StatefulWidget {
     super.key,
     required this.hintText,
     required this.label,
-    required this.filterIconClick,
+    required this.applyFilter,
+    required this.clearFilter,
     required this.onChange,
     this.canFilter = false,
   });
@@ -24,40 +23,79 @@ class FilterTextField extends StatefulWidget {
 }
 
 class _FilterTextFieldState extends State<FilterTextField> {
-  bool filtered = false;
   TextEditingController filterController = TextEditingController();
+  late FocusNode focusNode;
+  String hintText = '';
 
-  void onClick() {
+  @override
+  void initState() {
+    hintText = widget.hintText;
+    focusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    filterController.dispose();
+    super.dispose();
+  }
+
+  void onSubmit() {
     if (filterController.text.trim().length > 1 || widget.canFilter) {
       setState(() {
-        filtered = !filtered;
-      });
-      widget.filterIconClick(filtered);
-      if (filtered) {
-        filterController.text =
+        hintText =
             "Showing ${widget.label} matching '${filterController.text}' below.";
-      } else {
-        filterController.clear();
-      }
+      });
+      filterController.clear();
+      widget.applyFilter();
+    } else {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.info,
+        content: 'You should type at least two letters.',
+      ).showNotification();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextField(
-      hintText: widget.hintText,
-      onChanged: (val) {
-        widget.onChange(val);
-      },
-      onSubmitted: (value) => onClick(),
-      controller: filterController,
-      suffixIconData: filtered
-          ? PhosphorIcons.regular.arrowCounterClockwise
-          : PhosphorIcons.regular.funnel,
-      suffixIconColor: filtered ? Colors.red : const Color(0xff0c81ff),
-      onSuffixIconClick: () {
-        onClick();
-      },
+    return Row(
+      children: [
+        Expanded(
+          child: CustomTextField(
+            hintText: hintText,
+            focusNode: focusNode,
+            onChanged: (val) {
+              widget.onChange(val);
+            },
+            onSubmitted: (value) {
+              onSubmit();
+              focusNode.requestFocus();
+            },
+            controller: filterController,
+            suffixIconData: PhosphorIcons.regular.funnel,
+            suffixIconColor: const Color(0xff0c81ff),
+            onSuffixIconClick: () {
+              onSubmit();
+            },
+          ),
+        ),
+        spacer12,
+        InkWell(
+          onTap: () {
+            widget.clearFilter();
+            filterController.clear();
+            setState(() {
+              hintText = widget.hintText;
+            });
+          },
+          child: Icon(
+            PhosphorIcons.regular.arrowCounterClockwise,
+            color: Colors.red,
+          ),
+        )
+      ],
     );
   }
 }

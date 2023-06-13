@@ -82,9 +82,9 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 state.assignedCompanySites.isNotEmpty
-                    ? const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text(
+                    ? Padding(
+                        padding: insetx20,
+                        child: const Text(
                           'The following sites are associated with this project. Edit company to associate/ remove sites from this company',
                           style: TextStyle(
                             fontSize: 12,
@@ -106,10 +106,10 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: const [
+                          children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
+                              padding: insetx20,
+                              child: const Text(
                                 'This company has no sites assigned to it yet.',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -118,10 +118,10 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                                 ),
                               ),
                             ),
-                            CustomDivider(),
+                            const CustomDivider(),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
+                              padding: insetx20,
+                              child: const Text(
                                 'Sites can be assigned by editing the company and going to the sites tab to select from available companies',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -129,7 +129,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                                 ),
                               ),
                             ),
-                            CustomDivider(),
+                            const CustomDivider(),
                           ],
                         ),
                 ),
@@ -160,9 +160,9 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               state.assignedProjectCompanies.isNotEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
+                  ? Padding(
+                      padding: insetx20,
+                      child: const Text(
                         'The following projects are associated with this company. Edit company to associate/ remove projects from this company',
                         style: TextStyle(
                           fontSize: 12,
@@ -183,10 +183,10 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: const [
+                        children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
+                            padding: insetx20,
+                            child: const Text(
                               'This company has no projects assigned to it yet.',
                               style: TextStyle(
                                 fontSize: 12,
@@ -194,10 +194,10 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                               ),
                             ),
                           ),
-                          CustomDivider(),
+                          const CustomDivider(),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
+                            padding: insetx20,
+                            child: const Text(
                               'Projects can be assigned by editing the company and going to the projects tab to select from available companies',
                               style: TextStyle(
                                 fontSize: 12,
@@ -205,7 +205,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                               ),
                             ),
                           ),
-                          CustomDivider(),
+                          const CustomDivider(),
                         ],
                       ),
               ),
@@ -233,9 +233,9 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               state.auditTrails.isNotEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
+                  ? Padding(
+                      padding: insetx20,
+                      child: const Text(
                         'The following table shows the audit trail on this company.',
                         style: TextStyle(
                           fontSize: 12,
@@ -255,10 +255,10 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: const [
+                        children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
+                            padding: insetx20,
+                            child: const Text(
                               'No audit trail information available.',
                               style: TextStyle(
                                 fontSize: 12,
@@ -266,7 +266,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                               ),
                             ),
                           ),
-                          CustomDivider(),
+                          const CustomDivider(),
                         ],
                       ),
               ),

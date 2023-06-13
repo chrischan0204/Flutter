@@ -18,6 +18,7 @@ class CustomTextField extends StatefulWidget {
   final int? minLines;
   final int maxLines;
   final EdgeInsets contentPadding;
+  final FocusNode? focusNode;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -39,6 +40,7 @@ class CustomTextField extends StatefulWidget {
       horizontal: 10,
     ),
     this.onSubmitted,
+    this.focusNode,
   });
 
   @override
@@ -60,6 +62,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           key: widget.key,
           initialValue: widget.initialValue,
           controller: widget.controller,
+          focusNode: widget.focusNode,
           enabled: !(widget.isDisabled ?? false),
           onChanged: widget.onChanged,
           onFieldSubmitted: widget.onSubmitted,

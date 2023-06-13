@@ -35,6 +35,7 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
           return {
             ...map,
             'IN': 'IN',
+            'Not In': 'Not In',
           };
         }
         return {

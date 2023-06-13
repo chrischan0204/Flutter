@@ -47,6 +47,8 @@ class TemplateDesignerBloc
     on<TemplateDesignerLevelChanged>(_onTemplateDesignerLevelChanged);
     on<TemplateDesignerCurrentTemplateSectionItemChanged>(
         _onTemplateDesignerCurrentTemplateSectionItemChanged);
+    on<TemplateDesignerQuestionDetailLoaded>(
+        _onTemplateDesignerQuestionDetailLoaded);
   }
 
   @override
@@ -751,5 +753,19 @@ class TemplateDesignerBloc
       emit(state.copyWith(
           currentLevel2TemplateSectionItemId: event.templateSectionItemId));
     }
+  }
+
+  Future<void> _onTemplateDesignerQuestionDetailLoaded(
+    TemplateDesignerQuestionDetailLoaded event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    
+
+    try {
+      QuestionDetail questionDetail =
+          await sectionsRepository.getQuestionDetail(event.id, event.level);
+
+
+    } catch (e) {}
   }
 }

@@ -231,3 +231,15 @@ class TemplateDesignerCurrentTemplateSectionItemChanged
   @override
   List<Object> get props => [templateSectionItemId];
 }
+
+class TemplateDesignerQuestionDetailLoaded extends TemplateDesignerEvent {
+  final String id;
+  final int level;
+  const TemplateDesignerQuestionDetailLoaded({
+    required this.id,
+    required this.level,
+  });
+
+  @override
+  List<Object> get props => [id, level];
+}

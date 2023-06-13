@@ -91,9 +91,9 @@ class _AssignCompaniesToProjectViewState
   }
 
   Padding _buildUnassignedCompaniesTableViewHeader() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
+    return Padding(
+      padding: insetx20,
+      child: const Text(
         'Sites can be assigned to this company by selecting from the list below.',
         style: TextStyle(
           fontSize: 12,
@@ -105,7 +105,7 @@ class _AssignCompaniesToProjectViewState
 
   Padding _buildAssignedCompaniesTableViewHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: RichText(
         text: const TextSpan(
           style: TextStyle(
@@ -283,23 +283,21 @@ class _AssignCompaniesToProjectViewState
 
   Padding _buildFilterTextFieldForUnassignedCompany(ProjectsState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter unassigned companies by name.',
         label: 'sites',
-        filterIconClick: (filtered) {
-          if (filtered) {
-            projectsBloc.add(UnassignedCompanyProjectsRetrieved(
-              projectId: widget.projectId,
-              name: state.filterTextForUnassignedCompany,
-            ));
-          } else {
-            projectsBloc
-              ..add(UnassignedCompanyProjectsRetrieved(
-                  projectId: widget.projectId))
-              ..add(
-                  const FilterTextForUnassignedCompanyChanged(filterText: ''));
-          }
+        applyFilter: () {
+          projectsBloc.add(UnassignedCompanyProjectsRetrieved(
+            projectId: widget.projectId,
+            name: state.filterTextForUnassignedCompany,
+          ));
+        },
+        clearFilter: () {
+          projectsBloc
+            ..add(
+                UnassignedCompanyProjectsRetrieved(projectId: widget.projectId))
+            ..add(const FilterTextForUnassignedCompanyChanged(filterText: ''));
         },
         onChange: (value) => projectsBloc
             .add(FilterTextForUnassignedCompanyChanged(filterText: value)),
@@ -309,22 +307,20 @@ class _AssignCompaniesToProjectViewState
 
   Padding _buildFilterTextFieldForAssignedCompany(ProjectsState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter assigned companies by name.',
         label: 'sites',
-        filterIconClick: (filtered) {
-          if (filtered) {
-            projectsBloc.add(AssignedCompanyProjectsRetrieved(
-              projectId: widget.projectId,
-              name: state.filterTextForAssignedCompany,
-            ));
-          } else {
-            projectsBloc
-              ..add(
-                  AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
-              ..add(const FilterTextForAssignedCompanyChanged(filterText: ''));
-          }
+        applyFilter: () {
+          projectsBloc.add(AssignedCompanyProjectsRetrieved(
+            projectId: widget.projectId,
+            name: state.filterTextForAssignedCompany,
+          ));
+        },
+        clearFilter: () {
+          projectsBloc
+            ..add(AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
+            ..add(const FilterTextForAssignedCompanyChanged(filterText: ''));
         },
         onChange: (value) => projectsBloc
             .add(FilterTextForAssignedCompanyChanged(filterText: value)),

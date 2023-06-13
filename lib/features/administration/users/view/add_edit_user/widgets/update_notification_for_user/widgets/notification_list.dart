@@ -57,9 +57,9 @@ class _NotificationListViewState extends State<NotificationListView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text(
+        Padding(
+          padding: insetx20,
+          child: const Text(
             'Mark all Awareness categories for sites where the notification should be routed to this user.',
             style: TextStyle(
               fontSize: 12,

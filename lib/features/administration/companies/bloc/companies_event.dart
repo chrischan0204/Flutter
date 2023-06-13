@@ -117,16 +117,19 @@ class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
   final String companyId;
   final String? name;
   final String? siteId;
+  final bool forFilter;
   const AssignedProjectCompaniesRetrieved({
     required this.companyId,
     this.name,
     this.siteId,
+    this.forFilter = false,
   });
   @override
   List<Object?> get props => [
         companyId,
         name,
         siteId,
+        forFilter,
       ];
 }
 
@@ -134,16 +137,19 @@ class UnassignedProjectCompaniesRetrieved extends CompaniesEvent {
   final String companyId;
   final String? name;
   final String? siteId;
+  final bool forFilter;
   const UnassignedProjectCompaniesRetrieved({
     required this.companyId,
     this.name,
     this.siteId,
+    this.forFilter = false,
   });
   @override
   List<Object?> get props => [
         companyId,
         name,
         siteId,
+        forFilter,
       ];
 }
 

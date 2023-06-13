@@ -104,9 +104,9 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   }
 
   Padding _buildAssignedSitesTableViewHeader() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
+    return Padding(
+      padding: insetx20,
+      child: const Text(
         'Sites can be assigned from list on left. Once assigned they will show here in this list below.',
         style: TextStyle(
           fontSize: 12,
@@ -243,22 +243,20 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
 
   Padding _buildFilterTextFieldForUnassignedSites(CompaniesState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter unassigned sites by name.',
         label: 'sites',
-        filterIconClick: (filtered) {
-          if (filtered) {
-            companiesBloc.add(UnassignedCompanySitesRetrieved(
-              companyId: widget.companyId,
-              name: state.filterTextForUnassigned,
-            ));
-          } else {
-            companiesBloc
-              ..add(
-                  UnassignedCompanySitesRetrieved(companyId: widget.companyId))
-              ..add(const FilterTextForUnassignedChanged(filterText: ''));
-          }
+        applyFilter: () {
+          companiesBloc.add(UnassignedCompanySitesRetrieved(
+            companyId: widget.companyId,
+            name: state.filterTextForUnassigned,
+          ));
+        },
+        clearFilter: () {
+          companiesBloc
+            ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId))
+            ..add(const FilterTextForUnassignedChanged(filterText: ''));
         },
         onChange: (value) => companiesBloc
             .add(FilterTextForUnassignedChanged(filterText: value)),
@@ -268,21 +266,20 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
 
   Padding _buildFilterTextFieldForAssignedSites(CompaniesState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter assigned sites by name.',
         label: 'sites',
-        filterIconClick: (filtered) {
-          if (filtered) {
-            companiesBloc.add(AssignedCompanySitesRetrieved(
-              companyId: widget.companyId,
-              name: state.filterTextForAssigned,
-            ));
-          } else {
-            companiesBloc
-              ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-              ..add(const FilterTextForAssignedChanged(filterText: ''));
-          }
+        applyFilter: () {
+          companiesBloc.add(AssignedCompanySitesRetrieved(
+            companyId: widget.companyId,
+            name: state.filterTextForAssigned,
+          ));
+        },
+        clearFilter: () {
+          companiesBloc
+            ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+            ..add(const FilterTextForAssignedChanged(filterText: ''));
         },
         onChange: (value) =>
             companiesBloc.add(FilterTextForAssignedChanged(filterText: value)),
