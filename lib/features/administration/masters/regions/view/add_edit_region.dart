@@ -209,13 +209,19 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
     );
   }
 
+  void _clearForm() {
+    setState(() {
+      regionName = null;
+      selectedTimeZones = [];
+    });
+    regionsBloc.add(const RegionSelected(region: Region()));
+  }
+
   void _checkCrudStatus(RegionsState state, BuildContext context) {
     if (state.regionCrudStatus == EntityStatus.success) {
-      setState(() {
-        regionName = null;
-        selectedTimeZones = [];
-      });
       regionsBloc.add(const RegionsStatusInited());
+
+      _clearForm();
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,

@@ -120,9 +120,6 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     return BlocConsumer<AddEditUserBloc, AddEditUserState>(
       listener: (context, addEditUserState) {
         _checkCrudResult(addEditUserState, context);
-        context
-            .read<FormDirtyBloc>()
-            .add(FormDirtyChanged(isDirty: addEditUserState.isUserDataFill));
       },
       builder: (context, addEditUserState) {
         return BlocBuilder<UserDetailBloc, UserDetailState>(
@@ -193,6 +190,12 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     return {};
   }
 
+  void _checkFormDirty(AddEditUserState state) {
+    context
+        .read<FormDirtyBloc>()
+        .add(FormDirtyChanged(isDirty: state.isUserDataFill));
+  }
+
   void _checkCrudResult(
       AddEditUserState addEditUserState, BuildContext context) {
     if (addEditUserState.userAddStatus.isSuccess ||
@@ -220,16 +223,23 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
     }
   }
 
-  FormItem _buildFirstNameField(AddEditUserState addEditUserState) {
-    return FormItem(
-      label: 'First Name (*)',
-      content: CustomTextField(
-        controller: firstNameController,
-        hintText: 'First Name(required)',
-        onChanged: (firstName) => _addEditUserBloc
-            .add(AddEditUserFirstNameChanged(firstName: firstName)),
+  Widget _buildFirstNameField(AddEditUserState addEditUserState) {
+    return BlocListener<AddEditUserBloc, AddEditUserState>(
+      listener: (context, state) {
+        _checkFormDirty(state);
+      },
+      listenWhen: (previous, current) =>
+          previous.isUserDataFill != current.isUserDataFill,
+      child: FormItem(
+        label: 'First Name (*)',
+        content: CustomTextField(
+          controller: firstNameController,
+          hintText: 'First Name(required)',
+          onChanged: (firstName) => _addEditUserBloc
+              .add(AddEditUserFirstNameChanged(firstName: firstName)),
+        ),
+        message: addEditUserState.firstNameValidationMessage,
       ),
-      message: addEditUserState.firstNameValidationMessage,
     );
   }
 

@@ -173,10 +173,21 @@ class _AddEditAwarenessCategoryViewState
     );
   }
 
+  void _clearForm(AwarenessCategoriesState state) {
+    awarenessCategoryNameController.clear();
+    awarenessCategoriesBloc.add(
+      AwarenessCategorySelected(
+        awarenessCategory:
+            state.selectedAwarenessCategory!.copyWith(groupName: ''),
+      ),
+    );
+  }
+
   // check whenever the crud status changes
   void _checkCrudResult(AwarenessCategoriesState state, BuildContext context) {
     if (state.awarenessCategoryCrudStatus == EntityStatus.success) {
       awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
+      _clearForm(state);
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,

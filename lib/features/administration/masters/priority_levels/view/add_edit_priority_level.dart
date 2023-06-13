@@ -20,9 +20,8 @@ class AddEditPriorityLevelView extends StatefulWidget {
 class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
   late PriorityLevelsBloc priorityLevelsBloc;
 
-  TextEditingController priorityLevelNameController = TextEditingController(
-    text: '',
-  );
+  TextEditingController priorityLevelNameController =
+      TextEditingController(text: '');
   String? priorityType;
   Color? colorCode;
   bool priorityLevelDeactive = false;
@@ -99,6 +98,19 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
     return validated;
   }
 
+  void _clearForm() {
+    priorityLevelNameController.clear();
+    priorityLevelsBloc.add(
+      const PriorityLevelSelected(
+        priorityLevel: PriorityLevel(
+          name: '',
+          priorityType: '',
+          colorCode: Color(0xffffffff),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PriorityLevelsBloc, PriorityLevelsState>(
@@ -121,6 +133,8 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
 
         if (state.priorityLevelCrudStatus == EntityStatus.success) {
           priorityLevelsBloc.add(const PriorityLevelsStatusInited());
+
+          _clearForm();
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
@@ -191,7 +205,7 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
               FormItem(
                 label: 'Color (*)',
                 content: CustomColorPicker(
-                  color: colorCode ?? const Color(0xff1233ff),
+                  color: colorCode ?? Colors.white,
                   onChanged: (colorCode) => priorityLevelsBloc.add(
                     PriorityLevelSelected(
                       priorityLevel: state.selectedPriorityLevel!.copyWith(
@@ -200,7 +214,6 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                     ),
                   ),
                 ),
-                
               ),
               widget.priorityLevelId != null
                   ? FormItem(
@@ -219,7 +232,6 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
                           );
                         },
                       ),
-                      
                     )
                   : Container(),
             ],

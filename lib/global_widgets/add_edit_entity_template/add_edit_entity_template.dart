@@ -100,9 +100,17 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return CustomTabBar(
       activeIndex: selectedTabIndex,
       tabs: {'Details': _buildEditEntityView(), ...widget.tabItems},
-      onTabClick: () => context
-          .read<FormDirtyBloc>()
-          .add(const FormDirtyChanged(isDirty: false)),
+      onTabClick: (index) {
+        if (index == 0) {
+          context
+              .read<FormDirtyBloc>()
+              .add(const FormDirtyChanged(isDirty: true));
+        } else {
+          context
+              .read<FormDirtyBloc>()
+              .add(const FormDirtyChanged(isDirty: false));
+        }
+      },
     );
   }
 
@@ -232,12 +240,36 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       iconData: PhosphorIcons.regular.notePencil,
       text: 'Show ${camelize(widget.label)}',
       onClick: () {
-        String location = GoRouter.of(context).location;
-        int index = location.indexOf('edit');
-        location = location.replaceRange(index, null, 'show/${widget.id}');
-        GoRouter.of(context).go(location);
+        if (context.read<FormDirtyBloc>().state.isDirty) {
+          AwesomeDialog(
+            context: context,
+            width: MediaQuery.of(context).size.width / 4,
+            dialogType: DialogType.question,
+            headerAnimationLoop: false,
+            animType: AnimType.bottomSlide,
+            title: 'Confirm',
+            dialogBorderRadius: BorderRadius.circular(5),
+            desc: 'Data that was entered will be lost ..... Proceed?',
+            buttonsTextStyle: const TextStyle(color: Colors.white),
+            showCloseIcon: true,
+            btnCancelOnPress: () {},
+            btnOkOnPress: () => _goToShow(),
+            btnOkText: 'Proceed',
+            buttonsBorderRadius: BorderRadius.circular(3),
+            padding: const EdgeInsets.all(10),
+          ).show();
+        } else {
+          _goToShow();
+        }
       },
     );
+  }
+
+  void _goToShow() {
+    String location = GoRouter.of(context).location;
+    int index = location.indexOf('edit');
+    location = location.replaceRange(index, null, 'show/${widget.id}');
+    GoRouter.of(context).go(location);
   }
 
   CustomButton _buildGoToListButton(BuildContext context) {
@@ -247,7 +279,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       iconData: PhosphorIcons.regular.listNumbers,
       text: '${camelize(widget.label)} List',
       onClick: () {
-        if (widget.isCrudDataFill && widget.id == null) {
+        if (context.read<FormDirtyBloc>().state.isDirty) {
           AwesomeDialog(
             context: context,
             width: MediaQuery.of(context).size.width / 4,

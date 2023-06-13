@@ -41,14 +41,32 @@ class _TemplateDescriptionFieldState extends State<TemplateDescriptionField> {
           previous.message != current.message,
       builder: (context, state) => FormItem(
         label: 'Template Description (*)',
-        content: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+        content: BlocConsumer<TemplateDetailBloc, TemplateDetailState>(
+          listener: (context, state) {
+            context
+                .read<FormDirtyBloc>()
+                .add(const FormDirtyChanged(isDirty: true));
+          },
+          listenWhen: (previous, current) =>
+              previous.template != current.template,
           builder: (context, state) {
             return CustomTextField(
               key: ValueKey(state.template?.name),
               initialValue: state.template?.name,
               hintText: 'Template description',
-              onChanged: (description) => addEditTemplateBloc.add(
-                  AddEditTemplateDescriptionChanged(description: description)),
+              onChanged: (description) {
+                addEditTemplateBloc.add(AddEditTemplateDescriptionChanged(
+                    description: description));
+                if (!Validation.isEmpty(description)) {
+                  context
+                      .read<FormDirtyBloc>()
+                      .add(const FormDirtyChanged(isDirty: true));
+                } else {
+                  context
+                        .read<FormDirtyBloc>()
+                        .add(const FormDirtyChanged(isDirty: false));
+                }
+              },
             );
           },
         ),

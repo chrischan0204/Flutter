@@ -87,10 +87,15 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
     }
   }
 
+  void _clearForm() {
+    awarenessGroupNameController.clear();
+  }
+
   // check if the crud status is success or failure
   void _checkCrudStatus(AwarenessGroupsState state, BuildContext context) {
     if (state.awarenessGroupCrudStatus == EntityStatus.success) {
       awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
+      _clearForm();
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,

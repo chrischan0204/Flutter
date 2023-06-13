@@ -39,8 +39,19 @@ class _RevisionDatePickerState extends State<RevisionDatePicker> {
                 key: ValueKey(state.template?.revisionDate.toString()),
                 initialValue: state.template?.revisionDate.toString(),
                 dateTimePickerType: DateTimePickerType.date,
-                onChange: (date) => addEditTemplateBloc
-                    .add(AddEditTemplateDateChanged(date: date)),
+                onChange: (date) {
+                  addEditTemplateBloc
+                      .add(AddEditTemplateDateChanged(date: date));
+                  if (!Validation.isEmpty(date.toIso8601String())) {
+                    context
+                        .read<FormDirtyBloc>()
+                        .add(const FormDirtyChanged(isDirty: true));
+                  } else {
+                    context
+                        .read<FormDirtyBloc>()
+                        .add(const FormDirtyChanged(isDirty: false));
+                  }
+                },
               );
             },
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
 import '/data/model/model.dart';
@@ -152,9 +151,23 @@ class _AddEditObservationTypeViewState
     }
   }
 
+  void _clearForm() {
+    observationTypeNameController.clear();
+    observationTypesBloc.add(
+      const ObservationTypeSelected(
+        observationType: ObservationType(
+          name: '',
+          severity: '',
+          visibility: '',
+        ),
+      ),
+    );
+  }
+
   void _checkCrudResult(ObservationTypesState state, BuildContext context) {
     if (state.observationTypeCrudStatus == EntityStatus.success) {
       observationTypesBloc.add(const ObservationTypesStatusInited());
+      _clearForm();
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,
@@ -186,7 +199,6 @@ class _AddEditObservationTypeViewState
                 );
               },
             ),
-            
           )
         : Container();
   }
@@ -211,7 +223,6 @@ class _AddEditObservationTypeViewState
           );
         },
       ),
-      
     );
   }
 

@@ -68,7 +68,8 @@ class AddEditTemplateState extends Equatable {
       dateValidationMesage: dateValidationMesage ?? this.dateValidationMesage,
       usedInAudit: usedInAudit ?? this.usedInAudit,
       usedInInspection: usedInInspection ?? this.usedInInspection,
-      templateAddEditStatus: templateAddEditStatus ?? this.templateAddEditStatus,
+      templateAddEditStatus:
+          templateAddEditStatus ?? this.templateAddEditStatus,
       templateEditStatus: templateEditStatus ?? this.templateEditStatus,
       message: message ?? this.message,
     );

@@ -60,9 +60,6 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
       listener: (context, state) {
         _changeFormData(state);
         _checkCrudResult(state, context);
-        context
-            .read<FormDirtyBloc>()
-            .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
@@ -109,6 +106,12 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         (site != null && site!.isNotEmpty);
   }
 
+  void _checkFormDirty() {
+    context
+        .read<FormDirtyBloc>()
+        .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
+  }
+
   // change form data whenever the state changes
   void _changeFormData(ProjectsState state) {
     if (state.selectedProject != null) {
@@ -126,6 +129,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
             ? ''
             : state.selectedProject!.referenceNumber;
         isFirstInit = false;
+        _checkFormDirty();
       }
     }
   }
@@ -163,6 +167,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
           setState(() {
             projectNameValidationMessage = '';
           });
+          _checkFormDirty();
           projectsBloc.add(
             ProjectSelected(
               selectedProject: state.selectedProject!.copyWith(
@@ -194,6 +199,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
               setState(() {
                 siteValidationMessage = '';
               });
+              _checkFormDirty();
               projectsBloc.add(
                 ProjectSelected(
                   selectedProject: state.selectedProject!.copyWith(
@@ -219,6 +225,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         controller: referenceNumberController,
         hintText: hintText,
         onChanged: (referenceNumber) {
+          _checkFormDirty();
           projectsBloc.add(
             ProjectSelected(
               selectedProject: state.selectedProject!.copyWith(
@@ -240,6 +247,7 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
         controller: referenceNameController,
         hintText: hintText,
         onChanged: (referenceName) {
+          _checkFormDirty();
           projectsBloc.add(
             ProjectSelected(
               selectedProject: state.selectedProject!.copyWith(

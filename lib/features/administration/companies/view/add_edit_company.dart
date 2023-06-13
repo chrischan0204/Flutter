@@ -47,10 +47,9 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
       listener: (context, state) {
         _changeFormData(state);
         _checkCrudResult(state, context);
-        context
-            .read<FormDirtyBloc>()
-            .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
       },
+      // listenWhen: (previous, current) =>
+      //     previous.selectedCompany != current.selectedCompany,
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,
@@ -58,7 +57,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           selectedEntity: state.selectedCompany,
           addEntity: () => _addCompany(state),
           editEntity: () => _editCompany(state),
-          isCrudDataFill: _checkFormDataFill(),
+          isCrudDataFill: state.isFormDataFill,
           crudStatus: state.companyCrudStatus,
           tabItems: _buildTabs(state),
           editButtonName: editButtonName,
@@ -107,6 +106,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         einNumberController.text =
             widget.companyId == null ? '' : state.selectedCompany!.einNumber;
         isFirstInit = false;
+        _checkFormDirty();
       }
     }
   }
@@ -116,10 +116,18 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     return numericSpecialReg.hasMatch(einNumber);
   }
 
+  void _clearForm() {
+    companyNameController.clear();
+    einNumberController.clear();
+  }
+
   // check if the crud result is success or failure
   void _checkCrudResult(CompaniesState state, BuildContext context) {
     if (state.companyCrudStatus == EntityStatus.success) {
       companiesBloc.add(CompaniesStatusInited());
+
+      _clearForm();
+
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,
@@ -152,27 +160,40 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
     }
   }
 
+  void _checkFormDirty() {
+    context
+        .read<FormDirtyBloc>()
+        .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
+  }
+
   // return text field for company name
-  FormItem _buildCompanyNameField(CompaniesState state) {
-    return FormItem(
-      label: 'Company Name (*)',
-      content: CustomTextField(
-        controller: companyNameController,
-        hintText: 'Company Name',
-        onChanged: (companyName) {
-          setState(() {
-            companyNameValidationMessage = '';
-          });
-          companiesBloc.add(
-            CompanySelected(
-              selectedCompany: state.selectedCompany!.copyWith(
-                name: companyName,
+  Widget _buildCompanyNameField(CompaniesState state) {
+    return BlocListener<CompaniesBloc, CompaniesState>(
+      listener: (context, state) {},
+      listenWhen: (previous, current) =>
+          previous.selectedCompany != current.selectedCompany,
+      child: FormItem(
+        label: 'Company Name (*)',
+        content: CustomTextField(
+          controller: companyNameController,
+          hintText: 'Company Name',
+          onChanged: (companyName) {
+            setState(() {
+              companyNameValidationMessage = '';
+            });
+            _checkFormDirty();
+
+            companiesBloc.add(
+              CompanySelected(
+                selectedCompany: state.selectedCompany!.copyWith(
+                  name: companyName,
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
+        message: companyNameValidationMessage,
       ),
-      message: companyNameValidationMessage,
     );
   }
 
@@ -187,7 +208,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
           setState(() {
             einNumberValidationMessage = '';
           });
-
+          _checkFormDirty();
           companiesBloc.add(
             CompanySelected(
               selectedCompany: state.selectedCompany!.copyWith(

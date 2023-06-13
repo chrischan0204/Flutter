@@ -54,6 +54,10 @@ class CompaniesState extends Equatable {
     this.totalRows = 0,
   });
 
+  bool get isFormDataFill =>
+      !Validation.isEmpty(selectedCompany?.einNumber) ||
+      !Validation.isEmpty(selectedCompany?.name);
+
   @override
   List<Object?> get props => [
         companies,

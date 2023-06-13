@@ -54,6 +54,11 @@ class _CustomColorPickerState extends State<CustomColorPicker> {
         height: 25,
         decoration: BoxDecoration(
           color: widget.color,
+          border: Border.all(
+            color: Colors.grey,
+            width: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(3)
         ),
       ),
     );

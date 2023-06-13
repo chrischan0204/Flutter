@@ -67,9 +67,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       listener: (context, state) {
         _changeFormData(state);
         _checkCrudResult(state, context);
-        context
-            .read<FormDirtyBloc>()
-            .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
+
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
@@ -122,9 +120,16 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           ));
         }
         isFirstInit = false;
+        _checkFormDirty();
       }
       setState(() {});
     }
+  }
+
+  void _checkFormDirty() {
+    context
+        .read<FormDirtyBloc>()
+        .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
   }
 
   bool _checkFormDataFill() {
@@ -169,6 +174,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           setState(() {
             siteNameValidationMessage = '';
           });
+          _checkFormDirty();
           sitesBloc.add(
             SiteSelected(
               selectedSite: state.selectedSite!.copyWith(
@@ -199,6 +205,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
               setState(() {
                 regionValidationMessage = '';
               });
+              _checkFormDirty();
               regionsBloc
                   .add(TimeZonesRetrievedForRegion(regionId: region.value));
               sitesBloc.add(
@@ -225,6 +232,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         controller: referenceCodeController,
         hintText: '',
         onChanged: (referenceCode) {
+          _checkFormDirty();
           sitesBloc.add(
             SiteSelected(
               selectedSite: state.selectedSite!.copyWith(
@@ -244,6 +252,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         controller: siteCodeController,
         hintText: 'Site code e.g. CHILKSHDR',
         onChanged: (siteCode) {
+          _checkFormDirty();
           setState(() {
             siteCodeValidationMessage = '';
           });
@@ -273,6 +282,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         hint: 'Select Type',
         selectedValue: siteType,
         onChanged: (siteType) {
+          _checkFormDirty();
           setState(() {
             siteTypeValidationMessage = '';
           });
@@ -310,6 +320,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
               hint: 'Select Time Zone',
               selectedValue: regionsState.timeZones.isEmpty ? null : timeZone,
               onChanged: (timeZone) {
+                _checkFormDirty();
                 setState(() {
                   timeZoneValidationMessage = '';
                 });

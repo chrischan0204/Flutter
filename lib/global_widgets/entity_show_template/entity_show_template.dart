@@ -72,9 +72,17 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
     return CustomTabBar(
       activeIndex: selectedTabIndex,
       tabs: {'Details': _buildEntityDetails(), ...widget.tabItems},
-      onTabClick: () => context
-          .read<FormDirtyBloc>()
-          .add(const FormDirtyChanged(isDirty: false)),
+      onTabClick: (index) {
+        if (index == 0) {
+          context
+              .read<FormDirtyBloc>()
+              .add(const FormDirtyChanged(isDirty: true));
+        } else {
+          context
+              .read<FormDirtyBloc>()
+              .add(const FormDirtyChanged(isDirty: false));
+        }
+      },
     );
   }
 

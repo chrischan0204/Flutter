@@ -121,10 +121,10 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                 tabWidth: 500,
                 view: widget.view,
                 child: BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
-                  listener: (context, state) {
-                    context.read<FormDirtyBloc>().add(FormDirtyChanged(
-                        isDirty: addEditTemplateState.templateDetailFilled));
-                  },
+                  listener: (context, state) {},
+                  // listenWhen: (previous, current) =>
+                  //     previous.templateDetailFilled !=
+                  //     current.templateDetailFilled,
                   child:
                       AddEditTemplateDetailsView(templateId: widget.templateId),
                 ),
