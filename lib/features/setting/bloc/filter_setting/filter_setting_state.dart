@@ -83,7 +83,9 @@ class FilterSettingState extends Equatable {
       .where((userFilterItem) =>
           userFilterItem.filterValue.isEmpty ||
           userFilterItem.filterValue
-              .where((value) => Validation.isEmpty(value))
+              .where((value) =>
+                  Validation.isEmpty(value) ||
+                  Validation.isEmpty(value.replaceAll(',', '')))
               .isNotEmpty)
       .isNotEmpty;
 
