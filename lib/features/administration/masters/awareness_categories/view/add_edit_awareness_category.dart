@@ -174,13 +174,15 @@ class _AddEditAwarenessCategoryViewState
   }
 
   void _clearForm(AwarenessCategoriesState state) {
-    awarenessCategoryNameController.clear();
-    awarenessCategoriesBloc.add(
-      AwarenessCategorySelected(
-        awarenessCategory:
-            state.selectedAwarenessCategory!.copyWith(groupName: ''),
-      ),
-    );
+    if (widget.awarenessCategoryId == null) {
+      awarenessCategoryNameController.clear();
+      awarenessCategoriesBloc.add(
+        AwarenessCategorySelected(
+          awarenessCategory:
+              state.selectedAwarenessCategory!.copyWith(groupName: ''),
+        ),
+      );
+    }
   }
 
   // check whenever the crud status changes

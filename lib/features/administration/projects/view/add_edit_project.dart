@@ -107,9 +107,8 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
   }
 
   void _checkFormDirty() {
-    context
-        .read<FormDirtyBloc>()
-        .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
+    context.read<FormDirtyBloc>().add(FormDirtyChanged(
+        isDirty: widget.view == 'created' ? false : _checkFormDataFill()));
   }
 
   // change form data whenever the state changes

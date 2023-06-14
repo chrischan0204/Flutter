@@ -5,12 +5,12 @@ import 'package:equatable/equatable.dart';
 class Question extends Equatable {
   final String? id;
   final String name;
-  final String responseScaleId;
+  final String? responseScaleId;
   final int order;
   const Question({
     this.id,
     required this.name,
-    required this.responseScaleId,
+    this.responseScaleId,
     this.order = 0,
   });
   @override

@@ -4,7 +4,7 @@ class SectionsRepository extends BaseRepository {
   SectionsRepository({
     required super.token,
     required super.authBloc,
-  }) : super(url: '/api/audits/sections');
+  }) : super(url: '/api/audits/templates/sections');
 
   Future<List<TemplateSectionQuestion>> getSectionItemList(
       String sectionId) async {

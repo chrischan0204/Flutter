@@ -210,11 +210,13 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   }
 
   void _clearForm() {
-    setState(() {
-      regionName = null;
-      selectedTimeZones = [];
-    });
-    regionsBloc.add(const RegionSelected(region: Region()));
+    if (widget.regionId == null) {
+      setState(() {
+        regionName = null;
+        selectedTimeZones = [];
+      });
+      regionsBloc.add(const RegionSelected(region: Region()));
+    }
   }
 
   void _checkCrudStatus(RegionsState state, BuildContext context) {

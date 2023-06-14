@@ -88,7 +88,9 @@ class _AddEditAwarenessGroupViewState extends State<AddEditAwarenessGroupView> {
   }
 
   void _clearForm() {
-    awarenessGroupNameController.clear();
+    if (widget.awarenessGroupId == null) {
+      awarenessGroupNameController.clear();
+    }
   }
 
   // check if the crud status is success or failure

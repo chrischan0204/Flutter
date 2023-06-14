@@ -41,17 +41,17 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
             children: [
               Row(
                 children: [
-                  Expanded(child: _buildUnassignedSitesTableHeaderView()),
-                  const SizedBox(width: 100),
                   Expanded(child: _buildAssignedSitesTableViewHeader()),
+                  const SizedBox(width: 100),
+                  Expanded(child: _buildUnassignedSitesTableHeaderView()),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildAssignedSitesView(state, context),
+                  _buildUnassignedSitesView(state),
                   const SizedBox(width: 100),
-                  _buildUnassignedSitesView(state)
+                  _buildAssignedSitesView(state, context),
                 ],
               ),
             ],

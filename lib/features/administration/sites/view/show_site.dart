@@ -61,7 +61,7 @@ class _SiteShowViewState extends State<SiteShowView> {
 
   Map<String, Widget> get _buildTabs {
     return {
-      'Audits Templates': _buildAuditTemplatesTableView(),
+      'Audit Templates': _buildAuditTemplatesTableView(),
       'Site kiosks': Container(),
     };
   }

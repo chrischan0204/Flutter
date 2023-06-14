@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safety_eta/common_libraries.dart';
 import 'package:uuid/uuid.dart';
 
 import '/global_widgets/global_widget.dart';
@@ -174,6 +175,13 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           setState(() {
             siteNameValidationMessage = '';
           });
+
+          if (siteName.length > SiteFormValidation.siteNameMaxLength) {
+            setState(() {
+              siteNameValidationMessage = 'Site Name can be max 10 characters long.';
+            });
+          }
+
           _checkFormDirty();
           sitesBloc.add(
             SiteSelected(

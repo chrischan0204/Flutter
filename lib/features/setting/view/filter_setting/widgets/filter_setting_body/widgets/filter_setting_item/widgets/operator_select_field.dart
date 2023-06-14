@@ -63,7 +63,7 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: 160,
       child: CustomSingleSelect(
         selectedValue: widget.userFilterItem.operator,
         items: _getOperator(),

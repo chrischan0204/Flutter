@@ -94,7 +94,7 @@ class _AssignCompaniesToProjectViewState
     return Padding(
       padding: insetx20,
       child: const Text(
-        'Sites can be assigned to this company by selecting from the list below.',
+        'Companies can be assigned to this project by selecting from the list below.',
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,

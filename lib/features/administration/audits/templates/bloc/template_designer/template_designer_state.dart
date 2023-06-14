@@ -58,13 +58,24 @@ class TemplateDesignerState extends Equatable {
       case 0:
         return templateSectionItem!;
       case 1:
-        return templateSectionItem!.children.firstWhere(
-            (element) => element.id == currentLevel1TemplateSectionItemId);
+        for (final i in templateSectionItem!.children) {
+          for (final j in i.children) {
+            if (j.id == currentLevel1TemplateSectionItemId) {
+              return j;
+            }
+          }
+        }
+        return TemplateSectionItem.empty;
       case 2:
         for (final i in templateSectionItem!.children) {
           for (final j in i.children) {
-            if (j.id == currentLevel2TemplateSectionItemId) {
-              return j;
+            for (final k in j.children) {
+              for (final l in k.children) {
+                if (l.id == currentLevel2TemplateSectionItemId) {
+                  print(l.toMap());
+                  return l;
+                }
+              }
             }
           }
         }

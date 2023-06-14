@@ -99,16 +99,18 @@ class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
   }
 
   void _clearForm() {
-    priorityLevelNameController.clear();
-    priorityLevelsBloc.add(
-      const PriorityLevelSelected(
-        priorityLevel: PriorityLevel(
-          name: '',
-          priorityType: '',
-          colorCode: Color(0xffffffff),
+    if (widget.priorityLevelId == null) {
+      priorityLevelNameController.clear();
+      priorityLevelsBloc.add(
+        const PriorityLevelSelected(
+          priorityLevel: PriorityLevel(
+            name: '',
+            priorityType: '',
+            colorCode: Color(0xffffffff),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override

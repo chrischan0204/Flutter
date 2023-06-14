@@ -152,16 +152,18 @@ class _AddEditObservationTypeViewState
   }
 
   void _clearForm() {
-    observationTypeNameController.clear();
-    observationTypesBloc.add(
-      const ObservationTypeSelected(
-        observationType: ObservationType(
-          name: '',
-          severity: '',
-          visibility: '',
+    if (widget.observationTypeId == null) {
+      observationTypeNameController.clear();
+      observationTypesBloc.add(
+        const ObservationTypeSelected(
+          observationType: ObservationType(
+            name: '',
+            severity: '',
+            visibility: '',
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   void _checkCrudResult(ObservationTypesState state, BuildContext context) {

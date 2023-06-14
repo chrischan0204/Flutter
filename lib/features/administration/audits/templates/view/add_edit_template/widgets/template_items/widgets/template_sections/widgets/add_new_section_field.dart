@@ -40,6 +40,7 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
             content: state.message,
           ).showNotification();
         }
+        context.read<TemplateDetailBloc>().add(TemplateDetailSnapshotLoaded(templateId: widget.templateId));
       },
       listenWhen: (previous, current) =>
           previous.templateSectionAddStatus != current.templateSectionAddStatus,

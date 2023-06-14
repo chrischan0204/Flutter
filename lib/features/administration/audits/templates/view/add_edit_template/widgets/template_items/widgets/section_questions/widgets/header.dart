@@ -57,9 +57,11 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                         horizontal: 10,
                       ),
                     ),
-                    child: const Text(
-                      'Add Question',
-                      style: TextStyle(fontSize: 12),
+                    child: Text(
+                      state.showAddNewQuestionView
+                          ? 'Save Question'
+                          : 'Add Question',
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ),
                 ),

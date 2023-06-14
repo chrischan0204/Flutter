@@ -36,6 +36,8 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
 
     return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
       listener: (context, state) {
+        print(state
+                .currentTemplateSectionItemByLevel(state.level).toMap());
         questionController.text = state
                 .currentTemplateSectionItemByLevel(state.level)
                 .question
@@ -56,7 +58,6 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
           ),
           onChanged: (value) => context.read<TemplateDesignerBloc>().add(
                 TemplateDesignerQuestionChanged(
-                  responseScaleId: emptyGuid,
                   question: value,
                   templateSectionItemId:
                       widget.templateSectionItem.id ?? emptyGuid,

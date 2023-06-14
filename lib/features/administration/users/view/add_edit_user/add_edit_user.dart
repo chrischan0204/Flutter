@@ -191,9 +191,8 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
   }
 
   void _checkFormDirty(AddEditUserState state) {
-    context
-        .read<FormDirtyBloc>()
-        .add(FormDirtyChanged(isDirty: state.isUserDataFill));
+    context.read<FormDirtyBloc>().add(FormDirtyChanged(
+        isDirty: widget.view == 'created' ? false : state.isUserDataFill));
   }
 
   void _checkCrudResult(

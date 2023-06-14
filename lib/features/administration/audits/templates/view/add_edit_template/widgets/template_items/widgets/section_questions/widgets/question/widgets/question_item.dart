@@ -1,12 +1,10 @@
 import '/common_libraries.dart';
 
 class QuestionItemView extends StatelessWidget {
-  final String name;
-  final String score;
+  final TemplateSectionQuestion question;
   const QuestionItemView({
     super.key,
-    required this.name,
-    required this.score,
+    required this.question,
   });
 
   @override
@@ -15,21 +13,23 @@ class QuestionItemView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
+          onTap: () => context.read<TemplateDesignerBloc>().add(
+              TemplateDesignerQuestionDetailLoaded(id: question.id, level: 0)),
           leading: Icon(
             PhosphorIcons.regular.dotsThreeVertical,
             size: 20,
             color: primaryColor,
           ),
           title: Text(
-            name,
+            question.title,
             style: TextStyle(
               fontSize: 14,
               color: primaryColor,
             ),
           ),
-          trailing: Text(
-            score,
-            style: const TextStyle(fontSize: 14),
+          trailing: const Text(
+            '10 + 3',
+            style:  TextStyle(fontSize: 14),
           ),
         ),
         const CustomDivider(height: 1),

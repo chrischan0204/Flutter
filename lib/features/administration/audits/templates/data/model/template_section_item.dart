@@ -2,9 +2,10 @@ import '/common_libraries.dart';
 
 class TemplateSectionItem extends Equatable {
   final String? id;
+  final String? templateSectionItemId;
   final String templateSectionId;
   final int itemTypeId;
-  final String responseScaleId;
+  final String? responseScaleId;
   final String? parentId;
   final Question? question;
   final ResponseScaleItem? response;
@@ -14,9 +15,10 @@ class TemplateSectionItem extends Equatable {
 
   const TemplateSectionItem({
     this.id,
+    this.templateSectionItemId,
     this.templateSectionId = emptyGuid,
     this.itemTypeId = 1,
-    this.responseScaleId = emptyGuid,
+    this.responseScaleId,
     this.parentId,
     this.question,
     this.response,
@@ -26,6 +28,7 @@ class TemplateSectionItem extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        templateSectionItemId,
         templateSectionId,
         itemTypeId,
         responseScaleId,
@@ -45,7 +48,7 @@ class TemplateSectionItem extends Equatable {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
-      'id': id,
+      'id': templateSectionItemId,
       'templateSectionId':
           templateSectionId == emptyGuid ? null : templateSectionId,
       'itemTypeId': itemTypeId,
@@ -71,7 +74,7 @@ class TemplateSectionItem extends Equatable {
 
   factory TemplateSectionItem.fromMap(Map<String, dynamic> map) {
     return TemplateSectionItem(
-      id: map['id'] as String,
+      templateSectionItemId: map['id'] as String,
       templateSectionId: map['templateSectionId'] as String,
       itemTypeId: map['itemTypeId'],
       responseScaleId: map['responseScaleId'] as String,
@@ -90,6 +93,7 @@ class TemplateSectionItem extends Equatable {
 
   TemplateSectionItem copyWith({
     String? id,
+    String? templateSectionItemId,
     String? templateSectionId,
     int? itemTypeId,
     String? responseScaleId,
@@ -100,6 +104,8 @@ class TemplateSectionItem extends Equatable {
   }) {
     return TemplateSectionItem(
       id: id ?? this.id,
+      templateSectionItemId:
+          templateSectionItemId ?? this.templateSectionItemId,
       templateSectionId: templateSectionId ?? this.templateSectionId,
       itemTypeId: itemTypeId ?? this.itemTypeId,
       responseScaleId: responseScaleId ?? this.responseScaleId,

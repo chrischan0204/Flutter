@@ -44,7 +44,6 @@ class ResponseScaleItemView extends StatelessWidget {
                                       include: value!,
                                       templateSectionItemId:
                                           templateSectionItem.id!,
-                                      level: state.level,
                                     )),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(3)),
@@ -75,7 +74,6 @@ class ResponseScaleItemView extends StatelessWidget {
                                   .read<TemplateDesignerBloc>()
                                   .add(TemplateDesignerScoreChanged(
                                     score: double.parse(value),
-                                    level: state.level,
                                     templateSectionItemId:
                                         templateSectionItem.id!,
                                   )),
@@ -98,7 +96,6 @@ class ResponseScaleItemView extends StatelessWidget {
                             onClick: (commentRequired) => context
                                 .read<TemplateDesignerBloc>()
                                 .add(TemplateDesignerCommentRequiredChanged(
-                                  level: state.level,
                                   commentRequired: commentRequired,
                                   templateSectionItemId:
                                       templateSectionItem.id!,
@@ -115,7 +112,6 @@ class ResponseScaleItemView extends StatelessWidget {
                             onClick: (actionItemRequired) => context
                                 .read<TemplateDesignerBloc>()
                                 .add(TemplateDesignerActionItemChanged(
-                                  level: state.level,
                                   actionItemRequired: actionItemRequired,
                                   templateSectionItemId:
                                       templateSectionItem.id!,
@@ -136,7 +132,6 @@ class ResponseScaleItemView extends StatelessWidget {
                               onClick: (followUpRequired) => context
                                   .read<TemplateDesignerBloc>()
                                   .add(TemplateDesignerFollowUpRequiredChanged(
-                                    level: state.level,
                                     followUpRequired: followUpRequired,
                                     templateSectionItemId:
                                         templateSectionItem.id!,
@@ -154,14 +149,13 @@ class ResponseScaleItemView extends StatelessWidget {
                                       .response?.followUpRequired ??
                                   false,
                               onClick: (followUpRequired) {
-                                context.read<TemplateDesignerBloc>()
-                                  ..add(
-                                      TemplateDesignerCurrentTemplateSectionItemChanged(
-                                          templateSectionItemId:
-                                              templateSectionItem.id!))
-                                  ..add(TemplateDesignerLevelChanged(
-                                    level: state.level + 1,
-                                  ));
+                                context.read<TemplateDesignerBloc>().add(
+                                        TemplateDesignerCurrentTemplateSectionItemChanged(
+                                      templateSectionItemId:
+                                          templateSectionItem.id!,
+                                      responseScaleItem:
+                                          templateSectionItem.response!,
+                                    ));
                               },
                               disabled: disabled,
                               title: 'Add L${state.level + 1} Follow up',

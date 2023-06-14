@@ -36,10 +36,7 @@ class QuestionsForSectionView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: state.sectionItemQuestionList
-                    .map((e) => QuestionItemView(
-                          name: e.title,
-                          score: '10 + 3',
-                        ))
+                    .map((e) => QuestionItemView(question: e))
                     .toList(),
               );
             },

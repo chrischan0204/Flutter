@@ -112,13 +112,16 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   bool _checkEinNumber(String einNumber) {
-    final numericSpecialReg = RegExp(r'^[0-9. -]+$');
-    return numericSpecialReg.hasMatch(einNumber);
+    // final numericSpecialReg = RegExp(r'^[0-9. -]+$');
+    final reg = RegExp(r'^\d{2}-\d{7}');
+    return reg.hasMatch(einNumber);
   }
 
   void _clearForm() {
-    companyNameController.clear();
-    einNumberController.clear();
+    if (widget.companyId == null) {
+      companyNameController.clear();
+      einNumberController.clear();
+    }
   }
 
   // check if the crud result is success or failure
@@ -161,9 +164,8 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
   }
 
   void _checkFormDirty() {
-    context
-        .read<FormDirtyBloc>()
-        .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
+    context.read<FormDirtyBloc>().add(FormDirtyChanged(
+        isDirty: widget.view == 'created' ? false : _checkFormDataFill()));
   }
 
   // return text field for company name
@@ -239,7 +241,7 @@ class _AddEditCompanyViewState extends State<AddEditCompanyView> {
         !_checkEinNumber(einNumberController.text)) {
       setState(() {
         einNumberValidationMessage =
-            'EIN Field should allow only numbers, white space, dots and dashes in it. No alphabets and no other special characters.';
+            'EIN Number can have only Number and Dahses in the format XX-XXXXXXX.';
       });
       validated = false;
     }

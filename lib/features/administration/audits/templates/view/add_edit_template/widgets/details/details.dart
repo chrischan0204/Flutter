@@ -18,11 +18,6 @@ class _AddEditTemplateDetailsViewState
     extends State<AddEditTemplateDetailsView> {
   @override
   void initState() {
-    print('init');
-    if (widget.templateId != null) {
-      context.read<TemplateDetailBloc>().add(
-          TemplateDetailTemplateLoadedById(templateId: widget.templateId!));
-    }
     super.initState();
   }
 
