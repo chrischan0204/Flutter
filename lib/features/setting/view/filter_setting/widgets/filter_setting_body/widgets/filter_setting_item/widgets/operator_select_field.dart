@@ -49,6 +49,12 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
         return map;
       case 'DatePicker':
         return map;
+      case 'Select':
+        return {
+          ...map,
+          'IN': 'IN',
+          'Not In': 'Not In',
+        };
     }
 
     return {

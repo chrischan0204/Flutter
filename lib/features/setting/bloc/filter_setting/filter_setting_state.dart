@@ -101,7 +101,7 @@ class FilterSettingState extends Equatable {
     String? saveAsButtonName,
     bool? includeDeleted,
     String? viewName,
-    UserFilterSetting? appliedUserFilterSetting,
+    Nullable<UserFilterSetting?>? appliedUserFilterSetting,
   }) {
     return FilterSettingState(
       filterSettingListLoadStatus:
@@ -124,8 +124,9 @@ class FilterSettingState extends Equatable {
       saveAsButtonName: saveAsButtonName ?? this.saveAsButtonName,
       includeDeleted: includeDeleted ?? this.includeDeleted,
       viewName: viewName ?? this.viewName,
-      appliedUserFilterSetting:
-          appliedUserFilterSetting ?? this.appliedUserFilterSetting,
+      appliedUserFilterSetting: appliedUserFilterSetting != null
+          ? appliedUserFilterSetting.value
+          : this.appliedUserFilterSetting,
     );
   }
 }

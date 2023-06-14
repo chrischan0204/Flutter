@@ -390,23 +390,26 @@ class _CrudState extends State<EntityListTemplate> {
                             BlocConsumer<FilterSettingBloc, FilterSettingState>(
                               listener: (context, state) {
                                 if (widget.onFilterApplied != null) {
-                                  // widget.onFilterApplied!(emptyGuid);
+                                  widget.onFilterApplied!(emptyGuid);
                                 }
                               },
                               listenWhen: (previous, current) =>
                                   previous.appliedUserFilterSetting != null &&
                                   previous.appliedUserFilterSetting !=
                                       current.appliedUserFilterSetting &&
-                                  current.appliedUserFilterSetting?.isNew ==
-                                      true,
+                                  current.appliedUserFilterSetting == null,
                               builder: (context, state) {
                                 return filterNotApplied
                                     ? GestureDetector(
-                                        onTap: () => filterSettingBloc.add(
-                                          const FilterSettingAppliedUserFilterSettingChanged(
-                                              appliedUserFilterSetting:
-                                                  UserFilterSetting()),
-                                        ),
+                                        onTap: () {
+                                          filterSettingBloc.add(
+                                            const FilterSettingAppliedUserFilterSettingChanged(
+                                                appliedUserFilterSetting: null),
+                                          );
+                                          paginationBloc.add(
+                                              const PaginationSelectedPageNumChanged(
+                                                  selectedPageNum: 1));
+                                        },
                                         child: Icon(
                                           PhosphorIcons.regular.x,
                                           color: warnColor,

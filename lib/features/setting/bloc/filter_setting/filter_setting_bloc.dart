@@ -249,6 +249,8 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
       List<UserFilterSetting> userFilterSettingList =
           await settingsRepository.getUserFilterSettingList(state.viewName);
 
+      emit(state.copyWith(userFilterSettingList: userFilterSettingList));
+
       emit(state.copyWith(
         userFilterSettingUpdateStatus: EntityStatus.success,
         selectedUserFilterSetting: UserFilterSetting(
@@ -256,7 +258,6 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
           filterName: updatedUserFilter.filterName,
           isDefault: updatedUserFilter.isDefault,
         ),
-        userFilterSettingList: userFilterSettingList,
         userFilterUpdate: state.userFilterUpdate.copyWith(
             id: updatedUserFilter.id,
             filterName: updatedUserFilter.filterName,
@@ -293,6 +294,12 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
                         id: emptyGuid,
                       ))
                   .toList()));
+
+      List<UserFilterSetting> userFilterSettingList =
+          await settingsRepository.getUserFilterSettingList(state.viewName);
+
+      emit(state.copyWith(userFilterSettingList: userFilterSettingList));
+
       emit(state.copyWith(
         userFilterSettingUpdateStatus: EntityStatus.success,
         selectedUserFilterSetting: UserFilterSetting(
@@ -504,6 +511,7 @@ class FilterSettingBloc extends Bloc<FilterSettingEvent, FilterSettingState> {
     Emitter<FilterSettingState> emit,
   ) {
     emit(state.copyWith(
-        appliedUserFilterSetting: event.appliedUserFilterSetting));
+        appliedUserFilterSetting:
+            Nullable.value(event.appliedUserFilterSetting)));
   }
 }

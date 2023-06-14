@@ -1,12 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:safety_eta/common_libraries.dart';
+import '/common_libraries.dart';
 import 'package:uuid/uuid.dart';
-
-import '/global_widgets/global_widget.dart';
-import '/utils/custom_notification.dart';
-import '/data/model/model.dart';
-import '/data/bloc/bloc.dart';
 
 class AddEditSiteView extends StatefulWidget {
   final String? siteId;
@@ -39,6 +32,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   String timeZoneValidationMessage = '';
   String siteTypeValidationMessage = '';
   String siteCodeValidationMessage = '';
+  String referenceCodeValidationMessage = '';
 
   static String pageLabel = 'site';
 
@@ -68,7 +62,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
       listener: (context, state) {
         _changeFormData(state);
         _checkCrudResult(state, context);
-
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
@@ -178,7 +171,8 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
 
           if (siteName.length > SiteFormValidation.siteNameMaxLength) {
             setState(() {
-              siteNameValidationMessage = 'Site Name can be max 10 characters long.';
+              siteNameValidationMessage =
+                  'Site Name can be max 10 characters long.';
             });
           }
 
@@ -241,6 +235,15 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
         hintText: '',
         onChanged: (referenceCode) {
           _checkFormDirty();
+
+          // validate the max length
+          if (referenceCode.length >
+              SiteFormValidation.referenceCodeMaxLength) {
+            setState(() {
+              referenceCodeValidationMessage =
+                  'Site Name can be max 10 characters long.';
+            });
+          }
           sitesBloc.add(
             SiteSelected(
               selectedSite: state.selectedSite!.copyWith(
@@ -250,6 +253,7 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           );
         },
       ),
+      message: referenceCodeValidationMessage,
     );
   }
 
@@ -264,6 +268,14 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           setState(() {
             siteCodeValidationMessage = '';
           });
+          // validate the max length
+          if (siteCode.length > SiteFormValidation.siteCodeMaxLength) {
+            setState(() {
+              siteCodeValidationMessage =
+                  'Site Name can be max 10 characters long.';
+            });
+          }
+
           sitesBloc.add(
             SiteSelected(
               selectedSite: state.selectedSite!.copyWith(
@@ -352,10 +364,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   bool _checkAlphanumeric(String str) {
     final alphpanumeric = RegExp(r'^[0-9a-zA-Z ]+$');
     return alphpanumeric.hasMatch(str);
-  }
-
-  String _removeSpecialCharacters(String str) {
-    return str.replaceAll(RegExp('[^A-Za-z0-9]'), '');
   }
 
   bool _validate() {

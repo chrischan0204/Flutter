@@ -72,7 +72,9 @@ class _SitesListViewState extends State<SitesListView> {
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-      filterOption: withoutSave == true ? filterSettingBloc.state.userFilterUpdate : null,
+      filterOption: filterSettingBloc.state.appliedUserFilterSetting != null
+          ? filterSettingBloc.state.userFilterUpdate
+          : null,
     )));
   }
 }
