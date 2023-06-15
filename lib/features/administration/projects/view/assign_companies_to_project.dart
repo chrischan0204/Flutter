@@ -8,12 +8,10 @@ import '/global_widgets/global_widget.dart';
 
 class AssignCompaniesToProjectView extends StatefulWidget {
   final String projectId;
-  final String projectName;
   final String? view;
   const AssignCompaniesToProjectView({
     super.key,
     required this.projectId,
-    required this.projectName,
     this.view,
   });
 

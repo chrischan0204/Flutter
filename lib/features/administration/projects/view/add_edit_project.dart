@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../bloc/add_edit_project/add_edit_project_bloc.dart';
 import '/global_widgets/global_widget.dart';
 import '/utils/utils.dart';
 import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 import 'assign_companies_to_project.dart';
 
-class AddEditProjectView extends StatefulWidget {
+class AddEditProjectView extends StatelessWidget {
   final String? projectId;
   final String? view;
   const AddEditProjectView({
@@ -17,66 +18,100 @@ class AddEditProjectView extends StatefulWidget {
   });
 
   @override
-  State<AddEditProjectView> createState() => _AddEditProjectViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AddEditProjectBloc(
+        projectsRepository: RepositoryProvider.of(context),
+        sitesRepository: RepositoryProvider.of(context),
+        formDirtyBloc: context.read(),
+      ),
+      child: AddEditProjectWidget(
+        projectId: projectId,
+        view: view,
+      ),
+    );
+  }
 }
 
-class _AddEditProjectViewState extends State<AddEditProjectView> {
-  late ProjectsBloc projectsBloc;
-  late SitesBloc sitesBloc;
-  late RolesBloc rolesBloc;
-  TextEditingController projectNameController = TextEditingController(text: '');
-  TextEditingController referenceNumberController =
-      TextEditingController(text: '');
-  TextEditingController referenceNameController =
-      TextEditingController(text: '');
-  String? site;
+class AddEditProjectWidget extends StatefulWidget {
+  final String? projectId;
+  final String? view;
+  const AddEditProjectWidget({
+    super.key,
+    this.projectId,
+    this.view,
+  });
 
-  String projectNameValidationMessage = '';
-  String siteValidationMessage = '';
+  @override
+  State<AddEditProjectWidget> createState() => _AddEditProjectWidgetState();
+}
 
-  bool isFirstInit = true;
+class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
+  late AddEditProjectBloc addEditProjectBloc;
 
   static String pageLabel = 'project';
 
   @override
   void initState() {
-    projectsBloc = context.read<ProjectsBloc>();
-    sitesBloc = context.read<SitesBloc>()..add(SitesRetrieved());
+    addEditProjectBloc = context.read()..add(AddEditProjectSiteListLoaded());
+    context.read<SitesBloc>().add(SitesRetrieved());
     if (widget.projectId != null) {
-      projectsBloc.add(
-        ProjectSelectedById(projectId: widget.projectId!),
-      );
-      rolesBloc = context.read<RolesBloc>()..add(RolesRetrieved());
-    } else {
-      projectsBloc.add(const ProjectSelected(selectedProject: Project()));
+      addEditProjectBloc.add(AddEditProjectLoaded(id: widget.projectId!));
+      context.read<RolesBloc>().add(RolesRetrieved());
     }
 
     super.initState();
   }
 
+  Map<String, Widget> get tabViews => widget.projectId == null
+      ? {}
+      : {
+          'Companies': AssignCompaniesToProjectView(
+            projectId: widget.projectId!,
+            view: widget.view,
+          ),
+        };
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProjectsBloc, ProjectsState>(
+    return BlocConsumer<AddEditProjectBloc, AddEditProjectState>(
       listener: (context, state) {
-        _changeFormData(state);
-        _checkCrudResult(state, context);
+        if (state.status == EntityStatus.success) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+          if (widget.projectId == null) {
+            GoRouter.of(context)
+                .go('/projects/edit/${state.createdProjectId}?view=created');
+          }
+        }
+        if (state.status == EntityStatus.failure) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
+        }
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,
           id: widget.projectId,
-          selectedEntity: state.selectedProject,
-          addEntity: () => _addProject(state),
-          editEntity: () => _editProject(state),
-          crudStatus: state.projectCrudStatus,
-          tabItems: _buildTabs(state),
+          selectedEntity: state.loadedProject,
+          addEntity: () => addEditProjectBloc.add(AddEditProjectAdded()),
+          editEntity: () => addEditProjectBloc
+              .add(AddEditProjectEdited(id: widget.projectId ?? '')),
+          crudStatus: state.status,
+          tabItems: tabViews,
           view: widget.view,
           child: Column(
             children: [
-              _buildProjectNameField(state),
-              _buildSiteSelectField(state),
-              _buildReferenceNumberField(state),
-              _buildReferenceNameField(state),
+              _buildProjectNameField(),
+              _buildSiteSelectField(),
+              _buildReferenceNumberField(),
+              _buildReferenceNameField(),
             ],
           ),
         );
@@ -84,214 +119,87 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
     );
   }
 
-  Map<String, Widget> _buildTabs(ProjectsState state) {
-    if (widget.projectId == null) {
-      return {};
-    }
-    return {
-      'Companies': AssignCompaniesToProjectView(
-        projectId: widget.projectId!,
-        projectName: state.selectedProject?.name ?? '',
-        view: widget.view,
-      ),
-    };
-  }
-
-  // check if some of fields are filled
-  bool _checkFormDataFill() {
-    return projectNameController.text.trim().isNotEmpty ||
-        referenceNameController.text.trim().isNotEmpty ||
-        referenceNumberController.text.trim().isNotEmpty ||
-        (site != null && site!.isNotEmpty);
-  }
-
-  void _checkFormDirty() {
-    context.read<FormDirtyBloc>().add(FormDirtyChanged(
-        isDirty: widget.view == 'created' ? false : _checkFormDataFill()));
-  }
-
-  // change form data whenever the state changes
-  void _changeFormData(ProjectsState state) {
-    if (state.selectedProject != null) {
-      site = state.selectedProject!.siteName.isEmpty
-          ? null
-          : state.selectedProject!.siteName;
-
-      if (isFirstInit) {
-        projectNameController.text =
-            widget.projectId == null ? '' : state.selectedProject!.name ?? '';
-        referenceNameController.text = widget.projectId == null
-            ? ''
-            : state.selectedProject!.referneceName;
-        referenceNumberController.text = widget.projectId == null
-            ? ''
-            : state.selectedProject!.referenceNumber;
-        isFirstInit = false;
-        _checkFormDirty();
-      }
-    }
-  }
-
-  // check if the crud result is success or failure
-  void _checkCrudResult(ProjectsState state, BuildContext context) {
-    if (state.projectCrudStatus == EntityStatus.success) {
-      projectsBloc.add(ProjectsStatusInited());
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.success,
-        content: state.message,
-      ).showNotification();
-      if (widget.projectId == null) {
-        GoRouter.of(context)
-            .go('/projects/edit/${state.selectedProject!.id}?view=created');
-      }
-    }
-    if (state.projectCrudStatus == EntityStatus.failure) {
-      projectsBloc.add(ProjectsStatusInited());
-      setState(() {
-        projectNameValidationMessage = state.message;
-      });
-    }
-  }
-
   // return text field for project name
-  FormItem _buildProjectNameField(ProjectsState state) {
-    return FormItem(
-      label: 'Project Name (*)',
-      content: CustomTextField(
-        controller: projectNameController,
-        hintText: 'Project Name',
-        onChanged: (projectName) {
-          setState(() {
-            projectNameValidationMessage = '';
-          });
-          _checkFormDirty();
-          projectsBloc.add(
-            ProjectSelected(
-              selectedProject: state.selectedProject!.copyWith(
-                name: projectName,
-              ),
-            ),
-          );
-        },
-      ),
-      message: projectNameValidationMessage,
+  Widget _buildProjectNameField() {
+    return BlocBuilder<AddEditProjectBloc, AddEditProjectState>(
+      builder: (context, state) {
+        return FormItem(
+          label: 'Project Name (*)',
+          content: CustomTextField(
+            key: ValueKey(state.loadedProject?.id),
+            initialValue: state.projectName,
+            hintText: 'Project Name',
+            onChanged: (name) =>
+                addEditProjectBloc.add(AddEditProjectNameChanged(name: name)),
+          ),
+          message: state.projectNameValidationMessage,
+        );
+      },
     );
   }
 
   // return select field for site
-  BlocBuilder<SitesBloc, SitesState> _buildSiteSelectField(
-      ProjectsState state) {
-    return BlocBuilder<SitesBloc, SitesState>(
-      builder: (context, sitesState) {
-        Map<String, String> items = <String, String>{}..addEntries(sitesState
-            .sites
-            .map((site) => MapEntry(site.name ?? '', site.id!)));
+  Widget _buildSiteSelectField() {
+    return BlocBuilder<AddEditProjectBloc, AddEditProjectState>(
+      builder: (context, state) {
+        Map<String, Site> items = <String, Site>{}..addEntries(
+            state.siteList.map((site) => MapEntry(site.name ?? '', site)));
         return FormItem(
           label: 'Site (*)',
           content: CustomSingleSelect(
             items: items,
             hint: 'Select Site',
-            selectedValue: sitesState.sites.isEmpty ? null : site,
-            onChanged: (site) {
-              setState(() {
-                siteValidationMessage = '';
-              });
-              _checkFormDirty();
-              projectsBloc.add(
-                ProjectSelected(
-                  selectedProject: state.selectedProject!.copyWith(
-                    siteName: site.key,
-                    siteId: site.value,
-                  ),
-                ),
-              );
-            },
+            selectedValue: state.siteList.isEmpty ? null : state.site?.name,
+            onChanged: (site) => addEditProjectBloc
+                .add(AddEditProjecSiteChanged(site: site.value as Site)),
           ),
-          message: siteValidationMessage,
+          message: state.siteValidationMessage,
         );
       },
     );
   }
 
   // return text field for reference number
-  FormItem _buildReferenceNumberField(ProjectsState state) {
+  Widget _buildReferenceNumberField() {
     String label = 'Reference Number', hintText = 'Internal reference number';
-    return FormItem(
-      label: label,
-      content: CustomTextField(
-        controller: referenceNumberController,
-        hintText: hintText,
-        onChanged: (referenceNumber) {
-          _checkFormDirty();
-          projectsBloc.add(
-            ProjectSelected(
-              selectedProject: state.selectedProject!.copyWith(
-                referenceNumber: referenceNumber,
-              ),
-            ),
-          );
-        },
-      ),
+    return BlocBuilder<AddEditProjectBloc, AddEditProjectState>(
+      builder: (context, state) {
+        return FormItem(
+          label: label,
+          content: CustomTextField(
+            key: ValueKey(state.loadedProject?.id),
+            initialValue: state.referenceNumber,
+            hintText: hintText,
+            onChanged: (referenceNumber) {
+              addEditProjectBloc.add(AddEditProjectReferenceNumberChanged(
+                  referenceNumber: referenceNumber));
+            },
+          ),
+          message: state.refereneceNumberValidationMessage,
+        );
+      },
     );
   }
 
   // return text field for reference name
-  FormItem _buildReferenceNameField(ProjectsState state) {
+  Widget _buildReferenceNameField() {
     String label = 'Reference Name', hintText = 'Internal reference name';
-    return FormItem(
-      label: label,
-      content: CustomTextField(
-        controller: referenceNameController,
-        hintText: hintText,
-        onChanged: (referenceName) {
-          _checkFormDirty();
-          projectsBloc.add(
-            ProjectSelected(
-              selectedProject: state.selectedProject!.copyWith(
-                referneceName: referenceName,
-              ),
-            ),
-          );
-        },
-      ),
+    return BlocBuilder<AddEditProjectBloc, AddEditProjectState>(
+      builder: (context, state) {
+        return FormItem(
+          label: label,
+          content: CustomTextField(
+            key: ValueKey(state.loadedProject?.id),
+            initialValue: state.referenceName,
+            hintText: hintText,
+            onChanged: (referenceName) {
+              addEditProjectBloc.add(AddEditProjectReferenceNameChanged(
+                  referenceName: referenceName));
+            },
+          ),
+          message: state.referenceNameValidationMessage,
+        );
+      },
     );
-  }
-
-  // check if field are empty
-  bool _validate() {
-    bool validated = true;
-    if (projectNameController.text.isEmpty ||
-        projectNameController.text.trim().isEmpty) {
-      setState(() {
-        projectNameValidationMessage =
-            'Project name is required and cannot be blank.';
-      });
-
-      validated = false;
-    }
-
-    if (site == null ||
-        (site != null && (site!.isEmpty || site!.trim().isEmpty))) {
-      setState(() {
-        siteValidationMessage = 'Site is required.';
-      });
-
-      validated = false;
-    }
-
-    return validated;
-  }
-
-  // call event to add project
-  void _addProject(ProjectsState state) {
-    if (!_validate()) return;
-    projectsBloc.add(ProjectAdded(project: state.selectedProject!));
-  }
-
-  // call even to edit project
-  void _editProject(ProjectsState state) {
-    if (!_validate()) return;
-    projectsBloc.add(ProjectEdited(project: state.selectedProject!));
   }
 }

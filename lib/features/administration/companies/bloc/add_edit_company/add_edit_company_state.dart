@@ -26,7 +26,7 @@ class AddEditCompanyState extends Equatable {
   /// validation message for ein number
   final String einNumberValidationMessage;
 
-  /// load & creation & edition company status
+  /// creation & edition company status
   final EntityStatus status;
 
   /// response message from server
