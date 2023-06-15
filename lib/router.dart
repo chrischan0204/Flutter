@@ -117,7 +117,6 @@ final GoRouter router = GoRouter(
         child: Layout(
           body: AssignTemplatesToSiteView(
             siteId: state.queryParams['siteId']!,
-            siteName: state.queryParams['siteName']!,
           ),
           selectedItemName: 'sites',
         ),

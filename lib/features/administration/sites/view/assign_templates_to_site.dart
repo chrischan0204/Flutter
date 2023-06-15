@@ -10,11 +10,9 @@ import '/global_widgets/global_widget.dart';
 
 class AssignTemplatesToSiteView extends StatefulWidget {
   final String siteId;
-  final String siteName;
   const AssignTemplatesToSiteView({
     super.key,
     required this.siteId,
-    required this.siteName,
   });
 
   @override

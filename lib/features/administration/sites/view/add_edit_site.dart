@@ -1,7 +1,7 @@
+import '../bloc/add_edit_site/add_edit_site_bloc.dart';
 import '/common_libraries.dart';
-import 'package:uuid/uuid.dart';
 
-class AddEditSiteView extends StatefulWidget {
+class AddEditSiteView extends StatelessWidget {
   final String? siteId;
   const AddEditSiteView({
     super.key,
@@ -9,37 +9,32 @@ class AddEditSiteView extends StatefulWidget {
   });
 
   @override
-  State<AddEditSiteView> createState() => _AddEditSiteViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AddEditSiteBloc(
+        formDirtyBloc: context.read(),
+        regionsRepository: RepositoryProvider.of(context),
+        timeZonesRepository: RepositoryProvider.of(context),
+        sitesRepository: RepositoryProvider.of(context),
+      ),
+      child: AddEditSiteWidget(siteId: siteId),
+    );
+  }
 }
 
-class _AddEditSiteViewState extends State<AddEditSiteView> {
-  late SitesBloc sitesBloc;
-  late RegionsBloc regionsBloc;
-  TextEditingController siteNameController = TextEditingController(text: '');
-  TextEditingController siteCodeController = TextEditingController(text: '');
-  TextEditingController referenceCodeController =
-      TextEditingController(text: '');
+class AddEditSiteWidget extends StatefulWidget {
+  final String? siteId;
+  const AddEditSiteWidget({
+    super.key,
+    this.siteId,
+  });
 
-  String? siteName;
-  String? siteCode;
-  String? region;
-  String? timeZone;
-  String? referenceCode;
-  String? siteType;
+  @override
+  State<AddEditSiteWidget> createState() => _AddEditSiteWidgetState();
+}
 
-  String initSiteName = '';
-  String initSiteCode = '';
-  String initRegion = '';
-  String initTimeZone = '';
-  String initReferenceCode = '';
-  String initSiteType = '';
-
-  String siteNameValidationMessage = '';
-  String regionValidationMessage = '';
-  String timeZoneValidationMessage = '';
-  String siteTypeValidationMessage = '';
-  String siteCodeValidationMessage = '';
-  String referenceCodeValidationMessage = '';
+class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
+  late AddEditSiteBloc addEditSiteBloc;
 
   static String pageLabel = 'site';
 
@@ -47,17 +42,9 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
 
   @override
   void initState() {
-    sitesBloc = context.read<SitesBloc>()..add(SitesStatusInited());
-    regionsBloc = context.read<RegionsBloc>()
-      ..add(RegionsTimeZonesInited())
-      ..add(AssignedRegionsRetrieved());
-    sitesBloc.add(const SiteSelected(selectedSite: null));
+    addEditSiteBloc = context.read()..add(AddEditSiteRegionListLoaded());
     if (widget.siteId != null) {
-      sitesBloc.add(SiteSelectedById(siteId: widget.siteId!));
-    } else {
-      sitesBloc.add(
-        SiteSelected(selectedSite: Site(id: const Uuid().v1())),
-      );
+      addEditSiteBloc.add(AddEditSiteLoaded(id: widget.siteId!));
     }
 
     super.initState();
@@ -65,27 +52,37 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SitesBloc, SitesState>(
+    return BlocConsumer<AddEditSiteBloc, AddEditSiteState>(
       listener: (context, state) {
-        _changeFormData(state);
-        _checkCrudResult(state, context);
+        if (state.status == EntityStatus.success) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: state.message,
+          ).showNotification();
+          GoRouter.of(context)
+              .go('/sites/assign-templates?siteId=${state.createdSiteId}');
+        }
+        if (state.status == EntityStatus.failure) {}
       },
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,
           id: widget.siteId,
-          selectedEntity: state.selectedSite,
-          addEntity: () => _addSite(state),
-          editEntity: () => _editSite(state),
-          crudStatus: state.siteCrudStatus,
+          selectedEntity: state.loadedSite,
+          addEntity: () => addEditSiteBloc.add(AddEditSiteAdded()),
+          editEntity: () =>
+              addEditSiteBloc.add(AddEditSiteEdited(id: widget.siteId ?? '')),
+          crudStatus: state.status,
+          formDirty: state.formDirty,
           child: Column(
             children: [
-              _buildSiteNameField(state),
-              _buildRegionSelectField(state),
-              _buildTimeZoneSelectField(state),
-              _buildSiteTypeField(state),
-              _buildSiteCodeField(state),
-              _buildReferenceCodeField(state),
+              _buildSiteNameField(),
+              _buildRegionSelectField(),
+              _buildTimeZoneSelectField(),
+              _buildSiteTypeField(),
+              _buildSiteCodeField(),
+              _buildReferenceCodeField(),
             ],
           ),
         );
@@ -93,365 +90,130 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
     );
   }
 
-  void _changeFormData(SitesState state) {
-    if (state.selectedSite != null) {
-      siteName = (state.selectedSite!.name ?? '').isEmpty
-          ? null
-          : state.selectedSite!.name ?? '';
-      siteCode = state.selectedSite!.siteCode;
-      siteType = state.selectedSite!.siteType.isEmpty
-          ? null
-          : state.selectedSite!.siteType;
-      referenceCode = state.selectedSite!.referenceCode;
-      region = state.selectedSite!.region.isEmpty
-          ? null
-          : state.selectedSite!.region;
-
-      if (isFirstInit) {
-        initSiteName = siteNameController.text =
-            widget.siteId == null ? '' : state.selectedSite!.name ?? '';
-        initSiteCode = siteCodeController.text =
-            widget.siteId == null ? '' : state.selectedSite!.siteCode;
-        initReferenceCode = referenceCodeController.text =
-            widget.siteId == null ? '' : state.selectedSite!.referenceCode;
-        initRegion = state.selectedSite!.region;
-        initTimeZone = state.selectedSite!.timeZone;
-        initSiteType = state.selectedSite!.siteType;
-
-        if (state.selectedSite!.regionId.isNotEmpty) {
-          regionsBloc.add(TimeZonesRetrievedForRegion(
-            regionId: state.selectedSite!.regionId,
-          ));
-        }
-        isFirstInit = false;
-        _checkFormDirty();
-      }
-      setState(() {});
-    }
-  }
-
-  void _checkFormDirty() {
-    context
-        .read<FormDirtyBloc>()
-        .add(FormDirtyChanged(isDirty: _checkFormDataFill()));
-  }
-
-  bool _checkFormDataFill() {
-    return (Validation.isEmpty(siteNameController.text) &&
-            initSiteName != siteNameController.text) ||
-        (Validation.isEmpty(region) && initRegion != region) ||
-        (Validation.isEmpty(timeZone) && initTimeZone != timeZone) ||
-        (Validation.isEmpty(siteType) && initSiteType != siteType) ||
-        (Validation.isEmpty(siteCodeController.text) &&
-            siteCodeController.text != initSiteCode) ||
-        (Validation.isEmpty(referenceCodeController.text) &&
-            referenceCodeController.text != initReferenceCode);
-  }
-
-  void _checkCrudResult(SitesState state, BuildContext context) {
-    if (state.siteCrudStatus == EntityStatus.success) {
-      sitesBloc.add(SitesStatusInited());
-      CustomNotification(
-        context: context,
-        notifyType: NotifyType.success,
-        content: state.message,
-      ).showNotification();
-      GoRouter.of(context).go(
-          '/sites/assign-templates?siteId=${state.selectedSite!.id}&siteName=${state.selectedSite!.name}');
-    }
-    if (state.siteCrudStatus == EntityStatus.failure) {
-      sitesBloc.add(SitesStatusInited());
-      setState(() {
-        if (state.message.contains('code')) {
-          siteCodeValidationMessage = state.message;
-        } else {
-          siteNameValidationMessage = state.message;
-        }
-      });
-    }
-  }
-
-  FormItem _buildSiteNameField(SitesState state) {
-    return FormItem(
-      label: 'Site Name (*)',
-      content: CustomTextField(
-        controller: siteNameController,
-        hintText: 'Name e.g. Chicago, Lake shore',
-        onChanged: (siteName) {
-          setState(() {
-            siteNameValidationMessage = '';
-          });
-
-          if (siteName.length > SiteFormValidation.siteNameMaxLength) {
-            setState(() {
-              siteNameValidationMessage =
-                  'Site Name can be max 10 characters long.';
-            });
-          }
-
-          _checkFormDirty();
-          sitesBloc.add(
-            SiteSelected(
-              selectedSite: state.selectedSite!.copyWith(
-                name: siteName,
-              ),
-            ),
-          );
-        },
-      ),
-      message: siteNameValidationMessage,
-    );
-  }
-
-  BlocBuilder<RegionsBloc, RegionsState> _buildRegionSelectField(
-      SitesState state) {
-    return BlocBuilder<RegionsBloc, RegionsState>(
-      builder: (context, regionsState) {
-        Map<String, String> items = <String, String>{}..addEntries(
-            regionsState.assignedRegions.map((assignedRegion) =>
-                MapEntry(assignedRegion.name ?? '', assignedRegion.id!)));
+  Widget _buildSiteNameField() {
+    return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
+      builder: (context, state) {
         return FormItem(
-          label: 'Region (*)',
-          content: CustomSingleSelect(
-            items: items,
-            hint: 'Select Region',
-            selectedValue: regionsState.assignedRegions.isEmpty ? null : region,
-            onChanged: (region) {
-              setState(() {
-                regionValidationMessage = '';
-              });
-              _checkFormDirty();
-              regionsBloc
-                  .add(TimeZonesRetrievedForRegion(regionId: region.value));
-              sitesBloc.add(
-                SiteSelected(
-                  selectedSite: state.selectedSite!.copyWith(
-                    region: region.key,
-                    regionId: region.value,
-                    timeZone: '',
-                  ),
-                ),
-              );
+          label: 'Site Name (*)',
+          content: CustomTextField(
+            key: ValueKey(state.loadedSite?.id),
+            initialValue: state.siteName,
+            hintText: 'Name e.g. Chicago, Lake shore',
+            onChanged: (siteName) {
+              addEditSiteBloc.add(AddEditSiteNameChanged(name: siteName));
             },
           ),
-          message: regionValidationMessage,
+          message: state.siteNameValidationMessage,
         );
       },
     );
   }
 
-  FormItem _buildReferenceCodeField(SitesState state) {
-    return FormItem(
-      label: 'Reference Code',
-      content: CustomTextField(
-        controller: referenceCodeController,
-        hintText: '',
-        onChanged: (referenceCode) {
-          _checkFormDirty();
-
-          // validate the max length
-          if (referenceCode.length >
-              SiteFormValidation.referenceCodeMaxLength) {
-            setState(() {
-              referenceCodeValidationMessage =
-                  'Site Name can be max 10 characters long.';
-            });
-          }
-          sitesBloc.add(
-            SiteSelected(
-              selectedSite: state.selectedSite!.copyWith(
-                referenceCode: referenceCode,
-              ),
-            ),
-          );
-        },
-      ),
-      message: referenceCodeValidationMessage,
-    );
-  }
-
-  FormItem _buildSiteCodeField(SitesState state) {
-    return FormItem(
-      label: 'Site Code (*)',
-      content: CustomTextField(
-        controller: siteCodeController,
-        hintText: 'Site code e.g. CHILKSHDR',
-        onChanged: (siteCode) {
-          _checkFormDirty();
-          setState(() {
-            siteCodeValidationMessage = '';
-          });
-          // validate the max length
-          if (siteCode.length > SiteFormValidation.siteCodeMaxLength) {
-            setState(() {
-              siteCodeValidationMessage =
-                  'Site Name can be max 10 characters long.';
-            });
-          }
-
-          sitesBloc.add(
-            SiteSelected(
-              selectedSite: state.selectedSite!.copyWith(
-                siteCode: siteCode,
-              ),
-            ),
-          );
-        },
-      ),
-      message: siteCodeValidationMessage,
-    );
-  }
-
-  FormItem _buildSiteTypeField(SitesState state) {
-    return FormItem(
-      label: 'Site Type (*)',
-      content: CustomSingleSelect(
-        items: const <String, String>{
-          'Office': 'Office',
-          'Manufacturing': 'Manufacturing',
-          'Chemicals Plant': 'Chemicals Plant',
-          'Other': 'Other',
-        },
-        hint: 'Select Type',
-        selectedValue: siteType,
-        onChanged: (siteType) {
-          _checkFormDirty();
-          setState(() {
-            siteTypeValidationMessage = '';
-          });
-          sitesBloc.add(
-            SiteSelected(
-              selectedSite: state.selectedSite!.copyWith(
-                siteType: siteType.key,
-              ),
-            ),
-          );
-        },
-      ),
-      message: siteTypeValidationMessage,
-    );
-  }
-
-  BlocListener<SitesBloc, SitesState> _buildTimeZoneSelectField(
-      SitesState state) {
-    return BlocListener<SitesBloc, SitesState>(
-      listener: (context, state) {
-        if (state.selectedSite != null) {
-          timeZone = state.selectedSite!.timeZone.isEmpty
-              ? null
-              : state.selectedSite!.timeZone;
-        }
+  Widget _buildRegionSelectField() {
+    return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
+      builder: (context, state) {
+        Map<String, Region> items = {}..addEntries(state.regionList
+            .map((region) => MapEntry(region.name ?? '', region)));
+        return FormItem(
+          label: 'Region (*)',
+          content: CustomSingleSelect(
+            items: items,
+            hint: 'Select Region',
+            selectedValue: state.regionList.isEmpty ? null : state.region?.name,
+            onChanged: (region) {
+              addEditSiteBloc
+                  .add(AddEditSiteRegionChanged(region: region.value));
+            },
+          ),
+          message: state.regionValidationMessage,
+        );
       },
-      child: BlocBuilder<RegionsBloc, RegionsState>(
-        builder: (context, regionsState) {
-          return FormItem(
-            label: 'Time Zone (*)',
-            content: CustomSingleSelect(
-              items: <String, String>{}..addEntries(regionsState.timeZones.map(
-                  (timeZone) =>
-                      MapEntry(timeZone.name ?? '', timeZone.id ?? ''))),
-              hint: 'Select Time Zone',
-              selectedValue: regionsState.timeZones.isEmpty ? null : timeZone,
-              onChanged: (timeZone) {
-                _checkFormDirty();
-                setState(() {
-                  timeZoneValidationMessage = '';
-                });
-                sitesBloc.add(
-                  SiteSelected(
-                    selectedSite: state.selectedSite!.copyWith(
-                      timeZone: timeZone.key,
-                      timeZoneId: timeZone.value,
-                    ),
-                  ),
-                );
-              },
-            ),
-            message: timeZoneValidationMessage,
-          );
-        },
-      ),
     );
   }
 
-  bool _checkAlphanumeric(String str) {
-    final alphpanumeric = RegExp(r'^[0-9a-zA-Z ]+$');
-    return alphpanumeric.hasMatch(str);
+  Widget _buildReferenceCodeField() {
+    return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
+      builder: (context, state) {
+        return FormItem(
+          label: 'Reference Code',
+          content: CustomTextField(
+            key: ValueKey(state.loadedSite?.id),
+            initialValue: state.referenceCode,
+            hintText: '',
+            onChanged: (referenceCode) {
+              addEditSiteBloc.add(AddEditSiteReferenceCodeChanged(
+                  referenceCode: referenceCode));
+            },
+          ),
+          message: state.referenceCodeValidationMessage,
+        );
+      },
+    );
   }
 
-  bool _validate() {
-    bool validated = true;
-    if (siteName == null ||
-        (siteName != null && (siteName!.isEmpty || siteName!.trim().isEmpty))) {
-      setState(() {
-        siteNameValidationMessage =
-            'Site name is required and cannot be blank.';
-      });
-
-      validated = false;
-    } else {
-      if (!(_checkAlphanumeric(siteName!))) {
-        setState(() {
-          siteNameValidationMessage = 'Site name should be only alphanumeric.';
-        });
-
-        validated = false;
-      }
-    }
-
-    if (region == null ||
-        (region != null && (region!.isEmpty || region!.trim().isEmpty))) {
-      setState(() {
-        regionValidationMessage = 'Region is required.';
-      });
-
-      validated = false;
-    }
-
-    if (timeZone == null ||
-        (timeZone != null && (timeZone!.isEmpty || timeZone!.trim().isEmpty))) {
-      setState(() {
-        timeZoneValidationMessage = 'Time zone is required.';
-      });
-
-      validated = false;
-    }
-
-    if (siteType == null ||
-        (siteType != null && (siteType!.isEmpty || siteType!.trim().isEmpty))) {
-      setState(() {
-        siteTypeValidationMessage = 'Site type is required.';
-      });
-
-      validated = false;
-    }
-    if (siteCode == null ||
-        (siteCode != null && (siteCode!.isEmpty || siteCode!.trim().isEmpty))) {
-      setState(() {
-        siteCodeValidationMessage = 'Site code is required.';
-      });
-
-      validated = false;
-    } else {
-      if (!(_checkAlphanumeric(siteCode!))) {
-        setState(() {
-          siteCodeValidationMessage = 'Site code should be only alphanumeric.';
-        });
-
-        validated = false;
-      }
-    }
-
-    return validated;
+  Widget _buildSiteCodeField() {
+    return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
+      builder: (context, state) {
+        return FormItem(
+          label: 'Site Code (*)',
+          content: CustomTextField(
+            key: ValueKey(state.loadedSite?.id),
+            initialValue: state.siteCode,
+            hintText: 'Site code e.g. CHILKSHDR',
+            onChanged: (siteCode) {
+              addEditSiteBloc.add(AddEditSiteCodeChanged(siteCode: siteCode));
+            },
+          ),
+          message: state.siteCodeValidationMessage,
+        );
+      },
+    );
   }
 
-  void _addSite(SitesState state) {
-    if (!_validate()) return;
-    sitesBloc.add(SiteAdded(site: state.selectedSite!));
+  Widget _buildSiteTypeField() {
+    return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
+      builder: (context, state) {
+        return FormItem(
+          label: 'Site Type (*)',
+          content: CustomSingleSelect(
+            items: const <String, String>{
+              'Office': 'Office',
+              'Manufacturing': 'Manufacturing',
+              'Chemicals Plant': 'Chemicals Plant',
+              'Other': 'Other',
+            },
+            hint: 'Select Type',
+            selectedValue: state.siteType,
+            onChanged: (siteType) {
+              addEditSiteBloc
+                  .add(AddEditSiteTypeChanged(siteType: siteType.value));
+            },
+          ),
+          message: state.siteTypeValidationMessage,
+        );
+      },
+    );
   }
 
-  void _editSite(SitesState state) {
-    if (!_validate()) return;
-    sitesBloc.add(SiteEdited(site: state.selectedSite!));
+  Widget _buildTimeZoneSelectField() {
+    return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
+      builder: (context, state) {
+        return FormItem(
+          label: 'Time Zone (*)',
+          content: CustomSingleSelect(
+            items: <String, TimeZone>{}..addEntries(state.timeZoneList
+                .map((timeZone) => MapEntry(timeZone.name ?? '', timeZone))),
+            hint: 'Select Time Zone',
+            selectedValue:
+                state.timeZoneList.isEmpty ? null : state.timeZone?.name,
+            onChanged: (timeZone) {
+              addEditSiteBloc
+                  .add(AddEditSiteTimeZoneChanged(timeZone: timeZone.value));
+            },
+          ),
+          message: state.timeZoneValidationMessage,
+        );
+      },
+    );
   }
 }
