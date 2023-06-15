@@ -83,9 +83,13 @@ class AddEditCompanyBloc
 
         if (response.isSuccess) {
           emit(state.copyWith(
+            initialCompanyName: state.companyName,
+            initialEinNumber: state.einNumber,
             message: response.message,
             status: EntityStatus.success,
           ));
+
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           _checkMessage(emit, response.message);
         }

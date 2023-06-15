@@ -121,9 +121,15 @@ class AddEditProjectBloc
 
         if (response.isSuccess) {
           emit(state.copyWith(
+            initialProjectName: state.projectName,
+            initialSite: state.site,
+            initialReferenceName: state.referenceName,
+            initialReferenceNumber: state.referenceNumber,
             message: response.message,
             status: EntityStatus.success,
           ));
+
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           _checkMessage(emit, response.message);
         }

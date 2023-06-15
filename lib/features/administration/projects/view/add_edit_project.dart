@@ -95,6 +95,7 @@ class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
           ).showNotification();
         }
       },
+      listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,
@@ -104,6 +105,7 @@ class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
           editEntity: () => addEditProjectBloc
               .add(AddEditProjectEdited(id: widget.projectId ?? '')),
           crudStatus: state.status,
+          formDirty: state.formDirty,
           tabItems: tabViews,
           view: widget.view,
           child: Column(

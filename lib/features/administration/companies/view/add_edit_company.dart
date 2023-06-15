@@ -107,6 +107,7 @@ class _AddEditCompanyWidgetState extends State<AddEditCompanyWidget> {
           editEntity: () => _addEditCompanyBloc
               .add(AddEditCompanyEdited(id: widget.companyId ?? '')),
           crudStatus: state.status,
+          formDirty: state.formDirty,
           tabItems: tabViews,
           editButtonName: editButtonName,
           view: widget.view,

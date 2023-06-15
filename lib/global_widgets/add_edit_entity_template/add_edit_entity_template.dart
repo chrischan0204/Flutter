@@ -14,6 +14,7 @@ class AddEditEntityTemplate extends StatefulWidget {
   final Widget child;
   final String? addButtonName;
   final String? editButtonName;
+  final bool formDirty;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
   final EntityStatus crudStatus;
@@ -28,6 +29,7 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.child,
     this.addButtonName,
     this.editButtonName,
+    this.formDirty = true,
     required this.addEntity,
     required this.editEntity,
     this.crudStatus = EntityStatus.initial,
@@ -102,7 +104,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         if (index == 0) {
           context
               .read<FormDirtyBloc>()
-              .add(const FormDirtyChanged(isDirty: true));
+              .add(FormDirtyChanged(isDirty: widget.formDirty));
         } else {
           context
               .read<FormDirtyBloc>()
