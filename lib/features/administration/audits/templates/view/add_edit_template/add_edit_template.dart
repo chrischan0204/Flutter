@@ -121,15 +121,11 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
                     AddEditTemplateTemplateAddEdited(
                         templateId: widget.templateId)),
                 crudStatus: addEditTemplateState.templateAddEditStatus,
-                isCrudDataFill: addEditTemplateState.templateDetailFilled,
                 tabItems: _buildTabs(),
                 tabWidth: 500,
                 view: widget.view,
                 child: BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
                   listener: (context, state) {},
-                  // listenWhen: (previous, current) =>
-                  //     previous.templateDetailFilled !=
-                  //     current.templateDetailFilled,
                   child:
                       AddEditTemplateDetailsView(templateId: widget.templateId),
                 ),

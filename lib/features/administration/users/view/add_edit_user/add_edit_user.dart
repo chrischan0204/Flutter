@@ -143,7 +143,6 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
                 addEntity: () => _addUser(addEditUserState),
                 editEntity: () => _editUser(addEditUserState),
                 crudStatus: addEditUserState.userAddStatus,
-                isCrudDataFill: addEditUserState.isUserDataFill,
                 tabItems: _buildTabs(addEditUserState),
                 tabWidth: 500,
                 view: widget.view,

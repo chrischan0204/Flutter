@@ -14,7 +14,6 @@ class AddEditEntityTemplate extends StatefulWidget {
   final Widget child;
   final String? addButtonName;
   final String? editButtonName;
-  final bool isCrudDataFill;
   final VoidCallback addEntity;
   final VoidCallback editEntity;
   final EntityStatus crudStatus;
@@ -29,7 +28,6 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.child,
     this.addButtonName,
     this.editButtonName,
-    this.isCrudDataFill = false,
     required this.addEntity,
     required this.editEntity,
     this.crudStatus = EntityStatus.initial,

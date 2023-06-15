@@ -2,12 +2,10 @@ import '/common_libraries.dart';
 
 class AssignProjectsToCompanyView extends StatefulWidget {
   final String companyId;
-  final String companyName;
   final String? view;
   const AssignProjectsToCompanyView({
     super.key,
     required this.companyId,
-    required this.companyName,
     this.view,
   });
 

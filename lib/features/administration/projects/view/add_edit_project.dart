@@ -68,7 +68,6 @@ class _AddEditProjectViewState extends State<AddEditProjectView> {
           selectedEntity: state.selectedProject,
           addEntity: () => _addProject(state),
           editEntity: () => _editProject(state),
-          isCrudDataFill: _checkFormDataFill(),
           crudStatus: state.projectCrudStatus,
           tabItems: _buildTabs(state),
           view: widget.view,

@@ -78,7 +78,6 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           addEntity: () => _addSite(state),
           editEntity: () => _editSite(state),
           crudStatus: state.siteCrudStatus,
-          isCrudDataFill: _checkFormDataFill(),
           child: Column(
             children: [
               _buildSiteNameField(state),
