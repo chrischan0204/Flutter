@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 export 'package:http/http.dart';
 import '/common_libraries.dart';
@@ -17,9 +15,7 @@ class BaseRepository {
           'Content-Type': 'application/json',
           'accept': '*/*',
           'Authorization': 'Bearer $token'
-        } {
-    print(token);
-  }
+        };
 
   Future<http.Response> get(String encodedPath,
       [Map<String, dynamic>? queryParams]) async {

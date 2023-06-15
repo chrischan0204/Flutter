@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'template_designer_bloc.dart';
 
 abstract class TemplateDesignerEvent extends Equatable {
@@ -62,6 +61,8 @@ class TemplateDesignerTemplateSectionItemQuestionList
   List<Object> get props => [templateSectionId];
 }
 
+
+// event to get response scale item list by response scale id
 class TemplateDesignerResponseScaleItemListLoaded
     extends TemplateDesignerEvent {
   final String responseScaleId;
@@ -208,14 +209,28 @@ class TemplateDesignerCurrentTemplateSectionItemChanged
       ];
 }
 
+// event to load question detail by id
 class TemplateDesignerQuestionDetailLoaded extends TemplateDesignerEvent {
   final String id;
-  final int level;
+  final int itemTypeId;
   const TemplateDesignerQuestionDetailLoaded({
     required this.id,
-    required this.level,
+    required this.itemTypeId,
   });
 
   @override
-  List<Object> get props => [id, level];
+  List<Object> get props => [id, itemTypeId];
+}
+
+// event to change the selected response scale id
+class TemplateDesignerResponseScaleSelected extends TemplateDesignerEvent {
+  // selected response scale id
+  final String? responseScaleId;
+
+  const TemplateDesignerResponseScaleSelected({
+    this.responseScaleId,
+  });
+
+  @override
+  List<Object?> get props => [responseScaleId];
 }

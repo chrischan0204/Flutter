@@ -55,7 +55,7 @@ class TemplateSectionItem extends Equatable {
       'responseScaleId': responseScaleId,
       'parentId': parentId,
       'question': question?.toMap(),
-      'response': response?.toMap(),
+      'response': itemTypeId == 3 ? null : response?.toMap(),
     };
 
     if (children.isNotEmpty) {
@@ -74,7 +74,7 @@ class TemplateSectionItem extends Equatable {
 
   factory TemplateSectionItem.fromMap(Map<String, dynamic> map) {
     return TemplateSectionItem(
-      templateSectionItemId: map['id'] as String,
+      id: map['id'] as String,
       templateSectionId: map['templateSectionId'] as String,
       itemTypeId: map['itemTypeId'],
       responseScaleId: map['responseScaleId'] as String,

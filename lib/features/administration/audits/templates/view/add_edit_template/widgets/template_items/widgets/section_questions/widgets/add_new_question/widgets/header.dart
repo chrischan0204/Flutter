@@ -16,7 +16,9 @@ class AddNewQuestionHeaderView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Add Question',
+                  state.templateSectionItem?.templateSectionItemId == null
+                      ? 'Add Question'
+                      : 'Edit Question',
                   style: textNormal18.copyWith(color: textBlue),
                 ),
                 TextButton(
@@ -61,7 +63,7 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                       .read<TemplateDesignerBloc>()
                       .add(const TemplateDesignerLevelChanged(level: 1)),
                   child: Text(
-                    'Follow up Question (For Option=\'${state.currentTemplateSectionItemByLevel(1).response!.name}\')',
+                    'Follow up Question (For Option=\'${state.currentTemplateSectionItemByLevel(1)?.response!.name}\')',
                     style: textNormal14.copyWith(
                       decoration: TextDecoration.underline,
                       color: textBlue,
@@ -78,7 +80,7 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                   ),
                 if (state.level == 2)
                   Text(
-                    'Level Two Follow up Question (For Option=\'${state.currentTemplateSectionItemByLevel(2).response!.name}\')',
+                    'Level Two Follow up Question (For Option=\'${state.currentTemplateSectionItemByLevel(2)?.response!.name}\')',
                     style: textNormal12.copyWith(
                       color: textBlue,
                     ),

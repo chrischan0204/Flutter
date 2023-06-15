@@ -31,7 +31,7 @@ class SectionQuestionsView extends StatelessWidget {
                     builder: (context, state) {
                       return AddNewQuestionView(
                         templateSectionItem: state
-                            .currentTemplateSectionItemByLevel(state.level),
+                            .currentTemplateSectionItemByLevel(state.level)!,
                       );
                     },
                   );

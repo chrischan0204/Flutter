@@ -12,13 +12,13 @@ class ResponseScaleSelectFieldView extends StatefulWidget {
 
 class _ResponseScaleSelectFieldViewState
     extends State<ResponseScaleSelectFieldView> {
-  String? selectedValue;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
-        listener: (context, state) => setState(() => selectedValue = null),
+        listener: (context, state) => context.read<TemplateDesignerBloc>().add(
+            const TemplateDesignerResponseScaleSelected(responseScaleId: null)),
         listenWhen: (previous, current) => previous.level != current.level,
         builder: (context, state) {
           Map<String, ResponseScale> items = {};
@@ -27,10 +27,13 @@ class _ResponseScaleSelectFieldViewState
               state.responseScaleList.map((e) => MapEntry(e.name, e)));
           return CustomSingleSelect(
             hint: 'Select response scale',
-            selectedValue: selectedValue,
+            selectedValue: state.selectedResponseScaleItem?.name,
             items: items,
             onChanged: (value) {
-              setState(() => selectedValue = value.key);
+              context.read<TemplateDesignerBloc>().add(
+                  TemplateDesignerResponseScaleSelected(
+                      responseScaleId: (value.value as ResponseScale).id));
+
               context.read<TemplateDesignerBloc>().add(
                     TemplateDesignerResponseScaleItemListLoaded(
                       responseScaleId: (value.value as ResponseScale).id,

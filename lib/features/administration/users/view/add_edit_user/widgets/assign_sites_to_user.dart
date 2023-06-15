@@ -79,7 +79,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        'Sites can be assigned to this user by selecting from the list below.',
+        'Sites can be assigned from list on left. Once assigned they will show here in this list.',
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
@@ -117,7 +117,7 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
           children: <TextSpan>[
             TextSpan(
               text:
-                  'Sites can be assigned from list on left. Once assigned they will show here in this list.',
+                  'Sites can be assigned to this user by selecting from the list below.',
             ),
           ],
         ),

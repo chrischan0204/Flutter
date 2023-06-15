@@ -42,9 +42,13 @@ class ResponseScaleItem extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
+      'isRequired': isRequired,
+      'included': true,
       'name': name,
-      'responseScaleItemId': id,
+      'responseScaleItemId': responseScaleItemId,
       'score': score,
+      'order': order,
       'commentRequired': commentRequired,
       'actionItemRequired': actionItemRequired,
       'followUpRequired': followUpRequired,
@@ -58,7 +62,7 @@ class ResponseScaleItem extends Equatable {
       isRequired: map['isRequired'] ?? false,
       included:
           (map['isRequired'] as bool) == true ? true : map['included'] ?? false,
-      responseScaleItemId: map['responseScaleItemId'] ?? '',
+      responseScaleItemId: map['responseScaleItemId'],
       score: map['score'] ?? 0,
       commentRequired: map['commentRequired'] ?? false,
       actionItemRequired: map['actionItemRequired'] ?? false,

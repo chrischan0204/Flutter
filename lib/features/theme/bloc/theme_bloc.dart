@@ -16,7 +16,6 @@ class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
           collapsedItems.add(event.collapsedItem);
         }
         emit(state.copyWith(collapsedItems: collapsedItems));
-        print(collapsedItems);
       },
     );
 

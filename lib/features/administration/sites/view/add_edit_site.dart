@@ -27,6 +27,13 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   String? referenceCode;
   String? siteType;
 
+  String initSiteName = '';
+  String initSiteCode = '';
+  String initRegion = '';
+  String initTimeZone = '';
+  String initReferenceCode = '';
+  String initSiteType = '';
+
   String siteNameValidationMessage = '';
   String regionValidationMessage = '';
   String timeZoneValidationMessage = '';
@@ -102,12 +109,16 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
           : state.selectedSite!.region;
 
       if (isFirstInit) {
-        siteNameController.text =
+        initSiteName = siteNameController.text =
             widget.siteId == null ? '' : state.selectedSite!.name ?? '';
-        siteCodeController.text =
+        initSiteCode = siteCodeController.text =
             widget.siteId == null ? '' : state.selectedSite!.siteCode;
-        referenceCodeController.text =
+        initReferenceCode = referenceCodeController.text =
             widget.siteId == null ? '' : state.selectedSite!.referenceCode;
+        initRegion = state.selectedSite!.region;
+        initTimeZone = state.selectedSite!.timeZone;
+        initSiteType = state.selectedSite!.siteType;
+
         if (state.selectedSite!.regionId.isNotEmpty) {
           regionsBloc.add(TimeZonesRetrievedForRegion(
             regionId: state.selectedSite!.regionId,
@@ -127,12 +138,15 @@ class _AddEditSiteViewState extends State<AddEditSiteView> {
   }
 
   bool _checkFormDataFill() {
-    return siteNameController.text.trim().isNotEmpty ||
-        (region != null && region!.isNotEmpty) ||
-        (timeZone != null && timeZone!.isNotEmpty) ||
-        (siteType != null && siteType!.isNotEmpty) ||
-        siteCodeController.text.trim().isNotEmpty ||
-        referenceCodeController.text.trim().isNotEmpty;
+    return (Validation.isEmpty(siteNameController.text) &&
+            initSiteName != siteNameController.text) ||
+        (Validation.isEmpty(region) && initRegion != region) ||
+        (Validation.isEmpty(timeZone) && initTimeZone != timeZone) ||
+        (Validation.isEmpty(siteType) && initSiteType != siteType) ||
+        (Validation.isEmpty(siteCodeController.text) &&
+            siteCodeController.text != initSiteCode) ||
+        (Validation.isEmpty(referenceCodeController.text) &&
+            referenceCodeController.text != initReferenceCode);
   }
 
   void _checkCrudResult(SitesState state, BuildContext context) {

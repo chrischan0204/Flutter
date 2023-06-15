@@ -58,7 +58,8 @@ class SectionsRepository extends BaseRepository {
   }
 
   Future<QuestionDetail> getQuestionDetail(String id, int itemType) async {
-    Response response = await super.get('$url/$id/itemdetails');
+    Response response = await super
+        .get('$url/$id/itemdetails', {'itemType': itemType.toString()});
 
     if (response.statusCode == 200) {
       return QuestionDetail.fromJson(response.body);

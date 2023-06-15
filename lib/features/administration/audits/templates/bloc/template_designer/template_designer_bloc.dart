@@ -49,6 +49,8 @@ class TemplateDesignerBloc
         _onTemplateDesignerCurrentTemplateSectionItemChanged);
     on<TemplateDesignerQuestionDetailLoaded>(
         _onTemplateDesignerQuestionDetailLoaded);
+    on<TemplateDesignerResponseScaleSelected>(
+        _onTemplateDesignerResponseScaleSelected);
   }
 
   @override
@@ -68,10 +70,10 @@ class TemplateDesignerBloc
       add(TemplateDesignerTemplateSectionItemQuestionList(
           templateSectionId: nextState.selectedTemplateSection!.id));
     }
-    print('current');
-    print(currentState.templateSectionItem?.toMap());
-    print('next');
-    print(nextState.templateSectionItem?.toMap());
+    // print('current');
+    // print(currentState.templateSectionItem?.toMap());
+    // print('next');
+    // print(nextState.templateSectionItem?.toMap());
 
     super.onChange(change);
   }
@@ -164,6 +166,8 @@ class TemplateDesignerBloc
       selectedTemplateSection: Nullable.value(event.templateSection),
       templateSectionItem: const Nullable.value(null),
       showAddNewQuestionView: false,
+      level: 0,
+      selectedResponseScaleId: const Nullable.value(null),
     ));
 
     if (event.templateSection != null) {
@@ -209,14 +213,14 @@ class TemplateDesignerBloc
         case 0:
           newTemplateSection = state.templateSectionItem!.copyWith(
               responseScaleId: event.responseScaleId,
-              question: Nullable.value(state.templateSectionItem!.question?.copyWith(responseScaleId: event.responseScaleId)),
+              question: Nullable.value(state.templateSectionItem!.question
+                  ?.copyWith(responseScaleId: event.responseScaleId)),
               children: responseScaleItemList.map((e) {
                 return TemplateSectionItem(
                   id: const Uuid().v1(),
                   itemTypeId: 2,
                   templateSectionId: state.selectedTemplateSection!.id,
                   responseScaleId: event.responseScaleId,
-                  
                   response: e,
                 );
               }).toList());
@@ -229,25 +233,24 @@ class TemplateDesignerBloc
               children: children
                   .map((child) => child.copyWith(
                       children: child.children
-                          .map((e) =>
-                              e.id == state.currentLevel1TemplateSectionItemId
-                                  ? e.copyWith(
-                                      itemTypeId: 2,
-                                      responseScaleId: event.responseScaleId,
-                                       question: Nullable.value(child.question?.copyWith(responseScaleId: event.responseScaleId)),
-                                      children: responseScaleItemList
-                                          .map((e) => TemplateSectionItem(
-                                                id: const Uuid().v1(),
-                                                itemTypeId: 2,
-                                                templateSectionId: state
-                                                    .selectedTemplateSection!
-                                                    .id,
-                                                responseScaleId:
-                                                    event.responseScaleId,
-                                                response: e,
-                                              ))
-                                          .toList())
-                                  : e)
+                          .map((e) => e.id ==
+                                  state.currentLevel1TemplateSectionItemId
+                              ? e.copyWith(
+                                  responseScaleId: event.responseScaleId,
+                                  question: Nullable.value(e.question?.copyWith(
+                                      responseScaleId: event.responseScaleId)),
+                                  children: responseScaleItemList
+                                      .map((e) => TemplateSectionItem(
+                                            id: const Uuid().v1(),
+                                            itemTypeId: 2,
+                                            templateSectionId: state
+                                                .selectedTemplateSection!.id,
+                                            responseScaleId:
+                                                event.responseScaleId,
+                                            response: e,
+                                          ))
+                                      .toList())
+                              : e)
                           .toList()))
                   .toList());
 
@@ -268,10 +271,12 @@ class TemplateDesignerBloc
                                                   state
                                                       .currentLevel2TemplateSectionItemId
                                               ? child.copyWith(
-                                                  itemTypeId: 2,
                                                   responseScaleId:
                                                       event.responseScaleId,
-                                                      question: Nullable.value(child.question?.copyWith(responseScaleId: event.responseScaleId)),
+                                                  question: Nullable.value(
+                                                      child.question?.copyWith(
+                                                          responseScaleId: event
+                                                              .responseScaleId)),
                                                   children:
                                                       responseScaleItemList
                                                           .map((e) =>
@@ -314,9 +319,12 @@ class TemplateDesignerBloc
       add(TemplateDesignerTemplateSectionItemCreated());
     } else {
       final newTemplateSectionItem = Nullable.value(TemplateSectionItem(
-        templateSectionId: state.selectedTemplateSection!.id,
-        itemTypeId: 1,
-      ));
+          templateSectionId: state.selectedTemplateSection!.id,
+          itemTypeId: 1,
+          question: const Question(
+            name: '',
+            order: 0,
+          )));
       emit(state.copyWith(
         templateSectionItem: newTemplateSectionItem,
         level: 0,
@@ -343,10 +351,7 @@ class TemplateDesignerBloc
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             question: Nullable.value(
-          Question(
-            name: event.question,
-            order: 0,
-          ),
+          state.templateSectionItem!.question?.copyWith(name: event.question),
         ));
         break;
       case 1:
@@ -361,10 +366,7 @@ class TemplateDesignerBloc
                             e.id == state.currentLevel1TemplateSectionItemId
                                 ? e.copyWith(
                                     question: Nullable.value(
-                                    Question(
-                                      name: event.question,
-                                      order: 0,
-                                    ),
+                                    e.question?.copyWith(name: event.question),
                                   ))
                                 : e)
                         .toList()))
@@ -388,10 +390,8 @@ class TemplateDesignerBloc
                                                     .currentLevel2TemplateSectionItemId
                                             ? e.copyWith(
                                                 question: Nullable.value(
-                                                Question(
-                                                  name: event.question,
-                                                  order: 0,
-                                                ),
+                                                e.question?.copyWith(
+                                                    name: event.question),
                                               ))
                                             : e)
                                         .toList()))
@@ -749,8 +749,16 @@ class TemplateDesignerBloc
     emit(state.copyWith(templateSectionItemCreateStatus: EntityStatus.loading));
 
     try {
-      EntityResponse response = await sectionsRepository
+
+late EntityResponse response ;
+if (state.templateSectionItem?.id == null) {
+response = await sectionsRepository
           .createTemplateSectionItem(state.templateSectionItem!);
+} else {
+  response = await sectionsRepository
+          .editTemplateSectionItem(state.templateSectionItem!);
+}
+       
       emit(state.copyWith(
         templateSectionItemCreateStatus:
             response.isSuccess.toEntityStatusCode(),
@@ -792,11 +800,16 @@ class TemplateDesignerBloc
               .map((child) => child.id == event.templateSectionItemId
                   ? child.copyWith(
                       children: child.children.isNotEmpty
-                          ? child.children.map((e) => e.copyWith(id: followUpQuestionId,
-                                templateSectionId:
-                                    state.selectedTemplateSection!.id,
-                                itemTypeId: 3,
-                                response: Nullable.value(event.responseScaleItem),)).toList()
+                          ? child.children
+                              .map((e) => e.copyWith(
+                                    id: followUpQuestionId,
+                                    templateSectionId:
+                                        state.selectedTemplateSection!.id,
+                                    itemTypeId: 3,
+                                    response:
+                                        Nullable.value(event.responseScaleItem),
+                                  ))
+                              .toList()
                           : [
                               TemplateSectionItem(
                                 id: followUpQuestionId,
@@ -804,6 +817,7 @@ class TemplateDesignerBloc
                                     state.selectedTemplateSection!.id,
                                 itemTypeId: 3,
                                 response: event.responseScaleItem,
+                                question: const Question(name: '', order: 0),
                               )
                             ])
                   : child)
@@ -820,24 +834,38 @@ class TemplateDesignerBloc
               .map((x) => x.copyWith(
                   children: x.children
                       .map((z) => z.copyWith(
-                              children: z.children.map((child) => child.id == event.templateSectionItemId
-                  ? child.copyWith(
-                      children: child.children.isNotEmpty
-                          ? child.children.map((e) => e.copyWith(id: followUpQuestionId,
-                                templateSectionId:
-                                    state.selectedTemplateSection!.id,
-                                itemTypeId: 3,
-                                response: Nullable.value(event.responseScaleItem),)).toList()
-                          : [
-                              TemplateSectionItem(
-                                id: followUpQuestionId,
-                                templateSectionId:
-                                    state.selectedTemplateSection!.id,
-                                itemTypeId: 3,
-                                response: event.responseScaleItem,
-                              )
-                            ])
-                  : child).toList()))
+                          children: z.children
+                              .map((child) =>
+                                  child.id == event.templateSectionItemId
+                                      ? child.copyWith(
+                                          children: child.children.isNotEmpty
+                                              ? child.children
+                                                  .map((e) => e.copyWith(
+                                                        id: followUpQuestionId,
+                                                        templateSectionId: state
+                                                            .selectedTemplateSection!
+                                                            .id,
+                                                        itemTypeId: 3,
+                                                        response:
+                                                            Nullable.value(event
+                                                                .responseScaleItem),
+                                                      ))
+                                                  .toList()
+                                              : [
+                                                  TemplateSectionItem(
+                                                    id: followUpQuestionId,
+                                                    templateSectionId: state
+                                                        .selectedTemplateSection!
+                                                        .id,
+                                                    itemTypeId: 3,
+                                                    response:
+                                                        event.responseScaleItem,
+                                                    question: const Question(
+                                                        name: '', order: 0),
+                                                  )
+                                                ])
+                                      : child)
+                              .toList()))
                       .toList()))
               .toList());
 
@@ -855,27 +883,56 @@ class TemplateDesignerBloc
   ) async {
     emit(state.copyWith(questionDetailLoadStatus: EntityStatus.loading));
     try {
-      QuestionDetail questionDetail =
-          await sectionsRepository.getQuestionDetail(event.id, event.level + 1);
-      switch (event.level) {
+      QuestionDetail questionDetail = await sectionsRepository
+          .getQuestionDetail(event.id, event.itemTypeId);
+
+      switch (state.level) {
         case 0:
+          List<ResponseScaleItem> responseScaleItemList =
+              await responseScalesRepository
+                  .getResponseScaleItemList(questionDetail.responseScaleId);
+
+          for (final responseScaleItem in questionDetail.responseScaleItems) {
+            int index = responseScaleItemList.indexWhere(
+                (element) => element.name == responseScaleItem.name);
+
+            if (index != -1) {
+              responseScaleItemList.removeAt(index);
+              responseScaleItemList.insert(index, responseScaleItem);
+            }
+          }
+
           emit(
             state.copyWith(
-              level: event.level,
+              level: state.level,
+              selectedResponseScaleId:
+                  Nullable.value(questionDetail.responseScaleId),
               templateSectionItem: Nullable.value(
                 TemplateSectionItem(
                   id: questionDetail.id,
+                  itemTypeId: 1,
+                  templateSectionItemId: questionDetail.id,
                   templateSectionId: state.selectedTemplateSection!.id,
                   responseScaleId: questionDetail.responseScaleId,
                   question: Question(
                     name: questionDetail.name,
                     responseScaleId: questionDetail.responseScaleId,
                   ),
-                  children: questionDetail.responseScaleItems
-                      .map((e) => TemplateSectionItem(response: e))
+                  children: responseScaleItemList
+                      .map((e) => TemplateSectionItem(
+                            response: e,
+                            id: e.id,
+                            itemTypeId: 2,
+                            parentId: questionDetail.id,
+                            templateSectionItemId: e.id,
+                            templateSectionId:
+                                state.selectedTemplateSection!.id,
+                            responseScaleId: questionDetail.responseScaleId,
+                          ))
                       .toList(),
                 ),
               ),
+              showAddNewQuestionView: true,
             ),
           );
           break;
@@ -887,7 +944,16 @@ class TemplateDesignerBloc
 
       emit(state.copyWith(questionDetailLoadStatus: EntityStatus.success));
     } catch (e) {
+      print(e);
       emit(state.copyWith(questionDetailLoadStatus: EntityStatus.failure));
     }
+  }
+
+  void _onTemplateDesignerResponseScaleSelected(
+    TemplateDesignerResponseScaleSelected event,
+    Emitter<TemplateDesignerState> emit,
+  ) {
+    emit(state.copyWith(
+        selectedResponseScaleId: Nullable.value(event.responseScaleId)));
   }
 }

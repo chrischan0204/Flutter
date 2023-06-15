@@ -31,6 +31,9 @@ class TemplateDesignerState extends Equatable {
 
   final EntityStatus questionDetailLoadStatus;
 
+  // selected response scale id
+  final String? selectedResponseScaleId;
+
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -51,12 +54,20 @@ class TemplateDesignerState extends Equatable {
     this.currentLevel1TemplateSectionItemId,
     this.currentLevel2TemplateSectionItemId,
     this.questionDetailLoadStatus = EntityStatus.initial,
+    this.selectedResponseScaleId,
   });
 
-  TemplateSectionItem currentTemplateSectionItemByLevel(int level) {
+  ResponseScale? get selectedResponseScaleItem => responseScaleList
+              .indexWhere((element) => element.id == selectedResponseScaleId) ==
+          -1
+      ? null
+      : responseScaleList
+          .firstWhere((element) => element.id == selectedResponseScaleId);
+
+  TemplateSectionItem? currentTemplateSectionItemByLevel(int level) {
     switch (level) {
       case 0:
-        return templateSectionItem!;
+        return templateSectionItem;
       case 1:
         for (final i in templateSectionItem!.children) {
           for (final j in i.children) {
@@ -72,7 +83,6 @@ class TemplateDesignerState extends Equatable {
             for (final k in j.children) {
               for (final l in k.children) {
                 if (l.id == currentLevel2TemplateSectionItemId) {
-                  print(l.toMap());
                   return l;
                 }
               }
@@ -106,6 +116,7 @@ class TemplateDesignerState extends Equatable {
         currentLevel1TemplateSectionItemId,
         currentLevel2TemplateSectionItemId,
         questionDetailLoadStatus,
+        selectedResponseScaleId,
       ];
 
   TemplateDesignerState copyWith({
@@ -128,6 +139,7 @@ class TemplateDesignerState extends Equatable {
     String? currentLevel1TemplateSectionItemId,
     String? currentLevel2TemplateSectionItemId,
     EntityStatus? questionDetailLoadStatus,
+    Nullable<String?>? selectedResponseScaleId,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -164,6 +176,9 @@ class TemplateDesignerState extends Equatable {
           this.currentLevel2TemplateSectionItemId,
       questionDetailLoadStatus:
           questionDetailLoadStatus ?? this.questionDetailLoadStatus,
+      selectedResponseScaleId: selectedResponseScaleId != null
+          ? selectedResponseScaleId.value
+          : this.selectedResponseScaleId,
     );
   }
 }

@@ -68,14 +68,19 @@ class _OperatorSelectFieldState extends State<OperatorSelectField> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160,
-      child: CustomSingleSelect(
-        selectedValue: widget.userFilterItem.operator,
-        items: _getOperator(),
-        onChanged: (value) => filterSettingBloc.add(
-            FilterSettingUserFilterItemOperatorChanged(
-                operator: value.value, userFilterItem: widget.userFilterItem)),
+    return Tooltip(
+      message: widget.userFilterItem.operator,
+      preferBelow: false,
+      child: SizedBox(
+        width: 160,
+        child: CustomSingleSelect(
+          selectedValue: widget.userFilterItem.operator,
+          items: _getOperator(),
+          onChanged: (value) => filterSettingBloc.add(
+              FilterSettingUserFilterItemOperatorChanged(
+                  operator: value.value,
+                  userFilterItem: widget.userFilterItem)),
+        ),
       ),
     );
   }

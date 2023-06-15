@@ -13,6 +13,154 @@ class ResponseScaleItemView extends StatelessWidget {
 
   bool get disabled => !(templateSectionItem.response?.included ?? false);
 
+  // build include check box
+  Widget _buildIncludeCheckBox(BuildContext context) => Container(
+        alignment: Alignment.centerLeft,
+        width: 100,
+        child: Checkbox(
+          value: templateSectionItem.response?.isRequired == true
+              ? true
+              : templateSectionItem.response?.included,
+          onChanged: templateSectionItem.response?.isRequired == true
+              ? null
+              : (value) => context
+                  .read<TemplateDesignerBloc>()
+                  .add(TemplateDesignerIncludedChanged(
+                    include: value!,
+                    templateSectionItemId: templateSectionItem.id!,
+                  )),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+        ),
+      );
+
+  // response text field
+  Widget get responseTextField => Flexible(
+        flex: 3,
+        fit: FlexFit.tight,
+        child: Text(
+          response,
+          style: textSemiBold14,
+        ),
+      );
+
+  // build score text field
+  Widget _buildScoreTextField(BuildContext context) => Flexible(
+        flex: 1,
+        fit: FlexFit.tight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              fit: FlexFit.tight,
+              child: CustomTextField(
+                key: ValueKey(templateSectionItem.id),
+                initialValue: templateSectionItem.response?.score.toString(),
+                isDisabled: disabled,
+                onChanged: (value) => context
+                    .read<TemplateDesignerBloc>()
+                    .add(TemplateDesignerScoreChanged(
+                      score: double.parse(value),
+                      templateSectionItemId: templateSectionItem.id!,
+                    )),
+              ),
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 2,
+              child: Container(),
+            ),
+          ],
+        ),
+      );
+
+  // build comment button
+  Widget _buildCommentButton(BuildContext context) => FutherActionItemView(
+        onClick: (commentRequired) => context
+            .read<TemplateDesignerBloc>()
+            .add(TemplateDesignerCommentRequiredChanged(
+              commentRequired: commentRequired,
+              templateSectionItemId: templateSectionItem.id!,
+            )),
+        disabled: disabled,
+        active: templateSectionItem.response?.commentRequired ?? false,
+        title: 'Comment',
+        activeColor: primaryColor,
+      );
+
+  // build action item button
+  Widget _buildActionItemButton(BuildContext context) => FutherActionItemView(
+        onClick: (actionItemRequired) => context
+            .read<TemplateDesignerBloc>()
+            .add(TemplateDesignerActionItemChanged(
+              actionItemRequired: actionItemRequired,
+              templateSectionItemId: templateSectionItem.id!,
+            )),
+        disabled: disabled,
+        active: templateSectionItem.response?.actionItemRequired ?? false,
+        title: 'Action Item',
+        activeColor: primaryColor,
+      );
+
+  // build follow up button
+  Widget _buildFollowupButton(BuildContext context) => FutherActionItemView(
+        active: templateSectionItem.response?.followUpRequired ?? false,
+        onClick: (followUpRequired) => context
+            .read<TemplateDesignerBloc>()
+            .add(TemplateDesignerFollowUpRequiredChanged(
+              followUpRequired: followUpRequired,
+              templateSectionItemId: templateSectionItem.id!,
+            )),
+        disabled: disabled,
+        title: 'Follow up',
+        activeColor: warnColor,
+      );
+
+  // build level 1 or 2 follow up button
+  Widget _buildLevelFollowUpButton(BuildContext context, int level) =>
+      FutherActionItemView(
+        active: templateSectionItem.response?.followUpRequired ?? false,
+        onClick: (_) {
+          context
+              .read<TemplateDesignerBloc>()
+              .add(TemplateDesignerCurrentTemplateSectionItemChanged(
+                templateSectionItemId: templateSectionItem.id!,
+                responseScaleItem: templateSectionItem.response!,
+              ));
+
+          if (templateSectionItem.id != null) {
+            context
+                .read<TemplateDesignerBloc>()
+                .add(TemplateDesignerQuestionDetailLoaded(
+                  id: templateSectionItem.id!,
+                  itemTypeId: 2,
+                ));
+          }
+        },
+        disabled: disabled,
+        title: 'Add L${level + 1} Follow up',
+        activeColor: primaryColor,
+      );
+
+  // build futher action buttons
+  Widget _buildFurtherActionButtons(BuildContext context, int level) =>
+      Flexible(
+        flex: 3,
+        fit: FlexFit.tight,
+        child: Row(
+          children: [
+            _buildCommentButton(context),
+            spacer20,
+            _buildActionItemButton(context),
+            spacer20,
+            if (level != 2) _buildFollowupButton(context),
+            spacer20,
+            if (templateSectionItem.response?.followUpRequired == true &&
+                level < 2)
+              _buildLevelFollowUpButton(context, level),
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,142 +176,10 @@ class ResponseScaleItemView extends StatelessWidget {
               builder: (context, state) {
                 return Row(
                   children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: 100,
-                      child: Checkbox(
-                        value: templateSectionItem.response?.isRequired == true
-                            ? true
-                            : templateSectionItem.response?.included,
-                        onChanged:
-                            templateSectionItem.response?.isRequired == true
-                                ? null
-                                : (value) => context
-                                    .read<TemplateDesignerBloc>()
-                                    .add(TemplateDesignerIncludedChanged(
-                                      include: value!,
-                                      templateSectionItemId:
-                                          templateSectionItem.id!,
-                                    )),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      fit: FlexFit.tight,
-                      child: Text(
-                        response,
-                        style: textSemiBold14,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            fit: FlexFit.tight,
-                            child: CustomTextField(
-                              key: ValueKey(templateSectionItem.id),
-                              initialValue: templateSectionItem.response?.score
-                                  .toString(),
-                              isDisabled: disabled,
-                              onChanged: (value) => context
-                                  .read<TemplateDesignerBloc>()
-                                  .add(TemplateDesignerScoreChanged(
-                                    score: double.parse(value),
-                                    templateSectionItemId:
-                                        templateSectionItem.id!,
-                                  )),
-                            ),
-                          ),
-                          Flexible(
-                            fit: FlexFit.tight,
-                            flex: 2,
-                            child: Container(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      fit: FlexFit.tight,
-                      child: Row(
-                        children: [
-                          FutherActionItemView(
-                            onClick: (commentRequired) => context
-                                .read<TemplateDesignerBloc>()
-                                .add(TemplateDesignerCommentRequiredChanged(
-                                  commentRequired: commentRequired,
-                                  templateSectionItemId:
-                                      templateSectionItem.id!,
-                                )),
-                            disabled: disabled,
-                            active:
-                                templateSectionItem.response?.commentRequired ??
-                                    false,
-                            title: 'Comment',
-                            activeColor: primaryColor,
-                          ),
-                          spacer20,
-                          FutherActionItemView(
-                            onClick: (actionItemRequired) => context
-                                .read<TemplateDesignerBloc>()
-                                .add(TemplateDesignerActionItemChanged(
-                                  actionItemRequired: actionItemRequired,
-                                  templateSectionItemId:
-                                      templateSectionItem.id!,
-                                )),
-                            disabled: disabled,
-                            active: templateSectionItem
-                                    .response?.actionItemRequired ??
-                                false,
-                            title: 'Action Item',
-                            activeColor: primaryColor,
-                          ),
-                          spacer20,
-                          if (state.level != 2)
-                            FutherActionItemView(
-                              active: templateSectionItem
-                                      .response?.followUpRequired ??
-                                  false,
-                              onClick: (followUpRequired) => context
-                                  .read<TemplateDesignerBloc>()
-                                  .add(TemplateDesignerFollowUpRequiredChanged(
-                                    followUpRequired: followUpRequired,
-                                    templateSectionItemId:
-                                        templateSectionItem.id!,
-                                  )),
-                              disabled: disabled,
-                              title: 'Follow up',
-                              activeColor: warnColor,
-                            ),
-                          spacer20,
-                          if (templateSectionItem.response?.followUpRequired ==
-                                  true &&
-                              state.level < 2)
-                            FutherActionItemView(
-                              active: templateSectionItem
-                                      .response?.followUpRequired ??
-                                  false,
-                              onClick: (followUpRequired) {
-                                context.read<TemplateDesignerBloc>().add(
-                                        TemplateDesignerCurrentTemplateSectionItemChanged(
-                                      templateSectionItemId:
-                                          templateSectionItem.id!,
-                                      responseScaleItem:
-                                          templateSectionItem.response!,
-                                    ));
-                              },
-                              disabled: disabled,
-                              title: 'Add L${state.level + 1} Follow up',
-                              activeColor: primaryColor,
-                            ),
-                        ],
-                      ),
-                    ),
+                    _buildIncludeCheckBox(context),
+                    responseTextField,
+                    _buildScoreTextField(context),
+                    _buildFurtherActionButtons(context, state.level),
                   ],
                 );
               },

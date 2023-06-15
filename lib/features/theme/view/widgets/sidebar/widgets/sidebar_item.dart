@@ -33,9 +33,6 @@ class SidebarItem extends StatefulWidget {
 
 class _SidebarItemState extends State<SidebarItem>
     with TickerProviderStateMixin {
-  // late AnimationController animationController;
-  // late Animation<double> anim;
-  // late Animation<Color?> color;
   bool isHover = false;
   bool isSidebarItemExtended = false;
   CustomPopupMenuController customPopupMenuController =
@@ -50,31 +47,6 @@ class _SidebarItemState extends State<SidebarItem>
             widget.selectedItemName,
           );
     });
-    // animationController = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(
-    //     milliseconds: 350,
-    //   ),
-    // );
-
-    // anim = Tween(
-    //   begin: widget.isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
-    //   end: 0.0,
-    // ).animate(animationController);
-
-    // color = ColorTween(
-    //   end: widget.color,
-    //   begin: backgroundColor,
-    // ).animate(animationController);
-
-    // animationController.addListener(() {
-    //   setState(() {});
-    // });
-    // if (widget.selectedItemName != widget.path) {
-    //   animationController.reverse();
-    // } else {
-    //   animationController.forward();
-    // }
   }
 
   @override
@@ -84,7 +56,6 @@ class _SidebarItemState extends State<SidebarItem>
 
   @override
   void dispose() {
-    // animationController.dispose();
     customPopupMenuController.dispose();
     tooltipController.dispose();
     super.dispose();
@@ -106,12 +77,6 @@ class _SidebarItemState extends State<SidebarItem>
   Widget build(BuildContext context) {
     return BlocConsumer<ThemeBloc, ThemeState>(
       listener: (context, state) {
-        // animationController.duration = const Duration(milliseconds: 400);
-        // anim = Tween(
-        //   begin: widget.isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
-        //   end: 0.0,
-        // ).animate(animationController);
-
         if (state.hoveredItemName != widget.label) {
           _hidePopupMenu(state);
         }
@@ -256,7 +221,6 @@ class _SidebarItemState extends State<SidebarItem>
     return widget.isSidebarExtended || widget.isSubItem
         ? Container(
             alignment: Alignment.center,
-            // margin: const EdgeInsets.only(top: 5),
             child: Text(
               widget.label,
               textAlign: TextAlign.center,
@@ -271,60 +235,56 @@ class _SidebarItemState extends State<SidebarItem>
         : Container();
   }
 
+  void _onClick() {
+    if (context.read<FormDirtyBloc>().state.isDirty &&
+        !widget.path.contains('logout')) {
+      CustomAlert(
+        context: context,
+        width: MediaQuery.of(context).size.width / 4,
+        title: 'Notification',
+        description: 'Data that was entered will be lost ..... Proceed?',
+        btnOkText: 'Proceed',
+        btnOkOnPress: () => _navigate(),
+        btnCancelOnPress: () {},
+        dialogType: DialogType.info,
+      ).show();
+    } else {
+      _navigate();
+    }
+  }
+
+  void _navigate() {
+    if (widget.path.contains('logout')) {
+      CustomAlert(
+        context: context,
+        width: MediaQuery.of(context).size.width / 4,
+        title: 'Notification',
+        description: 'Do you really want to logout?',
+        btnOkText: 'Logout',
+        btnOkOnPress: () =>
+            context.read<AuthBloc>().add(const AuthUnauthenticated()),
+        btnCancelOnPress: () {},
+        dialogType: DialogType.info,
+      ).show();
+    } else {
+      if (widget.path.isNotEmpty) {
+        if ('/${widget.path}' == GoRouter.of(context).location) {
+          GoRouter.of(context).go('/${widget.path}/index');
+        } else {
+          GoRouter.of(context).go('/${widget.path}');
+        }
+      }
+
+      setState(() {
+        isSidebarItemExtended = !isSidebarItemExtended;
+      });
+    }
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
+  }
+
   Widget _buildItemBody(ThemeState state) {
     return GestureDetector(
-      onTap: () {
-        if (context.read<FormDirtyBloc>().state.isDirty) {
-          CustomAlert(
-            context: context,
-            width: MediaQuery.of(context).size.width / 4,
-            title: 'Notification',
-            description: 'Data that was entered will be lost ..... Proceed?',
-            btnOkText: 'Proceed',
-            btnOkOnPress: () {
-              if (widget.path.contains('logout')) {
-                context.read<AuthBloc>().add(const AuthUnauthenticated());
-              } else {
-                if (widget.path.isNotEmpty) {
-                  if ('/${widget.path}' == GoRouter.of(context).location) {
-                    GoRouter.of(context).go('/${widget.path}/index');
-                  } else {
-                    GoRouter.of(context).go('/${widget.path}');
-                  }
-                }
-
-                setState(() {
-                  isSidebarItemExtended = !isSidebarItemExtended;
-                });
-              }
-              context
-                  .read<FormDirtyBloc>()
-                  .add(const FormDirtyChanged(isDirty: false));
-            },
-            btnCancelOnPress: () {},
-            dialogType: DialogType.info,
-          ).show();
-        } else {
-          if (widget.path.contains('logout')) {
-            context.read<AuthBloc>().add(const AuthUnauthenticated());
-          } else {
-            if (widget.path.isNotEmpty) {
-              if ('/${widget.path}' == GoRouter.of(context).location) {
-                GoRouter.of(context).go('/${widget.path}/index');
-              } else {
-                GoRouter.of(context).go('/${widget.path}');
-              }
-            }
-
-            setState(() {
-              isSidebarItemExtended = !isSidebarItemExtended;
-            });
-          }
-          context
-              .read<FormDirtyBloc>()
-              .add(const FormDirtyChanged(isDirty: false));
-        }
-      },
+      onTap: _onClick,
       child: MouseRegion(
         onEnter: (event) {
           if (!widget.isSubItem) {
@@ -335,98 +295,41 @@ class _SidebarItemState extends State<SidebarItem>
           }
         },
         child: Container(
-          color: Colors.transparent,
-          child: Stack(
-            children: [
-              // widget.isSidebarExtended
-              //     ? CustomPaint(
-              //         painter: CurvePainter(
-              //           animValue: anim.value,
-              //           width: sidebarWidth,
-              //         ),
-              //       )
-              //     : widget.isSubItem
-              //         ? SizedBox(
-              //             width: sidebarWidth,
-              //           )
-              //         : CustomPaint(
-              //             painter: CurvePainter(
-              //               animValue: anim.value,
-              //               width: shrinkSidebarWidth,
-              //             ),
-              //           ),
-              Container(
-                color: widget.selectedItemName == widget.path
-                    ? darkGrey
-                    : isHover
-                        ? darkGrey
-                        : Colors.transparent,
-                height: sidebarItemHeight,
-                width: sidebarWidth,
-                alignment: Alignment.center,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: (widget.isSidebarExtended ? 30 : 17) +
-                        (widget.isSubItem ? 15 : 0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          _buildIcon(),
-                          widget.isSidebarExtended || widget.isSubItem
-                              ? const SizedBox(
-                                  width: 10,
-                                )
-                              : Container(),
-                          _buildLabel(),
-                        ],
-                      ),
-                      _buildExtendIcon(state)
-                    ],
-                  ),
+          color: widget.selectedItemName == widget.path
+              ? darkGrey
+              : isHover
+                  ? darkGrey
+                  : Colors.transparent,
+          height: sidebarItemHeight,
+          width: sidebarWidth,
+          alignment: Alignment.center,
+          child: Container(
+            padding: EdgeInsets.only(
+              left: (widget.isSidebarExtended ? 30 : 17) +
+                  (widget.isSubItem ? 15 : 0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildIcon(),
+                    widget.isSidebarExtended || widget.isSubItem
+                        ? const SizedBox(
+                            width: 10,
+                          )
+                        : Container(),
+                    _buildLabel(),
+                  ],
                 ),
-              ),
-            ],
+                _buildExtendIcon(state)
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-}
-
-class CurvePainter extends CustomPainter {
-  final double animValue;
-  final double width;
-  CurvePainter({
-    required this.animValue,
-    required this.width,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Path path = Path();
-    Paint paint = Paint();
-    paint.color = darkGrey;
-    path.addRect(
-      Rect.fromPoints(
-        Offset(animValue, 0),
-        Offset(
-          width,
-          sidebarItemHeight,
-        ),
-      ),
-    );
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return oldDelegate != this;
   }
 }

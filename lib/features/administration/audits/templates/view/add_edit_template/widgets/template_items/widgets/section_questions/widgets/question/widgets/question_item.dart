@@ -14,7 +14,8 @@ class QuestionItemView extends StatelessWidget {
       children: [
         ListTile(
           onTap: () => context.read<TemplateDesignerBloc>().add(
-              TemplateDesignerQuestionDetailLoaded(id: question.id, level: 0)),
+              TemplateDesignerQuestionDetailLoaded(
+                  id: question.id, itemTypeId: 1)),
           leading: Icon(
             PhosphorIcons.regular.dotsThreeVertical,
             size: 20,
@@ -29,7 +30,7 @@ class QuestionItemView extends StatelessWidget {
           ),
           trailing: const Text(
             '10 + 3',
-            style:  TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 14),
           ),
         ),
         const CustomDivider(height: 1),

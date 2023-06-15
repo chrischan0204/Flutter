@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class QuestionDetail extends Equatable {
@@ -43,7 +40,6 @@ class QuestionDetail extends Equatable {
       ];
 
   factory QuestionDetail.fromMap(Map<String, dynamic> map) {
-    // print(map['responseScaleItems']);
     return QuestionDetail(
       id: map['id'] as String,
       name: map['name'] as String,

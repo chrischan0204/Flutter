@@ -13,18 +13,12 @@ class PriorityLevelsRepository extends BaseRepository {
   Future<List<PriorityLevel>> getPriorityLevels() async {
     Response response = await super.get(url);
     if (response.statusCode == 200) {
-      try {
-        List<PriorityLevel> priorityLevels =
-            List.from(jsonDecode(response.body))
-                .map(
-                  (priorityLevelJson) =>
-                      PriorityLevel.fromMap(priorityLevelJson),
-                )
-                .toList();
-        return priorityLevels;
-      } catch (e) {
-        print(e);
-      }
+      List<PriorityLevel> priorityLevels = List.from(jsonDecode(response.body))
+          .map(
+            (priorityLevelJson) => PriorityLevel.fromMap(priorityLevelJson),
+          )
+          .toList();
+      return priorityLevels;
     }
     return [];
   }

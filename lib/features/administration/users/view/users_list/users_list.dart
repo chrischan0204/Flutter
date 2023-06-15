@@ -125,7 +125,6 @@ class _UsersListState extends State<UsersListWidget> {
     int? rowPerPage,
     bool? withoutSave,
   ]) {
-    print('filter users');
     final FilterSettingBloc filterSettingBloc = context.read();
     final PaginationBloc paginationBloc = context.read();
     userListBloc.add(UserListFiltered(
