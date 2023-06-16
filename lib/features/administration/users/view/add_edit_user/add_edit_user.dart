@@ -207,6 +207,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
           label: 'User Title',
           content: CustomTextField(
             key: ValueKey(state.loadedUser?.id),
+            initialValue: state.title,
             hintText: 'User Title',
             onChanged: (title) =>
                 _addEditUserBloc.add(AddEditUserTitleChanged(title: title)),
@@ -242,6 +243,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
           label: 'Mobile Phone',
           content: CustomTextField(
             key: ValueKey(state.loadedUser?.id),
+            initialValue: state.mobilePhone,
             hintText: '+94776233475',
             onChanged: (mobilePhone) => _addEditUserBloc
                 .add(AddEditUserMobilePhoneChanged(mobilePhone: mobilePhone)),

@@ -137,13 +137,25 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       try {
         EntityResponse response = await usersRepository.addUser(state.user);
 
-        emit(state.copyWith(
-          status: response.isSuccess.toEntityStatusCode(),
-          message: response.message,
-          createdUserId: response.data?.id,
-        ));
-        if (response.message.contains('Email')) {
-          emit(state.copyWith(emailValidationMessage: response.message));
+        if (response.isSuccess) {
+          emit(state.copyWith(
+            status: EntityStatus.success,
+            message: response.message,
+          ));
+
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+        } else {
+          if (response.message.contains('Email')) {
+            emit(state.copyWith(
+              emailValidationMessage: response.message,
+              status: EntityStatus.initial,
+            ));
+          } else {
+            emit(state.copyWith(
+              status: EntityStatus.failure,
+              message: response.message,
+            ));
+          }
         }
       } catch (e) {
         emit(state.copyWith(status: EntityStatus.failure));
@@ -161,13 +173,33 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
         EntityResponse response = await usersRepository
             .editUser(state.user.copyWith(id: event.userId));
 
-        emit(state.copyWith(
-          status:
-              response.isSuccess ? EntityStatus.success : EntityStatus.failure,
-          message: response.message,
-        ));
-        if (response.message.contains('Email')) {
-          emit(state.copyWith(emailValidationMessage: response.message));
+        if (response.isSuccess) {
+          emit(state.copyWith(
+            status: EntityStatus.success,
+            message: response.message,
+            initialFirstName: state.firstName,
+            initialLastName: state.lastName,
+            initialTitle: state.title,
+            initialEmail: state.email,
+            initialRole: state.role,
+            initialMobilePhone: state.mobilePhone,
+            initialDefaultSite: state.defaultSite,
+            initialTimeZone: state.timeZone,
+          ));
+
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+        } else {
+          if (response.message.contains('Email')) {
+            emit(state.copyWith(
+              emailValidationMessage: response.message,
+              status: EntityStatus.initial,
+            ));
+          } else {
+            emit(state.copyWith(
+              status: EntityStatus.failure,
+              message: response.message,
+            ));
+          }
         }
       } catch (e) {
         emit(state.copyWith(status: EntityStatus.failure));
@@ -208,7 +240,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     }
 
-    if (state.title.isNotEmpty && !Validation.checkAlphanumeric(state.title)) {
+    if (!Validation.isEmpty(state.title) &&
+        !Validation.checkAlphanumeric(state.title)) {
       emit(state.copyWith(
           titleValidationMessage: 'User title should be alphabetical.'));
       success = false;
@@ -245,7 +278,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     }
 
-    if (state.mobilePhone.isNotEmpty &&
+    if (!Validation.isEmpty(state.mobilePhone) &&
         !Validation.isMobilePhone(state.mobilePhone)) {
       emit(state.copyWith(
           mobilePhoneValidationMessage: 'It should be phone number format.'));
