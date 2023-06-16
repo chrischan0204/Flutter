@@ -182,21 +182,21 @@ class AddEditAwarenessCategoryBloc
 
     if (Validation.isEmpty(state.name)) {
       emit(state.copyWith(
-          nameValidationMessage: 'Awareness group is required.'));
+          nameValidationMessage: 'Awareness category is required.'));
 
       success = false;
     } else if (state.name.length >
         AwarenessCategoryFormValidation.awarenessCategoryMaxLength) {
       emit(state.copyWith(
           nameValidationMessage:
-              'Observation type can be ${AwarenessCategoryFormValidation.awarenessCategoryMaxLength} long at maximum.'));
+              'Awareness category can be ${AwarenessCategoryFormValidation.awarenessCategoryMaxLength} long at maximum.'));
 
       success = false;
     }
 
     if (state.awarenessGroup == null) {
       emit(state.copyWith(
-          awarenessGroupValidationMessage: 'Awareness category is required.'));
+          awarenessGroupValidationMessage: 'Awareness group is required.'));
 
       success = false;
     }
