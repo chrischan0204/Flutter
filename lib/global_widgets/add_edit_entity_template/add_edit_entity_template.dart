@@ -141,7 +141,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         ),
         const CustomDivider(),
         widget.child,
-        _buildDeactivationInfo(),
+        // _buildDeactivationInfo(),
         _buildAddEditButton(),
       ],
     );

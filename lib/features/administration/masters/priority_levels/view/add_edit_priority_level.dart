@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../bloc/add_edit_priority_level/add_edit_priority_level_bloc.dart';
 import '/utils/custom_notification.dart';
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/model/model.dart';
 
-class AddEditPriorityLevelView extends StatefulWidget {
+class AddEditPriorityLevelView extends StatelessWidget {
   final String? priorityLevelId;
   const AddEditPriorityLevelView({
     super.key,
@@ -13,229 +14,146 @@ class AddEditPriorityLevelView extends StatefulWidget {
   });
 
   @override
-  State<AddEditPriorityLevelView> createState() =>
-      _AddEditPriorityLevelViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AddEditPriorityLevelBloc(
+        priorityLevelsRepository: RepositoryProvider.of(context),
+        formDirtyBloc: context.read(),
+      ),
+      child: AddEditPriorityLevelWidget(priorityLevelId: priorityLevelId),
+    );
+  }
 }
 
-class _AddEditPriorityLevelViewState extends State<AddEditPriorityLevelView> {
-  late PriorityLevelsBloc priorityLevelsBloc;
+class AddEditPriorityLevelWidget extends StatefulWidget {
+  final String? priorityLevelId;
+  const AddEditPriorityLevelWidget({
+    super.key,
+    this.priorityLevelId,
+  });
 
-  TextEditingController priorityLevelNameController =
-      TextEditingController(text: '');
-  String? priorityType;
-  Color? colorCode;
-  bool priorityLevelDeactive = false;
-  bool isFirstInit = true;
+  @override
+  State<AddEditPriorityLevelWidget> createState() =>
+      _AddEditPriorityLevelWidgetState();
+}
 
-  String priorityLevelValidationMessage = '';
-  String priorityTypeValidationMessage = '';
+class _AddEditPriorityLevelWidgetState
+    extends State<AddEditPriorityLevelWidget> {
+  late AddEditPriorityLevelBloc addEditPriorityLevelBloc;
 
   @override
   void initState() {
-    priorityLevelsBloc = context.read<PriorityLevelsBloc>();
-    priorityLevelsBloc.add(const PriorityLevelsStatusInited());
+    addEditPriorityLevelBloc = context.read();
     if (widget.priorityLevelId != null) {
-      priorityLevelsBloc.add(
-        PriorityLevelSelectedById(priorityLevelId: widget.priorityLevelId!),
-      );
-    } else {
-      priorityLevelsBloc.add(
-        const PriorityLevelSelected(
-          priorityLevel: PriorityLevel(
-            name: '',
-            priorityType: '',
-            colorCode: Color(0xffffffff),
-            active: true,
-          ),
-        ),
-      );
+      addEditPriorityLevelBloc
+          .add(AddEditPriorityLevelLoaded(id: widget.priorityLevelId!));
     }
 
     super.initState();
   }
 
-  void _addPriorityLevel(PriorityLevelsState state) {
-    if (!_validate()) return;
-    priorityLevelsBloc.add(
-      PriorityLevelAdded(
-        priorityLevel: state.selectedPriorityLevel!.copyWith(
-          name: priorityLevelNameController.text,
-        ),
-      ),
-    );
-  }
-
-  void _editPriorityLevel(PriorityLevelsState state) {
-    if (!_validate()) return;
-    priorityLevelsBloc.add(
-      PriorityLevelEdited(
-        priorityLevel: state.selectedPriorityLevel!.copyWith(
-          name: priorityLevelNameController.text,
-        ),
-      ),
-    );
-  }
-
-  bool _validate() {
-    bool validated = true;
-    if (priorityLevelNameController.text.isEmpty ||
-        priorityLevelNameController.text.trim().isEmpty) {
-      setState(() {
-        priorityLevelValidationMessage = 'Priority level is required.';
-      });
-
-      validated = false;
-    }
-    if (priorityType == null ||
-        (priorityType != null &&
-            (priorityType!.isEmpty || priorityType!.trim().isEmpty))) {
-      setState(() {
-        priorityTypeValidationMessage = 'Priority type is required.';
-      });
-
-      validated = false;
-    }
-    return validated;
-  }
-
-  void _clearForm() {
-    if (widget.priorityLevelId == null) {
-      priorityLevelNameController.clear();
-      priorityLevelsBloc.add(
-        const PriorityLevelSelected(
-          priorityLevel: PriorityLevel(
-            name: '',
-            priorityType: '',
-            colorCode: Color(0xffffffff),
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PriorityLevelsBloc, PriorityLevelsState>(
+    return BlocConsumer<AddEditPriorityLevelBloc, AddEditPriorityLevelState>(
       listener: (context, state) {
-        if (state.selectedPriorityLevel != null) {
-          priorityType = state.selectedPriorityLevel!.priorityType.isEmpty
-              ? null
-              : state.selectedPriorityLevel!.priorityType;
-
-          colorCode = state.selectedPriorityLevel!.colorCode;
-          priorityLevelDeactive = !state.selectedPriorityLevel!.active;
-
-          if (isFirstInit) {
-            priorityLevelNameController.text = widget.priorityLevelId == null
-                ? ''
-                : state.selectedPriorityLevel!.name ?? '';
-            isFirstInit = false;
-          }
-        }
-
-        if (state.priorityLevelCrudStatus == EntityStatus.success) {
-          priorityLevelsBloc.add(const PriorityLevelsStatusInited());
-
-          _clearForm();
+        if (state.status == EntityStatus.success) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
         }
-        if (state.priorityLevelCrudStatus == EntityStatus.failure) {
-          priorityLevelsBloc.add(const PriorityLevelsStatusInited());
-          setState(() {
-            priorityLevelValidationMessage = state.message;
-          });
+        if (state.status == EntityStatus.failure) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.error,
+            content: state.message,
+          ).showNotification();
         }
       },
+      listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: 'priority level',
           id: widget.priorityLevelId,
-          selectedEntity: state.selectedPriorityLevel,
-          addEntity: () => _addPriorityLevel(state),
-          editEntity: () => _editPriorityLevel(state),
-          crudStatus: state.priorityLevelCrudStatus,
+          selectedEntity: state.loadedPriorityLevel,
+          addEntity: () =>
+              addEditPriorityLevelBloc.add(AddEditPriorityLevelAdded()),
+          editEntity: () => addEditPriorityLevelBloc.add(
+              AddEditPriorityLevelEdited(id: widget.priorityLevelId ?? '')),
+          crudStatus: state.status,
           child: Column(
             children: [
-              FormItem(
-                label: 'Priority Level (*)',
-                content: CustomTextField(
-                  controller: priorityLevelNameController,
-                  hintText: 'Priority Level Name',
-                  onChanged: (priorityLevelName) {
-                    setState(() {
-                      priorityLevelValidationMessage = '';
-                    });
-                    priorityLevelsBloc.add(
-                      PriorityLevelSelected(
-                        priorityLevel: state.selectedPriorityLevel!.copyWith(
-                          name: priorityLevelName,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                message: priorityLevelValidationMessage,
-              ),
-              FormItem(
-                label: 'Priority Type (*)',
-                content: CustomSingleSelect(
-                  items: const <String, String>{
-                    'Corrective': 'Corrective',
-                    'Positive': 'Positive',
-                  },
-                  hint: 'Select Priority Type',
-                  selectedValue: priorityType,
-                  onChanged: (priorityType) {
-                    setState(() {
-                      priorityTypeValidationMessage = '';
-                    });
-                    priorityLevelsBloc.add(
-                      PriorityLevelSelected(
-                        priorityLevel: state.selectedPriorityLevel!.copyWith(
-                          priorityType: priorityType.key,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                message: priorityTypeValidationMessage,
-              ),
-              FormItem(
-                label: 'Color (*)',
-                content: CustomColorPicker(
-                  color: colorCode ?? Colors.white,
-                  onChanged: (colorCode) => priorityLevelsBloc.add(
-                    PriorityLevelSelected(
-                      priorityLevel: state.selectedPriorityLevel!.copyWith(
-                        colorCode: colorCode,
-                      ),
+              BlocBuilder<AddEditPriorityLevelBloc, AddEditPriorityLevelState>(
+                builder: (context, state) {
+                  return FormItem(
+                    label: 'Priority Level (*)',
+                    content: CustomTextField(
+                      key: ValueKey(state.loadedPriorityLevel?.id),
+                      initialValue: state.priorityLevelName,
+                      hintText: 'Priority Level Name',
+                      onChanged: (priorityLevelName) {
+                        addEditPriorityLevelBloc.add(
+                            AddEditPriorityLevelChanged(
+                                priorityLevel: priorityLevelName));
+                      },
                     ),
-                  ),
-                ),
+                    message: state.priorityLevelNameValidationMessage,
+                  );
+                },
               ),
-              widget.priorityLevelId != null
-                  ? FormItem(
+              BlocBuilder<AddEditPriorityLevelBloc, AddEditPriorityLevelState>(
+                builder: (context, state) {
+                  return FormItem(
+                    label: 'Priority Type (*)',
+                    content: CustomSingleSelect(
+                      items: const <String, String>{
+                        'Corrective': 'Corrective',
+                        'Positive': 'Positive',
+                      },
+                      hint: 'Select Priority Type',
+                      selectedValue: state.priorityType,
+                      onChanged: (priorityType) {
+                        addEditPriorityLevelBloc.add(
+                            AddEditPriorityLevelTypeChanged(
+                                priorityType: priorityType.value));
+                      },
+                    ),
+                    message: state.priorityTypeValidationMessage,
+                  );
+                },
+              ),
+              BlocBuilder<AddEditPriorityLevelBloc, AddEditPriorityLevelState>(
+                builder: (context, state) {
+                  return FormItem(
+                    label: 'Color (*)',
+                    content: CustomColorPicker(
+                      color: state.colorCode,
+                      onChanged: (colorCode) => addEditPriorityLevelBloc.add(
+                          AddEditPriorityLevelColorCodeChanged(
+                              colorCode: colorCode)),
+                    ),
+                  );
+                },
+              ),
+              if (widget.priorityLevelId != null)
+                BlocBuilder<AddEditPriorityLevelBloc,
+                    AddEditPriorityLevelState>(
+                  builder: (context, state) {
+                    return FormItem(
                       label: 'Deactivate?',
                       content: CustomSwitch(
                         label: 'This observation type is deactivated',
-                        switchValue: priorityLevelDeactive,
+                        switchValue: state.deactivated,
                         onChanged: (active) {
-                          priorityLevelsBloc.add(
-                            PriorityLevelSelected(
-                              priorityLevel:
-                                  state.selectedPriorityLevel!.copyWith(
-                                active: !active,
-                              ),
-                            ),
-                          );
+                          addEditPriorityLevelBloc.add(
+                              AddEditPriorityLevelDeactivatedChanged(
+                                  deactivated: active));
                         },
                       ),
-                    )
-                  : Container(),
+                    );
+                  },
+                )
             ],
           ),
         );
