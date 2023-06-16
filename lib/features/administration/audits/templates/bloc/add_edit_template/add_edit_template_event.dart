@@ -27,12 +27,17 @@ class AddEditTemplateDateChanged extends AddEditTemplateEvent {
   List<Object> get props => [date];
 }
 
-
 class AddEditTemplateTemplateAddEdited extends AddEditTemplateEvent {
   final String? templateId;
-  const AddEditTemplateTemplateAddEdited({
-    this.templateId,
-  });
+  const AddEditTemplateTemplateAddEdited({this.templateId});
+
+  @override
+  List<Object?> get props => [templateId];
+}
+
+class AddEditTemplateLoaded extends AddEditTemplateEvent {
+  final String templateId;
+  const AddEditTemplateLoaded({required this.templateId});
 
   @override
   List<Object?> get props => [templateId];

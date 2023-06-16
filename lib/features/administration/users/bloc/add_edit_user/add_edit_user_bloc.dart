@@ -139,6 +139,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
 
         if (response.isSuccess) {
           emit(state.copyWith(
+            createdUserId: response.data?.id,
             status: EntityStatus.success,
             message: response.message,
           ));

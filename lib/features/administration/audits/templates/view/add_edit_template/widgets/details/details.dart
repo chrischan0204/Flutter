@@ -27,7 +27,6 @@ class _AddEditTemplateDetailsViewState
       children: const [
         TemplateDescriptionField(),
         RevisionDatePicker(),
-        // UsedInCheckBoxes()
       ],
     );
   }

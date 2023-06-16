@@ -1,29 +1,7 @@
 import '/common_libraries.dart';
 
-class TemplateDescriptionField extends StatefulWidget {
+class TemplateDescriptionField extends StatelessWidget {
   const TemplateDescriptionField({super.key});
-
-  @override
-  State<TemplateDescriptionField> createState() =>
-      _TemplateDescriptionFieldState();
-}
-
-class _TemplateDescriptionFieldState extends State<TemplateDescriptionField> {
-  late TextEditingController descriptionController;
-  late AddEditTemplateBloc addEditTemplateBloc;
-
-  @override
-  void initState() {
-    addEditTemplateBloc = context.read();
-    descriptionController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    descriptionController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,38 +14,19 @@ class _TemplateDescriptionFieldState extends State<TemplateDescriptionField> {
         ).showNotification();
       },
       listenWhen: (previous, current) =>
-          previous.templateAddEditStatus != current.templateAddEditStatus &&
-          current.templateAddEditStatus.isFailure &&
-          previous.message != current.message,
+          previous.status != current.status &&
+          current.status.isFailure &&
+          previous.message != current.message &&
+          current.message.isNotEmpty,
       builder: (context, state) => FormItem(
         label: 'Template Description (*)',
-        content: BlocConsumer<TemplateDetailBloc, TemplateDetailState>(
-          listener: (context, state) {
-            context
-                .read<FormDirtyBloc>()
-                .add(const FormDirtyChanged(isDirty: true));
-          },
-          listenWhen: (previous, current) =>
-              previous.template != current.template,
-          builder: (context, state) {
-            return CustomTextField(
-              key: ValueKey(state.template?.name),
-              initialValue: state.template?.name,
-              hintText: 'Template description',
-              onChanged: (description) {
-                addEditTemplateBloc.add(AddEditTemplateDescriptionChanged(
-                    description: description));
-                if (!Validation.isEmpty(description)) {
-                  context
-                      .read<FormDirtyBloc>()
-                      .add(const FormDirtyChanged(isDirty: true));
-                } else {
-                  context
-                        .read<FormDirtyBloc>()
-                        .add(const FormDirtyChanged(isDirty: false));
-                }
-              },
-            );
+        content: CustomTextField(
+          key: ValueKey(state.loadedTemplate?.id),
+          initialValue: state.templateDescription,
+          hintText: 'Template description',
+          onChanged: (description) {
+            context.read<AddEditTemplateBloc>().add(
+                AddEditTemplateDescriptionChanged(description: description));
           },
         ),
         message: state.templateDescriptionValidationMessage,

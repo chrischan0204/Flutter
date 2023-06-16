@@ -22,6 +22,7 @@ class _AddEditTemplateViewState extends State<AddEditTemplateView> {
         BlocProvider(
             create: (context) => AddEditTemplateBloc(
                   templatesRepository: RepositoryProvider.of(context),
+                  formDirtyBloc: context.read(),
                 )),
         BlocProvider(
             create: (context) => TemplateDetailBloc(
@@ -58,21 +59,23 @@ class AddEditTemplateWidget extends StatefulWidget {
 
 class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   late AddEditTemplateBloc addEditTemplateBloc;
-  late TemplateDetailBloc templateDetailBloc;
-
-  TextEditingController descriptionController = TextEditingController();
 
   static String pageLabel = 'template';
   static String addButtonName = 'Add Items';
 
+  Map<String, Widget> get tabViews => widget.templateId != null
+      ? {
+          'Template Items': TemplateItemsView(templateId: widget.templateId!),
+        }
+      : {};
+
   @override
   void initState() {
     addEditTemplateBloc = context.read();
-    templateDetailBloc = context.read();
 
     if (widget.templateId != null) {
-      context.read<TemplateDetailBloc>().add(
-          TemplateDetailTemplateLoadedById(templateId: widget.templateId!));
+      addEditTemplateBloc
+          .add(AddEditTemplateLoaded(templateId: widget.templateId!));
     }
 
     super.initState();
@@ -82,67 +85,40 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditTemplateBloc, AddEditTemplateState>(
       listener: (context, addEditTemplateState) {
-        CustomNotification(
-          context: context,
-          notifyType: NotifyType.success,
-          content: addEditTemplateState.message,
-        ).showNotification();
-        if (widget.templateId == null) {
-          GoRouter.of(context).go(
-              '/templates/edit/${widget.templateId ?? addEditTemplateState.createdTemplateId}?view=created');
+        if (addEditTemplateState.status.isSuccess) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: addEditTemplateState.message,
+          ).showNotification();
+          if (widget.templateId == null) {
+            GoRouter.of(context).go(
+                '/templates/edit/${widget.templateId ?? addEditTemplateState.createdTemplateId}?view=created');
+          }
         }
       },
-      listenWhen: (previous, current) =>
-          previous.templateAddEditStatus != current.templateAddEditStatus &&
-          current.templateAddEditStatus.isSuccess,
-      builder: (context, addEditTemplateState) {
-        return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
-          builder: (context, templateDetailState) {
-            return BlocListener<TemplateDetailBloc, TemplateDetailState>(
-              listener: (context, state) {
-                if (state.template != null) {
-                  addEditTemplateBloc.add(AddEditTemplateDateChanged(
-                      date: DateTime.parse(state.template!.revisionDate)));
-                  addEditTemplateBloc.add(AddEditTemplateDescriptionChanged(
-                      description: state.template!.name!));
-                }
-              },
-              listenWhen: (previous, current) =>
-                  previous.template != current.template &&
-                  previous.template == null,
-              child: AddEditEntityTemplate(
-                label: pageLabel,
-                id: widget.templateId,
-                selectedEntity: templateDetailState.template,
-                addButtonName: addButtonName,
-                addEntity: () => addEditTemplateBloc
-                    .add(const AddEditTemplateTemplateAddEdited()),
-                editEntity: () => addEditTemplateBloc.add(
-                    AddEditTemplateTemplateAddEdited(
-                        templateId: widget.templateId)),
-                crudStatus: addEditTemplateState.templateAddEditStatus,
-                tabItems: _buildTabs(),
-                tabWidth: 500,
-                view: widget.view,
-                child: BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
-                  listener: (context, state) {},
-                  child:
-                      AddEditTemplateDetailsView(templateId: widget.templateId),
-                ),
-              ),
-            );
-          },
+      listenWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return AddEditEntityTemplate(
+          label: pageLabel,
+          id: widget.templateId,
+          selectedEntity: state.loadedTemplate,
+          addButtonName: addButtonName,
+          addEntity: () =>
+              addEditTemplateBloc.add(const AddEditTemplateTemplateAddEdited()),
+          editEntity: () => addEditTemplateBloc.add(
+              AddEditTemplateTemplateAddEdited(templateId: widget.templateId)),
+          crudStatus: state.status,
+          formDirty: state.formDirty,
+          tabItems: tabViews,
+          tabWidth: 500,
+          view: widget.view,
+          child: BlocListener<AddEditTemplateBloc, AddEditTemplateState>(
+            listener: (context, state) {},
+            child: AddEditTemplateDetailsView(templateId: widget.templateId),
+          ),
         );
       },
     );
-  }
-
-  Map<String, Widget> _buildTabs() {
-    if (widget.templateId != null) {
-      return {
-        'Template Items': TemplateItemsView(templateId: widget.templateId!),
-      };
-    }
-    return {};
   }
 }
