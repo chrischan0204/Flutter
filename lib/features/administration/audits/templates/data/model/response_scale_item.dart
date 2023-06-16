@@ -42,11 +42,11 @@ class ResponseScaleItem extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      'id': null,
       'isRequired': isRequired,
       'included': true,
       'name': name,
-      'responseScaleItemId': responseScaleItemId,
+      'responseScaleItemId': id,
       'score': score,
       'order': order,
       'commentRequired': commentRequired,

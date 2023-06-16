@@ -6,13 +6,13 @@ import '/data/model/entity.dart';
 
 class ObservationType extends Entity implements Equatable {
   final String severity;
-  final String visibility;
+  final String? visibility;
 
   const ObservationType({
     super.id,
     super.name,
     required this.severity,
-    required this.visibility,
+    this.visibility,
     super.active,
     super.deactivationDate,
     super.deactivationUserName,
@@ -53,7 +53,7 @@ class ObservationType extends Entity implements Equatable {
     Map<String, dynamic> map = <String, dynamic>{
       'name': name,
       'severity': severity,
-      'visibility': visibility,
+      'visibility': visibility ?? '',
       'active': active,
     };
     if (id != null) {

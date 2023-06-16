@@ -145,10 +145,10 @@ class _AddEditPriorityLevelWidgetState
                       content: CustomSwitch(
                         label: 'This observation type is deactivated',
                         switchValue: state.deactivated,
-                        onChanged: (active) {
+                        onChanged: (deactivated) {
                           addEditPriorityLevelBloc.add(
                               AddEditPriorityLevelDeactivatedChanged(
-                                  deactivated: active));
+                                  deactivated: deactivated));
                         },
                       ),
                     );
