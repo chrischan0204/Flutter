@@ -215,7 +215,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       emit(state.copyWith(
           firstNameValidationMessage: firstNameValidationMessage));
       success = false;
-    } else if (!Validation.checkAlphanumeric(state.firstName)) {
+    } else if (!Validation.checkAlphabetic(state.firstName)) {
       emit(state.copyWith(
           firstNameValidationMessage: 'First name should be alphabetical.'));
       success = false;
@@ -230,7 +230,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       emit(
           state.copyWith(lastNameValidationMessage: lastNameValidationMessage));
       success = false;
-    } else if (!Validation.checkAlphanumeric(state.lastName)) {
+    } else if (!Validation.checkAlphabetic(state.lastName)) {
       emit(state.copyWith(
           lastNameValidationMessage: 'Last name should be alphabetical.'));
       success = false;
@@ -242,7 +242,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     }
 
     if (!Validation.isEmpty(state.title) &&
-        !Validation.checkAlphanumeric(state.title)) {
+        !Validation.checkAlphabetic(state.title)) {
       emit(state.copyWith(
           titleValidationMessage: 'User title should be alphabetical.'));
       success = false;
@@ -259,6 +259,11 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     } else if (!Validation.isEmail(state.email)) {
       emit(
           state.copyWith(emailValidationMessage: 'It should be email format.'));
+      success = false;
+    } else if (state.email.length > UserFormValidation.emailMaxLength) {
+      emit(state.copyWith(
+          emailValidationMessage:
+              'Emaii can be ${UserFormValidation.emailMaxLength} long at maximum.'));
       success = false;
     }
 

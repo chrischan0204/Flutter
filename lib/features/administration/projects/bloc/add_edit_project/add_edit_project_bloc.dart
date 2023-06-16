@@ -191,6 +191,12 @@ class AddEditProjectBloc
           projectNameValidationMessage:
               'Project name is required and cannot be blank.'));
       success = false;
+    } else if (Validation.isNotEmpty(state.projectName) &&
+        !Validation.isAlphanumbericWithSpecialChars(state.projectName)) {
+      emit(state.copyWith(
+          projectNameValidationMessage:
+              'Project name should be alphanumeric with allow special char.'));
+      success = false;
     } else if (state.projectName.length >
         ProjectFormValidation.projectNameMaxLength) {
       emit(state.copyWith(
@@ -204,7 +210,13 @@ class AddEditProjectBloc
       success = false;
     }
 
-    if (state.referenceName.length >
+    if (Validation.isNotEmpty(state.referenceName) &&
+        !Validation.isAlphanumbericWithSpecialChars(state.referenceName)) {
+      emit(state.copyWith(
+          referenceNameValidationMessage:
+              'Reference name should be alphanumeric with allow special char.'));
+      success = false;
+    } else if (state.referenceName.length >
         ProjectFormValidation.referenceNameMaxLength) {
       emit(state.copyWith(
           referenceNameValidationMessage:
@@ -212,7 +224,13 @@ class AddEditProjectBloc
       success = false;
     }
 
-    if (state.referenceName.length >
+    if (Validation.isNotEmpty(state.referenceNumber) &&
+        !Validation.isAlphanumbericWithSpecialChars(state.referenceNumber)) {
+      emit(state.copyWith(
+          refereneceNumberValidationMessage:
+              'Reference number should be alphanumeric with allow special char.'));
+      success = false;
+    } else if (state.referenceNumber.length >
         ProjectFormValidation.referneceNumberMaxLength) {
       emit(state.copyWith(
           refereneceNumberValidationMessage:

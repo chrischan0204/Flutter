@@ -123,6 +123,13 @@ class AddEditAwarenessGroupBloc
           nameValidationMessage: 'Awareness group is required.'));
 
       success = false;
+    } else if (Validation.isNotEmpty(state.name) &&
+        !Validation.isAlphanumbericWithSpecialChars(state.name)) {
+      emit(state.copyWith(
+          nameValidationMessage:
+              'Awareness group should be alphanumeric with allow special char.'));
+
+      success = false;
     } else if (state.name.length >
         AwarenessGroupFormValidation.awarenessGroupNameMaxLength) {
       emit(state.copyWith(

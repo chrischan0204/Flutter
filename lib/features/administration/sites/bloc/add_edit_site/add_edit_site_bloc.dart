@@ -246,8 +246,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       emit(state.copyWith(
           siteNameValidationMessage: 'Site name should be only alphanumeric.'));
       success = false;
-    }
-    if (state.siteName.length > SiteFormValidation.siteNameMaxLength) {
+    } else if (state.siteName.length > SiteFormValidation.siteNameMaxLength) {
       emit(state.copyWith(
           siteNameValidationMessage:
               'Site name can be ${SiteFormValidation.siteNameMaxLength} long at maximum.'));
@@ -271,14 +270,31 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
 
     if (Validation.isEmpty(state.siteCode)) {
       emit(state.copyWith(siteCodeValidationMessage: 'Site code is required.'));
+
+      success = false;
+    } else if (!Validation.checkAlphanumeric(state.siteCode)) {
+      emit(state.copyWith(
+          siteCodeValidationMessage: 'Site code should be only alphanumeric.'));
+
+      success = false;
+    } else if (state.siteName.length > SiteFormValidation.siteCodeMaxLength) {
+      emit(state.copyWith(
+          siteCodeValidationMessage:
+              'Site code can be ${SiteFormValidation.siteCodeMaxLength} long at maximum.'));
       success = false;
     }
 
-    if (state.referenceCode.length >
+    if (Validation.isNotEmpty(state.referenceCode) &&
+        !Validation.isAlphanumbericWithSpecialChars(state.referenceCode)) {
+      emit(state.copyWith(
+          siteCodeValidationMessage:
+              'Reference code should be alphanumeric with allow special char.'));
+      success = false;
+    } else if (state.referenceCode.length >
         SiteFormValidation.referenceCodeMaxLength) {
       emit(state.copyWith(
           referenceCodeValidationMessage:
-              'Reference name can be ${SiteFormValidation.referenceCodeMaxLength} long at maximum.'));
+              'Reference code can be ${SiteFormValidation.referenceCodeMaxLength} long at maximum.'));
       success = false;
     }
 

@@ -146,12 +146,20 @@ class AddEditCompanyBloc
       emit(state.copyWith(
           companyNameValidationMessage:
               'Company name is required and cannot be blank.'));
+
+      success = false;
+    } else if (!Validation.isAlphanumbericWithSpecialChars(state.companyName)) {
+      emit(state.copyWith(
+          companyNameValidationMessage:
+              'Company name should be alphanumeric with allow special char.'));
+
       success = false;
     } else if (state.companyName.length >
         CompanyFormValidation.companyNameMaxLength) {
       emit(state.copyWith(
           companyNameValidationMessage:
               'Company name can be ${CompanyFormValidation.companyNameMaxLength} long at maximum.'));
+
       success = false;
     }
 
@@ -161,6 +169,7 @@ class AddEditCompanyBloc
       emit(state.copyWith(
           einNumberValidationMessage:
               'EIN Number can have only Number and Dahses in the format XX-XXXXXXX.'));
+
       success = false;
     }
 

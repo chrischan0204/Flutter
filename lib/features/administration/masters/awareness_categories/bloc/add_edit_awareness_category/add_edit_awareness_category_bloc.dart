@@ -185,6 +185,13 @@ class AddEditAwarenessCategoryBloc
           nameValidationMessage: 'Awareness category is required.'));
 
       success = false;
+    } else if (Validation.isNotEmpty(state.name) &&
+        !Validation.isAlphanumbericWithSpecialChars(state.name)) {
+      emit(state.copyWith(
+          nameValidationMessage:
+              'Awareness category should be alphanumeric with allow special char.'));
+
+      success = false;
     } else if (state.name.length >
         AwarenessCategoryFormValidation.awarenessCategoryMaxLength) {
       emit(state.copyWith(

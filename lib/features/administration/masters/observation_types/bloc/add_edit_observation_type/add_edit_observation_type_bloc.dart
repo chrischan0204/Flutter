@@ -175,6 +175,14 @@ class AddEditObservationTypeBloc
               'Observation type name is required.'));
 
       success = false;
+    } else if (Validation.isNotEmpty(state.observationTypeName) &&
+        !Validation.isAlphanumbericWithSpecialChars(
+            state.observationTypeName)) {
+      emit(state.copyWith(
+          observationTypeNameValidationMessage:
+              'Obsevation type should be alphanumeric with allow special char.'));
+
+      success = false;
     } else if (state.observationTypeName.length >
         ObservationTypeFormValidation.observationTypeNameMaxLength) {
       emit(state.copyWith(
