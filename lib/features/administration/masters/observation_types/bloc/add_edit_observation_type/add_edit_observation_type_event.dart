@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'add_edit_observation_type_bloc.dart';
 
 abstract class AddEditObservationTypeEvent extends Equatable {
@@ -15,6 +14,9 @@ class AddEditObservationTypeNameChanged extends AddEditObservationTypeEvent {
   const AddEditObservationTypeNameChanged({
     required this.observationTypeName,
   });
+
+  @override
+  List<Object> get props => [observationTypeName];
 }
 
 class AddEditObservationTypeSeverityChanged
@@ -25,6 +27,9 @@ class AddEditObservationTypeSeverityChanged
   const AddEditObservationTypeSeverityChanged({
     required this.observationTypeSeverity,
   });
+
+  @override
+  List<Object> get props => [observationTypeSeverity];
 }
 
 class AddEditObservationTypeVisibilityChanged
@@ -35,6 +40,9 @@ class AddEditObservationTypeVisibilityChanged
   const AddEditObservationTypeVisibilityChanged({
     required this.observationTypeVisibility,
   });
+
+  @override
+  List<Object> get props => [observationTypeVisibility];
 }
 
 class AddEditObservationTypeLoaded extends AddEditObservationTypeEvent {
@@ -43,6 +51,9 @@ class AddEditObservationTypeLoaded extends AddEditObservationTypeEvent {
   const AddEditObservationTypeLoaded({
     required this.observationTypeId,
   });
+
+  @override
+  List<Object> get props => [observationTypeId];
 }
 
 class AddEditObservationTypeAdded extends AddEditObservationTypeEvent {}
@@ -53,9 +64,13 @@ class AddEditObservationTypeEdited extends AddEditObservationTypeEvent {
   const AddEditObservationTypeEdited({
     required this.id,
   });
+
+  @override
+  List<Object> get props => [id];
 }
 
-class AddEditObservationTypeDeactivatedChanged extends AddEditObservationTypeEvent {
+class AddEditObservationTypeDeactivatedChanged
+    extends AddEditObservationTypeEvent {
   /// deactivated to change
   final bool deactivated;
 
