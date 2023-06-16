@@ -1,163 +1,262 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'add_edit_user_bloc.dart';
 
 class AddEditUserState extends Equatable {
+  /// created user id
   final String? createdUserId;
 
+  /// loaded user
+  final User? loadedUser;
+
+  /// first name
   final String firstName;
+
+  /// validation message for first name
   final String firstNameValidationMessage;
 
+  /// initial first name to check form dirty
+  final String initialFirstName;
+
+  /// last name
   final String lastName;
+
+  /// validation message for last name
   final String lastNameValidationMessage;
 
+  /// initial last name to check form dirty
+  final String initialLastName;
+
+  /// title
   final String title;
 
+  /// initial title to check form dirty
+  final String initialTitle;
+
+  /// validation message for title
+  final String titleValidationMessage;
+
+  /// email
   final String email;
+
+  /// validation message for email
   final String emailValidationMessage;
 
+  /// initial email to check form dirty
+  final String initialEmail;
+
+  /// mobile phone
   final String mobilePhone;
 
-  final String roleId;
-  final String? roleName;
+  /// initial mobile phone to check form dirty
+  final String initialMobilePhone;
+
+  /// validation message for mobile phone
+  final String mobilePhoneValidationMessage;
+
+  /// role
+  final Role? role;
+
+  /// initial role to check form dirty
+  final Role? initialRole;
+
+  /// validation message for role
   final String roleValidationMessage;
 
-  final String defaultSiteId;
-  final String? defaultSiteName;
+  /// default site
+  final Site? defaultSite;
+
+  /// initial default site to check form dirty
+  final Site? initialDefaultSite;
+
+  /// validation message for default site
   final String defaultSiteValidationMessage;
 
-  final String timeZoneId;
-  final String? timeZoneName;
+  /// time zone
+  final TimeZone? timeZone;
+
+  /// initial time zone to check form dirty
+  final TimeZone? initialTimeZone;
+
+  /// validation message for time zone
   final String timeZoneValidationMessage;
 
-  final List<Role> userRoleList;
-  final EntityStatus userRoleListLoadStatus;
+  /// site list
+  final List<Site> siteList;
 
-  final EntityStatus userAddStatus;
-  final EntityStatus userEditStatus;
+  /// role list
+  final List<Role> roleList;
+
+  /// time zone list
+  final List<TimeZone> timeZoneList;
+
+  final EntityStatus status;
 
   final String message;
-  final int statusCode;
+
   const AddEditUserState({
     this.createdUserId,
+    this.loadedUser,
     this.firstName = '',
     this.firstNameValidationMessage = '',
+    this.initialFirstName = '',
     this.lastName = '',
     this.lastNameValidationMessage = '',
+    this.initialLastName = '',
     this.title = '',
+    this.initialTitle = '',
+    this.titleValidationMessage = '',
     this.email = '',
     this.emailValidationMessage = '',
+    this.initialEmail = '',
     this.mobilePhone = '',
-    this.roleId = '',
-    this.roleName,
+    this.initialMobilePhone = '',
+    this.mobilePhoneValidationMessage = '',
+    this.role,
+    this.initialRole,
     this.roleValidationMessage = '',
-    this.defaultSiteId = '',
-    this.defaultSiteName,
+    this.defaultSite,
+    this.initialDefaultSite,
     this.defaultSiteValidationMessage = '',
-    this.timeZoneId = '',
-    this.timeZoneName = '',
+    this.timeZone,
+    this.initialTimeZone,
     this.timeZoneValidationMessage = '',
-    this.userRoleList = const [],
-    this.userRoleListLoadStatus = EntityStatus.initial,
-    this.userAddStatus = EntityStatus.initial,
-    this.userEditStatus = EntityStatus.initial,
+    this.roleList = const [],
+    this.timeZoneList = const [],
+    this.siteList = const [],
+    this.status = EntityStatus.initial,
     this.message = '',
-    this.statusCode = 0,
   });
 
   @override
   List<Object?> get props => [
         createdUserId,
+        loadedUser,
         firstName,
         firstNameValidationMessage,
+        initialFirstName,
         lastName,
         lastNameValidationMessage,
+        initialLastName,
         title,
+        title,
+        titleValidationMessage,
         email,
         emailValidationMessage,
+        initialEmail,
         mobilePhone,
-        roleId,
-        roleName,
+        initialMobilePhone,
+        mobilePhoneValidationMessage,
+        role,
+        initialRole,
         roleValidationMessage,
-        defaultSiteId,
-        defaultSiteName,
+        defaultSite,
+        initialDefaultSite,
         defaultSiteValidationMessage,
-        timeZoneId,
-        timeZoneName,
+        timeZone,
+        initialTimeZone,
         timeZoneValidationMessage,
-        userAddStatus,
-        userEditStatus,
-        userRoleList,
-        userRoleListLoadStatus,
+        roleList,
+        timeZoneList,
+        siteList,
+        status,
         message,
-        statusCode,
       ];
 
-  bool get isUserDataFill => !(Validation.isEmpty(firstName) &&
-      Validation.isEmpty(lastName) &&
-      Validation.isEmpty(title) &&
-      Validation.isEmpty(email) &&
-      Validation.isEmpty(roleId) &&
-      Validation.isEmpty(defaultSiteId) &&
-      Validation.isEmpty(mobilePhone) &&
-      Validation.isEmpty(timeZoneId));
+  bool get formDirty =>
+      (!Validation.isEmpty(firstName) && initialFirstName != firstName) ||
+      (!Validation.isEmpty(lastName) && initialLastName != lastName) ||
+      (!Validation.isEmpty(title) && initialTitle != title) ||
+      (!Validation.isEmpty(email) && initialEmail != email) ||
+      (!Validation.isEmpty(mobilePhone) && initialMobilePhone != mobilePhone) ||
+      (role != null && initialRole?.id != role?.id) ||
+      (timeZone != null && initialTimeZone?.id != timeZone?.id) ||
+      (defaultSite != null && initialDefaultSite?.id != defaultSite?.id) ||
+      (timeZone != null && initialTimeZone?.id != timeZone?.id);
+
+  User get user => User(
+        firstName: firstName,
+        lastName: lastName,
+        title: title,
+        email: email,
+        mobileNumber: mobilePhone,
+        roleId: role!.id,
+        defaultSiteId: defaultSite!.id!,
+        timeZoneId: timeZone!.id!,
+      );
 
   AddEditUserState copyWith({
     String? createdUserId,
+    User? loadedUser,
     String? firstName,
     String? firstNameValidationMessage,
+    String? initialFirstName,
     String? lastName,
     String? lastNameValidationMessage,
+    String? initialLastName,
     String? title,
+    String? initialTitle,
+    String? titleValidationMessage,
     String? email,
     String? emailValidationMessage,
+    String? initialEmail,
     String? mobilePhone,
-    String? roleId,
-    String? roleName,
+    String? initialMobilePhone,
+    String? mobilePhoneValidationMessage,
+    Role? role,
+    Role? initialRole,
     String? roleValidationMessage,
-    String? defaultSiteId,
-    String? defaultSiteName,
+    Site? defaultSite,
+    Site? initialDefaultSite,
     String? defaultSiteValidationMessage,
-    String? timeZoneId,
-    String? timeZoneName,
+    TimeZone? timeZone,
+    TimeZone? initialTimeZone,
     String? timeZoneValidationMessage,
-    List<Role>? userRoleList,
-    EntityStatus? userRoleListLoadStatus,
-    EntityStatus? userAddStatus,
-    EntityStatus? userEditStatus,
+    List<Role>? roleList,
+    List<TimeZone>? timeZoneList,
+    List<Site>? siteList,
+    EntityStatus? status,
     String? message,
-    int? statusCode,
   }) {
     return AddEditUserState(
       createdUserId: createdUserId ?? this.createdUserId,
+      loadedUser: loadedUser ?? this.loadedUser,
       firstName: firstName ?? this.firstName,
       firstNameValidationMessage:
           firstNameValidationMessage ?? this.firstNameValidationMessage,
+      initialFirstName: initialFirstName ?? this.initialFirstName,
       lastName: lastName ?? this.lastName,
       lastNameValidationMessage:
           lastNameValidationMessage ?? this.lastNameValidationMessage,
+      initialLastName: initialLastName ?? this.initialLastName,
       title: title ?? this.title,
+      initialTitle: initialTitle ?? this.initialTitle,
+      titleValidationMessage:
+          titleValidationMessage ?? this.titleValidationMessage,
       email: email ?? this.email,
       emailValidationMessage:
           emailValidationMessage ?? this.emailValidationMessage,
+      initialEmail: initialEmail ?? this.initialEmail,
       mobilePhone: mobilePhone ?? this.mobilePhone,
-      roleId: roleId ?? this.roleId,
-      roleName: roleName ?? this.roleName,
+      initialMobilePhone: initialMobilePhone ?? this.initialMobilePhone,
+      mobilePhoneValidationMessage:
+          mobilePhoneValidationMessage ?? this.mobilePhoneValidationMessage,
+      role: role ?? this.role,
+      initialRole: initialRole ?? this.initialRole,
       roleValidationMessage:
           roleValidationMessage ?? this.roleValidationMessage,
-      defaultSiteId: defaultSiteId ?? this.defaultSiteId,
-      defaultSiteName: defaultSiteName ?? this.defaultSiteName,
+      defaultSite: defaultSite ?? this.defaultSite,
+      initialDefaultSite: initialDefaultSite ?? this.initialDefaultSite,
       defaultSiteValidationMessage:
           defaultSiteValidationMessage ?? this.defaultSiteValidationMessage,
-      timeZoneId: timeZoneId ?? this.timeZoneId,
-      timeZoneName: timeZoneName ?? this.timeZoneName,
+      timeZone: timeZone ?? this.timeZone,
+      initialTimeZone: initialTimeZone ?? this.initialTimeZone,
       timeZoneValidationMessage:
           timeZoneValidationMessage ?? this.timeZoneValidationMessage,
-      userRoleList: userRoleList ?? this.userRoleList,
-      userRoleListLoadStatus:
-          userRoleListLoadStatus ?? this.userRoleListLoadStatus,
-      userAddStatus: userAddStatus ?? this.userAddStatus,
-      userEditStatus: userEditStatus ?? this.userEditStatus,
+      roleList: roleList ?? this.roleList,
+      timeZoneList: timeZoneList ?? this.timeZoneList,
+      siteList: siteList ?? this.siteList,
+      status: status ?? this.status,
       message: message ?? this.message,
-      statusCode: statusCode ?? this.statusCode,
     );
   }
 }

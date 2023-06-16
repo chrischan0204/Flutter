@@ -19,6 +19,7 @@ dependencies:
   dotted_line: ^3.1.0
   dropdown_button2: ^2.0.0
   elegant_notification: ^1.8.1
+  email_validator: ^2.1.17
   equatable: ^2.0.5
   flutter:
     sdk: flutter

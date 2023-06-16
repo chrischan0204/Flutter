@@ -5,6 +5,9 @@ part 'add_edit_user_state.dart';
 
 class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
   final UsersRepository usersRepository;
+  final SitesRepository sitesRepository;
+  final TimeZonesRepository timeZonesRepository;
+  final FormDirtyBloc formDirtyBloc;
 
   static String firstNameValidationMessage = 'First name is required.';
   static String lastNameValidationMessage = 'Last name is required.';
@@ -15,8 +18,10 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
 
   AddEditUserBloc({
     required this.usersRepository,
+    required this.timeZonesRepository,
+    required this.sitesRepository,
+    required this.formDirtyBloc,
   }) : super(const AddEditUserState()) {
-    on<AddEditUserDetailsInited>(_onAddEditUserDetailsInited);
     on<AddEditUserFirstNameChanged>(_onAddEditUserFirstNameChanged);
     on<AddEditUserLastNameChanged>(_onAddEditUserLastNameChanged);
     on<AddEditUserTitleChanged>(_onAddEditUserTitleChanged);
@@ -27,27 +32,10 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     on<AddEditUserTimeZoneChanged>(_onAddEditUserTimeZoneChanged);
     on<AddEditUserUserAdded>(_onAddEditUserUserAdded);
     on<AddEditUserUserEdited>(_onAddEditUserUserEdited);
+    on<AddEditUserLoaded>(_onAddEditUserLoaded);
     on<AddEditUserRoleListLoaded>(_onAddEditUserRoleListLoaded);
-    on<AddEditUserStatusInited>(_onAddEditUserStatusInited);
-  }
-
-  void _onAddEditUserDetailsInited(
-    AddEditUserDetailsInited event,
-    Emitter<AddEditUserState> emit,
-  ) {
-    emit(state.copyWith(
-      firstName: event.user.firstName,
-      lastName: event.user.lastName,
-      title: event.user.title,
-      email: event.user.email,
-      roleId: event.user.roleId,
-      roleName: event.user.roleName,
-      defaultSiteId: event.user.defaultSiteId,
-      defaultSiteName: event.user.defaultSiteName,
-      timeZoneId: event.user.timeZoneId,
-      timeZoneName: event.user.timeZoneName,
-      mobilePhone: event.user.mobileNumber,
-    ));
+    on<AddEditUserSiteListLoaded>(_onAddEditUserSiteListLoaded);
+    on<AddEditUserTimeZoneListLoaded>(_onAddEditUserTimeZoneListLoaded);
   }
 
   void _onAddEditUserFirstNameChanged(
@@ -58,6 +46,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       firstName: event.firstName,
       firstNameValidationMessage: '',
     ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserLastNameChanged(
@@ -68,13 +58,19 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       lastName: event.lastName,
       lastNameValidationMessage: '',
     ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserTitleChanged(
     AddEditUserTitleChanged event,
     Emitter<AddEditUserState> emit,
   ) {
-    emit(state.copyWith(title: event.title));
+    emit(state.copyWith(
+      title: event.title,
+      titleValidationMessage: '',
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserEmailChanged(
@@ -85,13 +81,18 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       email: event.email,
       emailValidationMessage: '',
     ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserMobilePhoneChanged(
     AddEditUserMobilePhoneChanged event,
     Emitter<AddEditUserState> emit,
   ) {
-    emit(state.copyWith(mobilePhone: event.mobilePhone));
+    emit(state.copyWith(
+      mobilePhone: event.mobilePhone,
+      mobilePhoneValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserDefaultSiteChanged(
@@ -99,10 +100,10 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     Emitter<AddEditUserState> emit,
   ) {
     emit(state.copyWith(
-      defaultSiteId: event.defaultSiteId,
-      defaultSiteName: event.defaultSiteName,
+      defaultSite: event.defaultSite,
       defaultSiteValidationMessage: '',
     ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserRoleChanged(
@@ -110,10 +111,10 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     Emitter<AddEditUserState> emit,
   ) {
     emit(state.copyWith(
-      roleId: event.roleId,
-      roleName: event.roleName,
+      role: event.role,
       roleValidationMessage: '',
     ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditUserTimeZoneChanged(
@@ -121,32 +122,23 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     Emitter<AddEditUserState> emit,
   ) {
     emit(state.copyWith(
-      timeZoneId: event.timeZoneId,
-      timeZoneName: event.timeZoneName,
+      timeZone: event.timeZone,
       timeZoneValidationMessage: '',
     ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   Future<void> _onAddEditUserUserAdded(
     AddEditUserUserAdded event,
     Emitter<AddEditUserState> emit,
   ) async {
-    if (_validateUserData(emit)) {
-      emit(state.copyWith(userAddStatus: EntityStatus.loading));
+    if (_validate(emit)) {
+      emit(state.copyWith(status: EntityStatus.loading));
       try {
-        EntityResponse response = await usersRepository.addUser(User(
-          firstName: state.firstName,
-          lastName: state.lastName,
-          title: state.title,
-          email: state.email,
-          mobileNumber: state.mobilePhone,
-          roleId: state.roleId,
-          defaultSiteId: state.defaultSiteId,
-          timeZoneId: state.timeZoneId,
-        ));
+        EntityResponse response = await usersRepository.addUser(state.user);
 
         emit(state.copyWith(
-          userAddStatus: response.isSuccess.toEntityStatusCode(),
+          status: response.isSuccess.toEntityStatusCode(),
           message: response.message,
           createdUserId: response.data?.id,
         ));
@@ -154,7 +146,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
           emit(state.copyWith(emailValidationMessage: response.message));
         }
       } catch (e) {
-        emit(state.copyWith(userAddStatus: EntityStatus.failure));
+        emit(state.copyWith(status: EntityStatus.failure));
       }
     }
   }
@@ -163,23 +155,14 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     AddEditUserUserEdited event,
     Emitter<AddEditUserState> emit,
   ) async {
-    if (_validateUserData(emit)) {
-      emit(state.copyWith(userAddStatus: EntityStatus.loading));
+    if (_validate(emit)) {
+      emit(state.copyWith(status: EntityStatus.loading));
       try {
-        EntityResponse response = await usersRepository.editUser(User(
-          id: event.userId,
-          firstName: state.firstName,
-          lastName: state.lastName,
-          title: state.title,
-          email: state.email,
-          mobileNumber: state.mobilePhone,
-          roleId: state.roleId,
-          defaultSiteId: state.defaultSiteId,
-          timeZoneId: state.timeZoneId,
-        ));
+        EntityResponse response = await usersRepository
+            .editUser(state.user.copyWith(id: event.userId));
 
         emit(state.copyWith(
-          userAddStatus:
+          status:
               response.isSuccess ? EntityStatus.success : EntityStatus.failure,
           message: response.message,
         ));
@@ -187,16 +170,26 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
           emit(state.copyWith(emailValidationMessage: response.message));
         }
       } catch (e) {
-        emit(state.copyWith(userAddStatus: EntityStatus.failure));
+        emit(state.copyWith(status: EntityStatus.failure));
       }
     }
   }
 
-  bool _validateUserData(Emitter<AddEditUserState> emit) {
+  /// validate the form
+  bool _validate(Emitter<AddEditUserState> emit) {
     bool success = true;
     if (Validation.isEmpty(state.firstName)) {
       emit(state.copyWith(
           firstNameValidationMessage: firstNameValidationMessage));
+      success = false;
+    } else if (!Validation.checkAlphanumeric(state.firstName)) {
+      emit(state.copyWith(
+          firstNameValidationMessage: 'First name should be alphabetical.'));
+      success = false;
+    } else if (state.firstName.length > UserFormValidation.firstNameMaxLength) {
+      emit(state.copyWith(
+          firstNameValidationMessage:
+              'First name can be ${UserFormValidation.firstNameMaxLength} long at maximum.'));
       success = false;
     }
 
@@ -204,57 +197,121 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       emit(
           state.copyWith(lastNameValidationMessage: lastNameValidationMessage));
       success = false;
+    } else if (!Validation.checkAlphanumeric(state.lastName)) {
+      emit(state.copyWith(
+          lastNameValidationMessage: 'Last name should be alphabetical.'));
+      success = false;
+    } else if (state.lastName.length > UserFormValidation.lastNameMaxLength) {
+      emit(state.copyWith(
+          lastNameValidationMessage:
+              'Last name can be ${UserFormValidation.lastNameMaxLength} long at maximum.'));
+      success = false;
+    }
+
+    if (state.title.isNotEmpty && !Validation.checkAlphanumeric(state.title)) {
+      emit(state.copyWith(
+          titleValidationMessage: 'User title should be alphabetical.'));
+      success = false;
+    } else if (state.title.length > UserFormValidation.userTitleMaxLength) {
+      emit(state.copyWith(
+          titleValidationMessage:
+              'User title can be ${UserFormValidation.userTitleMaxLength} long at maximum.'));
+      success = false;
     }
 
     if (Validation.isEmpty(state.email)) {
       emit(state.copyWith(emailValidationMessage: emailValidationMessage));
       success = false;
+    } else if (!Validation.isEmail(state.email)) {
+      emit(
+          state.copyWith(emailValidationMessage: 'It should be email format.'));
+      success = false;
     }
 
-    if (Validation.isEmpty(state.timeZoneId)) {
+    if (state.timeZone == null) {
       emit(
           state.copyWith(timeZoneValidationMessage: timeZoneValidationMessage));
       success = false;
     }
 
-    if (Validation.isEmpty(state.roleId)) {
+    if (state.role == null) {
       emit(state.copyWith(roleValidationMessage: roleValidationMessage));
       success = false;
     }
 
-    if (Validation.isEmpty(state.defaultSiteId)) {
+    if (state.defaultSite == null) {
       emit(state.copyWith(
           defaultSiteValidationMessage: defaultSiteValidationMessage));
+      success = false;
+    }
+
+    if (state.mobilePhone.isNotEmpty &&
+        !Validation.isMobilePhone(state.mobilePhone)) {
+      emit(state.copyWith(
+          mobilePhoneValidationMessage: 'It should be phone number format.'));
       success = false;
     }
 
     return success;
   }
 
+  Future<void> _onAddEditUserLoaded(
+    AddEditUserLoaded event,
+    Emitter<AddEditUserState> emit,
+  ) async {
+    try {
+      User user = await usersRepository.getUserById(event.userId);
+
+      emit(state.copyWith(
+        loadedUser: user,
+        initialFirstName: user.firstName,
+        initialLastName: user.lastName,
+        initialTitle: user.title,
+        initialEmail: user.email,
+        initialRole: Role(id: user.roleId, name: user.roleName),
+        initialMobilePhone: user.mobileNumber,
+        initialDefaultSite:
+            Site(id: user.defaultSiteId, name: user.defaultSiteName),
+        initialTimeZone: TimeZone(id: user.timeZoneId, name: user.timeZoneName),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        title: user.title,
+        email: user.email,
+        role: Role(id: user.roleId, name: user.roleName),
+        mobilePhone: user.mobileNumber,
+        defaultSite: Site(id: user.defaultSiteId, name: user.defaultSiteName),
+        timeZone: TimeZone(id: user.timeZoneId, name: user.timeZoneName),
+      ));
+    } catch (e) {}
+  }
+
   Future<void> _onAddEditUserRoleListLoaded(
     AddEditUserRoleListLoaded event,
     Emitter<AddEditUserState> emit,
   ) async {
-    emit(state.copyWith(userRoleListLoadStatus: EntityStatus.loading));
     try {
-      List<Role> userRoleList = await usersRepository.getUserRoles();
-      emit(state.copyWith(
-        userRoleList: userRoleList,
-        userRoleListLoadStatus: EntityStatus.success,
-      ));
-    } catch (e) {
-      emit(state.copyWith(userRoleListLoadStatus: EntityStatus.failure));
-    }
+      List<Role> roleList = await usersRepository.getUserRoles();
+      emit(state.copyWith(roleList: roleList));
+    } catch (e) {}
   }
 
-  void _onAddEditUserStatusInited(
-    AddEditUserStatusInited event,
+  Future<void> _onAddEditUserSiteListLoaded(
+    AddEditUserSiteListLoaded event,
     Emitter<AddEditUserState> emit,
-  ) {
-    emit(state.copyWith(
-      userAddStatus: EntityStatus.initial,
-      userEditStatus: EntityStatus.initial,
-      userRoleListLoadStatus: EntityStatus.initial,
-    ));
+  ) async {
+    try {
+      List<Site> siteList = await sitesRepository.getSites();
+      emit(state.copyWith(siteList: siteList));
+    } catch (e) {}
+  }
+
+  Future<void> _onAddEditUserTimeZoneListLoaded(
+    AddEditUserTimeZoneListLoaded event,
+    Emitter<AddEditUserState> emit,
+  ) async {
+    try {
+      List<TimeZone> timeZoneList = await timeZonesRepository.getTimeZoneList();
+      emit(state.copyWith(timeZoneList: timeZoneList));
+    } catch (e) {}
   }
 }

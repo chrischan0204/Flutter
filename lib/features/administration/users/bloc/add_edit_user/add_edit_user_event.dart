@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'add_edit_user_bloc.dart';
 
 abstract class AddEditUserEvent extends Equatable {
@@ -5,13 +6,6 @@ abstract class AddEditUserEvent extends Equatable {
 
   @override
   List<Object?> get props => [];
-}
-
-class AddEditUserDetailsInited extends AddEditUserEvent {
-  final User user;
-  const AddEditUserDetailsInited({
-    required this.user,
-  });
 }
 
 class AddEditUserFirstNameChanged extends AddEditUserEvent {
@@ -55,60 +49,52 @@ class AddEditUserMobilePhoneChanged extends AddEditUserEvent {
 }
 
 class AddEditUserDefaultSiteChanged extends AddEditUserEvent {
-  final String defaultSiteId;
-  final String defaultSiteName;
+  final Site defaultSite;
 
-  const AddEditUserDefaultSiteChanged({
-    required this.defaultSiteId,
-    required this.defaultSiteName,
-  });
+  const AddEditUserDefaultSiteChanged({required this.defaultSite});
 
   @override
-  List<Object?> get props => [
-        defaultSiteId,
-        defaultSiteName,
-      ];
+  List<Object?> get props => [defaultSite];
 }
 
 class AddEditUserRoleChanged extends AddEditUserEvent {
-  final String roleId;
-  final String roleName;
-  const AddEditUserRoleChanged({
-    required this.roleId,
-    required this.roleName,
-  });
+  final Role role;
+  const AddEditUserRoleChanged({required this.role});
 
   @override
-  List<Object?> get props => [
-        roleId,
-        roleName,
-      ];
+  List<Object?> get props => [role];
 }
 
 class AddEditUserTimeZoneChanged extends AddEditUserEvent {
-  final String timeZoneId;
-  final String timeZoneName;
-  const AddEditUserTimeZoneChanged({
-    required this.timeZoneId,
-    required this.timeZoneName,
-  });
+  final TimeZone timeZone;
+  const AddEditUserTimeZoneChanged({required this.timeZone});
 
   @override
-  List<Object?> get props => [
-        timeZoneId,
-        timeZoneName,
-      ];
+  List<Object?> get props => [timeZone];
 }
 
 class AddEditUserUserAdded extends AddEditUserEvent {}
 
 class AddEditUserUserEdited extends AddEditUserEvent {
   final String userId;
-  const AddEditUserUserEdited({
-    required this.userId,
-  });
+  const AddEditUserUserEdited({required this.userId});
+
+  @override
+  List<Object?> get props => [userId];
 }
 
-class AddEditUserStatusInited extends AddEditUserEvent {}
+class AddEditUserLoaded extends AddEditUserEvent {
+  final String userId;
+  const AddEditUserLoaded({
+    required this.userId,
+  });
+
+  @override
+  List<Object?> get props => [userId];
+}
 
 class AddEditUserRoleListLoaded extends AddEditUserEvent {}
+
+class AddEditUserSiteListLoaded extends AddEditUserEvent {}
+
+class AddEditUserTimeZoneListLoaded extends AddEditUserEvent {}
