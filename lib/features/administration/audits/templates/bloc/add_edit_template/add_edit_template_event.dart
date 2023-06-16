@@ -27,25 +27,6 @@ class AddEditTemplateDateChanged extends AddEditTemplateEvent {
   List<Object> get props => [date];
 }
 
-class AddEditTemplateUsedInInspection extends AddEditTemplateEvent {
-  final bool usedInInspection;
-  const AddEditTemplateUsedInInspection({
-    required this.usedInInspection,
-  });
-
-  @override
-  List<Object> get props => [usedInInspection];
-}
-
-class AddEditTemplateUsedInAudit extends AddEditTemplateEvent {
-  final bool usedInAudit;
-  const AddEditTemplateUsedInAudit({
-    required this.usedInAudit,
-  });
-
-  @override
-  List<Object> get props => [usedInAudit];
-}
 
 class AddEditTemplateTemplateAddEdited extends AddEditTemplateEvent {
   final String? templateId;

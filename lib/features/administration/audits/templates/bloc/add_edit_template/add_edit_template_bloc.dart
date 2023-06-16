@@ -14,8 +14,6 @@ class AddEditTemplateBloc
       : super(const AddEditTemplateState()) {
     on<AddEditTemplateDescriptionChanged>(_onAddEditTemplateDescriptionChanged);
     on<AddEditTemplateDateChanged>(_onAddEditTemplateDateChanged);
-    on<AddEditTemplateUsedInInspection>(_onAddEditTemplateUsedInInspection);
-    on<AddEditTemplateUsedInAudit>(_onAddEditTemplateUsedInAudit);
     on<AddEditTemplateTemplateAddEdited>(_onAddEditTemplateTemplateAddEdited);
   }
 
@@ -37,20 +35,6 @@ class AddEditTemplateBloc
       date: event.date,
       dateValidationMesage: '',
     ));
-  }
-
-  void _onAddEditTemplateUsedInInspection(
-    AddEditTemplateUsedInInspection event,
-    Emitter<AddEditTemplateState> emit,
-  ) {
-    emit(state.copyWith(usedInInspection: event.usedInInspection));
-  }
-
-  void _onAddEditTemplateUsedInAudit(
-    AddEditTemplateUsedInAudit event,
-    Emitter<AddEditTemplateState> emit,
-  ) {
-    emit(state.copyWith(usedInAudit: event.usedInAudit));
   }
 
   Future<void> _onAddEditTemplateTemplateAddEdited(

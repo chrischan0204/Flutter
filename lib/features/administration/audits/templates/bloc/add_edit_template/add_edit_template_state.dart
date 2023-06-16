@@ -9,9 +9,6 @@ class AddEditTemplateState extends Equatable {
   final DateTime? date;
   final String dateValidationMesage;
 
-  final bool usedInAudit;
-  final bool usedInInspection;
-
   final EntityStatus templateAddEditStatus;
   final EntityStatus templateEditStatus;
   final String message;
@@ -22,8 +19,6 @@ class AddEditTemplateState extends Equatable {
     this.templateDescriptionValidationMessage = '',
     this.date,
     this.dateValidationMesage = '',
-    this.usedInAudit = false,
-    this.usedInInspection = false,
     this.templateAddEditStatus = EntityStatus.initial,
     this.templateEditStatus = EntityStatus.initial,
     this.message = '',
@@ -36,8 +31,6 @@ class AddEditTemplateState extends Equatable {
         templateDescriptionValidationMessage,
         date,
         dateValidationMesage,
-        usedInAudit,
-        usedInInspection,
         templateAddEditStatus,
         templateEditStatus,
         message,
@@ -52,8 +45,6 @@ class AddEditTemplateState extends Equatable {
     String? templateDescriptionValidationMessage,
     DateTime? date,
     String? dateValidationMesage,
-    bool? usedInAudit,
-    bool? usedInInspection,
     EntityStatus? templateAddEditStatus,
     EntityStatus? templateEditStatus,
     String? message,
@@ -66,8 +57,6 @@ class AddEditTemplateState extends Equatable {
               this.templateDescriptionValidationMessage,
       date: date ?? this.date,
       dateValidationMesage: dateValidationMesage ?? this.dateValidationMesage,
-      usedInAudit: usedInAudit ?? this.usedInAudit,
-      usedInInspection: usedInInspection ?? this.usedInInspection,
       templateAddEditStatus:
           templateAddEditStatus ?? this.templateAddEditStatus,
       templateEditStatus: templateEditStatus ?? this.templateEditStatus,

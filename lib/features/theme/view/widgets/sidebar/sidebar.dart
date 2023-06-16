@@ -1,5 +1,3 @@
-import 'package:flutter_animate/flutter_animate.dart';
-
 import '../../../data/model/model.dart';
 import '/common_libraries.dart';
 
@@ -44,10 +42,6 @@ class _SidebarState extends State<Sidebar> {
       );
     }
     return subItemWidgets;
-    // .animate(interval: 150.ms)
-    // .fadeIn(duration: 300.ms, delay: 100.ms)
-    // .shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
-    // .move(begin: const Offset(-8, 0), curve: Curves.easeOutQuad);
   }
 
   @override
@@ -128,7 +122,6 @@ class _SidebarState extends State<Sidebar> {
                     ),
                   ),
                 ),
-                // _buildBody(state),
                 CollapseButton(
                   isSidebarExtended: isSidebarExtended,
                 ),
@@ -139,31 +132,4 @@ class _SidebarState extends State<Sidebar> {
       },
     );
   }
-
-  // AnimatedPositioned _buildBody(ThemeState state) {
-  //   return AnimatedPositioned(
-  //     duration: const Duration(milliseconds: 200),
-  //     child: Container(
-  //       margin: EdgeInsets.only(
-  //         left: isSidebarExtended ? sidebarWidth : shrinkSidebarWidth,
-  //       ),
-  //       decoration: BoxDecoration(
-  //         color: sidebarColor,
-  //       ),
-  //       child: Container(
-  //         decoration: BoxDecoration(
-  //           color: backgroundColor,
-  //         ),
-  //         child: Column(
-  //           children: [
-  //             Container(
-  //               padding: const EdgeInsets.all(15),
-  //               child: widget.body,
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

@@ -140,38 +140,30 @@ class _MyAppState extends State<MyApp> {
           ],
           child: MultiBlocProvider(
             providers: [
-              BlocProvider(
-                create: (context) => ThemeBloc(),
-              ),
+              BlocProvider(create: (context) => ThemeBloc()),
               BlocProvider(
                 create: (context) => FilterSettingBloc(
-                  settingsRepository: RepositoryProvider.of(context),
-                ),
+                    settingsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => ViewSettingBloc(
-                  settingsRepository: RepositoryProvider.of(context),
-                ),
+                    settingsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => RegionsBloc(
-                  regionsRepository: RepositoryProvider.of(context),
-                ),
+                    regionsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => PriorityLevelsBloc(
-                  priorityLevelsRepository: RepositoryProvider.of(context),
-                ),
+                    priorityLevelsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => ObservationTypesBloc(
-                  observationTypesRepository: RepositoryProvider.of(context),
-                ),
+                    observationTypesRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => AwarenessGroupsBloc(
-                  awarenessGroupsRepository: RepositoryProvider.of(context),
-                ),
+                    awarenessGroupsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => AwarenessCategoriesBloc(
@@ -180,26 +172,23 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               BlocProvider(
-                create: (context) => SitesBloc(
-                  sitesRepository: RepositoryProvider.of(context),
-                ),
+                create: (context) =>
+                    SitesBloc(sitesRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => ProjectsBloc(
-                  projectsRepository: RepositoryProvider.of(context),
-                ),
+                    projectsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
                 create: (context) => CompaniesBloc(
-                  companiesRepository: RepositoryProvider.of(context),
-                ),
+                    companiesRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
-                create: (context) => RolesBloc(
-                  rolesRepository: RepositoryProvider.of(context),
-                ),
+                create: (context) =>
+                    RolesBloc(rolesRepository: RepositoryProvider.of(context)),
               ),
-              BlocProvider(create: (context) => PaginationBloc())
+              BlocProvider(create: (context) => PaginationBloc()),
+              BlocProvider(create: (context) => FormDirtyBloc())
             ],
             child: MaterialApp.router(
               title: 'Safety ETA',

@@ -21,12 +21,9 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FormDirtyBloc(),
-      child: LayoutWidget(
-        body: widget.body,
-        selectedItemName: widget.selectedItemName,
-      ),
+    return LayoutWidget(
+      body: widget.body,
+      selectedItemName: widget.selectedItemName,
     );
   }
 }
@@ -129,8 +126,8 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                               constraints.maxWidth < 1000
                                   ? Container()
                                   : Sidebar(
-                                      selectedItemName: widget.selectedItemName,
-                                    ),
+                                      selectedItemName:
+                                          widget.selectedItemName),
                               Expanded(
                                 child: SizedBox(
                                   height: MediaQuery.of(context).size.height -
