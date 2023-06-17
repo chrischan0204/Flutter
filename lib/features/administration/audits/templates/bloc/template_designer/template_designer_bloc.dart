@@ -88,7 +88,7 @@ class TemplateDesignerBloc
     ));
 
     try {
-      List<TemplateSection> templateSectionList =
+      List<TemplateSectionListItem> templateSectionList =
           await templatesRepository.getTemplateSectionList(event.templateId);
 
       emit(state.copyWith(
@@ -108,7 +108,7 @@ class TemplateDesignerBloc
 
     try {
       EntityResponse response = await templatesRepository.addTemplateSection(
-          TemplateSection(
+          TemplateSectionListItem(
             templateId: event.templateId,
             name: state.newSection,
           ),
@@ -204,7 +204,7 @@ class TemplateDesignerBloc
     emit(state.copyWith(responseScaleItemListLoadStatus: EntityStatus.loading));
 
     try {
-      List<ResponseScaleItem> responseScaleItemList =
+      List<TemplateResponseScaleItem> responseScaleItemList =
           await responseScalesRepository
               .getResponseScaleItemList(event.responseScaleId);
       late TemplateSectionItem newTemplateSection;
@@ -888,7 +888,7 @@ response = await sectionsRepository
 
       switch (state.level) {
         case 0:
-          List<ResponseScaleItem> responseScaleItemList =
+          List<TemplateResponseScaleItem> responseScaleItemList =
               await responseScalesRepository
                   .getResponseScaleItemList(questionDetail.responseScaleId);
 

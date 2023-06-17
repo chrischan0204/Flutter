@@ -2,14 +2,14 @@ part of 'template_designer_bloc.dart';
 
 class TemplateDesignerState extends Equatable {
   final String newSection;
-  final List<TemplateSection> templateSectionList;
+  final List<TemplateSectionListItem> templateSectionList;
   final EntityStatus templateSectionListLoadStatus;
   final EntityStatus templateSectionAddStatus;
 
   final List<ResponseScale> responseScaleList;
   final EntityStatus responseScaleListLoadStatus;
 
-  final TemplateSection? selectedTemplateSection;
+  final TemplateSectionListItem? selectedTemplateSection;
 
   final List<TemplateSectionQuestion> sectionItemQuestionList;
   final EntityStatus sectionItemQuestionListLoadStatus;
@@ -121,12 +121,12 @@ class TemplateDesignerState extends Equatable {
 
   TemplateDesignerState copyWith({
     String? newSection,
-    List<TemplateSection>? templateSectionList,
+    List<TemplateSectionListItem>? templateSectionList,
     EntityStatus? templateSectionListLoadStatus,
     EntityStatus? templateSectionAddStatus,
     List<ResponseScale>? responseScaleList,
     EntityStatus? responseScaleListLoadStatus,
-    Nullable<TemplateSection?>? selectedTemplateSection,
+    Nullable<TemplateSectionListItem?>? selectedTemplateSection,
     EntityStatus? sectionItemQuestionListLoadStatus,
     List<TemplateSectionQuestion>? sectionItemQuestionList,
     EntityStatus? responseScaleItemListLoadStatus,

@@ -8,7 +8,7 @@ class TemplateSectionItem extends Equatable {
   final String? responseScaleId;
   final String? parentId;
   final Question? question;
-  final ResponseScaleItem? response;
+  final TemplateResponseScaleItem? response;
   final List<TemplateSectionItem> children;
 
   static TemplateSectionItem empty = const TemplateSectionItem();
@@ -81,7 +81,7 @@ class TemplateSectionItem extends Equatable {
       parentId: map['parentId'] as String,
       question: Question.fromMap(map['question'] as Map<String, dynamic>),
       response:
-          ResponseScaleItem.fromMap(map['response'] as Map<String, dynamic>),
+          TemplateResponseScaleItem.fromMap(map['response'] as Map<String, dynamic>),
       children: List.from(json.decode(map['children'])),
     );
   }
@@ -99,7 +99,7 @@ class TemplateSectionItem extends Equatable {
     String? responseScaleId,
     String? parentId,
     Nullable<Question?>? question,
-    Nullable<ResponseScaleItem?>? response,
+    Nullable<TemplateResponseScaleItem?>? response,
     List<TemplateSectionItem>? children,
   }) {
     return TemplateSectionItem(

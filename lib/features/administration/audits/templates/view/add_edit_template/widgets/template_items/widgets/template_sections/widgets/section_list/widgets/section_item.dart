@@ -1,7 +1,7 @@
 import '/common_libraries.dart';
 
 class SectionItemView extends StatefulWidget {
-  final TemplateSection section;
+  final TemplateSectionListItem section;
   final bool first;
   final bool active;
   const SectionItemView({

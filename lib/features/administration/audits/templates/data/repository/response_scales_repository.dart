@@ -18,13 +18,13 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<ResponseScaleItem>> getResponseScaleItemList(
+  Future<List<TemplateResponseScaleItem>> getResponseScaleItemList(
       String responseScaleId) async {
     Response response =
         await super.get('$url/responsescaleitems/$responseScaleId');
 
     if (response.statusCode == 200) {
-      return ResponseScaleItem.fromListJson(response.body);
+      return TemplateResponseScaleItem.fromListJson(response.body);
     }
 
     throw Exception();

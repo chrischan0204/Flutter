@@ -18,7 +18,7 @@ class FilterSettingHeaderView extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    bool showOnlyIcon = width < 1400;
+    bool showOnlyIcon = width < 1344;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),

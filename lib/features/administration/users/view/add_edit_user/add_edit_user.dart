@@ -244,7 +244,7 @@ class _AddEditUserWidgetState extends State<AddEditUserWidget> {
           content: CustomTextField(
             key: ValueKey(state.loadedUser?.id),
             initialValue: state.mobilePhone,
-            hintText: '+14844731093',
+            hintText: '+1 (123) 456-7890',
             onChanged: (mobilePhone) => _addEditUserBloc
                 .add(AddEditUserMobilePhoneChanged(mobilePhone: mobilePhone)),
           ),

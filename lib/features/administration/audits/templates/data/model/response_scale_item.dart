@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class ResponseScaleItem extends Equatable {
+class TemplateResponseScaleItem extends Equatable {
   final String id;
   final String name;
   final String? responseScaleItemId;
@@ -13,7 +13,7 @@ class ResponseScaleItem extends Equatable {
   final bool actionItemRequired;
   final bool followUpRequired;
   final int order;
-  const ResponseScaleItem({
+  const TemplateResponseScaleItem({
     required this.id,
     required this.name,
     this.responseScaleItemId,
@@ -55,8 +55,8 @@ class ResponseScaleItem extends Equatable {
     };
   }
 
-  factory ResponseScaleItem.fromMap(Map<String, dynamic> map) {
-    return ResponseScaleItem(
+  factory TemplateResponseScaleItem.fromMap(Map<String, dynamic> map) {
+    return TemplateResponseScaleItem(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       isRequired: map['isRequired'] ?? false,
@@ -73,16 +73,16 @@ class ResponseScaleItem extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory ResponseScaleItem.fromJson(String source) =>
-      ResponseScaleItem.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TemplateResponseScaleItem.fromJson(String source) =>
+      TemplateResponseScaleItem.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static List<ResponseScaleItem> fromListJson(String source) {
+  static List<TemplateResponseScaleItem> fromListJson(String source) {
     return List.from(json.decode(source))
-        .map((e) => ResponseScaleItem.fromMap(e))
+        .map((e) => TemplateResponseScaleItem.fromMap(e))
         .toList();
   }
 
-  ResponseScaleItem copyWith({
+  TemplateResponseScaleItem copyWith({
     String? id,
     String? name,
     String? responseScaleItemId,
@@ -94,7 +94,7 @@ class ResponseScaleItem extends Equatable {
     bool? followUpRequired,
     int? order,
   }) {
-    return ResponseScaleItem(
+    return TemplateResponseScaleItem(
       id: id ?? this.id,
       name: name ?? this.name,
       responseScaleItemId: responseScaleItemId ?? this.responseScaleItemId,

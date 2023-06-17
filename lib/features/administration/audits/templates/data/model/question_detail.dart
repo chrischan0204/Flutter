@@ -5,7 +5,7 @@ class QuestionDetail extends Equatable {
   final String name;
   final String responseScaleId;
   final int order;
-  final List<ResponseScaleItem> responseScaleItems;
+  final List<TemplateResponseScaleItem> responseScaleItems;
   const QuestionDetail({
     required this.id,
     required this.name,
@@ -19,7 +19,7 @@ class QuestionDetail extends Equatable {
     String? name,
     String? responseScaleId,
     int? order,
-    List<ResponseScaleItem>? responseScaleItems,
+    List<TemplateResponseScaleItem>? responseScaleItems,
   }) {
     return QuestionDetail(
       id: id ?? this.id,
@@ -46,7 +46,7 @@ class QuestionDetail extends Equatable {
       responseScaleId: map['responseScaleId'] as String,
       order: map['order'] as int,
       responseScaleItems: List.from(
-        (map['responseScaleItems']).map((x) => ResponseScaleItem.fromMap(x)),
+        (map['responseScaleItems']).map((x) => TemplateResponseScaleItem.fromMap(x)),
       ),
     );
   }

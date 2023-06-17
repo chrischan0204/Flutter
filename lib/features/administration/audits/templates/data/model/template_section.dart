@@ -1,44 +1,44 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+import '/common_libraries.dart';
 
 class TemplateSection extends Equatable {
   final String id;
-  final String templateId;
   final String name;
-  final int templateSectionItemCount;
+  final List<TemplateQuestion> templateSectionItems;
+
   const TemplateSection({
-    this.id = '',
-    required this.templateId,
+    required this.id,
     required this.name,
-    this.templateSectionItemCount = 0,
+    required this.templateSectionItems,
   });
 
   @override
   List<Object?> get props => [
         id,
-        templateId,
         name,
-        templateSectionItemCount,
+        templateSectionItems,
       ];
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'templateId': templateId,
-      'name': name,
-    };
+  TemplateSection copyWith({
+    String? id,
+    String? name,
+    List<TemplateQuestion>? templateSectionItems,
+  }) {
+    return TemplateSection(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      templateSectionItems: templateSectionItems ?? this.templateSectionItems,
+    );
   }
 
   factory TemplateSection.fromMap(Map<String, dynamic> map) {
     return TemplateSection(
       id: map['id'] as String,
-      templateId: map['templateId'] as String,
       name: map['name'] as String,
-      templateSectionItemCount: map['templateSectionItemCount'] as int,
+      templateSectionItems: List.from(
+        (map['templateSectionItems']).map((x) => TemplateQuestion.fromMap(x)),
+      ),
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory TemplateSection.fromJson(String source) =>
       TemplateSection.fromMap(json.decode(source) as Map<String, dynamic>);

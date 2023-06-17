@@ -40,7 +40,7 @@ class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
 class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
 
 class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
-  final TemplateSection? templateSection;
+  final TemplateSectionListItem? templateSection;
   const TemplateDesignerTemplateSectionSelected({
     this.templateSection,
   });
@@ -195,7 +195,7 @@ class TemplateDesignerLevelChanged extends TemplateDesignerEvent {
 
 class TemplateDesignerCurrentTemplateSectionItemChanged
     extends TemplateDesignerEvent {
-  final ResponseScaleItem responseScaleItem;
+  final TemplateResponseScaleItem responseScaleItem;
   final String templateSectionItemId;
   const TemplateDesignerCurrentTemplateSectionItemChanged({
     required this.templateSectionItemId,
