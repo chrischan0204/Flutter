@@ -211,8 +211,8 @@ class AddEditProjectBloc
     } else if (state.projectName.length >
         ProjectFormValidation.projectNameMaxLength) {
       emit(state.copyWith(
-          projectNameValidationMessage:
-              'Project name can be ${ProjectFormValidation.projectNameMaxLength} long at maximum.'));
+          projectNameValidationMessage: Validation.maxLengthValidationMessage(
+              'Project name', ProjectFormValidation.projectNameMaxLength)));
       success = false;
     }
 
@@ -230,8 +230,8 @@ class AddEditProjectBloc
     } else if (state.referenceName.length >
         ProjectFormValidation.referenceNameMaxLength) {
       emit(state.copyWith(
-          referenceNameValidationMessage:
-              'Reference name can be ${ProjectFormValidation.referenceNameMaxLength} long at maximum.'));
+          referenceNameValidationMessage: Validation.maxLengthValidationMessage(
+              'Reference name', ProjectFormValidation.referenceNameMaxLength)));
       success = false;
     }
 
@@ -245,7 +245,8 @@ class AddEditProjectBloc
         ProjectFormValidation.referneceNumberMaxLength) {
       emit(state.copyWith(
           refereneceNumberValidationMessage:
-              'Reference number can be ${ProjectFormValidation.referneceNumberMaxLength} long at maximum.'));
+              Validation.maxLengthValidationMessage('Reference number',
+                  ProjectFormValidation.referneceNumberMaxLength)));
       success = false;
     }
 

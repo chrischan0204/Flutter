@@ -39,4 +39,11 @@ class Validation {
 
     return reg.hasMatch(str);
   }
+
+  static String maxLengthValidationMessage(
+    String field,
+    int maxLength,
+  ) {
+    return '$field cannot be more than $maxLength characters.';
+  }
 }

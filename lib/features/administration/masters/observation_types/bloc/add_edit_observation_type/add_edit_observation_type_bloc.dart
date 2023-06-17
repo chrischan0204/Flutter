@@ -187,7 +187,8 @@ class AddEditObservationTypeBloc
         ObservationTypeFormValidation.observationTypeNameMaxLength) {
       emit(state.copyWith(
           observationTypeNameValidationMessage:
-              'Observation type can be ${ObservationTypeFormValidation.observationTypeNameMaxLength} long at maximum.'));
+              Validation.maxLengthValidationMessage('Observation type',
+                  ObservationTypeFormValidation.observationTypeNameMaxLength)));
 
       success = false;
     }

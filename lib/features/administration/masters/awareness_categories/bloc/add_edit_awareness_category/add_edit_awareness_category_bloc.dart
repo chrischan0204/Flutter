@@ -194,8 +194,9 @@ class AddEditAwarenessCategoryBloc
     } else if (state.name.length >
         AwarenessCategoryFormValidation.awarenessCategoryMaxLength) {
       emit(state.copyWith(
-          nameValidationMessage:
-              'Awareness category can be ${AwarenessCategoryFormValidation.awarenessCategoryMaxLength} long at maximum.'));
+          nameValidationMessage: Validation.maxLengthValidationMessage(
+              'Awareness category',
+              AwarenessCategoryFormValidation.awarenessCategoryMaxLength)));
 
       success = false;
     }

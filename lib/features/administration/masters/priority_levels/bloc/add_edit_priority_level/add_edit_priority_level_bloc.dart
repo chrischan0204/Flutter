@@ -185,7 +185,8 @@ class AddEditPriorityLevelBloc
         PriorityLevelFormValidation.priorityLevelMaxLength) {
       emit(state.copyWith(
           priorityLevelNameValidationMessage:
-              'Priority level can be ${PriorityLevelFormValidation.priorityLevelMaxLength} long at maximum.'));
+              Validation.maxLengthValidationMessage('Priority level',
+                  PriorityLevelFormValidation.priorityLevelMaxLength)));
 
       success = false;
     }

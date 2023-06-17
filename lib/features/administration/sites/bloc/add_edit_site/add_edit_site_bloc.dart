@@ -259,8 +259,8 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       success = false;
     } else if (state.siteName.length > SiteFormValidation.siteNameMaxLength) {
       emit(state.copyWith(
-          siteNameValidationMessage:
-              'Site name can be ${SiteFormValidation.siteNameMaxLength} long at maximum.'));
+          siteNameValidationMessage: Validation.maxLengthValidationMessage(
+              'Site name', SiteFormValidation.siteNameMaxLength)));
       success = false;
     }
 
@@ -290,8 +290,8 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       success = false;
     } else if (state.siteCode.length > SiteFormValidation.siteCodeMaxLength) {
       emit(state.copyWith(
-          siteCodeValidationMessage:
-              'Site code can be ${SiteFormValidation.siteCodeMaxLength} long at maximum.'));
+          siteCodeValidationMessage: Validation.maxLengthValidationMessage(
+              'Site code', SiteFormValidation.siteCodeMaxLength)));
       success = false;
     }
 
@@ -304,8 +304,8 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
     } else if (state.referenceCode.length >
         SiteFormValidation.referenceCodeMaxLength) {
       emit(state.copyWith(
-          referenceCodeValidationMessage:
-              'Reference code can be ${SiteFormValidation.referenceCodeMaxLength} long at maximum.'));
+          referenceCodeValidationMessage: Validation.maxLengthValidationMessage(
+              'Reference code', SiteFormValidation.referenceCodeMaxLength)));
       success = false;
     }
 

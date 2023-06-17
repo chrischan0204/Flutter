@@ -169,8 +169,8 @@ class AddEditCompanyBloc
     } else if (state.companyName.length >
         CompanyFormValidation.companyNameMaxLength) {
       emit(state.copyWith(
-          companyNameValidationMessage:
-              'Company name can be ${CompanyFormValidation.companyNameMaxLength} long at maximum.'));
+          companyNameValidationMessage: Validation.maxLengthValidationMessage(
+              'Company name', CompanyFormValidation.companyNameMaxLength)));
 
       success = false;
     }

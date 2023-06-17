@@ -133,8 +133,9 @@ class AddEditAwarenessGroupBloc
     } else if (state.name.length >
         AwarenessGroupFormValidation.awarenessGroupNameMaxLength) {
       emit(state.copyWith(
-          nameValidationMessage:
-              'Awareness group can be ${AwarenessGroupFormValidation.awarenessGroupNameMaxLength} long at maximum.'));
+          nameValidationMessage: Validation.maxLengthValidationMessage(
+              'Awareness group',
+              AwarenessGroupFormValidation.awarenessGroupNameMaxLength)));
 
       success = false;
     }

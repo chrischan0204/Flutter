@@ -232,8 +232,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     } else if (state.firstName.length > UserFormValidation.firstNameMaxLength) {
       emit(state.copyWith(
-          firstNameValidationMessage:
-              'First name can be ${UserFormValidation.firstNameMaxLength} long at maximum.'));
+          firstNameValidationMessage: Validation.maxLengthValidationMessage(
+              'First name', UserFormValidation.firstNameMaxLength)));
       success = false;
     }
 
@@ -247,8 +247,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     } else if (state.lastName.length > UserFormValidation.lastNameMaxLength) {
       emit(state.copyWith(
-          lastNameValidationMessage:
-              'Last name can be ${UserFormValidation.lastNameMaxLength} long at maximum.'));
+          lastNameValidationMessage: Validation.maxLengthValidationMessage(
+              'Last name', UserFormValidation.lastNameMaxLength)));
       success = false;
     }
 
@@ -259,8 +259,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     } else if (state.title.length > UserFormValidation.userTitleMaxLength) {
       emit(state.copyWith(
-          titleValidationMessage:
-              'User title can be ${UserFormValidation.userTitleMaxLength} long at maximum.'));
+          titleValidationMessage: Validation.maxLengthValidationMessage(
+              'User title', UserFormValidation.userTitleMaxLength)));
       success = false;
     }
 
@@ -273,8 +273,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     } else if (state.email.length > UserFormValidation.emailMaxLength) {
       emit(state.copyWith(
-          emailValidationMessage:
-              'Emaii can be ${UserFormValidation.emailMaxLength} long at maximum.'));
+          emailValidationMessage: Validation.maxLengthValidationMessage(
+              'Email', UserFormValidation.emailMaxLength)));
       success = false;
     }
 
