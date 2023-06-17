@@ -4,7 +4,7 @@ abstract class TemplateDetailEvent extends Equatable {
   const TemplateDetailEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class TemplateDetailTemplateLoadedById extends TemplateDetailEvent {
@@ -27,4 +27,39 @@ class TemplateDetailSnapshotLoaded extends TemplateDetailEvent {
   const TemplateDetailSnapshotLoaded({required this.templateId});
   @override
   List<Object> get props => [templateId];
+}
+
+class TemplateDetailTemplateQuestionDetailLoaded extends TemplateDetailEvent {
+  final String id;
+  final int itemType;
+  final String? templateSectionId;
+  const TemplateDetailTemplateQuestionDetailLoaded({
+    required this.id,
+    required this.itemType,
+    this.templateSectionId,
+  });
+  @override
+  List<Object?> get props => [
+        id,
+        itemType,
+        templateSectionId,
+      ];
+}
+
+class TemplateDetailSectionListLoaded extends TemplateDetailEvent {
+  final String templateId;
+  const TemplateDetailSectionListLoaded({required this.templateId});
+
+  @override
+  List<Object> get props => [templateId];
+}
+
+class TemplateDetailSelectionSelected extends TemplateDetailEvent {
+  final TemplateSectionListItemForDetail section;
+  const TemplateDetailSelectionSelected({
+    required this.section,
+  });
+
+  @override
+  List<Object> get props => [section];
 }

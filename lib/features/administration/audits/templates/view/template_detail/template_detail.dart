@@ -50,7 +50,12 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
   void initState() {
     templatesBloc = context.read<TemplateDetailBloc>()
       ..add(TemplateDetailTemplateLoadedById(templateId: widget.templateId))
-      ..add(TemplateDetailSnapshotLoaded(templateId: widget.templateId));
+      ..add(TemplateDetailSnapshotLoaded(templateId: widget.templateId))
+      ..add(TemplateDetailSectionListLoaded(templateId: widget.templateId))
+      ..add(TemplateDetailTemplateQuestionDetailLoaded(
+        id: widget.templateId,
+        itemType: 1,
+      ));
 
     super.initState();
   }
@@ -80,13 +85,13 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
     }
   }
 
-  final Widget _customDetailWidget = Column(
-    mainAxisSize: MainAxisSize.min,
-    children: const [
-      TemplateView(),
-      QuestionsView(),
-    ],
-  );
+  Widget _buildCustomDetailWidget() => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const TemplateView(),
+          QuestionsView(templateId: widget.templateId),
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +102,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
           title: pageTitle,
           label: pageLabel,
           deleteEntity: () => _deleteTemplate(state),
-          customDetailWidget: _customDetailWidget,
+          customDetailWidget: _buildCustomDetailWidget(),
           entity: state.template,
           crudStatus: state.templateDeleteStatus,
           descriptionForDelete: descriptionForDelete,

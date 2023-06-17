@@ -2,15 +2,21 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class QuestionsView extends StatelessWidget {
-  const QuestionsView({super.key});
+  final String templateId;
+  const QuestionsView({
+    super.key,
+    required this.templateId,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: const [
-        QuestionsHeaderView(),
-        CustomDivider(),
+      children: [
+        QuestionsHeaderView(
+          templateId: templateId,
+        ),
+        const CustomDivider(),
         QuestionItemView(
           first: true,
           feedbackForOption: 'No',

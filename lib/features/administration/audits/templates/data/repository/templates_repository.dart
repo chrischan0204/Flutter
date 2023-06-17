@@ -18,7 +18,6 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
-
   /// get template by id
   Future<Template> getTemplateById(String templateId) async {
     Response response = await super.get('$url/$templateId');
@@ -30,7 +29,7 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
-  /// add template 
+  /// add template
   Future<EntityResponse> addTemplate(Template template) async {
     Response response = await super.post(url, body: template.toJson());
 
@@ -43,9 +42,9 @@ class TemplatesRepository extends BaseRepository {
           .copyWith(statusCode: response.statusCode);
     }
     throw Exception();
-  } 
+  }
 
-  /// edit template 
+  /// edit template
   Future<EntityResponse> editTemplate(Template template) async {
     Response response = await super.put(url, body: template.toJson());
 
@@ -125,12 +124,33 @@ class TemplatesRepository extends BaseRepository {
   }
 
   /// get template section list for template detail
-  Future<List<TemplateSectionListItemForDetail>> getTemplateSectionListForDetail(
-      String templateId) async {
+  Future<List<TemplateSectionListItemForDetail>>
+      getTemplateSectionListForDetail(String templateId) async {
     Response response = await super.get('$url/$templateId/sectionlist');
 
     return List.from(json.decode(response.body))
         .map((e) => TemplateSectionListItemForDetail.fromMap(e))
         .toList();
+  }
+
+  /// get template question details
+  Future<TemplateSection> getTemplateQuestionDetails(
+    String id,
+    int itemType,
+    String? templateSectionId,
+  ) async {
+    Map<String, String> map = {'itemType': itemType.toString()};
+
+    if (templateSectionId != null) {
+      map.addEntries(
+          [MapEntry('templateSectionId', templateSectionId.toString())]);
+    }
+    Response response = await super.get('$url/$id/details', map);
+
+    if (response.statusCode == 200) {
+      return TemplateSection.fromJson(response.body);
+    }
+
+    throw Exception();
   }
 }

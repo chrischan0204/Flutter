@@ -1,7 +1,26 @@
 import '/common_libraries.dart';
 
 class QuestionsHeaderView extends StatelessWidget {
-  const QuestionsHeaderView({super.key});
+  final String templateId;
+  const QuestionsHeaderView({
+    super.key,
+    required this.templateId,
+  });
+
+  /// get template question details by template section
+  void _getTemplateQuestionDetailsByTemplateSection(
+      BuildContext context, TemplateSectionListItemForDetail section) {
+    context
+        .read<TemplateDetailBloc>()
+        .add(TemplateDetailSelectionSelected(section: section));
+    context.read<TemplateDetailBloc>().add(
+          TemplateDetailTemplateQuestionDetailLoaded(
+            id: templateId,
+            itemType: 1,
+            templateSectionId: section.id,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +34,23 @@ class QuestionsHeaderView extends StatelessWidget {
             'Questions in this template',
             style: TextStyle(fontSize: 18),
           ),
-          CustomSingleSelect(
-            hint: 'Show all category questions',
-            width: 400,
-            items: const {
-              'Show all category questions': 'Show all category questions',
-              'Electric Inspection': 'Electric Inspection',
-              'Signage Inspection': 'Signage Inspection'
+          BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+            builder: (context, state) {
+              Map<String, TemplateSectionListItemForDetail> items = {};
+              for (final section in state.templateSectionList) {
+                items.addEntries([MapEntry(section.name, section)]);
+              }
+
+              return CustomSingleSelect(
+                hint: 'Show all category questions',
+                width: 400,
+                items: items,
+                selectedValue: state.selectedTemplateSection?.name,
+                onChanged: (section) =>
+                    _getTemplateQuestionDetailsByTemplateSection(
+                        context, section.value),
+              );
             },
-            onChanged: (value) {},
           ),
         ],
       ),
