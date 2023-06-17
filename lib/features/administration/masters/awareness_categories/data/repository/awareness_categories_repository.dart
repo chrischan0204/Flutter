@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart';
 import 'package:safety_eta/data/repository/base_repository.dart';
-import '/constants/uri.dart';
 
 import '/data/model/entity.dart';
 import '../model/awareness_category.dart';

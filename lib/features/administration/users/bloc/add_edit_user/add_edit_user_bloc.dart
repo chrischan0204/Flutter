@@ -16,6 +16,11 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
   static String timeZoneValidationMessage = 'Time Zone is required.';
   static String emailValidationMessage = 'Email is required.';
 
+  static String addErrorMessage =
+      'There was an error while adding user. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing user. Our team has been notified. Please wait a few minutes and try again.';
+
   AddEditUserBloc({
     required this.usersRepository,
     required this.timeZonesRepository,
@@ -159,7 +164,10 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
           }
         }
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: addErrorMessage,
+        ));
       }
     }
   }
@@ -203,7 +211,10 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
           }
         }
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: editErrorMessage,
+        ));
       }
     }
   }

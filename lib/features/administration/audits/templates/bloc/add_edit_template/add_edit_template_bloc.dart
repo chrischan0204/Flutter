@@ -11,6 +11,9 @@ class AddEditTemplateBloc
   static String templateAddErrorMessage =
       'There was a problem in creating the template. We have made a note of this. Please try again after a few minutes....';
 
+  static String templateEditErrorMessage =
+      'There was a problem in editing the template. We have made a note of this. Please try again after a few minutes....';
+
   AddEditTemplateBloc({
     required this.templatesRepository,
     required this.formDirtyBloc,
@@ -84,7 +87,9 @@ class AddEditTemplateBloc
       } catch (e) {
         emit(state.copyWith(
           status: EntityStatus.failure,
-          message: templateAddErrorMessage,
+          message: event.templateId == null
+              ? templateAddErrorMessage
+              : templateEditErrorMessage,
         ));
       }
     }

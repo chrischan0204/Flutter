@@ -41,8 +41,8 @@ class _FilterSettingSelectFieldState extends State<FilterSettingSelectField> {
               }
               return ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width / 7,
-                  minWidth: 100,
+                  maxWidth: MediaQuery.of(context).size.width / 5,
+                  minWidth: 150,
                 ),
                 child: CustomSingleSelect(
                   selectedValue:

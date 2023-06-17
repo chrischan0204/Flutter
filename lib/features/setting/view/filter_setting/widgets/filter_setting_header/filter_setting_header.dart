@@ -16,6 +16,10 @@ class FilterSettingHeaderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    bool showOnlyIcon = width < 1400;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -31,15 +35,27 @@ class FilterSettingHeaderView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ApplyButton(onFilterApplied: onFilterApplied),
+                ApplyButton(
+                  onFilterApplied: onFilterApplied,
+                  showOnlyIcon: showOnlyIcon,
+                ),
                 const SizedBox(width: 10),
-                SaveButton(onFilterSaved: onFilterApplied),
+                SaveButton(
+                  onFilterSaved: onFilterApplied,
+                  showOnlyIcon: showOnlyIcon,
+                ),
                 const SizedBox(width: 10),
-                SaveAsButton(onFilterSaved: onFilterApplied),
+                SaveAsButton(
+                  onFilterSaved: onFilterApplied,
+                  showOnlyIcon: showOnlyIcon,
+                ),
                 const SizedBox(width: 10),
-                RenameButton(onFilterSaved: onFilterApplied),
+                RenameButton(
+                  onFilterSaved: onFilterApplied,
+                  showOnlyIcon: showOnlyIcon,
+                ),
                 const SizedBox(width: 10),
-                const DeleteButton(),
+                DeleteButton(showOnlyIcon: showOnlyIcon),
                 const SizedBox(width: 10),
                 InkWell(
                   onTap: () => onFilterOptionClosed(),

@@ -8,6 +8,11 @@ class AddEditProjectBloc
   final FormDirtyBloc formDirtyBloc;
   final ProjectsRepository projectsRepository;
   final SitesRepository sitesRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding project. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing project. Our team has been notified. Please wait a few minutes and try again.';
   AddEditProjectBloc({
     required this.formDirtyBloc,
     required this.projectsRepository,
@@ -98,7 +103,10 @@ class AddEditProjectBloc
           _checkMessage(emit, response.message);
         }
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: addErrorMessage,
+        ));
       }
     }
   }
@@ -134,7 +142,10 @@ class AddEditProjectBloc
           _checkMessage(emit, response.message);
         }
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: editErrorMessage,
+        ));
       }
     }
   }

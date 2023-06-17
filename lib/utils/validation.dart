@@ -1,5 +1,3 @@
-import 'package:email_validator/email_validator.dart';
-
 class Validation {
   static bool isEmpty(String? text) {
     return text == null || (text.isEmpty || text.trim().isEmpty);
@@ -20,11 +18,18 @@ class Validation {
   }
 
   static bool isEmail(String str) {
-    return EmailValidator.validate(str);
+    final emailReg = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+    return emailReg.hasMatch(str);
+    // return EmailValidator.validate(str);
   }
 
   static bool isMobilePhone(String str) {
-    final mobile = RegExp(r'^(?:[+0]9)?[0-9]{10}$');
+    // final mobile = RegExp(r'^(?:[+0]9)?[0-9]{10}$');
+    // final mobile =
+    //     RegExp(r'^(\+0?1\s)?((\d{3})|(\(\d{3}\)))?(\s|-)\d{3}(\s|-)\d{4}$');
+    final mobile = RegExp(
+        r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
     // final mobile = RegExp(r'^[0-9]+.()-$');
     return mobile.hasMatch(str);
   }

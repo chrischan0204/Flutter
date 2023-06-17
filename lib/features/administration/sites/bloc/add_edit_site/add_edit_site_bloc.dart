@@ -8,6 +8,11 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
   final RegionsRepository regionsRepository;
   final TimeZonesRepository timeZonesRepository;
   final SitesRepository sitesRepository;
+
+  static String addErrorMessage =
+      'There was an error while adding site. Our team has been notified. Please wait a few minutes and try again.';
+  static String editErrorMessage =
+      'There was an error while editing site. Our team has been notified. Please wait a few minutes and try again.';
   AddEditSiteBloc({
     required this.formDirtyBloc,
     required this.regionsRepository,
@@ -132,7 +137,10 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
           _checkMessage(emit, response.message);
         }
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: addErrorMessage,
+        ));
       }
     }
   }
@@ -165,7 +173,10 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
           _checkMessage(emit, response.message);
         }
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: editErrorMessage,
+        ));
       }
     }
   }
@@ -277,7 +288,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
           siteCodeValidationMessage: 'Site code should be only alphanumeric.'));
 
       success = false;
-    } else if (state.siteName.length > SiteFormValidation.siteCodeMaxLength) {
+    } else if (state.siteCode.length > SiteFormValidation.siteCodeMaxLength) {
       emit(state.copyWith(
           siteCodeValidationMessage:
               'Site code can be ${SiteFormValidation.siteCodeMaxLength} long at maximum.'));

@@ -134,7 +134,6 @@ class AddEditAwarenessCategoryBloc
           ));
         }
       } catch (e) {
-        print(e);
         emit(state.copyWith(
           status: EntityStatus.failure,
           message: editErrorMessage,
