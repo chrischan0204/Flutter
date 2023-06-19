@@ -110,7 +110,7 @@ class TemplateDetailBloc
                                       templateQuestionDetailList,
                                 );
                               }
-                              return e.copyWith(isOpen: false);
+                              return e;
                             }).toList(),
                           ),
                         )
@@ -146,8 +146,7 @@ class TemplateDetailBloc
                                                                 templateQuestionDetailList,
                                                           );
                                                         }
-                                                        return c.copyWith(
-                                                            isOpen: false);
+                                                        return c;
                                                       }).toList()))
                                                   .toList()))
                                           .toList()))
@@ -193,9 +192,11 @@ class TemplateDetailBloc
                 (x) => x.copyWith(
                   templateSectionItems: x.templateSectionItems
                       .map(
-                        (y) => y.id == event.id
-                            ? y.copyWith(isOpen: event.isOpen)
-                            : y.copyWith(isOpen: false),
+                        (y) {
+                          if (y.id == event.id)
+                            {return y.copyWith(isOpen: event.isOpen);}
+                          else {return y;}
+                        },
                       )
                       .toList(),
                 ),
@@ -214,9 +215,15 @@ class TemplateDetailBloc
                                     followUpQuestionList: z.followUpQuestionList
                                         .map((e) => e.copyWith(
                                             templateSectionItems: e.templateSectionItems
-                                                .map((child) => child.id != event.id
-                                                    ? child.copyWith(isOpen: event.isOpen)
-                                                    : child.copyWith(isOpen: false))
+                                                .map((child) {
+                                                  if (child.id == event.id)
+                                                    {
+                                                      return child.copyWith(isOpen: event.isOpen);
+                                                    }
+                                                    else {
+                                                      return child;
+                                                    }
+                                                })
                                                 .toList()))
                                         .toList()))
                                 .toList()))
@@ -235,7 +242,7 @@ class TemplateDetailBloc
                                         .map((e) => e.copyWith(
                                             templateSectionItems: e.templateSectionItems
                                                 .map((child) => child.copyWith(
-                                                    responseScaleItems: child.responseScaleItems.map((c) => c.copyWith(followUpQuestionList: c.followUpQuestionList.map((cc) => cc.copyWith(templateSectionItems: cc.templateSectionItems.map((ccc) => ccc.id == event.id ? ccc.copyWith(isOpen: event.isOpen) : ccc.copyWith(isOpen: false)).toList())).toList())).toList()))
+                                                    responseScaleItems: child.responseScaleItems.map((c) => c.copyWith(followUpQuestionList: c.followUpQuestionList.map((cc) => cc.copyWith(templateSectionItems: cc.templateSectionItems.map((ccc) => ccc.id == event.id ? ccc.copyWith(isOpen: event.isOpen) : ccc).toList())).toList())).toList()))
                                                 .toList()))
                                         .toList()))
                                 .toList()))

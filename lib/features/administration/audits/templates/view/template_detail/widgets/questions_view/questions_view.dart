@@ -10,6 +10,17 @@ class QuestionsView extends StatelessWidget {
     required this.templateId,
   });
 
+  List<TemplateQuestion> _getTemplateQuestionList(
+      List<TemplateSection> templateSectionList) {
+    final List<TemplateQuestion> list = [];
+    for (final questionDetail in templateSectionList) {
+      for (final templateSectionItem in questionDetail.templateSectionItems) {
+        list.add(templateSectionItem);
+      }
+    }
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,15 +32,18 @@ class QuestionsView extends StatelessWidget {
         const CustomDivider(),
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
-            return Accordion(
-              maxOpenSections: 1,
-              scaleWhenAnimating: false,
-              openAndCloseAnimation: false,
-              headerPadding:
-                  const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-              headerBorderRadius: 0,
-              contentBorderRadius: 0,
-              contentVerticalPadding: 0,
+            return ExpansionPanelList(
+              expansionCallback: (int index, bool isExpanded) {
+                context
+                    .read<TemplateDetailBloc>()
+                    .add(TemplateDetailIsOpenChanged(
+                      id: _getTemplateQuestionList(
+                              state.templateQuestionDetailList)[index]
+                          .id,
+                      level: 1,
+                      isOpen: !isExpanded,
+                    ));
+              },
               children: [
                 for (final questionDetail in state.templateQuestionDetailList)
                   for (final templateSectionItem
@@ -40,6 +54,7 @@ class QuestionsView extends StatelessWidget {
                       context: context,
                       templateSectionId: questionDetail.id,
                       level: 1,
+                      getTemplateQuestionList: _getTemplateQuestionList,
                     )
               ],
             );
