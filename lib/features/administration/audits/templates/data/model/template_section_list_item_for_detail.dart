@@ -1,10 +1,10 @@
 import '/common_libraries.dart';
 
 class TemplateSectionListItemForDetail extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   const TemplateSectionListItemForDetail({
-    required this.id,
+    this.id,
     required this.name,
   });
 

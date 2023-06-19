@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'template_detail_bloc.dart';
 
 abstract class TemplateDetailEvent extends Equatable {
@@ -33,16 +34,22 @@ class TemplateDetailTemplateQuestionDetailLoaded extends TemplateDetailEvent {
   final String id;
   final int itemType;
   final String? templateSectionId;
+  final int level;
+  final bool? isOpen;
   const TemplateDetailTemplateQuestionDetailLoaded({
     required this.id,
     required this.itemType,
     this.templateSectionId,
+    required this.level,
+    this.isOpen,
   });
   @override
   List<Object?> get props => [
         id,
         itemType,
         templateSectionId,
+        level,
+        isOpen,
       ];
 }
 
@@ -62,4 +69,23 @@ class TemplateDetailSelectionSelected extends TemplateDetailEvent {
 
   @override
   List<Object> get props => [section];
+}
+
+/// event to change the expanded or collapsed of expandable list
+class TemplateDetailIsOpenChanged extends TemplateDetailEvent {
+  final bool isOpen;
+  final int level;
+  final String id;
+  const TemplateDetailIsOpenChanged({
+    required this.isOpen,
+    required this.level,
+    required this.id,
+  });
+
+  @override
+  List<Object> get props => [
+        isOpen,
+        level,
+        id,
+      ];
 }

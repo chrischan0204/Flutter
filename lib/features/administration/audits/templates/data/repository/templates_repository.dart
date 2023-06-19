@@ -134,7 +134,7 @@ class TemplatesRepository extends BaseRepository {
   }
 
   /// get template question details
-  Future<TemplateSection> getTemplateQuestionDetails(
+  Future<List<TemplateSection>> getTemplateQuestionDetailList(
     String id,
     int itemType,
     String? templateSectionId,
@@ -148,7 +148,9 @@ class TemplatesRepository extends BaseRepository {
     Response response = await super.get('$url/$id/details', map);
 
     if (response.statusCode == 200) {
-      return TemplateSection.fromJson(response.body);
+      return List.from(json.decode(response.body))
+          .map((e) => TemplateSection.fromMap(e))
+          .toList();
     }
 
     throw Exception();

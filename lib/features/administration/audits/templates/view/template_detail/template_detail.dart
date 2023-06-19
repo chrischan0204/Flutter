@@ -55,6 +55,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
       ..add(TemplateDetailTemplateQuestionDetailLoaded(
         id: widget.templateId,
         itemType: 1,
+        level: 0,
       ));
 
     super.initState();

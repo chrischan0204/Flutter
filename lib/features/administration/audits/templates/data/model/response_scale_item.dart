@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+import '/common_libraries.dart';
 
 class TemplateResponseScaleItem extends Equatable {
   final String id;
@@ -13,6 +11,10 @@ class TemplateResponseScaleItem extends Equatable {
   final bool actionItemRequired;
   final bool followUpRequired;
   final int order;
+
+  final List<TemplateSection> followUpQuestionList;
+  final bool isOpen;
+
   const TemplateResponseScaleItem({
     required this.id,
     required this.name,
@@ -24,6 +26,8 @@ class TemplateResponseScaleItem extends Equatable {
     required this.actionItemRequired,
     required this.followUpRequired,
     required this.order,
+    this.followUpQuestionList = const [],
+    this.isOpen = false,
   });
 
   @override
@@ -38,6 +42,8 @@ class TemplateResponseScaleItem extends Equatable {
         actionItemRequired,
         followUpRequired,
         order,
+        followUpQuestionList,
+        isOpen,
       ];
 
   Map<String, dynamic> toMap() {
@@ -74,7 +80,8 @@ class TemplateResponseScaleItem extends Equatable {
   String toJson() => json.encode(toMap());
 
   factory TemplateResponseScaleItem.fromJson(String source) =>
-      TemplateResponseScaleItem.fromMap(json.decode(source) as Map<String, dynamic>);
+      TemplateResponseScaleItem.fromMap(
+          json.decode(source) as Map<String, dynamic>);
 
   static List<TemplateResponseScaleItem> fromListJson(String source) {
     return List.from(json.decode(source))
@@ -93,6 +100,8 @@ class TemplateResponseScaleItem extends Equatable {
     bool? actionItemRequired,
     bool? followUpRequired,
     int? order,
+    List<TemplateSection>? followUpQuestionList,
+    bool? isOpen,
   }) {
     return TemplateResponseScaleItem(
       id: id ?? this.id,
@@ -105,6 +114,8 @@ class TemplateResponseScaleItem extends Equatable {
       actionItemRequired: actionItemRequired ?? this.actionItemRequired,
       followUpRequired: followUpRequired ?? this.followUpRequired,
       order: order ?? this.order,
+      followUpQuestionList: followUpQuestionList ?? this.followUpQuestionList,
+      isOpen: isOpen ?? this.isOpen,
     );
   }
 }

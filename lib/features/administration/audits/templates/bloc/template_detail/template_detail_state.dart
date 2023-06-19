@@ -15,7 +15,7 @@ class TemplateDetailState extends Equatable {
   final TemplateSectionListItemForDetail? selectedTemplateSection;
 
   /// template question details
-  final TemplateSection? templateQuestionDetails;
+  final List<TemplateSection> templateQuestionDetailList;
 
   /// template snapshot list load status
   final EntityStatus templateSnapshotListLoadStatus;
@@ -33,7 +33,7 @@ class TemplateDetailState extends Equatable {
     this.template,
     this.templateSnapshotList = const [],
     this.templateSectionList = const [],
-    this.templateQuestionDetails,
+    this.templateQuestionDetailList = const [],
     this.selectedTemplateSection,
     this.templateLoadStatus = EntityStatus.initial,
     this.templateDeleteStatus = EntityStatus.initial,
@@ -44,7 +44,7 @@ class TemplateDetailState extends Equatable {
   @override
   List<Object?> get props => [
         template,
-        templateQuestionDetails,
+        templateQuestionDetailList,
         selectedTemplateSection,
         templateSnapshotList,
         templateSectionList,
@@ -67,7 +67,7 @@ class TemplateDetailState extends Equatable {
     List<TemplateSnapshot>? templateSnapshotList,
     List<TemplateSectionListItemForDetail>? templateSectionList,
     TemplateSectionListItemForDetail? selectedTemplateSection,
-    TemplateSection? templateQuestionDetails,
+    List<TemplateSection>? templateQuestionDetailList,
     EntityStatus? templateSnapshotListLoadStatus,
     EntityStatus? templateLoadStatus,
     EntityStatus? templateDeleteStatus,
@@ -79,8 +79,8 @@ class TemplateDetailState extends Equatable {
       templateSectionList: templateSectionList ?? this.templateSectionList,
       selectedTemplateSection:
           selectedTemplateSection ?? this.selectedTemplateSection,
-      templateQuestionDetails:
-          templateQuestionDetails ?? this.templateQuestionDetails,
+      templateQuestionDetailList:
+          templateQuestionDetailList ?? this.templateQuestionDetailList,
       templateSnapshotListLoadStatus:
           templateSnapshotListLoadStatus ?? this.templateSnapshotListLoadStatus,
       templateLoadStatus: templateLoadStatus ?? this.templateLoadStatus,

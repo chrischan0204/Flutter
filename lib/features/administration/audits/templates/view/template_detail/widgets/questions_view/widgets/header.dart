@@ -18,6 +18,7 @@ class QuestionsHeaderView extends StatelessWidget {
             id: templateId,
             itemType: 1,
             templateSectionId: section.id,
+            level: 0,
           ),
         );
   }
@@ -36,7 +37,11 @@ class QuestionsHeaderView extends StatelessWidget {
           ),
           BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
             builder: (context, state) {
-              Map<String, TemplateSectionListItemForDetail> items = {};
+              Map<String, TemplateSectionListItemForDetail> items = {
+                'Show all category questions':
+                    const TemplateSectionListItemForDetail(
+                        name: 'Show all category questions')
+              };
               for (final section in state.templateSectionList) {
                 items.addEntries([MapEntry(section.name, section)]);
               }

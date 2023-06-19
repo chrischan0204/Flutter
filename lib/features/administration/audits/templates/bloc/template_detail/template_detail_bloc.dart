@@ -18,6 +18,7 @@ class TemplateDetailBloc
     on<TemplateDetailTemplateQuestionDetailLoaded>(
         _onTemplateDetailTemplateQuestionDetailLoaded);
     on<TemplateDetailSelectionSelected>(_onTemplateDetailSelectionSelected);
+    on<TemplateDetailIsOpenChanged>(_onTemplateDetailIsOpenChanged);
   }
 
   Future<void> _onTemplateDetailTemplateLoadedById(
@@ -84,12 +85,76 @@ class TemplateDetailBloc
     Emitter<TemplateDetailState> emit,
   ) async {
     try {
-      TemplateSection templateQuestionDetails =
-          await templatesRepository.getTemplateQuestionDetails(
+      List<TemplateSection> templateQuestionDetailList =
+          await templatesRepository.getTemplateQuestionDetailList(
               event.id, event.itemType, event.templateSectionId);
-      emit(state.copyWith(
-        templateQuestionDetails: templateQuestionDetails,
-      ));
+      switch (event.level) {
+        case 0:
+          emit(state.copyWith(
+            templateQuestionDetailList: templateQuestionDetailList,
+          ));
+          break;
+        case 1:
+          emit(state.copyWith(
+            templateQuestionDetailList: state.templateQuestionDetailList
+                .map(
+                  (x) => x.copyWith(
+                    templateSectionItems: x.templateSectionItems
+                        .map(
+                          (y) => y.copyWith(
+                            responseScaleItems: y.responseScaleItems.map((e) {
+                              if (e.id == event.id) {
+                                return e.copyWith(
+                                  isOpen: event.isOpen,
+                                  followUpQuestionList:
+                                      templateQuestionDetailList,
+                                );
+                              }
+                              return e.copyWith(isOpen: false);
+                            }).toList(),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          ));
+          break;
+        case 2:
+          emit(state.copyWith(
+              templateQuestionDetailList: state.templateQuestionDetailList
+                  .map((x) => x.copyWith(
+                      templateSectionItems: x.templateSectionItems
+                          .map((y) => y.copyWith(
+                              responseScaleItems: y.responseScaleItems
+                                  .map((z) => z.copyWith(
+                                      followUpQuestionList: z
+                                          .followUpQuestionList
+                                          .map((e) => e.copyWith(
+                                              templateSectionItems: e
+                                                  .templateSectionItems
+                                                  .map((child) =>
+                                                      child.copyWith(
+                                                          responseScaleItems: child
+                                                              .responseScaleItems
+                                                              .map((c)  {
+                              if (c.id == event.id) {
+                                return c.copyWith(
+                                  isOpen: event.isOpen,
+                                  followUpQuestionList:
+                                      templateQuestionDetailList,
+                                );
+                              }
+                              return c.copyWith(isOpen: false);
+                            })
+                                                              .toList()))
+                                                  .toList()))
+                                          .toList()))
+                                  .toList()))
+                          .toList()))
+                  .toList()));
+          break;
+      }
     } catch (e) {}
   }
 
@@ -113,5 +178,69 @@ class TemplateDetailBloc
     Emitter<TemplateDetailState> emit,
   ) {
     emit(state.copyWith(selectedTemplateSection: event.section));
+  }
+
+  void _onTemplateDetailIsOpenChanged(
+    TemplateDetailIsOpenChanged event,
+    Emitter<TemplateDetailState> emit,
+  ) {
+    switch (event.level) {
+      case 1:
+        emit(state.copyWith(
+          templateQuestionDetailList: state.templateQuestionDetailList
+              .map(
+                (x) => x.copyWith(
+                  templateSectionItems: x.templateSectionItems
+                      .map(
+                        (y) => y.id == event.id
+                            ? y.copyWith(isOpen: event.isOpen)
+                            : y.copyWith(isOpen: false),
+                      )
+                      .toList(),
+                ),
+              )
+              .toList(),
+        ));
+        break;
+      case 2:
+        emit(state.copyWith(
+            templateQuestionDetailList: state.templateQuestionDetailList
+                .map((x) => x.copyWith(
+                    templateSectionItems: x.templateSectionItems
+                        .map((y) => y.copyWith(
+                            responseScaleItems: y.responseScaleItems
+                                .map((z) => z.copyWith(
+                                    followUpQuestionList: z.followUpQuestionList
+                                        .map((e) => e.copyWith(
+                                            templateSectionItems: e.templateSectionItems
+                                                .map((child) => child.id != event.id
+                                                    ? child.copyWith(isOpen: event.isOpen)
+                                                    : child.copyWith(isOpen: false))
+                                                .toList()))
+                                        .toList()))
+                                .toList()))
+                        .toList()))
+                .toList()));
+        break;
+      case 3:
+        emit(state.copyWith(
+            templateQuestionDetailList: state.templateQuestionDetailList
+                .map((x) => x.copyWith(
+                    templateSectionItems: x.templateSectionItems
+                        .map((y) => y.copyWith(
+                            responseScaleItems: y.responseScaleItems
+                                .map((z) => z.copyWith(
+                                    followUpQuestionList: z.followUpQuestionList
+                                        .map((e) => e.copyWith(
+                                            templateSectionItems: e.templateSectionItems
+                                                .map((child) => child.copyWith(
+                                                    responseScaleItems: child.responseScaleItems.map((c) => c.copyWith(followUpQuestionList: c.followUpQuestionList.map((cc) => cc.copyWith(templateSectionItems: cc.templateSectionItems.map((ccc) => ccc.id == event.id ? ccc.copyWith(isOpen: event.isOpen) : ccc.copyWith(isOpen: false)).toList())).toList())).toList()))
+                                                .toList()))
+                                        .toList()))
+                                .toList()))
+                        .toList()))
+                .toList()));
+        break;
+    }
   }
 }

@@ -9,6 +9,8 @@ class TemplateQuestion extends Equatable {
   final double maxScore;
   final List<TemplateResponseScaleItem> responseScaleItems;
 
+  final bool isOpen;
+
   const TemplateQuestion({
     required this.id,
     required this.title,
@@ -17,6 +19,7 @@ class TemplateQuestion extends Equatable {
     required this.questionScore,
     required this.maxScore,
     required this.responseScaleItems,
+    this.isOpen = false,
   });
   @override
   List<Object?> get props => [
@@ -26,27 +29,9 @@ class TemplateQuestion extends Equatable {
         questionScorePoint,
         questionScore,
         maxScore,
+        responseScaleItems,
+        isOpen,
       ];
-
-  TemplateQuestion copyWith({
-    String? id,
-    String? title,
-    String? scaleName,
-    double? questionScorePoint,
-    double? questionScore,
-    double? maxScore,
-    List<TemplateResponseScaleItem>? responseScaleItems,
-  }) {
-    return TemplateQuestion(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      scaleName: scaleName ?? this.scaleName,
-      questionScorePoint: questionScorePoint ?? this.questionScorePoint,
-      questionScore: questionScore ?? this.questionScore,
-      maxScore: maxScore ?? this.maxScore,
-      responseScaleItems: responseScaleItems ?? this.responseScaleItems,
-    );
-  }
 
   factory TemplateQuestion.fromMap(Map<String, dynamic> map) {
     return TemplateQuestion(
@@ -65,4 +50,26 @@ class TemplateQuestion extends Equatable {
 
   factory TemplateQuestion.fromJson(String source) =>
       TemplateQuestion.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  TemplateQuestion copyWith({
+    String? id,
+    String? title,
+    String? scaleName,
+    double? questionScorePoint,
+    double? questionScore,
+    double? maxScore,
+    List<TemplateResponseScaleItem>? responseScaleItems,
+    bool? isOpen,
+  }) {
+    return TemplateQuestion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      scaleName: scaleName ?? this.scaleName,
+      questionScorePoint: questionScorePoint ?? this.questionScorePoint,
+      questionScore: questionScore ?? this.questionScore,
+      maxScore: maxScore ?? this.maxScore,
+      responseScaleItems: responseScaleItems ?? this.responseScaleItems,
+      isOpen: isOpen ?? this.isOpen,
+    );
+  }
 }

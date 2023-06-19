@@ -4,3 +4,4 @@ export 'date_format.dart';
 export 'validation.dart';
 export 'timer_service_provider.dart';
 export 'inactivity_detect_widget.dart';
+export 'extentions.dart';

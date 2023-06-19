@@ -8,8 +8,9 @@ class QuestionItemView extends StatelessWidget {
   final String question;
   final String scale;
   final String category;
-  final int questionScore;
-  final int maxScore;
+  final double questionScore;
+  final double maxScore;
+  final int level;
   const QuestionItemView({
     super.key,
     this.first = false,
@@ -20,6 +21,7 @@ class QuestionItemView extends StatelessWidget {
     required this.maxScore,
     this.feedbackForOption,
     this.l2FeedbackForOption,
+    required this.level,
   });
 
   @override
@@ -31,17 +33,18 @@ class QuestionItemView extends StatelessWidget {
         if (first) const ParallelLineView(),
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text(
-            question,
-            style: TextStyle(
-              color: darkGreyAccent,
-              fontSize: 18,
-            ),
+          child: QuestionItemRowItem(
+            title: level > 0 ? 'L$level Question' : 'Question',
+            fontSize: 18,
+            content: question,
           ),
         ),
-        const CustomDivider(height: 1),
+        const CustomDivider(
+          height: 1,
+          color: Colors.white,
+        ),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20),
           child: Row(
             children: [
               Expanded(
@@ -77,18 +80,6 @@ class QuestionItemView extends StatelessWidget {
             ],
           ),
         ),
-        FeedbackOptionView(
-          feedbackForOption: feedbackForOption,
-          scale: 'Yes/No',
-          questionScore: 1,
-        ),
-        FeedbackOptionView(
-          l2: true,
-          feedbackForOption: l2FeedbackForOption,
-          scale: 'Yes/No',
-          questionScore: 1,
-        ),
-        const ParallelLineView(),
       ],
     );
   }

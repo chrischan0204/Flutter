@@ -8,6 +8,7 @@ environment:
   sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
+  accordion: ^2.5.1
   animate_do: ^3.0.2
   animate_icons: ^2.0.0
   animated_text_kit: ^4.2.2
