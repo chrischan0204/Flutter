@@ -40,6 +40,7 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
                   searchController: textEditingController,
                   searchInnerWidgetHeight: 40,
                   searchInnerWidget: Container(
+                    color: Colors.white,
                     padding: const EdgeInsets.only(
                       top: 8,
                       bottom: 4,

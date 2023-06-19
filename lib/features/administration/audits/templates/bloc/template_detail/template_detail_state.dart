@@ -17,6 +17,9 @@ class TemplateDetailState extends Equatable {
   /// template question details
   final List<TemplateSection> templateQuestionDetailList;
 
+  /// audit template snapshot
+  final AuditTemplateSnapshot? auditTemplateSnapshot;
+
   /// template snapshot list load status
   final EntityStatus templateSnapshotListLoadStatus;
 
@@ -35,6 +38,7 @@ class TemplateDetailState extends Equatable {
     this.templateSectionList = const [],
     this.templateQuestionDetailList = const [],
     this.selectedTemplateSection,
+    this.auditTemplateSnapshot,
     this.templateLoadStatus = EntityStatus.initial,
     this.templateDeleteStatus = EntityStatus.initial,
     this.templateSnapshotListLoadStatus = EntityStatus.initial,
@@ -46,6 +50,7 @@ class TemplateDetailState extends Equatable {
         template,
         templateQuestionDetailList,
         selectedTemplateSection,
+        auditTemplateSnapshot,
         templateSnapshotList,
         templateSectionList,
         templateSnapshotListLoadStatus,
@@ -68,6 +73,7 @@ class TemplateDetailState extends Equatable {
     List<TemplateSectionListItemForDetail>? templateSectionList,
     TemplateSectionListItemForDetail? selectedTemplateSection,
     List<TemplateSection>? templateQuestionDetailList,
+    AuditTemplateSnapshot? auditTemplateSnapshot,
     EntityStatus? templateSnapshotListLoadStatus,
     EntityStatus? templateLoadStatus,
     EntityStatus? templateDeleteStatus,
@@ -81,6 +87,8 @@ class TemplateDetailState extends Equatable {
           selectedTemplateSection ?? this.selectedTemplateSection,
       templateQuestionDetailList:
           templateQuestionDetailList ?? this.templateQuestionDetailList,
+      auditTemplateSnapshot:
+          auditTemplateSnapshot ?? this.auditTemplateSnapshot,
       templateSnapshotListLoadStatus:
           templateSnapshotListLoadStatus ?? this.templateSnapshotListLoadStatus,
       templateLoadStatus: templateLoadStatus ?? this.templateLoadStatus,

@@ -155,4 +155,16 @@ class TemplatesRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  /// get template audit list
+  Future<AuditTemplateSnapshot> getTemplateAuditSnapshot(
+      String templateId) async {
+    Response response = await super.get('$url/$templateId/auditsnapshots');
+
+    if (response.statusCode == 200) {
+      return AuditTemplateSnapshot.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
 }

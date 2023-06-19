@@ -19,6 +19,8 @@ class TemplateDetailBloc
         _onTemplateDetailTemplateQuestionDetailLoaded);
     on<TemplateDetailSelectionSelected>(_onTemplateDetailSelectionSelected);
     on<TemplateDetailIsOpenChanged>(_onTemplateDetailIsOpenChanged);
+    on<TemplateDetailAuditTemplateSnapshotLoaded>(
+        _onTemplateDetailAuditTemplateSnapshotLoaded);
   }
 
   Future<void> _onTemplateDetailTemplateLoadedById(
@@ -332,5 +334,17 @@ class TemplateDetailBloc
                 .toList()));
         break;
     }
+  }
+
+  Future<void> _onTemplateDetailAuditTemplateSnapshotLoaded(
+    TemplateDetailAuditTemplateSnapshotLoaded event,
+    Emitter<TemplateDetailState> emit,
+  ) async {
+    try {
+      AuditTemplateSnapshot auditTemplateSnapshot =
+          await templatesRepository.getTemplateAuditSnapshot(event.id);
+
+      emit(state.copyWith(auditTemplateSnapshot: auditTemplateSnapshot));
+    } catch (e) {}
   }
 }

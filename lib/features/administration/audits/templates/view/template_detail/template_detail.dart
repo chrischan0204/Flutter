@@ -51,6 +51,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
     templatesBloc = context.read<TemplateDetailBloc>()
       ..add(TemplateDetailTemplateLoadedById(templateId: widget.templateId))
       ..add(TemplateDetailSnapshotLoaded(templateId: widget.templateId))
+      ..add(TemplateDetailAuditTemplateSnapshotLoaded(id: widget.templateId))
       ..add(TemplateDetailSectionListLoaded(templateId: widget.templateId))
       ..add(TemplateDetailTemplateQuestionDetailLoaded(
         id: widget.templateId,

@@ -89,3 +89,13 @@ class TemplateDetailIsOpenChanged extends TemplateDetailEvent {
         id,
       ];
 }
+
+/// event to load the audit template snapshot
+class TemplateDetailAuditTemplateSnapshotLoaded extends TemplateDetailEvent {
+  /// template id to load audit template snapshot
+  final String id;
+
+  const TemplateDetailAuditTemplateSnapshotLoaded({
+    required this.id,
+  });
+}
