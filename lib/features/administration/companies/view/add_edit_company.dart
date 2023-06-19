@@ -52,11 +52,9 @@ class _AddEditCompanyWidgetState extends State<AddEditCompanyWidget> {
       ? {
           'Sites': AssignSitesToCompanyView(
             companyId: widget.companyId!,
-            view: widget.view,
           ),
           'Projects': AssignProjectsToCompanyView(
             companyId: widget.companyId!,
-            view: widget.view,
           ),
         }
       : {};

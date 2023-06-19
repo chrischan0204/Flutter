@@ -7,7 +7,9 @@ class Template extends Entity {
   final int usedInSites;
   final String templateSites;
 
-  const Template({
+  bool assigned;
+
+  Template({
     super.id,
     super.name,
     this.revisionDate = '',
@@ -20,7 +22,7 @@ class Template extends Entity {
     super.createdOn,
     super.columns,
     super.deleted,
-  });
+  }) : assigned = id != null;
 
   @override
   List<Object?> get props => [
@@ -30,6 +32,7 @@ class Template extends Entity {
         usedInAudits,
         usedInSites,
         templateSites,
+        assigned,
       ];
 
   String get formatedRevisionDate => revisionDate.isNotEmpty

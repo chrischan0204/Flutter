@@ -104,11 +104,15 @@ class SitesRepository extends BaseRepository {
   /// toggle assign template to site
   Future<EntityResponse> toggleAssignTemplateToSite(
       TemplateSiteAssignment templateSiteAssignment) async {
-    Response response = await super
-        .put('$url/${templateSiteAssignment.siteId}/templates/toggle');
+    Response response = await super.put(
+        '$url/${templateSiteAssignment.siteId}/templates/toggle',
+        body: templateSiteAssignment.toJson());
 
     if (response.statusCode == 200) {
-      return EntityResponse.fromJson(response.body);
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
     }
     throw Exception();
   }

@@ -1,93 +1,21 @@
-import '../bloc/add_edit_site/add_edit_site_bloc.dart';
 import '/common_libraries.dart';
 
-class AddEditSiteView extends StatelessWidget {
-  final String? siteId;
-  const AddEditSiteView({
-    super.key,
-    this.siteId,
-  });
+class AddEditTemplateFormView extends StatefulWidget {
+  const AddEditTemplateFormView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddEditSiteBloc(
-        formDirtyBloc: context.read(),
-        regionsRepository: RepositoryProvider.of(context),
-        timeZonesRepository: RepositoryProvider.of(context),
-        sitesRepository: RepositoryProvider.of(context),
-      ),
-      child: AddEditSiteWidget(siteId: siteId),
-    );
-  }
+  State<AddEditTemplateFormView> createState() =>
+      _AddEditTemplateFormViewState();
 }
 
-class AddEditSiteWidget extends StatefulWidget {
-  final String? siteId;
-  const AddEditSiteWidget({
-    super.key,
-    this.siteId,
-  });
-
-  @override
-  State<AddEditSiteWidget> createState() => _AddEditSiteWidgetState();
-}
-
-class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
+class _AddEditTemplateFormViewState extends State<AddEditTemplateFormView> {
   late AddEditSiteBloc addEditSiteBloc;
-
-  static String pageLabel = 'site';
-
-  bool isFirstInit = true;
 
   @override
   void initState() {
-    addEditSiteBloc = context.read()..add(AddEditSiteRegionListLoaded());
-    if (widget.siteId != null) {
-      addEditSiteBloc.add(AddEditSiteLoaded(id: widget.siteId!));
-    }
+    addEditSiteBloc = context.read();
 
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<AddEditSiteBloc, AddEditSiteState>(
-      listener: (context, state) {
-        if (state.status == EntityStatus.success) {
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-          GoRouter.of(context)
-              .go('/sites/assign-templates?siteId=${state.createdSiteId}');
-        }
-        if (state.status == EntityStatus.failure) {}
-      },
-      builder: (context, state) {
-        return AddEditEntityTemplate(
-          label: pageLabel,
-          id: widget.siteId,
-          selectedEntity: state.loadedSite,
-          addEntity: () => addEditSiteBloc.add(AddEditSiteAdded()),
-          editEntity: () =>
-              addEditSiteBloc.add(AddEditSiteEdited(id: widget.siteId ?? '')),
-          crudStatus: state.status,
-          formDirty: state.formDirty,
-          child: Column(
-            children: [
-              _buildSiteNameField(),
-              _buildRegionSelectField(),
-              _buildTimeZoneSelectField(),
-              _buildSiteTypeField(),
-              _buildSiteCodeField(),
-              _buildReferenceCodeField(),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   Widget _buildSiteNameField() {
@@ -214,6 +142,20 @@ class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
           message: state.timeZoneValidationMessage,
         );
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildSiteNameField(),
+        _buildRegionSelectField(),
+        _buildTimeZoneSelectField(),
+        _buildSiteTypeField(),
+        _buildSiteCodeField(),
+        _buildReferenceCodeField(),
+      ],
     );
   }
 }

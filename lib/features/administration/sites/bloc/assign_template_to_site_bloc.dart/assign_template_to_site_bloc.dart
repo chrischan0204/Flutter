@@ -55,8 +55,9 @@ class AssignTemplateToSiteBloc
       EntityResponse response = await sitesRepository
           .toggleAssignTemplateToSite(event.templateSiteAssignment);
       emit(state.copyWith(
-          message: response.message,
-          status: response.isSuccess.toEntityStatusCode()));
+        message: response.message,
+        status: response.isSuccess.toEntityStatusCode(),
+      ));
     } catch (e) {
       emit(state.copyWith(
         message: 'Something went wrong',

@@ -58,14 +58,6 @@ TextStyle textNormal18 = const TextStyle(
   fontWeight: FontWeight.normal,
 );
 
-SizedBox spacer4 = const SizedBox(width: 4);
-SizedBox spacer8 = const SizedBox(width: 8);
-SizedBox spacer12 = const SizedBox(width: 12);
-SizedBox spacer16 = const SizedBox(width: 16);
-SizedBox spacer20 = const SizedBox(width: 20);
-SizedBox spacer30 = const SizedBox(width: 30);
-SizedBox spacer40 = const SizedBox(width: 40);
-
 EdgeInsets inset4 = const EdgeInsets.all(4);
 EdgeInsets inset8 = const EdgeInsets.all(8);
 EdgeInsets inset10 = const EdgeInsets.all(10);
@@ -112,3 +104,18 @@ EdgeInsets insetx24y12 = const EdgeInsets.symmetric(
   horizontal: 24,
   vertical: 12,
 );
+
+SizedBox spacer2 = const SizedBox(width: 2);
+SizedBox spacer3 = const SizedBox(width: 3);
+SizedBox spacer4 = const SizedBox(width: 4);
+SizedBox spacer5 = const SizedBox(width: 5);
+SizedBox spacer8 = const SizedBox(width: 8);
+SizedBox spacer10 = const SizedBox(width: 10);
+SizedBox spacer12 = const SizedBox(width: 12);
+SizedBox spacer15 = const SizedBox(width: 15);
+SizedBox spacer20 = const SizedBox(width: 20);
+SizedBox spacer30 = const SizedBox(width: 30);
+SizedBox spacer40 = const SizedBox(width: 40);
+SizedBox spacer50 = const SizedBox(width: 50);
+SizedBox spacer100 = const SizedBox(width: 100);
+SizedBox spacer150 = const SizedBox(width: 150);

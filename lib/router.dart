@@ -111,18 +111,6 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/sites/assign-templates',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: Layout(
-          body: AssignTemplatesToSiteView(
-            siteId: state.queryParams['siteId']!,
-          ),
-          selectedItemName: 'sites',
-        ),
-      ),
-    ),
-    GoRoute(
       path: '/projects',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

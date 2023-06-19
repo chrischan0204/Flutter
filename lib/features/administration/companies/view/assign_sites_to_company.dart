@@ -2,11 +2,9 @@ import '/common_libraries.dart';
 
 class AssignSitesToCompanyView extends StatefulWidget {
   final String companyId;
-  final String? view;
   const AssignSitesToCompanyView({
     super.key,
     required this.companyId,
-    this.view,
   });
 
   @override
