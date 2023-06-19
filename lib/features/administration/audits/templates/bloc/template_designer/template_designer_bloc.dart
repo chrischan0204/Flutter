@@ -190,12 +190,18 @@ class TemplateDesignerBloc
       List<TemplateSection> templateQuestionDetailList =
           await templatesRepository.getTemplateQuestionDetailList(
               event.templateId, 1, event.templateSectionId);
-
-      emit(state.copyWith(
-        templateQuestionList:
-            templateQuestionDetailList[0].templateSectionItems,
-        sectionItemQuestionListLoadStatus: EntityStatus.success,
-      ));
+      if (templateQuestionDetailList.isNotEmpty) {
+        emit(state.copyWith(
+          templateQuestionList:
+              templateQuestionDetailList[0].templateSectionItems,
+          sectionItemQuestionListLoadStatus: EntityStatus.success,
+        ));
+      } else {
+        emit(state.copyWith(
+          templateQuestionList: [],
+          sectionItemQuestionListLoadStatus: EntityStatus.success,
+        ));
+      }
     } catch (e) {
       emit(state.copyWith(
           sectionItemQuestionListLoadStatus: EntityStatus.failure));
@@ -793,7 +799,8 @@ class TemplateDesignerBloc
                                                                   ?.copyWith(
                                                             responseScaleItemId:
                                                                 e.response?.id,
-                                                            id: Nullable.value(null),
+                                                            id: Nullable.value(
+                                                                null),
                                                           )),
                                                           children: e.children
                                                               .map((f) =>
