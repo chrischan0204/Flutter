@@ -39,8 +39,7 @@ class TemplateSectionItemView extends ExpansionPanel {
                       expansionCallback: (int index, bool isExpanded) {
                         final responseScaleItem =
                             templateSectionItem.responseScaleItems[index];
-                        if (responseScaleItem.followUpQuestionList.isEmpty &&
-                            responseScaleItem.followUpRequired) {
+                        if (responseScaleItem.followUpRequired) {
                           context.read<TemplateDetailBloc>().add(
                                 TemplateDetailTemplateQuestionDetailLoaded(
                                   id: responseScaleItem.id!,

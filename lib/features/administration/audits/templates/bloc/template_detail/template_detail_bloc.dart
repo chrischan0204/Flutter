@@ -85,74 +85,142 @@ class TemplateDetailBloc
     Emitter<TemplateDetailState> emit,
   ) async {
     try {
-      List<TemplateSection> templateQuestionDetailList =
-          await templatesRepository.getTemplateQuestionDetailList(
-              event.id, event.itemType, event.templateSectionId);
       switch (event.level) {
         case 0:
+          List<TemplateSection> templateQuestionDetailList =
+              await templatesRepository.getTemplateQuestionDetailList(
+                  event.id, event.itemType, event.templateSectionId);
           emit(state.copyWith(
             templateQuestionDetailList: templateQuestionDetailList,
           ));
           break;
         case 1:
-          emit(state.copyWith(
-            templateQuestionDetailList: state.templateQuestionDetailList
-                .map(
-                  (x) => x.copyWith(
-                    templateSectionItems: x.templateSectionItems
-                        .map(
-                          (y) => y.copyWith(
-                            responseScaleItems: y.responseScaleItems.map((e) {
-                              if (e.id == event.id) {
-                                return e.copyWith(
-                                  isOpen: event.isOpen,
-                                  followUpQuestionList:
-                                      templateQuestionDetailList,
-                                );
-                              }
-                              return e;
-                            }).toList(),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList(),
-          ));
+          if (event.isOpen == true) {
+            List<TemplateSection> templateQuestionDetailList =
+                await templatesRepository.getTemplateQuestionDetailList(
+                    event.id, event.itemType, event.templateSectionId);
+            emit(state.copyWith(
+              templateQuestionDetailList: state.templateQuestionDetailList
+                  .map(
+                    (x) => x.copyWith(
+                      templateSectionItems: x.templateSectionItems
+                          .map(
+                            (y) => y.copyWith(
+                              responseScaleItems: y.responseScaleItems.map((e) {
+                                if (e.id == event.id) {
+                                  return e.copyWith(
+                                    isOpen: event.isOpen,
+                                    followUpQuestionList:
+                                        templateQuestionDetailList,
+                                  );
+                                }
+                                return e;
+                              }).toList(),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  )
+                  .toList(),
+            ));
+          } else {
+            emit(state.copyWith(
+              templateQuestionDetailList: state.templateQuestionDetailList
+                  .map(
+                    (x) => x.copyWith(
+                      templateSectionItems: x.templateSectionItems
+                          .map(
+                            (y) => y.copyWith(
+                              responseScaleItems: y.responseScaleItems.map((e) {
+                                if (e.id == event.id) {
+                                  return e.copyWith(isOpen: event.isOpen);
+                                }
+                                return e;
+                              }).toList(),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  )
+                  .toList(),
+            ));
+          }
+
           break;
         case 2:
-          emit(state.copyWith(
-              templateQuestionDetailList: state.templateQuestionDetailList
-                  .map((x) => x.copyWith(
-                      templateSectionItems: x.templateSectionItems
-                          .map((y) => y.copyWith(
-                              responseScaleItems: y.responseScaleItems
-                                  .map((z) => z.copyWith(
-                                      followUpQuestionList: z
-                                          .followUpQuestionList
-                                          .map((e) => e.copyWith(
-                                              templateSectionItems: e
-                                                  .templateSectionItems
-                                                  .map((child) =>
-                                                      child.copyWith(
-                                                          responseScaleItems: child
-                                                              .responseScaleItems
-                                                              .map((c) {
-                                                        if (c.id == event.id) {
-                                                          return c.copyWith(
-                                                            isOpen:
-                                                                event.isOpen,
-                                                            followUpQuestionList:
-                                                                templateQuestionDetailList,
-                                                          );
-                                                        }
-                                                        return c;
-                                                      }).toList()))
-                                                  .toList()))
-                                          .toList()))
-                                  .toList()))
-                          .toList()))
-                  .toList()));
+          if (event.isOpen == true) {
+            List<TemplateSection> templateQuestionDetailList =
+                await templatesRepository.getTemplateQuestionDetailList(
+                    event.id, event.itemType, event.templateSectionId);
+
+            emit(state.copyWith(
+                templateQuestionDetailList: state.templateQuestionDetailList
+                    .map((x) => x.copyWith(
+                        templateSectionItems: x.templateSectionItems
+                            .map((y) => y.copyWith(
+                                responseScaleItems: y.responseScaleItems
+                                    .map((z) => z.copyWith(
+                                        followUpQuestionList: z
+                                            .followUpQuestionList
+                                            .map((e) => e.copyWith(
+                                                templateSectionItems: e
+                                                    .templateSectionItems
+                                                    .map((child) =>
+                                                        child.copyWith(
+                                                            responseScaleItems:
+                                                                child
+                                                                    .responseScaleItems
+                                                                    .map((c) {
+                                                          if (c.id ==
+                                                              event.id) {
+                                                            return c.copyWith(
+                                                              isOpen:
+                                                                  event.isOpen,
+                                                              followUpQuestionList:
+                                                                  templateQuestionDetailList,
+                                                            );
+                                                          }
+                                                          return c;
+                                                        }).toList()))
+                                                    .toList()))
+                                            .toList()))
+                                    .toList()))
+                            .toList()))
+                    .toList()));
+          } else {
+            emit(state.copyWith(
+                templateQuestionDetailList: state.templateQuestionDetailList
+                    .map((x) => x.copyWith(
+                        templateSectionItems: x.templateSectionItems
+                            .map((y) => y.copyWith(
+                                responseScaleItems: y.responseScaleItems
+                                    .map((z) => z.copyWith(
+                                        followUpQuestionList: z
+                                            .followUpQuestionList
+                                            .map((e) => e.copyWith(
+                                                templateSectionItems: e
+                                                    .templateSectionItems
+                                                    .map((child) =>
+                                                        child.copyWith(
+                                                            responseScaleItems:
+                                                                child
+                                                                    .responseScaleItems
+                                                                    .map((c) {
+                                                          if (c.id ==
+                                                              event.id) {
+                                                            return c.copyWith(
+                                                                isOpen: event
+                                                                    .isOpen);
+                                                          }
+                                                          return c;
+                                                        }).toList()))
+                                                    .toList()))
+                                            .toList()))
+                                    .toList()))
+                            .toList()))
+                    .toList()));
+          }
+
           break;
       }
     } catch (e) {}
