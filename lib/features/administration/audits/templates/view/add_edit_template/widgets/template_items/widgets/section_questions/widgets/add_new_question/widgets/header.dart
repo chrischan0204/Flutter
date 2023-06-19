@@ -18,7 +18,7 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                 Text(
                   state.templateSectionItem?.templateSectionItemId == null
                       ? 'Add Question'
-                      : 'Edit Question',
+                      : 'Editing Question',
                   style: textNormal18.copyWith(color: textBlue),
                 ),
                 TextButton(

@@ -17,7 +17,6 @@ class ResponseScaleItemListView extends StatelessWidget {
           const ResponseScaleItemListHeaderView(),
         for (final templateSectionItem in templateSectionItemList)
           ResponseScaleItemView(
-            response: templateSectionItem.response?.name ?? '',
             templateSectionItem: templateSectionItem,
           ),
       ],

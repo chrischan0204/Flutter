@@ -49,7 +49,7 @@ class _TemplateSectionsViewState extends State<TemplateSectionsView> {
           ),
           const CustomDivider(height: 1),
           AddNewSectionField(templateId: widget.templateId),
-          const SectionListView(),
+          SectionListView(templateId: widget.templateId),
           const SizedBox(height: 20)
         ],
       ),

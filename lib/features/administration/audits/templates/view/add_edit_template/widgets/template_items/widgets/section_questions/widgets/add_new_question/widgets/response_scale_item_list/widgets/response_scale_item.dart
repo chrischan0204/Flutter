@@ -2,12 +2,10 @@ import '/common_libraries.dart';
 import 'futher_action_item.dart';
 
 class ResponseScaleItemView extends StatelessWidget {
-  final String response;
   final TemplateSectionItem templateSectionItem;
 
   const ResponseScaleItemView({
     super.key,
-    required this.response,
     required this.templateSectionItem,
   });
 
@@ -38,7 +36,7 @@ class ResponseScaleItemView extends StatelessWidget {
         flex: 3,
         fit: FlexFit.tight,
         child: Text(
-          response,
+          templateSectionItem.response?.name ?? '',
           style: textSemiBold14,
         ),
       );
@@ -128,12 +126,9 @@ class ResponseScaleItemView extends StatelessWidget {
               ));
 
           if (templateSectionItem.id != null) {
-            context
-                .read<TemplateDesignerBloc>()
-                .add(TemplateDesignerQuestionDetailLoaded(
-                  id: templateSectionItem.id!,
-                  itemTypeId: 2,
-                ));
+            context.read<TemplateDesignerBloc>().add(
+                TemplateDesignerFollowUpQuestionDetailLoaded(
+                    id: templateSectionItem.id!));
           }
         },
         disabled: disabled,

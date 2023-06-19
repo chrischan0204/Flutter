@@ -4,6 +4,7 @@ class TemplateQuestion extends Equatable {
   final String id;
   final String title;
   final String scaleName;
+  final String responseScaleId;
   final double questionScorePoint;
   final double questionScore;
   final double maxScore;
@@ -15,6 +16,7 @@ class TemplateQuestion extends Equatable {
     required this.id,
     required this.title,
     required this.scaleName,
+    required this.responseScaleId,
     required this.questionScorePoint,
     required this.questionScore,
     required this.maxScore,
@@ -38,6 +40,7 @@ class TemplateQuestion extends Equatable {
       id: map['id'] as String,
       title: map['title'] ?? '',
       scaleName: map['scaleName'] ?? '',
+      responseScaleId: map['responseScaleId'],
       questionScorePoint: map['questionScorePoint'] as double,
       questionScore: map['questionScore'] as double,
       maxScore: map['maxScore'] as double,
@@ -55,6 +58,7 @@ class TemplateQuestion extends Equatable {
     String? id,
     String? title,
     String? scaleName,
+    String? responseScaleId,
     double? questionScorePoint,
     double? questionScore,
     double? maxScore,
@@ -65,6 +69,7 @@ class TemplateQuestion extends Equatable {
       id: id ?? this.id,
       title: title ?? this.title,
       scaleName: scaleName ?? this.scaleName,
+      responseScaleId: responseScaleId ?? this.responseScaleId,
       questionScorePoint: questionScorePoint ?? this.questionScorePoint,
       questionScore: questionScore ?? this.questionScore,
       maxScore: maxScore ?? this.maxScore,

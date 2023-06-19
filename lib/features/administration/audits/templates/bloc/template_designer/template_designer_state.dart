@@ -34,6 +34,8 @@ class TemplateDesignerState extends Equatable {
   // selected response scale id
   final String? selectedResponseScaleId;
 
+  final List<TemplateQuestion> templateQuestionList;
+
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -55,6 +57,7 @@ class TemplateDesignerState extends Equatable {
     this.currentLevel2TemplateSectionItemId,
     this.questionDetailLoadStatus = EntityStatus.initial,
     this.selectedResponseScaleId,
+    this.templateQuestionList = const [],
   });
 
   ResponseScale? get selectedResponseScaleItem => responseScaleList
@@ -117,6 +120,7 @@ class TemplateDesignerState extends Equatable {
         currentLevel2TemplateSectionItemId,
         questionDetailLoadStatus,
         selectedResponseScaleId,
+        templateQuestionList,
       ];
 
   TemplateDesignerState copyWith({
@@ -140,6 +144,7 @@ class TemplateDesignerState extends Equatable {
     String? currentLevel2TemplateSectionItemId,
     EntityStatus? questionDetailLoadStatus,
     Nullable<String?>? selectedResponseScaleId,
+    List<TemplateQuestion>? templateQuestionList,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -179,6 +184,7 @@ class TemplateDesignerState extends Equatable {
       selectedResponseScaleId: selectedResponseScaleId != null
           ? selectedResponseScaleId.value
           : this.selectedResponseScaleId,
+      templateQuestionList: templateQuestionList ?? this.templateQuestionList,
     );
   }
 }

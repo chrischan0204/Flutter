@@ -137,17 +137,18 @@ class TemplateDetailBloc
                                                       child.copyWith(
                                                           responseScaleItems: child
                                                               .responseScaleItems
-                                                              .map((c)  {
-                              if (c.id == event.id) {
-                                return c.copyWith(
-                                  isOpen: event.isOpen,
-                                  followUpQuestionList:
-                                      templateQuestionDetailList,
-                                );
-                              }
-                              return c.copyWith(isOpen: false);
-                            })
-                                                              .toList()))
+                                                              .map((c) {
+                                                        if (c.id == event.id) {
+                                                          return c.copyWith(
+                                                            isOpen:
+                                                                event.isOpen,
+                                                            followUpQuestionList:
+                                                                templateQuestionDetailList,
+                                                          );
+                                                        }
+                                                        return c.copyWith(
+                                                            isOpen: false);
+                                                      }).toList()))
                                                   .toList()))
                                           .toList()))
                                   .toList()))

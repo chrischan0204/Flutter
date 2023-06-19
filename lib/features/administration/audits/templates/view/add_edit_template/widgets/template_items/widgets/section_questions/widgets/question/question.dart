@@ -35,7 +35,7 @@ class QuestionsForSectionView extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: state.sectionItemQuestionList
+                children: state.templateQuestionList
                     .map((e) => QuestionItemView(question: e))
                     .toList(),
               );

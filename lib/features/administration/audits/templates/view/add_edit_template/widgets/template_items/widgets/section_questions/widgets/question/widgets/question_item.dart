@@ -1,7 +1,7 @@
 import '/common_libraries.dart';
 
 class QuestionItemView extends StatelessWidget {
-  final TemplateSectionQuestion question;
+  final TemplateQuestion question;
   const QuestionItemView({
     super.key,
     required this.question,
@@ -13,9 +13,9 @@ class QuestionItemView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          onTap: () => context.read<TemplateDesignerBloc>().add(
-              TemplateDesignerQuestionDetailLoaded(
-                  id: question.id, itemTypeId: 1)),
+          onTap: () => context
+              .read<TemplateDesignerBloc>()
+              .add(TemplateDesignerQuestionDetailLoaded(question: question)),
           leading: Icon(
             PhosphorIcons.regular.dotsThreeVertical,
             size: 20,
@@ -28,9 +28,9 @@ class QuestionItemView extends StatelessWidget {
               color: primaryColor,
             ),
           ),
-          trailing: const Text(
-            '10 + 3',
-            style: TextStyle(fontSize: 14),
+          trailing: Text(
+            '${question.maxScore} + ${question.questionScorePoint}',
+            style: const TextStyle(fontSize: 14),
           ),
         ),
         const CustomDivider(height: 1),

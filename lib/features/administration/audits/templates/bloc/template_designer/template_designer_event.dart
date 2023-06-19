@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'template_designer_bloc.dart';
 
 abstract class TemplateDesignerEvent extends Equatable {
@@ -41,26 +42,36 @@ class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
 
 class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
   final TemplateSectionListItem? templateSection;
+  final String? templateId;
   const TemplateDesignerTemplateSectionSelected({
     this.templateSection,
+    this.templateId,
   });
 
   @override
-  List<Object?> get props => [templateSection];
+  List<Object?> get props => [
+        templateSection,
+        templateId,
+      ];
 }
 
 class TemplateDesignerTemplateSectionItemQuestionList
     extends TemplateDesignerEvent {
+  final String templateId;
+
   final String templateSectionId;
 
   const TemplateDesignerTemplateSectionItemQuestionList({
     required this.templateSectionId,
+    required this.templateId,
   });
 
   @override
-  List<Object> get props => [templateSectionId];
+  List<Object> get props => [
+        templateSectionId,
+        templateId,
+      ];
 }
-
 
 // event to get response scale item list by response scale id
 class TemplateDesignerResponseScaleItemListLoaded
@@ -211,15 +222,11 @@ class TemplateDesignerCurrentTemplateSectionItemChanged
 
 // event to load question detail by id
 class TemplateDesignerQuestionDetailLoaded extends TemplateDesignerEvent {
-  final String id;
-  final int itemTypeId;
-  const TemplateDesignerQuestionDetailLoaded({
-    required this.id,
-    required this.itemTypeId,
-  });
+  final TemplateQuestion question;
+  const TemplateDesignerQuestionDetailLoaded({required this.question});
 
   @override
-  List<Object> get props => [id, itemTypeId];
+  List<Object> get props => [question];
 }
 
 // event to change the selected response scale id
@@ -233,4 +240,16 @@ class TemplateDesignerResponseScaleSelected extends TemplateDesignerEvent {
 
   @override
   List<Object?> get props => [responseScaleId];
+}
+
+/// event to load the follow up question detail
+class TemplateDesignerFollowUpQuestionDetailLoaded
+    extends TemplateDesignerEvent {
+  final String id;
+  const TemplateDesignerFollowUpQuestionDetailLoaded({
+    required this.id,
+  });
+
+  @override
+  List<Object?> get props => [id];
 }
