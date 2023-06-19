@@ -80,4 +80,36 @@ class SitesRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  /// get audit template list by site id
+  Future<List<Template>> getAuditTemlateList(String siteId,
+      [bool? assigned]) async {
+    Map<String, String> queryParams = {};
+
+    if (assigned != null) {
+      queryParams = {'assigned': assigned.toString()};
+    }
+
+    Response response = await super.get('$url/$siteId/templates', queryParams);
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Template.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  /// toggle assign template to site
+  Future<EntityResponse> toggleAssignTemplateToSite(
+      TemplateSiteAssignment templateSiteAssignment) async {
+    Response response = await super
+        .put('$url/${templateSiteAssignment.siteId}/templates/toggle');
+
+    if (response.statusCode == 200) {
+      return EntityResponse.fromJson(response.body);
+    }
+    throw Exception();
+  }
 }

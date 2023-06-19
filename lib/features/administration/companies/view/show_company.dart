@@ -143,7 +143,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
         .map(
           (projectCompany) => [
             CustomDataCell(data: projectCompany.projectName),
-            CustomDataCell(data: projectCompany.projectName),
+            CustomDataCell(data: projectCompany.siteName),
             CustomDataCell(data: projectCompany.roleName),
             CustomDataCell(data: projectCompany.createdByUserName),
             CustomDataCell(data: projectCompany.createdOn),

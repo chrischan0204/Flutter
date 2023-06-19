@@ -14,8 +14,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
       'There was an error while adding site. Our team has been notified. Please wait a few minutes and try again.';
   static String editErrorMessage =
       'There was an error while editing site. Our team has been notified. Please wait a few minutes and try again.';
-  static String deleteErrorMessage =
-      'There was an error while deleting site. Our team has been notified. Please wait a few minutes and try again.';
+  
   SitesBloc({
     required this.sitesRepository,
   }) : super(const SitesState()) {
@@ -31,7 +30,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     on<AuditTemplateAssignedToSite>(_onAuditTemplateAssignedToSite);
     on<SiteAdded>(_onSiteAdded);
     on<SiteEdited>(_onSiteEdited);
-    on<SiteDeleted>(_onSiteDeleted);
+    
     on<SitesStatusInited>(_onSitesStatusInited);
   }
 
@@ -200,29 +199,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     }
   }
 
-  void _onSiteDeleted(SiteDeleted event, Emitter<SitesState> emit) async {
-    emit(state.copyWith(siteCrudStatus: EntityStatus.loading));
-    try {
-      EntityResponse response = await sitesRepository.deleteSite(event.siteId);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          siteCrudStatus: EntityStatus.success,
-          selectedSite: null,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          siteCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        siteCrudStatus: EntityStatus.failure,
-        message: deleteErrorMessage,
-      ));
-    }
-  }
+
 
   void _onSitesStatusInited(SitesStatusInited event, Emitter<SitesState> emit) {
     emit(

@@ -10,6 +10,7 @@ export '/features/administration/projects/bloc/projects_bloc.dart';
 export '/features/administration/sites/bloc/sites_bloc.dart';
 export '/features/administration/users/bloc/users_bloc.dart';
 export '/features/administration/audits/templates/bloc/templates_bloc.dart';
+export '/features/administration/sites/bloc/blocs.dart';
 export '/features/auth/bloc/auth/auth_bloc.dart';
 export '/features/setting/bloc/setting_bloc.dart';
 export '/features/theme/bloc/theme_bloc.dart';
