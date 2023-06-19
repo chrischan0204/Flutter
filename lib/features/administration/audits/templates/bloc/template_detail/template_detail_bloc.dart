@@ -190,15 +190,15 @@ class TemplateDetailBloc
           templateQuestionDetailList: state.templateQuestionDetailList
               .map(
                 (x) => x.copyWith(
-                  templateSectionItems: x.templateSectionItems
-                      .map(
-                        (y) {
-                          if (y.id == event.id)
-                            {return y.copyWith(isOpen: event.isOpen);}
-                          else {return y;}
-                        },
-                      )
-                      .toList(),
+                  templateSectionItems: x.templateSectionItems.map(
+                    (y) {
+                      if (y.id == event.id) {
+                        return y.copyWith(isOpen: event.isOpen);
+                      } else {
+                        return y;
+                      }
+                    },
+                  ).toList(),
                 ),
               )
               .toList(),
@@ -214,17 +214,16 @@ class TemplateDetailBloc
                                 .map((z) => z.copyWith(
                                     followUpQuestionList: z.followUpQuestionList
                                         .map((e) => e.copyWith(
-                                            templateSectionItems: e.templateSectionItems
-                                                .map((child) {
-                                                  if (child.id == event.id)
-                                                    {
-                                                      return child.copyWith(isOpen: event.isOpen);
-                                                    }
-                                                    else {
-                                                      return child;
-                                                    }
-                                                })
-                                                .toList()))
+                                                templateSectionItems: e
+                                                    .templateSectionItems
+                                                    .map((child) {
+                                              if (child.id == event.id) {
+                                                return child.copyWith(
+                                                    isOpen: event.isOpen);
+                                              } else {
+                                                return child;
+                                              }
+                                            }).toList()))
                                         .toList()))
                                 .toList()))
                         .toList()))
@@ -240,9 +239,24 @@ class TemplateDetailBloc
                                 .map((z) => z.copyWith(
                                     followUpQuestionList: z.followUpQuestionList
                                         .map((e) => e.copyWith(
-                                            templateSectionItems: e.templateSectionItems
+                                            templateSectionItems: e
+                                                .templateSectionItems
                                                 .map((child) => child.copyWith(
-                                                    responseScaleItems: child.responseScaleItems.map((c) => c.copyWith(followUpQuestionList: c.followUpQuestionList.map((cc) => cc.copyWith(templateSectionItems: cc.templateSectionItems.map((ccc) => ccc.id == event.id ? ccc.copyWith(isOpen: event.isOpen) : ccc).toList())).toList())).toList()))
+                                                    responseScaleItems: child
+                                                        .responseScaleItems
+                                                        .map((c) => c.copyWith(
+                                                            followUpQuestionList: c
+                                                                .followUpQuestionList
+                                                                .map((cc) =>
+                                                                    cc.copyWith(
+                                                                        templateSectionItems: cc
+                                                                            .templateSectionItems
+                                                                            .map(
+                                                                              (ccc) => ccc.id == event.id ? ccc.copyWith(isOpen: event.isOpen) : ccc,
+                                                                            )
+                                                                            .toList()))
+                                                                .toList()))
+                                                        .toList()))
                                                 .toList()))
                                         .toList()))
                                 .toList()))

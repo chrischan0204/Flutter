@@ -92,27 +92,28 @@ class EntityDataSource extends DataGridSource {
               ],
             ))
         .toList();
-
-    _entityData.add(DataGridRow(
-      cells: [
-        const DataGridCell(columnName: 'Section', value: 'Total:'),
-        DataGridCell(
-            columnName: 'Questions',
-            value: templateSnapshotList.isNotEmpty
-                ? templateSnapshotList
-                    .map((e) => e.questions)
-                    .reduce((value, element) => value + element)
-                : ''),
-        DataGridCell(
-            columnName: 'Max Score',
-            value: templateSnapshotList.isNotEmpty
-                ? templateSnapshotList
-                    .map((e) => e.maxScore)
-                    .reduce((value, element) => value + element)
-                : ''),
-        const DataGridCell(columnName: 'Legend', value: ''),
-      ],
-    ));
+    if (templateSnapshotList.isNotEmpty) {
+      _entityData.add(DataGridRow(
+        cells: [
+          const DataGridCell(columnName: 'Section', value: 'Total:'),
+          DataGridCell(
+              columnName: 'Questions',
+              value: templateSnapshotList.isNotEmpty
+                  ? templateSnapshotList
+                      .map((e) => e.questions)
+                      .reduce((value, element) => value + element)
+                  : ''),
+          DataGridCell(
+              columnName: 'Max Score',
+              value: templateSnapshotList.isNotEmpty
+                  ? templateSnapshotList
+                      .map((e) => e.maxScore)
+                      .reduce((value, element) => value + element)
+                  : ''),
+          const DataGridCell(columnName: 'Legend', value: ''),
+        ],
+      ));
+    }
   }
 
   List<DataGridRow> _entityData = [];

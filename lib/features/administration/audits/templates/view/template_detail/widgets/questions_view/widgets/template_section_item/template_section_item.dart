@@ -43,7 +43,7 @@ class TemplateSectionItemView extends ExpansionPanel {
                             responseScaleItem.followUpRequired) {
                           context.read<TemplateDetailBloc>().add(
                                 TemplateDetailTemplateQuestionDetailLoaded(
-                                  id: responseScaleItem.id,
+                                  id: responseScaleItem.id!,
                                   itemType: 2,
                                   templateSectionId: templateSectionId,
                                   level: level,

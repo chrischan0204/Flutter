@@ -1,7 +1,7 @@
 import '/common_libraries.dart';
 
 class TemplateResponseScaleItem extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   final String? responseScaleItemId;
   final bool isRequired;
@@ -16,7 +16,7 @@ class TemplateResponseScaleItem extends Equatable {
   final bool isOpen;
 
   const TemplateResponseScaleItem({
-    required this.id,
+    this.id,
     required this.name,
     this.responseScaleItemId,
     required this.isRequired,
@@ -48,11 +48,11 @@ class TemplateResponseScaleItem extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': null,
+      'id': id,
       'isRequired': isRequired,
       'included': true,
       'name': name,
-      'responseScaleItemId': id,
+      'responseScaleItemId': responseScaleItemId,
       'score': score,
       'order': order,
       'commentRequired': commentRequired,
@@ -90,7 +90,7 @@ class TemplateResponseScaleItem extends Equatable {
   }
 
   TemplateResponseScaleItem copyWith({
-    String? id,
+    Nullable<String?>? id,
     String? name,
     String? responseScaleItemId,
     bool? isRequired,
@@ -104,7 +104,7 @@ class TemplateResponseScaleItem extends Equatable {
     bool? isOpen,
   }) {
     return TemplateResponseScaleItem(
-      id: id ?? this.id,
+      id: id != null ? id.value : this.id,
       name: name ?? this.name,
       responseScaleItemId: responseScaleItemId ?? this.responseScaleItemId,
       isRequired: isRequired ?? this.isRequired,
