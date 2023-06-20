@@ -105,6 +105,16 @@ EdgeInsets insetx24y12 = const EdgeInsets.symmetric(
   vertical: 12,
 );
 
+EdgeInsets insetx20y15 = const EdgeInsets.symmetric(
+  horizontal: 20,
+  vertical: 15,
+);
+
+EdgeInsets insetx15y20 = const EdgeInsets.symmetric(
+  horizontal: 15,
+  vertical: 20,
+);
+
 SizedBox spacer2 = const SizedBox(width: 2);
 SizedBox spacer3 = const SizedBox(width: 3);
 SizedBox spacer4 = const SizedBox(width: 4);

@@ -1,11 +1,12 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import '/common_libraries.dart';
 
 class AddEditObservationFormView extends StatelessWidget {
   const AddEditObservationFormView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [],
+    );
   }
 }

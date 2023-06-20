@@ -19,16 +19,12 @@ class CrudButtonsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GoToListButton(label: label),
-        const SizedBox(
-          width: 15,
-        ),
+        spacer15,
         GoToEditButton(label: label),
-        const SizedBox(
-          width: 15,
-        ),
+        spacer15,
         DeleteButton(
           label: label,
           deletable: deletable,

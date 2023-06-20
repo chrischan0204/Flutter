@@ -189,8 +189,9 @@ class _CrudState extends State<EntityListTemplate> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PageTitle(
-                    title: widget.title,
+                  Text(
+                    widget.title,
+                    style: textSemiBold18,
                   ),
                   const SizedBox(width: 10),
                   if (widget.description.isNotEmpty)
@@ -612,21 +613,19 @@ class _CrudState extends State<EntityListTemplate> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
+                      padding: insetx20,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            widget.selectedEntity != null
-                                ? widget.selectedEntity!.name ?? ''
-                                : '',
-                            style: TextStyle(
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w600,
-                              color: darkTeal,
-                              fontSize: 14,
+                          Expanded(
+                            child: Text(
+                              widget.selectedEntity != null
+                                  ? widget.selectedEntity!.name ?? ''
+                                  : '',
+                              style: textSemiBold14,
+                              maxLines: 3,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           IconButton(

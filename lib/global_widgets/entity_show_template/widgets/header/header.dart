@@ -25,31 +25,30 @@ class HeaderView extends StatelessWidget {
     return Card(
       elevation: 3,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
-        ),
+        padding: insetx20y15,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '$title - $name',
-              style: TextStyle(
-                color: darkTeal,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'OpenSans',
+            Expanded(
+              flex: 3,
+              child: Text(
+                '$title - $name',
+                style: textSemiBold18,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: false,
               ),
             ),
-            const SizedBox(
-              width: 15,
-            ),
-            CrudButtonsView(
-              label: label,
-              deletable: deletable,
-              deleting: deleting,
-              descriptionForDelete: descriptionForDelete,
-              deleteEntity: deleteEntity,
+            spacer15,
+            Expanded(
+              flex: 2,
+              child: CrudButtonsView(
+                label: label,
+                deletable: deletable,
+                deleting: deleting,
+                descriptionForDelete: descriptionForDelete,
+                deleteEntity: deleteEntity,
+              ),
             ),
           ],
         ),

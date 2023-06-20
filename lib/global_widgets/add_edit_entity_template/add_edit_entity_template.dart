@@ -51,7 +51,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: inset10,
       child: SizedBox(
         width: double.infinity,
         child: Column(
@@ -65,14 +65,26 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                   vertical: 15,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildTitle(),
-                    const SizedBox(
-                      width: 15,
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        (widget.id == null
+                            ? 'New ${camelize(widget.label)}'
+                            : widget.selectedEntity != null
+                                ? 'Editing ${camelize(widget.label)} - ${widget.selectedEntity!.name ?? ''}'
+                                : ''),
+                        style: textSemiBold18,
+                        softWrap: true,
+                        maxLines: 3,
+                      ),
                     ),
-                    _buildCrudButtons(context)
+                    spacer15,
+                    Expanded(
+                      flex: 1,
+                      child: _buildCrudButtons(context),
+                    ),
                   ],
                 ),
               ),
@@ -81,7 +93,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
               child: Card(
                 elevation: 3,
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: inset20,
                   child: CustomScrollViewWithBackButton(
                     child: widget.tabItems.isNotEmpty && widget.id != null
                         ? _buildTab()
@@ -124,11 +136,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             vertical: 6,
           ),
           child: DefaultTextStyle(
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'OpenSans',
-            ),
+            style: textSemiBold14,
             child: AnimatedTextKit(
               totalRepeatCount: 1,
               pause: const Duration(milliseconds: 300),
@@ -205,30 +213,15 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     );
   }
 
-  Widget _buildTitle() {
-    return PageTitle(
-      title: (widget.id == null
-          ? 'New ${camelize(widget.label)}'
-          : widget.selectedEntity != null
-              ? 'Editing ${camelize(widget.label)} - ${widget.selectedEntity!.name ?? ''}'
-              : ''),
-    );
-  }
-
   Row _buildCrudButtons(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildGoToListButton(context),
-        widget.id != null
-            ? SizedBox(
-                width: MediaQuery.of(context).size.width / 40,
-              )
-            : Container(),
-        widget.id != null ? _buildShowButton(context) : Container(),
-        const SizedBox(
-          width: 50,
-        )
+        if (widget.id != null) spacer20,
+        if (widget.id != null) _buildShowButton(context),
+        spacer20,
       ],
     );
   }
