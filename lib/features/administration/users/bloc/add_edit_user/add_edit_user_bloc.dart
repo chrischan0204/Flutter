@@ -284,8 +284,9 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
               .requiredAndNotBlankMessage));
       success = false;
     } else if (!Validation.isEmail(state.email)) {
-      emit(
-          state.copyWith(emailValidationMessage: 'It should be email format.'));
+      emit(state.copyWith(
+          emailValidationMessage:
+              FormValidationMessage.emailValidationMessage));
       success = false;
     } else if (state.email.length > UserFormValidation.emailMaxLength) {
       emit(state.copyWith(

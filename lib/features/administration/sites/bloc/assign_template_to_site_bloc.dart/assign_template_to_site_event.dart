@@ -33,13 +33,32 @@ class AssignTemplateToSiteUnassignedAuditTemplateListLoaded
   List<Object> get props => [id];
 }
 
-class AssignTemplateToSiteToggleAssigned extends AssignTemplateToSiteEvent {
-  /// data to assign template to site
-  final TemplateSiteAssignment templateSiteAssignment;
-  const AssignTemplateToSiteToggleAssigned({
-    required this.templateSiteAssignment,
+class AssignTemplateToSiteAssigned extends AssignTemplateToSiteEvent {
+  final String templateId;
+  final String siteId;
+  const AssignTemplateToSiteAssigned({
+    required this.templateId,
+    required this.siteId,
   });
 
   @override
-  List<Object> get props => [templateSiteAssignment];
+  List<Object> get props => [
+        templateId,
+        siteId,
+      ];
+}
+
+class AssignTemplateFromSiteUnassigned extends AssignTemplateToSiteEvent {
+  final String templateId;
+  final String siteId;
+  const AssignTemplateFromSiteUnassigned({
+    required this.templateId,
+    required this.siteId,
+  });
+
+  @override
+  List<Object> get props => [
+        templateId,
+        siteId,
+      ];
 }

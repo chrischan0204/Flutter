@@ -8,7 +8,7 @@ class FormValidationMessage {
     this.maxLength,
   });
 
-  String get capitalizedFieldName => camelize(fieldName);
+  String get capitalizedFieldName => capitalize(fieldName);
 
   String get requiredAndNotBlankMessage =>
       '$capitalizedFieldName is required and cannot be blank.';
@@ -30,4 +30,6 @@ class FormValidationMessage {
 
   static const String einNumberValidationMessage =
       'EIN Number can have only Number and Dahses in the format XX-XXXXXXX.';
+
+  static const String emailValidationMessage = 'It should be in an email format.';
 }

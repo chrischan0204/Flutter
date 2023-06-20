@@ -183,15 +183,12 @@ class _AssignTemplatesToSiteWidgetState
                     trueString: 'Yes',
                     falseString: 'No',
                     textColor: darkTeal,
-                    switchValue: false,
+                    switchValue: unassignedTemplate.assigned,
                     onChanged: (value) {
-                      assignTemplateToSiteBloc
-                          .add(AssignTemplateToSiteToggleAssigned(
-                              templateSiteAssignment: TemplateSiteAssignment(
+                      assignTemplateToSiteBloc.add(AssignTemplateToSiteAssigned(
                         siteId: widget.siteId,
                         templateId: unassignedTemplate.id!,
-                        assigned: true,
-                      )));
+                      ));
                     },
                   ),
                 ],
@@ -228,18 +225,18 @@ class _AssignTemplatesToSiteWidgetState
           columns: columnList,
           rows: List<Template>.from(state.assignedAuditTemplateList)
               .map(
-                (assignedSiteSite) => [
+                (assignedTemplate) => [
                   CustomDataCell(
-                    data: assignedSiteSite.name,
+                    data: assignedTemplate.name,
                   ),
                   CustomDataCell(
-                    data: assignedSiteSite.createdByUserName,
+                    data: assignedTemplate.createdByUserName,
                   ),
                   CustomDataCell(
-                    data: assignedSiteSite.formatedRevisionDate,
+                    data: assignedTemplate.formatedRevisionDate,
                   ),
                   CustomSwitch(
-                    switchValue: false,
+                    switchValue: assignedTemplate.assigned,
                     trueString: 'Yes',
                     falseString: 'No',
                     textColor: darkTeal,
@@ -253,12 +250,10 @@ class _AssignTemplatesToSiteWidgetState
                       btnCancelOnPress: () {},
                       btnOkOnPress: () {
                         assignTemplateToSiteBloc
-                            .add(AssignTemplateToSiteToggleAssigned(
-                                templateSiteAssignment: TemplateSiteAssignment(
+                            .add(AssignTemplateFromSiteUnassigned(
                           siteId: widget.siteId,
-                          templateId: assignedSiteSite.id!,
-                          assigned: false,
-                        )));
+                          templateId: assignedTemplate.id!,
+                        ));
                       },
                       dialogType: DialogType.question,
                     ).show(),
@@ -278,14 +273,14 @@ class _AssignTemplatesToSiteWidgetState
         hintText: 'Filter unassigned templates by name.',
         label: 'sites',
         applyFilter: () {
-          // assignTemplateToSiteBloc.add(UnassignedSiteSitesRetrieved(
+          // assignTemplateToSiteBloc.add(UnassignedTemplatesRetrieved(
           //   siteId: widget.siteId,
           //   name: state.filterTextForUnassigned,
           // ));
         },
         clearFilter: () {
           // assignTemplateToSiteBloc
-          //   ..add(UnassignedSiteSitesRetrieved(siteId: widget.siteId))
+          //   ..add(UnassignedTemplatesRetrieved(siteId: widget.siteId))
           //   ..add(const FilterTextForUnassignedChanged(filterText: ''));
         },
         onChange: (value) {

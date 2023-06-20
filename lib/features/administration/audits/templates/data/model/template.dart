@@ -7,9 +7,10 @@ class Template extends Entity {
   final int usedInSites;
   final String templateSites;
 
-  bool assigned;
+  /// assigned or not
+  final bool assigned;
 
-  Template({
+  const Template({
     super.id,
     super.name,
     this.revisionDate = '',
@@ -17,12 +18,13 @@ class Template extends Entity {
     this.usedInAudits = 0,
     this.usedInSites = 0,
     this.templateSites = '',
+    this.assigned = false,
     super.active,
     super.createdByUserName,
     super.createdOn,
     super.columns,
     super.deleted,
-  }) : assigned = id != null;
+  });
 
   @override
   List<Object?> get props => [
@@ -115,6 +117,7 @@ class Template extends Entity {
     String? createdByUserName,
     bool? deleted,
     List<String>? columns,
+    bool? assigned,
   }) {
     return Template(
       id: id ?? this.id,
@@ -127,6 +130,7 @@ class Template extends Entity {
       createdByUserName: createdByUserName ?? this.createdByUserName,
       deleted: deleted ?? this.deleted,
       columns: columns ?? this.columns,
+      assigned: assigned ?? this.assigned,
     );
   }
 }

@@ -52,7 +52,7 @@ class _AuditTemplateListViewState extends State<AuditTemplateListView> {
                   .map((auditTemplate) => [
                         CustomDataCell(data: auditTemplate.name),
                         CustomDataCell(data: auditTemplate.createdByUserName),
-                        CustomDataCell(data: auditTemplate.revisionDate),
+                        CustomDataCell(data: auditTemplate.formatedRevisionDate),
                       ])
                   .toList(),
             );
