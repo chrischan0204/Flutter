@@ -173,7 +173,7 @@ class AddEditPriorityLevelBloc
       emit(state.copyWith(
           priorityLevelNameValidationMessage:
               FormValidationMessage(fieldName: 'Priority level')
-                  .requiredAndNotBlankMessage));
+                  .requiredMessage));
 
       success = false;
     } else if (Validation.isNotEmpty(state.priorityLevelName) &&

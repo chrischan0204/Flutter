@@ -118,7 +118,7 @@ class AddEditTemplateBloc
     if (Validation.isEmpty(state.templateDescription)) {
       emit(state.copyWith(
           templateDescriptionValidationMessage:
-              FormValidationMessage(fieldName: 'Description').requiredAndNotBlankMessage));
+              FormValidationMessage(fieldName: 'Description').requiredMessage));
       success = false;
     }
 

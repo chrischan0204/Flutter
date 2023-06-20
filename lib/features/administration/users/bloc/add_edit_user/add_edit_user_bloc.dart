@@ -226,7 +226,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       emit(state.copyWith(
           firstNameValidationMessage:
               FormValidationMessage(fieldName: 'First name')
-                  .requiredAndNotBlankMessage));
+                  .requiredMessage));
       success = false;
     } else if (!Validation.checkAlphabetic(state.firstName)) {
       emit(state.copyWith(
@@ -247,7 +247,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       emit(state.copyWith(
           lastNameValidationMessage:
               FormValidationMessage(fieldName: 'Last name')
-                  .requiredAndNotBlankMessage));
+                  .requiredMessage));
       success = false;
     } else if (!Validation.checkAlphabetic(state.lastName)) {
       emit(state.copyWith(
@@ -281,7 +281,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     if (Validation.isEmpty(state.email)) {
       emit(state.copyWith(
           emailValidationMessage: FormValidationMessage(fieldName: 'Email')
-              .requiredAndNotBlankMessage));
+              .requiredMessage));
       success = false;
     } else if (!Validation.isEmail(state.email)) {
       emit(state.copyWith(

@@ -10,26 +10,26 @@ class FormValidationMessage {
 
   String get capitalizedFieldName => capitalize(fieldName);
 
-  String get requiredAndNotBlankMessage =>
-      '$capitalizedFieldName is required and cannot be blank.';
-
   String get requiredMessage => '$capitalizedFieldName is required.';
 
   String get alphanumbericWithAllowSpecialCharMessage =>
-      '$capitalizedFieldName should be alphanumeric with allow special char.';
+      '$capitalizedFieldName must contain only alphanumeric characters and special characters.';
 
-  String get alphabeticMessage => '$fieldName should be only alphabetic.';
+  String get alphabeticMessage =>
+      '$capitalizedFieldName  must contain only alphabets (letters A-Z and a-z).';
 
-  String get alphanumericMessage => '$fieldName should be only alphanumeric.';
+  String get alphanumericMessage =>
+      '$capitalizedFieldName must contain only alphanumeric characters (letters A-Z, a-z, and numbers 0-9).';
 
   String get maxLengthValidationMessage =>
       '$capitalizedFieldName cannot be more than $maxLength characters.';
 
   static const String phoneValidationMessage =
-      'It should be phone number format.';
+      'Please enter a valid phone number. It should consist of numbers and may include +, optional spaces, dashes or parentheses.';
 
   static const String einNumberValidationMessage =
-      'EIN Number can have only Number and Dahses in the format XX-XXXXXXX.';
+      'EIN Number can have only number and dahses in the format XX-XXXXXXX.';
 
-  static const String emailValidationMessage = 'It should be in an email format.';
+  static const String emailValidationMessage =
+      'It should be in an email format.';
 }

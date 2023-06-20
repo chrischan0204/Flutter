@@ -201,7 +201,7 @@ class AddEditProjectBloc
       emit(state.copyWith(
           projectNameValidationMessage:
               FormValidationMessage(fieldName: 'Project name')
-                  .requiredAndNotBlankMessage));
+                  .requiredMessage));
       success = false;
     } else if (Validation.isNotEmpty(state.projectName) &&
         !Validation.isAlphanumbericWithSpecialChars(state.projectName)) {

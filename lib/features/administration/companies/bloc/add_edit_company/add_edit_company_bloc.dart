@@ -158,7 +158,7 @@ class AddEditCompanyBloc
       emit(state.copyWith(
           companyNameValidationMessage:
               FormValidationMessage(fieldName: 'company name')
-                  .requiredAndNotBlankMessage));
+                  .requiredMessage));
 
       success = false;
     } else if (!Validation.isAlphanumbericWithSpecialChars(state.companyName)) {
