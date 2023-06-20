@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'user_detail_bloc.dart';
 
 class UserDetailState extends Equatable {
@@ -24,10 +23,6 @@ class UserDetailState extends Equatable {
   UserDetailState copyWith({
     User? user,
     EntityStatus? userLoadStatus,
-    List<UserSite>? userSiteAssignmentList,
-    EntityStatus? userSiteAssignmentListLoadStatus,
-    List<UserSiteNotification>? userSiteNotification,
-    EntityStatus? userSiteNotificationLoadStatus,
     EntityStatus? userDeleteStatus,
     String? message,
   }) {

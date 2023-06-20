@@ -19,31 +19,22 @@ class _UserDetailViewState extends State<UserDetailView> {
   String token = '';
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) =>
-          setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) =>
-          previous.authUser?.token != current.authUser?.token,
-      builder: (context, state) {
-        token = state.authUser?.token ?? '';
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-                create: (context) => UserDetailBloc(
-                    usersRepository: RepositoryProvider.of(context))),
-            BlocProvider(
-                create: (context) => AssignSiteToUserBloc(
-                    usersRepository: RepositoryProvider.of(context))),
-            BlocProvider(
-                create: (context) => NotificationSettingBloc(
-                    usersRepository: RepositoryProvider.of(context))),
-            BlocProvider(
-                create: (context) => UserInviteBloc(
-                    usersRepository: RepositoryProvider.of(context)))
-          ],
-          child: UserDetailWidget(userId: widget.userId),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => UserDetailBloc(
+                usersRepository: RepositoryProvider.of(context))),
+        BlocProvider(
+            create: (context) => AssignSiteToUserBloc(
+                usersRepository: RepositoryProvider.of(context))),
+        BlocProvider(
+            create: (context) => NotificationSettingBloc(
+                usersRepository: RepositoryProvider.of(context))),
+        BlocProvider(
+            create: (context) =>
+                UserInviteBloc(usersRepository: RepositoryProvider.of(context)))
+      ],
+      child: UserDetailWidget(userId: widget.userId),
     );
   }
 }
@@ -76,7 +67,8 @@ class _UserDetailWidgetState extends State<UserDetailWidget> {
     assignSiteToUserBloc = context.read()
       ..add(AssignSiteToUserAssignedUserSiteListLoaded(userId: widget.userId));
     notificationSettingBloc = context.read()
-      ..add(NotificationSettingUserSiteNotificationLoaded(userId: widget.userId));
+      ..add(
+          NotificationSettingUserSiteNotificationLoaded(userId: widget.userId));
 
     super.initState();
   }

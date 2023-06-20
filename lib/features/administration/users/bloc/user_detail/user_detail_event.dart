@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'user_detail_bloc.dart';
 
 abstract class UserDetailEvent extends Equatable {

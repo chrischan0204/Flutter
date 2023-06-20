@@ -1,7 +1,6 @@
 import 'dart:core';
 
-import 'package:equatable/equatable.dart';
-import 'package:safety_eta/common_libraries.dart';
+import '/common_libraries.dart';
 
 part 'user_detail_event.dart';
 part 'user_detail_state.dart';

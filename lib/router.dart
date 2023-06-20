@@ -304,11 +304,24 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/audits/show',
+      path: '/audits/edit/:auditId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: const Layout(
-          body: ShowAuditView(),
+        child: Layout(
+          body: AddEditAuditView(
+            auditId: state.params['auditId'],
+            view: state.queryParams['view'],
+          ),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/audits/show/:auditId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AuditDetailView(auditId: state.params['auditId']!),
           selectedItemName: 'audits',
         ),
       ),
