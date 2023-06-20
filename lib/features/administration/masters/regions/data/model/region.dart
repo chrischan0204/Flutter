@@ -99,7 +99,7 @@ class Region extends Entity {
             ),
           )
           .toList(),
-      siteCount: map['siteCount'] != null ? map['siteCount'] as int : null,
+      siteCount: map['siteCount'],
       active: entity.active,
       deactivationDate: entity.deactivationDate,
       deactivationUserName: entity.deactivationUserName,

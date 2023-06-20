@@ -81,7 +81,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
     return BlocConsumer<RegionsBloc, RegionsState>(
       listener: (context, state) {
         _changeFormData(state);
-        _checkCrudStatus(state, context);
+        _checkCrudStatus(state);
       },
       builder: (context, state) {
         Map<String, dynamic> regionItems = <String, dynamic>{}..addEntries(
@@ -108,7 +108,8 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
             children: [
               _buildRegionSelectField(regionItems, state),
               _buildTimeZoneSelectField(state),
-              _buildDeactiveSwitch(state),
+              if (state.selectedRegion?.deletable == true)
+                _buildDeactiveSwitch(state),
             ],
           ),
         );
@@ -219,8 +220,8 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
     }
   }
 
-  void _checkCrudStatus(RegionsState state, BuildContext context) {
-    if (state.regionCrudStatus == EntityStatus.success) {
+  void _checkCrudStatus(RegionsState state) {
+    if (state.regionCrudStatus.isSuccess) {
       regionsBloc.add(const RegionsStatusInited());
 
       _clearForm();
@@ -230,7 +231,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
         content: state.message,
       ).showNotification();
     }
-    if (state.regionCrudStatus == EntityStatus.failure) {
+    if (state.regionCrudStatus.isFailure) {
       regionsBloc.add(const RegionsStatusInited());
       setState(() {
         regionName = state.message;
