@@ -134,7 +134,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
               pause: const Duration(milliseconds: 300),
               animatedTexts: [
                 TyperAnimatedText(
-                    'Fill in the details below to create a ${widget.label}. Fields with (*) are required.'),
+                    'Fill in the details below to create ${widget.label}. Fields with (*) are required.'),
               ],
             ),
           ),

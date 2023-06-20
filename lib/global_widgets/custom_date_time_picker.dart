@@ -69,7 +69,9 @@ class CustomDateTimePicker extends StatelessWidget {
         dateLabelText: 'Date Time',
         use24HourFormat: false,
         locale: const Locale('en', 'US'),
-        onChanged: (val) => onChange(DateTime.parse(val)),
+        onChanged: (val) {
+          onChange(DateTime.parse(val));
+        },
         validator: (val) {
           return null;
         },

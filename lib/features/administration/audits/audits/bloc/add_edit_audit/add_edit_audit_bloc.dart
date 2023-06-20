@@ -8,7 +8,7 @@ part 'add_edit_audit_state.dart';
 class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   late FormDirtyBloc formDirtyBloc;
   late AuditsRepository auditsRepository;
-  late AuditsRepository sitesRepository;
+  late SitesRepository sitesRepository;
   late TemplatesRepository templatesRepository;
   late ProjectsRepository projectsRepository;
   final BuildContext context;
@@ -26,6 +26,19 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     on<AddEditAuditAdded>(_onAddEditAuditAdded);
     on<AddEditAuditEdited>(_onAddEditAuditEdited);
     on<AddEditAuditLoaded>(_onAddEditAuditLoaded);
+    on<AddEditAuditSiteListLoaded>(_onAddEditAuditSiteListLoaded);
+    on<AddEditAuditSiteTemplateLoaded>(_onAddEditAuditSiteTemplateLoaded);
+    on<AddEditAuditProjectListLoaded>(_onAddEditAuditProjectListLoaded);
+    on<AddEditAuditNameChanged>(_onAddEditAuditNameChanged);
+    on<AddEditAuditDateChanged>(_onAddEditAuditDateChanged);
+    on<AddEditAuditSiteChanged>(_onAddEditAuditSiteChanged);
+    on<AddEditAuditTemplateChanged>(_onAddEditAuditTemplateChanged);
+    on<AddEditAuditCompaniesChanged>(_onAddEditAuditCompaniesChanged);
+    on<AddEditAuditTimeChanged>(_onAddEditAuditTimeChanged);
+    on<AddEditAuditSelectedProjectListChanged>(
+        _onAddEditAuditSelectedProjectListChanged);
+    on<AddEditAuditAreaChanged>(_onAddEditAuditAreaChanged);
+    on<AddEditAuditInspectorsChanged>(_onAddEditAuditInspectorsChanged);
   }
 
   Future<void> _onAddEditAuditAdded(
@@ -36,15 +49,15 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        EntityResponse response = await auditsRepository.addAudit(state.audit);
+        // EntityResponse response = await auditsRepository.addAudit(state.audit);
 
-        if (response.isSuccess) {
-          emit(state.copyWith(
-            createdAuditId: response.data?.id,
-            message: response.message,
-            status: EntityStatus.success,
-          ));
-        } else {}
+        // if (response.isSuccess) {
+        //   emit(state.copyWith(
+        //     createdAuditId: response.data?.id,
+        //     message: response.message,
+        //     status: EntityStatus.success,
+        //   ));
+        // } else {}
       } catch (e) {
         emit(state.copyWith(
           status: EntityStatus.failure,
@@ -62,20 +75,20 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        EntityResponse response = await auditsRepository
-            .editAudit(state.audit.copyWith(id: event.id));
+        // EntityResponse response = await auditsRepository
+        //     .editAudit(state.audit.copyWith(id: event.id));
 
-        if (response.isSuccess) {
-          emit(state.copyWith(
-            initialAuditName: state.auditName,
-            message: response.message,
-            status: EntityStatus.success,
-          ));
+        // if (response.isSuccess) {
+        //   emit(state.copyWith(
+        //     initialAuditName: state.auditName,
+        //     message: response.message,
+        //     status: EntityStatus.success,
+        //   ));
 
-          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
-        } else {
-          // _checkMessage(emit, response.message);
-        }
+        //   formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+        // } else {
+        //   // _checkMessage(emit, response.message);
+        // }
       } catch (e) {
         // emit(state.copyWith(
         //   status: EntityStatus.failure,
@@ -141,5 +154,139 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     }
 
     return success;
+  }
+
+  Future<void> _onAddEditAuditSiteListLoaded(
+    AddEditAuditSiteListLoaded event,
+    Emitter<AddEditAuditState> emit,
+  ) async {
+    try {
+      List<Site> siteList = await sitesRepository.getSites();
+      emit(state.copyWith(siteList: siteList));
+    } catch (e) {}
+  }
+
+  Future<void> _onAddEditAuditSiteTemplateLoaded(
+    AddEditAuditSiteTemplateLoaded event,
+    Emitter<AddEditAuditState> emit,
+  ) async {
+    try {
+      List<Template> templateList = await templatesRepository.getTemplateList();
+      emit(state.copyWith(templateList: templateList));
+    } catch (e) {}
+  }
+
+  Future<void> _onAddEditAuditProjectListLoaded(
+    AddEditAuditProjectListLoaded event,
+    Emitter<AddEditAuditState> emit,
+  ) async {
+    try {
+      List<Project> projectList = await projectsRepository.getProjects();
+      emit(state.copyWith(projectList: projectList));
+    } catch (e) {}
+  }
+
+  void _onAddEditAuditNameChanged(
+    AddEditAuditNameChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      auditName: event.auditName,
+      auditNameValidationMessage: '',
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditDateChanged(
+    AddEditAuditDateChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      auditDate: event.date,
+      auditDateValidationMessage: '',
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditSiteChanged(
+    AddEditAuditSiteChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      site: event.site,
+      siteValidationMessage: '',
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditTemplateChanged(
+    AddEditAuditTemplateChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      template: event.template,
+      templateValidationMessage: '',
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditCompaniesChanged(
+    AddEditAuditCompaniesChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      companies: event.companies,
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditTimeChanged(
+    AddEditAuditTimeChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      auditTime: event.time,
+      auditTimeValidationMessage: '',
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditAreaChanged(
+    AddEditAuditAreaChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      area: event.area,
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditInspectorsChanged(
+    AddEditAuditInspectorsChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      inspectors: event.inspectors,
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditAuditSelectedProjectListChanged(
+    AddEditAuditSelectedProjectListChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) {
+    emit(state.copyWith(
+      projectList: event.projectList,
+    ));
+
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 }

@@ -125,7 +125,37 @@ class AddEditAuditState extends Equatable {
   });
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [
+        createdAuditId,
+        loadedAudit,
+        siteList,
+        templateList,
+        projectList,
+        auditName,
+        initialAuditName,
+        auditNameValidationMessage,
+        auditDate,
+        initialAuditDate,
+        site,
+        initialSite,
+        siteValidationMessage,
+        template,
+        initialTemplate,
+        templateValidationMessage,
+        companies,
+        initialCompanies,
+        auditTime,
+        initialAuditTime,
+        auditTimeValidationMessage,
+        selectedProjectList,
+        initialSelectedProjectList,
+        area,
+        initialArea,
+        inspectors,
+        initialInspectors,
+        status,
+        message,
+      ];
 
   Audit get audit => Audit(
         userId: 'userId',
@@ -140,8 +170,8 @@ class AddEditAuditState extends Equatable {
       (Validation.isNotEmpty(area) && area != initialArea) ||
       (Validation.isNotEmpty(inspectors) && inspectors != initialInspectors) ||
       (auditDate != null && auditDate != initialAuditDate) ||
-      (site != null && site != initialSite) ||
-      (template != null && template != initialTemplate) ||
+      (site != null && site?.id != initialSite?.id) ||
+      (template != null && template?.id != initialTemplate?.id) ||
       (selectedProjectList.isNotEmpty &&
           selectedProjectList != initialSelectedProjectList) ||
       (auditTime != null && auditTime != initialAuditTime);

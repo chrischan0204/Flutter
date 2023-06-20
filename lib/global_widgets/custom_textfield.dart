@@ -19,6 +19,7 @@ class CustomTextField extends StatefulWidget {
   final int maxLines;
   final EdgeInsets contentPadding;
   final FocusNode? focusNode;
+  final VoidCallback? onTap;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -41,6 +42,7 @@ class CustomTextField extends StatefulWidget {
     ),
     this.onSubmitted,
     this.focusNode,
+    this.onTap,
   });
 
   @override
@@ -71,6 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             fontFamily: 'OpenSans',
             fontWeight: FontWeight.w400,
           ),
+          onTap: widget.onTap,
           decoration: InputDecoration(
             hintText: widget.hintText,
             contentPadding: widget.contentPadding,

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'add_edit_audit_bloc.dart';
 
 abstract class AddEditAuditEvent extends Equatable {
@@ -28,4 +29,116 @@ class AddEditAuditLoaded extends AddEditAuditEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+/// even to load site list
+class AddEditAuditSiteListLoaded extends AddEditAuditEvent {}
+
+/// even to load template list
+class AddEditAuditSiteTemplateLoaded extends AddEditAuditEvent {}
+
+/// even to load project list
+class AddEditAuditProjectListLoaded extends AddEditAuditEvent {}
+
+/// event to change the audit name
+class AddEditAuditNameChanged extends AddEditAuditEvent {
+  /// audit name to change
+  final String auditName;
+  const AddEditAuditNameChanged({required this.auditName});
+
+  @override
+  List<Object> get props => [auditName];
+}
+
+/// event to change the audit date
+class AddEditAuditDateChanged extends AddEditAuditEvent {
+  /// audit date to change
+  final DateTime date;
+  const AddEditAuditDateChanged({
+    required this.date,
+  });
+
+  @override
+  List<Object> get props => [date];
+}
+
+/// event to change site
+class AddEditAuditSiteChanged extends AddEditAuditEvent {
+  /// site to change
+  final Site site;
+  const AddEditAuditSiteChanged({
+    required this.site,
+  });
+
+  @override
+  List<Object> get props => [site];
+}
+
+/// event to change template
+class AddEditAuditTemplateChanged extends AddEditAuditEvent {
+  /// template to change
+  final Template template;
+  const AddEditAuditTemplateChanged({required this.template});
+
+  @override
+  List<Object> get props => [template];
+}
+
+/// event to change companies
+class AddEditAuditCompaniesChanged extends AddEditAuditEvent {
+  /// companies to change
+  final String companies;
+  const AddEditAuditCompaniesChanged({
+    required this.companies,
+  });
+
+  @override
+  List<Object> get props => [companies];
+}
+
+/// event to change audit time
+class AddEditAuditTimeChanged extends AddEditAuditEvent {
+  /// audit time to change
+  final DateTime time;
+  const AddEditAuditTimeChanged({
+    required this.time,
+  });
+
+  @override
+  List<Object> get props => [time];
+}
+
+/// event to change the select project list
+class AddEditAuditSelectedProjectListChanged extends AddEditAuditEvent {
+  final List<Project> projectList;
+  const AddEditAuditSelectedProjectListChanged({
+    required this.projectList,
+  });
+
+  @override
+  List<Object> get props => [projectList];
+}
+
+/// event to change area
+class AddEditAuditAreaChanged extends AddEditAuditEvent {
+  /// area to change
+  final String area;
+  const AddEditAuditAreaChanged({
+    required this.area,
+  });
+
+  @override
+  List<Object> get props => [area];
+}
+
+// event to change the inspectors
+class AddEditAuditInspectorsChanged extends AddEditAuditEvent {
+  /// inspectors to change
+  final String inspectors;
+  const AddEditAuditInspectorsChanged({
+    required this.inspectors,
+  });
+
+  @override
+  List<Object> get props => [inspectors];
 }
