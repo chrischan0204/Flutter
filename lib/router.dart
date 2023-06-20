@@ -273,26 +273,26 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
-    // GoRoute(
-    //   path: '/audits',
-    //   pageBuilder: (context, state) => NoTransitionPage<void>(
-    //     key: state.pageKey,
-    //     child: const Layout(
-    //       body: AuditListView(),
-    //       selectedItemName: 'audits',
-    //     ),
-    //   ),
-    // ),
-    // GoRoute(
-    //   path: '/audits/index',
-    //   pageBuilder: (context, state) => NoTransitionPage<void>(
-    //     key: state.pageKey,
-    //     child: const Layout(
-    //       body: AuditListView(),
-    //       selectedItemName: 'audits',
-    //     ),
-    //   ),
-    // ),
+    GoRoute(
+      path: '/audits',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AuditListView(),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/audits/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AuditListView(),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
     GoRoute(
       path: '/audits/new',
       pageBuilder: (context, state) => NoTransitionPage<void>(

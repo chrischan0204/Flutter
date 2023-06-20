@@ -13,3 +13,4 @@ export '/features/auth/data/repository/auth_repository.dart';
 export 'base_repository.dart';
 export '/features/setting/data/repository/settings_repository.dart';
 export '/features/administration/audits/templates/data/repository/repository.dart';
+export '/features/administration/audits/audits/data/repository/audits_repository.dart';

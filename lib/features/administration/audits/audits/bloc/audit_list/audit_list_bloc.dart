@@ -1,9 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:safety_eta/common_libraries.dart';
-import 'package:safety_eta/features/administration/audits/audits/data/repository/audits_repository.dart';
-
-import '../../data/model/audit.dart';
 
 part 'audit_list_event.dart';
 part 'audit_list_state.dart';
@@ -12,7 +7,8 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
   final AuditsRepository auditsRepository;
   AuditListBloc({required this.auditsRepository})
       : super(const AuditListState()) {
-    on<AuditListEvent>((event, emit) {});
+    on<AuditListLoaded>(_onAuditListLoaded);
+    on<AuditListFiltered>(_onAuditListFiltered);
   }
 
   Future<void> _onAuditListLoaded(

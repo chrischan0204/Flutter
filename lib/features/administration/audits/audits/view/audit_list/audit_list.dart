@@ -1,6 +1,3 @@
-import '../../bloc/audit_detail/audit_detail_bloc.dart';
-import '../../bloc/audit_list/audit_list_bloc.dart';
-import '../../data/repository/audits_repository.dart';
 import '/common_libraries.dart';
 
 class AuditListView extends StatefulWidget {
@@ -17,8 +14,7 @@ class _AuditListViewState extends State<AuditListView> {
       providers: [
         BlocProvider(
             create: (context) => AuditListBloc(
-                auditsRepository:
-                    RepositoryProvider.of<AuditsRepository>(context))),
+                auditsRepository: RepositoryProvider.of(context))),
       ],
       child: const AuditListWidget(),
     );
@@ -34,7 +30,7 @@ class AuditListWidget extends StatefulWidget {
 
 class _AuditListState extends State<AuditListWidget> {
   late AuditListBloc auditListBloc;
-  late AuditDetailBloc auditDetailBloc;
+  // late AuditDetailBloc auditDetailBloc;
 
   static String pageTitle = 'Audits';
   static String pageLabel = 'audit';
@@ -44,7 +40,7 @@ class _AuditListState extends State<AuditListWidget> {
   @override
   void initState() {
     auditListBloc = context.read<AuditListBloc>();
-    auditDetailBloc = context.read<AuditDetailBloc>();
+    // auditDetailBloc = context.read<AuditDetailBloc>();
 
     super.initState();
   }
@@ -55,48 +51,43 @@ class _AuditListState extends State<AuditListWidget> {
       builder: (context, filterSettingState) =>
           BlocBuilder<AuditListBloc, AuditListState>(
         builder: (context, auditListState) {
-          return BlocBuilder<AuditDetailBloc, AuditDetailState>(
-            builder: (context, auditDetailState) {
-              return EntityListTemplate(
-                title: pageTitle,
-                label: pageLabel,
-                viewName: pageLabel,
-                entities: auditListState.auditList,
-                showTableHeaderButtons: true,
-                onRowClick: (selectedAudit) => _selectAudit(selectedAudit),
-                emptyMessage: emptyMessage,
-                entityListLoadStatusLoading:
-                    filterSettingState.filterSettingLoading ||
-                        auditListState.auditListLoadStatus.isLoading,
-                // entityDetailLoadStatusLoading:
-                //     auditDetailState.auditLoadStatus.isLoading,
-                // selectedEntity: auditDetailState.audit,
-                onViewSettingApplied: () {
-                  _filterAudits();
-                },
-                onIncludeDeletedChanged: (value) {
-                  _filterAudits(null, value, 1);
-                },
-                onFilterSaved: (value) {
-                  _filterAudits(value, null, 1);
-                },
-                onFilterApplied: ([value, withoutSave]) {
-                  _filterAudits(value, null, 1, null, withoutSave);
-                },
-                onPaginate: (pageNum, pageRow) {
-                  _filterAudits(null, null, pageNum, pageRow);
-                },
-                totalRows: auditListState.totalRows,
-              );
+          return EntityListTemplate(
+            title: pageTitle,
+            label: pageLabel,
+            viewName: pageLabel,
+            entities: auditListState.auditList,
+            showTableHeaderButtons: true,
+            onRowClick: (selectedAudit) => _selectAudit(selectedAudit),
+            emptyMessage: emptyMessage,
+            entityListLoadStatusLoading:
+                filterSettingState.filterSettingLoading ||
+                    auditListState.auditListLoadStatus.isLoading,
+            // entityDetailLoadStatusLoading:
+            //     auditDetailState.auditLoadStatus.isLoading,
+            // selectedEntity: auditDetailState.audit,
+            onViewSettingApplied: () {
+              _filterAudits();
             },
+            onIncludeDeletedChanged: (value) {
+              _filterAudits(null, value, 1);
+            },
+            onFilterSaved: (value) {
+              _filterAudits(value, null, 1);
+            },
+            onFilterApplied: ([value, withoutSave]) {
+              _filterAudits(value, null, 1, null, withoutSave);
+            },
+            onPaginate: (pageNum, pageRow) {
+              _filterAudits(null, null, pageNum, pageRow);
+            },
+            totalRows: auditListState.totalRows,
           );
         },
       ),
     );
   }
 
-  void _selectAudit(Entity selectedAudit) {
-  }
+  void _selectAudit(Entity selectedAudit) {}
 
   void _filterAudits([
     String? filterId,
