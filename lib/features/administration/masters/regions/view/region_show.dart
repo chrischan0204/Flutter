@@ -23,6 +23,8 @@ class _RegionShowViewState extends State<RegionShowView> {
   static String pageTitle = 'Region';
   static String pageLabel = 'region';
 
+  static String descriptionForDelete = 'Region cannot be deleted, as it\'s having sites associated with it.';
+
   @override
   void initState() {
     regionsBloc = context.read<RegionsBloc>();
@@ -47,6 +49,7 @@ class _RegionShowViewState extends State<RegionShowView> {
               ? true
               : state.selectedRegion!.deletable,
           deleteEntity: () => _deleteRegion(state),
+          descriptionForDelete: descriptionForDelete,
           crudStatus: state.regionCrudStatus,
         );
       },

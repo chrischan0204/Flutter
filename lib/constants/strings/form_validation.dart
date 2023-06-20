@@ -16,7 +16,7 @@ class FormValidationMessage {
       '$capitalizedFieldName must contain only alphanumeric characters and special characters.';
 
   String get alphabeticMessage =>
-      '$capitalizedFieldName  must contain only alphabets (letters A-Z and a-z).';
+      '$capitalizedFieldName must contain only alphabets (letters A-Z and a-z).';
 
   String get alphanumericMessage =>
       '$capitalizedFieldName must contain only alphanumeric characters (letters A-Z, a-z, and numbers 0-9).';
@@ -31,5 +31,5 @@ class FormValidationMessage {
       'EIN Number can have only number and dahses in the format XX-XXXXXXX.';
 
   static const String emailValidationMessage =
-      'It should be in an email format.';
+      'Please enter a valid email address.';
 }

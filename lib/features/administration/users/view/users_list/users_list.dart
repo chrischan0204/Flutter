@@ -8,30 +8,20 @@ class UsersListView extends StatefulWidget {
 }
 
 class _UsersListViewState extends State<UsersListView> {
-  String token = '';
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) =>
-          setState(() => token = state.authUser?.token ?? ''),
-      listenWhen: (previous, current) =>
-          previous.authUser?.token != current.authUser?.token,
-      builder: (context, state) {
-        token = state.authUser?.token ?? '';
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-                create: (context) => UserListBloc(
-                    usersRepository:
-                        RepositoryProvider.of<UsersRepository>(context))),
-            BlocProvider(
-                create: (context) => UserDetailBloc(
-                    usersRepository:
-                        RepositoryProvider.of<UsersRepository>(context))),
-          ],
-          child: const UsersListWidget(),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => UserListBloc(
+                usersRepository:
+                    RepositoryProvider.of<UsersRepository>(context))),
+        BlocProvider(
+            create: (context) => UserDetailBloc(
+                usersRepository:
+                    RepositoryProvider.of<UsersRepository>(context))),
+      ],
+      child: const UsersListWidget(),
     );
   }
 }

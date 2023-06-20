@@ -251,11 +251,13 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
     if (Validation.isEmpty(state.siteName)) {
       emit(state.copyWith(
           siteNameValidationMessage:
-              'Site name is required and cannot be blank.'));
+              FormValidationMessage(fieldName: 'Site name').requiredMessage));
       success = false;
     } else if (!Validation.checkAlphanumeric(state.siteName)) {
       emit(state.copyWith(
-          siteNameValidationMessage: 'Site name should be only alphanumeric.'));
+          siteNameValidationMessage:
+              FormValidationMessage(fieldName: 'Site name')
+                  .alphanumericMessage));
       success = false;
     } else if (state.siteName.length > SiteFormValidation.siteNameMaxLength) {
       emit(state.copyWith(

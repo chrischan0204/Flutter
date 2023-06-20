@@ -15,6 +15,8 @@ export '/features/administration/companies/data/model/model.dart';
 
 export '/features/administration/users/data/model/model.dart';
 
+export '/features/administration/audits/audits/data/model/model.dart';
+
 export '/features/setting/data/model/model.dart';
 
 export '/features/auth/data/model/model.dart';
