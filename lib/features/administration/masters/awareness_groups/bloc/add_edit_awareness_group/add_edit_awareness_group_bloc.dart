@@ -120,22 +120,27 @@ class AddEditAwarenessGroupBloc
 
     if (Validation.isEmpty(state.name)) {
       emit(state.copyWith(
-          nameValidationMessage: 'Awareness group is required.'));
+          nameValidationMessage:
+              FormValidationMessage(fieldName: 'Awareness group')
+                  .requiredMessage));
 
       success = false;
     } else if (Validation.isNotEmpty(state.name) &&
         !Validation.isAlphanumbericWithSpecialChars(state.name)) {
       emit(state.copyWith(
           nameValidationMessage:
-              'Awareness group should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Awareness group')
+                  .alphanumbericWithAllowSpecialCharMessage));
 
       success = false;
     } else if (state.name.length >
         AwarenessGroupFormValidation.awarenessGroupNameMaxLength) {
       emit(state.copyWith(
-          nameValidationMessage: Validation.maxLengthValidationMessage(
-              'Awareness group',
-              AwarenessGroupFormValidation.awarenessGroupNameMaxLength)));
+          nameValidationMessage: FormValidationMessage(
+                  fieldName: 'Awareness group',
+                  maxLength:
+                      AwarenessGroupFormValidation.awarenessGroupNameMaxLength)
+              .maxLengthValidationMessage));
 
       success = false;
     }

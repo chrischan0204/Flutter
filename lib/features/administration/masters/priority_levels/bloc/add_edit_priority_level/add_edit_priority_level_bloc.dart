@@ -171,29 +171,35 @@ class AddEditPriorityLevelBloc
 
     if (Validation.isEmpty(state.priorityLevelName)) {
       emit(state.copyWith(
-          priorityLevelNameValidationMessage: 'Priority level is required.'));
+          priorityLevelNameValidationMessage:
+              FormValidationMessage(fieldName: 'Priority level')
+                  .requiredAndNotBlankMessage));
 
       success = false;
     } else if (Validation.isNotEmpty(state.priorityLevelName) &&
         !Validation.isAlphanumbericWithSpecialChars(state.priorityLevelName)) {
       emit(state.copyWith(
           priorityLevelNameValidationMessage:
-              'Priority level should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Priority level')
+                  .alphanumbericWithAllowSpecialCharMessage));
 
       success = false;
     } else if (state.priorityLevelName.length >
         PriorityLevelFormValidation.priorityLevelMaxLength) {
       emit(state.copyWith(
-          priorityLevelNameValidationMessage:
-              Validation.maxLengthValidationMessage('Priority level',
-                  PriorityLevelFormValidation.priorityLevelMaxLength)));
+          priorityLevelNameValidationMessage: FormValidationMessage(
+        fieldName: 'Priority level',
+        maxLength: PriorityLevelFormValidation.priorityLevelMaxLength,
+      ).maxLengthValidationMessage));
 
       success = false;
     }
 
     if (Validation.isEmpty(state.priorityType)) {
       emit(state.copyWith(
-          priorityTypeValidationMessage: 'Priority type is required.'));
+          priorityTypeValidationMessage:
+              FormValidationMessage(fieldName: 'Priority type')
+                  .requiredMessage));
 
       success = false;
     }

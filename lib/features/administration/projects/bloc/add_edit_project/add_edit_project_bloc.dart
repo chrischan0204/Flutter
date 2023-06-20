@@ -200,24 +200,30 @@ class AddEditProjectBloc
     if (Validation.isEmpty(state.projectName)) {
       emit(state.copyWith(
           projectNameValidationMessage:
-              'Project name is required and cannot be blank.'));
+              FormValidationMessage(fieldName: 'Project name')
+                  .requiredAndNotBlankMessage));
       success = false;
     } else if (Validation.isNotEmpty(state.projectName) &&
         !Validation.isAlphanumbericWithSpecialChars(state.projectName)) {
       emit(state.copyWith(
           projectNameValidationMessage:
-              'Project name should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Project name')
+                  .alphanumbericWithAllowSpecialCharMessage));
       success = false;
     } else if (state.projectName.length >
         ProjectFormValidation.projectNameMaxLength) {
       emit(state.copyWith(
-          projectNameValidationMessage: Validation.maxLengthValidationMessage(
-              'Project name', ProjectFormValidation.projectNameMaxLength)));
+          projectNameValidationMessage: FormValidationMessage(
+                  fieldName: 'Project name',
+                  maxLength: ProjectFormValidation.projectNameMaxLength)
+              .maxLengthValidationMessage));
       success = false;
     }
 
     if (state.site == null) {
-      emit(state.copyWith(siteValidationMessage: 'Site is required.'));
+      emit(state.copyWith(
+          siteValidationMessage:
+              FormValidationMessage(fieldName: 'Site').requiredMessage));
       success = false;
     }
 
@@ -225,13 +231,16 @@ class AddEditProjectBloc
         !Validation.isAlphanumbericWithSpecialChars(state.referenceName)) {
       emit(state.copyWith(
           referenceNameValidationMessage:
-              'Reference name should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Reference name')
+                  .alphanumbericWithAllowSpecialCharMessage));
       success = false;
     } else if (state.referenceName.length >
         ProjectFormValidation.referenceNameMaxLength) {
       emit(state.copyWith(
-          referenceNameValidationMessage: Validation.maxLengthValidationMessage(
-              'Reference name', ProjectFormValidation.referenceNameMaxLength)));
+          referenceNameValidationMessage: FormValidationMessage(
+                  fieldName: 'Reference name',
+                  maxLength: ProjectFormValidation.referenceNameMaxLength)
+              .maxLengthValidationMessage));
       success = false;
     }
 
@@ -239,14 +248,16 @@ class AddEditProjectBloc
         !Validation.isAlphanumbericWithSpecialChars(state.referenceNumber)) {
       emit(state.copyWith(
           refereneceNumberValidationMessage:
-              'Reference number should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Reference number')
+                  .alphanumbericWithAllowSpecialCharMessage));
       success = false;
     } else if (state.referenceNumber.length >
         ProjectFormValidation.referneceNumberMaxLength) {
       emit(state.copyWith(
-          refereneceNumberValidationMessage:
-              Validation.maxLengthValidationMessage('Reference number',
-                  ProjectFormValidation.referneceNumberMaxLength)));
+          refereneceNumberValidationMessage: FormValidationMessage(
+                  fieldName: 'Reference number',
+                  maxLength: ProjectFormValidation.referneceNumberMaxLength)
+              .maxLengthValidationMessage));
       success = false;
     }
 

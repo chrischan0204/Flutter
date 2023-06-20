@@ -118,12 +118,14 @@ class AddEditTemplateBloc
     if (Validation.isEmpty(state.templateDescription)) {
       emit(state.copyWith(
           templateDescriptionValidationMessage:
-              'Description is required and cannot be blank.'));
+              FormValidationMessage(fieldName: 'Description').requiredAndNotBlankMessage));
       success = false;
     }
 
     if (Validation.isEmpty(state.date?.toIso8601String())) {
-      emit(state.copyWith(dateValidationMesage: 'Date is required.'));
+      emit(state.copyWith(
+          dateValidationMesage:
+              FormValidationMessage(fieldName: 'Date').requiredMessage));
       success = false;
     }
 

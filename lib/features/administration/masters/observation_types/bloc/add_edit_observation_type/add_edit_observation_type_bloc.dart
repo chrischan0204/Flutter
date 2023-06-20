@@ -172,7 +172,8 @@ class AddEditObservationTypeBloc
     if (Validation.isEmpty(state.observationTypeName)) {
       emit(state.copyWith(
           observationTypeNameValidationMessage:
-              'Observation type name is required.'));
+              FormValidationMessage(fieldName: 'Observation type name')
+                  .requiredMessage));
 
       success = false;
     } else if (Validation.isNotEmpty(state.observationTypeName) &&
@@ -180,22 +181,25 @@ class AddEditObservationTypeBloc
             state.observationTypeName)) {
       emit(state.copyWith(
           observationTypeNameValidationMessage:
-              'Obsevation type should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Observation type name')
+                  .alphanumbericWithAllowSpecialCharMessage));
 
       success = false;
     } else if (state.observationTypeName.length >
         ObservationTypeFormValidation.observationTypeNameMaxLength) {
       emit(state.copyWith(
-          observationTypeNameValidationMessage:
-              Validation.maxLengthValidationMessage('Observation type',
-                  ObservationTypeFormValidation.observationTypeNameMaxLength)));
+          observationTypeNameValidationMessage: FormValidationMessage(
+        fieldName: 'Observation type',
+        maxLength: ObservationTypeFormValidation.observationTypeNameMaxLength,
+      ).maxLengthValidationMessage));
 
       success = false;
     }
 
     if (Validation.isEmpty(state.observationTypeSeverity)) {
       emit(state.copyWith(
-          observationTypeSeverityValidationMessage: 'Severity is required.'));
+          observationTypeSeverityValidationMessage:
+              FormValidationMessage(fieldName: 'Severity').requiredMessage));
 
       success = false;
     }

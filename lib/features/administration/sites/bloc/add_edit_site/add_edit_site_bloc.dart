@@ -259,39 +259,53 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       success = false;
     } else if (state.siteName.length > SiteFormValidation.siteNameMaxLength) {
       emit(state.copyWith(
-          siteNameValidationMessage: Validation.maxLengthValidationMessage(
-              'Site name', SiteFormValidation.siteNameMaxLength)));
+          siteNameValidationMessage: FormValidationMessage(
+                  fieldName: 'Site name',
+                  maxLength: SiteFormValidation.siteNameMaxLength)
+              .maxLengthValidationMessage));
       success = false;
     }
 
     if (state.region == null) {
-      emit(state.copyWith(regionValidationMessage: 'Region is required.'));
+      emit(state.copyWith(
+          regionValidationMessage:
+              FormValidationMessage(fieldName: 'Region').requiredMessage));
       success = false;
     }
 
     if (state.timeZone == null) {
-      emit(state.copyWith(timeZoneValidationMessage: 'Time zone is required.'));
+      emit(state.copyWith(
+          timeZoneValidationMessage:
+              FormValidationMessage(fieldName: 'Time zone').requiredMessage));
       success = false;
     }
 
     if (state.siteType == null) {
-      emit(state.copyWith(siteTypeValidationMessage: 'Site type is required.'));
+      emit(state.copyWith(
+          siteTypeValidationMessage:
+              FormValidationMessage(fieldName: 'Site type').requiredMessage));
       success = false;
     }
 
     if (Validation.isEmpty(state.siteCode)) {
-      emit(state.copyWith(siteCodeValidationMessage: 'Site code is required.'));
+      emit(state.copyWith(
+          siteCodeValidationMessage:
+              FormValidationMessage(fieldName: 'Site code').requiredMessage));
 
       success = false;
     } else if (!Validation.checkAlphanumeric(state.siteCode)) {
       emit(state.copyWith(
-          siteCodeValidationMessage: 'Site code should be only alphanumeric.'));
+          siteCodeValidationMessage:
+              FormValidationMessage(fieldName: 'Site code')
+                  .alphanumericMessage));
 
       success = false;
     } else if (state.siteCode.length > SiteFormValidation.siteCodeMaxLength) {
       emit(state.copyWith(
-          siteCodeValidationMessage: Validation.maxLengthValidationMessage(
-              'Site code', SiteFormValidation.siteCodeMaxLength)));
+          siteCodeValidationMessage: FormValidationMessage(
+        fieldName: 'Site code',
+        maxLength: SiteFormValidation.siteCodeMaxLength,
+      ).alphanumericMessage));
       success = false;
     }
 
@@ -299,13 +313,16 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
         !Validation.isAlphanumbericWithSpecialChars(state.referenceCode)) {
       emit(state.copyWith(
           siteCodeValidationMessage:
-              'Reference code should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Reference code')
+                  .alphanumbericWithAllowSpecialCharMessage));
       success = false;
     } else if (state.referenceCode.length >
         SiteFormValidation.referenceCodeMaxLength) {
       emit(state.copyWith(
-          referenceCodeValidationMessage: Validation.maxLengthValidationMessage(
-              'Reference code', SiteFormValidation.referenceCodeMaxLength)));
+          referenceCodeValidationMessage: FormValidationMessage(
+        fieldName: 'Reference code',
+        maxLength: SiteFormValidation.referenceCodeMaxLength,
+      ).maxLengthValidationMessage));
       success = false;
     }
 

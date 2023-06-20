@@ -9,12 +9,12 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
   final TimeZonesRepository timeZonesRepository;
   final FormDirtyBloc formDirtyBloc;
 
-  static String firstNameValidationMessage = 'First name is required.';
-  static String lastNameValidationMessage = 'Last name is required.';
-  static String roleValidationMessage = 'Role is required.';
-  static String defaultSiteValidationMessage = 'Default site is required.';
-  static String timeZoneValidationMessage = 'Time Zone is required.';
-  static String emailValidationMessage = 'Email is required.';
+  // static String firstNameValidationMessage = 'First name is required.';
+  // static String lastNameValidationMessage = 'Last name is required.';
+  // static String roleValidationMessage = 'Role is required.';
+  // static String defaultSiteValidationMessage = 'Default site is required.';
+  // static String timeZoneValidationMessage = 'Time Zone is required.';
+  // static String emailValidationMessage = 'Email is required.';
 
   static String addErrorMessage =
       'There was an error while adding user. Our team has been notified. Please wait a few minutes and try again.';
@@ -224,48 +224,64 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     bool success = true;
     if (Validation.isEmpty(state.firstName)) {
       emit(state.copyWith(
-          firstNameValidationMessage: firstNameValidationMessage));
+          firstNameValidationMessage:
+              FormValidationMessage(fieldName: 'First name')
+                  .requiredAndNotBlankMessage));
       success = false;
     } else if (!Validation.checkAlphabetic(state.firstName)) {
       emit(state.copyWith(
-          firstNameValidationMessage: 'First name should be alphabetical.'));
+          firstNameValidationMessage:
+              FormValidationMessage(fieldName: 'First name')
+                  .alphabeticMessage));
       success = false;
     } else if (state.firstName.length > UserFormValidation.firstNameMaxLength) {
       emit(state.copyWith(
-          firstNameValidationMessage: Validation.maxLengthValidationMessage(
-              'First name', UserFormValidation.firstNameMaxLength)));
+          firstNameValidationMessage: FormValidationMessage(
+                  fieldName: 'First name',
+                  maxLength: UserFormValidation.firstNameMaxLength)
+              .maxLengthValidationMessage));
       success = false;
     }
 
     if (Validation.isEmpty(state.lastName)) {
-      emit(
-          state.copyWith(lastNameValidationMessage: lastNameValidationMessage));
+      emit(state.copyWith(
+          lastNameValidationMessage:
+              FormValidationMessage(fieldName: 'Last name')
+                  .requiredAndNotBlankMessage));
       success = false;
     } else if (!Validation.checkAlphabetic(state.lastName)) {
       emit(state.copyWith(
-          lastNameValidationMessage: 'Last name should be alphabetical.'));
+          lastNameValidationMessage:
+              FormValidationMessage(fieldName: 'Last name').alphabeticMessage));
       success = false;
     } else if (state.lastName.length > UserFormValidation.lastNameMaxLength) {
       emit(state.copyWith(
-          lastNameValidationMessage: Validation.maxLengthValidationMessage(
-              'Last name', UserFormValidation.lastNameMaxLength)));
+          lastNameValidationMessage: FormValidationMessage(
+        fieldName: 'Last name',
+        maxLength: UserFormValidation.lastNameMaxLength,
+      ).maxLengthValidationMessage));
       success = false;
     }
 
     if (!Validation.isEmpty(state.title) &&
         !Validation.checkAlphabetic(state.title)) {
       emit(state.copyWith(
-          titleValidationMessage: 'User title should be alphabetical.'));
+          titleValidationMessage: FormValidationMessage(fieldName: 'User title')
+              .alphabeticMessage));
       success = false;
     } else if (state.title.length > UserFormValidation.userTitleMaxLength) {
       emit(state.copyWith(
-          titleValidationMessage: Validation.maxLengthValidationMessage(
-              'User title', UserFormValidation.userTitleMaxLength)));
+          titleValidationMessage: FormValidationMessage(
+        fieldName: 'User title',
+        maxLength: UserFormValidation.userTitleMaxLength,
+      ).maxLengthValidationMessage));
       success = false;
     }
 
     if (Validation.isEmpty(state.email)) {
-      emit(state.copyWith(emailValidationMessage: emailValidationMessage));
+      emit(state.copyWith(
+          emailValidationMessage: FormValidationMessage(fieldName: 'Email')
+              .requiredAndNotBlankMessage));
       success = false;
     } else if (!Validation.isEmail(state.email)) {
       emit(
@@ -273,32 +289,40 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
       success = false;
     } else if (state.email.length > UserFormValidation.emailMaxLength) {
       emit(state.copyWith(
-          emailValidationMessage: Validation.maxLengthValidationMessage(
-              'Email', UserFormValidation.emailMaxLength)));
+          emailValidationMessage: FormValidationMessage(
+        fieldName: 'Email',
+        maxLength: UserFormValidation.emailMaxLength,
+      ).maxLengthValidationMessage));
       success = false;
     }
 
     if (state.timeZone == null) {
-      emit(
-          state.copyWith(timeZoneValidationMessage: timeZoneValidationMessage));
+      emit(state.copyWith(
+          timeZoneValidationMessage:
+              FormValidationMessage(fieldName: 'Time zone').requiredMessage));
       success = false;
     }
 
     if (state.role == null) {
-      emit(state.copyWith(roleValidationMessage: roleValidationMessage));
+      emit(state.copyWith(
+          roleValidationMessage:
+              FormValidationMessage(fieldName: 'Role').requiredMessage));
       success = false;
     }
 
     if (state.defaultSite == null) {
       emit(state.copyWith(
-          defaultSiteValidationMessage: defaultSiteValidationMessage));
+          defaultSiteValidationMessage:
+              FormValidationMessage(fieldName: 'Default site')
+                  .requiredMessage));
       success = false;
     }
 
     if (!Validation.isEmpty(state.mobilePhone) &&
         !Validation.isMobilePhone(state.mobilePhone)) {
       emit(state.copyWith(
-          mobilePhoneValidationMessage: 'It should be phone number format.'));
+          mobilePhoneValidationMessage:
+              FormValidationMessage.phoneValidationMessage));
       success = false;
     }
 

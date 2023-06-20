@@ -181,29 +181,36 @@ class AddEditAwarenessCategoryBloc
 
     if (Validation.isEmpty(state.name)) {
       emit(state.copyWith(
-          nameValidationMessage: 'Awareness category is required.'));
+          nameValidationMessage:
+              FormValidationMessage(fieldName: 'Awareness category')
+                  .requiredMessage));
 
       success = false;
     } else if (Validation.isNotEmpty(state.name) &&
         !Validation.isAlphanumbericWithSpecialChars(state.name)) {
       emit(state.copyWith(
           nameValidationMessage:
-              'Awareness category should be alphanumeric with allow special char.'));
+              FormValidationMessage(fieldName: 'Awareness category')
+                  .alphanumbericWithAllowSpecialCharMessage));
 
       success = false;
     } else if (state.name.length >
         AwarenessCategoryFormValidation.awarenessCategoryMaxLength) {
       emit(state.copyWith(
-          nameValidationMessage: Validation.maxLengthValidationMessage(
-              'Awareness category',
-              AwarenessCategoryFormValidation.awarenessCategoryMaxLength)));
+          nameValidationMessage: FormValidationMessage(
+                  fieldName: 'Awareness category',
+                  maxLength: AwarenessCategoryFormValidation
+                      .awarenessCategoryMaxLength)
+              .maxLengthValidationMessage));
 
       success = false;
     }
 
     if (state.awarenessGroup == null) {
       emit(state.copyWith(
-          awarenessGroupValidationMessage: 'Awareness group is required.'));
+          awarenessGroupValidationMessage:
+              FormValidationMessage(fieldName: 'Awareness group')
+                  .requiredMessage));
 
       success = false;
     }
