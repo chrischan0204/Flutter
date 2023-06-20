@@ -23,6 +23,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
     return SizedBox(
       height: widget.height,
       child: CustomTextField(
+        hintText: '--:-- --',
         controller: timeinput,
         onTap: () async {
           TimeOfDay? pickedTime = await showTimePicker(

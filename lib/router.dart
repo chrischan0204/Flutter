@@ -30,8 +30,28 @@ final GoRouter router = GoRouter(
       path: '/observations',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
-          body: Observations(),
+        child: const Layout(
+          body: ObservationListView(),
+          selectedItemName: 'observations',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/observations/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ObservationListView(),
+          selectedItemName: 'observations',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/observations/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: AddEditObservationView(),
           selectedItemName: 'observations',
         ),
       ),

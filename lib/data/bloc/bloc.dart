@@ -11,6 +11,7 @@ export '/features/administration/sites/bloc/sites_bloc.dart';
 export '/features/administration/users/bloc/users_bloc.dart';
 export '/features/administration/audits/templates/bloc/templates_bloc.dart';
 export '/features/administration/audits/audits/bloc/audits_bloc.dart';
+export 'package:safety_eta/features/main/observations/bloc/observation_bloc.dart';
 export '/features/administration/sites/bloc/blocs.dart';
 export '/features/auth/bloc/auth/auth_bloc.dart';
 export '/features/setting/bloc/setting_bloc.dart';

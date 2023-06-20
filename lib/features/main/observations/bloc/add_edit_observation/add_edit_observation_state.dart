@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-part of 'add_edit_audit_bloc.dart';
+part of 'add_edit_observation_bloc.dart';
 
-class AddEditAuditState extends Equatable {
-  /// created audit id
-  final String? createdAuditId;
+class AddEditObservationState extends Equatable {
+  /// created observation id
+  final String? createdObservationId;
 
-  /// loaded audit to fill the form to edit audit
-  final Audit? loadedAudit;
+  /// loaded observation to fill the form to edit observation
+  final Observation? loadedObservation;
 
   /// site list
   final List<Site> siteList;
@@ -17,25 +17,25 @@ class AddEditAuditState extends Equatable {
   /// project list
   final List<Project> projectList;
 
-  /// audit name to create audit
-  final String auditName;
+  /// observation name to create observation
+  final String observationName;
 
-  /// initial audit name to check form dirty
-  final String initialAuditName;
+  /// initial observation name to check form dirty
+  final String initialObservationName;
 
-  /// validation message for audit name
-  final String auditNameValidationMessage;
+  /// validation message for observation name
+  final String observationNameValidationMessage;
 
-  /// audit date to create audit
-  final DateTime? auditDate;
+  /// observation date to create observation
+  final DateTime? observationDate;
 
-  /// initial audit date to check form dirty
-  final DateTime? initialAuditDate;
+  /// initial observation date to check form dirty
+  final DateTime? initialObservationDate;
 
-  /// validation message for audit time
-  final String auditDateValidationMessage;
+  /// validation message for observation time
+  final String observationDateValidationMessage;
 
-  /// site to create audit
+  /// site to create observation
   final Site? site;
 
   /// initial site to check form dirty
@@ -44,7 +44,7 @@ class AddEditAuditState extends Equatable {
   /// validation message for site
   final String siteValidationMessage;
 
-  /// template to create audit
+  /// template to create observation
   final Template? template;
 
   /// initial template to check form dirty
@@ -53,34 +53,34 @@ class AddEditAuditState extends Equatable {
   /// validation message for template;
   final String templateValidationMessage;
 
-  /// companies with comma separated to create audit
+  /// companies with comma separated to create observation
   final String companies;
 
   /// initial companies to check form dirty
   final String initialCompanies;
 
-  /// audit time to create audit
-  final DateTime? auditTime;
+  /// observation time to create observation
+  final DateTime? observationTime;
 
-  /// initial audit time to check form dirty
-  final DateTime? initialAuditTime;
+  /// initial observation time to check form dirty
+  final DateTime? initialObservationTime;
 
-  /// validation message for audit time
-  final String auditTimeValidationMessage;
+  /// validation message for observation time
+  final String observationTimeValidationMessage;
 
-  /// project list to create audit
+  /// project list to create observation
   final List<Project> selectedProjectList;
 
   /// initial project list to check form dirty
   final List<Project> initialSelectedProjectList;
 
-  /// area to create audit
+  /// area to create observation
   final String? area;
 
   /// initial area to check form dirty
   final String? initialArea;
 
-  /// inspectors to create audit
+  /// inspectors to create observation
   final String? inspectors;
 
   /// initial inspectors to check form dirty
@@ -91,18 +91,18 @@ class AddEditAuditState extends Equatable {
 
   /// response message from server
   final String message;
-  const AddEditAuditState({
-    this.createdAuditId,
-    this.loadedAudit,
+  const AddEditObservationState({
+    this.createdObservationId,
+    this.loadedObservation,
     this.siteList = const [],
     this.templateList = const [],
     this.projectList = const [],
-    this.auditName = '',
-    this.initialAuditName = '',
-    this.auditNameValidationMessage = '',
-    this.auditDate,
-    this.initialAuditDate,
-    this.auditDateValidationMessage = '',
+    this.observationName = '',
+    this.initialObservationName = '',
+    this.observationNameValidationMessage = '',
+    this.observationDate,
+    this.initialObservationDate,
+    this.observationDateValidationMessage = '',
     this.site,
     this.initialSite,
     this.siteValidationMessage = '',
@@ -111,9 +111,9 @@ class AddEditAuditState extends Equatable {
     this.templateValidationMessage = '',
     this.companies = '',
     this.initialCompanies = '',
-    this.auditTime,
-    this.initialAuditTime,
-    this.auditTimeValidationMessage = '',
+    this.observationTime,
+    this.initialObservationTime,
+    this.observationTimeValidationMessage = '',
     this.selectedProjectList = const [],
     this.initialSelectedProjectList = const [],
     this.area,
@@ -126,17 +126,16 @@ class AddEditAuditState extends Equatable {
 
   @override
   List<Object?> get props => [
-        createdAuditId,
-        loadedAudit,
+        createdObservationId,
+        loadedObservation,
         siteList,
         templateList,
         projectList,
-        auditName,
-        initialAuditName,
-        auditNameValidationMessage,
-        auditDate,
-        initialAuditDate,
-        auditDateValidationMessage,
+        observationName,
+        initialObservationName,
+        observationNameValidationMessage,
+        observationDate,
+        initialObservationDate,
         site,
         initialSite,
         siteValidationMessage,
@@ -145,9 +144,9 @@ class AddEditAuditState extends Equatable {
         templateValidationMessage,
         companies,
         initialCompanies,
-        auditTime,
-        initialAuditTime,
-        auditTimeValidationMessage,
+        observationTime,
+        initialObservationTime,
+        observationTimeValidationMessage,
         selectedProjectList,
         initialSelectedProjectList,
         area,
@@ -158,37 +157,38 @@ class AddEditAuditState extends Equatable {
         message,
       ];
 
-  Audit get audit => Audit(
-        userId: 'userId',
-        auditDate: auditDate.toString(),
-        templateId: 'templateId',
+  Observation get observation => Observation(
+        observation: 'observation',
         siteId: 'siteId',
+        location: 'location',
+        response: 'response',
       );
 
   bool get formDirty =>
-      (Validation.isNotEmpty(auditName) && auditName != initialAuditName) ||
+      (Validation.isNotEmpty(observationName) &&
+          observationName != initialObservationName) ||
       (Validation.isNotEmpty(companies) && companies != initialCompanies) ||
       (Validation.isNotEmpty(area) && area != initialArea) ||
       (Validation.isNotEmpty(inspectors) && inspectors != initialInspectors) ||
-      (auditDate != null && auditDate != initialAuditDate) ||
+      (observationDate != null && observationDate != initialObservationDate) ||
       (site != null && site?.id != initialSite?.id) ||
       (template != null && template?.id != initialTemplate?.id) ||
       (selectedProjectList.isNotEmpty &&
           selectedProjectList != initialSelectedProjectList) ||
-      (auditTime != null && auditTime != initialAuditTime);
+      (observationTime != null && observationTime != initialObservationTime);
 
-  AddEditAuditState copyWith({
-    String? createdAuditId,
-    Audit? loadedAudit,
+  AddEditObservationState copyWith({
+    String? createdObservationId,
+    Observation? loadedObservation,
     List<Site>? siteList,
     List<Template>? templateList,
     List<Project>? projectList,
-    String? auditName,
-    String? initialAuditName,
-    String? auditNameValidationMessage,
-    DateTime? auditDate,
-    DateTime? initialAuditDate,
-    String? auditDateValidationMessage,
+    String? observationName,
+    String? initialObservationName,
+    String? observationNameValidationMessage,
+    DateTime? observationDate,
+    DateTime? initialObservationDate,
+    String? observationDateValidationMessage,
     Site? site,
     Site? initialSite,
     String? siteValidationMessage,
@@ -197,9 +197,9 @@ class AddEditAuditState extends Equatable {
     String? templateValidationMessage,
     String? companies,
     String? initialCompanies,
-    DateTime? auditTime,
-    DateTime? initialAuditTime,
-    String? auditTimeValidationMessage,
+    DateTime? observationTime,
+    DateTime? initialObservationTime,
+    String? observationTimeValidationMessage,
     List<Project>? selectedProjectList,
     List<Project>? initialSelectedProjectList,
     String? area,
@@ -209,20 +209,22 @@ class AddEditAuditState extends Equatable {
     EntityStatus? status,
     String? message,
   }) {
-    return AddEditAuditState(
-      createdAuditId: createdAuditId ?? this.createdAuditId,
-      loadedAudit: loadedAudit ?? this.loadedAudit,
+    return AddEditObservationState(
+      createdObservationId: createdObservationId ?? this.createdObservationId,
+      loadedObservation: loadedObservation ?? this.loadedObservation,
       siteList: siteList ?? this.siteList,
       templateList: templateList ?? this.templateList,
       projectList: projectList ?? this.projectList,
-      auditName: auditName ?? this.auditName,
-      initialAuditName: initialAuditName ?? this.initialAuditName,
-      auditNameValidationMessage:
-          auditNameValidationMessage ?? this.auditNameValidationMessage,
-      auditDate: auditDate ?? this.auditDate,
-      initialAuditDate: initialAuditDate ?? this.initialAuditDate,
-      auditDateValidationMessage:
-          auditDateValidationMessage ?? this.auditDateValidationMessage,
+      observationName: observationName ?? this.observationName,
+      initialObservationName:
+          initialObservationName ?? this.initialObservationName,
+      observationNameValidationMessage: observationNameValidationMessage ??
+          this.observationNameValidationMessage,
+      observationDate: observationDate ?? this.observationDate,
+      initialObservationDate:
+          initialObservationDate ?? this.initialObservationDate,
+      observationDateValidationMessage: observationDateValidationMessage ??
+          this.observationDateValidationMessage,
       site: site ?? this.site,
       initialSite: initialSite ?? this.initialSite,
       siteValidationMessage:
@@ -233,10 +235,11 @@ class AddEditAuditState extends Equatable {
           templateValidationMessage ?? this.templateValidationMessage,
       companies: companies ?? this.companies,
       initialCompanies: initialCompanies ?? this.initialCompanies,
-      auditTime: auditTime ?? this.auditTime,
-      initialAuditTime: initialAuditTime ?? this.initialAuditTime,
-      auditTimeValidationMessage:
-          auditTimeValidationMessage ?? this.auditTimeValidationMessage,
+      observationTime: observationTime ?? this.observationTime,
+      initialObservationTime:
+          initialObservationTime ?? this.initialObservationTime,
+      observationTimeValidationMessage: observationTimeValidationMessage ??
+          this.observationTimeValidationMessage,
       selectedProjectList: selectedProjectList ?? this.selectedProjectList,
       initialSelectedProjectList:
           initialSelectedProjectList ?? this.initialSelectedProjectList,

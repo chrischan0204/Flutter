@@ -1,5 +1,3 @@
-import 'package:safety_eta/features/administration/audits/audits/data/repository/audits_repository.dart';
-
 import '/common_libraries.dart';
 
 part 'add_edit_audit_event.dart';
@@ -148,7 +146,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
 
     if (state.auditTime == null) {
       emit(state.copyWith(
-          templateValidationMessage:
+          auditTimeValidationMessage:
               FormValidationMessage(fieldName: 'Audit time').requiredMessage));
       success = false;
     }

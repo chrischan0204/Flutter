@@ -14,3 +14,4 @@ export 'base_repository.dart';
 export '/features/setting/data/repository/settings_repository.dart';
 export '/features/administration/audits/templates/data/repository/repository.dart';
 export '/features/administration/audits/audits/data/repository/audits_repository.dart';
+export 'package:safety_eta/features/main/observations/data/repository/observations_repository.dart';
