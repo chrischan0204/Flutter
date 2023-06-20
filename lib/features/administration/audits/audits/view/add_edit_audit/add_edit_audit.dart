@@ -53,7 +53,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
 
   Map<String, Widget> get tabItems => widget.auditId != null
       ? {
-          // 'Audit questions': AuditQuestionsView(auditId: widget.auditId!),
+          'Audit questions': AuditQuestionsView(auditId: widget.auditId!),
         }
       : {};
 
