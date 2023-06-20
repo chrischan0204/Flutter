@@ -16,6 +16,10 @@ class AssignTemplateToSiteBloc
         _onAssignTemplateToSiteUnassignedAuditTemplateListLoaded);
     on<AssignTemplateToSiteAssigned>(_onAssignTemplateToSiteAssigned);
     on<AssignTemplateFromSiteUnassigned>(_onAssignTemplateFromSiteUnassigned);
+    on<AssignTemplateToSiteFilterTextForAssignedChanged>(
+        _onAssignTemplateToSiteFilterTextForAssignedChanged);
+    on<AssignTemplateToSiteFilterTextForUnassignedChanged>(
+        _onAssignTemplateToSiteFilterTextForUnassignedChanged);
   }
 
   /// load assigned template list
@@ -24,8 +28,8 @@ class AssignTemplateToSiteBloc
     Emitter<AssignTemplateToSiteState> emit,
   ) async {
     try {
-      final List<Template> assignedAuditTemplateList =
-          await sitesRepository.getAuditTemlateList(event.id, true);
+      final List<Template> assignedAuditTemplateList = await sitesRepository
+          .getAuditTemlateList(event.id, true, state.filterTextForAssigned);
 
       emit(state.copyWith(
         assignedAuditTemplateList: assignedAuditTemplateList
@@ -41,8 +45,8 @@ class AssignTemplateToSiteBloc
     Emitter<AssignTemplateToSiteState> emit,
   ) async {
     try {
-      final List<Template> unassignedAuditTemplateList =
-          await sitesRepository.getAuditTemlateList(event.id, false);
+      final List<Template> unassignedAuditTemplateList = await sitesRepository
+          .getAuditTemlateList(event.id, false, state.filterTextForUnassigned);
 
       emit(state.copyWith(
         unassignedAuditTemplateList: unassignedAuditTemplateList,
@@ -135,5 +139,19 @@ class AssignTemplateToSiteBloc
         status: EntityStatus.failure,
       ));
     }
+  }
+
+  void _onAssignTemplateToSiteFilterTextForAssignedChanged(
+    AssignTemplateToSiteFilterTextForAssignedChanged event,
+    Emitter<AssignTemplateToSiteState> emit,
+  ) {
+    emit(state.copyWith(filterTextForAssigned: event.filterText));
+  }
+
+  void _onAssignTemplateToSiteFilterTextForUnassignedChanged(
+    AssignTemplateToSiteFilterTextForUnassignedChanged event,
+    Emitter<AssignTemplateToSiteState> emit,
+  ) {
+    emit(state.copyWith(filterTextForUnassigned: event.filterText));
   }
 }

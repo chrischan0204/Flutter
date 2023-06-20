@@ -33,6 +33,7 @@ class AssignTemplateToSiteUnassignedAuditTemplateListLoaded
   List<Object> get props => [id];
 }
 
+/// event to assign template to site
 class AssignTemplateToSiteAssigned extends AssignTemplateToSiteEvent {
   final String templateId;
   final String siteId;
@@ -48,6 +49,31 @@ class AssignTemplateToSiteAssigned extends AssignTemplateToSiteEvent {
       ];
 }
 
+/// event to change the filter text for assigned template list
+class AssignTemplateToSiteFilterTextForAssignedChanged
+    extends AssignTemplateToSiteEvent {
+  /// filter text to change
+  final String filterText;
+  const AssignTemplateToSiteFilterTextForAssignedChanged(
+      {required this.filterText});
+
+  @override
+  List<Object> get props => [filterText];
+}
+
+/// event to change the filter text for unassigned template list
+class AssignTemplateToSiteFilterTextForUnassignedChanged
+    extends AssignTemplateToSiteEvent {
+  /// filter text to change
+  final String filterText;
+  const AssignTemplateToSiteFilterTextForUnassignedChanged(
+      {required this.filterText});
+
+  @override
+  List<Object> get props => [filterText];
+}
+
+/// event to unassign template from site
 class AssignTemplateFromSiteUnassigned extends AssignTemplateToSiteEvent {
   final String templateId;
   final String siteId;

@@ -44,8 +44,6 @@ class _AssignTemplatesToSiteWidgetState
   @override
   void initState() {
     assignTemplateToSiteBloc = context.read()
-      // ..add(const FilterTextForAssignedChanged(filterText: ''))
-      // ..add(const FilterTextForUnassignedChanged(filterText: ''))
       ..add(AssignTemplateToSiteAssignedAuditTemplateListLoaded(
           id: widget.siteId))
       ..add(AssignTemplateToSiteUnassignedAuditTemplateListLoaded(
@@ -273,18 +271,21 @@ class _AssignTemplatesToSiteWidgetState
         hintText: 'Filter unassigned templates by name.',
         label: 'sites',
         applyFilter: () {
-          // assignTemplateToSiteBloc.add(UnassignedTemplatesRetrieved(
-          //   siteId: widget.siteId,
-          //   name: state.filterTextForUnassigned,
-          // ));
+          assignTemplateToSiteBloc.add(
+              AssignTemplateToSiteUnassignedAuditTemplateListLoaded(
+                  id: widget.siteId));
         },
         clearFilter: () {
-          // assignTemplateToSiteBloc
-          //   ..add(UnassignedTemplatesRetrieved(siteId: widget.siteId))
-          //   ..add(const FilterTextForUnassignedChanged(filterText: ''));
+          assignTemplateToSiteBloc
+            ..add(const AssignTemplateToSiteFilterTextForUnassignedChanged(
+                filterText: ''))
+            ..add(AssignTemplateToSiteUnassignedAuditTemplateListLoaded(
+                id: widget.siteId));
         },
         onChange: (value) {
-          // assignTemplateToSiteBloc.add(FilterTextForUnassignedChanged(filterText: value));
+          assignTemplateToSiteBloc.add(
+              AssignTemplateToSiteFilterTextForUnassignedChanged(
+                  filterText: value));
         },
       ),
     );
@@ -297,18 +298,21 @@ class _AssignTemplatesToSiteWidgetState
         hintText: 'Filter assigned templates by name.',
         label: 'sites',
         applyFilter: () {
-          // assignTemplateToSiteBloc.add(AssignedSiteSitesRetrieved(
-          //   siteId: widget.siteId,
-          //   name: state.filterTextForAssigned,
-          // ));
+          assignTemplateToSiteBloc.add(
+              AssignTemplateToSiteAssignedAuditTemplateListLoaded(
+                  id: widget.siteId));
         },
         clearFilter: () {
-          // assignTemplateToSiteBloc
-          //   ..add(AssignedSiteSitesRetrieved(siteId: widget.siteId))
-          //   ..add(const FilterTextForAssignedChanged(filterText: ''));
+          assignTemplateToSiteBloc
+            ..add(const AssignTemplateToSiteFilterTextForAssignedChanged(
+                filterText: ''))
+            ..add(AssignTemplateToSiteAssignedAuditTemplateListLoaded(
+                id: widget.siteId));
         },
         onChange: (value) {
-          // assignTemplateToSiteBloc.add(FilterTextForAssignedChanged(filterText: value))
+          assignTemplateToSiteBloc.add(
+              AssignTemplateToSiteFilterTextForAssignedChanged(
+                  filterText: value));
         },
       ),
     );

@@ -83,11 +83,15 @@ class SitesRepository extends BaseRepository {
 
   /// get audit template list by site id
   Future<List<Template>> getAuditTemlateList(String siteId,
-      [bool? assigned]) async {
+      [bool? assigned, String? name]) async {
     Map<String, String> queryParams = {};
 
     if (assigned != null) {
       queryParams = {'assigned': assigned.toString()};
+    }
+
+    if (name != null) {
+      queryParams.addEntries([MapEntry('name', name)]);
     }
 
     Response response = await super.get('$url/$siteId/templates', queryParams);
