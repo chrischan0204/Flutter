@@ -108,15 +108,13 @@ class AddEditAuditTimeChanged extends AddEditAuditEvent {
   List<Object> get props => [time];
 }
 
-/// event to change the select project list
-class AddEditAuditSelectedProjectListChanged extends AddEditAuditEvent {
-  final List<Project> projectList;
-  const AddEditAuditSelectedProjectListChanged({
-    required this.projectList,
-  });
+/// event to change the project
+class AddEditAuditProjectChanged extends AddEditAuditEvent {
+  final Project project;
+  const AddEditAuditProjectChanged({required this.project});
 
   @override
-  List<Object> get props => [projectList];
+  List<Object> get props => [project];
 }
 
 /// event to change area

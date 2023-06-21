@@ -5,6 +5,8 @@ class ThemeState extends Equatable {
     this.collapsedItems = const [
       'templates/show',
       'templates/edit',
+      'audits/show',
+      'audits/edit',
     ],
     this.hoveredItemName = '',
   });

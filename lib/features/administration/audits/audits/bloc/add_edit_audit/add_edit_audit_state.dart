@@ -68,11 +68,11 @@ class AddEditAuditState extends Equatable {
   /// validation message for audit time
   final String auditTimeValidationMessage;
 
-  /// project list to create audit
-  final List<Project> selectedProjectList;
+  /// project to create audit
+  final Project? project;
 
-  /// initial project list to check form dirty
-  final List<Project> initialSelectedProjectList;
+  /// initial project to check form dirty
+  final Project? initialProject;
 
   /// area to create audit
   final String? area;
@@ -114,8 +114,8 @@ class AddEditAuditState extends Equatable {
     this.auditTime,
     this.initialAuditTime,
     this.auditTimeValidationMessage = '',
-    this.selectedProjectList = const [],
-    this.initialSelectedProjectList = const [],
+    this.project,
+    this.initialProject,
     this.area,
     this.initialArea,
     this.inspectors,
@@ -148,8 +148,8 @@ class AddEditAuditState extends Equatable {
         auditTime,
         initialAuditTime,
         auditTimeValidationMessage,
-        selectedProjectList,
-        initialSelectedProjectList,
+        project,
+        initialProject,
         area,
         initialArea,
         inspectors,
@@ -158,11 +158,16 @@ class AddEditAuditState extends Equatable {
         message,
       ];
 
-  Audit get audit => Audit(
-        userId: 'userId',
-        auditDate: auditDate.toString(),
-        templateId: 'templateId',
-        siteId: 'siteId',
+  AuditCreate get audit => AuditCreate(
+        name: auditName,
+        userId: emptyGuid,
+        auditDate: auditDate!.toIso8601String(),
+        templateId: template!.id!,
+        siteId: site!.id!,
+        projectId: project!.id,
+        area: area,
+        companies: companies,
+        inspectors: inspectors,
       );
 
   bool get formDirty =>
@@ -173,8 +178,7 @@ class AddEditAuditState extends Equatable {
       (auditDate != null && auditDate != initialAuditDate) ||
       (site != null && site?.id != initialSite?.id) ||
       (template != null && template?.id != initialTemplate?.id) ||
-      (selectedProjectList.isNotEmpty &&
-          selectedProjectList != initialSelectedProjectList) ||
+      (project != null && project != initialProject) ||
       (auditTime != null && auditTime != initialAuditTime);
 
   AddEditAuditState copyWith({
@@ -200,8 +204,8 @@ class AddEditAuditState extends Equatable {
     DateTime? auditTime,
     DateTime? initialAuditTime,
     String? auditTimeValidationMessage,
-    List<Project>? selectedProjectList,
-    List<Project>? initialSelectedProjectList,
+    Project? project,
+    Project? initialProject,
     String? area,
     String? initialArea,
     String? inspectors,
@@ -237,9 +241,8 @@ class AddEditAuditState extends Equatable {
       initialAuditTime: initialAuditTime ?? this.initialAuditTime,
       auditTimeValidationMessage:
           auditTimeValidationMessage ?? this.auditTimeValidationMessage,
-      selectedProjectList: selectedProjectList ?? this.selectedProjectList,
-      initialSelectedProjectList:
-          initialSelectedProjectList ?? this.initialSelectedProjectList,
+      initialProject: initialProject ?? this.initialProject,
+      project: project ?? this.project,
       area: area ?? this.area,
       initialArea: initialArea ?? this.initialArea,
       inspectors: inspectors ?? this.inspectors,

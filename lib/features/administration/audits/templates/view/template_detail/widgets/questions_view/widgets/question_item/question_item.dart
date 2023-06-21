@@ -68,12 +68,13 @@ class QuestionItemView extends StatelessWidget {
                         content: '$questionScore pts',
                       ),
                     ),
-                    Expanded(
-                      child: QuestionItemRowItem(
-                        title: 'Max Score',
-                        content: '$maxScore pts',
-                      ),
-                    )
+                    if (level == 0)
+                      Expanded(
+                        child: QuestionItemRowItem(
+                          title: 'Max Score',
+                          content: '$maxScore pts',
+                        ),
+                      )
                   ],
                 ),
               )

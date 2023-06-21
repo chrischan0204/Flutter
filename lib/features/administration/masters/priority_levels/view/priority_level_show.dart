@@ -60,7 +60,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
 
   void _checkDeletePriorityLevel(
       PriorityLevelsState state, BuildContext context) {
-    if (state.priorityLevelCrudStatus == EntityStatus.success) {
+    if (state.priorityLevelCrudStatus.isSuccess) {
       priorityLevelsBloc.add(const PriorityLevelsStatusInited());
       CustomNotification(
         context: context,
@@ -70,7 +70,7 @@ class _PriorityLevelShowViewState extends State<PriorityLevelShowView> {
 
       GoRouter.of(context).go('/priority-levels');
     }
-    if (state.priorityLevelCrudStatus == EntityStatus.failure) {
+    if (state.priorityLevelCrudStatus .isFailure) {
       priorityLevelsBloc.add(const PriorityLevelsStatusInited());
       CustomNotification(
         context: context,

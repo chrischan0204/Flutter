@@ -119,7 +119,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
       width: double.infinity,
       child: BlocListener<CompaniesBloc, CompaniesState>(
         listener: (context, state) {
-          if (state.siteFromCompanyUnassignedStatus == EntityStatus.success) {
+          if (state.siteFromCompanyUnassignedStatus.isSuccess) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,
@@ -171,7 +171,7 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
       width: double.infinity,
       child: BlocListener<CompaniesBloc, CompaniesState>(
         listener: (context, state) {
-          if (state.siteToCompanyAssignedStatus == EntityStatus.success) {
+          if (state.siteToCompanyAssignedStatus.isSuccess) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,

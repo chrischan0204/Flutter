@@ -198,7 +198,7 @@ class _AssignCompaniesToProjectViewState
       width: double.infinity,
       child: BlocListener<ProjectsBloc, ProjectsState>(
           listener: (context, state) {
-            if (state.companyToProjectAssignedStatus == EntityStatus.success) {
+            if (state.companyToProjectAssignedStatus.isSuccess) {
               CustomNotification(
                 context: context,
                 notifyType: NotifyType.success,

@@ -60,7 +60,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditObservationBloc, AddEditObservationState>(
       listener: (context, state) {
-        if (state.status == EntityStatus.success) {
+        if (state.status.isSuccess) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
@@ -71,7 +71,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
                 '/observations/edit/${state.createdObservationId}?view=created');
           }
         }
-        if (state.status == EntityStatus.failure) {
+        if (state.status .isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,

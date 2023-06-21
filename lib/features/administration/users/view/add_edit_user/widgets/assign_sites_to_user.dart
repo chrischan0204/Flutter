@@ -130,14 +130,14 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
       width: double.infinity,
       child: BlocListener<AssignSiteToUserBloc, AssignSiteToUserState>(
         listener: (context, state) {
-          if (state.unassignStatus == EntityStatus.success) {
+          if (state.unassignStatus.isSuccess) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
             _refetchUserSites(state);
-          } else if (state.unassignStatus == EntityStatus.failure) {
+          } else if (state.unassignStatus .isFailure) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.error,
@@ -177,14 +177,14 @@ class _AssignSitesToUserViewState extends State<AssignSitesToUserView> {
       width: double.infinity,
       child: BlocListener<AssignSiteToUserBloc, AssignSiteToUserState>(
         listener: (context, state) {
-          if (state.assignStatus == EntityStatus.success) {
+          if (state.assignStatus.isSuccess) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,
               content: state.message,
             ).showNotification();
             _refetchUserSites(state);
-          } else if (state.assignStatus == EntityStatus.failure) {
+          } else if (state.assignStatus .isFailure) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.error,

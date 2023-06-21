@@ -64,7 +64,7 @@ class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditSiteBloc, AddEditSiteState>(
       listener: (context, state) {
-        if (state.status == EntityStatus.success) {
+        if (state.status.isSuccess) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
@@ -75,7 +75,7 @@ class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
                 .go('/sites/edit/${state.createdSiteId}?view=created');
           }
         }
-        if (state.status == EntityStatus.failure) {
+        if (state.status .isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,

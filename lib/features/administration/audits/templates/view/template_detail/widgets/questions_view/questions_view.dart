@@ -33,6 +33,8 @@ class QuestionsView extends StatelessWidget {
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
             return ExpansionPanelList(
+              dividerColor: primaryColor,
+              elevation: 3,
               expansionCallback: (int index, bool isExpanded) {
                 context
                     .read<TemplateDetailBloc>()

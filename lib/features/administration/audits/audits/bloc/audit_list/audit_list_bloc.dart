@@ -42,7 +42,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
 
       emit(state.copyWith(
           auditList: filteredauditData.data
-              .map((e) => e.toAudit().copyWith(columns: columns))
+              .map((e) => e.audit.copyWith(columns: columns))
               .toList(),
           auditListLoadStatus: EntityStatus.success,
           totalRows: filteredauditData.totalRows));

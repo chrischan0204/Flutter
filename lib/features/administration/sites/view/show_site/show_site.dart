@@ -63,7 +63,7 @@ class _SiteShowWidgetState extends State<SiteShowWidget> {
   }
 
   void _checkDeleteResult(ShowSiteState state, BuildContext context) {
-    if (state.deleteStatus == EntityStatus.success) {
+    if (state.deleteStatus.isSuccess) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.success,
@@ -72,7 +72,7 @@ class _SiteShowWidgetState extends State<SiteShowWidget> {
 
       GoRouter.of(context).go('/sites');
     }
-    if (state.deleteStatus == EntityStatus.failure) {
+    if (state.deleteStatus .isFailure) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,

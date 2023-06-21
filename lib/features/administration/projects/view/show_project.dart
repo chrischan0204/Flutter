@@ -137,7 +137,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
   }
 
   void _checkDeleteProjectStatus(ProjectsState state, BuildContext context) {
-    if (state.projectCrudStatus == EntityStatus.success) {
+    if (state.projectCrudStatus.isSuccess) {
       projectsBloc.add(ProjectsStatusInited());
       CustomNotification(
         context: context,
@@ -147,7 +147,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
 
       GoRouter.of(context).go('/projects');
     }
-    if (state.projectCrudStatus == EntityStatus.failure) {
+    if (state.projectCrudStatus .isFailure) {
       projectsBloc.add(ProjectsStatusInited());
       CustomNotification(
         context: context,

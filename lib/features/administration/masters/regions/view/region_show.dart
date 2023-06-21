@@ -65,7 +65,7 @@ class _RegionShowViewState extends State<RegionShowView> {
   }
 
   void _checkDeleteRegionStatus(RegionsState state, BuildContext context) {
-    if (state.regionCrudStatus == EntityStatus.success) {
+    if (state.regionCrudStatus.isSuccess) {
       regionsBloc.add(const RegionsStatusInited());
       CustomNotification(
         context: context,
@@ -75,7 +75,7 @@ class _RegionShowViewState extends State<RegionShowView> {
 
       GoRouter.of(context).go('/regions');
     }
-    if (state.regionCrudStatus == EntityStatus.failure) {
+    if (state.regionCrudStatus .isFailure) {
       regionsBloc.add(const RegionsStatusInited());
       CustomNotification(
         context: context,

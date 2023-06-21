@@ -76,7 +76,7 @@ class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditProjectBloc, AddEditProjectState>(
       listener: (context, state) {
-        if (state.status == EntityStatus.success) {
+        if (state.status.isSuccess) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
@@ -87,7 +87,7 @@ class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
                 .go('/projects/edit/${state.createdProjectId}?view=created');
           }
         }
-        if (state.status == EntityStatus.failure) {
+        if (state.status .isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,

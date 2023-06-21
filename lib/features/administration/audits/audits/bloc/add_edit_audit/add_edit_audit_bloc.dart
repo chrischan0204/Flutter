@@ -33,8 +33,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     on<AddEditAuditTemplateChanged>(_onAddEditAuditTemplateChanged);
     on<AddEditAuditCompaniesChanged>(_onAddEditAuditCompaniesChanged);
     on<AddEditAuditTimeChanged>(_onAddEditAuditTimeChanged);
-    on<AddEditAuditSelectedProjectListChanged>(
-        _onAddEditAuditSelectedProjectListChanged);
+    on<AddEditAuditProjectChanged>(_onAddEditAuditProjectChanged);
     on<AddEditAuditAreaChanged>(_onAddEditAuditAreaChanged);
     on<AddEditAuditInspectorsChanged>(_onAddEditAuditInspectorsChanged);
   }
@@ -47,16 +46,19 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        // EntityResponse response = await auditsRepository.addAudit(state.audit);
+        Audit audit = await auditsRepository.addAudit(state.audit);
 
-        // if (response.isSuccess) {
-        //   emit(state.copyWith(
-        //     createdAuditId: response.data?.id,
-        //     message: response.message,
-        //     status: EntityStatus.success,
-        //   ));
-        // } else {}
+        emit(state.copyWith(
+          createdAuditId: audit.id,
+          message: 'Audit successfully added.',
+          status: EntityStatus.success,
+        ));
+        // emit(state.copyWith(
+        //   auditNameValidationMessage: response.message,
+        //   status: EntityStatus.initial,
+        // ));
       } catch (e) {
+        print(e);
         emit(state.copyWith(
           status: EntityStatus.failure,
           // message: addErrorMessage,
@@ -277,13 +279,11 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
-  void _onAddEditAuditSelectedProjectListChanged(
-    AddEditAuditSelectedProjectListChanged event,
+  void _onAddEditAuditProjectChanged(
+    AddEditAuditProjectChanged event,
     Emitter<AddEditAuditState> emit,
   ) {
-    emit(state.copyWith(
-      projectList: event.projectList,
-    ));
+    emit(state.copyWith(project: event.project));
 
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }

@@ -29,6 +29,11 @@ class TemplateSectionItemView extends ExpansionPanel {
               level: level - 1,
             );
           },
+          backgroundColor: level == 1
+              ? lightGreenAccent
+              : level == 2
+                  ? lightBlueAccent
+                  : lightTeal,
           isExpanded: templateSectionItem.isOpen,
           body: templateSectionItem.responseScaleItems.isNotEmpty
               ? Padding(

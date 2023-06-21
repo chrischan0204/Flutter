@@ -5,55 +5,51 @@ class ProjectSelectField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
+    //   builder: (context, state) {
+    //     Map<String, Entity> items = {};
+    //     for (final item in state.projectList) {
+    //       items.addEntries(
+    //           [MapEntry(item.name!, Entity(id: item.id, name: item.name))]);
+    //     }
+    //     return FormItem(
+    //       label: 'Project',
+    //       content: CustomMultiSelect(
+    //         items: items,
+    //         selectedItems: state.selectedProjectList
+    //             .map((e) => Entity(id: e.id, name: e.name))
+    //             .toList(),
+    //         hint: 'Select Projects',
+    //         onChanged: (projectList) => context
+    //             .read<AddEditAuditBloc>()
+    //             .add(AddEditAuditProjectChanged(
+    //                 projectList: projectList
+    //                     .map((e) => Project(
+    //                           id: e.id,
+    //                           name: e.name,
+    //                         ))
+    //                     .toList())),
+    //       ),
+    //     );
     return BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
       builder: (context, state) {
-        Map<String, Entity> items = {};
-        for (final item in state.projectList) {
-          items.addEntries(
-              [MapEntry(item.name!, Entity(id: item.id, name: item.name))]);
-        }
+        Map<String, Project> items = {}..addEntries(state.projectList
+            .map((project) => MapEntry(project.name ?? '', project)));
         return FormItem(
-          label: 'Project',
-          content: CustomMultiSelect(
+          label: 'Project (*)',
+          content: CustomSingleSelect(
             items: items,
-            selectedItems: state.selectedProjectList
-                .map((e) => Entity(id: e.id, name: e.name))
-                .toList(),
-            hint: 'Select Projects',
-            onChanged: (projectList) => context
-                .read<AddEditAuditBloc>()
-                .add(AddEditAuditSelectedProjectListChanged(
-                    projectList: projectList
-                        .map((e) => Project(
-                              id: e.id,
-                              name: e.name,
-                            ))
-                        .toList())),
+            hint: 'Select Project',
+            selectedValue:
+                state.projectList.isEmpty ? null : state.project?.name,
+            onChanged: (project) {
+              context
+                  .read<AddEditAuditBloc>()
+                  .add(AddEditAuditProjectChanged(project: project.value));
+            },
           ),
+          message: '',
         );
-        // Map<String, Entity> items = {}
-        //   ..addEntries(state.projectList.map((project) => MapEntry(
-        //       project.name ?? '', Entity(id: project.id, name: project.name))));
-        // return FormItem(
-        //   label: 'Project',
-        //   content: CustomMultiSelect(
-        //     items: items,
-        //     hint: 'Select Projects',
-        //     selectedItems: state.selectedProjectList,
-        //     onChanged: (projectList) {
-        //       context
-        //           .read<AddEditAuditBloc>()
-        //           .add(AddEditAuditSelectedProjectListChanged(
-        //               projectList: projectList
-        //                   .map((e) => Project(
-        //                         id: e.id,
-        //                         name: e.name,
-        //                       ))
-        //                   .toList()));
-        //     },
-        //   ),
-        //   message: '',
-        // );
       },
     );
   }

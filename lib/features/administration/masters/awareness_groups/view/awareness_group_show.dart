@@ -66,7 +66,7 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
 
   void _checkDeleteAwarenessGroupStatus(
       AwarenessGroupsState state, BuildContext context) {
-    if (state.awarenessGroupCrudStatus == EntityStatus.success) {
+    if (state.awarenessGroupCrudStatus.isSuccess) {
       awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
       CustomNotification(
         context: context,
@@ -76,7 +76,7 @@ class _AwarenessGroupShowViewState extends State<AwarenessGroupShowView> {
 
       GoRouter.of(context).go('/awareness-groups');
     }
-    if (state.awarenessGroupCrudStatus == EntityStatus.failure) {
+    if (state.awarenessGroupCrudStatus .isFailure) {
       awarenessGroupsBloc.add(const AwarenessGroupsStatusInited());
       CustomNotification(
         context: context,

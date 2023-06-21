@@ -54,7 +54,7 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
 
   void _checkDeleteAwarenessCategoryStatus(
       AwarenessCategoriesState state, BuildContext context) {
-    if (state.awarenessCategoryCrudStatus == EntityStatus.success) {
+    if (state.awarenessCategoryCrudStatus.isSuccess) {
       awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
       CustomNotification(
         context: context,
@@ -64,7 +64,7 @@ class _AwarenessCategoryShowViewState extends State<AwarenessCategoryShowView> {
 
       GoRouter.of(context).go('/awareness-categories');
     }
-    if (state.awarenessCategoryCrudStatus == EntityStatus.failure) {
+    if (state.awarenessCategoryCrudStatus .isFailure) {
       awarenessCategoriesBloc.add(const AwarenessCategoriesStatusInited());
       CustomNotification(
         context: context,

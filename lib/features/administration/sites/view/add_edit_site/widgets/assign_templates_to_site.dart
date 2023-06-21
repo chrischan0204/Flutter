@@ -146,7 +146,7 @@ class _AssignTemplatesToSiteWidgetState
       width: double.infinity,
       child: BlocConsumer<AssignTemplateToSiteBloc, AssignTemplateToSiteState>(
         listener: (context, state) {
-          if (state.status == EntityStatus.success) {
+          if (state.status.isSuccess) {
             CustomNotification(
               context: context,
               notifyType: NotifyType.success,

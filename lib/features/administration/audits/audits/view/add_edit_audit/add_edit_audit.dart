@@ -61,7 +61,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditAuditBloc, AddEditAuditState>(
       listener: (context, state) {
-        if (state.status == EntityStatus.success) {
+        if (state.status.isSuccess) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
@@ -72,7 +72,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
                 .go('/audits/edit/${state.createdAuditId}?view=created');
           }
         }
-        if (state.status == EntityStatus.failure) {
+        if (state.status.isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,
@@ -80,6 +80,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
           ).showNotification();
         }
       },
+      listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,

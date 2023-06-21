@@ -62,7 +62,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
 
   void _checkDeleteObservationTypeStatus(
       ObservationTypesState state, BuildContext context) {
-    if (state.observationTypeCrudStatus == EntityStatus.success) {
+    if (state.observationTypeCrudStatus.isSuccess) {
       observationTypesBloc.add(const ObservationTypesStatusInited());
       CustomNotification(
         context: context,
@@ -72,7 +72,7 @@ class _ObservationTypeShowViewState extends State<ObservationTypeShowView> {
 
       GoRouter.of(context).go('/observation-types');
     }
-    if (state.observationTypeCrudStatus == EntityStatus.failure) {
+    if (state.observationTypeCrudStatus .isFailure) {
       observationTypesBloc.add(const ObservationTypesStatusInited());
       CustomNotification(
         context: context,

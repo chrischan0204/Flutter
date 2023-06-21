@@ -1,65 +1,110 @@
 import '/common_libraries.dart';
 
 class FilteredAudit extends FilteredEntity {
-  final String userId;
+  final String? name;
+  final String? auditNumber;
   final String auditDate;
-  final String templateId;
-  final String siteId;
-  final String? projectId;
-  final String? area;
-  final String? companies;
-  final String? inspectors;
+  final String? auditStatusName;
+  final double completed;
+  final String? siteName;
+  final String? projectName;
+  final String? templateName;
+  final String? owner;
+  final double score;
+
   const FilteredAudit({
     super.id,
-    required this.userId,
+    this.name,
+    this.auditNumber,
     required this.auditDate,
-    required this.templateId,
-    required this.siteId,
-    this.projectId,
-    this.area,
-    this.companies,
-    this.inspectors,
-    super.createdBy,
-    super.createdById,
+    this.auditStatusName,
+    required this.completed,
+    this.siteName,
+    this.projectName,
+    this.templateName,
+    this.owner,
+    required this.score,
     super.createdOn,
-    super.lastModifiedOn,
-    super.lastModifiedByUserName,
     super.deleted,
-  }) : super();
+  });
 
   @override
   List<Object?> get props => [
         ...super.props,
-        userId,
+        name,
+        auditNumber,
         auditDate,
-        templateId,
-        siteId,
-        projectId,
-        area,
-        companies,
-        inspectors,
+        auditStatusName,
+        completed,
+        siteName,
+        projectName,
+        templateName,
+        owner,
+        score,
       ];
 
-  Audit toAudit() {
+  String get formatedAuditDate => auditDate.isNotEmpty
+      ? FormatDate(format: 'd MMMM y', dateString: auditDate).formatDate
+      : '--';
+
+  Audit get audit => Audit(
+        id: id,
+        name: name,
+        auditNumber: auditNumber,
+        auditDate: auditDate,
+        auditStatusName: auditStatusName,
+        completed: completed,
+        siteName: siteName,
+        projectName: projectName,
+        templateName: templateName,
+        owner: owner,
+        score: score,
+      );
+
+  Audit copyWith({
+    String? id,
+    String? name,
+    String? auditNumber,
+    String? auditDate,
+    String? auditStatusName,
+    double? completed,
+    String? siteName,
+    String? projectName,
+    String? templateName,
+    String? owner,
+    double? score,
+    String? createdOn,
+    bool? deleted,
+    List<String>? columns,
+  }) {
     return Audit(
-      userId: userId,
-      auditDate: auditDate,
-      templateId: templateId,
-      siteId: siteId,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      auditNumber: auditNumber ?? this.auditNumber,
+      auditDate: auditDate ?? this.auditDate,
+      auditStatusName: auditStatusName ?? this.auditStatusName,
+      completed: completed ?? this.completed,
+      siteName: siteName ?? this.siteName,
+      projectName: projectName ?? this.projectName,
+      templateName: templateName ?? this.templateName,
+      owner: owner ?? this.owner,
+      score: score ?? this.score,
+      createdOn: createdOn ?? this.createdOn,
+      deleted: deleted ?? this.deleted,
     );
   }
 
   factory FilteredAudit.fromMap(Map<String, dynamic> map) {
     return FilteredAudit(
-      userId: map['userId'] as String,
-      auditDate: map['auditDate'] as String,
-      templateId: map['templateId'] as String,
-      siteId: map['siteId'] as String,
-      projectId: map['projectId'] != null ? map['projectId'] as String : null,
-      area: map['area'] != null ? map['area'] as String : null,
-      companies: map['companies'] != null ? map['companies'] as String : null,
-      inspectors:
-          map['inspectors'] != null ? map['inspectors'] as String : null,
+      auditNumber: map['auditNumber'],
+      auditDate: map['auditDate'],
+      auditStatusName: map['auditStatusName'],
+      completed: map['completed'] as double,
+      siteName: map['siteName'],
+      projectName: map['projectName'],
+      templateName: map['templateName'],
+      owner: map['owner'],
+      score: map['score'],
     );
   }
 

@@ -56,14 +56,14 @@ class _AddEditPriorityLevelWidgetState
   Widget build(BuildContext context) {
     return BlocConsumer<AddEditPriorityLevelBloc, AddEditPriorityLevelState>(
       listener: (context, state) {
-        if (state.status == EntityStatus.success) {
+        if (state.status.isSuccess) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
         }
-        if (state.status == EntityStatus.failure) {
+        if (state.status .isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,

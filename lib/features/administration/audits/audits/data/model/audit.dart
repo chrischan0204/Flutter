@@ -1,27 +1,28 @@
 import '/common_libraries.dart';
 
 class Audit extends Entity {
-  final String userId;
+  final String? auditNumber;
   final String auditDate;
-  final String templateId;
-  final String siteId;
-  final String? projectId;
-  final String? area;
-  final String? companies;
-  final String? inspectors;
+  final String? auditStatusName;
+  final double completed;
+  final String? siteName;
+  final String? projectName;
+  final String? templateName;
+  final String? owner;
+  final double score;
 
   const Audit({
     super.id,
     super.name,
-    required this.userId,
+    this.auditNumber,
     required this.auditDate,
-    required this.templateId,
-    required this.siteId,
-    this.projectId,
-    this.area,
-    this.companies,
-    this.inspectors,
-    super.active,
+    this.auditStatusName,
+    required this.completed,
+    this.siteName,
+    this.projectName,
+    this.templateName,
+    this.owner,
+    required this.score,
     super.createdByUserName,
     super.createdOn,
     super.columns,
@@ -31,14 +32,15 @@ class Audit extends Entity {
   @override
   List<Object?> get props => [
         ...super.props,
-        userId,
+        auditNumber,
         auditDate,
-        templateId,
-        siteId,
-        projectId,
-        area,
-        companies,
-        inspectors,
+        auditStatusName,
+        completed,
+        siteName,
+        projectName,
+        templateName,
+        owner,
+        score,
       ];
 
   String get formatedAuditDate => auditDate.isNotEmpty
@@ -60,22 +62,6 @@ class Audit extends Entity {
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'userId': userId,
-      'auditDate': auditDate,
-      'templateId': templateId,
-      'siteId': siteId,
-      'projectId': projectId,
-      'area': area,
-      'companies': companies,
-      'inspectors': inspectors,
-    };
-  }
-
-  @override
   Map<String, dynamic> detailItemsToMap() {
     return {
       'Template Description': name,
@@ -85,15 +71,15 @@ class Audit extends Entity {
   Audit copyWith({
     String? id,
     String? name,
-    String? userId,
+    String? auditNumber,
     String? auditDate,
-    String? templateId,
-    String? siteId,
-    String? projectId,
-    String? area,
-    String? companies,
-    String? inspectors,
-    bool? active,
+    String? auditStatusName,
+    double? completed,
+    String? siteName,
+    String? projectName,
+    String? templateName,
+    String? owner,
+    double? score,
     String? createdOn,
     String? createdByUserName,
     bool? deleted,
@@ -102,15 +88,15 @@ class Audit extends Entity {
     return Audit(
       id: id ?? this.id,
       name: name ?? this.name,
-      userId: userId ?? this.userId,
+      auditNumber: auditNumber ?? this.auditNumber,
       auditDate: auditDate ?? this.auditDate,
-      templateId: templateId ?? this.templateId,
-      siteId: siteId ?? this.siteId,
-      projectId: projectId ?? this.projectId,
-      area: area ?? this.area,
-      companies: companies ?? this.companies,
-      inspectors: inspectors ?? this.inspectors,
-      active: active ?? this.active,
+      auditStatusName: auditStatusName ?? this.auditStatusName,
+      completed: completed ?? this.completed,
+      siteName: siteName ?? this.siteName,
+      projectName: projectName ?? this.projectName,
+      templateName: templateName ?? this.templateName,
+      owner: owner ?? this.owner,
+      score: score ?? this.score,
       createdOn: createdOn ?? this.createdOn,
       createdByUserName: createdByUserName ?? this.createdByUserName,
       deleted: deleted ?? this.deleted,
@@ -120,19 +106,18 @@ class Audit extends Entity {
 
   factory Audit.fromMap(Map<String, dynamic> map) {
     return Audit(
-      userId: map['userId'] as String,
-      auditDate: map['auditDate'] as String,
-      templateId: map['templateId'] as String,
-      siteId: map['siteId'] as String,
-      projectId: map['projectId'] != null ? map['projectId'] as String : null,
-      area: map['area'] != null ? map['area'] as String : null,
-      companies: map['companies'] != null ? map['companies'] as String : null,
-      inspectors:
-          map['inspectors'] != null ? map['inspectors'] as String : null,
+      id: map['id'],
+      auditNumber: map['auditNumber'],
+      auditDate: map['auditDate'],
+      auditStatusName: map['auditStatusName'],
+      completed: map['completed'] as double,
+      siteName: map['siteName'],
+      projectName: map['projectName'],
+      templateName: map['templateName'],
+      owner: map['owner'],
+      score: map['score'],
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory Audit.fromJson(String source) =>
       Audit.fromMap(json.decode(source) as Map<String, dynamic>);

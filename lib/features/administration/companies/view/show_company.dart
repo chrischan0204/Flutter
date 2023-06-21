@@ -275,7 +275,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
   }
 
   void _checkDeleteCompanyStatus(CompaniesState state, BuildContext context) {
-    if (state.companyCrudStatus == EntityStatus.success) {
+    if (state.companyCrudStatus.isSuccess) {
       companiesBloc.add(CompaniesStatusInited());
       CustomNotification(
         context: context,
@@ -285,7 +285,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
 
       GoRouter.of(context).go('/companies');
     }
-    if (state.companyCrudStatus == EntityStatus.failure) {
+    if (state.companyCrudStatus .isFailure) {
       companiesBloc.add(CompaniesStatusInited());
       CustomNotification(
         context: context,

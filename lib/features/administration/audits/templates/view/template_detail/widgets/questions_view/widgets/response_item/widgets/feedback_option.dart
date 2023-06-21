@@ -1,3 +1,4 @@
+import '../../../../../../add_edit_template/widgets/template_items/widgets/section_questions/widgets/add_new_question/widgets/response_scale_item_list/widgets/futher_action_item.dart';
 import '/common_libraries.dart';
 import '../../question_item/widgets/widgets.dart';
 
@@ -9,6 +10,7 @@ class FeedbackOptionView extends StatelessWidget {
   final bool comment;
   final bool actionItem;
   final bool followUp;
+  final String optionName;
   const FeedbackOptionView({
     super.key,
     this.l2 = false,
@@ -18,6 +20,7 @@ class FeedbackOptionView extends StatelessWidget {
     required this.comment,
     required this.followUp,
     required this.actionItem,
+    this.optionName = 'Scale Option',
   });
 
   @override
@@ -42,7 +45,7 @@ class FeedbackOptionView extends StatelessWidget {
               //   ),
               // if (l2) const SizedBox(width: 5),
               Text(
-                'Feedback for option = $feedbackForOption',
+                '$optionName = $feedbackForOption',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -72,21 +75,31 @@ class FeedbackOptionView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: QuestionItemRowItem(
-                  title: 'Comment',
-                  content: comment.asString(),
-                ),
-              ),
-              Expanded(
-                child: QuestionItemRowItem(
-                  title: 'Action Item',
-                  content: actionItem.asString(),
-                ),
-              ),
-              Expanded(
-                child: QuestionItemRowItem(
-                  title: 'Follow Up',
-                  content: followUp.asString(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FutherActionItemView(
+                      active: comment,
+                      onClick: (_) {},
+                      disabled: true,
+                      title: 'Comment',
+                      activeColor: primaryColor,
+                    ),
+                    FutherActionItemView(
+                      active: actionItem,
+                      onClick: (_) {},
+                      disabled: true,
+                      title: 'Action Item',
+                      activeColor: primaryColor,
+                    ),
+                    FutherActionItemView(
+                      active: followUp,
+                      onClick: (_) {},
+                      disabled: true,
+                      title: 'Follow Up',
+                      activeColor: warnColor,
+                    ),
+                  ],
                 ),
               ),
             ],
