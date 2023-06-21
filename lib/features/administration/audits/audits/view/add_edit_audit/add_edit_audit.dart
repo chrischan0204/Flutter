@@ -39,6 +39,12 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
 
   static String addButtonName = 'Create & add questions';
 
+  Map<String, Widget> get tabItems => widget.auditId != null
+      ? {
+          'Audit questions': AuditQuestionsView(auditId: widget.auditId!),
+        }
+      : {};
+
   @override
   void initState() {
     addEditAuditBloc = context.read()
@@ -53,11 +59,16 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
     super.initState();
   }
 
-  Map<String, Widget> get tabItems => widget.auditId != null
-      ? {
-          'Audit questions': AuditQuestionsView(auditId: widget.auditId!),
-        }
-      : {};
+  @override
+  void didChangeDependencies() {
+    if (widget.auditId != null) {
+      context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
+            collapsedItem: UrlUtil.getPath(context),
+            force: true,
+          ));
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class AuditQuestionsView extends StatelessWidget {
   final String auditId;
@@ -9,39 +10,38 @@ class AuditQuestionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AuditQuestionsBloc(context),
+      child: AuditQuestionsWidget(auditId: auditId),
+    );
+  }
+}
+
+class AuditQuestionsWidget extends StatefulWidget {
+  final String auditId;
+  const AuditQuestionsWidget({
+    super.key,
+    required this.auditId,
+  });
+
+  @override
+  State<AuditQuestionsWidget> createState() => _AuditQuestionsWidgetState();
+}
+
+class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
+  @override
+  void initState() {
+    context
+        .read<AuditQuestionsBloc>()
+        .add(AuditQuestionsSnapshotListLoaded(auditId: emptyGuid));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
-        Card(
-          elevation: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: inset20,
-                child: Text(
-                  'Summary Section',
-                  style: textSemiBold14,
-                ),
-              ),
-              Container(
-                padding: inset20.copyWith(bottom: 100),
-                decoration:
-                    BoxDecoration(border: Border.all(color: primaryColor)),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Placeholder(),
-                    ),
-                    spacer20,
-                    Expanded(
-                      child: Placeholder(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        const SummarySectionView(),
         Padding(
           padding: inset20,
           child: Column(

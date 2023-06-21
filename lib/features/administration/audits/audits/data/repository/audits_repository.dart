@@ -87,5 +87,37 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
-  
+  Future<List<AuditQuestionSnapshot>> getAuditQuestionSnapshotList(
+      String auditId) async {
+    return const [
+      AuditQuestionSnapshot(
+        section: 'Electric inspection',
+        totalQuestionCount: 8,
+        includedQuestionCount: 8,
+        maxScore: 43,
+        includedScore: 2,
+      ),
+      AuditQuestionSnapshot(
+        section: 'Signage Inspection',
+        totalQuestionCount: 8,
+        includedQuestionCount: 8,
+        maxScore: 2,
+        includedScore: 32,
+      ),
+      AuditQuestionSnapshot(
+        section: 'Housekeeping interviews',
+        totalQuestionCount: 5,
+        includedQuestionCount: 2,
+        maxScore: 31,
+        includedScore: 2,
+      ),
+      AuditQuestionSnapshot(
+        section: 'Cafe supplies inspection',
+        totalQuestionCount: 8,
+        includedQuestionCount: 8,
+        maxScore: 12,
+        includedScore: 53,
+      ),
+    ];
+  }
 }

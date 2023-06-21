@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
-import '/data/model/model.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
 import 'widgets/audit_template_list.dart';
@@ -55,6 +54,7 @@ class _SiteShowWidgetState extends State<SiteShowWidget> {
   void initState() {
     showSiteBloc = context.read<ShowSiteBloc>()
       ..add(ShowSiteLoaded(id: widget.siteId));
+
     super.initState();
   }
 
@@ -72,7 +72,7 @@ class _SiteShowWidgetState extends State<SiteShowWidget> {
 
       GoRouter.of(context).go('/sites');
     }
-    if (state.deleteStatus .isFailure) {
+    if (state.deleteStatus.isFailure) {
       CustomNotification(
         context: context,
         notifyType: NotifyType.error,

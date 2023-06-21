@@ -34,19 +34,8 @@ class _CollapseButtonState extends State<CollapseButton> {
           if (MediaQuery.of(context).size.width < 1000) {
             Navigator.of(context).pop();
           } else {
-            // if (widget.isSidebarExtended) {
-            //   context.read<ThemeBloc>().add(ThemeSidebarShrank());
-            // } else {
-            //   context.read<ThemeBloc>().add(ThemeSidebarExtended());
-            // }
-            final pathSegments =
-                Uri.parse(GoRouter.of(context).location).pathSegments;
-            String second = '';
-            if (pathSegments.length > 1 && pathSegments[1] != 'index') {
-              second = '/${pathSegments[1]}';
-            }
             context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-                collapsedItem: '${pathSegments[0]}$second'));
+                collapsedItem: UrlUtil.getPath(context)));
           }
         },
         child: Container(

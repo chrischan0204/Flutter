@@ -2,20 +2,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '/common_libraries.dart';
 
-class TemplateSectionView extends StatefulWidget {
-  const TemplateSectionView({super.key});
-
-  @override
-  State<TemplateSectionView> createState() => _TemplateSectionViewState();
-}
-
-class _TemplateSectionViewState extends State<TemplateSectionView> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  List<String> columns = [
+class SectionSummaryView extends StatelessWidget {
+  const SectionSummaryView({super.key});
+  static List<String> columns = [
     'Section',
     'Total \'s',
     'Included Q\'s',
@@ -49,11 +38,11 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 400,
-      child: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+      child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
         builder: (context, state) {
           return SfDataGrid(
             source: EntityDataSource(
-              templateSnapshotList: state.templateSnapshotList,
+              auditQuestionSnapshotList: state.auditQuestionSnapshotList,
               columns: columns,
             ),
             columnWidthMode: ColumnWidthMode.fill,
@@ -72,37 +61,56 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
 }
 
 class EntityDataSource extends DataGridSource {
-  final List<TemplateSnapshot> templateSnapshotList;
+  final List<AuditQuestionSnapshot> auditQuestionSnapshotList;
   final List<String> columns;
 
   EntityDataSource({
-    required this.templateSnapshotList,
+    required this.auditQuestionSnapshotList,
     required this.columns,
   }) {
-    _entityData = templateSnapshotList
+    _entityData = auditQuestionSnapshotList
         .map((templateSnapshot) => DataGridRow(
               cells: [
                 DataGridCell(
-                    columnName: columns[0], value: templateSnapshot.name),
+                    columnName: columns[0], value: templateSnapshot.section),
                 DataGridCell(
-                    columnName: columns[1], value: templateSnapshot.questions),
+                    columnName: columns[1],
+                    value: templateSnapshot.totalQuestionCount),
                 DataGridCell(
-                    columnName: columns[2], value: templateSnapshot.maxScore),
+                    columnName: columns[2],
+                    value: templateSnapshot.includedQuestionCount),
                 DataGridCell(
-                    columnName: columns[2], value: templateSnapshot.maxScore),
+                    columnName: columns[3], value: templateSnapshot.maxScore),
                 DataGridCell(
-                    columnName: columns[2], value: templateSnapshot.maxScore),
+                    columnName: columns[4],
+                    value: templateSnapshot.includedScore),
               ],
             ))
         .toList();
-    if (templateSnapshotList.isNotEmpty) {
+    if (auditQuestionSnapshotList.isNotEmpty) {
       _entityData.add(DataGridRow(
         cells: [
           DataGridCell(columnName: columns[0], value: 'Total:'),
-          DataGridCell(columnName: columns[1], value: ''),
-          DataGridCell(columnName: columns[2], value: ''),
-          DataGridCell(columnName: columns[3], value: ''),
-          DataGridCell(columnName: columns[4], value: ''),
+          DataGridCell(
+              columnName: columns[1],
+              value: auditQuestionSnapshotList
+                  .map((e) => e.totalQuestionCount)
+                  .reduce((value, element) => value + element)),
+          DataGridCell(
+              columnName: columns[2],
+              value: auditQuestionSnapshotList
+                  .map((e) => e.includedQuestionCount)
+                  .reduce((value, element) => value + element)),
+          DataGridCell(
+              columnName: columns[3],
+              value: auditQuestionSnapshotList
+                  .map((e) => e.maxScore)
+                  .reduce((value, element) => value + element)),
+          DataGridCell(
+              columnName: columns[4],
+              value: auditQuestionSnapshotList
+                  .map((e) => e.includedScore)
+                  .reduce((value, element) => value + element)),
         ],
       ));
     }

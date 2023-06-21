@@ -1,13 +1,25 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import '/common_libraries.dart';
 
 part 'audit_questions_event.dart';
 part 'audit_questions_state.dart';
 
-class AuditQuestionsBloc extends Bloc<AuditQuestionsEvent, AuditQuestionsState> {
-  AuditQuestionsBloc() : super(AuditQuestionsInitial()) {
-    on<AuditQuestionsEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+class AuditQuestionsBloc
+    extends Bloc<AuditQuestionsEvent, AuditQuestionsState> {
+  final BuildContext context;
+  late AuditsRepository auditsRepository;
+  AuditQuestionsBloc(this.context) : super(const AuditQuestionsState()) {
+    auditsRepository = context.read();
+
+    on<AuditQuestionsSnapshotListLoaded>(_onAuditQuestionsSnapshotListLoaded);
+  }
+
+  Future<void> _onAuditQuestionsSnapshotListLoaded(
+    AuditQuestionsSnapshotListLoaded event,
+    Emitter<AuditQuestionsState> emit,
+  ) async {
+    final auditQuestionSnapshotList =
+        await auditsRepository.getAuditQuestionSnapshotList(event.auditId);
+
+    emit(state.copyWith(auditQuestionSnapshotList: auditQuestionSnapshotList));
   }
 }

@@ -26,6 +26,15 @@ class _AuditDetailViewState extends State<AuditDetailView> {
   }
 
   @override
+  void didChangeDependencies() {
+    context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
+          collapsedItem: UrlUtil.getPath(context),
+          force: true,
+        ));
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuditDetailBloc, AuditDetailState>(
       listener: (context, state) {

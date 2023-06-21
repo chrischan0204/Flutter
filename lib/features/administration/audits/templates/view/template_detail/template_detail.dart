@@ -62,6 +62,15 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
+          collapsedItem: UrlUtil.getPath(context),
+          force: true,
+        ));
+    super.didChangeDependencies();
+  }
+
   void _deleteTemplate(TemplateDetailState state) {
     templatesBloc
         .add(TemplateDetailTemplateDeleted(templateId: widget.templateId));
