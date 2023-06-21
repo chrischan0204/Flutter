@@ -39,7 +39,7 @@ class HeaderView extends StatelessWidget {
                 softWrap: false,
               ),
             ),
-            spacer15,
+            spacerx15,
             Expanded(
               flex: 2,
               child: CrudButtonsView(

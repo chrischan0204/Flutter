@@ -59,7 +59,7 @@ class FormItemVertical extends StatelessWidget {
                   ],
                 ),
               ),
-              spacer50,
+              spacerx50,
               if (rightChild != null)
                 Expanded(
                   child: Row(
@@ -105,7 +105,7 @@ class FormItemVertical extends StatelessWidget {
                     ],
                   ),
                 ),
-                spacer50,
+                spacerx50,
                 Expanded(
                   child: Row(
                     children: [

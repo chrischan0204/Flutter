@@ -263,7 +263,7 @@ class _AssignProjectsToCompanyViewState
       child: Row(
         children: [
           _buildSiteSelectFieldForUnassigned(state),
-          spacer30,
+          spacerx30,
           _buildFilterProjectTextFieldForUnassigned(state),
         ],
       ),
@@ -333,7 +333,7 @@ class _AssignProjectsToCompanyViewState
                   ),
                 ),
               ),
-              spacer12,
+              spacerx12,
               InkWell(
                 onTap: () {
                   setState(() {
@@ -366,7 +366,7 @@ class _AssignProjectsToCompanyViewState
       child: Row(
         children: [
           _buildSiteSelectFieldForAssigned(state),
-          spacer30,
+          spacerx30,
           _buildFilterProjectTextFieldForAssigned(state),
         ],
       ),
@@ -436,7 +436,7 @@ class _AssignProjectsToCompanyViewState
                   ),
                 ),
               ),
-              spacer12,
+              spacerx12,
               InkWell(
                 onTap: () {
                   setState(() {

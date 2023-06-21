@@ -65,7 +65,7 @@ class _AssignTemplatesToSiteWidgetState
               Row(
                 children: [
                   Expanded(child: _buildUnassignedTemplatesTableHeaderView()),
-                  spacer100,
+                  spacerx100,
                   Expanded(child: _buildAssignedTemplatesTableViewHeader()),
                 ],
               ),
@@ -73,7 +73,7 @@ class _AssignTemplatesToSiteWidgetState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildUnassignedTemplatesTableView(state),
-                  spacer100,
+                  spacerx100,
                   _buildAssignedTemplatesTableView(state, context),
                 ],
               ),

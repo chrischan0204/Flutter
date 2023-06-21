@@ -25,3 +25,4 @@ export 'custom_tab_bar.dart';
 export 'custom_expansion_tile.dart';
 // export 'custom_accordion/accordion.dart';
 export 'custom_time_picker.dart';
+export 'custom_badge.dart';

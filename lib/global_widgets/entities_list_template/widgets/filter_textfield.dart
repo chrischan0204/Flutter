@@ -81,7 +81,7 @@ class _FilterTextFieldState extends State<FilterTextField> {
             },
           ),
         ),
-        spacer12,
+        spacerx12,
         InkWell(
           onTap: () {
             widget.clearFilter();

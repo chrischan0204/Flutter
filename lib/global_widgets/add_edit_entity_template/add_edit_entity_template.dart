@@ -80,7 +80,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
                         maxLines: 3,
                       ),
                     ),
-                    spacer15,
+                    spacerx15,
                     Expanded(
                       flex: 1,
                       child: _buildCrudButtons(context),
@@ -219,9 +219,9 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildGoToListButton(context),
-        if (widget.id != null) spacer20,
+        if (widget.id != null) spacerx20,
         if (widget.id != null) _buildShowButton(context),
-        spacer20,
+        spacerx20,
       ],
     );
   }

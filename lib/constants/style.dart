@@ -13,6 +13,21 @@ TextStyle tableDataTextStyle = TextStyle(
 
 const double topbarHeight = 75;
 
+TextStyle textBold10 = const TextStyle(
+  fontSize: 10,
+  fontWeight: FontWeight.bold,
+);
+
+TextStyle textSemiBold10 = const TextStyle(
+  fontSize: 10,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle textNormal10 = const TextStyle(
+  fontSize: 10,
+  fontWeight: FontWeight.normal,
+);
+
 TextStyle textBold12 = const TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.bold,
@@ -58,6 +73,24 @@ TextStyle textNormal18 = const TextStyle(
   fontWeight: FontWeight.normal,
 );
 
+TextStyle textBold20 = const TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
+
+TextStyle textSemiBold20 = const TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle textNormal20 = const TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.normal,
+);
+
+EdgeInsets inset0 = const EdgeInsets.all(0);
+EdgeInsets inset1 = const EdgeInsets.all(1);
+EdgeInsets inset2 = const EdgeInsets.all(2);
 EdgeInsets inset4 = const EdgeInsets.all(4);
 EdgeInsets inset8 = const EdgeInsets.all(8);
 EdgeInsets inset10 = const EdgeInsets.all(10);
@@ -115,17 +148,32 @@ EdgeInsets insetx15y20 = const EdgeInsets.symmetric(
   vertical: 20,
 );
 
-SizedBox spacer2 = const SizedBox(width: 2);
-SizedBox spacer3 = const SizedBox(width: 3);
-SizedBox spacer4 = const SizedBox(width: 4);
-SizedBox spacer5 = const SizedBox(width: 5);
-SizedBox spacer8 = const SizedBox(width: 8);
-SizedBox spacer10 = const SizedBox(width: 10);
-SizedBox spacer12 = const SizedBox(width: 12);
-SizedBox spacer15 = const SizedBox(width: 15);
-SizedBox spacer20 = const SizedBox(width: 20);
-SizedBox spacer30 = const SizedBox(width: 30);
-SizedBox spacer40 = const SizedBox(width: 40);
-SizedBox spacer50 = const SizedBox(width: 50);
-SizedBox spacer100 = const SizedBox(width: 100);
-SizedBox spacer150 = const SizedBox(width: 150);
+SizedBox spacerx2 = const SizedBox(width: 2);
+SizedBox spacerx3 = const SizedBox(width: 3);
+SizedBox spacerx4 = const SizedBox(width: 4);
+SizedBox spacerx5 = const SizedBox(width: 5);
+SizedBox spacerx8 = const SizedBox(width: 8);
+SizedBox spacerx10 = const SizedBox(width: 10);
+SizedBox spacerx12 = const SizedBox(width: 12);
+SizedBox spacerx15 = const SizedBox(width: 15);
+SizedBox spacerx20 = const SizedBox(width: 20);
+SizedBox spacerx30 = const SizedBox(width: 30);
+SizedBox spacerx40 = const SizedBox(width: 40);
+SizedBox spacerx50 = const SizedBox(width: 50);
+SizedBox spacerx100 = const SizedBox(width: 100);
+SizedBox spacerx150 = const SizedBox(width: 150);
+
+SizedBox spacery2 = const SizedBox(height: 2);
+SizedBox spacery3 = const SizedBox(height: 3);
+SizedBox spacery4 = const SizedBox(height: 4);
+SizedBox spacery5 = const SizedBox(height: 5);
+SizedBox spacery8 = const SizedBox(height: 8);
+SizedBox spacery10 = const SizedBox(height: 10);
+SizedBox spacery12 = const SizedBox(height: 12);
+SizedBox spacery15 = const SizedBox(height: 15);
+SizedBox spacery20 = const SizedBox(height: 20);
+SizedBox spacery30 = const SizedBox(height: 30);
+SizedBox spacery40 = const SizedBox(height: 40);
+SizedBox spacery50 = const SizedBox(height: 50);
+SizedBox spacery100 = const SizedBox(height: 100);
+SizedBox spacery150 = const SizedBox(height: 150);

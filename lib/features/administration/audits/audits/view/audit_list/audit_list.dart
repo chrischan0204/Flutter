@@ -64,7 +64,7 @@ class _AuditListState extends State<AuditListWidget> {
                     auditListState.auditListLoadStatus.isLoading,
             // entityDetailLoadStatusLoading:
             //     auditDetailState.auditLoadStatus.isLoading,
-            // selectedEntity: auditDetailState.audit,
+            selectedEntity: auditListState.audit,
             onViewSettingApplied: () {
               _filterAudits();
             },
@@ -87,7 +87,10 @@ class _AuditListState extends State<AuditListWidget> {
     );
   }
 
-  void _selectAudit(Entity selectedAudit) {}
+  void _selectAudit(Entity selectedAudit) {
+    auditListBloc
+        .add(AuditListSelectedAuditChanged(audit: selectedAudit as Audit));
+  }
 
   void _filterAudits([
     String? filterId,

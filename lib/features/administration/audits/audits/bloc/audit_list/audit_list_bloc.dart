@@ -9,6 +9,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
       : super(const AuditListState()) {
     on<AuditListLoaded>(_onAuditListLoaded);
     on<AuditListFiltered>(_onAuditListFiltered);
+    on<AuditListSelectedAuditChanged>(_onAuditListSelectedAuditChanged);
   }
 
   Future<void> _onAuditListLoaded(
@@ -17,7 +18,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
   ) async {
     emit(state.copyWith(auditListLoadStatus: EntityStatus.loading));
     try {
-      List<Audit> auditList = await auditsRepository.getAudits();
+      List<Audit> auditList = await auditsRepository.getAuditList();
       emit(state.copyWith(
         auditListLoadStatus: EntityStatus.success,
         auditList: auditList,
@@ -34,20 +35,32 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
     emit(state.copyWith(auditListLoadStatus: EntityStatus.loading));
 
     try {
-      final filteredauditData =
-          await auditsRepository.getFilteredAuditList(event.option);
-      final List<String> columns = List.from(filteredauditData.headers
-          .where((e) => !e.isHidden)
-          .map((e) => e.title));
-
+      final auditList = await auditsRepository.getAuditList();
       emit(state.copyWith(
-          auditList: filteredauditData.data
-              .map((e) => e.audit.copyWith(columns: columns))
-              .toList(),
+          auditList: auditList,
           auditListLoadStatus: EntityStatus.success,
-          totalRows: filteredauditData.totalRows));
+          totalRows: auditList.length));
+      // final filteredauditData =
+      //     await auditsRepository.getFilteredAuditList(event.option);
+      // final List<String> columns = List.from(filteredauditData.headers
+      //     .where((e) => !e.isHidden)
+      //     .map((e) => e.title));
+
+      // emit(state.copyWith(
+      //     auditList: filteredauditData.data
+      //         .map((e) => e.audit.copyWith(columns: columns))
+      //         .toList(),
+      //     auditListLoadStatus: EntityStatus.success,
+      //     totalRows: filteredauditData.totalRows));
     } catch (e) {
       emit(state.copyWith(auditListLoadStatus: EntityStatus.failure));
     }
+  }
+
+  Future<void> _onAuditListSelectedAuditChanged(
+    AuditListSelectedAuditChanged event,
+    Emitter<AuditListState> emit,
+  ) async {
+    emit(state.copyWith(audit: event.audit));
   }
 }

@@ -1,4 +1,4 @@
-export 'entity.dart';
+  export 'entity.dart';
 
 export '/features/administration/masters/regions/data/model/region.dart';
 export '/features/administration/masters/regions/data/model/time_zone.dart';

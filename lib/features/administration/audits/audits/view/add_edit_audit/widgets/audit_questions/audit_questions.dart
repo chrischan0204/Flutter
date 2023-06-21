@@ -82,7 +82,7 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
                 ),
               ),
             ),
-            spacer10,
+            spacerx10,
             Expanded(
               flex: 5,
               child: Card(

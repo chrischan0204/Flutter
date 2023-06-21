@@ -144,11 +144,11 @@ class ResponseScaleItemView extends StatelessWidget {
         child: Row(
           children: [
             _buildCommentButton(context),
-            spacer20,
+            spacerx20,
             _buildActionItemButton(context),
-            spacer20,
+            spacerx20,
             if (level != 2) _buildFollowupButton(context),
-            spacer20,
+            spacerx20,
             if (templateSectionItem.response?.followUpRequired == true &&
                 level < 2)
               _buildLevelFollowUpButton(context, level),

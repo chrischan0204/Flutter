@@ -23,8 +23,10 @@ class Audit extends Entity {
     this.templateName,
     this.owner,
     required this.score,
-    super.createdByUserName,
     super.createdOn,
+    super.createdByUserName,
+    super.lastModifiedOn,
+    super.lastModifiedByUserName,
     super.columns,
     super.deleted,
   });
@@ -32,6 +34,7 @@ class Audit extends Entity {
   @override
   List<Object?> get props => [
         ...super.props,
+        name,
         auditNumber,
         auditDate,
         auditStatusName,
@@ -41,6 +44,12 @@ class Audit extends Entity {
         templateName,
         owner,
         score,
+        createdOn,
+        createdByUserName,
+        lastModifiedOn,
+        lastModifiedByUserName,
+        columns,
+        deleted,
       ];
 
   String get formatedAuditDate => auditDate.isNotEmpty
@@ -51,6 +60,12 @@ class Audit extends Entity {
   Map<String, dynamic> tableItemsToMap() {
     return {
       'Audit': name,
+      'Status': auditStatusName,
+      'Complete': completed,
+      'Site': siteName,
+      'Template': templateName,
+      'Onwer': owner,
+      'Score': score,
     };
   }
 
@@ -58,6 +73,18 @@ class Audit extends Entity {
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
       'Audit': name,
+      'Onwer': owner,
+      'Started on': '12th March 2023',
+      'Completion': completed,
+      'Score': score,
+      'Sections': 4,
+      'Questions': 42,
+      'Site': siteName,
+      'Project': projectName ?? '--',
+      'Created on': createdOn,
+      'Created by': createdByUserName,
+      'Last Updated': lastModifiedOn,
+      'Updated by': lastModifiedByUserName,
     };
   }
 
@@ -80,8 +107,8 @@ class Audit extends Entity {
     String? templateName,
     String? owner,
     double? score,
+    String? lastModifiedOn,
     String? createdOn,
-    String? createdByUserName,
     bool? deleted,
     List<String>? columns,
   }) {
@@ -98,15 +125,17 @@ class Audit extends Entity {
       owner: owner ?? this.owner,
       score: score ?? this.score,
       createdOn: createdOn ?? this.createdOn,
-      createdByUserName: createdByUserName ?? this.createdByUserName,
+      lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
       deleted: deleted ?? this.deleted,
       columns: columns ?? this.columns,
     );
   }
 
   factory Audit.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return Audit(
-      id: map['id'],
+      id: entity.id,
+      name: entity.name,
       auditNumber: map['auditNumber'],
       auditDate: map['auditDate'],
       auditStatusName: map['auditStatusName'],
@@ -114,8 +143,12 @@ class Audit extends Entity {
       siteName: map['siteName'],
       projectName: map['projectName'],
       templateName: map['templateName'],
-      owner: map['owner'],
+      owner: map['owner'] ?? '',
       score: map['score'],
+      createdOn: entity.createdOn,
+      lastModifiedOn: entity.lastModifiedOn,
+      createdByUserName: entity.createdByUserName,
+      lastModifiedByUserName: entity.lastModifiedByUserName,
     );
   }
 

@@ -26,7 +26,7 @@ class SummarySectionView extends StatelessWidget {
                 const Expanded(
                   child: SectionSummaryView(),
                 ),
-                spacer20,
+                spacerx20,
                 Expanded(
                   child: Placeholder(),
                 ),

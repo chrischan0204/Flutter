@@ -22,9 +22,9 @@ class CrudButtonsView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GoToListButton(label: label),
-        spacer15,
+        spacerx15,
         GoToEditButton(label: label),
-        spacer15,
+        spacerx15,
         DeleteButton(
           label: label,
           deletable: deletable,
