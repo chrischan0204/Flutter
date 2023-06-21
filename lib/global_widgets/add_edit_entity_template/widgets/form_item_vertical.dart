@@ -2,19 +2,21 @@ import '/common_libraries.dart';
 
 class FormItemVertical extends StatelessWidget {
   final Widget leftChild;
-  final Widget rightChild;
+  final Widget? rightChild;
   final String leftLabel;
-  final String rightLabel;
+  final String? rightLabel;
   final String leftValidationMessage;
-  final String rightValidationMessage;
+  final String? rightValidationMessage;
+  final Widget? secondaryRightChild;
   const FormItemVertical({
     super.key,
     required this.leftChild,
-    required this.rightChild,
+    this.rightChild,
     required this.leftLabel,
-    required this.rightLabel,
+    this.rightLabel,
     this.leftValidationMessage = '',
     this.rightValidationMessage = '',
+    this.secondaryRightChild,
   });
 
   @override
@@ -58,23 +60,26 @@ class FormItemVertical extends StatelessWidget {
                 ),
               ),
               spacer50,
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        '$rightLabel:',
-                        style: textSemiBold12,
+              if (rightChild != null)
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          '$rightLabel:',
+                          style: textSemiBold12,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: rightChild,
-                    ),
-                  ],
+                      Expanded(
+                        flex: 3,
+                        child: rightChild!,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              if (secondaryRightChild != null)
+                Expanded(child: secondaryRightChild!)
             ],
           ),
           Padding(
@@ -108,15 +113,16 @@ class FormItemVertical extends StatelessWidget {
                         flex: 2,
                         child: Container(),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          rightValidationMessage,
-                          style: textNormal12.copyWith(
-                            color: Colors.red,
+                      if (rightValidationMessage != null)
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            rightValidationMessage!,
+                            style: textNormal12.copyWith(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),

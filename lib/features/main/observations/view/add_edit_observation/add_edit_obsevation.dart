@@ -38,9 +38,12 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
 
   static String pageLabel = 'observation';
 
+  static String addButtonName = 'Create';
+
   @override
   void initState() {
-    addEditObservationBloc = context.read();
+    addEditObservationBloc = context.read()
+      ..add(AddEditObservationSiteListLoaded());
 
     if (widget.observationId != null) {
       addEditObservationBloc
@@ -71,7 +74,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
                 '/observations/edit/${state.createdObservationId}?view=created');
           }
         }
-        if (state.status .isFailure) {
+        if (state.status.isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,
@@ -92,6 +95,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
           tabItems: tabItems,
           view: widget.view,
           formDirty: state.formDirty,
+          addButtonName: addButtonName,
           child: const AddEditObservationFormView(),
         );
       },

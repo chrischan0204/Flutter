@@ -11,12 +11,6 @@ class AddEditObservationState extends Equatable {
   /// site list
   final List<Site> siteList;
 
-  /// template list
-  final List<Template> templateList;
-
-  /// project list
-  final List<Project> projectList;
-
   /// observation name to create observation
   final String observationName;
 
@@ -25,15 +19,6 @@ class AddEditObservationState extends Equatable {
 
   /// validation message for observation name
   final String observationNameValidationMessage;
-
-  /// observation date to create observation
-  final DateTime? observationDate;
-
-  /// initial observation date to check form dirty
-  final DateTime? initialObservationDate;
-
-  /// validation message for observation time
-  final String observationDateValidationMessage;
 
   /// site to create observation
   final Site? site;
@@ -44,47 +29,23 @@ class AddEditObservationState extends Equatable {
   /// validation message for site
   final String siteValidationMessage;
 
-  /// template to create observation
-  final Template? template;
+  /// location to create observation
+  final String location;
 
-  /// initial template to check form dirty
-  final Template? initialTemplate;
+  /// initial location to check form dirty
+  final String initialLocation;
 
-  /// validation message for template;
-  final String templateValidationMessage;
+  /// validation message for location
+  final String locationValidationMessage;
 
-  /// companies with comma separated to create observation
-  final String companies;
+  /// location to create response
+  final String response;
 
-  /// initial companies to check form dirty
-  final String initialCompanies;
+  /// initial response to check form dirty
+  final String initialResponse;
 
-  /// observation time to create observation
-  final DateTime? observationTime;
-
-  /// initial observation time to check form dirty
-  final DateTime? initialObservationTime;
-
-  /// validation message for observation time
-  final String observationTimeValidationMessage;
-
-  /// project list to create observation
-  final List<Project> selectedProjectList;
-
-  /// initial project list to check form dirty
-  final List<Project> initialSelectedProjectList;
-
-  /// area to create observation
-  final String? area;
-
-  /// initial area to check form dirty
-  final String? initialArea;
-
-  /// inspectors to create observation
-  final String? inspectors;
-
-  /// initial inspectors to check form dirty
-  final String? initialInspectors;
+  /// images to create observation
+  final List<Uint8List> images;
 
   /// creation & edition site status
   final EntityStatus status;
@@ -95,31 +56,18 @@ class AddEditObservationState extends Equatable {
     this.createdObservationId,
     this.loadedObservation,
     this.siteList = const [],
-    this.templateList = const [],
-    this.projectList = const [],
     this.observationName = '',
     this.initialObservationName = '',
     this.observationNameValidationMessage = '',
-    this.observationDate,
-    this.initialObservationDate,
-    this.observationDateValidationMessage = '',
     this.site,
     this.initialSite,
     this.siteValidationMessage = '',
-    this.template,
-    this.initialTemplate,
-    this.templateValidationMessage = '',
-    this.companies = '',
-    this.initialCompanies = '',
-    this.observationTime,
-    this.initialObservationTime,
-    this.observationTimeValidationMessage = '',
-    this.selectedProjectList = const [],
-    this.initialSelectedProjectList = const [],
-    this.area,
-    this.initialArea,
-    this.inspectors,
-    this.initialInspectors,
+    this.location = '',
+    this.initialLocation = '',
+    this.locationValidationMessage = '',
+    this.response = '',
+    this.initialResponse = '',
+    this.images = const [],
     this.status = EntityStatus.initial,
     this.message = '',
   });
@@ -129,30 +77,18 @@ class AddEditObservationState extends Equatable {
         createdObservationId,
         loadedObservation,
         siteList,
-        templateList,
-        projectList,
         observationName,
         initialObservationName,
         observationNameValidationMessage,
-        observationDate,
-        initialObservationDate,
         site,
         initialSite,
         siteValidationMessage,
-        template,
-        initialTemplate,
-        templateValidationMessage,
-        companies,
-        initialCompanies,
-        observationTime,
-        initialObservationTime,
-        observationTimeValidationMessage,
-        selectedProjectList,
-        initialSelectedProjectList,
-        area,
-        initialArea,
-        inspectors,
-        initialInspectors,
+        location,
+        initialLocation,
+        locationValidationMessage,
+        response,
+        initialResponse,
+        images,
         status,
         message,
       ];
@@ -167,45 +103,24 @@ class AddEditObservationState extends Equatable {
   bool get formDirty =>
       (Validation.isNotEmpty(observationName) &&
           observationName != initialObservationName) ||
-      (Validation.isNotEmpty(companies) && companies != initialCompanies) ||
-      (Validation.isNotEmpty(area) && area != initialArea) ||
-      (Validation.isNotEmpty(inspectors) && inspectors != initialInspectors) ||
-      (observationDate != null && observationDate != initialObservationDate) ||
-      (site != null && site?.id != initialSite?.id) ||
-      (template != null && template?.id != initialTemplate?.id) ||
-      (selectedProjectList.isNotEmpty &&
-          selectedProjectList != initialSelectedProjectList) ||
-      (observationTime != null && observationTime != initialObservationTime);
+      (site != null && site?.id != initialSite?.id);
 
   AddEditObservationState copyWith({
     String? createdObservationId,
     Observation? loadedObservation,
     List<Site>? siteList,
-    List<Template>? templateList,
-    List<Project>? projectList,
     String? observationName,
     String? initialObservationName,
     String? observationNameValidationMessage,
-    DateTime? observationDate,
-    DateTime? initialObservationDate,
-    String? observationDateValidationMessage,
     Site? site,
     Site? initialSite,
     String? siteValidationMessage,
-    Template? template,
-    Template? initialTemplate,
-    String? templateValidationMessage,
-    String? companies,
-    String? initialCompanies,
-    DateTime? observationTime,
-    DateTime? initialObservationTime,
-    String? observationTimeValidationMessage,
-    List<Project>? selectedProjectList,
-    List<Project>? initialSelectedProjectList,
-    String? area,
-    String? initialArea,
-    String? inspectors,
-    String? initialInspectors,
+    String? location,
+    String? initialLocation,
+    String? locationValidationMessage,
+    String? response,
+    String? initialResponse,
+    List<Uint8List>? images,
     EntityStatus? status,
     String? message,
   }) {
@@ -213,40 +128,22 @@ class AddEditObservationState extends Equatable {
       createdObservationId: createdObservationId ?? this.createdObservationId,
       loadedObservation: loadedObservation ?? this.loadedObservation,
       siteList: siteList ?? this.siteList,
-      templateList: templateList ?? this.templateList,
-      projectList: projectList ?? this.projectList,
       observationName: observationName ?? this.observationName,
       initialObservationName:
           initialObservationName ?? this.initialObservationName,
       observationNameValidationMessage: observationNameValidationMessage ??
           this.observationNameValidationMessage,
-      observationDate: observationDate ?? this.observationDate,
-      initialObservationDate:
-          initialObservationDate ?? this.initialObservationDate,
-      observationDateValidationMessage: observationDateValidationMessage ??
-          this.observationDateValidationMessage,
       site: site ?? this.site,
       initialSite: initialSite ?? this.initialSite,
       siteValidationMessage:
           siteValidationMessage ?? this.siteValidationMessage,
-      template: template ?? this.template,
-      initialTemplate: initialTemplate ?? this.initialTemplate,
-      templateValidationMessage:
-          templateValidationMessage ?? this.templateValidationMessage,
-      companies: companies ?? this.companies,
-      initialCompanies: initialCompanies ?? this.initialCompanies,
-      observationTime: observationTime ?? this.observationTime,
-      initialObservationTime:
-          initialObservationTime ?? this.initialObservationTime,
-      observationTimeValidationMessage: observationTimeValidationMessage ??
-          this.observationTimeValidationMessage,
-      selectedProjectList: selectedProjectList ?? this.selectedProjectList,
-      initialSelectedProjectList:
-          initialSelectedProjectList ?? this.initialSelectedProjectList,
-      area: area ?? this.area,
-      initialArea: initialArea ?? this.initialArea,
-      inspectors: inspectors ?? this.inspectors,
-      initialInspectors: initialInspectors ?? this.initialInspectors,
+      location: location ?? this.location,
+      initialLocation: initialLocation ?? this.initialLocation,
+      locationValidationMessage:
+          locationValidationMessage ?? this.locationValidationMessage,
+      response: response ?? this.response,
+      initialResponse: initialResponse ?? this.initialResponse,
+      images: images ?? this.images,
       status: status ?? this.status,
       message: message ?? this.message,
     );

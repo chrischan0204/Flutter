@@ -34,12 +34,6 @@ class AddEditObservationLoaded extends AddEditObservationEvent {
 /// even to load site list
 class AddEditObservationSiteListLoaded extends AddEditObservationEvent {}
 
-/// even to load template list
-class AddEditObservationSiteTemplateLoaded extends AddEditObservationEvent {}
-
-/// even to load project list
-class AddEditObservationProjectListLoaded extends AddEditObservationEvent {}
-
 /// event to change the observation name
 class AddEditObservationNameChanged extends AddEditObservationEvent {
   /// observation name to change
@@ -48,4 +42,46 @@ class AddEditObservationNameChanged extends AddEditObservationEvent {
 
   @override
   List<Object> get props => [observationName];
+}
+
+/// event to change the location
+class AddEditObservationLocationChanged extends AddEditObservationEvent {
+  /// location to change
+  final String location;
+  const AddEditObservationLocationChanged({required this.location});
+
+  @override
+  List<Object> get props => [location];
+}
+
+/// event to change the response
+class AddEditObservationResponseChanged extends AddEditObservationEvent {
+  /// response to change
+  final String response;
+  const AddEditObservationResponseChanged({required this.response});
+
+  @override
+  List<Object> get props => [response];
+}
+
+/// event to change the site
+class AddEditObservationSiteChanged extends AddEditObservationEvent {
+  /// site to change
+  final Site site;
+  const AddEditObservationSiteChanged({required this.site});
+
+  @override
+  List<Object> get props => [site];
+}
+
+/// event to change the image list
+class AddEditObservationImageListChanged extends AddEditObservationEvent {
+  /// image list to change
+  final List<Uint8List> imageList;
+  const AddEditObservationImageListChanged({
+    required this.imageList,
+  });
+
+  @override
+  List<Object> get props => [imageList];
 }

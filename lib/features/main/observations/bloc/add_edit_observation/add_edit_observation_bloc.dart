@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '/common_libraries.dart';
 
 part 'add_edit_observation_event.dart';
@@ -27,11 +29,12 @@ class AddEditObservationBloc
     on<AddEditObservationEdited>(_onAddEditObservationEdited);
     on<AddEditObservationLoaded>(_onAddEditObservationLoaded);
     on<AddEditObservationSiteListLoaded>(_onAddEditObservationSiteListLoaded);
-    on<AddEditObservationSiteTemplateLoaded>(
-        _onAddEditObservationSiteTemplateLoaded);
-    on<AddEditObservationProjectListLoaded>(
-        _onAddEditObservationProjectListLoaded);
     on<AddEditObservationNameChanged>(_onAddEditObservationNameChanged);
+    on<AddEditObservationLocationChanged>(_onAddEditObservationLocationChanged);
+    on<AddEditObservationSiteChanged>(_onAddEditObservationSiteChanged);
+    on<AddEditObservationResponseChanged>(_onAddEditObservationResponseChanged);
+    on<AddEditObservationImageListChanged>(
+        _onAddEditObservationImageListChanged);
   }
 
   Future<void> _onAddEditObservationAdded(
@@ -116,11 +119,10 @@ class AddEditObservationBloc
       success = false;
     }
 
-    if (state.observationDate == null) {
+    if (Validation.isEmpty(state.location)) {
       emit(state.copyWith(
-          observationDateValidationMessage:
-              FormValidationMessage(fieldName: 'Observation date')
-                  .requiredMessage));
+          locationValidationMessage:
+              FormValidationMessage(fieldName: 'Location').requiredMessage));
       success = false;
     }
 
@@ -128,21 +130,6 @@ class AddEditObservationBloc
       emit(state.copyWith(
           siteValidationMessage:
               FormValidationMessage(fieldName: 'Site').requiredMessage));
-      success = false;
-    }
-
-    if (state.template == null) {
-      emit(state.copyWith(
-          templateValidationMessage:
-              FormValidationMessage(fieldName: 'Template').requiredMessage));
-      success = false;
-    }
-
-    if (state.observationTime == null) {
-      emit(state.copyWith(
-          templateValidationMessage:
-              FormValidationMessage(fieldName: 'Observation time')
-                  .requiredMessage));
       success = false;
     }
 
@@ -159,26 +146,6 @@ class AddEditObservationBloc
     } catch (e) {}
   }
 
-  Future<void> _onAddEditObservationSiteTemplateLoaded(
-    AddEditObservationSiteTemplateLoaded event,
-    Emitter<AddEditObservationState> emit,
-  ) async {
-    try {
-      List<Template> templateList = await templatesRepository.getTemplateList();
-      emit(state.copyWith(templateList: templateList));
-    } catch (e) {}
-  }
-
-  Future<void> _onAddEditObservationProjectListLoaded(
-    AddEditObservationProjectListLoaded event,
-    Emitter<AddEditObservationState> emit,
-  ) async {
-    try {
-      List<Project> projectList = await projectsRepository.getProjects();
-      emit(state.copyWith(projectList: projectList));
-    } catch (e) {}
-  }
-
   void _onAddEditObservationNameChanged(
     AddEditObservationNameChanged event,
     Emitter<AddEditObservationState> emit,
@@ -189,5 +156,33 @@ class AddEditObservationBloc
     ));
 
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditObservationLocationChanged(
+    AddEditObservationLocationChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(location: event.location));
+  }
+
+  void _onAddEditObservationResponseChanged(
+    AddEditObservationResponseChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(response: event.response));
+  }
+
+  void _onAddEditObservationSiteChanged(
+    AddEditObservationSiteChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(site: event.site));
+  }
+
+  void _onAddEditObservationImageListChanged(
+    AddEditObservationImageListChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(images: event.imageList));
   }
 }
