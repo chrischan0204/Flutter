@@ -37,6 +37,8 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
 
   static String pageLabel = 'audit';
 
+  static String addButtonName = 'Create & add questions';
+
   @override
   void initState() {
     addEditAuditBloc = context.read()
@@ -86,13 +88,16 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
           label: pageLabel,
           id: widget.auditId,
           selectedEntity: state.loadedAudit,
-          addEntity: () => addEditAuditBloc.add(AddEditAuditAdded()),
+          addEntity: () => addEditAuditBloc.add(AddEditAuditAdded(
+              userId:
+                  context.read<AuthBloc>().state.authUser?.id ?? emptyGuid)),
           editEntity: () => addEditAuditBloc
               .add(AddEditAuditEdited(id: widget.auditId ?? '')),
           crudStatus: state.status,
           tabItems: tabItems,
           view: widget.view,
           formDirty: state.formDirty,
+          addButtonName: addButtonName,
           child: const AddEditAuditFormView(),
         );
       },

@@ -1,5 +1,4 @@
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
 
@@ -16,8 +15,15 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
     super.initState();
   }
 
+  List<String> columns = [
+    'Section',
+    'Total \'s',
+    'Included Q\'s',
+    'Max Score',
+    'Included Score'
+  ];
+
   List<GridColumn> _buildColumns() {
-    List<String> columns = ['Section', 'Questions', 'Max Score', 'Legend'];
     return [
       ...columns
           .map(
@@ -48,6 +54,7 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
           return SfDataGrid(
             source: EntityDataSource(
               templateSnapshotList: state.templateSnapshotList,
+              columns: columns,
             ),
             columnWidthMode: ColumnWidthMode.fill,
             columnResizeMode: ColumnResizeMode.onResize,
@@ -66,46 +73,36 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
 
 class EntityDataSource extends DataGridSource {
   final List<TemplateSnapshot> templateSnapshotList;
+  final List<String> columns;
 
-  EntityDataSource({required this.templateSnapshotList}) {
+  EntityDataSource({
+    required this.templateSnapshotList,
+    required this.columns,
+  }) {
     _entityData = templateSnapshotList
         .map((templateSnapshot) => DataGridRow(
               cells: [
                 DataGridCell(
-                    columnName: 'Section', value: templateSnapshot.name),
+                    columnName: columns[0], value: templateSnapshot.name),
                 DataGridCell(
-                    columnName: 'Questions', value: templateSnapshot.questions),
+                    columnName: columns[1], value: templateSnapshot.questions),
                 DataGridCell(
-                    columnName: 'Max Score', value: templateSnapshot.maxScore),
+                    columnName: columns[2], value: templateSnapshot.maxScore),
                 DataGridCell(
-                    columnName: 'Legend',
-                    value: Color.fromARGB(
-                        255,
-                        Uuid.parse(templateSnapshot.id)[1],
-                        Uuid.parse(templateSnapshot.id)[2],
-                        Uuid.parse(templateSnapshot.id)[3])),
+                    columnName: columns[2], value: templateSnapshot.maxScore),
+                DataGridCell(
+                    columnName: columns[2], value: templateSnapshot.maxScore),
               ],
             ))
         .toList();
     if (templateSnapshotList.isNotEmpty) {
       _entityData.add(DataGridRow(
         cells: [
-          const DataGridCell(columnName: 'Section', value: 'Total:'),
-          DataGridCell(
-              columnName: 'Questions',
-              value: templateSnapshotList.isNotEmpty
-                  ? templateSnapshotList
-                      .map((e) => e.questions)
-                      .reduce((value, element) => value + element)
-                  : ''),
-          DataGridCell(
-              columnName: 'Max Score',
-              value: templateSnapshotList.isNotEmpty
-                  ? templateSnapshotList
-                      .map((e) => e.maxScore)
-                      .reduce((value, element) => value + element)
-                  : ''),
-          const DataGridCell(columnName: 'Legend', value: ''),
+          DataGridCell(columnName: columns[0], value: 'Total:'),
+          DataGridCell(columnName: columns[1], value: ''),
+          DataGridCell(columnName: columns[2], value: ''),
+          DataGridCell(columnName: columns[3], value: ''),
+          DataGridCell(columnName: columns[4], value: ''),
         ],
       ));
     }
@@ -134,34 +131,8 @@ class EntityDataSource extends DataGridSource {
         Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: TemplateSectionItemView(value: cells[i].value),
+          child: Text(cells[i].value.toString()),
         )
     ]);
-  }
-}
-
-class TemplateSectionItemView extends StatelessWidget {
-  final dynamic value;
-  const TemplateSectionItemView({
-    super.key,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (value is int || value is String || value is double) {
-      return Text(
-        value.toString(),
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-        ),
-      );
-    }
-    return Container(
-      width: 18,
-      height: 18,
-      color: value,
-    );
   }
 }

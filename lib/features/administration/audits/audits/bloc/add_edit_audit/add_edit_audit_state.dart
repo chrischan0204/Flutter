@@ -59,15 +59,6 @@ class AddEditAuditState extends Equatable {
   /// initial companies to check form dirty
   final String initialCompanies;
 
-  /// audit time to create audit
-  final DateTime? auditTime;
-
-  /// initial audit time to check form dirty
-  final DateTime? initialAuditTime;
-
-  /// validation message for audit time
-  final String auditTimeValidationMessage;
-
   /// project to create audit
   final Project? project;
 
@@ -111,15 +102,12 @@ class AddEditAuditState extends Equatable {
     this.templateValidationMessage = '',
     this.companies = '',
     this.initialCompanies = '',
-    this.auditTime,
-    this.initialAuditTime,
-    this.auditTimeValidationMessage = '',
     this.project,
     this.initialProject,
-    this.area,
-    this.initialArea,
-    this.inspectors,
-    this.initialInspectors,
+    this.area = '',
+    this.initialArea = '',
+    this.inspectors = '',
+    this.initialInspectors = '',
     this.status = EntityStatus.initial,
     this.message = '',
   });
@@ -145,9 +133,6 @@ class AddEditAuditState extends Equatable {
         templateValidationMessage,
         companies,
         initialCompanies,
-        auditTime,
-        initialAuditTime,
-        auditTimeValidationMessage,
         project,
         initialProject,
         area,
@@ -164,7 +149,7 @@ class AddEditAuditState extends Equatable {
         auditDate: auditDate!.toIso8601String(),
         templateId: template!.id!,
         siteId: site!.id!,
-        projectId: project!.id,
+        projectId: project?.id,
         area: area,
         companies: companies,
         inspectors: inspectors,
@@ -178,8 +163,7 @@ class AddEditAuditState extends Equatable {
       (auditDate != null && auditDate != initialAuditDate) ||
       (site != null && site?.id != initialSite?.id) ||
       (template != null && template?.id != initialTemplate?.id) ||
-      (project != null && project != initialProject) ||
-      (auditTime != null && auditTime != initialAuditTime);
+      (project != null && project != initialProject);
 
   AddEditAuditState copyWith({
     String? createdAuditId,
@@ -201,9 +185,6 @@ class AddEditAuditState extends Equatable {
     String? templateValidationMessage,
     String? companies,
     String? initialCompanies,
-    DateTime? auditTime,
-    DateTime? initialAuditTime,
-    String? auditTimeValidationMessage,
     Project? project,
     Project? initialProject,
     String? area,
@@ -237,10 +218,6 @@ class AddEditAuditState extends Equatable {
           templateValidationMessage ?? this.templateValidationMessage,
       companies: companies ?? this.companies,
       initialCompanies: initialCompanies ?? this.initialCompanies,
-      auditTime: auditTime ?? this.auditTime,
-      initialAuditTime: initialAuditTime ?? this.initialAuditTime,
-      auditTimeValidationMessage:
-          auditTimeValidationMessage ?? this.auditTimeValidationMessage,
       initialProject: initialProject ?? this.initialProject,
       project: project ?? this.project,
       area: area ?? this.area,

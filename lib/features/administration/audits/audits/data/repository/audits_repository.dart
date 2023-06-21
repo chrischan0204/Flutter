@@ -86,4 +86,6 @@ class AuditsRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  
 }

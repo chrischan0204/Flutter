@@ -32,7 +32,6 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     on<AddEditAuditSiteChanged>(_onAddEditAuditSiteChanged);
     on<AddEditAuditTemplateChanged>(_onAddEditAuditTemplateChanged);
     on<AddEditAuditCompaniesChanged>(_onAddEditAuditCompaniesChanged);
-    on<AddEditAuditTimeChanged>(_onAddEditAuditTimeChanged);
     on<AddEditAuditProjectChanged>(_onAddEditAuditProjectChanged);
     on<AddEditAuditAreaChanged>(_onAddEditAuditAreaChanged);
     on<AddEditAuditInspectorsChanged>(_onAddEditAuditInspectorsChanged);
@@ -46,7 +45,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        Audit audit = await auditsRepository.addAudit(state.audit);
+        Audit audit = await auditsRepository
+            .addAudit(state.audit.copyWith(userId: event.userId));
 
         emit(state.copyWith(
           createdAuditId: audit.id,
@@ -146,13 +146,6 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       success = false;
     }
 
-    if (state.auditTime == null) {
-      emit(state.copyWith(
-          auditTimeValidationMessage:
-              FormValidationMessage(fieldName: 'Audit time').requiredMessage));
-      success = false;
-    }
-
     return success;
   }
 
@@ -240,18 +233,6 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   ) {
     emit(state.copyWith(
       companies: event.companies,
-    ));
-
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
-  }
-
-  void _onAddEditAuditTimeChanged(
-    AddEditAuditTimeChanged event,
-    Emitter<AddEditAuditState> emit,
-  ) {
-    emit(state.copyWith(
-      auditTime: event.time,
-      auditTimeValidationMessage: '',
     ));
 
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));

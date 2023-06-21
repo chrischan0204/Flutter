@@ -7,19 +7,15 @@ class AuditNameTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
       builder: (context, state) {
-        return FormItem(
-          label: 'Name (*)',
-          content: CustomTextField(
-            key: ValueKey(state.loadedAudit?.id),
-            initialValue: state.auditName,
-            hintText: 'Audit name',
-            onChanged: (auditName) {
-              context
-                  .read<AddEditAuditBloc>()
-                  .add(AddEditAuditNameChanged(auditName: auditName));
-            },
-          ),
-          message: state.auditNameValidationMessage,
+        return CustomTextField(
+          key: ValueKey(state.loadedAudit?.id),
+          initialValue: state.auditName,
+          hintText: 'Audit name',
+          onChanged: (auditName) {
+            context
+                .read<AddEditAuditBloc>()
+                .add(AddEditAuditNameChanged(auditName: auditName));
+          },
         );
       },
     );

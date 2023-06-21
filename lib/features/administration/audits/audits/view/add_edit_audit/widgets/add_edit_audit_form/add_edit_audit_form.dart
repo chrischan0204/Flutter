@@ -6,18 +6,43 @@ class AddEditAuditFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        AuditNameTextField(),
-        AuditDatePicker(),
-        SiteSelectField(),
-        TemplateSelectField(),
-        CompaniesTextField(),
-        AuditTimePicker(),
-        ProjectSelectField(),
-        AreaTextField(),
-        InspectorsTextField()
-      ],
+    return BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FormItemVertical(
+              leftLabel: 'Name (*)',
+              leftChild: const AuditNameTextField(),
+              leftValidationMessage: state.auditNameValidationMessage,
+              rightLabel: 'Audit Date (*)',
+              rightChild: const AuditDatePicker(),
+              rightValidationMessage: state.auditDateValidationMessage,
+            ),
+            FormItemVertical(
+              leftLabel: 'Site (*)',
+              leftChild: const SiteSelectField(),
+              leftValidationMessage: state.siteValidationMessage,
+              rightLabel: 'Project',
+              rightChild: const ProjectSelectField(),
+            ),
+            FormItemVertical(
+              leftLabel: 'Template (*)',
+              leftChild: const TemplateSelectField(),
+              leftValidationMessage: state.templateValidationMessage,
+              rightLabel: 'Area',
+              rightChild: const AreaTextField(),
+            ),
+            const FormItemVertical(
+              leftLabel: 'Companies',
+              leftChild: CompaniesTextField(),
+              rightLabel: 'Inspectors',
+              rightChild: InspectorsTextField(),
+            ),
+          ],
+        );
+      },
     );
   }
 }

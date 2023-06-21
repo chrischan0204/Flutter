@@ -9,7 +9,14 @@ abstract class AddEditAuditEvent extends Equatable {
 }
 
 /// event to add audit
-class AddEditAuditAdded extends AddEditAuditEvent {}
+class AddEditAuditAdded extends AddEditAuditEvent {
+  /// user id to create audit
+  final String userId;
+  const AddEditAuditAdded({required this.userId});
+
+  @override
+  List<Object> get props => [userId];
+}
 
 /// event to edit audit
 class AddEditAuditEdited extends AddEditAuditEvent {
@@ -94,18 +101,6 @@ class AddEditAuditCompaniesChanged extends AddEditAuditEvent {
 
   @override
   List<Object> get props => [companies];
-}
-
-/// event to change audit time
-class AddEditAuditTimeChanged extends AddEditAuditEvent {
-  /// audit time to change
-  final DateTime time;
-  const AddEditAuditTimeChanged({
-    required this.time,
-  });
-
-  @override
-  List<Object> get props => [time];
 }
 
 /// event to change the project

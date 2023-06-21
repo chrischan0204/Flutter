@@ -9,19 +9,15 @@ class SiteSelectField extends StatelessWidget {
       builder: (context, state) {
         Map<String, Site> items = {}..addEntries(
             state.siteList.map((site) => MapEntry(site.name ?? '', site)));
-        return FormItem(
-          label: 'Site (*)',
-          content: CustomSingleSelect(
-            items: items,
-            hint: 'Select Site',
-            selectedValue: state.siteList.isEmpty ? null : state.site?.name,
-            onChanged: (site) {
-              context
-                  .read<AddEditAuditBloc>()
-                  .add(AddEditAuditSiteChanged(site: site.value));
-            },
-          ),
-          message: state.siteValidationMessage,
+        return CustomSingleSelect(
+          items: items,
+          hint: 'Select Site',
+          selectedValue: state.siteList.isEmpty ? null : state.site?.name,
+          onChanged: (site) {
+            context
+                .read<AddEditAuditBloc>()
+                .add(AddEditAuditSiteChanged(site: site.value));
+          },
         );
       },
     );

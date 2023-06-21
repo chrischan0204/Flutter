@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '/common_libraries.dart';
 
 class AuditCreate extends Equatable {
@@ -51,4 +52,28 @@ class AuditCreate extends Equatable {
   }
 
   String toJson() => json.encode(toMap());
+
+  AuditCreate copyWith({
+    String? name,
+    String? userId,
+    String? auditDate,
+    String? templateId,
+    String? siteId,
+    String? projectId,
+    String? area,
+    String? companies,
+    String? inspectors,
+  }) {
+    return AuditCreate(
+      name: name ?? this.name,
+      userId: userId ?? this.userId,
+      auditDate: auditDate ?? this.auditDate,
+      templateId: templateId ?? this.templateId,
+      siteId: siteId ?? this.siteId,
+      projectId: projectId ?? this.projectId,
+      area: area ?? this.area,
+      companies: companies ?? this.companies,
+      inspectors: inspectors ?? this.inspectors,
+    );
+  }
 }
