@@ -162,7 +162,11 @@ class AddEditObservationBloc
     AddEditObservationLocationChanged event,
     Emitter<AddEditObservationState> emit,
   ) {
-    emit(state.copyWith(location: event.location));
+    emit(state.copyWith(
+      location: event.location,
+      locationValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditObservationResponseChanged(
@@ -170,13 +174,18 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) {
     emit(state.copyWith(response: event.response));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditObservationSiteChanged(
     AddEditObservationSiteChanged event,
     Emitter<AddEditObservationState> emit,
   ) {
-    emit(state.copyWith(site: event.site));
+    emit(state.copyWith(
+      site: event.site,
+      siteValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditObservationImageListChanged(
@@ -184,5 +193,6 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) {
     emit(state.copyWith(images: event.imageList));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 }

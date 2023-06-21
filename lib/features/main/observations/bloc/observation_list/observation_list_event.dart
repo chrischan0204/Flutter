@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'observation_list_bloc.dart';
 
 abstract class ObservationListEvent extends Equatable {
@@ -17,4 +18,14 @@ class ObservationListFiltered extends ObservationListEvent {
 
   @override
   List<Object?> get props => [option];
+}
+
+class ObservationListObservationSelected extends ObservationListEvent {
+  final Observation observation;
+  const ObservationListObservationSelected({
+    required this.observation,
+  });
+
+  @override
+  List<Object?> get props => [observation];
 }

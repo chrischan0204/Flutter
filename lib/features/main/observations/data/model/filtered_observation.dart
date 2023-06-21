@@ -28,14 +28,14 @@ class FilteredObservation extends FilteredEntity {
         images,
       ];
 
-  Observation toObservation() {
-    return Observation(
-      observation: observation,
-      siteId: siteId,
-      location: location,
-      response: response,
-    );
-  }
+  // Observation toObservation() {
+  //   return Observation(
+  //     observation: observation,
+  //     siteId: siteId,
+  //     location: location,
+  //     response: response,
+  //   );
+  // }
 
   FilteredObservation copyWith({
     String? id,

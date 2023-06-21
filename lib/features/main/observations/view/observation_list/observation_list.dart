@@ -65,7 +65,7 @@ class _ObservationListState extends State<ObservationListWidget> {
                     observationListState.observationListLoadStatus.isLoading,
             // entityDetailLoadStatusLoading:
             //     observationDetailState.observationLoadStatus.isLoading,
-            // selectedEntity: observationDetailState.observation,
+            selectedEntity: observationListState.observation,
             onViewSettingApplied: () {
               _filterObservations();
             },
@@ -88,7 +88,10 @@ class _ObservationListState extends State<ObservationListWidget> {
     );
   }
 
-  void _selectObservation(Entity selectedObservation) {}
+  void _selectObservation(Entity selectedObservation) {
+    observationListBloc.add(ObservationListObservationSelected(
+        observation: selectedObservation as Observation));
+  }
 
   void _filterObservations([
     String? filterId,

@@ -10,6 +10,8 @@ class ObservationListBloc
       : super(const ObservationListState()) {
     on<ObservationListLoaded>(_onObservationListLoaded);
     on<ObservationListFiltered>(_onObservationListFiltered);
+    on<ObservationListObservationSelected>(
+        _onObservationListObservationSelected);
   }
 
   Future<void> _onObservationListLoaded(
@@ -19,7 +21,7 @@ class ObservationListBloc
     emit(state.copyWith(observationListLoadStatus: EntityStatus.loading));
     try {
       List<Observation> observationList =
-          await observationsRepository.getObservations();
+          await observationsRepository.getObservationList();
       emit(state.copyWith(
         observationListLoadStatus: EntityStatus.success,
         observationList: observationList,
@@ -36,20 +38,33 @@ class ObservationListBloc
     emit(state.copyWith(observationListLoadStatus: EntityStatus.loading));
 
     try {
-      final filteredobservationData =
-          await observationsRepository.getFilteredObservationList(event.option);
-      final List<String> columns = List.from(filteredobservationData.headers
-          .where((e) => !e.isHidden)
-          .map((e) => e.title));
-
+      final observationList = await observationsRepository.getObservationList();
       emit(state.copyWith(
-          observationList: filteredobservationData.data
-              .map((e) => e.toObservation().copyWith(columns: columns))
-              .toList(),
-          observationListLoadStatus: EntityStatus.success,
-          totalRows: filteredobservationData.totalRows));
+        observationListLoadStatus: EntityStatus.success,
+        observationList: observationList,
+      ));
+      // final filteredobservationData =
+      //     await observationsRepository.getFilteredObservationList(event.option);
+      // final List<String> columns = List.from(filteredobservationData.headers
+      //     .where((e) => !e.isHidden)
+      //     .map((e) => e.title));
+
+      // emit(state.copyWith(
+      //   observationList: filteredobservationData.data
+      //       .map((e) => e.toObservation().copyWith(columns: columns))
+      //       .toList(),
+      //   observationListLoadStatus: EntityStatus.success,
+      //   totalRows: filteredobservationData.totalRows,
+      // ));
     } catch (e) {
       emit(state.copyWith(observationListLoadStatus: EntityStatus.failure));
     }
+  }
+
+  void _onObservationListObservationSelected(
+    ObservationListObservationSelected event,
+    Emitter<ObservationListState> emit,
+  ) {
+    emit(state.copyWith(observation: event.observation));
   }
 }

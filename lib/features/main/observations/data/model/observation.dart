@@ -1,59 +1,71 @@
 import '/common_libraries.dart';
 
 class Observation extends Entity {
-  final String observation;
-  final String siteId;
+  final String statusName;
   final String location;
-  final String response;
-  final List<dynamic> images;
-
+  final String source;
+  final String reportedBy;
+  final String reportedAt;
+  final String via;
+  final String assessed;
+  final String assessedBy;
+  final String assessedAs;
+  final String actionItems;
   const Observation({
     super.id,
     super.name,
-    required this.observation,
-    required this.siteId,
+    required this.statusName,
     required this.location,
-    required this.response,
-    this.images = const [],
-    super.active,
-    super.createdByUserName,
-    super.createdOn,
-    super.columns,
-    super.deleted,
+    required this.source,
+    required this.reportedBy,
+    required this.reportedAt,
+    required this.via,
+    required this.assessed,
+    required this.assessedBy,
+    required this.assessedAs,
+    required this.actionItems,
   });
 
   @override
   List<Object?> get props => [
         ...super.props,
-        siteId,
-        observation,
+        statusName,
         location,
-        response,
-        images,
+        source,
+        reportedBy,
+        reportedAt,
+        via,
+        assessed,
+        assessedBy,
+        assessedAs,
+        actionItems,
       ];
 
   @override
   Map<String, dynamic> tableItemsToMap() {
     return {
       'Observation': name,
+      'Status': statusName,
+      'Source': source,
+      'Reported By': reportedBy,
+      'Reported At': reportedAt,
+      'Assessed?': assessed,
+      'Assessed By': assessedBy,
     };
   }
 
   @override
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
-      'Observation': name,
-    };
-  }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'observation': observation,
-      'siteId': siteId,
-      'location': location,
-      'response': response,
-      'images': images,
+      'Observation': {'content': name},
+      'Location': {'content': location},
+      'Reported By': reportedBy,
+      'Reported At': reportedAt,
+      'Via': via,
+      'Assessor': assessedBy,
+      'Assessed?': assessed,
+      'Assessed As': assessedAs,
+      'Action Items': {'content': actionItems}
     };
   }
 
@@ -65,45 +77,45 @@ class Observation extends Entity {
   }
 
   Observation copyWith({
-    String? id,
-    String? name,
-    String? siteId,
-    String? observation,
-    String? response,
+    String? statusName,
     String? location,
-    List<dynamic>? images,
-    bool? active,
-    String? createdOn,
-    String? createdByUserName,
-    bool? deleted,
-    List<String>? columns,
+    String? source,
+    String? reportedBy,
+    String? reportedAt,
+    String? via,
+    String? assessed,
+    String? assessedBy,
+    String? assessedAs,
+    String? actionItems,
   }) {
     return Observation(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      siteId: siteId ?? this.siteId,
-      observation: observation ?? this.observation,
-      response: response ?? this.response,
+      statusName: statusName ?? this.statusName,
       location: location ?? this.location,
-      active: active ?? this.active,
-      createdOn: createdOn ?? this.createdOn,
-      createdByUserName: createdByUserName ?? this.createdByUserName,
-      deleted: deleted ?? this.deleted,
-      columns: columns ?? this.columns,
+      source: source ?? this.source,
+      reportedBy: reportedBy ?? this.reportedBy,
+      reportedAt: reportedAt ?? this.reportedAt,
+      via: via ?? this.via,
+      assessed: assessed ?? this.assessed,
+      assessedBy: assessedBy ?? this.assessedBy,
+      assessedAs: assessedAs ?? this.assessedAs,
+      actionItems: actionItems ?? this.actionItems,
     );
   }
 
   factory Observation.fromMap(Map<String, dynamic> map) {
     return Observation(
-      observation: map['observation'] as String,
-      siteId: map['siteId'] as String,
+      statusName: map['statusName'] as String,
       location: map['location'] as String,
-      response: map['response'] as String,
-      images: List<dynamic>.from((map['images'] as List<dynamic>)),
+      source: map['source'] as String,
+      reportedBy: map['reportedBy'] as String,
+      reportedAt: map['reportedAt'] as String,
+      via: map['via'] as String,
+      assessed: map['assessed'] as String,
+      assessedBy: map['assessedBy'] as String,
+      assessedAs: map['assessedAs'] as String,
+      actionItems: map['actionItems'] as String,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory Observation.fromJson(String source) =>
       Observation.fromMap(json.decode(source) as Map<String, dynamic>);

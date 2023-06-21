@@ -93,11 +93,12 @@ class AddEditObservationState extends Equatable {
         message,
       ];
 
-  Observation get observation => Observation(
-        observation: 'observation',
-        siteId: 'siteId',
-        location: 'location',
-        response: 'response',
+  ObservationCreate get observation => ObservationCreate(
+        name: observationName,
+        siteId: site!.id!,
+        location: location,
+        response: response,
+        images: images,
       );
 
   bool get formDirty =>
