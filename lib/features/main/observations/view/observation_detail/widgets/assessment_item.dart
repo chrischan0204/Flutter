@@ -1,11 +1,11 @@
 import '/common_libraries.dart';
 
-class AuditDetailItemView extends StatelessWidget {
+class AssessmentDetailItemView extends StatelessWidget {
   final String label;
   final String content;
   final bool twoLines;
   final Color color;
-  const AuditDetailItemView({
+  const AssessmentDetailItemView({
     super.key,
     required this.label,
     required this.content,
@@ -23,9 +23,7 @@ class AuditDetailItemView extends StatelessWidget {
             padding: inset10,
             child: Text(
               label,
-              style: textSemiBold14.copyWith(
-                color: primaryColor,
-              ),
+              style: textSemiBold14,
               maxLines: 3,
               softWrap: false,
               overflow: TextOverflow.ellipsis,
@@ -49,12 +47,7 @@ class AuditDetailItemView extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                label,
-                style: textSemiBold14.copyWith(
-                  color: primaryColor,
-                ),
-              ),
+              child: Text(label, style: textSemiBold14),
             ),
             spacerx20,
             Expanded(

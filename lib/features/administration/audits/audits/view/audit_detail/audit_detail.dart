@@ -1,6 +1,5 @@
-import 'package:safety_eta/features/administration/audits/audits/view/audit_detail/widgets/widgets.dart';
-
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class AuditDetailView extends StatelessWidget {
   final String auditId;
@@ -184,7 +183,8 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                               ),
                               AuditDetailItemView(
                                 label: 'Inspectors',
-                                content: 'Frank Hurt, Brian Trippi and George Kiltman',
+                                content:
+                                    'Frank Hurt, Brian Trippi and George Kiltman',
                                 twoLines: true,
                               ),
                             ],

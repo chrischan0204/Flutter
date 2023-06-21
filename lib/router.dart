@@ -57,6 +57,30 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/observations/edit/:observationId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditObservationView(
+            observationId: state.params['observationId'],
+          ),
+          selectedItemName: 'observations',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/observations/show/:observationId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ObservationDetailView(
+            observationId: state.params['observationId']!,
+          ),
+          selectedItemName: 'observations',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/audits1',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
