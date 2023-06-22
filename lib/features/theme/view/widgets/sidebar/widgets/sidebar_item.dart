@@ -50,11 +50,6 @@ class _SidebarItemState extends State<SidebarItem>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     customPopupMenuController.dispose();
     tooltipController.dispose();

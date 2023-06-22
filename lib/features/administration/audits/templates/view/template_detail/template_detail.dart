@@ -64,8 +64,8 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
 
   @override
   void didChangeDependencies() {
-    context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-          collapsedItem: UrlUtil.getPath(context),
+    context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
+          collapsedItem: 'templates/show',
           force: true,
         ));
     super.didChangeDependencies();

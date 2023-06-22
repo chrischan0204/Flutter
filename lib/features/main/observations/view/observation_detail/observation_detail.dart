@@ -47,8 +47,8 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
 
   @override
   void didChangeDependencies() {
-    context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-          collapsedItem: UrlUtil.getPath(context),
+    context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
+          collapsedItem: 'observations/show',
           force: true,
         ));
     super.didChangeDependencies();

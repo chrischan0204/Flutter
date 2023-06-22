@@ -39,8 +39,10 @@ class CustomDateTimePicker extends StatelessWidget {
         ),
         decoration: InputDecoration(
           hintText: dateTimePickerType == DateTimePickerType.dateTime
-              ? 'Selected Time'
-              : 'Select Date',
+              ? 'Select date and time'
+              : dateTimePickerType == DateTimePickerType.date
+                  ? 'Select Date'
+                  : 'Select Time',
           contentPadding: const EdgeInsets.symmetric(
             vertical: 6,
             horizontal: 10,

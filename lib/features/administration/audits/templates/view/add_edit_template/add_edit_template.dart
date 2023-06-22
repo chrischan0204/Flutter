@@ -84,8 +84,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   @override
   void didChangeDependencies() {
     if (widget.templateId != null) {
-      context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-            collapsedItem: UrlUtil.getPath(context),
+      context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
+            collapsedItem: 'templates/edit',
             force: true,
           ));
     }

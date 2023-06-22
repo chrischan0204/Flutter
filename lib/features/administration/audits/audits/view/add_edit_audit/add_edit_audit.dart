@@ -62,8 +62,8 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
   @override
   void didChangeDependencies() {
     if (widget.auditId != null) {
-      context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-            collapsedItem: UrlUtil.getPath(context),
+      context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
+            collapsedItem: 'audits/edit',
             force: true,
           ));
     }
