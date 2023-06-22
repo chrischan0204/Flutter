@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-
 import '/data/repository/base_repository.dart';
 import '/data/model/model.dart';
 
@@ -10,7 +8,7 @@ class ObservationTypesRepository extends BaseRepository {
     required super.token,
     required super.authBloc,
   }) : super(url: '/api/ObservationType');
-  Future<List<ObservationType>> getObservationTypes() async {
+  Future<List<ObservationType>> getObservationTypeList() async {
     Response response = await super.get(
       url,
     );

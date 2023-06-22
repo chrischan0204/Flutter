@@ -375,7 +375,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     Emitter<AddEditUserState> emit,
   ) async {
     try {
-      List<Site> siteList = await sitesRepository.getSites();
+      List<Site> siteList = await sitesRepository.getSiteList();
       emit(state.copyWith(siteList: siteList));
     } catch (e) {}
   }

@@ -57,7 +57,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
   ) async {
     emit(state.copyWith(companiesRetrievedStatus: EntityStatus.loading));
     try {
-      List<Company> companies = await companiesRepository.getCompanies();
+      List<Company> companies = await companiesRepository.getCompanyList();
       emit(state.copyWith(
         companies: companies,
         companiesRetrievedStatus: EntityStatus.success,

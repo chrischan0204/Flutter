@@ -314,7 +314,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
     if (Validation.isNotEmpty(state.referenceCode) &&
         !Validation.isAlphanumbericWithSpecialChars(state.referenceCode)) {
       emit(state.copyWith(
-          siteCodeValidationMessage:
+          referenceCodeValidationMessage:
               FormValidationMessage(fieldName: 'Reference code')
                   .alphanumbericWithAllowSpecialCharMessage));
       success = false;

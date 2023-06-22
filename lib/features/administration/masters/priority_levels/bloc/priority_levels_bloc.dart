@@ -39,7 +39,7 @@ class PriorityLevelsBloc
     emit(state.copyWith(priorityLevelsRetrievedStatus: EntityStatus.loading));
     try {
       List<PriorityLevel> priorityLevels =
-          await priorityLevelsRepository.getPriorityLevels();
+          await priorityLevelsRepository.getPriorityLevelList();
       emit(state.copyWith(
         priorityLevels: priorityLevels,
         priorityLevelsRetrievedStatus: EntityStatus.success,

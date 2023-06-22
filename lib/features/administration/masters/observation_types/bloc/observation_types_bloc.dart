@@ -45,7 +45,7 @@ class ObservationTypesBloc
     ));
     try {
       List<ObservationType> observationTypes =
-          await observationTypesRepository.getObservationTypes();
+          await observationTypesRepository.getObservationTypeList();
       emit(state.copyWith(
         observationTypes: observationTypes,
         observationTypesRetrievedStatus: EntityStatus.success,

@@ -77,7 +77,7 @@ class AwarenessCategoriesBloc
     );
     try {
       List<AwarenessCategory> awarenessCategories =
-          await awarenessCategoriesRepository.getAwarenessCategories();
+          await awarenessCategoriesRepository.getAwarenessCategorieList();
       emit(
         state.copyWith(
           awarenessCategoriesRetrievedStatus: EntityStatus.success,

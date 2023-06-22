@@ -53,7 +53,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ) async {
     emit(state.copyWith(projectsRetrievedStatus: EntityStatus.loading));
     try {
-      List<Project> projects = await projectsRepository.getProjects();
+      List<Project> projects = await projectsRepository.getProjectList();
       emit(state.copyWith(
         projects: projects,
         projectsRetrievedStatus: EntityStatus.success,
@@ -209,7 +209,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         assignedCompanyProjectsRetrievedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> assignedCompanyProjects = await projectsRepository
-          .getCompaniesForProject(event.projectId, true, event.name);
+          .getCompanyListForProject(event.projectId, true, event.name);
       emit(state.copyWith(
         assignedCompanyProjects: assignedCompanyProjects,
         assignedCompanyProjectsRetrievedStatus: EntityStatus.success,
@@ -228,7 +228,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         unassignedCompanyProjectsRetrievedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> unassignedCompanyProjects = await projectsRepository
-          .getCompaniesForProject(event.projectId, false, event.name);
+          .getCompanyListForProject(event.projectId, false, event.name);
       emit(state.copyWith(
         unassignedCompanyProjects: unassignedCompanyProjects,
         unassignedCompanyProjectsRetrievedStatus: EntityStatus.success,

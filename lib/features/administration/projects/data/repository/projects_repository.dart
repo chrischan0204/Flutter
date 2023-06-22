@@ -9,7 +9,7 @@ class ProjectsRepository extends BaseRepository {
   }) : super(url: '/api/Projects');
 
   // get projects list
-  Future<List<Project>> getProjects() async {
+  Future<List<Project>> getProjectList() async {
     Response response = await super.get(url);
 
     if (response.statusCode == 200) {
@@ -80,7 +80,7 @@ class ProjectsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<ProjectCompany>> getCompaniesForProject(String projectId,
+  Future<List<ProjectCompany>> getCompanyListForProject(String projectId,
       [bool? assigned, String? name]) async {
     Map<String, dynamic> map = {};
     if (assigned != null) {

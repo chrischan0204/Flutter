@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class CompaniesRepository extends BaseRepository {
@@ -9,7 +7,7 @@ class CompaniesRepository extends BaseRepository {
   }) : super(url: '/api/Companies');
 
   // get companies list
-  Future<List<Company>> getCompanies() async {
+  Future<List<Company>> getCompanyList() async {
     Response response = await super.get(url);
 
     if (response.statusCode == 200) {

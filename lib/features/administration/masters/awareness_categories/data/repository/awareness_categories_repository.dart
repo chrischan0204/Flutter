@@ -11,7 +11,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
   }) : super(url: '/api/AwarenessCategory');
 
   // get awareness categories list from api
-  Future<List<AwarenessCategory>> getAwarenessCategories() async {
+  Future<List<AwarenessCategory>> getAwarenessCategorieList() async {
     Response response = await super.get(url);
 
     if (response.statusCode == 200) {

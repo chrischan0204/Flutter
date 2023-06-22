@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'observation_detail_bloc.dart';
 
 class ObservationDetailState extends Equatable {
@@ -6,32 +7,47 @@ class ObservationDetailState extends Equatable {
   final EntityStatus observationLoadStatus;
   final EntityStatus observationDeleteStatus;
 
-  // /// awareness category list
-  // final List<AwarenessCategory> awarenessCategoryList;
+  /// awareness category list
+  final List<AwarenessCategory> awarenessCategoryList;
 
-  // /// priority level list
-  // final List<PriorityLevel> priorityLevelList;
+  /// observation type list
+  final List<ObservationType> observationTypeList;
 
-  // /// company list
-  // final List<Company> companyList;
+  /// priority level list
+  final List<PriorityLevel> priorityLevelList;
 
-  // /// project list
-  // final List<Project> projectList;
+  /// company list
+  final List<Company> companyList;
 
-  // /// site list
-  // final List<Site> siteList;
+  /// project list
+  final List<Project> projectList;
+
+  /// site list
+  final List<Site> siteList;
 
   final String message;
   const ObservationDetailState({
     this.observation,
     this.observationLoadStatus = EntityStatus.initial,
     this.observationDeleteStatus = EntityStatus.initial,
+    this.awarenessCategoryList = const [],
+    this.observationTypeList = const [],
+    this.priorityLevelList = const [],
+    this.companyList = const [],
+    this.projectList = const [],
+    this.siteList = const [],
     this.message = '',
   });
 
   @override
   List<Object?> get props => [
         observation,
+        awarenessCategoryList,
+        priorityLevelList,
+        observationTypeList,
+        companyList,
+        projectList,
+        siteList,
         observationLoadStatus,
         observationDeleteStatus,
         message,
@@ -41,6 +57,12 @@ class ObservationDetailState extends Equatable {
     Observation? observation,
     EntityStatus? observationLoadStatus,
     EntityStatus? observationDeleteStatus,
+    List<AwarenessCategory>? awarenessCategoryList,
+    List<ObservationType>? observationTypeList,
+    List<PriorityLevel>? priorityLevelList,
+    List<Company>? companyList,
+    List<Project>? projectList,
+    List<Site>? siteList,
     String? message,
   }) {
     return ObservationDetailState(
@@ -49,6 +71,13 @@ class ObservationDetailState extends Equatable {
           observationLoadStatus ?? this.observationLoadStatus,
       observationDeleteStatus:
           observationDeleteStatus ?? this.observationDeleteStatus,
+      awarenessCategoryList:
+          awarenessCategoryList ?? this.awarenessCategoryList,
+      observationTypeList: observationTypeList ?? this.observationTypeList,
+      priorityLevelList: priorityLevelList ?? this.priorityLevelList,
+      companyList: companyList ?? this.companyList,
+      projectList: projectList ?? this.projectList,
+      siteList: siteList ?? this.siteList,
       message: message ?? this.message,
     );
   }

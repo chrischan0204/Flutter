@@ -10,7 +10,7 @@ class PriorityLevelsRepository extends BaseRepository {
     required super.token,
     required super.authBloc,
   }) : super(url: '/api/PriorityLevels');
-  Future<List<PriorityLevel>> getPriorityLevels() async {
+  Future<List<PriorityLevel>> getPriorityLevelList() async {
     Response response = await super.get(url);
     if (response.statusCode == 200) {
       List<PriorityLevel> priorityLevels = List.from(jsonDecode(response.body))

@@ -154,7 +154,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      List<Site> siteList = await sitesRepository.getSites();
+      List<Site> siteList = await sitesRepository.getSiteList();
       emit(state.copyWith(siteList: siteList));
     } catch (e) {}
   }
@@ -174,7 +174,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      List<Project> projectList = await projectsRepository.getProjects();
+      List<Project> projectList = await projectsRepository.getProjectList();
       emit(state.copyWith(projectList: projectList));
     } catch (e) {}
   }

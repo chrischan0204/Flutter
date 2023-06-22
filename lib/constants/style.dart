@@ -109,6 +109,9 @@ EdgeInsets insetx20 = const EdgeInsets.symmetric(horizontal: 20);
 EdgeInsets insetx30 = const EdgeInsets.symmetric(horizontal: 30);
 EdgeInsets insetx40 = const EdgeInsets.symmetric(horizontal: 40);
 
+EdgeInsets insety0 = const EdgeInsets.symmetric(vertical: 0);
+EdgeInsets insety1 = const EdgeInsets.symmetric(vertical: 1);
+EdgeInsets insety2 = const EdgeInsets.symmetric(vertical: 2);
 EdgeInsets insety4 = const EdgeInsets.symmetric(vertical: 4);
 EdgeInsets insety8 = const EdgeInsets.symmetric(vertical: 8);
 EdgeInsets insety10 = const EdgeInsets.symmetric(vertical: 10);

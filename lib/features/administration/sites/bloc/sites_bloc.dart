@@ -40,7 +40,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
   ) async {
     emit(state.copyWith(sitesRetrievedStatus: EntityStatus.loading));
     try {
-      List<Site> sites = await sitesRepository.getSites();
+      List<Site> sites = await sitesRepository.getSiteList();
       emit(state.copyWith(
         sites: sites,
         sitesRetrievedStatus: EntityStatus.success,

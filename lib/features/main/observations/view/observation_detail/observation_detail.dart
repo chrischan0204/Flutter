@@ -34,7 +34,13 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
 
   @override
   void initState() {
-    context.read<ObservationDetailBloc>();
+    context.read<ObservationDetailBloc>()
+      ..add(ObservationDetailObservationCategoryListLoaded())
+      ..add(ObservationDetailObservationTypeListLoaded())
+      ..add(ObservationDetailPriorityLevelListLoaded())
+      ..add(ObservationDetailCompanyListLoaded())
+      ..add(ObservationDetailProjectListLoaded())
+      ..add(ObservationDetailSiteListLoaded());
     super.initState();
   }
 
@@ -100,9 +106,12 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 3,
-                              child: EditAssessmentView(),
+                              child: BlocProvider(
+                                create: (context) => EditAssessmentBloc(),
+                                child: const EditAssessmentView(),
+                              ),
                             ),
                             spacerx5,
                             const Expanded(

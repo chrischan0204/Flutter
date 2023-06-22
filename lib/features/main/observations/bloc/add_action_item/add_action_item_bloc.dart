@@ -1,13 +1,10 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import '/common_libraries.dart';
 
 part 'add_action_item_event.dart';
 part 'add_action_item_state.dart';
 
 class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
-  AddActionItemBloc() : super(AddActionItemInitial()) {
-    on<AddActionItemEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+  AddActionItemBloc() : super(const AddActionItemState()) {
+    on<AddActionItemEvent>((event, emit) {});
   }
 }

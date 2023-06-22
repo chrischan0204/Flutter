@@ -8,7 +8,7 @@ class SitesRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/Sites');
 
-  Future<List<Site>> getSites() async {
+  Future<List<Site>> getSiteList() async {
     Response response = await super.get(url);
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
