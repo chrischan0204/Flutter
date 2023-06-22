@@ -1,14 +1,26 @@
+import 'package:intl/intl.dart';
+
 import '/common_libraries.dart';
 
 class Audit extends Entity {
   final String? auditNumber;
-  final String auditDate;
+
+  final DateTime auditDate;
   final String? auditStatusName;
+
   final double completed;
+
+  final String siteId;
   final String? siteName;
+
+  final String? projectId;
   final String? projectName;
+
+  final String templateId;
   final String? templateName;
+
   final String? owner;
+
   final double score;
 
   const Audit({
@@ -18,8 +30,11 @@ class Audit extends Entity {
     required this.auditDate,
     this.auditStatusName,
     required this.completed,
+    required this.siteId,
     this.siteName,
+    required this.projectId,
     this.projectName,
+    required this.templateId,
     this.templateName,
     this.owner,
     required this.score,
@@ -39,8 +54,11 @@ class Audit extends Entity {
         auditDate,
         auditStatusName,
         completed,
+        siteId,
         siteName,
+        projectId,
         projectName,
+        templateId,
         templateName,
         owner,
         score,
@@ -52,9 +70,7 @@ class Audit extends Entity {
         deleted,
       ];
 
-  String get formatedAuditDate => auditDate.isNotEmpty
-      ? FormatDate(format: 'd MMMM y', dateString: auditDate).formatDate
-      : '--';
+  String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
 
   @override
   Map<String, dynamic> tableItemsToMap() {
@@ -77,7 +93,7 @@ class Audit extends Entity {
       'Started on': '12th March 2023',
       'Completion': completed,
       'Score': score,
-      'Sections': 4,
+      'Sections': 4,  
       'Questions': 42,
       'Site': siteName,
       'Project': projectName ?? '--',
@@ -90,20 +106,21 @@ class Audit extends Entity {
 
   @override
   Map<String, dynamic> detailItemsToMap() {
-    return {
-      'Template Description': name,
-    };
+    return {};
   }
 
   Audit copyWith({
     String? id,
     String? name,
     String? auditNumber,
-    String? auditDate,
+    DateTime? auditDate,
     String? auditStatusName,
     double? completed,
+    String? siteId,
     String? siteName,
+    String? projectId,
     String? projectName,
+    String? templateId,
     String? templateName,
     String? owner,
     double? score,
@@ -119,8 +136,11 @@ class Audit extends Entity {
       auditDate: auditDate ?? this.auditDate,
       auditStatusName: auditStatusName ?? this.auditStatusName,
       completed: completed ?? this.completed,
+      siteId: siteId ?? this.siteId,
       siteName: siteName ?? this.siteName,
+      projectId: projectId ?? this.projectId,
       projectName: projectName ?? this.projectName,
+      templateId: templateId ?? this.templateId,
       templateName: templateName ?? this.templateName,
       owner: owner ?? this.owner,
       score: score ?? this.score,
@@ -137,11 +157,14 @@ class Audit extends Entity {
       id: entity.id,
       name: entity.name,
       auditNumber: map['auditNumber'],
-      auditDate: map['auditDate'],
+      auditDate: DateTime.parse(map['auditDate']),
       auditStatusName: map['auditStatusName'],
       completed: map['completed'] as double,
+      siteId: map['siteId'],
       siteName: map['siteName'],
+      projectId: map['projectId'],
       projectName: map['projectName'],
+      templateId: map['templateId'],
       templateName: map['templateName'],
       owner: map['owner'] ?? '',
       score: map['score'],

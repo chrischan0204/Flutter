@@ -23,18 +23,13 @@ class AuditsRepository extends BaseRepository {
   Future<Audit> getAuditById(
     String auditId,
   ) async {
-    return const Audit(
-      auditDate: '',
-      completed: 0,
-      score: 1,
-    );
-    // Response response = await super.get('$url/$auditId');
+    Response response = await super.get('$url/$auditId');
 
-    // if (response.statusCode == 200) {
-    //   return Audit.fromJson(response.body);
-    // }
+    if (response.statusCode == 200) {
+      return Audit.fromJson(response.body);
+    }
 
-    // throw Exception();
+    throw Exception();
   }
 
   // add audit

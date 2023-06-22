@@ -10,7 +10,10 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   late TemplatesRepository templatesRepository;
   late ProjectsRepository projectsRepository;
   final BuildContext context;
-  AddEditAuditBloc(this.context) : super(const AddEditAuditState()) {
+
+  final String? auditId;
+  AddEditAuditBloc(this.context, {this.auditId})
+      : super(const AddEditAuditState()) {
     formDirtyBloc = context.read();
     auditsRepository = RepositoryProvider.of(context);
     sitesRepository = RepositoryProvider.of(context);
@@ -18,6 +21,14 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     projectsRepository = RepositoryProvider.of(context);
 
     _bindEvents();
+  }
+
+  @override
+  void onChange(Change<AddEditAuditState> change) {
+    final current = change.currentState;
+    final next = change.nextState;
+
+    super.onChange(change);
   }
 
   void _bindEvents() {
@@ -105,14 +116,28 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     try {
       Audit audit = await auditsRepository.getAuditById(event.id);
 
+      final site = Site(id: audit.siteId, name: audit.siteName);
+
+      final project = Project(id: audit.projectId, name: audit.projectName);
+
+      final template = Template(id: audit.templateId, name: audit.templateName);
+
       emit(state.copyWith(
         loadedAudit: audit,
         initialAuditName: audit.name,
         auditName: audit.name,
-        auditDate: DateTime.parse(audit.auditDate),
-        initialAuditDate: DateTime.parse(audit.auditDate),
+        auditDate: audit.auditDate,
+        initialAuditDate: audit.auditDate,
+        site: site,
+        initialSite: site,
+        project: project,
+        initialProject: project,
+        template: template,
+        initialTemplate: template,
       ));
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   bool _checkValidation(Emitter<AddEditAuditState> emit) {

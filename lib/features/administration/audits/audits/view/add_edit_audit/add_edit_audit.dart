@@ -13,7 +13,7 @@ class AddEditAuditView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddEditAuditBloc(context),
+      create: (context) => AddEditAuditBloc(context, auditId: auditId),
       child: AddEditAuditWidget(auditId: auditId),
     );
   }
