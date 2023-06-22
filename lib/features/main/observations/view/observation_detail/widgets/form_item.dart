@@ -1,9 +1,9 @@
 import '/common_libraries.dart';
 
-class AssessmentFormItemView extends StatelessWidget {
+class ObservationDetailFormItemView extends StatelessWidget {
   final String label;
   final Widget content;
-  const AssessmentFormItemView({
+  const ObservationDetailFormItemView({
     super.key,
     required this.label,
     required this.content,

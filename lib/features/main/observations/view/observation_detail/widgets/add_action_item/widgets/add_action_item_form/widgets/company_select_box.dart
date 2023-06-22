@@ -1,5 +1,5 @@
-import '/common_libraries.dart';
 import '../../../../form_item.dart';
+import '/common_libraries.dart';
 
 class CompanySelectField extends StatelessWidget {
   const CompanySelectField({super.key});
@@ -13,17 +13,18 @@ class CompanySelectField extends StatelessWidget {
           Map<String, Company> items = {}..addEntries(observationDetailState
               .companyList
               .map((company) => MapEntry(company.name ?? '', company)));
-          return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
-            builder: (context, editAssessmentState) {
+          return BlocBuilder<AddActionItemBloc, AddActionItemState>(
+            builder: (context, addActionItemState) {
               return CustomSingleSelect(
                 items: items,
                 hint: 'Select Company',
                 selectedValue: observationDetailState.companyList.isEmpty
                     ? null
-                    : editAssessmentState.company?.name,
+                    : addActionItemState.company?.name,
                 onChanged: (company) {
-                  context.read<EditAssessmentBloc>().add(
-                      EditAssessmentCompanyChanged(company: company.value));
+                  context
+                      .read<AddActionItemBloc>()
+                      .add(AddActionItemCompanyChanged(company: company.value));
                 },
               );
             },

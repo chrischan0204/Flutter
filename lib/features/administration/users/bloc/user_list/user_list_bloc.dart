@@ -17,7 +17,7 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
   ) async {
     emit(state.copyWith(userListLoadStatus: EntityStatus.loading));
     try {
-      List<User> userList = await usersRepository.getUsers();
+      List<User> userList = await usersRepository.getUserList();
       emit(state.copyWith(
         userListLoadStatus: EntityStatus.success,
         userList: userList,

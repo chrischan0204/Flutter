@@ -1,6 +1,5 @@
 import '/common_libraries.dart';
-import 'detail_item1.dart';
-import 'detail_item2.dart';
+import 'widgets/widgets.dart';
 
 class DetailView extends StatelessWidget {
   const DetailView({super.key});

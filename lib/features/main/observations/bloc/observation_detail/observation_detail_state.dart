@@ -25,6 +25,9 @@ class ObservationDetailState extends Equatable {
   /// site list
   final List<Site> siteList;
 
+  /// use list
+  final List<User> userList;
+
   final String message;
   const ObservationDetailState({
     this.observation,
@@ -36,6 +39,7 @@ class ObservationDetailState extends Equatable {
     this.companyList = const [],
     this.projectList = const [],
     this.siteList = const [],
+    this.userList = const [],
     this.message = '',
   });
 
@@ -48,6 +52,7 @@ class ObservationDetailState extends Equatable {
         companyList,
         projectList,
         siteList,
+        userList,
         observationLoadStatus,
         observationDeleteStatus,
         message,
@@ -63,6 +68,7 @@ class ObservationDetailState extends Equatable {
     List<Company>? companyList,
     List<Project>? projectList,
     List<Site>? siteList,
+    List<User>? userList,
     String? message,
   }) {
     return ObservationDetailState(
@@ -78,6 +84,7 @@ class ObservationDetailState extends Equatable {
       companyList: companyList ?? this.companyList,
       projectList: projectList ?? this.projectList,
       siteList: siteList ?? this.siteList,
+      userList: userList ?? this.userList,
       message: message ?? this.message,
     );
   }

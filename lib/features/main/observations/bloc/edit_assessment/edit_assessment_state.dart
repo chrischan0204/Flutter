@@ -2,22 +2,40 @@
 part of 'edit_assessment_bloc.dart';
 
 class EditAssessmentState extends Equatable {
+  /// category to edit assessment
   final AwarenessCategory? category;
+
+  /// observation type to edit assessment
   final ObservationType? observationType;
+
+  /// priority level to edit assessment
   final PriorityLevel? priorityLevel;
 
-  /// written against
+  /// company to edit assessment
   final Company? company;
+
+  /// project to edit assessment
   final Project? project;
 
-  /// other data points
+  /// category to edit assessment
   final Site? site;
+
+  /// observer to edit assessment
   final String observer;
+
+  /// report via to edit assessment
   final String reportedVia;
+
+  /// follow up closeout to edit assessment
   final String followUpCloseout;
+
+  /// mark as closed to edit assessment
   final bool markAsClosed;
+
+  /// notify sender to edit assessment
   final bool notifySender;
 
+  /// check if it is editing
   final bool isEditing;
 
   const EditAssessmentState({

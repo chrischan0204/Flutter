@@ -13,6 +13,7 @@ class ObservationDetailBloc
   late AwarenessCategoriesRepository awarenessCategoriesRepository;
   late CompaniesRepository companiesRepository;
   late ObservationTypesRepository observationTypesRepository;
+  late UsersRepository usersRepository;
   ObservationDetailBloc(this.context) : super(const ObservationDetailState()) {
     observationsRepository = RepositoryProvider.of(context);
     sitesRepository = RepositoryProvider.of(context);
@@ -21,6 +22,7 @@ class ObservationDetailBloc
     priorityLevelsRepository = RepositoryProvider.of(context);
     awarenessCategoriesRepository = RepositoryProvider.of(context);
     companiesRepository = RepositoryProvider.of(context);
+    usersRepository = RepositoryProvider.of(context);
 
     _bindEvents();
   }
@@ -40,6 +42,7 @@ class ObservationDetailBloc
         _onObservationDetailObservationCategoryListLoaded);
     on<ObservationDetailPriorityLevelListLoaded>(
         _onObservationDetailPriorityLevelListLoaded);
+    on<ObservationDetailUserListLoaded>(_onObservationDetailUserListLoaded);
   }
 
   Future<void> _onObservationDetailLoaded(
@@ -119,6 +122,16 @@ class ObservationDetailBloc
         await observationTypesRepository.getObservationTypeList();
 
     emit(state.copyWith(observationTypeList: observationTypeList));
+    try {} catch (e) {}
+  }
+
+  Future<void> _onObservationDetailUserListLoaded(
+    ObservationDetailUserListLoaded event,
+    Emitter<ObservationDetailState> emit,
+  ) async {
+    List<User> userList = await usersRepository.getUserList();
+
+    emit(state.copyWith(userList: userList));
     try {} catch (e) {}
   }
 }

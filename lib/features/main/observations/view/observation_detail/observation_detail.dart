@@ -40,7 +40,8 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
       ..add(ObservationDetailPriorityLevelListLoaded())
       ..add(ObservationDetailCompanyListLoaded())
       ..add(ObservationDetailProjectListLoaded())
-      ..add(ObservationDetailSiteListLoaded());
+      ..add(ObservationDetailSiteListLoaded())
+      ..add(ObservationDetailUserListLoaded());
     super.initState();
   }
 
@@ -114,9 +115,13 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
                               ),
                             ),
                             spacerx5,
-                            const Expanded(
+                            Expanded(
                               flex: 2,
-                              child: AddActionItemView(),
+                              child: BlocProvider(
+                                create: (context) => AddActionItemBloc(context),
+                                child: AddActionItemView(
+                                    observationId: widget.observationId),
+                              ),
                             )
                           ],
                         )

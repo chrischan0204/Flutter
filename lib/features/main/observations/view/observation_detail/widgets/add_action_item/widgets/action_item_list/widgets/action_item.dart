@@ -2,16 +2,10 @@
 import '/common_libraries.dart';
 
 class ActionItemView extends StatelessWidget {
-  final String actionItem;
-  final String status;
-  final String due;
-  final String assignedBy;
+  final ActionItem actionItem;
   const ActionItemView({
     Key? key,
     required this.actionItem,
-    required this.status,
-    required this.due,
-    required this.assignedBy,
   }) : super(key: key);
 
   @override
@@ -25,13 +19,15 @@ class ActionItemView extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Text(
-                  actionItem,
+                  actionItem.task,
                   style: textNormal12,
                 ),
               ),
               Expanded(
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => context
+                      .read<AddActionItemBloc>()
+                      .add(AddActionItemDetailShown(actionItem: actionItem)),
                   icon: Icon(
                     PhosphorIcons.regular.appWindow,
                     color: purpleColor,
@@ -41,7 +37,9 @@ class ActionItemView extends StatelessWidget {
               ),
               Expanded(
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => context
+                      .read<AddActionItemBloc>()
+                      .add(AddActionItemDetailEdited(actionItem: actionItem)),
                   icon: Icon(
                     PhosphorIcons.regular.wrench,
                     color: warnColor,
@@ -53,25 +51,25 @@ class ActionItemView extends StatelessWidget {
           ),
         ),
         CustomBottomBorderContainer(
-          color: status == 'Open' ? lightRedAccent : lightGreenAccent,
+          color: actionItem.status.isOpen ? lightRedAccent : lightGreenAccent,
           padding: insetx20y10,
           child: Row(
             children: [
               Expanded(
                 child: Text(
-                  'Status: $status',
+                  'Status: ${actionItem.status.toString()}',
                   style: textNormal10,
                 ),
               ),
               Expanded(
                 child: Text(
-                  'Due: $due',
+                  'Due: ${actionItem.formatedDue}',
                   style: textNormal10,
                 ),
               ),
               Expanded(
                 child: Text(
-                  'Assigned: $assignedBy',
+                  'Assigned: ${actionItem.assignee}',
                   style: textNormal10,
                 ),
               ),

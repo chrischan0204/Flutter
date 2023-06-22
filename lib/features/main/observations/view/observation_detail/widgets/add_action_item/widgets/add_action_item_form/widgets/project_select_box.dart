@@ -1,5 +1,5 @@
-import '/common_libraries.dart';
 import '../../../../form_item.dart';
+import '/common_libraries.dart';
 
 class ProjectSelectField extends StatelessWidget {
   const ProjectSelectField({super.key});
@@ -13,17 +13,17 @@ class ProjectSelectField extends StatelessWidget {
           Map<String, Project> items = {}..addEntries(observationDetailState
               .projectList
               .map((project) => MapEntry(project.name ?? '', project)));
-          return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
-            builder: (context, editAssessmentState) {
+          return BlocBuilder<AddActionItemBloc, AddActionItemState>(
+            builder: (context, addActionItemState) {
               return CustomSingleSelect(
                 items: items,
                 hint: 'Select Project',
                 selectedValue: observationDetailState.projectList.isEmpty
                     ? null
-                    : editAssessmentState.project?.name,
+                    : addActionItemState.project?.name,
                 onChanged: (project) {
-                  context.read<EditAssessmentBloc>().add(
-                      EditAssessmentProjectChanged(project: project.value));
+                  context.read<AddActionItemBloc>().add(
+                      AddActionItemProjectChanged(project: project.value));
                 },
               );
             },

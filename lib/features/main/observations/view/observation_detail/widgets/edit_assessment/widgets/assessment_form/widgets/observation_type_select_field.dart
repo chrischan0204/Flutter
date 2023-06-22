@@ -1,12 +1,12 @@
 import '/common_libraries.dart';
-import 'form_item.dart';
+import '../../../../form_item.dart';
 
 class ObservationTypeSelectField extends StatelessWidget {
   const ObservationTypeSelectField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AssessmentFormItemView(
+    return ObservationDetailFormItemView(
       label: 'Observation Type',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {

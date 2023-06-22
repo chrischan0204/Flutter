@@ -152,4 +152,34 @@ class ObservationsRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  /// get action item list
+  Future<List<ActionItem>> getActionItemList(String auditId) async {
+    return [
+      ActionItem(
+        id: const Uuid().v1(),
+        task: 'Inspect the staircase on an ASAP basis.',
+        due: DateTime.now(),
+        assignee: 'Olive Alex',
+        category: 'Bio Hazard',
+        company: 'Green and Sons',
+        project: 'Darren',
+        location: 'By the admin office',
+        notes: 'The task was closed after inspection',
+        status: ActionItemStatus.open,
+      ),
+      ActionItem(
+        id: const Uuid().v1(),
+        task: 'Assign a cleaning crew to address this',
+        due: DateTime.now(),
+        assignee: 'Alexander Korshunov',
+        category: 'Category',
+        company: 'Comic Maroon',
+        project: 'Blackwater',
+        location: 'By the admin office',
+        notes: 'The task was closed after inspection',
+        status: ActionItemStatus.closed,
+      ),
+    ];
+  }
 }

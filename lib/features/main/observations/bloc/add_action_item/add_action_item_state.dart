@@ -2,48 +2,93 @@
 part of 'add_action_item_bloc.dart';
 
 class AddActionItemState extends Equatable {
-  final AwarenessCategory? category;
-  final String? observationType;
-  final PriorityLevel? priorityLevel;
+  /// action item to display or edit
+  final ActionItem? actionItem;
 
-  /// written against
+  /// action item list to display or edit
+  final List<ActionItem> actionItemList;
+
+  /// task to create action item
+  final String task;
+
+  /// dueBy to create action item
+  final DateTime? dueBy;
+
+  /// assignee to create action item
+  final User? assignee;
+
+  /// category to create action item
+  final AwarenessCategory? category;
+
+  /// company to create action item
   final Company? company;
+
+  /// project to create action item
   final Project? project;
 
-  /// other data points
-  final Site? site;
-  final String observer;
-  final String reportedVia;
-  final String followUpCloseout;
-  final bool markAsClosed;
-  final bool notifySender;
+  /// location to create action item
+  final String location;
+
+  /// notes to create action item
+  final String notes;
+
+  /// check if it is editing
+  final bool isEditing;
 
   const AddActionItemState({
+    this.actionItem,
+    this.actionItemList = const [],
+    this.task = '',
+    this.dueBy,
+    this.assignee,
     this.category,
-    this.observationType,
-    this.priorityLevel,
     this.company,
     this.project,
-    this.site,
-    this.observer = '',
-    this.reportedVia = '',
-    this.followUpCloseout = '',
-    this.markAsClosed = false,
-    this.notifySender = false,
+    this.location = '',
+    this.notes = '',
+    this.isEditing = false,
   });
 
   @override
   List<Object?> get props => [
+        actionItem,
+        actionItemList,
+        task,
+        dueBy,
+        assignee,
         category,
-        observationType,
-        priorityLevel,
         company,
         project,
-        site,
-        observer,
-        reportedVia,
-        followUpCloseout,
-        markAsClosed,
-        notifySender,
+        location,
+        notes,
+        isEditing,
       ];
+
+  AddActionItemState copyWith({
+    Nullable<ActionItem?>? actionItem,
+    List<ActionItem>? actionItemList,
+    String? task,
+    Nullable<DateTime?>? dueBy,
+    Nullable<User?>? assignee,
+    Nullable<AwarenessCategory?>? category,
+    Nullable<Company?>? company,
+    Nullable<Project?>? project,
+    String? location,
+    String? notes,
+    bool? isEditing,
+  }) {
+    return AddActionItemState(
+      actionItem: actionItem != null ? actionItem.value : this.actionItem,
+      actionItemList: actionItemList ?? this.actionItemList,
+      task: task ?? this.task,
+      dueBy: dueBy != null ? dueBy.value : this.dueBy,
+      assignee: assignee != null ? assignee.value : this.assignee,
+      category: category != null ? category.value : this.category,
+      company: company != null ? company.value : this.company,
+      project: project != null ? project.value : this.project,
+      location: location ?? this.location,
+      notes: notes ?? this.notes,
+      isEditing: isEditing ?? this.isEditing,
+    );
+  }
 }

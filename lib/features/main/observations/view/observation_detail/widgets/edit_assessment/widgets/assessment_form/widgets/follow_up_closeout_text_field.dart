@@ -1,5 +1,5 @@
 import '/common_libraries.dart';
-import 'form_item.dart';
+import '../../../../form_item.dart';
 
 class FollowUpCloseoutTextField extends StatelessWidget {
   const FollowUpCloseoutTextField({super.key});
@@ -8,7 +8,7 @@ class FollowUpCloseoutTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
       builder: (context, state) {
-        return AssessmentFormItemView(
+        return ObservationDetailFormItemView(
           label: 'Follow up closeout',
           content: CustomTextField(
             // key: ValueKey(state.loadedAudit?.id),

@@ -19,6 +19,7 @@ class User extends Entity {
 
   const User({
     super.id,
+    super.name,
     this.firstName = '',
     this.lastName = '',
     this.email = '',
@@ -39,7 +40,9 @@ class User extends Entity {
     super.lastModifiedOn,
     super.columns = const [],
     super.deleted,
-  }) : super(name: '$firstName $lastName');
+  }) : super();
+
+  String get fullName => '$firstName $lastName';
 
   @override
   List<Object?> get props => [
@@ -138,7 +141,7 @@ class User extends Entity {
   @override
   Map<String, dynamic> detailItemsToMap() {
     return {
-      'Name': '$firstName $lastName',
+      'Name': fullName,
       'Title': title,
       'Role': roleName,
       'Email': email,

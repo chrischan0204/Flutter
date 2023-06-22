@@ -3,7 +3,7 @@ export 'observation_type_select_field.dart';
 export 'company_select_field.dart';
 export 'site_select_field.dart';
 export 'project_select_field.dart';
-export 'form_item.dart';
+export '../../../../form_item.dart';
 export 'follow_up_closeout_text_field.dart';
 export 'observer_text_field.dart';
 export 'priority_level_select_field.dart';

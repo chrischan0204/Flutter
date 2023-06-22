@@ -37,7 +37,8 @@ class ObservationDetailObservationCategoryListLoaded
 
 class ObservationDetailSiteListLoaded extends ObservationDetailEvent {}
 
-class ObservationDetailObservationTypeListLoaded extends ObservationDetailEvent {}
+class ObservationDetailObservationTypeListLoaded
+    extends ObservationDetailEvent {}
 
 class ObservationDetailCompanyListLoaded extends ObservationDetailEvent {}
 
@@ -45,4 +46,4 @@ class ObservationDetailProjectListLoaded extends ObservationDetailEvent {}
 
 class ObservationDetailPriorityLevelListLoaded extends ObservationDetailEvent {}
 
-
+class ObservationDetailUserListLoaded extends ObservationDetailEvent {}

@@ -7,7 +7,7 @@ class UsersRepository extends BaseRepository {
   }) : super(url: '/api/Users');
 
   // get users list
-  Future<List<User>> getUsers() async {
+  Future<List<User>> getUserList() async {
     Response response = await super.get(url);
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))

@@ -1,12 +1,12 @@
 import '/common_libraries.dart';
-import 'form_item.dart';
+import '../../../../form_item.dart';
 
 class PriorityLevelSelectField extends StatelessWidget {
   const PriorityLevelSelectField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AssessmentFormItemView(
+    return ObservationDetailFormItemView(
       label: 'Priority Level',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {

@@ -71,7 +71,7 @@ class Site extends Entity {
       'Name': name,
       'Region': region,
       'Time Zone': timeZone,
-      'Code': siteCode,
+      'Site Code': siteCode,
       'Reference Code': referenceCode,
       'Users': users,
       'Observations': observations,
