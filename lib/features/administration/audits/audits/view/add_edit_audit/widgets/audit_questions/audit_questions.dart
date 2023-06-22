@@ -31,9 +31,9 @@ class AuditQuestionsWidget extends StatefulWidget {
 class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
   @override
   void initState() {
-    context
-        .read<AuditQuestionsBloc>()
-        .add(AuditQuestionsSnapshotListLoaded(auditId: emptyGuid));
+    context.read<AuditQuestionsBloc>()
+      ..add(AuditQuestionsSnapshotListLoaded(auditId: widget.auditId))
+      ..add(AuditQuestionsAuditSectionListLoaded(auditId: widget.auditId));
     super.initState();
   }
 
@@ -59,70 +59,20 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
+            const Expanded(
               flex: 2,
-              child: Card(
-                elevation: 3,
-                child: Padding(
-                  padding: inset10,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: inset20,
-                        child: Text(
-                          'Audit Sections',
-                          style: textSemiBold14,
-                        ),
-                      ),
-                      const CustomDivider(),
-                      Placeholder(),
-                    ],
-                  ),
-                ),
-              ),
+              child: AuditSectionsView(),
             ),
             spacerx10,
             Expanded(
               flex: 5,
-              child: Card(
-                elevation: 3,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: inset20,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Questions from Electric Inspection',
-                            style: textSemiBold14,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: warnColor,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 15,
-                                horizontal: 10,
-                              ),
-                            ),
-                            child: Text(
-                              'Remove Entire Section',
-                              style: textNormal12,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: inset10,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: primaryColor)),
-                      child: Placeholder(),
-                    ),
-                  ],
-                ),
+              child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
+                builder: (context, state) {
+                  if (state.selectedAuditSection != null) {
+                    return const QuestionListView();
+                  } 
+                  return Container();
+                },
               ),
             ),
           ],

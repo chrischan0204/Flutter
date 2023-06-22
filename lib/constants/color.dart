@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Color darkTeal = const Color(0xff252b36);
 Color lightTeal = const Color(0xfff1f4f9);
-Color grey = const Color(0xffd1d5db);
+Color grey = const Color(0xffD1D5DB);
 Color darkGrey = const Color(0xff454b54);
 Color primaryColor = const Color(0xff0c83ff);
 Color textColor = const Color(0xff1F2937);
@@ -20,6 +20,6 @@ Color lightRed = const Color(0xffef556d);
 Color lightRedAccent = const Color(0xffFEF8F7);
 Color textBlue = const Color(0xff42BFFF);
 Color lightBlue = const Color(0xff00bef6);
-Color lightBlueAccent = const Color(0xffD0EFFF);
+Color lightBlueAccent = const Color(0xffE2F5FF);
 Color darkGreyAccent = const Color(0xff898989);
 Color disableColor = const Color(0xfff3f4f6);

@@ -22,13 +22,21 @@ class SummarySectionView extends StatelessWidget {
             padding: inset20.copyWith(bottom: 100),
             decoration: BoxDecoration(border: Border.all(color: primaryColor)),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Expanded(
                   child: SectionSummaryView(),
                 ),
                 spacerx20,
                 Expanded(
-                  child: Placeholder(),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Expanded(child: AuditSummary1()),
+                      spacerx5,
+                      const Expanded(child: AuditSummary2())
+                    ],
+                  ),
                 ),
               ],
             ),

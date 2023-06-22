@@ -4,13 +4,13 @@ class AuditDetailItemView extends StatelessWidget {
   final String label;
   final String content;
   final bool twoLines;
-  final Color color;
+  final bool highlighted;
   const AuditDetailItemView({
     super.key,
     required this.label,
     required this.content,
     this.twoLines = false,
-    this.color = Colors.transparent,
+    this.highlighted = false,
   });
 
   @override
@@ -46,6 +46,7 @@ class AuditDetailItemView extends StatelessWidget {
     } else {
       return CustomBottomBorderContainer(
         padding: inset10,
+        backgroundColor: highlighted ? lightBlueAccent : Colors.transparent,
         child: Row(
           children: [
             Expanded(

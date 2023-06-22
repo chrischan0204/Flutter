@@ -11,6 +11,11 @@ class AuditQuestionsBloc
     auditsRepository = context.read();
 
     on<AuditQuestionsSnapshotListLoaded>(_onAuditQuestionsSnapshotListLoaded);
+    on<AuditQuestionsAuditSectionListLoaded>(
+        _onAuditQuestionsAuditSectionListLoaded);
+    on<AuditQuestionsSelectedAuditSectionChanged>(
+        _onAuditQuestionsSelectedAuditSectionChanged);
+    on<AuditQuestionsIncludedChanged>(_onAuditQuestionsIncludedChanged);
   }
 
   Future<void> _onAuditQuestionsSnapshotListLoaded(
@@ -21,5 +26,65 @@ class AuditQuestionsBloc
         await auditsRepository.getAuditQuestionSnapshotList(event.auditId);
 
     emit(state.copyWith(auditQuestionSnapshotList: auditQuestionSnapshotList));
+  }
+
+  Future<void> _onAuditQuestionsAuditSectionListLoaded(
+    AuditQuestionsAuditSectionListLoaded event,
+    Emitter<AuditQuestionsState> emit,
+  ) async {
+    final auditSectionList =
+        await auditsRepository.getAuditSectionList(event.auditId);
+
+    emit(state.copyWith(
+      auditSectionList: auditSectionList,
+      selectedAuditSection:
+          auditSectionList.isNotEmpty ? auditSectionList.first : null,
+    ));
+  }
+
+  void _onAuditQuestionsSelectedAuditSectionChanged(
+    AuditQuestionsSelectedAuditSectionChanged event,
+    Emitter<AuditQuestionsState> emit,
+  ) {
+    emit(state.copyWith(selectedAuditSection: event.auditSection));
+  }
+
+  void _onAuditQuestionsIncludedChanged(
+    AuditQuestionsIncludedChanged event,
+    Emitter<AuditQuestionsState> emit,
+  ) {
+    if (event.questionId != null) {
+      emit(state.copyWith(
+          selectedAuditSection: state.selectedAuditSection!.copyWith(
+              auditQuestionList: state.selectedAuditSection!.auditQuestionList
+                  .map((question) => question.id == event.questionId
+                      ? question.copyWith(included: !question.included)
+                      : question)
+                  .toList()),
+          auditSectionList: state.auditSectionList
+              .map((e) => e.copyWith(
+                  auditQuestionList: e.auditQuestionList
+                      .map((question) => question.id == event.questionId
+                          ? question.copyWith(included: !question.included)
+                          : question)
+                      .toList()))
+              .toList()));
+    } else {
+      emit(state.copyWith(
+          selectedAuditSection: state.selectedAuditSection!.copyWith(
+              auditQuestionList: state.selectedAuditSection!.auditQuestionList
+                  .map((question) =>
+                      question.copyWith(included: state.isAllExcluded))
+                  .toList()),
+          auditSectionList: state.auditSectionList
+              .map((e) => e.id == state.selectedAuditSection!.id
+                  ? e.copyWith(
+                      auditQuestionList: e.auditQuestionList
+                          .map((question) =>
+                              question.copyWith(included: state.isAllExcluded))
+                          .toList())
+                  : e)
+              .toList()));
+    }
   }
 }

@@ -57,7 +57,7 @@ class AddActionItemHeaderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomBottomBorderContainer(
       padding: inset20,
-      color: lightBlueAccent,
+      backgroundColor: lightBlueAccent,
       child: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Row(

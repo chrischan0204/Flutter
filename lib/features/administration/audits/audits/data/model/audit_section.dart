@@ -52,6 +52,9 @@ class AuditSection extends Equatable {
     this.auditQuestionList = const [],
   });
 
+  bool get isNoIncluded =>
+      auditQuestionList.where((element) => element.included).isEmpty;
+
   @override
   List<Object?> get props => [
         id,

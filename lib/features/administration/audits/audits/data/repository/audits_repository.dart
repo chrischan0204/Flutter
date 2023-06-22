@@ -136,8 +136,9 @@ class AuditsRepository extends BaseRepository {
         status: AuditSectionStatus.done,
         questionCount: 8,
         maxScore: 32,
-        auditQuestionList: const [
+        auditQuestionList: [
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 2,
             question: 'Is the WFH employees percentage less than 20%?',
@@ -145,6 +146,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 3,
             question: 'Is the current number of employees that are working?',
@@ -152,6 +154,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 4,
             question:
@@ -160,6 +163,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 5,
             question: 'How satisfied are the employees who are WFH?',
@@ -174,8 +178,9 @@ class AuditsRepository extends BaseRepository {
         status: AuditSectionStatus.partial,
         questionCount: 12,
         maxScore: 41,
-        auditQuestionList: const [
+        auditQuestionList: [
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 2,
             question: 'How well do the employees know about social distancing?',
@@ -183,6 +188,7 @@ class AuditsRepository extends BaseRepository {
             answered: false,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 3,
             question: 'Does the number of people wearing masks exceed 50%?',
@@ -190,6 +196,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 3,
             question: 'Does the number of people wearing masks exceed 50%?',
@@ -197,6 +204,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 2,
             question:
@@ -212,8 +220,9 @@ class AuditsRepository extends BaseRepository {
         status: AuditSectionStatus.inProgress,
         questionCount: 4,
         maxScore: 20,
-        auditQuestionList: const [
+        auditQuestionList: [
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 2,
             question:
@@ -222,6 +231,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 3,
             question: 'How well do the employees know about social distancing?',
@@ -229,6 +239,7 @@ class AuditsRepository extends BaseRepository {
             answered: false,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 4,
             question: 'Does the number of people wearing masks exceed 50%?',
@@ -236,6 +247,7 @@ class AuditsRepository extends BaseRepository {
             answered: true,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 5,
             question:
@@ -251,8 +263,9 @@ class AuditsRepository extends BaseRepository {
         status: AuditSectionStatus.notStarted,
         questionCount: 11,
         maxScore: 28,
-        auditQuestionList: const [
+        auditQuestionList: [
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 2,
             question: 'Are the soap dispensers cleaned every day?',
@@ -260,6 +273,7 @@ class AuditsRepository extends BaseRepository {
             answered: false,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 3,
             question:
@@ -268,6 +282,7 @@ class AuditsRepository extends BaseRepository {
             answered: false,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 4,
             question: 'Are there sufficient dispensars for hand sanitization?',
@@ -275,6 +290,7 @@ class AuditsRepository extends BaseRepository {
             answered: false,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 5,
             question:
@@ -283,6 +299,7 @@ class AuditsRepository extends BaseRepository {
             answered: false,
           ),
           AuditQuestion(
+            id: const Uuid().v1(),
             no: 1,
             score: 5,
             question:

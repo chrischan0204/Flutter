@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import '../constants/color.dart';
 
 class CustomBottomBorderContainer extends Container {
-  final Color? color;
+  final Color? backgroundColor;
   CustomBottomBorderContainer({
     super.key,
     super.padding,
     super.child,
-    this.color,
+    this.backgroundColor,
   }) : super(
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: grey),
+              bottom: BorderSide(
+                color: grey,
+                width: 0.5,
+              ),
             ),
-            color: color,
+            color: backgroundColor,
           ),
         );
 }

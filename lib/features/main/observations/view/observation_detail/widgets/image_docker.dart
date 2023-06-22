@@ -37,7 +37,7 @@ class _ImageDockerViewState extends State<ImageDockerView> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           CustomBottomBorderContainer(
-            color: lightBlueAccent,
+            backgroundColor: lightBlueAccent,
             padding: inset20,
             child: Text(
               'Image Dock',

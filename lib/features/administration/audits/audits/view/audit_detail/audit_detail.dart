@@ -1,3 +1,4 @@
+import '../widgets/widgets.dart';
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -126,12 +127,12 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                               AuditDetailItemView(
                                 label: 'Completion',
                                 content: '33% (11 of 33)',
-                                color: lightBlueAccent,
+                                highlighted: true,
                               ),
                               AuditDetailItemView(
                                 label: 'Observations',
                                 content: '2',
-                                color: lightBlueAccent,
+                                highlighted: true,
                               ),
                             ],
                           )),
@@ -158,12 +159,12 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                               AuditDetailItemView(
                                 label: 'Action items',
                                 content: '4',
-                                color: lightBlueAccent,
+                                highlighted: true,
                               ),
                               AuditDetailItemView(
                                 label: 'Images',
                                 content: '4',
-                                color: lightBlueAccent,
+                                highlighted: true,
                               ),
                             ],
                           )),

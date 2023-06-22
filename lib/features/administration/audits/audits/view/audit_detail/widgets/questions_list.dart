@@ -108,20 +108,19 @@ class AuditQuestionDataSource extends DataGridSource {
 
   @override
   List<DataGridRow> get rows => _entityData;
+  Widget _buildItem(dynamic value) {
+    if (value is bool) {
+      return CustomBadge(
+        label: value ? 'Answered' : 'Unanswered',
+        color: value ? primaryColor : warnColor,
+      );
+    }
+    return Text(value.toString());
+  }
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     final cells = row.getCells();
-
-    Widget _buildItem(dynamic value) {
-      if (value is bool) {
-        return CustomBadge(
-          label: value ? 'Answered' : 'Unanswered',
-          color: value ? primaryColor : warnColor,
-        );
-      }
-      return Text(value.toString());
-    }
 
     return DataGridRowAdapter(cells: [
       for (int i = 0; i < cells.length; i++)

@@ -7,7 +7,7 @@ class AssessmentHeaderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomBottomBorderContainer(
       padding: inset20,
-      color: lightBlueAccent,
+      backgroundColor: lightBlueAccent,
       child: BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
         builder: (context, state) {
           return Row(
