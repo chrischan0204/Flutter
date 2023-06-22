@@ -24,6 +24,7 @@ class EditAssessmentBloc
         _onEditAssessmentFollowUpCloseoutChanged);
     on<EditAssessmentMarkAsClosedChanged>(_onEditAssessmentMarkAsClosedChanged);
     on<EditAssessmentNotifySenderChanged>(_onEditAssessmentNotifySenderChanged);
+    on<EditAssessmentIsEditingChanged>(_onEditAssessmentIsEditingChanged);
   }
 
   void _onEditAssessmentCategoryChanged(
@@ -101,5 +102,12 @@ class EditAssessmentBloc
     Emitter<EditAssessmentState> emit,
   ) {
     emit(state.copyWith(notifySender: event.notifySender));
+  }
+
+  void _onEditAssessmentIsEditingChanged(
+    EditAssessmentIsEditingChanged event,
+    Emitter<EditAssessmentState> emit,
+  ) {
+    emit(state.copyWith(isEditing: !state.isEditing));
   }
 }

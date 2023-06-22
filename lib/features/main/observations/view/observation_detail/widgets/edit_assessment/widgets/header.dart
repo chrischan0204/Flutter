@@ -1,5 +1,3 @@
-
-
 import '/common_libraries.dart';
 
 class AssessmentHeaderView extends StatelessWidget {
@@ -10,22 +8,30 @@ class AssessmentHeaderView extends StatelessWidget {
     return CustomBottomBorderContainer(
       padding: inset20,
       color: lightBlueAccent,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Assessment Reading',
-            style: textNormal14,
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
-            child: Text(
-              'Edit Assessment',
-              style: textNormal12.copyWith(color: Colors.white),
-            ),
-          ),
-        ],
+      child: BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
+        builder: (context, state) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                state.isEditing ? 'Assessment' : 'Assessment Reading',
+                style: textSemiBold14,
+              ),
+              ElevatedButton(
+                onPressed: () => context
+                    .read<EditAssessmentBloc>()
+                    .add(EditAssessmentIsEditingChanged()),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        state.isEditing ? successColor : primaryColor),
+                child: Text(
+                  state.isEditing ? 'Submit' : 'Edit Assessment',
+                  style: textNormal12.copyWith(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

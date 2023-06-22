@@ -10,9 +10,17 @@ class EditAssessmentView extends StatelessWidget {
       elevation: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          AssessmentHeaderView(),
-          AssessmentFormView(),
+        children: [
+          const AssessmentHeaderView(),
+          BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
+            builder: (context, state) {
+              if (state.isEditing) {
+                return const AssessmentFormView();
+              } else {
+                return const AssessmentDetailView();
+              }
+            },
+          ),
         ],
       ),
     );

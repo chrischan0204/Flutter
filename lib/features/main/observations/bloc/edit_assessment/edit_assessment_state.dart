@@ -18,6 +18,8 @@ class EditAssessmentState extends Equatable {
   final bool markAsClosed;
   final bool notifySender;
 
+  final bool isEditing;
+
   const EditAssessmentState({
     this.category,
     this.observationType,
@@ -30,6 +32,7 @@ class EditAssessmentState extends Equatable {
     this.followUpCloseout = '',
     this.markAsClosed = false,
     this.notifySender = false,
+    this.isEditing = false,
   });
 
   @override
@@ -45,6 +48,7 @@ class EditAssessmentState extends Equatable {
         followUpCloseout,
         markAsClosed,
         notifySender,
+        isEditing,
       ];
 
   EditAssessmentState copyWith({
@@ -59,6 +63,7 @@ class EditAssessmentState extends Equatable {
     String? followUpCloseout,
     bool? markAsClosed,
     bool? notifySender,
+    bool? isEditing,
   }) {
     return EditAssessmentState(
       category: category ?? this.category,
@@ -72,6 +77,7 @@ class EditAssessmentState extends Equatable {
       followUpCloseout: followUpCloseout ?? this.followUpCloseout,
       markAsClosed: markAsClosed ?? this.markAsClosed,
       notifySender: notifySender ?? this.notifySender,
+      isEditing: isEditing ?? this.isEditing,
     );
   }
 }

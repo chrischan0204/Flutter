@@ -96,3 +96,4 @@ class EditAssessmentNotifySenderChanged extends EditAssessmentEvent {
   List<Object> get props => [notifySender];
 }
 
+class EditAssessmentIsEditingChanged extends EditAssessmentEvent {}
