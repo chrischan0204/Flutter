@@ -63,7 +63,6 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
               flex: 2,
               child: AuditSectionsView(),
             ),
-            spacerx10,
             Expanded(
               flex: 5,
               child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(

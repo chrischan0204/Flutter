@@ -132,18 +132,25 @@ class AuditQuestionDataSource extends DataGridSource {
     return Text(value.toString());
   }
 
-  Color? _getColor(dynamic value) {
-    if (value is Map && value['included'] == false) {
-      return const Color(0xfff7f2f2);
-    }
-  }
-
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     final cells = row.getCells();
 
+    Color? getColor(dynamic value) {
+      if (value is Map && value['included'] == false) {
+        return const Color(0xfff7f2f2);
+      }
+
+      int index = effectiveRows.indexOf(row);
+      if (index % 2 == 0) {
+        return Colors.transparent;
+      } else {
+        return const Color(0xfff8f9fc);
+      }
+    }
+
     return DataGridRowAdapter(
-      color: _getColor(cells.first.value),
+      color: getColor(cells.first.value),
       cells: [
         for (int i = 0; i < cells.length; i++)
           Container(

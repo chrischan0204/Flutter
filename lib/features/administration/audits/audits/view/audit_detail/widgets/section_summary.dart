@@ -1,4 +1,5 @@
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 import '/common_libraries.dart';
 
@@ -34,23 +35,29 @@ class SectionSummaryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
+    return Card(
+      elevation: 3,
       child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
         builder: (context, state) {
-          return SfDataGrid(
-            source: AuditSectionDataSource(
-              auditSectionList: state.auditSectionList,
-              columns: columns,
+          return SfDataGridTheme(
+            data: SfDataGridThemeData(
+              headerColor: lightBlueAccent,
+              rowHoverColor: lightTeal,
             ),
-            columnWidthMode: ColumnWidthMode.fill,
-            columnResizeMode: ColumnResizeMode.onResize,
-            allowColumnsResizing: true,
-            gridLinesVisibility: GridLinesVisibility.none,
-            headerGridLinesVisibility: GridLinesVisibility.none,
-            headerRowHeight: 52,
-            rowHeight: 46,
-            columns: _buildColumns(),
+            child: SfDataGrid(
+              source: AuditSectionDataSource(
+                auditSectionList: state.auditSectionList,
+                columns: columns,
+              ),
+              columnWidthMode: ColumnWidthMode.fill,
+              columnResizeMode: ColumnResizeMode.onResize,
+              allowColumnsResizing: true,
+              gridLinesVisibility: GridLinesVisibility.none,
+              headerGridLinesVisibility: GridLinesVisibility.none,
+              headerRowHeight: 52,
+              rowHeight: 46,
+              columns: _buildColumns(),
+            ),
           );
         },
       ),
@@ -110,7 +117,12 @@ class AuditSectionDataSource extends DataGridSource {
           cells.first.value.toString().contains('Total')) {
         return lightBlueAccent;
       }
-      return null;
+      int index = effectiveRows.indexOf(row);
+      if (index % 2 == 0) {
+        return Colors.transparent;
+      } else {
+        return const Color(0xfff8f9fc);
+      }
     }
 
     Widget getItem(String value, int index) {

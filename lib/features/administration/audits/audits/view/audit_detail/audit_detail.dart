@@ -102,94 +102,13 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Expanded(child: SectionSummaryView()),
-                          spacerx5,
                           Expanded(
-                              child: Column(
-                            children: [
-                              AuditDetailItemView(
-                                label: 'Owner',
-                                content: 'Amy Admas',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Last touched',
-                                content: '16th May 2023',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Sections',
-                                content: '4',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Site',
-                                content: 'Lakeshore Drive, Chicago',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Completion',
-                                content: '33% (11 of 33)',
-                                highlighted: true,
-                              ),
-                              AuditDetailItemView(
-                                label: 'Observations',
-                                content: '2',
-                                highlighted: true,
-                              ),
-                            ],
-                          )),
-                          spacerx5,
-                          Expanded(
-                              child: Column(
-                            children: [
-                              AuditDetailItemView(
-                                label: 'Created on',
-                                content: '14th May 2023',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Status',
-                                content: 'In progress',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Questions',
-                                content: '43',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Project',
-                                content: '--',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Action items',
-                                content: '4',
-                                highlighted: true,
-                              ),
-                              AuditDetailItemView(
-                                label: 'Images',
-                                content: '4',
-                                highlighted: true,
-                              ),
-                            ],
-                          )),
-                          spacerx5,
-                          Expanded(
-                              child: Column(
-                            children: [
-                              AuditDetailItemView(
-                                label: 'Area',
-                                content: 'Section 3 Parking garage',
-                              ),
-                              AuditDetailItemView(
-                                label: 'Companies',
-                                content:
-                                    'Lucas Landscaping, Constellation Fencing and picketing llc., Rider group concrete inc and Gartner Electric',
-                                twoLines: true,
-                              ),
-                              AuditDetailItemView(
-                                label: 'Inspectors',
-                                content:
-                                    'Frank Hurt, Brian Trippi and George Kiltman',
-                                twoLines: true,
-                              ),
-                            ],
-                          )),
+                            child: AuditDetailView1(),
+                          ),
+                          Expanded(child: AuditDetailView2()),
+                          Expanded(child: AuditDetailView3()),
                         ],
                       ),
                     ],
@@ -199,9 +118,8 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               spacery20,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Expanded(child: AuditSectionsView()),
-                  spacerx10,
                   Expanded(
                     flex: 3,
                     child: QuestionsListView(),

@@ -25,13 +25,8 @@ class QuestionsListView extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
+              CustomBottomBorderContainer(
                 padding: inset20,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: grey),
-                  ),
-                ),
                 child: Text(
                   'Questions for ${state.selectedAuditSection!.name}',
                   style: textSemiBold14,
@@ -121,14 +116,29 @@ class AuditQuestionDataSource extends DataGridSource {
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     final cells = row.getCells();
+    Color? getColor() {
+      if (cells.first.value is String &&
+          cells.first.value.toString().contains('Total')) {
+        return lightBlueAccent;
+      }
+      int index = effectiveRows.indexOf(row);
+      if (index % 2 == 0) {
+        return Colors.transparent;
+      } else {
+        return const Color(0xfff8f9fc);
+      }
+    }
 
-    return DataGridRowAdapter(cells: [
-      for (int i = 0; i < cells.length; i++)
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: _buildItem(cells[i].value),
-        )
-    ]);
+    return DataGridRowAdapter(
+      color: getColor(),
+      cells: [
+        for (int i = 0; i < cells.length; i++)
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: _buildItem(cells[i].value),
+          )
+      ],
+    );
   }
 }

@@ -27,14 +27,12 @@ class SummarySectionView extends StatelessWidget {
                 const Expanded(
                   child: SectionSummaryView(),
                 ),
-                spacerx20,
                 Expanded(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Expanded(child: AuditSummary1()),
-                      spacerx5,
-                      const Expanded(child: AuditSummary2())
+                    children: const [
+                      Expanded(child: AuditSummary1()),
+                      Expanded(child: AuditSummary2())
                     ],
                   ),
                 ),
