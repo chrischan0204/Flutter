@@ -48,9 +48,8 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
   @override
   void initState() {
     addEditAuditBloc = context.read()
-      ..add(AddEditAuditSiteListLoaded())
-      ..add(AddEditAuditSiteTemplateLoaded())
-      ..add(AddEditAuditProjectListLoaded());
+      ..add(AddEditAuditSiteListLoaded(
+          userId: context.read<AuthBloc>().state.authUser!.id));
 
     if (widget.auditId != null) {
       addEditAuditBloc.add(AddEditAuditLoaded(id: widget.auditId!));

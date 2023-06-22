@@ -39,13 +39,40 @@ class AddEditAuditLoaded extends AddEditAuditEvent {
 }
 
 /// even to load site list
-class AddEditAuditSiteListLoaded extends AddEditAuditEvent {}
+class AddEditAuditSiteListLoaded extends AddEditAuditEvent {
+  /// user id to load site list
+  final String userId;
+  const AddEditAuditSiteListLoaded({
+    required this.userId,
+  });
+
+  @override
+  List<Object> get props => [userId];
+}
 
 /// even to load template list
-class AddEditAuditSiteTemplateLoaded extends AddEditAuditEvent {}
+class AddEditAuditTemplateListLoaded extends AddEditAuditEvent {
+  /// site id to load template list
+  final String siteId;
+  const AddEditAuditTemplateListLoaded({
+    required this.siteId,
+  });
+
+  @override
+  List<Object> get props => [siteId];
+}
 
 /// even to load project list
-class AddEditAuditProjectListLoaded extends AddEditAuditEvent {}
+class AddEditAuditProjectListLoaded extends AddEditAuditEvent {
+  /// site id to load project list
+  final String siteId;
+  const AddEditAuditProjectListLoaded({
+    required this.siteId,
+  });
+
+  @override
+  List<Object> get props => [siteId];
+}
 
 /// event to change the audit name
 class AddEditAuditNameChanged extends AddEditAuditEvent {

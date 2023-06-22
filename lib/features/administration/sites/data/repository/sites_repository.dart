@@ -120,4 +120,28 @@ class SitesRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  Future<List<Project>> getProjectListForSite(String siteId) async {
+    Response response = await super.get('$url/$siteId/projects');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Project.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<Template>> getTemplateListForSite(String siteId) async {
+    Response response = await super.get('$url/$siteId/templates', {'assigned': 'true'});
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Template.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 }

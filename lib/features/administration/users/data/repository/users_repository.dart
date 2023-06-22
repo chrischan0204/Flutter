@@ -241,4 +241,17 @@ class UsersRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  Future<List<UserSite>> getSiteListForUser(String userId) async {
+    Response response =
+        await super.get('$url/$userId/sites', {'assigned': 'true'});
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => UserSite.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 }

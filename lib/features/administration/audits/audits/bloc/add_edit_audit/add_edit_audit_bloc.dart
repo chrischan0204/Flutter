@@ -6,9 +6,8 @@ part 'add_edit_audit_state.dart';
 class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   late FormDirtyBloc formDirtyBloc;
   late AuditsRepository auditsRepository;
+  late UsersRepository usersRepository;
   late SitesRepository sitesRepository;
-  late TemplatesRepository templatesRepository;
-  late ProjectsRepository projectsRepository;
   final BuildContext context;
 
   final String? auditId;
@@ -16,10 +15,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       : super(const AddEditAuditState()) {
     formDirtyBloc = context.read();
     auditsRepository = RepositoryProvider.of(context);
+    usersRepository = RepositoryProvider.of(context);
     sitesRepository = RepositoryProvider.of(context);
-    templatesRepository = RepositoryProvider.of(context);
-    projectsRepository = RepositoryProvider.of(context);
-
     _bindEvents();
   }
 
@@ -27,6 +24,11 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   void onChange(Change<AddEditAuditState> change) {
     final current = change.currentState;
     final next = change.nextState;
+
+    if (current.site?.id != next.site?.id && next.site?.id != null) {
+      add(AddEditAuditProjectListLoaded(siteId: next.site!.id!));
+      add(AddEditAuditTemplateListLoaded(siteId: next.site!.id!));
+    }
 
     super.onChange(change);
   }
@@ -36,7 +38,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     on<AddEditAuditEdited>(_onAddEditAuditEdited);
     on<AddEditAuditLoaded>(_onAddEditAuditLoaded);
     on<AddEditAuditSiteListLoaded>(_onAddEditAuditSiteListLoaded);
-    on<AddEditAuditSiteTemplateLoaded>(_onAddEditAuditSiteTemplateLoaded);
+    on<AddEditAuditTemplateListLoaded>(_onAddEditAuditSiteTemplateLoaded);
     on<AddEditAuditProjectListLoaded>(_onAddEditAuditProjectListLoaded);
     on<AddEditAuditNameChanged>(_onAddEditAuditNameChanged);
     on<AddEditAuditDateChanged>(_onAddEditAuditDateChanged);
@@ -130,9 +132,9 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
         initialAuditDate: audit.auditDate,
         site: site,
         initialSite: site,
-        project: project,
+        project: Nullable.value(project),
         initialProject: project,
-        template: template,
+        template: Nullable.value(template),
         initialTemplate: template,
       ));
     } catch (e) {
@@ -179,17 +181,22 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      List<Site> siteList = await sitesRepository.getSiteList();
-      emit(state.copyWith(siteList: siteList));
+      List<UserSite> siteList =
+          await usersRepository.getSiteListForUser(event.userId);
+      emit(state.copyWith(
+        siteList:
+            siteList.map((e) => Site(id: e.siteId, name: e.siteName)).toList(),
+      ));
     } catch (e) {}
   }
 
   Future<void> _onAddEditAuditSiteTemplateLoaded(
-    AddEditAuditSiteTemplateLoaded event,
+    AddEditAuditTemplateListLoaded event,
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      List<Template> templateList = await templatesRepository.getTemplateList();
+      List<Template> templateList =
+          await sitesRepository.getTemplateListForSite(event.siteId);
       emit(state.copyWith(templateList: templateList));
     } catch (e) {}
   }
@@ -199,7 +206,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      List<Project> projectList = await projectsRepository.getProjectList();
+      List<Project> projectList =
+          await sitesRepository.getProjectListForSite(event.siteId);
       emit(state.copyWith(projectList: projectList));
     } catch (e) {}
   }
@@ -234,6 +242,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   ) {
     emit(state.copyWith(
       site: event.site,
+      project: const Nullable.value(null),
+      template: const Nullable.value(null),
       siteValidationMessage: '',
     ));
 
@@ -245,7 +255,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) {
     emit(state.copyWith(
-      template: event.template,
+      template: Nullable.value(event.template),
       templateValidationMessage: '',
     ));
 
@@ -289,7 +299,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     AddEditAuditProjectChanged event,
     Emitter<AddEditAuditState> emit,
   ) {
-    emit(state.copyWith(project: event.project));
+    emit(state.copyWith(project: Nullable.value(event.project)));
 
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
