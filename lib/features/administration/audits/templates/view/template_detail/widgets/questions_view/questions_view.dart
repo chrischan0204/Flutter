@@ -1,5 +1,3 @@
-import 'package:accordion/accordion.dart';
-
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
@@ -32,7 +30,7 @@ class QuestionsView extends StatelessWidget {
         const CustomDivider(),
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
-            return ExpansionPanelList(
+            return CustomExpansionPanelList(
               dividerColor: primaryColor,
               elevation: 3,
               expansionCallback: (int index, bool isExpanded) {
