@@ -45,16 +45,18 @@ class AddEditObservationBloc
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        // EntityResponse response = await observationsRepository.addObservation(state.observation);
+        EntityResponse response =
+            await observationsRepository.addObservation(state.observation);
 
-        // if (response.isSuccess) {
-        //   emit(state.copyWith(
-        //     createdObservationId: response.data?.id,
-        //     message: response.message,
-        //     status: EntityStatus.success,
-        //   ));
-        // } else {}
+        if (response.isSuccess) {
+          emit(state.copyWith(
+            createdObservationId: response.data?.id,
+            message: response.message,
+            status: EntityStatus.success,
+          ));
+        } else {}
       } catch (e) {
+        print(e);
         emit(state.copyWith(
           status: EntityStatus.failure,
           // message: addErrorMessage,

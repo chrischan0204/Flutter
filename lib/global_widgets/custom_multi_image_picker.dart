@@ -3,14 +3,18 @@ import 'package:image_picker_web/image_picker_web.dart';
 
 import '/common_libraries.dart';
 
-class MultiImagePicker extends StatefulWidget {
-  const MultiImagePicker({super.key});
+class CustomMultiImagePicker extends StatefulWidget {
+  final Function(List<Uint8List>) onSelect;
+  const CustomMultiImagePicker({
+    super.key,
+    required this.onSelect,
+  });
 
   @override
-  State<MultiImagePicker> createState() => _MultiImagePickerState();
+  State<CustomMultiImagePicker> createState() => _CustomMultiImagePickerState();
 }
 
-class _MultiImagePickerState extends State<MultiImagePicker> {
+class _CustomMultiImagePickerState extends State<CustomMultiImagePicker> {
   int selectedImageCount = 0;
 
   String _getFilePaths() {
@@ -31,6 +35,8 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
         setState(() {
           selectedImageCount = (_imgs ?? []).length;
         });
+
+        widget.onSelect(_imgs ?? []);
       },
       child: Container(
         decoration: BoxDecoration(

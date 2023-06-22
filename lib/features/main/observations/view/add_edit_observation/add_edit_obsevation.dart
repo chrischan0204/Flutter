@@ -53,11 +53,11 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
     super.initState();
   }
 
-  Map<String, Widget> get tabItems => widget.observationId != null
-      ? {
-          'Observation questions': Container(),
-        }
-      : {};
+  // Map<String, Widget> get tabItems => widget.observationId != null
+  //     ? {
+  //         'Observation questions': Container(),
+  //       }
+  //     : {};
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +69,10 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-          if (widget.observationId == null) {
-            GoRouter.of(context).go(
-                '/observations/edit/${state.createdObservationId}?view=created');
-          }
+          // if (widget.observationId == null) {
+          //   GoRouter.of(context).go(
+          //       '/observations/edit/${state.createdObservationId}?view=created');
+          // }
         }
         if (state.status.isFailure) {
           CustomNotification(
@@ -92,7 +92,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
           editEntity: () => addEditObservationBloc
               .add(AddEditObservationEdited(id: widget.observationId ?? '')),
           crudStatus: state.status,
-          tabItems: tabItems,
+          // tabItems: tabItems,
           view: widget.view,
           formDirty: state.formDirty,
           addButtonName: addButtonName,

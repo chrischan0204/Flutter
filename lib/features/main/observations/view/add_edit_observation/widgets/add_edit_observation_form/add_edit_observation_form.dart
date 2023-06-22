@@ -26,7 +26,7 @@ class AddEditObservationFormView extends StatelessWidget {
               leftValidationMessage: state.siteValidationMessage,
             ),
             FormItemVertical(
-              leftChild: const MultiImagePicker(),
+              leftChild: const ObservationImagePicker(),
               leftLabel: 'Images',
               secondaryRightChild: Text(
                 '(You can upload multiple images)',

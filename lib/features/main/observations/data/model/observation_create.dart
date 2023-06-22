@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '/common_libraries.dart';
 
 class ObservationCreate extends Equatable {
@@ -5,7 +7,7 @@ class ObservationCreate extends Equatable {
   final String siteId;
   final String location;
   final String response;
-  final List<dynamic> images;
+  final List<Uint8List> images;
 
   const ObservationCreate({
     required this.name,
@@ -28,7 +30,7 @@ class ObservationCreate extends Equatable {
     String? siteId,
     String? location,
     String? response,
-    List<dynamic>? images,
+    List<Uint8List>? images,
   }) {
     return ObservationCreate(
       name: name ?? this.name,
@@ -41,11 +43,13 @@ class ObservationCreate extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'name': name,
       'siteId': siteId,
-      'location': location,
+      'userReportedPriorityLevelId': 'bfd6e228-d9a8-417f-88b5-4c5f60d75f36',
+      'userReportedObservationTypeId': 'b0c92972-d4f5-4c96-9871-bdf244af1a9d',
       'response': response,
-      'images': images,
+      'base64Image': base64.encode(images[0]),
+      'description': name,
+      'area': location,
     };
   }
 
