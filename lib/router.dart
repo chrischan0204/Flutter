@@ -371,6 +371,26 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/audits/execute/:auditId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ExecuteAuditView(auditId: state.params['auditId']!),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/audits/focus_mode/:auditId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AuditFocusModeView(auditId: state.params['auditId']!),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/regions',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

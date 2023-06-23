@@ -58,6 +58,22 @@ TextStyle textNormal14 = const TextStyle(
   fontWeight: FontWeight.normal,
 );
 
+TextStyle textBold16 = const TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+TextStyle textSemiBold16 = const TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle textNormal16 = const TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.normal,
+);
+
+
 TextStyle textBold18 = const TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,
