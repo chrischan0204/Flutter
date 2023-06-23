@@ -8,19 +8,18 @@ part 'add_edit_observation_state.dart';
 class AddEditObservationBloc
     extends Bloc<AddEditObservationEvent, AddEditObservationState> {
   late FormDirtyBloc formDirtyBloc;
-  late ObservationsRepository observationsRepository;
   late SitesRepository sitesRepository;
-  late TemplatesRepository templatesRepository;
-  late ProjectsRepository projectsRepository;
+  late ObservationTypesRepository observationTypesRepository;
+  late PriorityLevelsRepository priorityLevelsRepository;
+  late ObservationsRepository observationsRepository;
   final BuildContext context;
   AddEditObservationBloc(this.context)
       : super(const AddEditObservationState()) {
     formDirtyBloc = context.read();
-    observationsRepository = RepositoryProvider.of(context);
     sitesRepository = RepositoryProvider.of(context);
-    templatesRepository = RepositoryProvider.of(context);
-    projectsRepository = RepositoryProvider.of(context);
-
+    observationTypesRepository = RepositoryProvider.of(context);
+    priorityLevelsRepository = RepositoryProvider.of(context);
+    observationsRepository = RepositoryProvider.of(context);
     _bindEvents();
   }
 
@@ -28,11 +27,21 @@ class AddEditObservationBloc
     on<AddEditObservationAdded>(_onAddEditObservationAdded);
     on<AddEditObservationEdited>(_onAddEditObservationEdited);
     on<AddEditObservationLoaded>(_onAddEditObservationLoaded);
+
     on<AddEditObservationSiteListLoaded>(_onAddEditObservationSiteListLoaded);
+    on<AddEditObservationPriorityLevelListLoaded>(
+        _onAddEditObservationPriorityLevelListLoaded);
+    on<AddEditObservationObservationTypeListLoaded>(
+        _onAddEditObservationObservationTypeListLoaded);
     on<AddEditObservationNameChanged>(_onAddEditObservationNameChanged);
     on<AddEditObservationLocationChanged>(_onAddEditObservationLocationChanged);
     on<AddEditObservationSiteChanged>(_onAddEditObservationSiteChanged);
     on<AddEditObservationResponseChanged>(_onAddEditObservationResponseChanged);
+    on<AddEditObservationPriorityLevelChanged>(
+        _onAddEditObservationPriorityLevelChanged);
+
+    on<AddEditObservationObservationTypeChanged>(
+        _onAddEditObservationObservationTypeChanged);
     on<AddEditObservationImageListChanged>(
         _onAddEditObservationImageListChanged);
   }
@@ -135,6 +144,22 @@ class AddEditObservationBloc
       success = false;
     }
 
+    if (state.priorityLevel == null) {
+      emit(state.copyWith(
+          priorityLevelValidationMessage:
+              FormValidationMessage(fieldName: 'Priority level')
+                  .requiredMessage));
+      success = false;
+    }
+
+    if (state.observationType == null) {
+      emit(state.copyWith(
+          observationTypeValidationMessage:
+              FormValidationMessage(fieldName: 'Observation type')
+                  .requiredMessage));
+      success = false;
+    }
+
     return success;
   }
 
@@ -145,6 +170,26 @@ class AddEditObservationBloc
     try {
       List<Site> siteList = await sitesRepository.getSiteList();
       emit(state.copyWith(siteList: siteList));
+    } catch (e) {}
+  }
+
+  Future<void> _onAddEditObservationPriorityLevelListLoaded(
+    AddEditObservationPriorityLevelListLoaded event,
+    Emitter<AddEditObservationState> emit,
+  ) async {
+    try {
+      List<PriorityLevel> priorityLevelList = await priorityLevelsRepository.getPriorityLevelList();
+      emit(state.copyWith(priorityLevelList: priorityLevelList));
+    } catch (e) {}
+  }
+
+  Future<void> _onAddEditObservationObservationTypeListLoaded(
+    AddEditObservationObservationTypeListLoaded event,
+    Emitter<AddEditObservationState> emit,
+  ) async {
+    try {
+      List<ObservationType> observationTypeList = await observationTypesRepository.getObservationTypeList();
+      emit(state.copyWith(observationTypeList: observationTypeList));
     } catch (e) {}
   }
 
@@ -186,6 +231,28 @@ class AddEditObservationBloc
     emit(state.copyWith(
       site: event.site,
       siteValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditObservationPriorityLevelChanged(
+    AddEditObservationPriorityLevelChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(
+      priorityLevel: event.priorityLevel,
+      priorityLevelValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditObservationObservationTypeChanged(
+    AddEditObservationObservationTypeChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(
+      observationType: event.observationType,
+      observationTypeValidationMessage: '',
     ));
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }

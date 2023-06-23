@@ -598,103 +598,111 @@ class _CrudState extends State<EntityListTemplate> {
         elevation: 3,
         child: Container(
           width: MediaQuery.of(context).size.width / 4,
-          constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height - topbarHeight),
+          height: MediaQuery.of(context).size.height - topbarHeight,
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 30,
           ),
           color: Colors.white,
-          child: widget.entityDetailLoadStatusLoading
-              ? const Center(
-                  child: Loader(),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: insetx20,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.selectedEntity != null
-                                  ? widget.selectedEntity!.name ?? ''
-                                  : '',
-                              style: textSemiBold14,
-                              maxLines: 3,
-                              softWrap: false,
-                              overflow: TextOverflow.ellipsis,
+          child: SingleChildScrollView(
+            child: widget.entityDetailLoadStatusLoading
+                ? const Center(
+                    child: Loader(),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: insetx20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.selectedEntity != null
+                                    ? widget.selectedEntity!.name ?? ''
+                                    : '',
+                                style: textSemiBold14,
+                                maxLines: 3,
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () => _hideDetailsSlider(),
-                            icon: Icon(
-                              PhosphorIcons.regular.arrowCircleRight,
-                              size: 20,
-                              color: const Color(0xffef4444),
+                            IconButton(
+                              onPressed: () => _hideDetailsSlider(),
+                              icon: Icon(
+                                PhosphorIcons.regular.arrowCircleRight,
+                                size: 20,
+                                color: const Color(0xffef4444),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    ...widget.selectedEntity != null
-                        ? widget.selectedEntity!
-                            .sideDetailItemsToMap()
-                            .entries
-                            .map(
-                              (detail) => DetailItem(
-                                label: detail.key,
-                                isTwoLine: detail.value is Map,
-                                content: CustomDataCell(
-                                  data: detail.value is Map
-                                      ? detail.value['content']
-                                      : detail.value,
+                      ...widget.selectedEntity != null
+                          ? widget.selectedEntity!
+                              .sideDetailItemsToMap()
+                              .entries
+                              .map(
+                                (detail) => DetailItem(
+                                  label: detail.key,
+                                  isTwoLine: detail.value is Map,
+                                  content: Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width /
+                                                4),
+                                    child: CustomDataCell(
+                                      data: detail.value is Map
+                                          ? detail.value['content']
+                                          : detail.value,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList()
-                        : [],
-                    widget.entityDetailLoadStatusLoading
-                        ? Container()
-                        : Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  color: grey,
-                                  width: 1,
+                              )
+                              .toList()
+                          : [],
+                      widget.entityDetailLoadStatusLoading
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: grey,
+                                    width: 1,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                    widget.entityDetailLoadStatusLoading
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20.0,
-                              top: 12,
-                            ),
-                            child: CustomButton(
-                              backgroundColor: const Color(0xff0c83ff),
-                              hoverBackgroundColor: const Color(0xff0b76e6),
-                              iconData: PhosphorIcons.regular.arrowRight,
-                              text: '${camelize(widget.label)} Details',
-                              onClick: () {
-                                String location = GoRouter.of(context).location;
-                                int index = location.indexOf('/index');
-                                if (index != -1) {
-                                  location =
-                                      location.replaceRange(index, null, '');
-                                }
+                      widget.entityDetailLoadStatusLoading
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20.0,
+                                top: 12,
+                              ),
+                              child: CustomButton(
+                                backgroundColor: const Color(0xff0c83ff),
+                                hoverBackgroundColor: const Color(0xff0b76e6),
+                                iconData: PhosphorIcons.regular.arrowRight,
+                                text: '${camelize(widget.label)} Details',
+                                onClick: () {
+                                  String location =
+                                      GoRouter.of(context).location;
+                                  int index = location.indexOf('/index');
+                                  if (index != -1) {
+                                    location =
+                                        location.replaceRange(index, null, '');
+                                  }
 
-                                GoRouter.of(context)
-                                    .go('$location/show/$selectedId');
-                              },
+                                  GoRouter.of(context)
+                                      .go('$location/show/$selectedId');
+                                },
+                              ),
                             ),
-                          ),
-                  ],
-                ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );

@@ -43,7 +43,9 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
   @override
   void initState() {
     addEditObservationBloc = context.read()
-      ..add(AddEditObservationSiteListLoaded());
+      ..add(AddEditObservationSiteListLoaded())
+      ..add(AddEditObservationPriorityLevelListLoaded())
+      ..add(AddEditObservationObservationTypeListLoaded());
 
     if (widget.observationId != null) {
       addEditObservationBloc

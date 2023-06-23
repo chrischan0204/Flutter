@@ -34,6 +34,12 @@ class AddEditObservationLoaded extends AddEditObservationEvent {
 /// even to load site list
 class AddEditObservationSiteListLoaded extends AddEditObservationEvent {}
 
+/// even to load priority level list
+class AddEditObservationPriorityLevelListLoaded extends AddEditObservationEvent {}
+
+/// even to load observation type list
+class AddEditObservationObservationTypeListLoaded extends AddEditObservationEvent {}
+
 /// event to change the observation name
 class AddEditObservationNameChanged extends AddEditObservationEvent {
   /// observation name to change
@@ -62,6 +68,27 @@ class AddEditObservationResponseChanged extends AddEditObservationEvent {
 
   @override
   List<Object> get props => [response];
+}
+
+/// event to change the priority level
+class AddEditObservationPriorityLevelChanged extends AddEditObservationEvent {
+  /// site to priority level
+  final PriorityLevel priorityLevel;
+  const AddEditObservationPriorityLevelChanged({required this.priorityLevel});
+
+  @override
+  List<Object> get props => [priorityLevel];
+}
+
+/// event to change the observation
+class AddEditObservationObservationTypeChanged extends AddEditObservationEvent {
+  /// site to observation type
+  final ObservationType observationType;
+  const AddEditObservationObservationTypeChanged(
+      {required this.observationType});
+
+  @override
+  List<Object> get props => [observationType];
 }
 
 /// event to change the site

@@ -11,6 +11,12 @@ class AddEditObservationState extends Equatable {
   /// site list
   final List<Site> siteList;
 
+  /// priority level list
+  final List<PriorityLevel> priorityLevelList;
+
+  /// observation type list
+  final List<ObservationType> observationTypeList;
+
   /// observation name to create observation
   final String observationName;
 
@@ -44,6 +50,24 @@ class AddEditObservationState extends Equatable {
   /// initial response to check form dirty
   final String initialResponse;
 
+  /// priority level to create observation
+  final PriorityLevel? priorityLevel;
+
+  /// initial priority level to check form dirty
+  final PriorityLevel? initialPriorityLevel;
+
+  /// validation message for priority level
+  final String priorityLevelValidationMessage;
+
+  /// observation type to create observation
+  final ObservationType? observationType;
+
+  /// initial observation type to check form dirty
+  final ObservationType? initialObservationType;
+
+  /// validation message for observation type
+  final String observationTypeValidationMessage;
+
   /// images to create observation
   final List<Uint8List> images;
 
@@ -56,6 +80,8 @@ class AddEditObservationState extends Equatable {
     this.createdObservationId,
     this.loadedObservation,
     this.siteList = const [],
+    this.priorityLevelList = const [],
+    this.observationTypeList = const [],
     this.observationName = '',
     this.initialObservationName = '',
     this.observationNameValidationMessage = '',
@@ -67,6 +93,12 @@ class AddEditObservationState extends Equatable {
     this.locationValidationMessage = '',
     this.response = '',
     this.initialResponse = '',
+    this.priorityLevel,
+    this.initialPriorityLevel,
+    this.priorityLevelValidationMessage = '',
+    this.initialObservationType,
+    this.observationType,
+    this.observationTypeValidationMessage = '',
     this.images = const [],
     this.status = EntityStatus.initial,
     this.message = '',
@@ -77,6 +109,8 @@ class AddEditObservationState extends Equatable {
         createdObservationId,
         loadedObservation,
         siteList,
+        priorityLevelList,
+        observationTypeList,
         observationName,
         initialObservationName,
         observationNameValidationMessage,
@@ -88,6 +122,12 @@ class AddEditObservationState extends Equatable {
         locationValidationMessage,
         response,
         initialResponse,
+        priorityLevel,
+        initialPriorityLevel,
+        priorityLevelValidationMessage,
+        observationType,
+        initialObservationType,
+        observationTypeValidationMessage,
         images,
         status,
         message,
@@ -98,18 +138,29 @@ class AddEditObservationState extends Equatable {
         siteId: site!.id!,
         location: location,
         response: response,
+        priorityLevelId: priorityLevel!.id!,
+        observationTypeId: observationType!.id!,
         images: images,
       );
 
   bool get formDirty =>
       (Validation.isNotEmpty(observationName) &&
           observationName != initialObservationName) ||
-      (site != null && site?.id != initialSite?.id);
+      (Validation.isNotEmpty(location) && location != initialLocation) ||
+      (Validation.isNotEmpty(response) && response != initialResponse) ||
+      (site != null && site?.id != initialSite?.id) ||
+      (priorityLevel != null &&
+          priorityLevel?.id != initialPriorityLevel?.id) ||
+      (observationType != null &&
+          observationType?.id != initialObservationType?.id) ||
+      (images.isNotEmpty);
 
   AddEditObservationState copyWith({
     String? createdObservationId,
     Observation? loadedObservation,
     List<Site>? siteList,
+    List<PriorityLevel>? priorityLevelList,
+    List<ObservationType>? observationTypeList,
     String? observationName,
     String? initialObservationName,
     String? observationNameValidationMessage,
@@ -121,6 +172,12 @@ class AddEditObservationState extends Equatable {
     String? locationValidationMessage,
     String? response,
     String? initialResponse,
+    PriorityLevel? priorityLevel,
+    PriorityLevel? initialPriorityLevel,
+    String? priorityLevelValidationMessage,
+    ObservationType? observationType,
+    ObservationType? initialObservationType,
+    String? observationTypeValidationMessage,
     List<Uint8List>? images,
     EntityStatus? status,
     String? message,
@@ -129,6 +186,8 @@ class AddEditObservationState extends Equatable {
       createdObservationId: createdObservationId ?? this.createdObservationId,
       loadedObservation: loadedObservation ?? this.loadedObservation,
       siteList: siteList ?? this.siteList,
+      priorityLevelList: priorityLevelList ?? this.priorityLevelList,
+      observationTypeList: observationTypeList ?? this.observationTypeList,
       observationName: observationName ?? this.observationName,
       initialObservationName:
           initialObservationName ?? this.initialObservationName,
@@ -144,6 +203,15 @@ class AddEditObservationState extends Equatable {
           locationValidationMessage ?? this.locationValidationMessage,
       response: response ?? this.response,
       initialResponse: initialResponse ?? this.initialResponse,
+      priorityLevel: priorityLevel ?? this.priorityLevel,
+      initialPriorityLevel: initialPriorityLevel ?? this.initialPriorityLevel,
+      priorityLevelValidationMessage:
+          priorityLevelValidationMessage ?? this.priorityLevelValidationMessage,
+      observationType: observationType ?? this.observationType,
+      initialObservationType:
+          initialObservationType ?? this.initialObservationType,
+      observationTypeValidationMessage: observationTypeValidationMessage ??
+          this.observationTypeValidationMessage,
       images: images ?? this.images,
       status: status ?? this.status,
       message: message ?? this.message,

@@ -26,6 +26,14 @@ class AddEditObservationFormView extends StatelessWidget {
               leftValidationMessage: state.siteValidationMessage,
             ),
             FormItemVertical(
+              leftChild: const PriorityLevelSelectField(),
+              rightChild: const ObservationTypeSelectField(),
+              leftLabel: 'Priority Level (*)',
+              rightLabel: 'Observation Type (*)',
+              leftValidationMessage: state.priorityLevelValidationMessage,
+              rightValidationMessage: state.observationNameValidationMessage,
+            ),
+            FormItemVertical(
               leftChild: const ObservationImagePicker(),
               leftLabel: 'Images',
               secondaryRightChild: Text(
