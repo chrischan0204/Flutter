@@ -8,33 +8,41 @@ class AuditSummary1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: Column(
-        children: const [
-          AuditDetailItemView(
-            label: 'Owner',
-            content: 'Amy Adams',
-          ),
-          AuditDetailItemView(
-            label: 'Created on',
-            content: '14th May 2023',
-          ),
-          AuditDetailItemView(
-            label: 'Status',
-            content: 'In progress',
-          ),
-          AuditDetailItemView(
-            label: 'Last touched',
-            content: '16th May 2023',
-          ),
-          AuditDetailItemView(
-            label: 'Sections',
-            content: '4',
-          ),
-          AuditDetailItemView(
-            label: 'Site',
-            content: 'Lakeshore Drive, Chicago',
-          ),
-        ],
+      child: BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
+        builder: (context, state) {
+          if (state.loadedAudit != null) {
+            final audit = state.loadedAudit!;
+            return Column(
+              children: [
+                AuditDetailItemView(
+                  label: 'Owner',
+                  content: audit.owner ?? '--',
+                ),
+                AuditDetailItemView(
+                  label: 'Created on',
+                  content: audit.createdOn ?? '--',
+                ),
+                AuditDetailItemView(
+                  label: 'Status',
+                  content: audit.auditStatusName ?? '--',
+                ),
+                AuditDetailItemView(
+                  label: 'Last touched',
+                  content: audit.lastModifiedOn ?? '--',
+                ),
+                AuditDetailItemView(
+                  label: 'Sections',
+                  content: audit.sections.toString(),
+                ),
+                AuditDetailItemView(
+                  label: 'Site',
+                  content: audit.siteName ?? '--',
+                ),
+              ],
+            );
+          }
+          return Container();
+        },
       ),
     );
   }

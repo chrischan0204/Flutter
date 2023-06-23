@@ -30,6 +30,9 @@ class AuditQuestionsAuditSectionListLoaded extends AuditQuestionsEvent {
   List<Object> get props => [auditId];
 }
 
+/// event to load audit question list
+class AuditQuestionsAuditQuestionListLoaded extends AuditQuestionsEvent {}
+
 /// event to change selected audit detail
 class AuditQuestionsSelectedAuditSectionChanged extends AuditQuestionsEvent {
   final AuditSection auditSection;

@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import '/common_libraries.dart';
 
 // enum AuditQuestionStatus {
@@ -21,49 +23,87 @@ import '/common_libraries.dart';
 
 class AuditQuestion extends Equatable {
   final String id;
-  final int no;
-  final double score;
+  final double questionScore;
+  final double maxScore;
   final String question;
-  final String scale;
-  final bool answered;
+  final String responseScaleName;
+  final int questionStatus;
+  final int questionOrder;
   final bool included;
+
   const AuditQuestion({
     required this.id,
-    required this.no,
-    required this.score,
+    required this.questionScore,
+    this.maxScore = 0,
     required this.question,
-    required this.scale,
-    required this.answered,
+    required this.responseScaleName,
+    required this.questionStatus,
+    this.questionOrder = 0,
     this.included = true,
   });
+
   @override
   List<Object?> get props => [
         id,
-        no,
-        score,
+        questionScore,
         question,
-        scale,
-        answered,
+        maxScore,
+        responseScaleName,
+        questionStatus,
+        questionOrder,
         included,
       ];
 
   AuditQuestion copyWith({
     String? id,
-    int? no,
-    double? score,
+    double? questionScore,
+    double? maxScore,
     String? question,
-    String? scale,
-    bool? answered,
+    String? responseScaleName,
+    int? questionStatus,
+    int? questionOrder,
     bool? included,
   }) {
     return AuditQuestion(
       id: id ?? this.id,
-      no: no ?? this.no,
-      score: score ?? this.score,
+      questionScore: questionScore ?? this.questionScore,
+      maxScore: maxScore ?? this.maxScore,
       question: question ?? this.question,
-      scale: scale ?? this.scale,
-      answered: answered ?? this.answered,
+      responseScaleName: responseScaleName ?? this.responseScaleName,
+      questionStatus: questionStatus ?? this.questionStatus,
+      questionOrder: questionOrder ?? this.questionOrder,
       included: included ?? this.included,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'questionScore': questionScore,
+      'maxScore': maxScore,
+      'question': question,
+      'responseScaleName': responseScaleName,
+      'questionStatus': questionStatus,
+      'questionOrder': questionOrder,
+      'questionExcluded': included,
+    };
+  }
+
+  factory AuditQuestion.fromMap(Map<String, dynamic> map) {
+    return AuditQuestion(
+      id: map['id'] as String,
+      questionScore: map['questionScore'] as double,
+      maxScore: map['maxScore'] as double,
+      question: map['question'] as String,
+      responseScaleName: map['responseScaleName'] as String,
+      questionStatus: map['questionStatus'] as int,
+      questionOrder: map['questionOrder'] as int,
+      included: !(map['questionExcluded'] as bool),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory AuditQuestion.fromJson(String source) =>
+      AuditQuestion.fromMap(json.decode(source) as Map<String, dynamic>);
 }

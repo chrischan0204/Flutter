@@ -768,20 +768,20 @@ class TemplateDesignerBloc
                     .map((a) => a.copyWith(
                         response: Nullable.value(a.response?.copyWith(
                           responseScaleItemId: a.response?.id,
-                          id: Nullable.value(null),
+                          id: const Nullable.value(null),
                         )),
                         children: a.children
                             .map((b) => b.copyWith(
                                   response: Nullable.value(b.response?.copyWith(
                                     responseScaleItemId: b.response?.id,
-                                    id: Nullable.value(null),
+                                    id: const Nullable.value(null),
                                   )),
                                   children: b.children
                                       .map((c) => c.copyWith(
                                           response: Nullable.value(
                                               c.response?.copyWith(
                                             responseScaleItemId: c.response?.id,
-                                            id: Nullable.value(null),
+                                            id: const Nullable.value(null),
                                           )),
                                           children: c.children
                                               .map((d) => d.copyWith(
@@ -789,7 +789,8 @@ class TemplateDesignerBloc
                                                       d.response?.copyWith(
                                                     responseScaleItemId:
                                                         d.response?.id,
-                                                    id: Nullable.value(null),
+                                                    id: const Nullable.value(
+                                                        null),
                                                   )),
                                                   children: d.children
                                                       .map((e) => e.copyWith(
@@ -799,8 +800,8 @@ class TemplateDesignerBloc
                                                                   ?.copyWith(
                                                             responseScaleItemId:
                                                                 e.response?.id,
-                                                            id: Nullable.value(
-                                                                null),
+                                                            id: const Nullable
+                                                                .value(null),
                                                           )),
                                                           children: e.children
                                                               .map((f) =>
@@ -963,12 +964,13 @@ class TemplateDesignerBloc
           selectedResponseScaleId: Nullable.value(responseScaleId),
           templateSectionItem: Nullable.value(
             TemplateSectionItem(
-              id: event.question.id,
+              id: '7aad71c1-892c-4bbc-a8c6-3983e9c4d598',
               itemTypeId: 1,
-              templateSectionItemId: event.question.id,
+              templateSectionItemId:'7aad71c1-892c-4bbc-a8c6-3983e9c4d598',
               templateSectionId: state.selectedTemplateSection!.id,
               responseScaleId: responseScaleId,
               question: Question(
+                id: event.question.id,
                 name: event.question.title,
                 responseScaleId: responseScaleId,
               ),
@@ -1007,6 +1009,8 @@ class TemplateDesignerBloc
       final followUpQuestion =
           templateQuestionDetailList[0].templateSectionItems[0];
 
+
+
       List<TemplateResponseScaleItem> responseScaleItemList =
           await responseScalesRepository
               .getResponseScaleItemList(followUpQuestion.responseScaleId);
@@ -1035,7 +1039,7 @@ class TemplateDesignerBloc
                           .map((e) => e.id ==
                                   state.currentLevel1TemplateSectionItemId
                               ? e.copyWith(
-                                  id: followUpQuestion.id,
+                                  id: templateQuestionDetailList[0].id,
                                   itemTypeId: 3,
                                   templateSectionId:
                                       state.selectedTemplateSection!.id,
@@ -1044,6 +1048,7 @@ class TemplateDesignerBloc
                                       followUpQuestion.responseScaleId,
                                   question: Nullable.value(
                                     e.question?.copyWith(
+                                      id: followUpQuestion.id,
                                       name: followUpQuestion.title,
                                       responseScaleId:
                                           followUpQuestion.responseScaleId,
@@ -1087,7 +1092,7 @@ class TemplateDesignerBloc
                                                   state
                                                       .currentLevel2TemplateSectionItemId
                                               ? e.copyWith(
-                                                  id: followUpQuestion.id,
+                                                  id: templateQuestionDetailList[0].id,
                                                   itemTypeId: 3,
                                                   templateSectionId: state
                                                       .selectedTemplateSection!
@@ -1099,6 +1104,7 @@ class TemplateDesignerBloc
                                                           .responseScaleId,
                                                   question: Nullable.value(
                                                     e.question?.copyWith(
+                                                      id: followUpQuestion.id,
                                                       name: followUpQuestion
                                                           .title,
                                                       responseScaleId:

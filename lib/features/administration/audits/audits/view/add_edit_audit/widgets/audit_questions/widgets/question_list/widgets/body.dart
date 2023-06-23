@@ -26,7 +26,7 @@ class QuestionsListBodyView extends StatelessWidget {
           ),
           child: SfDataGrid(
             source: AuditQuestionDataSource(
-              auditQuestionList: state.selectedAuditSection!.auditQuestionList,
+              auditQuestionList: state.auditQuestionList,
               columns: columnList,
               context: context,
             ),
@@ -75,9 +75,10 @@ class AuditQuestionDataSource extends DataGridSource {
                 DataGridCell(
                     columnName: columns[1], value: auditQuestion.question),
                 DataGridCell(
-                    columnName: columns[2], value: auditQuestion.score),
+                    columnName: columns[2], value: auditQuestion.questionScore),
                 DataGridCell(
-                    columnName: columns[3], value: auditQuestion.answered),
+                    columnName: columns[3],
+                    value: !(auditQuestion.questionStatus == 0)),
               ],
             ))
         .toList();

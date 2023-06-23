@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import '/common_libraries.dart';
 
 enum AuditSectionStatus {
@@ -38,6 +40,8 @@ enum AuditSectionStatus {
 class AuditSection extends Equatable {
   final String id;
   final String name;
+  final int order;
+  final bool excluded;
   final int questionCount;
   final double maxScore;
   final AuditSectionStatus status;
@@ -46,6 +50,8 @@ class AuditSection extends Equatable {
   const AuditSection({
     required this.id,
     required this.name,
+    required this.order,
+    required this.excluded,
     required this.status,
     required this.questionCount,
     required this.maxScore,
@@ -59,6 +65,8 @@ class AuditSection extends Equatable {
   List<Object?> get props => [
         id,
         name,
+        order,
+        excluded,
         status,
         auditQuestionList,
         questionCount,
@@ -68,6 +76,8 @@ class AuditSection extends Equatable {
   AuditSection copyWith({
     String? id,
     String? name,
+    int? order,
+    bool? excluded,
     int? questionCount,
     double? maxScore,
     AuditSectionStatus? status,
@@ -76,10 +86,42 @@ class AuditSection extends Equatable {
     return AuditSection(
       id: id ?? this.id,
       name: name ?? this.name,
+      order: order ?? this.order,
+      excluded: excluded ?? this.excluded,
       questionCount: questionCount ?? this.questionCount,
       maxScore: maxScore ?? this.maxScore,
       status: status ?? this.status,
       auditQuestionList: auditQuestionList ?? this.auditQuestionList,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'order': order,
+      'excluded': excluded,
+      'questionCount': questionCount,
+      'maxScore': maxScore,
+      'auditQuestionList': auditQuestionList.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory AuditSection.fromMap(Map<String, dynamic> map) {
+    return AuditSection(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      order: map['order'] as int,
+      excluded: map['excluded'] as bool,
+      questionCount: map['questionCount'] ?? 0,
+      maxScore: map['maxScore'] ?? 0,
+      status: AuditSectionStatus.done,
+      auditQuestionList: [],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory AuditSection.fromJson(String source) =>
+      AuditSection.fromMap(json.decode(source) as Map<String, dynamic>);
 }

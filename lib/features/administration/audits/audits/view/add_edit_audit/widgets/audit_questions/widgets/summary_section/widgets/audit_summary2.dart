@@ -8,33 +8,41 @@ class AuditSummary2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: Column(
-        children: const [
-          AuditDetailItemView(
-            label: 'Project',
-            content: '--',
-          ),
-          AuditDetailItemView(
-            label: 'Completion',
-            content: '11 of 33',
-            highlighted: true,
-          ),
-          AuditDetailItemView(
-            label: 'Observations',
-            content: '2',
-            highlighted: true,
-          ),
-          AuditDetailItemView(
-            label: 'Action Items',
-            content: '4',
-            highlighted: true,
-          ),
-          AuditDetailItemView(
-            label: 'Images',
-            content: '4',
-            highlighted: true,
-          ),
-        ],
+      child: BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
+        builder: (context, state) {
+          if (state.loadedAudit != null) {
+            final audit = state.loadedAudit!;
+            return Column(
+              children: [
+                AuditDetailItemView(
+                  label: 'Project',
+                  content: audit.projectName ?? '--',
+                ),
+                AuditDetailItemView(
+                  label: 'Completion',
+                  content: '${audit.completed} of 33',
+                  highlighted: true,
+                ),
+                AuditDetailItemView(
+                  label: 'Observations',
+                  content: '2',
+                  highlighted: true,
+                ),
+                AuditDetailItemView(
+                  label: 'Action Items',
+                  content: '4',
+                  highlighted: true,
+                ),
+                AuditDetailItemView(
+                  label: 'Images',
+                  content: '4',
+                  highlighted: true,
+                ),
+              ],
+            );
+          }
+          return Container();
+        },
       ),
     );
   }

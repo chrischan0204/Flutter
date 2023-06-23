@@ -11,7 +11,7 @@ class AuditQuestionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuditQuestionsBloc(context),
+      create: (context) => AuditQuestionsBloc(context, auditId: auditId),
       child: AuditQuestionsWidget(auditId: auditId),
     );
   }
@@ -69,7 +69,7 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
                 builder: (context, state) {
                   if (state.selectedAuditSection != null) {
                     return const QuestionListView();
-                  } 
+                  }
                   return Container();
                 },
               ),

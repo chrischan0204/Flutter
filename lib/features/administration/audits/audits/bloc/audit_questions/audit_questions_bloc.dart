@@ -6,8 +6,10 @@ part 'audit_questions_state.dart';
 class AuditQuestionsBloc
     extends Bloc<AuditQuestionsEvent, AuditQuestionsState> {
   final BuildContext context;
+  final String auditId;
   late AuditsRepository auditsRepository;
-  AuditQuestionsBloc(this.context) : super(const AuditQuestionsState()) {
+  AuditQuestionsBloc(this.context, {required this.auditId})
+      : super(const AuditQuestionsState()) {
     auditsRepository = context.read();
 
     on<AuditQuestionsSnapshotListLoaded>(_onAuditQuestionsSnapshotListLoaded);
@@ -16,6 +18,21 @@ class AuditQuestionsBloc
     on<AuditQuestionsSelectedAuditSectionChanged>(
         _onAuditQuestionsSelectedAuditSectionChanged);
     on<AuditQuestionsIncludedChanged>(_onAuditQuestionsIncludedChanged);
+    on<AuditQuestionsAuditQuestionListLoaded>(
+        _onAuditQuestionsAuditQuestionListLoaded);
+  }
+
+  @override
+  void onChange(Change<AuditQuestionsState> change) {
+    final current = change.currentState;
+    final next = change.nextState;
+
+    if (current.selectedAuditSection != next.selectedAuditSection &&
+        next.selectedAuditSection != null) {
+      add(AuditQuestionsAuditQuestionListLoaded());
+    }
+
+    super.onChange(change);
   }
 
   Future<void> _onAuditQuestionsSnapshotListLoaded(
@@ -40,6 +57,16 @@ class AuditQuestionsBloc
       selectedAuditSection:
           auditSectionList.isNotEmpty ? auditSectionList.first : null,
     ));
+  }
+
+  Future<void> _onAuditQuestionsAuditQuestionListLoaded(
+    AuditQuestionsAuditQuestionListLoaded event,
+    Emitter<AuditQuestionsState> emit,
+  ) async {
+    final auditQuestionList = await auditsRepository.getAuditQuestionList(
+        auditId, state.selectedAuditSection!.id);
+
+    emit(state.copyWith(auditQuestionList: auditQuestionList));
   }
 
   void _onAuditQuestionsSelectedAuditSectionChanged(

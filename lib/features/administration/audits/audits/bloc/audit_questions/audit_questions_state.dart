@@ -5,10 +5,13 @@ class AuditQuestionsState extends Equatable {
   final List<AuditQuestionSnapshot> auditQuestionSnapshotList;
   final List<AuditSection> auditSectionList;
   final AuditSection? selectedAuditSection;
+
+  final List<AuditQuestion> auditQuestionList;
   const AuditQuestionsState({
     this.auditQuestionSnapshotList = const [],
     this.auditSectionList = const [],
     this.selectedAuditSection,
+    this.auditQuestionList = const [],
   });
 
   @override
@@ -16,6 +19,7 @@ class AuditQuestionsState extends Equatable {
         auditQuestionSnapshotList,
         auditSectionList,
         selectedAuditSection,
+        auditQuestionList,
       ];
 
   bool get isAllExcluded => selectedAuditSection!.auditQuestionList
@@ -29,13 +33,14 @@ class AuditQuestionsState extends Equatable {
             includedQuestionCount: section.auditQuestionList
                 .where((element) => element.included)
                 .length,
-            maxScore: section.auditQuestionList
-                .map((e) => e.score)
-                .reduce((value, element) => value > element ? value : element),
+            maxScore: [
+              ...section.auditQuestionList.map((e) => e.questionScore),
+              0.0,
+            ].reduce((value, element) => value > element ? value : element),
             includedScore: [
               ...section.auditQuestionList
                   .where((element) => element.included)
-                  .map((e) => e.score),
+                  .map((e) => e.questionScore),
               0.0,
             ].reduce((value, element) => value + element),
           ))
@@ -45,12 +50,14 @@ class AuditQuestionsState extends Equatable {
     List<AuditQuestionSnapshot>? auditQuestionSnapshotList,
     List<AuditSection>? auditSectionList,
     AuditSection? selectedAuditSection,
+    List<AuditQuestion>? auditQuestionList,
   }) {
     return AuditQuestionsState(
       auditQuestionSnapshotList:
           auditQuestionSnapshotList ?? this.auditQuestionSnapshotList,
       auditSectionList: auditSectionList ?? this.auditSectionList,
       selectedAuditSection: selectedAuditSection ?? this.selectedAuditSection,
+      auditQuestionList: auditQuestionList ?? this.auditQuestionList,
     );
   }
 }

@@ -22,7 +22,7 @@ class QuestionListHeaderView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (state.selectedAuditSection!.auditQuestionList
-                      .where((element) => !element.included)
+                      .where((element) => element.included)
                       .isEmpty) {
                     CustomAlert(
                       context: context,
