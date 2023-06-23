@@ -11,12 +11,16 @@ class AuditListState extends Equatable {
   /// selected audit
   final Audit? audit;
 
+  /// audit load status
+  final EntityStatus auditLoadStatus;
+
   /// total rows of audit list
   final int totalRows;
   const AuditListState({
     this.auditList = const [],
     this.auditListLoadStatus = EntityStatus.initial,
     this.audit,
+    this.auditLoadStatus = EntityStatus.initial,
     this.totalRows = 0,
   });
 
@@ -25,19 +29,24 @@ class AuditListState extends Equatable {
         auditList,
         auditListLoadStatus,
         audit,
+        auditLoadStatus,
         totalRows,
       ];
+
+  
 
   AuditListState copyWith({
     List<Audit>? auditList,
     EntityStatus? auditListLoadStatus,
     Audit? audit,
+    EntityStatus? auditLoadStatus,
     int? totalRows,
   }) {
     return AuditListState(
       auditList: auditList ?? this.auditList,
       auditListLoadStatus: auditListLoadStatus ?? this.auditListLoadStatus,
       audit: audit ?? this.audit,
+      auditLoadStatus: auditLoadStatus ?? this.auditLoadStatus,
       totalRows: totalRows ?? this.totalRows,
     );
   }

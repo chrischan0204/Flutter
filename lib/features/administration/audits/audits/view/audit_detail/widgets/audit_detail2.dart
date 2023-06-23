@@ -8,35 +8,40 @@ class AuditDetailView2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: Column(
-        children: const [
-          AuditDetailItemView(
-            label: 'Created on',
-            content: '14th May 2023',
-          ),
-          AuditDetailItemView(
-            label: 'Status',
-            content: 'In progress',
-          ),
-          AuditDetailItemView(
-            label: 'Questions',
-            content: '43',
-          ),
-          AuditDetailItemView(
-            label: 'Project',
-            content: '--',
-          ),
-          AuditDetailItemView(
-            label: 'Action items',
-            content: '4',
-            highlighted: true,
-          ),
-          AuditDetailItemView(
-            label: 'Images',
-            content: '4',
-            highlighted: true,
-          ),
-        ],
+      child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
+        builder: (context, state) {
+          final audit = state.audit!;
+          return Column(
+            children: [
+              AuditDetailItemView(
+                label: 'Created on',
+                content: audit.createdOn ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Status',
+                content: audit.auditStatusName ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Questions',
+                content: audit.questions.toString(),
+              ),
+              AuditDetailItemView(
+                label: 'Project',
+                content: audit.projectName ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Action items',
+                content: '4',
+                highlighted: true,
+              ),
+              AuditDetailItemView(
+                label: 'Images',
+                content: '4',
+                highlighted: true,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

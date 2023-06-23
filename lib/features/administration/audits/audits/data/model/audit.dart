@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:intl/intl.dart';
 
 import '/common_libraries.dart';
@@ -19,10 +20,14 @@ class Audit extends Entity {
   final String templateId;
   final String? templateName;
 
+  final int sections;
+  final int questions;
+  final int answeredQuestions;
+
   final String? owner;
 
   final double score;
-
+  final double maxScore;
   const Audit({
     super.id,
     super.name,
@@ -37,6 +42,10 @@ class Audit extends Entity {
     required this.templateId,
     this.templateName,
     this.owner,
+    required this.sections,
+    required this.questions,
+    required this.answeredQuestions,
+    required this.maxScore,
     required this.score,
     super.createdOn,
     super.createdByUserName,
@@ -61,6 +70,10 @@ class Audit extends Entity {
         templateId,
         templateName,
         owner,
+        sections,
+        questions,
+        answeredQuestions,
+        maxScore,
         score,
         createdOn,
         createdByUserName,
@@ -90,11 +103,11 @@ class Audit extends Entity {
     return {
       'Audit': name,
       'Onwer': owner,
-      'Started on': '12th March 2023',
+      'Started on': formatedAuditDate,
       'Completion': completed,
       'Score': score,
-      'Sections': 4,  
-      'Questions': 42,
+      'Sections': sections,
+      'Questions': questions,
       'Site': siteName,
       'Project': projectName ?? '--',
       'Created on': createdOn,
@@ -107,48 +120,6 @@ class Audit extends Entity {
   @override
   Map<String, dynamic> detailItemsToMap() {
     return {};
-  }
-
-  Audit copyWith({
-    String? id,
-    String? name,
-    String? auditNumber,
-    DateTime? auditDate,
-    String? auditStatusName,
-    double? completed,
-    String? siteId,
-    String? siteName,
-    String? projectId,
-    String? projectName,
-    String? templateId,
-    String? templateName,
-    String? owner,
-    double? score,
-    String? lastModifiedOn,
-    String? createdOn,
-    bool? deleted,
-    List<String>? columns,
-  }) {
-    return Audit(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      auditNumber: auditNumber ?? this.auditNumber,
-      auditDate: auditDate ?? this.auditDate,
-      auditStatusName: auditStatusName ?? this.auditStatusName,
-      completed: completed ?? this.completed,
-      siteId: siteId ?? this.siteId,
-      siteName: siteName ?? this.siteName,
-      projectId: projectId ?? this.projectId,
-      projectName: projectName ?? this.projectName,
-      templateId: templateId ?? this.templateId,
-      templateName: templateName ?? this.templateName,
-      owner: owner ?? this.owner,
-      score: score ?? this.score,
-      createdOn: createdOn ?? this.createdOn,
-      lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
-      deleted: deleted ?? this.deleted,
-      columns: columns ?? this.columns,
-    );
   }
 
   factory Audit.fromMap(Map<String, dynamic> map) {
@@ -168,6 +139,10 @@ class Audit extends Entity {
       templateName: map['templateName'],
       owner: map['owner'] ?? '',
       score: map['score'],
+      answeredQuestions: map['answeredQuestions'],
+      maxScore: map['maxScore'],
+      sections: map['sections'],
+      questions: map['questions'],
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
       createdByUserName: entity.createdByUserName,
@@ -177,4 +152,42 @@ class Audit extends Entity {
 
   factory Audit.fromJson(String source) =>
       Audit.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  Audit copyWith({
+    String? auditNumber,
+    DateTime? auditDate,
+    String? auditStatusName,
+    double? completed,
+    String? siteId,
+    String? siteName,
+    String? projectId,
+    String? projectName,
+    String? templateId,
+    String? templateName,
+    int? sections,
+    int? questions,
+    int? answeredQuestions,
+    String? owner,
+    double? score,
+    double? maxScore,
+  }) {
+    return Audit(
+      auditNumber: auditNumber ?? this.auditNumber,
+      auditDate: auditDate ?? this.auditDate,
+      auditStatusName: auditStatusName ?? this.auditStatusName,
+      completed: completed ?? this.completed,
+      siteId: siteId ?? this.siteId,
+      siteName: siteName ?? this.siteName,
+      projectId: projectId ?? this.projectId,
+      projectName: projectName ?? this.projectName,
+      templateId: templateId ?? this.templateId,
+      templateName: templateName ?? this.templateName,
+      sections: sections ?? this.sections,
+      questions: questions ?? this.questions,
+      answeredQuestions: answeredQuestions ?? this.answeredQuestions,
+      owner: owner ?? this.owner,
+      score: score ?? this.score,
+      maxScore: maxScore ?? this.maxScore,
+    );
+  }
 }

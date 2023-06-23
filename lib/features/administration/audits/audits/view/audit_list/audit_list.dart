@@ -62,8 +62,8 @@ class _AuditListState extends State<AuditListWidget> {
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
                     auditListState.auditListLoadStatus.isLoading,
-            // entityDetailLoadStatusLoading:
-            //     auditDetailState.auditLoadStatus.isLoading,
+            entityDetailLoadStatusLoading:
+                auditListState.auditLoadStatus.isLoading,
             selectedEntity: auditListState.audit,
             onViewSettingApplied: () {
               _filterAudits();

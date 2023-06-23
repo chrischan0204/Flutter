@@ -8,24 +8,29 @@ class AuditDetailView3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: Column(
-        children: const [
-          AuditDetailItemView(
-            label: 'Area',
-            content: 'Section 3 Parking garage',
-          ),
-          AuditDetailItemView(
-            label: 'Companies',
-            content:
-                'Lucas Landscaping, Constellation Fencing and picketing llc., Rider group concrete inc and Gartner Electric',
-            twoLines: true,
-          ),
-          AuditDetailItemView(
-            label: 'Inspectors',
-            content: 'Frank Hurt, Brian Trippi and George Kiltman',
-            twoLines: true,
-          ),
-        ],
+      child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
+        builder: (context, state) {
+          final audit = state.audit!;
+          return Column(
+            children: [
+              AuditDetailItemView(
+                label: 'Area',
+                content: 'Section 3 Parking garage',
+              ),
+              AuditDetailItemView(
+                label: 'Companies',
+                content:
+                    'Lucas Landscaping, Constellation Fencing and picketing llc., Rider group concrete inc and Gartner Electric',
+                twoLines: true,
+              ),
+              AuditDetailItemView(
+                label: 'Inspectors',
+                content: 'Frank Hurt, Brian Trippi and George Kiltman',
+                twoLines: true,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

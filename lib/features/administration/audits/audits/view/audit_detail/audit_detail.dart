@@ -35,9 +35,9 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
 
   @override
   void initState() {
-    context
-        .read<AuditDetailBloc>()
-        .add(AuditDetailAuditSectionListLoaded(auditId: widget.auditId));
+    context.read<AuditDetailBloc>()
+      ..add(AuditDetailLoaded(auditId: widget.auditId))
+      ..add(AuditDetailAuditSectionListLoaded(auditId: widget.auditId));
     super.initState();
   }
 
@@ -82,52 +82,53 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               .add(AuditDetailAuditDeleted(auditId: widget.auditId)),
           entity: state.audit,
           crudStatus: state.auditDeleteStatus,
-          customDetailWidget: Column(
-            children: [
-              Card(
-                elevation: 3,
-                child: Padding(
-                  padding: inset10,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        padding: inset20,
-                        decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(color: grey))),
-                        child: Text(
-                          'SA0029-23',
-                          style: textNormal20,
+          customDetailWidget: state.audit == null
+              ? const Center(child: Loader())
+              : Column(
+                  children: [
+                    Card(
+                      elevation: 3,
+                      child: Padding(
+                        padding: inset10,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              padding: inset20,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border(bottom: BorderSide(color: grey))),
+                              child: Text(
+                                state.audit?.name ?? '',
+                                style: textNormal20,
+                              ),
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Expanded(child: SectionSummaryView()),
+                                Expanded(child: AuditDetailView1()),
+                                Expanded(child: AuditDetailView2()),
+                                Expanded(child: AuditDetailView3()),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Expanded(child: SectionSummaryView()),
-                          Expanded(
-                            child: AuditDetailView1(),
-                          ),
-                          Expanded(child: AuditDetailView2()),
-                          Expanded(child: AuditDetailView3()),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    spacery20,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Expanded(child: AuditSectionsView()),
+                        Expanded(
+                          flex: 3,
+                          child: QuestionsListView(),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              spacery20,
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Expanded(child: AuditSectionsView()),
-                  Expanded(
-                    flex: 3,
-                    child: QuestionsListView(),
-                  ),
-                ],
-              ),
-            ],
-          ),
           // descriptionForDelete: descriptionForDelete,
         );
       },

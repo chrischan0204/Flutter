@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '/common_libraries.dart';
 
 part 'add_edit_audit_event.dart';
@@ -58,18 +60,21 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        Audit audit = await auditsRepository
+        String? response = await auditsRepository
             .addAudit(state.audit.copyWith(userId: event.userId));
 
-        emit(state.copyWith(
-          createdAuditId: audit.id,
-          message: 'Audit successfully added.',
-          status: EntityStatus.success,
-        ));
-        // emit(state.copyWith(
-        //   auditNameValidationMessage: response.message,
-        //   status: EntityStatus.initial,
-        // ));
+        if (Uuid.isValidUUID(fromString: response ?? '')) {
+          emit(state.copyWith(
+            createdAuditId: response,
+            message: 'Audit successfully added.',
+            status: EntityStatus.success,
+          ));
+        } else {
+          emit(state.copyWith(
+            auditNameValidationMessage: response,
+            status: EntityStatus.initial,
+          ));
+        }
       } catch (e) {
         print(e);
         emit(state.copyWith(

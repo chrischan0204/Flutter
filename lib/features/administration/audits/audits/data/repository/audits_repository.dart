@@ -33,11 +33,14 @@ class AuditsRepository extends BaseRepository {
   }
 
   // add audit
-  Future<Audit> addAudit(AuditCreate audit) async {
+  Future<String?> addAudit(AuditCreate audit) async {
     Response response = await super.post(url, body: audit.toJson());
 
     if (response.statusCode == 200) {
-      return Audit.fromJson(response.body);
+      return Audit.fromJson(response.body).id;
+    }
+    if (response.statusCode == 500) {
+      return EntityResponse.fromJson(response.body).message;
     }
     throw Exception();
   }

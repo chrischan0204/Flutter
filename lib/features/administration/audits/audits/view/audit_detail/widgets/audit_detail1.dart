@@ -8,35 +8,40 @@ class AuditDetailView1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: Column(
-        children: const [
-          AuditDetailItemView(
-            label: 'Owner',
-            content: 'Amy Admas',
-          ),
-          AuditDetailItemView(
-            label: 'Last touched',
-            content: '16th May 2023',
-          ),
-          AuditDetailItemView(
-            label: 'Sections',
-            content: '4',
-          ),
-          AuditDetailItemView(
-            label: 'Site',
-            content: 'Lakeshore Drive, Chicago',
-          ),
-          AuditDetailItemView(
-            label: 'Completion',
-            content: '33% (11 of 33)',
-            highlighted: true,
-          ),
-          AuditDetailItemView(
-            label: 'Observations',
-            content: '2',
-            highlighted: true,
-          ),
-        ],
+      child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
+        builder: (context, state) {
+          final audit = state.audit!;
+          return Column(
+            children: [
+              AuditDetailItemView(
+                label: 'Owner',
+                content: audit.owner ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Last touched',
+                content: audit.lastModifiedOn ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Sections',
+                content: audit.sections.toString(),
+              ),
+              AuditDetailItemView(
+                label: 'Site',
+                content: audit.siteName ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Completion',
+                content: audit.completed.toString(),
+                highlighted: true,
+              ),
+              AuditDetailItemView(
+                label: 'Observations',
+                content: '2',
+                highlighted: true,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
