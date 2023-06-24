@@ -70,16 +70,22 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
             status: EntityStatus.success,
           ));
         } else {
-          emit(state.copyWith(
-            auditNameValidationMessage: response,
-            status: EntityStatus.initial,
-          ));
+          if (response?.contains('already') == true) {
+            emit(state.copyWith(
+              auditNameValidationMessage: response,
+              status: EntityStatus.initial,
+            ));
+          } else {
+            emit(state.copyWith(
+              status: EntityStatus.failure,
+              message: response,
+            ));
+          }
         }
       } catch (e) {
-        print(e);
         emit(state.copyWith(
           status: EntityStatus.failure,
-          // message: addErrorMessage,
+          message: ErrorMessage('audit').add,
         ));
       }
     }

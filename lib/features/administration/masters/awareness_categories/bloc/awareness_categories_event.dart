@@ -9,7 +9,8 @@ abstract class AwarenessCategoriesEvent extends Equatable {
 
 class AwarenessCategoriesRetrieved extends AwarenessCategoriesEvent {}
 
-class AwarenessGroupsForAwarenessCategoriesRetrieved extends AwarenessCategoriesEvent {}
+class AwarenessGroupsForAwarenessCategoriesRetrieved
+    extends AwarenessCategoriesEvent {}
 
 class AwarenessCategorySelected extends AwarenessCategoriesEvent {
   final AwarenessCategory? awarenessCategory;
@@ -30,30 +31,6 @@ class AwarenessCategorySelectedById extends AwarenessCategoriesEvent {
   @override
   List<Object> get props => [
         awarenessCategoryId,
-      ];
-}
-
-class AwarenessCategoryAdded extends AwarenessCategoriesEvent {
-  final AwarenessCategory awarenessCategory;
-  const AwarenessCategoryAdded({
-    required this.awarenessCategory,
-  });
-
-  @override
-  List<Object> get props => [
-        awarenessCategory,
-      ];
-}
-
-class AwarenessCategoryEdited extends AwarenessCategoriesEvent {
-  final AwarenessCategory awarenessCategory;
-  const AwarenessCategoryEdited({
-    required this.awarenessCategory,
-  });
-
-  @override
-  List<Object> get props => [
-        awarenessCategory,
       ];
 }
 

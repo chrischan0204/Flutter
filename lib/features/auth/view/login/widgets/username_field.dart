@@ -54,7 +54,7 @@ class _UsernameFieldState extends State<UsernameField> {
                     hintText: 'Username',
                   ),
                 ),
-                ErrorMessage(
+                ErrorMessageView(
                     validationMessage: state.usernameValidationmessage),
               ],
             ));

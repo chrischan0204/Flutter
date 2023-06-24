@@ -1,8 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-
-import '/data/repository/repository.dart';
-import '/data/model/model.dart';
+import '/common_libraries.dart';
 
 part 'awareness_categories_event.dart';
 part 'awareness_categories_state.dart';
@@ -12,12 +8,7 @@ class AwarenessCategoriesBloc
   final AwarenessCategoriesRepository awarenessCategoriesRepository;
   final AwarenessGroupsRepository awarenessGroupsRepository;
 
-  final String addErrorMessage =
-      'There was an error while adding awareness category. Our team has been notified. Please wait a few minutes and try again.';
-  final String editErrorMessage =
-      'There was an error while editing awareness category. Our team has been notified. Please wait a few minutes and try again.';
-  final String deleteErrorMessage =
-      'There was an error while deleting awareness category. Our team has been notified. Please wait a few minutes and try again.';
+  final String deleteErrorMessage = ErrorMessage('awareness category').delete;
 
   AwarenessCategoriesBloc({
     required this.awarenessCategoriesRepository,
@@ -33,8 +24,6 @@ class AwarenessCategoriesBloc
         _onAwarenessGroupsForAwarenessCategoriesRetrieved);
     on<AwarenessCategorySelected>(_onAwarenessCategorySelected);
     on<AwarenessCategorySelectedById>(_onAwarenessCategorySelectedById);
-    on<AwarenessCategoryAdded>(_onAwarenessCategoryAdded);
-    on<AwarenessCategoryEdited>(_onAwarenessCategoryEdited);
     on<AwarenessCategoryDeleted>(_onAwarenessCategoryDeleted);
     on<AwarenessCategoriesStatusInited>(_onAwarenessCategoriesStatusInited);
   }
@@ -127,67 +116,6 @@ class AwarenessCategoriesBloc
       emit(state.copyWith(
         selectedAwarenessCategory: null,
         awarenessCategorySelectedStatus: EntityStatus.failure,
-      ));
-    }
-  }
-
-  // add awareness category
-  Future<void> _onAwarenessCategoryAdded(
-    AwarenessCategoryAdded event,
-    Emitter<AwarenessCategoriesState> emit,
-  ) async {
-    emit(state.copyWith(
-      awarenessCategoryCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response = await awarenessCategoriesRepository
-          .addAwarenessCategory(event.awarenessCategory);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.success,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        awarenessCategoryCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
-    }
-  }
-
-  // edit awareness category
-  Future<void> _onAwarenessCategoryEdited(
-    AwarenessCategoryEdited event,
-    Emitter<AwarenessCategoriesState> emit,
-  ) async {
-    emit(state.copyWith(
-      awarenessCategoryCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response = await awarenessCategoriesRepository
-          .editAwarenessCategory(event.awarenessCategory);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.success,
-          selectedAwarenessCategory: null,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          awarenessCategoryCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        awarenessCategoryCrudStatus: EntityStatus.failure,
-        message: editErrorMessage,
       ));
     }
   }

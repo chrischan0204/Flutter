@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ErrorMessage extends StatelessWidget {
+class ErrorMessageView extends StatelessWidget {
   final String validationMessage;
-  const ErrorMessage({
+  const ErrorMessageView({
     super.key,
     required this.validationMessage,
   });

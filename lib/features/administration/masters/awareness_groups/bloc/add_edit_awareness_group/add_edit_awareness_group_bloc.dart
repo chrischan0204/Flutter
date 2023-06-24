@@ -8,10 +8,8 @@ class AddEditAwarenessGroupBloc
   final AwarenessGroupsRepository awarenessGroupsRepository;
   final FormDirtyBloc formDirtyBloc;
 
-  static String addErrorMessage =
-      'There was an error while adding awareness group. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing awareness group. Our team has been notified. Please wait a few minutes and try again.';
+  static String addErrorMessage = ErrorMessage('awareness group').add;
+  static String editErrorMessage = ErrorMessage('awareness group').edit;
 
   AddEditAwarenessGroupBloc({
     required this.awarenessGroupsRepository,

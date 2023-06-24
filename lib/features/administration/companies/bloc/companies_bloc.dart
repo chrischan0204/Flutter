@@ -6,16 +6,12 @@ part 'companies_state.dart';
 class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
   CompaniesRepository companiesRepository;
 
-  static String addErrorMessage =
-      'There was an error while adding company. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing company. Our team has been notified. Please wait a few minutes and try again.';
-  static String deleteErrorMessage =
-      'There was an error while deleting company. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('company').delete;
   static String assignSiteToCompanyErrorMessage =
-      'There was an error while assigning site to company. Our team has been notified. Please wait a few minutes and try again.';
+      ErrorMessage('company').assign('site');
   static String assignProjectToCompanyErrorMessage =
-      'There was an error while assigning project to company. Our team has been notified. Please wait a few minutes and try again.';
+      ErrorMessage('company').assign('project');
+
   CompaniesBloc({
     required this.companiesRepository,
   }) : super(const CompaniesState()) {
@@ -36,8 +32,6 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<ProjectToCompanyAssigned>(_onProjectToCompanyAssigned);
     on<ProjectFromCompanyUnassigned>(_onProjectFromCompanyUnassigned);
     on<CompanySelectedById>(_onCompanySelectedById);
-    on<CompanyAdded>(_onCompanyAdded);
-    on<CompanyEdited>(_onCompanyEdited);
     on<CompanyDeleted>(_onCompanyDeleted);
     on<CompaniesSorted>(_onCompaniesSorted);
     on<UnAssignedProjectCompanyRoleSelected>(
@@ -350,66 +344,6 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       emit(state.copyWith(
           projectFromCompanyUnassignedStatus: EntityStatus.failure));
       result.assigned = true;
-    }
-  }
-
-  // add company
-  Future<void> _onCompanyAdded(
-    CompanyAdded event,
-    Emitter<CompaniesState> emit,
-  ) async {
-    emit(state.copyWith(companyCrudStatus: EntityStatus.loading));
-    try {
-      EntityResponse response =
-          await companiesRepository.addCompany(event.company);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          companyCrudStatus: EntityStatus.success,
-          message: response.message,
-          selectedCompany:
-              state.selectedCompany!.copyWith(id: response.data!.id),
-        ));
-      } else {
-        emit(state.copyWith(
-          companyCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        companyCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
-    }
-  }
-
-  // edit company
-  Future<void> _onCompanyEdited(
-    CompanyEdited event,
-    Emitter<CompaniesState> emit,
-  ) async {
-    emit(state.copyWith(companyCrudStatus: EntityStatus.loading));
-    try {
-      EntityResponse response =
-          await companiesRepository.editCompany(event.company);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          companyCrudStatus: EntityStatus.success,
-          message: response.message,
-          selectedCompany:
-              state.selectedCompany!.copyWith(id: response.data?.id),
-        ));
-      } else {
-        emit(state.copyWith(
-          companyCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        companyCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
     }
   }
 

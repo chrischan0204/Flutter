@@ -7,8 +7,7 @@ class TemplateDetailBloc
     extends Bloc<TemplateDetailEvent, TemplateDetailState> {
   final TemplatesRepository templatesRepository;
 
-  static String deleteErrorMessage =
-      'There was an error while deleting site. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('site').add;
   TemplateDetailBloc({required this.templatesRepository})
       : super(const TemplateDetailState()) {
     on<TemplateDetailTemplateLoadedById>(_onTemplateDetailTemplateLoadedById);

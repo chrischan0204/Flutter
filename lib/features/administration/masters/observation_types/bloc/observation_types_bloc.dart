@@ -1,9 +1,4 @@
-import '/data/model/entity.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-
-import '/data/repository/repository.dart';
-import '../data/model/observation_type.dart';
+import '/common_libraries.dart';
 
 part 'observation_types_event.dart';
 part 'observation_types_state.dart';
@@ -12,12 +7,7 @@ class ObservationTypesBloc
     extends Bloc<ObservationTypesEvent, ObservationTypesState> {
   final ObservationTypesRepository observationTypesRepository;
 
-  static String addErrorMessage =
-      'There was an error while adding observation type. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing observation type. Our team has been notified. Please wait a few minutes and try again.';
-  static String deleteErrorMessage =
-      'There was an error while deleting observation type. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('observation type').delete;
   ObservationTypesBloc({
     required this.observationTypesRepository,
   }) : super(const ObservationTypesState()) {
@@ -29,8 +19,6 @@ class ObservationTypesBloc
     on<ObservationTypesRetrieved>(_onObservationTypesRetrieved);
     on<ObservationTypeSelected>(_onObservationTypeSelected);
     on<ObservationTypeSelectedById>(_onObservationTypeSelectedById);
-    on<ObservationTypeAdded>(_onObservationTypeAdded);
-    on<ObservationTypeEdited>(_onObservationTypeEdited);
     on<ObservationTypeDeleted>(_onObservationTypeDeleted);
     on<ObservationTypesStatusInited>(_onObservationTypesStatusInited);
   }
@@ -91,68 +79,6 @@ class ObservationTypesBloc
       emit(state.copyWith(
         selectedObservationType: null,
         observationTypeSelectedStatus: EntityStatus.failure,
-      ));
-    }
-  }
-
-  // add observation type
-  Future<void> _onObservationTypeAdded(
-    ObservationTypeAdded event,
-    Emitter<ObservationTypesState> emit,
-  ) async {
-    emit(state.copyWith(
-      observationTypeCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response = await observationTypesRepository
-          .addObservationType(event.observationType);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.success,
-          message: response.message,
-          selectedObservationType: null,
-        ));
-      } else {
-        emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        observationTypeCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
-    }
-  }
-
-  // edit observation type
-  Future<void> _onObservationTypeEdited(
-    ObservationTypeEdited event,
-    Emitter<ObservationTypesState> emit,
-  ) async {
-    emit(state.copyWith(
-      observationTypeCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response = await observationTypesRepository
-          .editObservationType(event.observationType);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.success,
-          selectedObservationType: null,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          observationTypeCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        observationTypeCrudStatus: EntityStatus.failure,
-        message: editErrorMessage,
       ));
     }
   }

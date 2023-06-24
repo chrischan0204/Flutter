@@ -8,13 +8,8 @@ class AddEditObservationTypeBloc
   final ObservationTypesRepository observationTypesRepository;
   final FormDirtyBloc formDirtyBloc;
 
-  static String addErrorMessage =
-      'There was an error while adding observation type. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing observation type. Our team has been notified. Please wait a few minutes and try again.';
-
-  static String deleteErrorMessage =
-      'There was an error while deleting observation type. Our team has been notified. Please wait a few minutes and try again.';
+  static String addErrorMessage = ErrorMessage('observation type').add;
+  static String editErrorMessage = ErrorMessage('observation type').edit;
 
   AddEditObservationTypeBloc({
     required this.formDirtyBloc,

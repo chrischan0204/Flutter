@@ -40,28 +40,6 @@ class CompanySelectedById extends CompaniesEvent {
       ];
 }
 
-class CompanyAdded extends CompaniesEvent {
-  final Company company;
-  const CompanyAdded({
-    required this.company,
-  });
-  @override
-  List<Object?> get props => [
-        company,
-      ];
-}
-
-class CompanyEdited extends CompaniesEvent {
-  final Company company;
-  const CompanyEdited({
-    required this.company,
-  });
-  @override
-  List<Object?> get props => [
-        company,
-      ];
-}
-
 class CompanyDeleted extends CompaniesEvent {
   final String companyId;
   const CompanyDeleted({

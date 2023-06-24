@@ -6,8 +6,7 @@ part 'show_site_state.dart';
 class ShowSiteBloc extends Bloc<ShowSiteEvent, ShowSiteState> {
   final SitesRepository sitesRepository;
 
-  static String deleteErrorMessage =
-      'There was an error while deleting site. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('site').delete;
   ShowSiteBloc({
     required this.sitesRepository,
   }) : super(const ShowSiteState()) {

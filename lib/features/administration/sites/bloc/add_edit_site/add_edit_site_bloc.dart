@@ -9,10 +9,8 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
   final TimeZonesRepository timeZonesRepository;
   final SitesRepository sitesRepository;
 
-  static String addErrorMessage =
-      'There was an error while adding site. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing site. Our team has been notified. Please wait a few minutes and try again.';
+  static String addErrorMessage = ErrorMessage('site').add;
+  static String editErrorMessage = ErrorMessage('site').edit;
   AddEditSiteBloc({
     required this.formDirtyBloc,
     required this.regionsRepository,

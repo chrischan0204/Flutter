@@ -8,13 +8,8 @@ class AddEditPriorityLevelBloc
   final PriorityLevelsRepository priorityLevelsRepository;
   final FormDirtyBloc formDirtyBloc;
 
-  static String addErrorMessage =
-      'There was an error while adding priority level. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing priority level. Our team has been notified. Please wait a few minutes and try again.';
-
-  static String deleteErrorMessage =
-      'There was an error while deleting priority level. Our team has been notified. Please wait a few minutes and try again.';
+  static String addErrorMessage = ErrorMessage('priority level').add;
+  static String editErrorMessage = ErrorMessage('priority level').edit;
 
   AddEditPriorityLevelBloc({
     required this.priorityLevelsRepository,

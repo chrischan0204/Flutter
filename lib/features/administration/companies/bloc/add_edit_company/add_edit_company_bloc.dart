@@ -8,10 +8,8 @@ class AddEditCompanyBloc
   final CompaniesRepository companiesRepository;
   final FormDirtyBloc formDirtyBloc;
 
-  static String addErrorMessage =
-      'There was an error while adding company. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing company. Our team has been notified. Please wait a few minutes and try again.';
+  String addErrorMessage = ErrorMessage('company').add;
+  static String editErrorMessage = ErrorMessage('company').edit;
 
   AddEditCompanyBloc({
     required this.companiesRepository,

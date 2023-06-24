@@ -72,7 +72,7 @@ class _PasswordFieldState extends State<PasswordField> {
                   ),
                   obscureText: isPassword,
                 ),
-                ErrorMessage(
+                ErrorMessageView(
                     validationMessage: state.passwordValidationMessage),
               ],
             ));

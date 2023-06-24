@@ -1,9 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-
-import '/data/model/entity.dart';
-import '../data/model/awareness_group.dart';
-import '/data/repository/repository.dart';
+import '/common_libraries.dart';
 
 part 'awareness_groups_event.dart';
 part 'awareness_groups_state.dart';
@@ -12,12 +7,7 @@ class AwarenessGroupsBloc
     extends Bloc<AwarenessGroupsEvent, AwarenessGroupsState> {
   final AwarenessGroupsRepository awarenessGroupsRepository;
 
-  static String addErrorMessage =
-      'There was an error while adding awareness group. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing awareness group. Our team has been notified. Please wait a few minutes and try again.';
-  static String deleteErrorMessage =
-      'There was an error while deleting awareness group. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('awareness group').delete;
 
   AwarenessGroupsBloc({
     required this.awarenessGroupsRepository,
@@ -29,8 +19,6 @@ class AwarenessGroupsBloc
     on<AwarenessGroupsRetrieved>(_onAwarenessGroupsRetrieved);
     on<AwarenessGroupSelected>(_onAwarenessGroupSelected);
     on<AwarenessGroupSelectedById>(_onAwarenessGroupSelectedById);
-    on<AwarenessGroupAdded>(_onAwarenessGroupAdded);
-    on<AwarenessGroupEdited>(_onAwarenessGroupEdited);
     on<AwarenessGroupDeleted>(_onAwarenessGroupDeleted);
     on<AwarenessGroupsStatusInited>(_onAwarenessGroupsStatusInited);
   }
@@ -85,68 +73,6 @@ class AwarenessGroupsBloc
       emit(state.copyWith(
         selectedAwarenessGroup: null,
         awarenessGroupSelectedStatus: EntityStatus.failure,
-      ));
-    }
-  }
-
-  // add awareness group
-  Future<void> _onAwarenessGroupAdded(
-    AwarenessGroupAdded event,
-    Emitter<AwarenessGroupsState> emit,
-  ) async {
-    emit(state.copyWith(
-      awarenessGroupCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response = await awarenessGroupsRepository
-          .addAwarenessGroup(event.awarenessGroup);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.success,
-          message: response.message,
-          selectedAwarenessGroup: null,
-        ));
-      } else {
-        emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        awarenessGroupCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
-    }
-  }
-
-  // edit awareness group
-  Future<void> _onAwarenessGroupEdited(
-    AwarenessGroupEdited event,
-    Emitter<AwarenessGroupsState> emit,
-  ) async {
-    emit(state.copyWith(
-      awarenessGroupCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response = await awarenessGroupsRepository
-          .editAwarenessGroup(event.awarenessGroup);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.success,
-          selectedAwarenessGroup: null,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          awarenessGroupCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        awarenessGroupCrudStatus: EntityStatus.failure,
-        message: editErrorMessage,
       ));
     }
   }

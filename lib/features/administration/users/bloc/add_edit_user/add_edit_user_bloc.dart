@@ -16,10 +16,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
   // static String timeZoneValidationMessage = 'Time Zone is required.';
   // static String emailValidationMessage = 'Email is required.';
 
-  static String addErrorMessage =
-      'There was an error while adding user. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing user. Our team has been notified. Please wait a few minutes and try again.';
+  static String addErrorMessage = ErrorMessage('user').add;
+  static String editErrorMessage = ErrorMessage('user').edit;
 
   AddEditUserBloc({
     required this.usersRepository,
@@ -225,8 +223,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     if (Validation.isEmpty(state.firstName)) {
       emit(state.copyWith(
           firstNameValidationMessage:
-              FormValidationMessage(fieldName: 'First name')
-                  .requiredMessage));
+              FormValidationMessage(fieldName: 'First name').requiredMessage));
       success = false;
     } else if (!Validation.checkAlphabetic(state.firstName)) {
       emit(state.copyWith(
@@ -246,8 +243,7 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
     if (Validation.isEmpty(state.lastName)) {
       emit(state.copyWith(
           lastNameValidationMessage:
-              FormValidationMessage(fieldName: 'Last name')
-                  .requiredMessage));
+              FormValidationMessage(fieldName: 'Last name').requiredMessage));
       success = false;
     } else if (!Validation.checkAlphabetic(state.lastName)) {
       emit(state.copyWith(
@@ -280,8 +276,8 @@ class AddEditUserBloc extends Bloc<AddEditUserEvent, AddEditUserState> {
 
     if (Validation.isEmpty(state.email)) {
       emit(state.copyWith(
-          emailValidationMessage: FormValidationMessage(fieldName: 'Email')
-              .requiredMessage));
+          emailValidationMessage:
+              FormValidationMessage(fieldName: 'Email').requiredMessage));
       success = false;
     } else if (!Validation.isEmail(state.email)) {
       emit(state.copyWith(

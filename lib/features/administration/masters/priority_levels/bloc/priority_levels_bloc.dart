@@ -1,8 +1,4 @@
-import '/data/model/entity.dart';
-import '/data/repository/repository.dart';
-import '/features/administration/masters/priority_levels/data/model/priority_level.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import '/common_libraries.dart';
 
 part 'priority_levels_event.dart';
 part 'priority_levels_state.dart';
@@ -11,13 +7,7 @@ class PriorityLevelsBloc
     extends Bloc<PriorityLevelsEvent, PriorityLevelsState> {
   final PriorityLevelsRepository priorityLevelsRepository;
 
-  static String addErrorMessage =
-      'There was an error while adding priority level. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing priority level. Our team has been notified. Please wait a few minutes and try again.';
-
-  static String deleteErrorMessage =
-      'There was an error while deleting priority level. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('priority level').delete;
   PriorityLevelsBloc({
     required this.priorityLevelsRepository,
   }) : super(const PriorityLevelsState()) {
@@ -28,8 +18,6 @@ class PriorityLevelsBloc
     on<PriorityLevelsRetrieved>(_onPriorityLevelsRetrieved);
     on<PriorityLevelSelected>(_onPriorityLevelSelected);
     on<PriorityLevelSelectedById>(_onPriorityLevelSelectedById);
-    on<PriorityLevelAdded>(_onPriorityLevelAdded);
-    on<PriorityLevelEdited>(_onPriorityLevelEdited);
     on<PriorityLevelDeleted>(_onPriorityLevelDeleted);
     on<PriorityLevelsStatusInited>(_onPriorityLevelsStatusInited);
   }
@@ -80,66 +68,6 @@ class PriorityLevelsBloc
       emit(state.copyWith(
         selectedPriorityLevel: null,
         priorityLevelSelectedStatus: EntityStatus.failure,
-      ));
-    }
-  }
-
-  Future<void> _onPriorityLevelAdded(
-    PriorityLevelAdded event,
-    Emitter<PriorityLevelsState> emit,
-  ) async {
-    emit(state.copyWith(
-      priorityLevelCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response =
-          await priorityLevelsRepository.addPriorityLevel(event.priorityLevel);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.success,
-          selectedPriorityLevel: null,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        priorityLevelCrudStatus: EntityStatus.failure,
-        message: addErrorMessage,
-      ));
-    }
-  }
-
-  Future<void> _onPriorityLevelEdited(
-    PriorityLevelEdited event,
-    Emitter<PriorityLevelsState> emit,
-  ) async {
-    emit(state.copyWith(
-      priorityLevelCrudStatus: EntityStatus.loading,
-    ));
-    try {
-      EntityResponse response =
-          await priorityLevelsRepository.editPriorityLevel(event.priorityLevel);
-      if (response.isSuccess) {
-        emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.success,
-          selectedPriorityLevel: null,
-          message: response.message,
-        ));
-      } else {
-        emit(state.copyWith(
-          priorityLevelCrudStatus: EntityStatus.failure,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-        priorityLevelCrudStatus: EntityStatus.failure,
-        message: editErrorMessage,
       ));
     }
   }

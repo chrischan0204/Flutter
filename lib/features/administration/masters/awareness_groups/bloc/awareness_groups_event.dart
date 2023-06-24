@@ -31,30 +31,6 @@ class AwarenessGroupSelectedById extends AwarenessGroupsEvent {
       ];
 }
 
-class AwarenessGroupAdded extends AwarenessGroupsEvent {
-  final AwarenessGroup awarenessGroup;
-  const AwarenessGroupAdded({
-    required this.awarenessGroup,
-  });
-
-  @override
-  List<Object> get props => [
-        awarenessGroup,
-      ];
-}
-
-class AwarenessGroupEdited extends AwarenessGroupsEvent {
-  final AwarenessGroup awarenessGroup;
-  const AwarenessGroupEdited({
-    required this.awarenessGroup,
-  });
-
-  @override
-  List<Object> get props => [
-        awarenessGroup,
-      ];
-}
-
 class AwarenessGroupDeleted extends AwarenessGroupsEvent {
   final String awarenessGroupId;
   const AwarenessGroupDeleted({

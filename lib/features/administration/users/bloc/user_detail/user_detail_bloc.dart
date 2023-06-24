@@ -8,8 +8,7 @@ part 'user_detail_state.dart';
 class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   final UsersRepository usersRepository;
 
-  static String deleteErrorMessage =
-      'There was an error while deleting site. Our team has been notified. Please wait a few minutes and try again.';
+  static String deleteErrorMessage = ErrorMessage('user').delete;
   UserDetailBloc({required this.usersRepository})
       : super(const UserDetailState()) {
     on<UserDetailUserLoadedById>(_onUserDetailUserLoadedById);

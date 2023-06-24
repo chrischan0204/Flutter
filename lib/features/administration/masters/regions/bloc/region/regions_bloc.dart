@@ -1,7 +1,4 @@
-import '/data/repository/repository.dart';
-import '/data/model/model.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import '/common_libraries.dart';
 
 part 'regions_event.dart';
 part 'regions_state.dart';
@@ -9,12 +6,9 @@ part 'regions_state.dart';
 class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   final RegionsRepository regionsRepository;
 
-  static String addErrorMessage =
-      'There was an error while adding region. Our team has been notified. Please wait a few minutes and try again.';
-  static String editErrorMessage =
-      'There was an error while editing region. Our team has been notified. Please wait a few minutes and try again.';
-  static String deleteErrorMessage =
-      'There was an error while deleting region. Our team has been notified. Please wait a few minutes and try again.';
+  static String addErrorMessage = ErrorMessage('region').add;
+  static String editErrorMessage = ErrorMessage('region').edit;
+  static String deleteErrorMessage = ErrorMessage('region').delete;
 
   RegionsBloc({
     required this.regionsRepository,

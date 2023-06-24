@@ -9,12 +9,8 @@ class AddEditAwarenessCategoryBloc
   final AwarenessGroupsRepository awarenessGroupsRepository;
   final FormDirtyBloc formDirtyBloc;
 
-  final String addErrorMessage =
-      'There was an error while adding awareness category. Our team has been notified. Please wait a few minutes and try again.';
-  final String editErrorMessage =
-      'There was an error while editing awareness category. Our team has been notified. Please wait a few minutes and try again.';
-  final String deleteErrorMessage =
-      'There was an error while deleting awareness category. Our team has been notified. Please wait a few minutes and try again.';
+  final String addErrorMessage = ErrorMessage('awareness category').add;
+  final String editErrorMessage = ErrorMessage('awareness category').edit;
 
   AddEditAwarenessCategoryBloc({
     required this.formDirtyBloc,

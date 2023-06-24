@@ -39,28 +39,6 @@ class ProjectSelectedById extends ProjectsEvent {
       ];
 }
 
-class ProjectAdded extends ProjectsEvent {
-  final Project project;
-  const ProjectAdded({
-    required this.project,
-  });
-  @override
-  List<Object?> get props => [
-        project,
-      ];
-}
-
-class ProjectEdited extends ProjectsEvent {
-  final Project project;
-  const ProjectEdited({
-    required this.project,
-  });
-  @override
-  List<Object?> get props => [
-        project,
-      ];
-}
-
 class ProjectDeleted extends ProjectsEvent {
   final String projectId;
   const ProjectDeleted({
