@@ -3,10 +3,12 @@ import '/common_libraries.dart';
 class CustomDataCell extends StatefulWidget {
   final dynamic data;
   final VoidCallback? onRowClick;
+  final int maxLines;
   const CustomDataCell({
     super.key,
     required this.data,
     this.onRowClick,
+    this.maxLines = 3,
   });
 
   @override
@@ -66,7 +68,7 @@ class _CustomDataCellState extends State<CustomDataCell> {
             decorationColor: primaryColor,
             decorationThickness: 3,
           ),
-          maxLines: 3,
+          maxLines: widget.maxLines,
           softWrap: false,
           overflow: TextOverflow.ellipsis,
         ),

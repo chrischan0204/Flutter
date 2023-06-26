@@ -6,7 +6,7 @@ class CategoryWeightHeaderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      'Category Weight',
+      'Section Weight',
       style: TextStyle(
         fontWeight: FontWeight.w600,
         fontSize: 16,

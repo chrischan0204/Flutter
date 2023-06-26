@@ -656,6 +656,7 @@ class _CrudState extends State<EntityListTemplate> {
                                       data: detail.value is Map
                                           ? detail.value['content']
                                           : detail.value,
+                                      maxLines: 1000,
                                     ),
                                   ),
                                 ),

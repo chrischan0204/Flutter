@@ -43,7 +43,7 @@ class ResponseScaleItemView extends StatelessWidget {
 
   // build score text field
   Widget _buildScoreTextField(BuildContext context) => Flexible(
-        flex: 1,
+        flex: 2,
         fit: FlexFit.tight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,31 +115,40 @@ class ResponseScaleItemView extends StatelessWidget {
 
   // build level 1 or 2 follow up button
   Widget _buildLevelFollowUpButton(BuildContext context, int level) =>
-      FutherActionItemView(
-        active: templateSectionItem.response?.followUpRequired ?? false,
-        onClick: (_) {
-          context
-              .read<TemplateDesignerBloc>()
-              .add(TemplateDesignerCurrentTemplateSectionItemChanged(
-                templateSectionItemId: templateSectionItem.id!,
-                responseScaleItem: templateSectionItem.response!,
-              ));
+      ElevatedButton(
+          onPressed: () {
+            context
+                .read<TemplateDesignerBloc>()
+                .add(TemplateDesignerCurrentTemplateSectionItemChanged(
+                  templateSectionItemId: templateSectionItem.id!,
+                  responseScaleItem: templateSectionItem.response!,
+                ));
 
-          if (templateSectionItem.id != null) {
-            context.read<TemplateDesignerBloc>().add(
-                TemplateDesignerFollowUpQuestionDetailLoaded(
-                    id: templateSectionItem.id!));
-          }
-        },
-        disabled: disabled,
-        title: 'Add L${level + 1} Follow up',
-        activeColor: primaryColor,
-      );
+            if (templateSectionItem.id != null) {
+              context.read<TemplateDesignerBloc>().add(
+                  TemplateDesignerFollowUpQuestionDetailLoaded(
+                      id: templateSectionItem.id!));
+            }
+          },
+          style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          child: Icon(
+            PhosphorIcons.regular.arrowCircleRight,
+            size: 18,
+          ));
+  // FutherActionItemView(
+  //   active: templateSectionItem.response?.followUpRequired ?? false,
+  //   onClick: (_) {
+
+  //   },
+  //   disabled: disabled,
+  //   title: 'Add L${level + 1} Follow up',
+  //   activeColor: primaryColor,
+  // );
 
   // build futher action buttons
   Widget _buildFurtherActionButtons(BuildContext context, int level) =>
       Flexible(
-        flex: 3,
+        flex: 6,
         fit: FlexFit.tight,
         child: Row(
           children: [

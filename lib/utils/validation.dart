@@ -32,10 +32,10 @@ class Validation {
         r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
     // final mobile = RegExp(r'^[0-9]+.()-$');
     return mobile.hasMatch(str);
-  }
+  } 
 
   static bool isAlphanumbericWithSpecialChars(String str) {
-    final reg = RegExp(r'^[ A-Za-z0-9_@./#&+-]*$');
+    final reg = RegExp(r'^[ A-Za-z0-9_@$*./#&+-]*$');
 
     return reg.hasMatch(str);
   }

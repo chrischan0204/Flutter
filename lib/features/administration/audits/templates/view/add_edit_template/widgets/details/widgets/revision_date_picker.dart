@@ -13,7 +13,7 @@ class RevisionDatePicker extends StatelessWidget {
           label: 'Date (*)',
           content: CustomDateTimePicker(
             key: ValueKey(state.loadedTemplate?.id),
-            initialValue: state.date.toString(),
+            initialValue: state.date?.toString(),
             dateTimePickerType: DateTimePickerType.date,
             onChange: (date) {
               context

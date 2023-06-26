@@ -38,16 +38,16 @@ class QuestionsHeaderView extends StatelessWidget {
           BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
             builder: (context, state) {
               Map<String, TemplateSectionListItemForDetail> items = {
-                'Show all category questions':
+                'Show All Section Items':
                     const TemplateSectionListItemForDetail(
-                        name: 'Show all category questions')
+                        name: 'Show All Section Items')
               };
               for (final section in state.templateSectionList) {
                 items.addEntries([MapEntry(section.name, section)]);
               }
 
               return CustomSingleSelect(
-                hint: 'Show all category questions',
+                hint: 'Show All Section Items',
                 width: 400,
                 items: items,
                 selectedValue: state.selectedTemplateSection?.name,

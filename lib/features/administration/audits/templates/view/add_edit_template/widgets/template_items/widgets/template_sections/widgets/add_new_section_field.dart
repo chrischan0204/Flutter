@@ -57,7 +57,7 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
                       size: 20,
                     )
                   : Icon(
-                      PhosphorIcons.regular.arrowCircleRight,
+                      PhosphorIcons.regular.plusCircle,
                       color: textColor,
                       size: 18,
                     ),

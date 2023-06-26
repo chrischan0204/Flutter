@@ -63,6 +63,8 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
   static String pageLabel = 'template';
   static String addButtonName = 'Add Items';
 
+  static String editButtonName = 'Update template';
+
   Map<String, Widget> get tabViews => widget.templateId != null
       ? {
           'Template Items': TemplateItemsView(templateId: widget.templateId!),
@@ -121,6 +123,7 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
               AddEditTemplateTemplateAddEdited(templateId: widget.templateId)),
           crudStatus: state.status,
           formDirty: state.formDirty,
+          editButtonName: editButtonName,
           tabItems: tabViews,
           tabWidth: 500,
           view: widget.view,

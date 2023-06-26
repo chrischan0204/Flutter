@@ -26,7 +26,7 @@ class _ByQuestionCountViewState extends State<ByQuestionCountView> {
     return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
       builder: (context, state) {
         return SfCircularChart(
-          title: ChartTitle(text: 'By Question Count'),
+          title: ChartTitle(text: 'By question count'),
           series: _getDefaultPieSeries(state.templateSnapshotList),
           tooltipBehavior: _tooltipBehavior,
         );

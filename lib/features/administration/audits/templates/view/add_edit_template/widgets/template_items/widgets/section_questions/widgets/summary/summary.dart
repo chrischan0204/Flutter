@@ -23,19 +23,34 @@ class _SummarySectionViewState extends State<SummarySectionView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: const [
-            Flexible(
-              flex: 3,
-              fit: FlexFit.tight,
-              child: TemplateSectionView(),
-            ),
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: CategoryWeightView(),
-            )
-          ],
+        BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+          builder: (context, state) {
+            if (state.templateSnapshotList.isNotEmpty) {
+              return Row(
+                children: const [
+                  Flexible(
+                    flex: 3,
+                    fit: FlexFit.tight,
+                    child: TemplateSectionView(),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    fit: FlexFit.tight,
+                    child: CategoryWeightView(),
+                  )
+                ],
+              );
+            }
+            return Center(
+              child: Padding(
+                padding: insety30,
+                child: Text(
+                  'Data will be displayed once sections and question are created.',
+                  style: textSemiBold14,
+                ),
+              ),
+            );
+          },
         ),
         const CustomDivider(height: 1),
         Padding(

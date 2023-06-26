@@ -27,7 +27,7 @@ class CustomDateTimePicker extends StatelessWidget {
         dateMask: dateTimePickerType == DateTimePickerType.dateTime
             ? 'd MMMM, yyyy - hh:mm a'
             : null,
-        initialValue: initialValue,
+        initialValue: initialValue ?? DateTime.now().toString(),
         controller: controller,
         firstDate: DateTime(2000),
         lastDate: DateTime(2100),

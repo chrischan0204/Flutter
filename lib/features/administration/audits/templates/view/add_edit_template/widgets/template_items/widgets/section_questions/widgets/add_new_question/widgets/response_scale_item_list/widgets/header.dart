@@ -26,7 +26,7 @@ class ResponseScaleItemListHeaderView extends StatelessWidget {
             ),
           ),
           Flexible(
-            flex: 1,
+            flex: 2,
             fit: FlexFit.tight,
             child: Text(
               'Score',
@@ -34,7 +34,7 @@ class ResponseScaleItemListHeaderView extends StatelessWidget {
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 6,
             fit: FlexFit.tight,
             child: Text(
               'Further Actions',

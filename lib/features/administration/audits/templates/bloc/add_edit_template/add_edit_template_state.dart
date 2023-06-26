@@ -17,7 +17,7 @@ class AddEditTemplateState extends Equatable {
   final String templateDescriptionValidationMessage;
 
   /// revised date
-  final DateTime? date;
+  DateTime? date;
 
   /// initial revised date to check form dirty
   final DateTime? initialDate;
@@ -31,7 +31,7 @@ class AddEditTemplateState extends Equatable {
   /// response message
   final String message;
 
-  const AddEditTemplateState({
+  AddEditTemplateState({
     this.createdTemplateId = '',
     this.loadedTemplate,
     this.templateDescription = '',
@@ -42,7 +42,9 @@ class AddEditTemplateState extends Equatable {
     this.dateValidationMesage = '',
     this.status = EntityStatus.initial,
     this.message = '',
-  });
+  }) {
+    date ??= DateTime.now();
+  }
 
   @override
   List<Object?> get props => [

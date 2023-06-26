@@ -17,7 +17,7 @@ class AddEditTemplateBloc
   AddEditTemplateBloc({
     required this.templatesRepository,
     required this.formDirtyBloc,
-  }) : super(const AddEditTemplateState()) {
+  }) : super(AddEditTemplateState()) {
     on<AddEditTemplateDescriptionChanged>(_onAddEditTemplateDescriptionChanged);
     on<AddEditTemplateDateChanged>(_onAddEditTemplateDateChanged);
     on<AddEditTemplateTemplateAddEdited>(_onAddEditTemplateTemplateAddEdited);
