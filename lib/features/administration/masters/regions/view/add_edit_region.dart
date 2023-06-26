@@ -108,8 +108,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
             children: [
               _buildRegionSelectField(regionItems, state),
               _buildTimeZoneSelectField(state),
-              if (state.selectedRegion?.deletable == true)
-                _buildDeactiveSwitch(state),
+              _buildDeactiveSwitch(state),
             ],
           ),
         );
@@ -124,6 +123,7 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
             content: CustomSwitch(
               label: 'This region is deactivated',
               switchValue: regionDeactive,
+              active: state.selectedRegion?.deletable == true,
               onChanged: (active) {
                 regionsBloc.add(
                   RegionSelected(

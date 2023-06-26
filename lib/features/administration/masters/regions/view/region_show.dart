@@ -23,7 +23,8 @@ class _RegionShowViewState extends State<RegionShowView> {
   static String pageTitle = 'Region';
   static String pageLabel = 'region';
 
-  static String descriptionForDelete = 'Region cannot be deleted, as it\'s having sites associated with it.';
+  static String descriptionForDelete =
+      'Region cannot be deleted, as it\'s having sites associated with it.';
 
   @override
   void initState() {
@@ -49,7 +50,9 @@ class _RegionShowViewState extends State<RegionShowView> {
               ? true
               : state.selectedRegion!.deletable,
           deleteEntity: () => _deleteRegion(state),
-          descriptionForDelete: descriptionForDelete,
+          descriptionForDelete: state.selectedRegion?.active == false
+              ? 'Region cannot be deleted, as it\'s deactivated.'
+              : descriptionForDelete,
           crudStatus: state.regionCrudStatus,
         );
       },
@@ -75,7 +78,7 @@ class _RegionShowViewState extends State<RegionShowView> {
 
       GoRouter.of(context).go('/regions');
     }
-    if (state.regionCrudStatus .isFailure) {
+    if (state.regionCrudStatus.isFailure) {
       regionsBloc.add(const RegionsStatusInited());
       CustomNotification(
         context: context,

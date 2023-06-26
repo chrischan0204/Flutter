@@ -23,8 +23,8 @@ class CustomAlert {
     required this.dialogType,
     this.body,
   });
-  void show() {
-    AwesomeDialog(
+  Future<dynamic> show() {
+    return AwesomeDialog(
       context: context,
       width: width,
       dialogType: dialogType,

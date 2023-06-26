@@ -18,7 +18,7 @@ class Region extends Entity {
   });
 
   // check if the region can be deleted
-  bool get deletable => siteCount == 0 || siteCount == null;
+  bool get deletable => (siteCount == 0 || siteCount == null) && active == true;
 
   List<TimeZone> get associatedTimeZones =>
       timeZones.where((timeZone) => timeZone.assigned).toList();

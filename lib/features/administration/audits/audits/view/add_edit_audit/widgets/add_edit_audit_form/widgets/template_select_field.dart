@@ -14,6 +14,7 @@ class TemplateSelectField extends StatelessWidget {
           hint: 'Select Template',
           selectedValue:
               state.templateList.isEmpty ? null : state.template?.name,
+          disabled: state.loadedAudit?.auditStatusName != 'Draft',
           onChanged: (template) {
             context
                 .read<AddEditAuditBloc>()

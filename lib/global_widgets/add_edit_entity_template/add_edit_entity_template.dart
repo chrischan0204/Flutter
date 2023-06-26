@@ -18,6 +18,7 @@ class AddEditEntityTemplate extends StatefulWidget {
   final VoidCallback addEntity;
   final VoidCallback editEntity;
   final EntityStatus crudStatus;
+  final Future<bool> Function(int)? onTabClick;
   const AddEditEntityTemplate({
     super.key,
     required this.label,
@@ -33,6 +34,7 @@ class AddEditEntityTemplate extends StatefulWidget {
     required this.addEntity,
     required this.editEntity,
     this.crudStatus = EntityStatus.initial,
+    this.onTabClick,
   });
 
   @override
@@ -112,15 +114,20 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return CustomTabBar(
       activeIndex: selectedTabIndex,
       tabs: {'Details': _buildEditEntityView(), ...widget.tabItems},
-      onTabClick: (index) {
-        if (index == 0) {
-          context
-              .read<FormDirtyBloc>()
-              .add(FormDirtyChanged(isDirty: widget.formDirty));
+      onTabClick: (index) async {
+        if (widget.onTabClick != null) {
+          return await widget.onTabClick!(index);
         } else {
-          context
-              .read<FormDirtyBloc>()
-              .add(const FormDirtyChanged(isDirty: false));
+          if (index == 0) {
+            context
+                .read<FormDirtyBloc>()
+                .add(FormDirtyChanged(isDirty: widget.formDirty));
+          } else {
+            context
+                .read<FormDirtyBloc>()
+                .add(const FormDirtyChanged(isDirty: false));
+          }
+          return true;
         }
       },
     );

@@ -12,6 +12,7 @@ class SiteSelectField extends StatelessWidget {
         return CustomSingleSelect(
           items: items,
           hint: 'Select Site',
+          disabled: state.loadedAudit?.auditStatusName != 'Draft',
           selectedValue: state.siteList.isEmpty ? null : state.site?.name,
           onChanged: (site) {
             context

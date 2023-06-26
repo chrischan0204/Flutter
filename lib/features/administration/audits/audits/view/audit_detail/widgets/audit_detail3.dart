@@ -15,17 +15,16 @@ class AuditDetailView3 extends StatelessWidget {
             children: [
               AuditDetailItemView(
                 label: 'Area',
-                content: 'Section 3 Parking garage',
+                content: audit.area,
               ),
               AuditDetailItemView(
                 label: 'Companies',
-                content:
-                    'Lucas Landscaping, Constellation Fencing and picketing llc., Rider group concrete inc and Gartner Electric',
+                content: audit.companies,
                 twoLines: true,
               ),
               AuditDetailItemView(
                 label: 'Inspectors',
-                content: 'Frank Hurt, Brian Trippi and George Kiltman',
+                content: audit.inspectors,
                 twoLines: true,
               ),
             ],

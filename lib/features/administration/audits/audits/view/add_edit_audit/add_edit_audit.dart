@@ -106,6 +106,34 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
               userId: context.read<AuthBloc>().state.authUser!.id)),
           crudStatus: state.status,
           tabItems: tabItems,
+          onTabClick: (index) async {
+            if (index == 1) {
+              bool success = true;
+
+              if (context.read<FormDirtyBloc>().state.isDirty) {
+                await AwesomeDialog(
+                  context: context,
+                  width: MediaQuery.of(context).size.width / 4,
+                  dialogType: DialogType.question,
+                  headerAnimationLoop: false,
+                  animType: AnimType.bottomSlide,
+                  title: 'Confirm',
+                  dialogBorderRadius: BorderRadius.circular(5),
+                  desc: 'Data that was entered will be lost ..... Proceed?',
+                  buttonsTextStyle: const TextStyle(color: Colors.white),
+                  showCloseIcon: true,
+                  btnCancelOnPress: () => success = false,
+                  btnOkOnPress: () => success = true,
+                  btnOkText: 'Proceed',
+                  buttonsBorderRadius: BorderRadius.circular(3),
+                  padding: const EdgeInsets.all(10),
+                ).show();
+              }
+              return success;
+            } else {
+              return true;
+            }
+          },
           view: widget.view,
           formDirty: state.formDirty,
           addButtonName: addButtonName,
