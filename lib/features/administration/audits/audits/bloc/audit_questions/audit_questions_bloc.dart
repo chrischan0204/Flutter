@@ -8,9 +8,11 @@ class AuditQuestionsBloc
   final BuildContext context;
   final String auditId;
   late AuditsRepository auditsRepository;
+  late String userId;
   AuditQuestionsBloc(this.context, {required this.auditId})
       : super(const AuditQuestionsState()) {
     auditsRepository = context.read();
+    userId = context.read<AuthBloc>().state.authUser!.id;
 
     on<AuditQuestionsSnapshotListLoaded>(_onAuditQuestionsSnapshotListLoaded);
     on<AuditQuestionsAuditSectionListLoaded>(
@@ -20,6 +22,8 @@ class AuditQuestionsBloc
     on<AuditQuestionsIncludedChanged>(_onAuditQuestionsIncludedChanged);
     on<AuditQuestionsAuditQuestionListLoaded>(
         _onAuditQuestionsAuditQuestionListLoaded);
+    on<AuditQuestionsSectionIncludedChanged>(
+        _onAuditQuestionsSectionIncludedChanged);
   }
 
   @override
@@ -27,8 +31,8 @@ class AuditQuestionsBloc
     final current = change.currentState;
     final next = change.nextState;
 
-    if (current.selectedAuditSection != next.selectedAuditSection &&
-        next.selectedAuditSection != null) {
+    if (current.selectedAuditSectionId != next.selectedAuditSectionId &&
+        next.selectedAuditSectionId != null) {
       add(AuditQuestionsAuditQuestionListLoaded());
     }
 
@@ -54,8 +58,10 @@ class AuditQuestionsBloc
 
     emit(state.copyWith(
       auditSectionList: auditSectionList,
-      selectedAuditSection:
-          auditSectionList.isNotEmpty ? auditSectionList.first : null,
+      selectedAuditSectionId:
+          state.selectedAuditSectionId == null && auditSectionList.isNotEmpty
+              ? auditSectionList.first.id
+              : null,
     ));
   }
 
@@ -64,7 +70,7 @@ class AuditQuestionsBloc
     Emitter<AuditQuestionsState> emit,
   ) async {
     final auditQuestionList = await auditsRepository.getAuditQuestionList(
-        auditId, state.selectedAuditSection!.id);
+        auditId, state.selectedAuditSectionId!);
 
     emit(state.copyWith(auditQuestionList: auditQuestionList));
   }
@@ -73,45 +79,46 @@ class AuditQuestionsBloc
     AuditQuestionsSelectedAuditSectionChanged event,
     Emitter<AuditQuestionsState> emit,
   ) {
-    emit(state.copyWith(selectedAuditSection: event.auditSection));
+    emit(state.copyWith(selectedAuditSectionId: event.auditSection.id));
   }
 
-  void _onAuditQuestionsIncludedChanged(
+  Future<void> _onAuditQuestionsIncludedChanged(
     AuditQuestionsIncludedChanged event,
     Emitter<AuditQuestionsState> emit,
-  ) {
-    if (event.questionId != null) {
-      emit(state.copyWith(
-          selectedAuditSection: state.selectedAuditSection!.copyWith(
-              auditQuestionList: state.selectedAuditSection!.auditQuestionList
-                  .map((question) => question.id == event.questionId
-                      ? question.copyWith(questionIncluded: !question.questionIncluded)
-                      : question)
-                  .toList()),
-          auditSectionList: state.auditSectionList
-              .map((e) => e.copyWith(
-                  auditQuestionList: e.auditQuestionList
-                      .map((question) => question.id == event.questionId
-                          ? question.copyWith(questionIncluded: !question.questionIncluded)
-                          : question)
-                      .toList()))
-              .toList()));
-    } else {
-      emit(state.copyWith(
-          selectedAuditSection: state.selectedAuditSection!.copyWith(
-              auditQuestionList: state.selectedAuditSection!.auditQuestionList
-                  .map((question) =>
-                      question.copyWith(questionIncluded: state.isAllExcluded))
-                  .toList()),
-          auditSectionList: state.auditSectionList
-              .map((e) => e.id == state.selectedAuditSection!.id
-                  ? e.copyWith(
-                      auditQuestionList: e.auditQuestionList
-                          .map((question) =>
-                              question.copyWith(questionIncluded: state.isAllExcluded))
-                          .toList())
-                  : e)
-              .toList()));
-    }
+  ) async {
+    try {
+      EntityResponse response =
+          await auditsRepository.toggleIncludeQuestion(AuditQuestionAssociation(
+        auditId: auditId,
+        questionId: event.questionId,
+        userId: userId,
+        isIncluded: event.isIncluded,
+      ));
+
+      if (response.isSuccess) {
+        add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
+        add(AuditQuestionsAuditQuestionListLoaded());
+      }
+    } catch (e) {}
+  }
+
+  Future<void> _onAuditQuestionsSectionIncludedChanged(
+    AuditQuestionsSectionIncludedChanged event,
+    Emitter<AuditQuestionsState> emit,
+  ) async {
+    try {
+      EntityResponse response =
+          await auditsRepository.toggleIncludeSection(AuditSectionAssociation(
+        auditId: auditId,
+        sectionId: event.sectionId,
+        userId: userId,
+        isIncluded: event.isIncluded,
+      ));
+
+      if (response.isSuccess) {
+        add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
+        add(AuditQuestionsAuditQuestionListLoaded());
+      }
+    } catch (e) {}
   }
 }

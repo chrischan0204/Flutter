@@ -16,7 +16,7 @@ class QuestionsListBodyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
       builder: (context, state) {
-        if (state.selectedAuditSection == null) {
+        if (state.selectedAuditSectionId == null) {
           return Container();
         }
         return SfDataGridTheme(
@@ -89,10 +89,11 @@ class AuditQuestionDataSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => _entityData;
 
-  void _changeIncluded(String id) {
-    context
-        .read<AuditQuestionsBloc>()
-        .add(AuditQuestionsIncludedChanged(questionId: id));
+  void _changeIncluded(String id, bool isIncluded) {
+    context.read<AuditQuestionsBloc>().add(AuditQuestionsIncludedChanged(
+          questionId: id,
+          isIncluded: !isIncluded,
+        ));
   }
 
   Widget _buildItem(
@@ -109,10 +110,10 @@ class AuditQuestionDataSource extends DataGridSource {
                     'This question has already been answered. Are you sure you would like to exclude from audit?',
                 btnOkText: 'OK',
                 btnCancelOnPress: () {},
-                btnOkOnPress: () => _changeIncluded(value['id']),
+                btnOkOnPress: () => _changeIncluded(value['id'], value['included']),
                 dialogType: DialogType.question,
               ).show()
-            : _changeIncluded(value['id']),
+            : _changeIncluded(value['id'], value['included']),
       );
     }
 

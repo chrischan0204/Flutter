@@ -30,7 +30,7 @@ class AuditSectionsView extends StatelessWidget {
                   children: [
                     for (final section in state.auditSectionList)
                       AuditSectionItemView(
-                        active: section.id == state.selectedAuditSection?.id,
+                        active: section.id == state.selectedAuditSectionId,
                         auditSection: section,
                         disabled: section.isNoIncluded,
                       )

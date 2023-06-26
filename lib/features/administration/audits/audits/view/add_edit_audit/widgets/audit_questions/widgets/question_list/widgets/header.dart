@@ -9,21 +9,17 @@ class QuestionListHeaderView extends StatelessWidget {
       padding: inset20,
       child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
         builder: (context, state) {
-          bool allExluded = state.selectedAuditSection!.auditQuestionList
-              .where((element) => element.questionIncluded)
-              .isEmpty;
+          bool allExluded = !state.selectedSection.isIncluded;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Questions from ${state.selectedAuditSection!.name}',
+                'Questions from ${state.selectedSection.name}',
                 style: textSemiBold14,
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (state.selectedAuditSection!.auditQuestionList
-                      .where((element) => element.questionIncluded)
-                      .isEmpty) {
+                  if (state.selectedSection.isIncluded) {
                     CustomAlert(
                       context: context,
                       width: MediaQuery.of(context).size.width / 4,
@@ -34,13 +30,19 @@ class QuestionListHeaderView extends StatelessWidget {
                       btnCancelOnPress: () {},
                       btnOkOnPress: () => context
                           .read<AuditQuestionsBloc>()
-                          .add(const AuditQuestionsIncludedChanged()),
+                          .add(AuditQuestionsSectionIncludedChanged(
+                            isIncluded: !state.selectedSection.isIncluded,
+                            sectionId: state.selectedSection.id,
+                          )),
                       dialogType: DialogType.question,
                     ).show();
                   } else {
                     context
                         .read<AuditQuestionsBloc>()
-                        .add(const AuditQuestionsIncludedChanged());
+                        .add(AuditQuestionsSectionIncludedChanged(
+                          isIncluded: !state.selectedSection.isIncluded,
+                          sectionId: state.selectedSection.id,
+                        ));
                   }
                 },
                 style: ElevatedButton.styleFrom(

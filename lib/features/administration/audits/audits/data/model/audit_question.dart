@@ -85,7 +85,7 @@ class AuditQuestion extends Equatable {
       'responseScaleName': responseScaleName,
       'questionStatus': questionStatus,
       'questionOrder': questionOrder,
-      'questionExcluded': questionIncluded,
+      'questionIncluded': questionIncluded,
     };
   }
 
@@ -98,7 +98,7 @@ class AuditQuestion extends Equatable {
       responseScaleName: map['responseScaleName'] as String,
       questionStatus: map['questionStatus'] as int,
       questionOrder: map['questionOrder'] as int,
-      questionIncluded: !(map['questionExcluded'] as bool),
+      questionIncluded: map['questionIncluded'],
     );
   }
 

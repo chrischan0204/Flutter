@@ -128,7 +128,7 @@ class AuditsRepository extends BaseRepository {
         '/api/audits/$auditId/sections/$sectionId/auditandtemplatequestions');
 
     if (response.statusCode == 200) {
-      return List.from(json.decode(response.body)['newQuestions'])
+      return List.from(json.decode(response.body)['questions'])
           .map((e) => AuditQuestion.fromMap(e))
           .toList();
     }
@@ -141,7 +141,7 @@ class AuditsRepository extends BaseRepository {
         await super.get('$url/$auditId/auditandtemplatesections');
 
     if (response.statusCode == 200) {
-      return List.from(json.decode(response.body)['templateSections'])
+      return List.from(json.decode(response.body)['auditSections'])
           .map((e) => AuditSection.fromMap(e))
           .toList();
     }
@@ -311,5 +311,38 @@ class AuditsRepository extends BaseRepository {
     //     ],
     //   )
     // ];
+  }
+
+  Future<EntityResponse> toggleIncludeQuestion(
+      AuditQuestionAssociation auditQuestionAssociation) async {
+    Response response = await super.post(
+      '$url/${auditQuestionAssociation.auditId}/question/toggle',
+      body: auditQuestionAssociation.toJson(),
+    );
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> toggleIncludeSection(
+      AuditSectionAssociation auditSectionAssociation) async {
+    Response response = await super.post(
+      '$url/${auditSectionAssociation.auditId}/section/toggle',
+      body: auditSectionAssociation.toJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    throw Exception();
   }
 }

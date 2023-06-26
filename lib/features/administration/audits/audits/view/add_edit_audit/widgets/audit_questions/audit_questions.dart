@@ -67,7 +67,7 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
               flex: 5,
               child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
                 builder: (context, state) {
-                  if (state.selectedAuditSection != null) {
+                  if (state.selectedAuditSectionId != null) {
                     return const QuestionListView();
                   }
                   return Container();

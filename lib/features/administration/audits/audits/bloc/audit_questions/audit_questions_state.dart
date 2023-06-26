@@ -4,13 +4,16 @@ part of 'audit_questions_bloc.dart';
 class AuditQuestionsState extends Equatable {
   final List<AuditQuestionSnapshot> auditQuestionSnapshotList;
   final List<AuditSection> auditSectionList;
-  final AuditSection? selectedAuditSection;
+  final String? selectedAuditSectionId;
 
   final List<AuditQuestion> auditQuestionList;
+
+  // final String message;
+
   const AuditQuestionsState({
     this.auditQuestionSnapshotList = const [],
     this.auditSectionList = const [],
-    this.selectedAuditSection,
+    this.selectedAuditSectionId,
     this.auditQuestionList = const [],
   });
 
@@ -18,13 +21,13 @@ class AuditQuestionsState extends Equatable {
   List<Object?> get props => [
         auditQuestionSnapshotList,
         auditSectionList,
-        selectedAuditSection,
+        selectedAuditSectionId,
         auditQuestionList,
       ];
 
-  bool get isAllExcluded => selectedAuditSection!.auditQuestionList
-      .where((element) => element.questionIncluded)
-      .isEmpty;
+  AuditSection get selectedSection => auditSectionList.firstWhere(
+      (element) => element.id == selectedAuditSectionId,
+      orElse: () => const AuditSection());
 
   List<AuditQuestionSnapshot> get snapshotList => auditSectionList
       .map((section) => AuditQuestionSnapshot(
@@ -49,14 +52,15 @@ class AuditQuestionsState extends Equatable {
   AuditQuestionsState copyWith({
     List<AuditQuestionSnapshot>? auditQuestionSnapshotList,
     List<AuditSection>? auditSectionList,
-    AuditSection? selectedAuditSection,
+    String? selectedAuditSectionId,
     List<AuditQuestion>? auditQuestionList,
   }) {
     return AuditQuestionsState(
       auditQuestionSnapshotList:
           auditQuestionSnapshotList ?? this.auditQuestionSnapshotList,
       auditSectionList: auditSectionList ?? this.auditSectionList,
-      selectedAuditSection: selectedAuditSection ?? this.selectedAuditSection,
+      selectedAuditSectionId:
+          selectedAuditSectionId ?? this.selectedAuditSectionId,
       auditQuestionList: auditQuestionList ?? this.auditQuestionList,
     );
   }

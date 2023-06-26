@@ -21,7 +21,7 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
   Color _getColor() {
     if (_hover) {
       return const Color(0xfff7fdf1);
-    } else if (widget.disabled) {
+    } else if (!widget.auditSection.isIncluded) {
       return const Color(0xfff7f2f2);
     } else if (widget.active) {
       return const Color(0xffecfadc);

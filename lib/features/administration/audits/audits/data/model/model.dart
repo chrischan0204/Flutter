@@ -5,3 +5,5 @@ export 'audit_create.dart';
 export 'audit_question_snapshot.dart';
 export 'audit_section.dart';
 export 'audit_question.dart';
+export 'audit_question_association.dart';
+export 'audit_section_association.dart';

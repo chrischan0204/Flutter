@@ -48,13 +48,13 @@ class AuditSection extends Equatable {
   final List<AuditQuestion> auditQuestionList;
 
   const AuditSection({
-    required this.id,
-    required this.name,
-    required this.order,
-    required this.isIncluded,
-    required this.status,
-    required this.questionCount,
-    required this.maxScore,
+    this.id = emptyGuid,
+    this.name = '',
+    this.order = 0,
+    this.isIncluded = true,
+    this.status = AuditSectionStatus.done,
+    this.questionCount = 0,
+    this.maxScore = 0,
     this.auditQuestionList = const [],
   });
 

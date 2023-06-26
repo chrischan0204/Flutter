@@ -19,15 +19,16 @@ class BaseRepository {
 
   Future<http.Response> get(String encodedPath,
       [Map<String, dynamic>? queryParams]) async {
-    late http.Response response;
+    http.Response response;
     try {
       response = await http.get(
           Uri.https(ApiUri.host, encodedPath, queryParams),
           headers: headers);
+      return response;
     } on http.ClientException catch (_) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      throw Exception();
     }
-    return response;
   }
 
   Future<http.Response> post(
@@ -43,10 +44,12 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
+      return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
-    return response;
+
+    throw Exception();
   }
 
   Future<http.Response> put(
@@ -62,10 +65,12 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
+      return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
-    return response;
+
+    throw Exception();
   }
 
   Future<http.Response> delete(
@@ -81,37 +86,23 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
+
+      return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
-    return response;
+    throw Exception();
   }
 
   Future<http.Response> filter(FilteredTableParameter option) async {
     late http.Response response;
     try {
-      // if (option.filterOption == null) {
-      //   Map<String, String> queryParams = {
-      //     'includeDeleted': option.includeDeleted.toString()
-      //   };
-
-      //   if (!Validation.isEmpty(option.filterId)) {
-      //     queryParams.addEntries([MapEntry('filterId', option.filterId)]);
-      //   }
-
-      //   queryParams
-      //       .addEntries([MapEntry('pageNum', option.pageNum.toString())]);
-
-      //   queryParams
-      //       .addEntries([MapEntry('pageSize', option.pageSize.toString())]);
-
-      //   response = await get('$url/list', queryParams);
-      // } else {
       response = await post('$url/list', body: option.toJson());
-      // }
+      return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
-    return response;
+
+    throw Exception();
   }
 }

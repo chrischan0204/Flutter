@@ -45,12 +45,35 @@ class AuditQuestionsSelectedAuditSectionChanged extends AuditQuestionsEvent {
 }
 
 /// event to include or exclude the question
-/// if questionId is null, it will exclude all questions by auditSectionId
-/// if questionId is not null, it will exclude one question by question id
+
 class AuditQuestionsIncludedChanged extends AuditQuestionsEvent {
-  final String? questionId;
-  const AuditQuestionsIncludedChanged({this.questionId});
+  final String questionId;
+  final bool isIncluded;
+  const AuditQuestionsIncludedChanged({
+    required this.questionId,
+    required this.isIncluded,
+  });
 
   @override
-  List<Object?> get props => [questionId];
+  List<Object?> get props => [
+        questionId,
+        isIncluded,
+      ];
+}
+
+/// event to include or exclude the section
+
+class AuditQuestionsSectionIncludedChanged extends AuditQuestionsEvent {
+  final String sectionId;
+  final bool isIncluded;
+  const AuditQuestionsSectionIncludedChanged({
+    required this.sectionId,
+    required this.isIncluded,
+  });
+
+  @override
+  List<Object?> get props => [
+        sectionId,
+        isIncluded,
+      ];
 }
