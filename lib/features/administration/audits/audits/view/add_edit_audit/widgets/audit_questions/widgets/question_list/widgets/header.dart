@@ -10,7 +10,7 @@ class QuestionListHeaderView extends StatelessWidget {
       child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
         builder: (context, state) {
           bool allExluded = state.selectedAuditSection!.auditQuestionList
-              .where((element) => element.included)
+              .where((element) => element.questionIncluded)
               .isEmpty;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -22,7 +22,7 @@ class QuestionListHeaderView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (state.selectedAuditSection!.auditQuestionList
-                      .where((element) => element.included)
+                      .where((element) => element.questionIncluded)
                       .isEmpty) {
                     CustomAlert(
                       context: context,

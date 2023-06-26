@@ -46,21 +46,17 @@ class AuditsRepository extends BaseRepository {
   }
 
   // edit audit
-  Future<EntityResponse> editAudit(AuditCreate audit) async {
+  Future<String?> editAudit(AuditCreate audit) async {
     Response response = await super.put(
       url,
       body: audit.toJson(),
     );
 
-    if (response.statusCode != 500) {
-      if (response.statusCode == 200) {
-        return EntityResponse(
-          statusCode: response.statusCode,
-          isSuccess: true,
-          message: response.body,
-        );
-      }
-      return EntityResponse.fromJson(response.body);
+    if (response.statusCode == 200) {
+      return Audit.fromJson(response.body).id;
+    }
+    if (response.statusCode == 500) {
+      return EntityResponse.fromJson(response.body).message;
     }
     throw Exception();
   }

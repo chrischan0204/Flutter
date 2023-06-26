@@ -22,10 +22,17 @@ class AddEditAuditAdded extends AddEditAuditEvent {
 class AddEditAuditEdited extends AddEditAuditEvent {
   /// audit id to edit
   final String id;
-  const AddEditAuditEdited({required this.id});
+  final String userId;
+  const AddEditAuditEdited({
+    required this.id,
+    required this.userId,
+  });
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [
+        id,
+        userId,
+      ];
 }
 
 /// event to load the audit by id

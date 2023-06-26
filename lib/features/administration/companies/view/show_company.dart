@@ -85,7 +85,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
                     ? Padding(
                         padding: insetx20,
                         child: const Text(
-                          'The following sites are associated with this project. Edit company to associate/ remove sites from this company',
+                          'The following sites are associated with this company. Edit company to associate/ remove sites from this company',
                           style: TextStyle(
                             fontSize: 12,
                             fontFamily: 'OpenSans',
@@ -285,7 +285,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
 
       GoRouter.of(context).go('/companies');
     }
-    if (state.companyCrudStatus .isFailure) {
+    if (state.companyCrudStatus.isFailure) {
       companiesBloc.add(CompaniesStatusInited());
       CustomNotification(
         context: context,

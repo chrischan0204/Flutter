@@ -85,14 +85,14 @@ class AuditQuestionsBloc
           selectedAuditSection: state.selectedAuditSection!.copyWith(
               auditQuestionList: state.selectedAuditSection!.auditQuestionList
                   .map((question) => question.id == event.questionId
-                      ? question.copyWith(included: !question.included)
+                      ? question.copyWith(questionIncluded: !question.questionIncluded)
                       : question)
                   .toList()),
           auditSectionList: state.auditSectionList
               .map((e) => e.copyWith(
                   auditQuestionList: e.auditQuestionList
                       .map((question) => question.id == event.questionId
-                          ? question.copyWith(included: !question.included)
+                          ? question.copyWith(questionIncluded: !question.questionIncluded)
                           : question)
                       .toList()))
               .toList()));
@@ -101,14 +101,14 @@ class AuditQuestionsBloc
           selectedAuditSection: state.selectedAuditSection!.copyWith(
               auditQuestionList: state.selectedAuditSection!.auditQuestionList
                   .map((question) =>
-                      question.copyWith(included: state.isAllExcluded))
+                      question.copyWith(questionIncluded: state.isAllExcluded))
                   .toList()),
           auditSectionList: state.auditSectionList
               .map((e) => e.id == state.selectedAuditSection!.id
                   ? e.copyWith(
                       auditQuestionList: e.auditQuestionList
                           .map((question) =>
-                              question.copyWith(included: state.isAllExcluded))
+                              question.copyWith(questionIncluded: state.isAllExcluded))
                           .toList())
                   : e)
               .toList()));

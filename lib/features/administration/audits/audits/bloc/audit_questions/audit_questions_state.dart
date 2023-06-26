@@ -23,7 +23,7 @@ class AuditQuestionsState extends Equatable {
       ];
 
   bool get isAllExcluded => selectedAuditSection!.auditQuestionList
-      .where((element) => element.included)
+      .where((element) => element.questionIncluded)
       .isEmpty;
 
   List<AuditQuestionSnapshot> get snapshotList => auditSectionList
@@ -31,7 +31,7 @@ class AuditQuestionsState extends Equatable {
             section: section.name,
             totalQuestionCount: section.auditQuestionList.length,
             includedQuestionCount: section.auditQuestionList
-                .where((element) => element.included)
+                .where((element) => element.questionIncluded)
                 .length,
             maxScore: [
               ...section.auditQuestionList.map((e) => e.questionScore),
@@ -39,7 +39,7 @@ class AuditQuestionsState extends Equatable {
             ].reduce((value, element) => value > element ? value : element),
             includedScore: [
               ...section.auditQuestionList
-                  .where((element) => element.included)
+                  .where((element) => element.questionIncluded)
                   .map((e) => e.questionScore),
               0.0,
             ].reduce((value, element) => value + element),

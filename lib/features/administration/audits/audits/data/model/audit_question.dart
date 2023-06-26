@@ -29,7 +29,7 @@ class AuditQuestion extends Equatable {
   final String responseScaleName;
   final int questionStatus;
   final int questionOrder;
-  final bool included;
+  final bool questionIncluded;
 
   const AuditQuestion({
     required this.id,
@@ -39,7 +39,7 @@ class AuditQuestion extends Equatable {
     required this.responseScaleName,
     required this.questionStatus,
     this.questionOrder = 0,
-    this.included = true,
+    this.questionIncluded = true,
   });
 
   @override
@@ -51,7 +51,7 @@ class AuditQuestion extends Equatable {
         responseScaleName,
         questionStatus,
         questionOrder,
-        included,
+        questionIncluded,
       ];
 
   AuditQuestion copyWith({
@@ -62,7 +62,7 @@ class AuditQuestion extends Equatable {
     String? responseScaleName,
     int? questionStatus,
     int? questionOrder,
-    bool? included,
+    bool? questionIncluded,
   }) {
     return AuditQuestion(
       id: id ?? this.id,
@@ -72,7 +72,7 @@ class AuditQuestion extends Equatable {
       responseScaleName: responseScaleName ?? this.responseScaleName,
       questionStatus: questionStatus ?? this.questionStatus,
       questionOrder: questionOrder ?? this.questionOrder,
-      included: included ?? this.included,
+      questionIncluded: questionIncluded ?? this.questionIncluded,
     );
   }
 
@@ -85,7 +85,7 @@ class AuditQuestion extends Equatable {
       'responseScaleName': responseScaleName,
       'questionStatus': questionStatus,
       'questionOrder': questionOrder,
-      'questionExcluded': included,
+      'questionExcluded': questionIncluded,
     };
   }
 
@@ -98,7 +98,7 @@ class AuditQuestion extends Equatable {
       responseScaleName: map['responseScaleName'] as String,
       questionStatus: map['questionStatus'] as int,
       questionOrder: map['questionOrder'] as int,
-      included: !(map['questionExcluded'] as bool),
+      questionIncluded: !(map['questionExcluded'] as bool),
     );
   }
 

@@ -70,7 +70,7 @@ class AuditQuestionDataSource extends DataGridSource {
               cells: [
                 DataGridCell(columnName: columns[0], value: {
                   'id': auditQuestion.id,
-                  'included': auditQuestion.included,
+                  'included': auditQuestion.questionIncluded,
                 }),
                 DataGridCell(
                     columnName: columns[1], value: auditQuestion.question),

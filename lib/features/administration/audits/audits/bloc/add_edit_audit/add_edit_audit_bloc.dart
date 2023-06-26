@@ -66,9 +66,19 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
         if (Uuid.isValidUUID(fromString: response ?? '')) {
           emit(state.copyWith(
             createdAuditId: response,
+            initialArea: state.area,
+            initialAuditDate: state.auditDate,
+            initialAuditName: state.auditName,
+            initialCompanies: state.companies,
+            initialInspectors: state.inspectors,
+            initialProject: state.project,
+            initialSite: state.site,
+            initialTemplate: state.template,
             message: 'Audit successfully added.',
             status: EntityStatus.success,
           ));
+
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           if (response?.contains('already') == true) {
             emit(state.copyWith(
@@ -99,25 +109,43 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        // EntityResponse response = await auditsRepository
-        //     .editAudit(state.audit.copyWith(id: event.id));
+        String? response = await auditsRepository
+            .editAudit(state.audit.copyWith(id: event.id));
 
-        // if (response.isSuccess) {
-        //   emit(state.copyWith(
-        //     initialAuditName: state.auditName,
-        //     message: response.message,
-        //     status: EntityStatus.success,
-        //   ));
+        if (Uuid.isValidUUID(fromString: response ?? '')) {
+          emit(state.copyWith(
+            createdAuditId: response,
+            initialArea: state.area,
+            initialAuditDate: state.auditDate,
+            initialAuditName: state.auditName,
+            initialCompanies: state.companies,
+            initialInspectors: state.inspectors,
+            initialProject: state.project,
+            initialSite: state.site,
+            initialTemplate: state.template,
+            message: 'Audit successfully updated.',
+            status: EntityStatus.success,
+          ));
 
-        //   formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
-        // } else {
-        //   // _checkMessage(emit, response.message);
-        // }
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+        } else {
+          if (response?.contains('already') == true) {
+            emit(state.copyWith(
+              auditNameValidationMessage: response,
+              status: EntityStatus.initial,
+            ));
+          } else {
+            emit(state.copyWith(
+              status: EntityStatus.failure,
+              message: response,
+            ));
+          }
+        }
       } catch (e) {
-        // emit(state.copyWith(
-        //   status: EntityStatus.failure,
-        //   message: editErrorMessage,
-        // ));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          message: ErrorMessage('audit').edit,
+        ));
       }
     }
   }
@@ -147,6 +175,12 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
         initialProject: project,
         template: Nullable.value(template),
         initialTemplate: template,
+        area: audit.area,
+        initialArea: audit.area,
+        companies: audit.companies,
+        initialCompanies: audit.companies,
+        inspectors: audit.inspectors,
+        initialInspectors: audit.inspectors,
       ));
     } catch (e) {
       print(e);

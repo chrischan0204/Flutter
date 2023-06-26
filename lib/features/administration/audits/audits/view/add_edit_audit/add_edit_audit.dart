@@ -101,8 +101,9 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
           addEntity: () => addEditAuditBloc.add(AddEditAuditAdded(
               userId:
                   context.read<AuthBloc>().state.authUser?.id ?? emptyGuid)),
-          editEntity: () => addEditAuditBloc
-              .add(AddEditAuditEdited(id: widget.auditId ?? '')),
+          editEntity: () => addEditAuditBloc.add(AddEditAuditEdited(
+              id: widget.auditId ?? '',
+              userId: context.read<AuthBloc>().state.authUser!.id)),
           crudStatus: state.status,
           tabItems: tabItems,
           view: widget.view,

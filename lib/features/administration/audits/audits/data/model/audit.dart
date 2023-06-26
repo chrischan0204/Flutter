@@ -28,9 +28,16 @@ class Audit extends Entity {
 
   final double score;
   final double maxScore;
+
+  final String companies;
+  final String inspectors;
+  final String area;
   const Audit({
     super.id,
     super.name,
+    this.area = '',
+    this.inspectors = '',
+    this.companies = '',
     this.auditNumber,
     required this.auditDate,
     this.auditStatusName,
@@ -59,6 +66,9 @@ class Audit extends Entity {
   List<Object?> get props => [
         ...super.props,
         name,
+        area,
+        companies,
+        inspectors,
         auditNumber,
         auditDate,
         auditStatusName,
@@ -127,6 +137,9 @@ class Audit extends Entity {
     return Audit(
       id: entity.id,
       name: entity.name,
+      area: map['area'] ?? '',
+      companies: map['companies'] ?? '',
+      inspectors: map['inspectors'] ?? '',
       auditNumber: map['auditNumber'],
       auditDate: DateTime.parse(map['auditDate']),
       auditStatusName: map['auditStatusName'],

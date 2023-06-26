@@ -2,6 +2,7 @@
 import '/common_libraries.dart';
 
 class AuditCreate extends Equatable {
+  final String? id;
   final String name;
   final String userId;
   final String auditDate;
@@ -13,6 +14,7 @@ class AuditCreate extends Equatable {
   final String? inspectors;
 
   const AuditCreate({
+    this.id,
     required this.name,
     required this.userId,
     required this.auditDate,
@@ -26,6 +28,7 @@ class AuditCreate extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         userId,
         auditDate,
@@ -38,7 +41,7 @@ class AuditCreate extends Equatable {
       ];
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'name': name,
       'userId': userId,
       'auditDate': auditDate,
@@ -49,11 +52,16 @@ class AuditCreate extends Equatable {
       'companies': companies,
       'inspectors': inspectors,
     };
+    if (id != null) {
+      map.addEntries([MapEntry('id', id!)]);
+    }
+    return map;
   }
 
   String toJson() => json.encode(toMap());
 
   AuditCreate copyWith({
+    String? id,
     String? name,
     String? userId,
     String? auditDate,
@@ -65,6 +73,7 @@ class AuditCreate extends Equatable {
     String? inspectors,
   }) {
     return AuditCreate(
+      id: id ?? this.id,
       name: name ?? this.name,
       userId: userId ?? this.userId,
       auditDate: auditDate ?? this.auditDate,

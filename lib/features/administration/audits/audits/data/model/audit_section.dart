@@ -41,7 +41,7 @@ class AuditSection extends Equatable {
   final String id;
   final String name;
   final int order;
-  final bool excluded;
+  final bool isIncluded;
   final int questionCount;
   final double maxScore;
   final AuditSectionStatus status;
@@ -51,7 +51,7 @@ class AuditSection extends Equatable {
     required this.id,
     required this.name,
     required this.order,
-    required this.excluded,
+    required this.isIncluded,
     required this.status,
     required this.questionCount,
     required this.maxScore,
@@ -59,14 +59,14 @@ class AuditSection extends Equatable {
   });
 
   bool get isNoIncluded =>
-      auditQuestionList.where((element) => element.included).isEmpty;
+      auditQuestionList.where((element) => element.questionIncluded).isEmpty;
 
   @override
   List<Object?> get props => [
         id,
         name,
         order,
-        excluded,
+        isIncluded,
         status,
         auditQuestionList,
         questionCount,
@@ -77,7 +77,7 @@ class AuditSection extends Equatable {
     String? id,
     String? name,
     int? order,
-    bool? excluded,
+    bool? isIncluded,
     int? questionCount,
     double? maxScore,
     AuditSectionStatus? status,
@@ -87,7 +87,7 @@ class AuditSection extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       order: order ?? this.order,
-      excluded: excluded ?? this.excluded,
+      isIncluded: isIncluded ?? this.isIncluded,
       questionCount: questionCount ?? this.questionCount,
       maxScore: maxScore ?? this.maxScore,
       status: status ?? this.status,
@@ -95,32 +95,18 @@ class AuditSection extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'order': order,
-      'excluded': excluded,
-      'questionCount': questionCount,
-      'maxScore': maxScore,
-      'auditQuestionList': auditQuestionList.map((x) => x.toMap()).toList(),
-    };
-  }
-
   factory AuditSection.fromMap(Map<String, dynamic> map) {
     return AuditSection(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      order: map['order'] as int,
-      excluded: map['excluded'] as bool,
+      id: map['id'],
+      name: map['name'],
+      order: map['order'],
+      isIncluded: map['isIncluded'],
       questionCount: map['questionCount'] ?? 0,
       maxScore: map['maxScore'] ?? 0,
       status: AuditSectionStatus.done,
       auditQuestionList: [],
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory AuditSection.fromJson(String source) =>
       AuditSection.fromMap(json.decode(source) as Map<String, dynamic>);
