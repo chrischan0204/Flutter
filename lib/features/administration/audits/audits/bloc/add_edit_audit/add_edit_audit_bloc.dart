@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 import '/common_libraries.dart';
 
 part 'add_edit_audit_event.dart';
@@ -60,12 +58,12 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        String? response = await auditsRepository
+        EntityResponse response = await auditsRepository
             .addAudit(state.audit.copyWith(userId: event.userId));
 
-        if (Uuid.isValidUUID(fromString: response ?? '')) {
+        if (response.isSuccess) {
           emit(state.copyWith(
-            createdAuditId: response,
+            createdAuditId: response.data?.id ?? emptyGuid,
             initialArea: state.area,
             initialAuditDate: state.auditDate,
             initialAuditName: state.auditName,
@@ -80,15 +78,15 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
 
           formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
-          if (response?.contains('already') == true) {
+          if (response.message.contains('already') == true) {
             emit(state.copyWith(
-              auditNameValidationMessage: response,
+              auditNameValidationMessage: response.message,
               status: EntityStatus.initial,
             ));
           } else {
             emit(state.copyWith(
               status: EntityStatus.failure,
-              message: response,
+              message: response.message,
             ));
           }
         }
@@ -109,12 +107,11 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        String? response = await auditsRepository
+        EntityResponse response = await auditsRepository
             .editAudit(state.audit.copyWith(id: event.id));
 
-        if (Uuid.isValidUUID(fromString: response ?? '')) {
+        if (response.isSuccess) {
           emit(state.copyWith(
-            createdAuditId: response,
             initialArea: state.area,
             initialAuditDate: state.auditDate,
             initialAuditName: state.auditName,
@@ -129,15 +126,15 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
 
           formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
-          if (response?.contains('already') == true) {
+          if (response.message.contains('already') == true) {
             emit(state.copyWith(
-              auditNameValidationMessage: response,
+              auditNameValidationMessage: response.message,
               status: EntityStatus.initial,
             ));
           } else {
             emit(state.copyWith(
               status: EntityStatus.failure,
-              message: response,
+              message: response.message,
             ));
           }
         }
