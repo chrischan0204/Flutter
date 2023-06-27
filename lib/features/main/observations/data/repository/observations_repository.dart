@@ -10,72 +10,15 @@ class ObservationsRepository extends BaseRepository {
 
   /// get observations list
   Future<List<Observation>> getObservationList() async {
-    return [
-      Observation(
-        id: const Uuid().v1(),
-        name: 'Broken electric wire hanging from pole',
-        statusName: 'Draft',
-        location: 'Delivery gate - South entrance',
-        source: '--',
-        reportedBy: 'Anonymous',
-        reportedAt: '14th May 2021 at 2:31 PM',
-        via: 'Tap in App',
-        assessed: 'Yes',
-        assessedBy: 'Kartik Sharma',
-        assessedAs: 'Good Catch',
-        actionItems: 'One assigned to Jack Donner / Open Status',
-      ),
-      Observation(
-        id: const Uuid().v1(),
-        statusName: 'In Progress',
-        name: 'Broken electric wire hanging from pole',
-        location: 'Delivery gate - South entrance',
-        source: '--',
-        reportedBy: 'Anonymous',
-        reportedAt: '14th May 2021 at 2:31 PM',
-        via: 'Tap in App',
-        assessed: 'No',
-        assessedBy: 'Josh Lucas',
-        assessedAs: 'Good Catch',
-        actionItems: 'One assigned to Jack Donner / Open Status',
-      ),
-      Observation(
-        id: const Uuid().v1(),
-        statusName: 'Draft',
-        name: 'Broken electric wire hanging from pole',
-        location: 'Delivery gate - South entrance',
-        source: '--',
-        reportedBy: 'Lake Shore Drive, Chicago',
-        reportedAt: '14th May 2021 at 2:31 PM',
-        via: 'Tap in App',
-        assessed: 'Yes',
-        assessedBy: 'Kartik Sharma',
-        assessedAs: 'Good Catch',
-        actionItems: 'One assigned to Jack Donner / Open Status',
-      ),
-      Observation(
-        id: const Uuid().v1(),
-        name: 'Broken electric wire hanging from pole',
-        statusName: 'Completed',
-        location: 'Delivery gate - South entrance',
-        source: '--',
-        reportedBy: 'Lake Shore Drive, Chicago',
-        reportedAt: '14th May 2021 at 2:31 PM',
-        via: 'Tap in App',
-        assessed: 'No',
-        assessedBy: 'Josh Lucas',
-        assessedAs: 'Good Catch',
-        actionItems: 'One assigned to Jack Donner / Open Status',
-      )
-    ];
-
-    Response response = await super.get(url);
-    if (response.statusCode == 200) {
-      return List.from(jsonDecode(response.body))
-          .map((observationMap) => Observation.fromMap(observationMap))
-          .toList();
-    }
     return [];
+
+    // Response response = await super.get(url);
+    // if (response.statusCode == 200) {
+    //   return List.from(jsonDecode(response.body))
+    //       .map((observationMap) => Observation.fromMap(observationMap))
+    //       .toList();
+    // }
+    // return [];
   }
 
   /// get observation by id

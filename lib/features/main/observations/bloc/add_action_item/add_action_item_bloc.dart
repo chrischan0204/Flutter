@@ -60,7 +60,10 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
       actionItem: Nullable.value(event.actionItem),
       task: event.actionItem.task,
       dueBy: Nullable.value(event.actionItem.due),
-      assignee: Nullable.value(User(name: event.actionItem.assignee)),
+      assignee: Nullable.value(User(
+        firstName: event.actionItem.assignee.split(' ')[0],
+        lastName: event.actionItem.assignee.split(' ')[1],
+      )),
       category:
           Nullable.value(AwarenessCategory(name: event.actionItem.category)),
       company: Nullable.value(Company(name: event.actionItem.company)),

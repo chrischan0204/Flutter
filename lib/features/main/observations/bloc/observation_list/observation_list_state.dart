@@ -8,8 +8,11 @@ class ObservationListState extends Equatable {
   /// observation list load status
   final EntityStatus observationListLoadStatus;
 
-  /// select observation for detail
+  /// selected observation for detail
   final Observation? observation;
+
+  /// observation load status
+  final EntityStatus observationLoadStatus;
 
   /// total rows of observation list
   final int totalRows;
@@ -17,6 +20,7 @@ class ObservationListState extends Equatable {
     this.observationList = const [],
     this.observation,
     this.observationListLoadStatus = EntityStatus.initial,
+    this.observationLoadStatus = EntityStatus.initial,
     this.totalRows = 0,
   });
 
@@ -24,6 +28,7 @@ class ObservationListState extends Equatable {
   List<Object?> get props => [
         observationList,
         observationListLoadStatus,
+        observationLoadStatus,
         observation,
         totalRows,
       ];
@@ -32,6 +37,7 @@ class ObservationListState extends Equatable {
     List<Observation>? observationList,
     EntityStatus? observationListLoadStatus,
     Observation? observation,
+    EntityStatus? observationLoadStatus,
     int? totalRows,
   }) {
     return ObservationListState(
@@ -39,6 +45,8 @@ class ObservationListState extends Equatable {
       observationListLoadStatus:
           observationListLoadStatus ?? this.observationListLoadStatus,
       observation: observation ?? this.observation,
+      observationLoadStatus:
+          observationLoadStatus ?? this.observationLoadStatus,
       totalRows: totalRows ?? this.totalRows,
     );
   }

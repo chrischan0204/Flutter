@@ -12,9 +12,7 @@ class _ObservationListViewState extends State<ObservationListView> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (context) => ObservationListBloc(
-                observationsRepository: RepositoryProvider.of(context))),
+        BlocProvider(create: (context) => ObservationListBloc(context)),
       ],
       child: const ObservationListWidget(),
     );
@@ -40,7 +38,6 @@ class _ObservationListState extends State<ObservationListWidget> {
   @override
   void initState() {
     observationListBloc = context.read<ObservationListBloc>();
-    // observationDetailBloc = context.read<ObservationDetailBloc>();
 
     super.initState();
   }
@@ -63,8 +60,8 @@ class _ObservationListState extends State<ObservationListWidget> {
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
                     observationListState.observationListLoadStatus.isLoading,
-            // entityDetailLoadStatusLoading:
-            //     observationDetailState.observationLoadStatus.isLoading,
+            entityDetailLoadStatusLoading:
+                observationListState.observationLoadStatus.isLoading,
             selectedEntity: observationListState.observation,
             onViewSettingApplied: () {
               _filterObservations();
@@ -89,8 +86,8 @@ class _ObservationListState extends State<ObservationListWidget> {
   }
 
   void _selectObservation(Entity selectedObservation) {
-    observationListBloc.add(ObservationListObservationSelected(
-        observation: selectedObservation as Observation));
+    observationListBloc.add(ObservationListObservationForSideDetailLoaded(
+        observationId: selectedObservation.id!));
   }
 
   void _filterObservations([

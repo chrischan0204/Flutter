@@ -7,14 +7,18 @@ part 'template_designer_state.dart';
 
 class TemplateDesignerBloc
     extends Bloc<TemplateDesignerEvent, TemplateDesignerState> {
-  final TemplatesRepository templatesRepository;
-  final ResponseScalesRepository responseScalesRepository;
-  final SectionsRepository sectionsRepository;
+      final BuildContext context;
+  late TemplatesRepository templatesRepository;
+  late ResponseScalesRepository responseScalesRepository;
+  late SectionsRepository sectionsRepository;
   TemplateDesignerBloc({
-    required this.templatesRepository,
-    required this.responseScalesRepository,
-    required this.sectionsRepository,
+    required this.context
   }) : super(const TemplateDesignerState()) {
+
+    templatesRepository = context.read();
+    responseScalesRepository = context.read();
+    sectionsRepository = context.read();
+
     on<TemplateDesignerTemplateSectionListLoaded>(
         _onTemplateDesignerTemplateSectionListLoaded);
     on<TemplateDesignerTemplateSectionAdded>(
@@ -121,11 +125,16 @@ class TemplateDesignerBloc
           message: response.message,
           newSection: '',
         ));
+
+
       } else if (response.statusCode == 409) {
         emit(state.copyWith(
           templateSectionAddStatus: EntityStatus.failure,
           message: response.message,
         ));
+
+        
+        add(const TemplateDesignerNewSectionChanged(newSection: ''));
       }
     } catch (e) {
       emit(state.copyWith(

@@ -12,7 +12,7 @@ class AssigneeSelectField extends StatelessWidget {
         builder: (context, observationDetailState) {
           Map<String, User> items = {}..addEntries(observationDetailState
               .userList
-              .map((user) => MapEntry(user.fullName, user)));
+              .map((user) => MapEntry(user.name!, user)));
           return BlocBuilder<AddActionItemBloc, AddActionItemState>(
             builder: (context, addActionItemState) {
               return CustomSingleSelect(

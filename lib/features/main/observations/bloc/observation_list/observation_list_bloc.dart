@@ -5,13 +5,15 @@ part 'observation_list_state.dart';
 
 class ObservationListBloc
     extends Bloc<ObservationListEvent, ObservationListState> {
-  final ObservationsRepository observationsRepository;
-  ObservationListBloc({required this.observationsRepository})
-      : super(const ObservationListState()) {
+  late ObservationsRepository observationsRepository;
+  final BuildContext context;
+  ObservationListBloc(this.context) : super(const ObservationListState()) {
+    observationsRepository = context.read();
+
     on<ObservationListLoaded>(_onObservationListLoaded);
     on<ObservationListFiltered>(_onObservationListFiltered);
-    on<ObservationListObservationSelected>(
-        _onObservationListObservationSelected);
+    on<ObservationListObservationForSideDetailLoaded>(
+        _onObservationListObservationForSideDetailLoaded);
   }
 
   Future<void> _onObservationListLoaded(
@@ -38,33 +40,41 @@ class ObservationListBloc
     emit(state.copyWith(observationListLoadStatus: EntityStatus.loading));
 
     try {
-      final observationList = await observationsRepository.getObservationList();
-      emit(state.copyWith(
-        observationListLoadStatus: EntityStatus.success,
-        observationList: observationList,
-      ));
-      // final filteredobservationData =
-      //     await observationsRepository.getFilteredObservationList(event.option);
-      // final List<String> columns = List.from(filteredobservationData.headers
-      //     .where((e) => !e.isHidden)
-      //     .map((e) => e.title));
+      final filteredobservationData =
+          await observationsRepository.getFilteredObservationList(event.option);
+      final List<String> columns = List.from(filteredobservationData.headers
+          .where((e) => !e.isHidden)
+          .map((e) => e.title));
 
-      // emit(state.copyWith(
-      //   observationList: filteredobservationData.data
-      //       .map((e) => e.toObservation().copyWith(columns: columns))
-      //       .toList(),
-      //   observationListLoadStatus: EntityStatus.success,
-      //   totalRows: filteredobservationData.totalRows,
-      // ));
+      emit(state.copyWith(
+        observationList: filteredobservationData.data
+            .map((e) => e.observation.copyWith(columns: columns))
+            .toList(),
+        observationListLoadStatus: EntityStatus.success,
+        totalRows: filteredobservationData.totalRows,
+      ));
     } catch (e) {
+      print(e);
       emit(state.copyWith(observationListLoadStatus: EntityStatus.failure));
     }
   }
 
-  void _onObservationListObservationSelected(
-    ObservationListObservationSelected event,
+  Future<void> _onObservationListObservationForSideDetailLoaded(
+    ObservationListObservationForSideDetailLoaded event,
     Emitter<ObservationListState> emit,
-  ) {
-    emit(state.copyWith(observation: event.observation));
+  ) async {
+    emit(state.copyWith(observationLoadStatus: EntityStatus.loading));
+
+    try {
+      Observation observation =
+          await observationsRepository.getObservationById(event.observationId);
+
+      emit(state.copyWith(
+        observationLoadStatus: EntityStatus.success,
+        observation: observation,
+      ));
+    } catch (e) {
+      emit(state.copyWith(observationLoadStatus: EntityStatus.failure));
+    }
   }
 }

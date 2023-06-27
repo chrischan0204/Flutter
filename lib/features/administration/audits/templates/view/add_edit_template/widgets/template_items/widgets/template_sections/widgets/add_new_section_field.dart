@@ -40,7 +40,6 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
             content: state.message,
           ).showNotification();
         }
-        context.read<TemplateDetailBloc>().add(TemplateDetailSnapshotLoaded(templateId: widget.templateId));
       },
       listenWhen: (previous, current) =>
           previous.templateSectionAddStatus != current.templateSectionAddStatus,
@@ -63,9 +62,19 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
                     ),
             ),
           ),
-          onSuffixClicked: () => templateDesignerBloc.add(
-              TemplateDesignerTemplateSectionAdded(
-                  templateId: widget.templateId)),
+          onSuffixClicked: () {
+            if (sectionController.text.isEmpty) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: FormValidationMessage(fieldName: 'Section name')
+                    .requiredMessage,
+              ).showNotification();
+            } else {
+              templateDesignerBloc.add(TemplateDesignerTemplateSectionAdded(
+                  templateId: widget.templateId));
+            }
+          },
           onChange: (value) => templateDesignerBloc
               .add(TemplateDesignerNewSectionChanged(newSection: value)),
           controller: sectionController,

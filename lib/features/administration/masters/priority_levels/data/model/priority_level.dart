@@ -82,10 +82,10 @@ class PriorityLevel extends Entity implements Equatable {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = <String, dynamic>{
       'name': name,
-      'colorCode': colorCode.value.toRadixString(16).substring(2),
+      'colorCode': '#${colorCode.value.toRadixString(16).substring(2)}',
       'priorityType': priorityType,
       'active': active,
-    };
+    }; 
 
     if (id == null) {
       return map;

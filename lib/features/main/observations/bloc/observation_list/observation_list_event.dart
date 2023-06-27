@@ -20,12 +20,12 @@ class ObservationListFiltered extends ObservationListEvent {
   List<Object?> get props => [option];
 }
 
-class ObservationListObservationSelected extends ObservationListEvent {
-  final Observation observation;
-  const ObservationListObservationSelected({
-    required this.observation,
-  });
+class ObservationListObservationForSideDetailLoaded
+    extends ObservationListEvent {
+  final String observationId;
+  const ObservationListObservationForSideDetailLoaded(
+      {required this.observationId});
 
   @override
-  List<Object?> get props => [observation];
+  List<Object?> get props => [observationId];
 }

@@ -90,7 +90,7 @@ class FilteredEntity extends Equatable {
               .formatDate
           : '--',
       createdBy: map['created_By'] ?? '',
-      createdById: map['created_By'] ?? emptyGuid,
+      createdById: map['created_By_Id'] ?? emptyGuid,
       lastModifiedOn: map['last_Modified_On'] != null
           ? FormatDate(
                   format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')

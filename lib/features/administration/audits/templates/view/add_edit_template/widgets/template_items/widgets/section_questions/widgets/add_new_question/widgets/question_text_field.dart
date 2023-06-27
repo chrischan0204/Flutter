@@ -34,23 +34,13 @@ class _QuestionTextFieldState extends State<QuestionTextField> {
       }
     }
 
-    return BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
-      listener: (context, state) {
-        questionController.text = state
-                .currentTemplateSectionItemByLevel(state.level)
-                ?.question
-                ?.name ??
-            '';
-      },
-      listenWhen: (previous, current) => previous.level != current.level,
-      // current.templateSectionItem != previous.templateSectionItem,
+    return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
       builder: (context, state) {
         final templateSectionItem =
             state.currentTemplateSectionItemByLevel(state.level);
         return CustomTextField(
           key: ValueKey(templateSectionItem?.id),
           initialValue: templateSectionItem?.question?.name,
-          // controller: questionController,
           hintText: getHintText(state.level),
           minLines: 3,
           height: null,
