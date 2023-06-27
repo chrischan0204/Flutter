@@ -60,9 +60,17 @@ class AddEditObservationBloc
         if (response.isSuccess) {
           emit(state.copyWith(
             createdObservationId: response.data?.id,
+            initialLocation: state.location,
+            initialObservationName: state.observationName,
+            initialObservationType: state.observationType,
+            initialPriorityLevel: state.initialPriorityLevel,
+            initialResponse: state.response,
+            initialSite: state.site,
             message: response.message,
             status: EntityStatus.success,
           ));
+
+          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {}
       } catch (e) {
         print(e);
@@ -178,7 +186,8 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) async {
     try {
-      List<PriorityLevel> priorityLevelList = await priorityLevelsRepository.getPriorityLevelList();
+      List<PriorityLevel> priorityLevelList =
+          await priorityLevelsRepository.getPriorityLevelList();
       emit(state.copyWith(priorityLevelList: priorityLevelList));
     } catch (e) {}
   }
@@ -188,7 +197,8 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) async {
     try {
-      List<ObservationType> observationTypeList = await observationTypesRepository.getObservationTypeList();
+      List<ObservationType> observationTypeList =
+          await observationTypesRepository.getObservationTypeList();
       emit(state.copyWith(observationTypeList: observationTypeList));
     } catch (e) {}
   }

@@ -6,33 +6,42 @@ class DetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        DetailItemView1(
-          label: 'Observation',
-          content: 'Slippery stairs by the admin office',
-        ),
-        DetailItemView1(
-          label: 'Location',
-          content: 'East entrance going to second floor',
-        ),
-        DetailItemView1(
-          label: 'Follow up',
-          content: 'Reported via safety app',
-        ),
-        DetailItemView2(
-          rightContent: 'Reported At',
-          rightLabel: '13th May 2021 at 2:31 PM',
-          leftLabel: 'Reported By',
-          leftContent: 'Frank Curtis',
-        ),
-        DetailItemView2(
-          rightContent: 'Reported Level',
-          rightLabel: 'High',
-          leftLabel: 'Reported Via',
-          leftContent: 'PIMS Safety App',
-        ),
-      ],
+    return BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
+      builder: (context, state) {
+        if (state.observation == null) {
+          return Container();
+        }
+        final observation = state.observation!;
+
+        return Column(
+          children: [
+            DetailItemView1(
+              label: 'Observation',
+              content: observation.name ?? '',
+            ),
+            DetailItemView1(
+              label: 'Location',
+              content: observation.area,
+            ),
+            DetailItemView1(
+              label: 'Follow up',
+              content: 'Reported via ${observation.reportedVia}',
+            ),
+            DetailItemView2(
+              rightLabel: 'Reported At',
+              rightContent: observation.formatedReportedAt ?? '--',
+              leftLabel: 'Reported By',
+              leftContent: observation.reportedBy,
+            ),
+            DetailItemView2(
+              rightContent: observation.reportedPriorityLevel,
+              rightLabel: 'Reported Level',
+              leftLabel: 'Reported Via',
+              leftContent: observation.reportedVia,
+            ),
+          ],
+        );
+      },
     );
   }
 }

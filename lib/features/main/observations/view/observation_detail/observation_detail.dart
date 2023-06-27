@@ -35,6 +35,7 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
   @override
   void initState() {
     context.read<ObservationDetailBloc>()
+      ..add(ObservationDetailLoaded(observationId: widget.observationId))
       ..add(ObservationDetailObservationCategoryListLoaded())
       ..add(ObservationDetailObservationTypeListLoaded())
       ..add(ObservationDetailPriorityLevelListLoaded())
@@ -89,13 +90,7 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
           customDetailWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomBottomBorderContainer(
-                padding: inset20,
-                child: Text(
-                  'Slippery stairs by admin office',
-                  style: textNormal20,
-                ),
-              ),
+              const ObservationDetailHeaderView(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

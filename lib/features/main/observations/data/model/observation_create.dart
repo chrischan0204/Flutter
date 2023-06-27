@@ -41,6 +41,11 @@ class ObservationCreate extends Equatable {
       'base64Image': base64.encode(images[0]),
       'description': name,
       'area': location,
+      'reportedVia': kIsWeb &&
+              (defaultTargetPlatform == TargetPlatform.android ||
+                  defaultTargetPlatform == TargetPlatform.iOS)
+          ? 'Mobile'
+          : 'Web',
     };
   }
 

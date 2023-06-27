@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '/common_libraries.dart';
 
 class Observation extends Entity {
@@ -5,7 +7,7 @@ class Observation extends Entity {
   final String reportedVia;
   final bool markedAsClosed;
   final String reportedBy;
-  final String reportedAt;
+  DateTime? reportedAt;
   final String area;
   final String reportedPriorityLevel;
   final String reportedObservationType;
@@ -26,13 +28,13 @@ class Observation extends Entity {
   final String region;
   final String actionItems;
 
-  const Observation({
+  Observation({
     super.id,
     super.name,
     this.site = '',
     this.reportedVia = '',
     this.markedAsClosed = true,
-    this.reportedAt = '',
+    this.reportedAt,
     this.reportedBy = '',
     this.area = '',
     this.reportedPriorityLevel = '',
@@ -59,7 +61,9 @@ class Observation extends Entity {
     super.columns,
     super.deleted,
     this.actionItems = '',
-  });
+  }) {
+    reportedAt ??= DateTime.now();
+  }
 
   @override
   List<Object?> get props => [
@@ -90,6 +94,10 @@ class Observation extends Entity {
         actionItems,
       ];
 
+  String? get formatedReportedAt => reportedAt != null
+      ? DateFormat.yMMMMd('en_US').add_jm().format(reportedAt!)
+      : null;
+
   Observation copyWith({
     String? id,
     String? name,
@@ -97,7 +105,7 @@ class Observation extends Entity {
     String? reportedVia,
     bool? markedAsClosed,
     String? reportedBy,
-    String? reportedAt,
+    DateTime? reportedAt,
     String? area,
     String? reportedPriorityLevel,
     String? reportedObservationType,
@@ -172,7 +180,8 @@ class Observation extends Entity {
       name: map['description'] ?? '',
       site: map['siteName'] ?? '',
       area: map['area'] ?? '',
-      reportedAt: map['reportedAt'] ?? '',
+      reportedAt:
+          map['reportedAt'] != null ? DateTime.parse(map['reportedAt']) : null,
       reportedBy: map['reportedByUserName'] ?? '',
       reportedVia: map['reportedVia'] ?? '',
       assessedBy: map['assessor'] ?? '',
@@ -193,7 +202,7 @@ class Observation extends Entity {
       'Reported Via': reportedVia,
       'Marked As Closed': markedAsClosed,
       'Reported By': reportedBy,
-      'Reported At': reportedAt,
+      'Reported At': formatedReportedAt,
       'Area': area,
       'Reported Observation Type': reportedObservationType,
       'Reported Priority Level': reportedPriorityLevel,

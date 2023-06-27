@@ -6,7 +6,7 @@ class FilteredObservation extends FilteredEntity {
   final String reportedVia;
   final bool markedAsClosed;
   final String reportedBy;
-  final String reportedAt;
+  DateTime? reportedAt;
   final String area;
   final String reportedPriorityLevel;
   final String reportedObservationType;
@@ -24,13 +24,13 @@ class FilteredObservation extends FilteredEntity {
   final String project;
   final String region;
 
-  const FilteredObservation({
+  FilteredObservation({
     required this.name,
     required this.site,
     required this.reportedVia,
     required this.markedAsClosed,
     required this.reportedBy,
-    required this.reportedAt,
+    this.reportedAt,
     required this.area,
     required this.reportedPriorityLevel,
     required this.reportedObservationType,
@@ -123,7 +123,9 @@ class FilteredObservation extends FilteredEntity {
       reportedVia: map['reported_Via'] ?? '',
       markedAsClosed: map['marked_As_Closed'] ?? '',
       reportedBy: map['reported_By'] ?? '',
-      reportedAt: map['reported_At'] ?? '',
+      reportedAt: map['reported_At'] != null
+          ? DateTime.parse(map['reported_At'])
+          : null,
       area: map['area'] ?? '',
       reportedPriorityLevel: map['reported_Priority_Level'] ?? '',
       reportedObservationType: map['reported_Observation_Type'] ?? '',
@@ -157,7 +159,7 @@ class FilteredObservation extends FilteredEntity {
     String? reportedVia,
     bool? markedAsClosed,
     String? reportedBy,
-    String? reportedAt,
+    DateTime? reportedAt,
     String? area,
     String? reportedPriorityLevel,
     String? reportedObservationType,
