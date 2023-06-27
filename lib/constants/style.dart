@@ -196,3 +196,5 @@ SizedBox spacery40 = const SizedBox(height: 40);
 SizedBox spacery50 = const SizedBox(height: 50);
 SizedBox spacery100 = const SizedBox(height: 100);
 SizedBox spacery150 = const SizedBox(height: 150);
+
+const double minDesktopWidth = 1200; 

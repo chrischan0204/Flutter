@@ -228,7 +228,7 @@ class Observation extends Entity {
       'Observation': {'content': name},
       'Location': {'content': area},
       'Reported By': reportedBy,
-      'Reported At': reportedAt,
+      'Reported At': formatedReportedAt,
       'Via': reportedVia,
       'Assessor': assessedBy,
       'Assessed?': assessmentComment,

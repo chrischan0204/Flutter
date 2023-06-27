@@ -11,16 +11,21 @@ class GoToListButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomButton(
-      backgroundColor: primaryColor,
-      hoverBackgroundColor: primaryHoverColor,
-      iconData: PhosphorIcons.regular.listNumbers,
-      text: '${camelize(label)} List',
-      onClick: () {
-        String location = GoRouter.of(context).location;
-        location = location.replaceRange(location.indexOf('show'), null, '');
-        GoRouter.of(context).go(location);
-      },
+    final width = MediaQuery.of(context).size.width;
+    return Tooltip(
+      message: width > minDesktopWidth ? '' : '${camelize(label)} List',
+      child: CustomButton(
+        backgroundColor: primaryColor,
+        hoverBackgroundColor: primaryHoverColor,
+        iconData: PhosphorIcons.regular.listNumbers,
+        text: width < minDesktopWidth ? '' : '${camelize(label)} List',
+        isOnlyIcon: width < minDesktopWidth,
+        onClick: () {
+          String location = GoRouter.of(context).location;
+          location = location.replaceRange(location.indexOf('show'), null, '');
+          GoRouter.of(context).go(location);
+        },
+      ),
     );
     ;
   }

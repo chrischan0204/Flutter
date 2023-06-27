@@ -233,35 +233,40 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     );
   }
 
-  CustomButton _buildShowButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: purpleColor,
-      hoverBackgroundColor: purpleHoverColor,
-      iconData: PhosphorIcons.regular.notePencil,
-      text: 'Show ${camelize(widget.label)}',
-      onClick: () {
-        if (context.read<FormDirtyBloc>().state.isDirty) {
-          AwesomeDialog(
-            context: context,
-            width: MediaQuery.of(context).size.width / 4,
-            dialogType: DialogType.question,
-            headerAnimationLoop: false,
-            animType: AnimType.bottomSlide,
-            title: 'Confirm',
-            dialogBorderRadius: BorderRadius.circular(5),
-            desc: 'Data that was entered will be lost ..... Proceed?',
-            buttonsTextStyle: const TextStyle(color: Colors.white),
-            showCloseIcon: true,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () => _goToShow(),
-            btnOkText: 'Proceed',
-            buttonsBorderRadius: BorderRadius.circular(3),
-            padding: const EdgeInsets.all(10),
-          ).show();
-        } else {
-          _goToShow();
-        }
-      },
+  Tooltip _buildShowButton(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return Tooltip(
+      message: width > minDesktopWidth ? '' : 'Show ${camelize(widget.label)}',
+      child: CustomButton(
+        backgroundColor: purpleColor,
+        hoverBackgroundColor: purpleHoverColor,
+        iconData: PhosphorIcons.regular.notePencil,
+        text: 'Show ${camelize(widget.label)}',
+        isOnlyIcon: width < minDesktopWidth,
+        onClick: () {
+          if (context.read<FormDirtyBloc>().state.isDirty) {
+            AwesomeDialog(
+              context: context,
+              width: MediaQuery.of(context).size.width / 4,
+              dialogType: DialogType.question,
+              headerAnimationLoop: false,
+              animType: AnimType.bottomSlide,
+              title: 'Confirm',
+              dialogBorderRadius: BorderRadius.circular(5),
+              desc: 'Data that was entered will be lost ..... Proceed?',
+              buttonsTextStyle: const TextStyle(color: Colors.white),
+              showCloseIcon: true,
+              btnCancelOnPress: () {},
+              btnOkOnPress: () => _goToShow(),
+              btnOkText: 'Proceed',
+              buttonsBorderRadius: BorderRadius.circular(3),
+              padding: const EdgeInsets.all(10),
+            ).show();
+          } else {
+            _goToShow();
+          }
+        },
+      ),
     );
   }
 
@@ -272,35 +277,40 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     GoRouter.of(context).go(location);
   }
 
-  CustomButton _buildGoToListButton(BuildContext context) {
-    return CustomButton(
-      backgroundColor: primaryColor,
-      hoverBackgroundColor: primaryHoverColor,
-      iconData: PhosphorIcons.regular.listNumbers,
-      text: '${camelize(widget.label)} List',
-      onClick: () {
-        if (context.read<FormDirtyBloc>().state.isDirty) {
-          AwesomeDialog(
-            context: context,
-            width: MediaQuery.of(context).size.width / 4,
-            dialogType: DialogType.question,
-            headerAnimationLoop: false,
-            animType: AnimType.bottomSlide,
-            title: 'Confirm',
-            dialogBorderRadius: BorderRadius.circular(5),
-            desc: 'Data that was entered will be lost ..... Proceed?',
-            buttonsTextStyle: const TextStyle(color: Colors.white),
-            showCloseIcon: true,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () => _goToList(),
-            btnOkText: 'Proceed',
-            buttonsBorderRadius: BorderRadius.circular(3),
-            padding: const EdgeInsets.all(10),
-          ).show();
-        } else {
-          _goToList();
-        }
-      },
+  Tooltip _buildGoToListButton(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return Tooltip(
+      message: width > minDesktopWidth ? '' : '${camelize(widget.label)} List',
+      child: CustomButton(
+        backgroundColor: primaryColor,
+        hoverBackgroundColor: primaryHoverColor,
+        iconData: PhosphorIcons.regular.listNumbers,
+        text: '${camelize(widget.label)} List',
+        isOnlyIcon: width < minDesktopWidth,
+        onClick: () {
+          if (context.read<FormDirtyBloc>().state.isDirty) {
+            AwesomeDialog(
+              context: context,
+              width: MediaQuery.of(context).size.width / 4,
+              dialogType: DialogType.question,
+              headerAnimationLoop: false,
+              animType: AnimType.bottomSlide,
+              title: 'Confirm',
+              dialogBorderRadius: BorderRadius.circular(5),
+              desc: 'Data that was entered will be lost ..... Proceed?',
+              buttonsTextStyle: const TextStyle(color: Colors.white),
+              showCloseIcon: true,
+              btnCancelOnPress: () {},
+              btnOkOnPress: () => _goToList(),
+              btnOkText: 'Proceed',
+              buttonsBorderRadius: BorderRadius.circular(3),
+              padding: const EdgeInsets.all(10),
+            ).show();
+          } else {
+            _goToList();
+          }
+        },
+      ),
     );
   }
 

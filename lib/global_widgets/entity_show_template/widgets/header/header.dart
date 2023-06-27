@@ -30,7 +30,6 @@ class HeaderView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex: 3,
               child: Text(
                 '$title - $name',
                 style: textSemiBold18,
@@ -41,13 +40,15 @@ class HeaderView extends StatelessWidget {
             ),
             spacerx15,
             Expanded(
-              flex: 2,
-              child: CrudButtonsView(
-                label: label,
-                deletable: deletable,
-                deleting: deleting,
-                descriptionForDelete: descriptionForDelete,
-                deleteEntity: deleteEntity,
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: CrudButtonsView(
+                  label: label,
+                  deletable: deletable,
+                  deleting: deleting,
+                  descriptionForDelete: descriptionForDelete,
+                  deleteEntity: deleteEntity,
+                ),
               ),
             ),
           ],

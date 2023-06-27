@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '/common_libraries.dart';
 
 class CustomButton extends StatefulWidget {
   final Color backgroundColor;
@@ -13,6 +13,7 @@ class CustomButton extends StatefulWidget {
   final Widget? body;
   final EdgeInsets padding;
   final double borderRadius;
+  final bool isOnlyIcon;
   const CustomButton({
     Key? key,
     required this.backgroundColor,
@@ -35,6 +36,7 @@ class CustomButton extends StatefulWidget {
     this.iconSize = 20,
     this.disabled = false,
     this.body,
+    this.isOnlyIcon = false,
   }) : super(key: key);
 
   @override
@@ -83,16 +85,13 @@ class _CustomButtonState extends State<CustomButton> {
                           size: widget.iconSize,
                           color: widget.iconColor,
                         ),
-                  widget.iconData == null
-                      ? Container()
-                      : const SizedBox(
-                          width: 10,
-                        ),
-                  Text(
-                    widget.text,
-                    style: widget.textStyle,
-                    softWrap: true,
-                  ),
+                  if (widget.iconData != null && !widget.isOnlyIcon) spacerx10,
+                  if (!widget.isOnlyIcon)
+                    Text(
+                      widget.text,
+                      style: widget.textStyle,
+                      softWrap: true,
+                    ),
                 ],
               ),
         ),

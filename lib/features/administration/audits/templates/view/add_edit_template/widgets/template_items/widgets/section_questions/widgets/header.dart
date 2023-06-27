@@ -44,12 +44,33 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                       current.templateSectionItemCreateStatus,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<TemplateDesignerBloc>().add(
-                          const TemplateDesignerAddNewQuestionViewShowed(
-                              showAddNewQuestionView: true));
-                      context
-                          .read<TemplateDesignerBloc>()
-                          .add(TemplateDesignerNewQuestionButtonClicked());
+                      if (context
+                                  .read<TemplateDesignerBloc>()
+                                  .state
+                                  .templateSectionItem
+                                  ?.question
+                                  ?.name
+                                  .isNotEmpty ==
+                              true ||
+                          context
+                                  .read<TemplateDesignerBloc>()
+                                  .state
+                                  .templateSectionItem ==
+                              null) {
+                        context.read<TemplateDesignerBloc>().add(
+                            const TemplateDesignerAddNewQuestionViewShowed(
+                                showAddNewQuestionView: true));
+                        context
+                            .read<TemplateDesignerBloc>()
+                            .add(TemplateDesignerNewQuestionButtonClicked());
+                      } else {
+                        CustomNotification(
+                          context: context,
+                          notifyType: NotifyType.info,
+                          content: FormValidationMessage(fieldName: 'Question')
+                              .requiredMessage,
+                        ).showNotification();
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
