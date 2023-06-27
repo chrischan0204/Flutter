@@ -133,9 +133,14 @@ class AuditsRepository extends BaseRepository {
         '/api/audits/$auditId/sections/$sectionId/auditandtemplatequestions');
 
     if (response.statusCode == 200) {
-      return List.from(json.decode(response.body)['questions'])
-          .map((e) => AuditQuestion.fromMap(e))
-          .toList();
+      return [
+        ...List.from(json.decode(response.body)['questions'])
+            .map((e) => AuditQuestion.fromMap(e))
+            .toList(),
+        ...List.from(json.decode(response.body)['newQuestions'])
+            .map((e) => AuditQuestion.fromMap(e))
+            .toList()
+      ];
     }
 
     throw Exception();
@@ -146,9 +151,14 @@ class AuditsRepository extends BaseRepository {
         await super.get('$url/$auditId/auditandtemplatesections');
 
     if (response.statusCode == 200) {
-      return List.from(json.decode(response.body)['auditSections'])
-          .map((e) => AuditSection.fromMap(e))
-          .toList();
+      return [
+        ...List.from(json.decode(response.body)['auditSections'])
+            .map((e) => AuditSection.fromMap(e))
+            .toList(),
+        ...List.from(json.decode(response.body)['templateSections'])
+            .map((e) => AuditSection.fromMap(e))
+            .toList(),
+      ];
     }
 
     throw Exception();

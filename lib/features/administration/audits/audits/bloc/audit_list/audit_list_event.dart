@@ -20,12 +20,10 @@ class AuditListFiltered extends AuditListEvent {
   List<Object?> get props => [option];
 }
 
-class AuditListSelectedAuditChanged extends AuditListEvent {
-  final Audit audit;
-  const AuditListSelectedAuditChanged({
-    required this.audit,
-  });
+class AuditListAuditForSideDetailLoaded extends AuditListEvent {
+  final String auditId;
+  const AuditListAuditForSideDetailLoaded({required this.auditId});
 
   @override
-  List<Object?> get props => [audit];
+  List<Object?> get props => [auditId];
 }

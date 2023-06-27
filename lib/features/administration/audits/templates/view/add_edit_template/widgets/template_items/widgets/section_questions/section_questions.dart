@@ -3,7 +3,10 @@ import 'widgets/widgets.dart';
 
 class SectionQuestionsView extends StatelessWidget {
   final String templateId;
-  const SectionQuestionsView({super.key, required this.templateId});
+  const SectionQuestionsView({
+    super.key,
+    required this.templateId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class SectionQuestionsView extends StatelessWidget {
                       TemplateDesignerState>(
                     builder: (context, state) {
                       return AddNewQuestionView(
+                        templateId: templateId,
                         templateSectionItem: state
                             .currentTemplateSectionItemByLevel(state.level)!,
                       );

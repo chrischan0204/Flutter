@@ -1,7 +1,9 @@
 import '/common_libraries.dart';
 
 class AddNewQuestionHeaderView extends StatelessWidget {
+  final String templateId;
   const AddNewQuestionHeaderView({
+    required this.templateId,
     super.key,
   });
 
@@ -22,9 +24,20 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                   style: textNormal18.copyWith(color: textBlue),
                 ),
                 TextButton(
-                  onPressed: () => context.read<TemplateDesignerBloc>().add(
-                      const TemplateDesignerAddNewQuestionViewShowed(
-                          showAddNewQuestionView: false)),
+                  onPressed: () {
+                    context.read<TemplateDesignerBloc>()
+                      ..add(const TemplateDesignerAddNewQuestionViewShowed(
+                          showAddNewQuestionView: false))
+                      ..add(
+                        TemplateDesignerTemplateSectionSelected(
+                          templateId: templateId,
+                          templateSection: context
+                              .read<TemplateDesignerBloc>()
+                              .state
+                              .selectedTemplateSection,
+                        ),
+                      );
+                  },
                   child: Text(
                     'Back to list',
                     style: textNormal12.copyWith(

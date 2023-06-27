@@ -28,8 +28,8 @@ class TemplateDesignerBloc
         _onTemplateDesignerResponseScaleListLoaded);
     on<TemplateDesignerTemplateSectionSelected>(
         _onTemplateDesignerTemplateSectionSelected);
-    on<TemplateDesignerTemplateSectionItemQuestionList>(
-        _onTemplateDesignerTemplateSectionItemQuestionList);
+    on<TemplateDesignerTemplateSectionItemQuestionListLoaded>(
+        _onTemplateDesignerTemplateSectionItemQuestionListLoaded);
     on<TemplateDesignerResponseScaleItemListLoaded>(
         _onTemplateDesignerResponseScaleItemListLoaded);
     on<TemplateDesignerQuestionChanged>(_onTemplateDesignerQuestionChanged);
@@ -73,7 +73,7 @@ class TemplateDesignerBloc
     // if (currentState.templateSectionItemCreateStatus !=
     //         nextState.templateSectionItemCreateStatus &&
     //     nextState.templateSectionItemCreateStatus.isSuccess) {
-    //   add(TemplateDesignerTemplateSectionItemQuestionList(
+    //   add(TemplateDesignerTemplateSectionItemQuestionListLoaded(
     //       templateSectionId: nextState.selectedTemplateSection!.id));
     // }
     // print('current');
@@ -182,14 +182,14 @@ class TemplateDesignerBloc
     ));
 
     if (event.templateSection != null) {
-      add(TemplateDesignerTemplateSectionItemQuestionList(
+      add(TemplateDesignerTemplateSectionItemQuestionListLoaded(
           templateId: event.templateId!,
-          templateSectionId: event.templateSection!.id));
+          templateSectionId: event.templateSection!.id,));
     }
   }
 
-  Future<void> _onTemplateDesignerTemplateSectionItemQuestionList(
-    TemplateDesignerTemplateSectionItemQuestionList event,
+  Future<void> _onTemplateDesignerTemplateSectionItemQuestionListLoaded(
+    TemplateDesignerTemplateSectionItemQuestionListLoaded event,
     Emitter<TemplateDesignerState> emit,
   ) async {
     emit(state.copyWith(

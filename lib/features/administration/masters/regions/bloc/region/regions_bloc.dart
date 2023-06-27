@@ -69,7 +69,10 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
     try {
       List<Region> unassignedRegions =
           await regionsRepository.getUnassignedRegions();
-      if (unassignedRegions.isEmpty) {
+      if (unassignedRegions.isEmpty &&
+          !(state.selectedRegion != null
+              ? !state.selectedRegion!.deletable
+              : true)) {
         emit(state.copyWith(
           unassignedRegionsRetrievedStatus: EntityStatus.failure,
           message: 'No region available for Add',

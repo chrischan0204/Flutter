@@ -9,7 +9,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
       : super(const AuditListState()) {
     on<AuditListLoaded>(_onAuditListLoaded);
     on<AuditListFiltered>(_onAuditListFiltered);
-    on<AuditListSelectedAuditChanged>(_onAuditListSelectedAuditChanged);
+    on<AuditListAuditForSideDetailLoaded>(_onAuditListAuditForSideDetailLoaded);
   }
 
   Future<void> _onAuditListLoaded(
@@ -57,10 +57,19 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
     }
   }
 
-  Future<void> _onAuditListSelectedAuditChanged(
-    AuditListSelectedAuditChanged event,
+  Future<void> _onAuditListAuditForSideDetailLoaded(
+    AuditListAuditForSideDetailLoaded event,
     Emitter<AuditListState> emit,
   ) async {
-    emit(state.copyWith(audit: event.audit));
+    emit(state.copyWith(auditLoadStatus: EntityStatus.loading));
+    try {
+      Audit audit = await auditsRepository.getAuditById(event.auditId);
+      emit(state.copyWith(
+        auditLoadStatus: EntityStatus.success,
+        audit: audit,
+      ));
+    } catch (e) {
+      emit(state.copyWith(auditLoadStatus: EntityStatus.failure));
+    }
   }
 }

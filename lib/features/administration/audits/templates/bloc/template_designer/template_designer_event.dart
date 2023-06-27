@@ -55,13 +55,13 @@ class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
       ];
 }
 
-class TemplateDesignerTemplateSectionItemQuestionList
+class TemplateDesignerTemplateSectionItemQuestionListLoaded
     extends TemplateDesignerEvent {
   final String templateId;
 
   final String templateSectionId;
 
-  const TemplateDesignerTemplateSectionItemQuestionList({
+  const TemplateDesignerTemplateSectionItemQuestionListLoaded({
     required this.templateSectionId,
     required this.templateId,
   });

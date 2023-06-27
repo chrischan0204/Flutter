@@ -89,7 +89,7 @@ class _AuditListState extends State<AuditListWidget> {
 
   void _selectAudit(Entity selectedAudit) {
     auditListBloc
-        .add(AuditListSelectedAuditChanged(audit: selectedAudit as Audit));
+        .add(AuditListAuditForSideDetailLoaded(auditId: selectedAudit.id!));
   }
 
   void _filterAudits([
