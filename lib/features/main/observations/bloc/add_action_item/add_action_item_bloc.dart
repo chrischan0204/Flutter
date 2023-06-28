@@ -4,10 +4,10 @@ part 'add_action_item_event.dart';
 part 'add_action_item_state.dart';
 
 class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
-  late ObservationsRepository observationsRepository;
+  late ActionItemsRepository _actionItemsRepository;
   final BuildContext context;
   AddActionItemBloc(this.context) : super(const AddActionItemState()) {
-    observationsRepository = RepositoryProvider.of(context);
+    _actionItemsRepository = RepositoryProvider.of(context);
 
     _bindEvents();
   }
@@ -37,7 +37,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   ) async {
     try {
       final List<ActionItem> actionItemList =
-          await observationsRepository.getActionItemList(event.observationId);
+          await _actionItemsRepository.getActionItemList(event.observationId);
       emit(state.copyWith(actionItemList: actionItemList));
     } catch (e) {}
   }
@@ -56,22 +56,22 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemDetailEdited event,
     Emitter<AddActionItemState> emit,
   ) {
-    emit(state.copyWith(
-      actionItem: Nullable.value(event.actionItem),
-      task: event.actionItem.task,
-      dueBy: Nullable.value(event.actionItem.due),
-      assignee: Nullable.value(User(
-        firstName: event.actionItem.assignee.split(' ')[0],
-        lastName: event.actionItem.assignee.split(' ')[1],
-      )),
-      category:
-          Nullable.value(AwarenessCategory(name: event.actionItem.category)),
-      company: Nullable.value(Company(name: event.actionItem.company)),
-      project: Nullable.value(Project(name: event.actionItem.project)),
-      location: event.actionItem.location,
-      notes: event.actionItem.notes,
-      isEditing: true,
-    ));
+    // emit(state.copyWith(
+    //   actionItem: Nullable.value(event.actionItem),
+    //   task: event.actionItem.task,
+    //   dueBy: Nullable.value(event.actionItem.due),
+    //   assignee: Nullable.value(User(
+    //     firstName: event.actionItem.assignee.split(' ')[0],
+    //     lastName: event.actionItem.assignee.split(' ')[1],
+    //   )),
+    //   category:
+    //       Nullable.value(AwarenessCategory(name: event.actionItem.category)),
+    //   company: Nullable.value(Company(name: event.actionItem.company)),
+    //   project: Nullable.value(Project(name: event.actionItem.project)),
+    //   location: event.actionItem.location,
+    //   notes: event.actionItem.notes,
+    //   isEditing: true,
+    // ));
   }
 
   void _onAddActionItemTaskChanged(

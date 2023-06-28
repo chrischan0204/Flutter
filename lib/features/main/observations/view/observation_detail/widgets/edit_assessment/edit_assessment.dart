@@ -17,7 +17,15 @@ class EditAssessmentView extends StatelessWidget {
               if (state.isEditing) {
                 return const AssessmentFormView();
               } else {
-                return const AssessmentDetailView();
+                return BlocBuilder<ObservationDetailBloc,
+                    ObservationDetailState>(
+                  builder: (context, state) {
+                    if (state.observation?.assessed == false) {
+                      return const NotAssessedYetView();
+                    }
+                    return const AssessmentDetailView();
+                  },
+                );
               }
             },
           ),

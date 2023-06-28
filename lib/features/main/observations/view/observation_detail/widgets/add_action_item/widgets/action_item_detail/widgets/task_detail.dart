@@ -11,7 +11,7 @@ class TaskDetailView extends StatelessWidget {
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(
-            state.actionItem!.task,
+            state.actionItem!.description,
             style: textNormal14,
           );
         },

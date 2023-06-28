@@ -38,6 +38,11 @@ class TemplateSectionItem extends Equatable {
         children,
       ];
 
+  List<TemplateSectionItem> get includedChildren => children
+      .where((element) => element.response?.included == true)
+      .map((e) => e)
+      .toList();
+
   bool get isNotBlank =>
       children.isNotEmpty ||
       question != null ||
@@ -80,8 +85,8 @@ class TemplateSectionItem extends Equatable {
       responseScaleId: map['responseScaleId'] as String,
       parentId: map['parentId'] as String,
       question: Question.fromMap(map['question'] as Map<String, dynamic>),
-      response:
-          TemplateResponseScaleItem.fromMap(map['response'] as Map<String, dynamic>),
+      response: TemplateResponseScaleItem.fromMap(
+          map['response'] as Map<String, dynamic>),
       children: List.from(json.decode(map['children'])),
     );
   }

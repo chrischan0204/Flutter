@@ -57,12 +57,28 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                                   .state
                                   .templateSectionItem ==
                               null) {
-                        context.read<TemplateDesignerBloc>().add(
-                            const TemplateDesignerAddNewQuestionViewShowed(
-                                showAddNewQuestionView: true));
-                        context
-                            .read<TemplateDesignerBloc>()
-                            .add(TemplateDesignerNewQuestionButtonClicked());
+                        if (context
+                                .read<TemplateDesignerBloc>()
+                                .state
+                                .templateSectionItem
+                                ?.includedChildren
+                                .isEmpty ==
+                            true) {
+                          CustomNotification(
+                            context: context,
+                            notifyType: NotifyType.info,
+                            content:
+                                FormValidationMessage(fieldName: 'Response scale')
+                                    .requiredMessage,
+                          ).showNotification();
+                        } else {
+                          context.read<TemplateDesignerBloc>().add(
+                              const TemplateDesignerAddNewQuestionViewShowed(
+                                  showAddNewQuestionView: true));
+                          context
+                              .read<TemplateDesignerBloc>()
+                              .add(TemplateDesignerNewQuestionButtonClicked());
+                        }
                       } else {
                         CustomNotification(
                           context: context,

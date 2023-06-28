@@ -44,6 +44,7 @@ dependencies:
   nested: ^1.0.0
   number_paginator: ^0.2.3
   phosphor_flutter: ^2.0.0
+  rotated_corner_decoration: ^2.1.0+1
   star_menu: ^3.1.4
   strings: ^0.2.2
   syncfusion_flutter_charts: ^21.2.4

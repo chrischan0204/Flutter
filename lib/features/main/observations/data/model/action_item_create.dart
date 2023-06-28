@@ -1,6 +1,7 @@
 import '/common_libraries.dart';
 
 class ActionItemCreate extends Equatable {
+  final String? id;
   final String task;
   final String dueBy;
   final String assigneeId;
@@ -10,6 +11,7 @@ class ActionItemCreate extends Equatable {
   final String location;
   final String notes;
   const ActionItemCreate({
+    this.id,
     required this.task,
     required this.dueBy,
     required this.assigneeId,
@@ -33,6 +35,7 @@ class ActionItemCreate extends Equatable {
       ];
 
   ActionItemCreate copyWith({
+    String? id,
     String? task,
     String? dueBy,
     String? assigneeId,
@@ -43,6 +46,7 @@ class ActionItemCreate extends Equatable {
     String? notes,
   }) {
     return ActionItemCreate(
+      id: id ?? this.id,
       task: task ?? this.task,
       dueBy: dueBy ?? this.dueBy,
       assigneeId: assigneeId ?? this.assigneeId,
@@ -55,16 +59,22 @@ class ActionItemCreate extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'task': task,
+    Map<String, dynamic> map = <String, dynamic>{
+      'description': task,
       'dueBy': dueBy,
       'assigneeId': assigneeId,
-      'categoryId': categoryId,
+      'awarenessCategoryId': categoryId,
       'companyId': companyId,
       'projectId': projectId,
-      'location': location,
+      'area': location,
       'notes': notes,
     };
+
+    if (id != null) {
+      map.addEntries([MapEntry('id', id)]);
+    }
+
+    return map;
   }
 
   String toJson() => json.encode(toMap());

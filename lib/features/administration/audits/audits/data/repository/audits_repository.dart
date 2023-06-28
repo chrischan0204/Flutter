@@ -360,4 +360,30 @@ class AuditsRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<EntityResponse> copySection(
+    String auditId,
+    String sectionId,
+  ) async {
+    Response response = await super.post('$url/$auditId/sections/$sectionId');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(isSuccess: true, message: response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> copyQuestion(
+    String auditId,
+    String questionId,
+  ) async {
+    Response response = await super.post('$url/$auditId/question/$questionId');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(isSuccess: true, message: response.body);
+    }
+
+    throw Exception();
+  }
 }

@@ -11,7 +11,7 @@ class ProjectDetailView extends StatelessWidget {
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(
-            state.actionItem!.project,
+            state.actionItem!.projectName,
             style: textNormal14,
           );
         },

@@ -5,7 +5,14 @@ part 'edit_assessment_state.dart';
 
 class EditAssessmentBloc
     extends Bloc<EditAssessmentEvent, EditAssessmentState> {
-  EditAssessmentBloc() : super(const EditAssessmentState()) {
+  final BuildContext context;
+  final String observationId;
+  late ObservationsRepository _observationsRepository;
+  EditAssessmentBloc(
+    this.context,
+    this.observationId,
+  ) : super(const EditAssessmentState()) {
+    _observationsRepository = context.read();
     _bindEvents();
   }
 
@@ -25,6 +32,32 @@ class EditAssessmentBloc
     on<EditAssessmentMarkAsClosedChanged>(_onEditAssessmentMarkAsClosedChanged);
     on<EditAssessmentNotifySenderChanged>(_onEditAssessmentNotifySenderChanged);
     on<EditAssessmentIsEditingChanged>(_onEditAssessmentIsEditingChanged);
+    on<EditAssessmentAdded>(_onEditAssessmentAdded);
+  }
+
+  Future<void> _onEditAssessmentAdded(
+    EditAssessmentAdded event,
+    Emitter<EditAssessmentState> emit,
+  ) async {
+    try {
+      _observationsRepository.addAssessment(
+          observationId,
+          AssessmentCreate(
+            notificationSent: state.notifySender,
+            // observerId: observerId,
+            // assessorId: assessorId,
+            reportedVia: 'Web',
+            // kioskId: kioskId,
+            assessmentAwarenessCategoryId: state.category!.id!,
+            assessmentObservationTypeId: state.observationType!.id!,
+            assessmentPriorityLevelId: state.priorityLevel!.id!,
+            assessmentFollowupComment: state.followUpCloseout,
+            assessmentCompanyId: state.company!.id!,
+            assessmentProjectId: state.project!.id!,
+            assessmentSiteId: state.site!.id!,
+            userReportedObservationTypeId: state.observationType!.id!,
+          ));
+    } catch (e) {}
   }
 
   void _onEditAssessmentCategoryChanged(
@@ -108,6 +141,9 @@ class EditAssessmentBloc
     EditAssessmentIsEditingChanged event,
     Emitter<EditAssessmentState> emit,
   ) {
+    if (state.isEditing) {
+      add(EditAssessmentAdded());
+    }
     emit(state.copyWith(isEditing: !state.isEditing));
   }
 }

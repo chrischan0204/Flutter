@@ -11,7 +11,7 @@ class CategoryDetailView extends StatelessWidget {
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(
-            state.actionItem!.category,
+            state.actionItem!.companyName,
             style: textNormal14,
           );
         },

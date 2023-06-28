@@ -1,3 +1,5 @@
+import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
+
 import '/common_libraries.dart';
 
 class AuditSectionItemView extends StatefulWidget {
@@ -37,6 +39,29 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
               auditSection: widget.auditSection)),
       onHover: (value) => setState(() => _hover = value),
       child: CustomBottomBorderContainer(
+        foregroundDecoration: widget.auditSection.isNew
+            ? const RotatedCornerDecoration.withColor(
+                color: Colors.red,
+                spanBaselineShift: 4,
+                badgeSize: Size(40, 40),
+                badgePosition: BadgePosition.topEnd,
+                textSpan: TextSpan(
+                  text: 'NEW',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : null,
         padding: insetx10,
         backgroundColor: _getColor(),
         child: Row(
@@ -51,12 +76,12 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
                 ),
               ),
             ),
-            if (widget.auditSection.isNew) spacerx10,
-            if (widget.auditSection.isNew)
-              CustomBadge(
-                label: 'NEW',
-                color: lightBlue,
-              )
+            // if (widget.auditSection.isNew) spacerx10,
+            // if (widget.auditSection.isNew)
+            //   CustomBadge(
+            //     label: 'NEW',
+            //     color: lightBlue,
+            //   )
           ],
         ),
       ),

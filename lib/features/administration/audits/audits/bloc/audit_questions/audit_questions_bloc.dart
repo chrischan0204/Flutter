@@ -75,10 +75,18 @@ class AuditQuestionsBloc
     emit(state.copyWith(auditQuestionList: auditQuestionList));
   }
 
-  void _onAuditQuestionsSelectedAuditSectionChanged(
+  Future<void> _onAuditQuestionsSelectedAuditSectionChanged(
     AuditQuestionsSelectedAuditSectionChanged event,
     Emitter<AuditQuestionsState> emit,
-  ) {
+  ) async {
+    if (event.auditSection.isNew) {
+      EntityResponse response =
+          await auditsRepository.copySection(auditId, event.auditSection.id);
+
+      if (!response.isSuccess) {
+        return;
+      }
+    }
     emit(state.copyWith(selectedAuditSectionId: event.auditSection.id));
   }
 
@@ -87,6 +95,15 @@ class AuditQuestionsBloc
     Emitter<AuditQuestionsState> emit,
   ) async {
     try {
+      if (event.isNew) {
+        EntityResponse response =
+            await auditsRepository.copyQuestion(auditId, event.questionId);
+
+        if (!response.isSuccess) {
+          // return;
+        }
+      }
+
       EntityResponse response =
           await auditsRepository.toggleIncludeQuestion(AuditQuestionAssociation(
         auditId: auditId,

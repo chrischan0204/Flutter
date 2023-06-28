@@ -151,6 +151,12 @@ class _MyAppState extends State<MyApp> {
                 authBloc: BlocProvider.of(context),
               ),
             ),
+            RepositoryProvider(
+              create: (context) => ActionItemsRepository(
+                token: token,
+                authBloc: BlocProvider.of(context),
+              ),
+            ),
           ],
           child: MultiBlocProvider(
             providers: [

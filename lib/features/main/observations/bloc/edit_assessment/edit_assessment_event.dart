@@ -97,3 +97,5 @@ class EditAssessmentNotifySenderChanged extends EditAssessmentEvent {
 }
 
 class EditAssessmentIsEditingChanged extends EditAssessmentEvent {}
+
+class EditAssessmentAdded extends EditAssessmentEvent {}

@@ -19,7 +19,7 @@ class ActionItemView extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Text(
-                  actionItem.task,
+                  actionItem.description,
                   style: textNormal12,
                 ),
               ),
@@ -50,32 +50,32 @@ class ActionItemView extends StatelessWidget {
             ],
           ),
         ),
-        CustomBottomBorderContainer(
-          backgroundColor: actionItem.status.isOpen ? lightRedAccent : lightGreenAccent,
-          padding: insetx20y10,
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Status: ${actionItem.status.toString()}',
-                  style: textNormal10,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Due: ${actionItem.formatedDue}',
-                  style: textNormal10,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Assigned: ${actionItem.assignee}',
-                  style: textNormal10,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // CustomBottomBorderContainer(
+        //   backgroundColor: actionItem.status.isOpen ? lightRedAccent : lightGreenAccent,
+        //   padding: insetx20y10,
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: Text(
+        //           'Status: ${actionItem.status.toString()}',
+        //           style: textNormal10,
+        //         ),
+        //       ),
+        //       Expanded(
+        //         child: Text(
+        //           'Due: ${actionItem.formatedDue}',
+        //           style: textNormal10,
+        //         ),
+        //       ),
+        //       Expanded(
+        //         child: Text(
+        //           'Assigned: ${actionItem.assignee}',
+        //           style: textNormal10,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }

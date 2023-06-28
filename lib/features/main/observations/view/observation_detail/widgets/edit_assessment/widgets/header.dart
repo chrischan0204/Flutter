@@ -24,9 +24,18 @@ class AssessmentHeaderView extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     backgroundColor:
                         state.isEditing ? successColor : primaryColor),
-                child: Text(
-                  state.isEditing ? 'Submit' : 'Edit Assessment',
-                  style: textNormal12.copyWith(color: Colors.white),
+                child:
+                    BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
+                  builder: (context, detailState) {
+                    return Text(
+                      state.isEditing
+                          ? 'Submit'
+                          : detailState.observation?.assessed == false
+                              ? 'Add Assessment'
+                              : 'Edit Assessment',
+                      style: textNormal12.copyWith(color: Colors.white),
+                    );
+                  },
                 ),
               ),
             ],

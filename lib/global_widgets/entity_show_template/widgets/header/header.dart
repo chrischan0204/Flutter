@@ -9,6 +9,8 @@ class HeaderView extends StatelessWidget {
   final bool deletable;
   final String descriptionForDelete;
   final VoidCallback deleteEntity;
+  final bool isDeletable;
+  final bool isEditable;
   const HeaderView({
     super.key,
     required this.title,
@@ -18,6 +20,8 @@ class HeaderView extends StatelessWidget {
     required this.deletable,
     required this.descriptionForDelete,
     required this.deleteEntity,
+    required this.isDeletable,
+    required this.isEditable,
   });
 
   @override
@@ -48,6 +52,8 @@ class HeaderView extends StatelessWidget {
                   deleting: deleting,
                   descriptionForDelete: descriptionForDelete,
                   deleteEntity: deleteEntity,
+                  isDeletable: isDeletable,
+                  isEditable: isEditable,
                 ),
               ),
             ),

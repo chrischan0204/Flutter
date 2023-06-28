@@ -1,3 +1,4 @@
+import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -88,10 +89,11 @@ class AuditQuestionDataSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => _entityData;
 
-  void _changeIncluded(String id, bool isIncluded) {
+  void _changeIncluded(String id, bool isIncluded, bool isNew) {
     context.read<AuditQuestionsBloc>().add(AuditQuestionsIncludedChanged(
           questionId: id,
           isIncluded: !isIncluded,
+          isNew: isNew,
         ));
   }
 
@@ -100,7 +102,8 @@ class AuditQuestionDataSource extends DataGridSource {
     if (index == 0 && value is Map) {
       return Checkbox(
         value: value['included'] as bool,
-        onChanged: (_) => cells.last.value == true && value['included'] == true
+        onChanged: (_) => cells.last.value['status'] == true &&
+                value['included'] == true
             ? CustomAlert(
                 context: context,
                 width: MediaQuery.of(context).size.width / 4,
@@ -109,15 +112,52 @@ class AuditQuestionDataSource extends DataGridSource {
                     'This question has already been answered. Are you sure you would like to exclude from audit?',
                 btnOkText: 'OK',
                 btnCancelOnPress: () {},
-                btnOkOnPress: () =>
-                    _changeIncluded(value['id'], value['included']),
+                btnOkOnPress: () => _changeIncluded(
+                    value['id'], value['included'], cells.last.value['isNew']),
                 dialogType: DialogType.question,
               ).show()
-            : _changeIncluded(value['id'], value['included']),
+            : _changeIncluded(
+                value['id'], value['included'], cells.last.value['isNew']),
       );
     }
 
     if (value is Map<String, bool>) {
+      // return Container(
+      //   width: double.infinity,
+      //   foregroundDecoration: const RotatedCornerDecoration.withColor(
+      //     color: Colors.red,
+      //     spanBaselineShift: 4,
+      //     badgeSize: Size(40, 40),
+      //     badgePosition: BadgePosition.topEnd,
+      //     textSpan: TextSpan(
+      //       text: 'NEW',
+      //       style: TextStyle(
+      //         color: Colors.white,
+      //         fontSize: 10,
+      //         letterSpacing: 1,
+      //         fontWeight: FontWeight.bold,
+      //         shadows: [
+      //           BoxShadow(
+      //             color: Colors.grey,
+      //             blurRadius: 8,
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      //   child: CustomBadge(
+      //     label: cells.first.value['included'] == false
+      //         ? 'Excluded'
+      //         : value['status'] == true
+      //             ? 'Answered'
+      //             : 'Unanswered',
+      //     color: cells.first.value['included'] == false
+      //         ? Colors.red
+      //         : value['status'] == true
+      //             ? successColor
+      //             : primaryColor,
+      //   ),
+      // );
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -136,7 +176,7 @@ class AuditQuestionDataSource extends DataGridSource {
           if (value['isNew'] == true)
             CustomBadge(
               label: 'NEW',
-              color: lightGreen,
+              color: lightBlue,
             )
         ],
       );

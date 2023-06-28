@@ -49,15 +49,18 @@ class AuditQuestionsSelectedAuditSectionChanged extends AuditQuestionsEvent {
 class AuditQuestionsIncludedChanged extends AuditQuestionsEvent {
   final String questionId;
   final bool isIncluded;
+  final bool isNew;
   const AuditQuestionsIncludedChanged({
     required this.questionId,
     required this.isIncluded,
+    required this.isNew,
   });
 
   @override
   List<Object?> get props => [
         questionId,
         isIncluded,
+        isNew,
       ];
 }
 

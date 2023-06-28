@@ -87,6 +87,8 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
                   observationId: widget.observationId)),
           entity: state.observation,
           crudStatus: state.observationDeleteStatus,
+          isDeletable: false,
+          isEditable: false,
           customDetailWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -105,7 +107,8 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
                             Expanded(
                               flex: 3,
                               child: BlocProvider(
-                                create: (context) => EditAssessmentBloc(),
+                                create: (context) => EditAssessmentBloc(
+                                    context, widget.observationId),
                                 child: const EditAssessmentView(),
                               ),
                             ),

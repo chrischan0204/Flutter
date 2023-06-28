@@ -7,6 +7,8 @@ class CrudButtonsView extends StatelessWidget {
   final bool deleting;
   final String descriptionForDelete;
   final VoidCallback deleteEntity;
+  final bool isDeletable;
+  final bool isEditable;
   const CrudButtonsView({
     super.key,
     required this.label,
@@ -14,6 +16,8 @@ class CrudButtonsView extends StatelessWidget {
     required this.deletable,
     required this.descriptionForDelete,
     required this.deleteEntity,
+    required this.isDeletable,
+    required this.isEditable,
   });
 
   @override
@@ -22,16 +26,17 @@ class CrudButtonsView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GoToListButton(label: label),
-        spacerx15,
-        GoToEditButton(label: label),
-        spacerx15,
-        DeleteButton(
-          label: label,
-          deletable: deletable,
-          deleting: deleting,
-          descriptionForDelete: descriptionForDelete,
-          deleteEntity: deleteEntity,
-        ),
+        if (isEditable) spacerx15,
+        if (isEditable) GoToEditButton(label: label),
+        if (isDeletable) spacerx15,
+        if (isDeletable)
+          DeleteButton(
+            label: label,
+            deletable: deletable,
+            deleting: deleting,
+            descriptionForDelete: descriptionForDelete,
+            deleteEntity: deleteEntity,
+          ),
       ],
     );
   }

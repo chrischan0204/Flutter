@@ -112,6 +112,7 @@ class Audit extends Entity {
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
       'Audit': name,
+      'Audit Number': auditNumber,
       'Onwer': owner,
       'Started on': formatedAuditDate,
       'Completion': completed,

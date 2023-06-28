@@ -11,7 +11,7 @@ class LocationDetailView extends StatelessWidget {
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(
-            state.actionItem!.assignee,
+            state.actionItem!.area,
             style: textNormal14,
           );
         },

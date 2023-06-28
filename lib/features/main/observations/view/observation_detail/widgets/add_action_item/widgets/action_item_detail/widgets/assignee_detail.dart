@@ -11,7 +11,7 @@ class AssigneeDetailView extends StatelessWidget {
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(
-            state.actionItem!.assignee,
+            state.actionItem!.assigneeName,
             style: textNormal14,
           );
         },

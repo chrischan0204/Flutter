@@ -9,6 +9,7 @@ class CustomBottomBorderContainer extends Container {
     super.padding,
     super.child,
     this.backgroundColor,
+    super.foregroundDecoration,
   }) : super(
           decoration: BoxDecoration(
             border: Border(
