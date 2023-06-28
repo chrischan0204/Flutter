@@ -37,18 +37,26 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
               auditSection: widget.auditSection)),
       onHover: (value) => setState(() => _hover = value),
       child: CustomBottomBorderContainer(
+        padding: insetx10,
         backgroundColor: _getColor(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: insetx20y10,
-              child: Text(
-                widget.auditSection.name,
-                style: textNormal14.copyWith(color: primaryColor),
+            Expanded(
+              child: Padding(
+                padding: insetx20y10,
+                child: Text(
+                  widget.auditSection.name,
+                  style: textNormal14.copyWith(color: primaryColor),
+                ),
               ),
             ),
+            if (widget.auditSection.isNew) spacerx10,
+            if (widget.auditSection.isNew)
+              CustomBadge(
+                label: 'NEW',
+                color: lightBlue,
+              )
           ],
         ),
       ),

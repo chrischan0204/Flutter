@@ -30,6 +30,7 @@ class AuditQuestion extends Equatable {
   final int questionStatus;
   final int questionOrder;
   final bool questionIncluded;
+  final bool isNew;
 
   const AuditQuestion({
     required this.id,
@@ -40,6 +41,7 @@ class AuditQuestion extends Equatable {
     required this.questionStatus,
     this.questionOrder = 0,
     this.questionIncluded = true,
+    this.isNew = false,
   });
 
   @override
@@ -52,29 +54,8 @@ class AuditQuestion extends Equatable {
         questionStatus,
         questionOrder,
         questionIncluded,
+        isNew,
       ];
-
-  AuditQuestion copyWith({
-    String? id,
-    double? questionScore,
-    double? maxScore,
-    String? question,
-    String? responseScaleName,
-    int? questionStatus,
-    int? questionOrder,
-    bool? questionIncluded,
-  }) {
-    return AuditQuestion(
-      id: id ?? this.id,
-      questionScore: questionScore ?? this.questionScore,
-      maxScore: maxScore ?? this.maxScore,
-      question: question ?? this.question,
-      responseScaleName: responseScaleName ?? this.responseScaleName,
-      questionStatus: questionStatus ?? this.questionStatus,
-      questionOrder: questionOrder ?? this.questionOrder,
-      questionIncluded: questionIncluded ?? this.questionIncluded,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -106,4 +87,28 @@ class AuditQuestion extends Equatable {
 
   factory AuditQuestion.fromJson(String source) =>
       AuditQuestion.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AuditQuestion copyWith({
+    String? id,
+    double? questionScore,
+    double? maxScore,
+    String? question,
+    String? responseScaleName,
+    int? questionStatus,
+    int? questionOrder,
+    bool? questionIncluded,
+    bool? isNew,
+  }) {
+    return AuditQuestion(
+      id: id ?? this.id,
+      questionScore: questionScore ?? this.questionScore,
+      maxScore: maxScore ?? this.maxScore,
+      question: question ?? this.question,
+      responseScaleName: responseScaleName ?? this.responseScaleName,
+      questionStatus: questionStatus ?? this.questionStatus,
+      questionOrder: questionOrder ?? this.questionOrder,
+      questionIncluded: questionIncluded ?? this.questionIncluded,
+      isNew: isNew ?? this.isNew,
+    );
+  }
 }

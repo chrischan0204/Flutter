@@ -1082,7 +1082,7 @@ class TemplateDesignerBloc
                   .toList());
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel1TemplateSectionItemId: followUpQuestion.id,
+            currentLevel1TemplateSectionItemId:  templateQuestionDetailList[0].id,
           ));
           break;
         case 2:
@@ -1153,7 +1153,7 @@ class TemplateDesignerBloc
                   .toList());
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel2TemplateSectionItemId: followUpQuestion.id,
+            currentLevel2TemplateSectionItemId:  templateQuestionDetailList[0].id,
           ));
           break;
       }

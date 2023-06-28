@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 enum AuditSectionStatus {
@@ -43,6 +41,7 @@ class AuditSection extends Equatable {
   final int order;
   final bool isIncluded;
   final int questionCount;
+  final bool isNew;
   final double maxScore;
   final AuditSectionStatus status;
   final List<AuditQuestion> auditQuestionList;
@@ -52,6 +51,7 @@ class AuditSection extends Equatable {
     this.name = '',
     this.order = 0,
     this.isIncluded = true,
+    this.isNew = false,
     this.status = AuditSectionStatus.done,
     this.questionCount = 0,
     this.maxScore = 0,
@@ -67,33 +67,12 @@ class AuditSection extends Equatable {
         name,
         order,
         isIncluded,
+        isNew,
         status,
         auditQuestionList,
         questionCount,
         maxScore,
       ];
-
-  AuditSection copyWith({
-    String? id,
-    String? name,
-    int? order,
-    bool? isIncluded,
-    int? questionCount,
-    double? maxScore,
-    AuditSectionStatus? status,
-    List<AuditQuestion>? auditQuestionList,
-  }) {
-    return AuditSection(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      order: order ?? this.order,
-      isIncluded: isIncluded ?? this.isIncluded,
-      questionCount: questionCount ?? this.questionCount,
-      maxScore: maxScore ?? this.maxScore,
-      status: status ?? this.status,
-      auditQuestionList: auditQuestionList ?? this.auditQuestionList,
-    );
-  }
 
   factory AuditSection.fromMap(Map<String, dynamic> map) {
     return AuditSection(
@@ -110,4 +89,28 @@ class AuditSection extends Equatable {
 
   factory AuditSection.fromJson(String source) =>
       AuditSection.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AuditSection copyWith({
+    String? id,
+    String? name,
+    int? order,
+    bool? isIncluded,
+    int? questionCount,
+    bool? isNew,
+    double? maxScore,
+    AuditSectionStatus? status,
+    List<AuditQuestion>? auditQuestionList,
+  }) {
+    return AuditSection(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      order: order ?? this.order,
+      isIncluded: isIncluded ?? this.isIncluded,
+      questionCount: questionCount ?? this.questionCount,
+      isNew: isNew ?? this.isNew,
+      maxScore: maxScore ?? this.maxScore,
+      status: status ?? this.status,
+      auditQuestionList: auditQuestionList ?? this.auditQuestionList,
+    );
+  }
 }

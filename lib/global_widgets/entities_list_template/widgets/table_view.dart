@@ -40,16 +40,19 @@ class _DataTableViewState extends State<DataTableView> {
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              column,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                fontFamily: 'OpenSans',
+            child: Tooltip(
+              message: column,
+              child: Text(
+                column,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  fontFamily: 'OpenSans',
+                ),
+                softWrap: false,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              softWrap: false,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),

@@ -138,7 +138,7 @@ class AuditsRepository extends BaseRepository {
             .map((e) => AuditQuestion.fromMap(e))
             .toList(),
         ...List.from(json.decode(response.body)['newQuestions'])
-            .map((e) => AuditQuestion.fromMap(e))
+            .map((e) => AuditQuestion.fromMap(e).copyWith(isNew: true))
             .toList()
       ];
     }
@@ -156,7 +156,7 @@ class AuditsRepository extends BaseRepository {
             .map((e) => AuditSection.fromMap(e))
             .toList(),
         ...List.from(json.decode(response.body)['templateSections'])
-            .map((e) => AuditSection.fromMap(e))
+            .map((e) => AuditSection.fromMap(e).copyWith(isNew: true))
             .toList(),
       ];
     }

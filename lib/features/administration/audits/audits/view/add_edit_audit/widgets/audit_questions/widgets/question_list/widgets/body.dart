@@ -30,9 +30,7 @@ class QuestionsListBodyView extends StatelessWidget {
               columns: columnList,
               context: context,
             ),
-            columnWidthMode: ColumnWidthMode.lastColumnFill,
-            columnResizeMode: ColumnResizeMode.onResize,
-            allowColumnsResizing: true,
+            columnWidthMode: ColumnWidthMode.fill,
             gridLinesVisibility: GridLinesVisibility.none,
             headerGridLinesVisibility: GridLinesVisibility.none,
             headerRowHeight: 52,
@@ -76,9 +74,10 @@ class AuditQuestionDataSource extends DataGridSource {
                     columnName: columns[1], value: auditQuestion.question),
                 DataGridCell(
                     columnName: columns[2], value: auditQuestion.questionScore),
-                DataGridCell(
-                    columnName: columns[3],
-                    value: !(auditQuestion.questionStatus == 0)),
+                DataGridCell(columnName: columns[3], value: <String, bool>{
+                  'status': !(auditQuestion.questionStatus == 0),
+                  'isNew': auditQuestion.isNew,
+                }),
               ],
             ))
         .toList();
@@ -110,25 +109,36 @@ class AuditQuestionDataSource extends DataGridSource {
                     'This question has already been answered. Are you sure you would like to exclude from audit?',
                 btnOkText: 'OK',
                 btnCancelOnPress: () {},
-                btnOkOnPress: () => _changeIncluded(value['id'], value['included']),
+                btnOkOnPress: () =>
+                    _changeIncluded(value['id'], value['included']),
                 dialogType: DialogType.question,
               ).show()
             : _changeIncluded(value['id'], value['included']),
       );
     }
 
-    if (value is bool) {
-      return CustomBadge(
-        label: cells.first.value['included'] == false
-            ? 'Excluded'
-            : value
-                ? 'Answered'
-                : 'Unanswered',
-        color: cells.first.value['included'] == false
-            ? Colors.red
-            : value
-                ? successColor
-                : primaryColor,
+    if (value is Map<String, bool>) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomBadge(
+            label: cells.first.value['included'] == false
+                ? 'Excluded'
+                : value['status'] == true
+                    ? 'Answered'
+                    : 'Unanswered',
+            color: cells.first.value['included'] == false
+                ? Colors.red
+                : value['status'] == true
+                    ? successColor
+                    : primaryColor,
+          ),
+          if (value['isNew'] == true)
+            CustomBadge(
+              label: 'NEW',
+              color: lightGreen,
+            )
+        ],
       );
     }
     return Text(value.toString());
