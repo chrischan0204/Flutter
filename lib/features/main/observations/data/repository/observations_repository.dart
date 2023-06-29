@@ -96,6 +96,7 @@ class ObservationsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// add aseessment
   Future<void> addAssessment(
     String observationId,
     AssessmentCreate assessmentCreate,
@@ -106,6 +107,19 @@ class ObservationsRepository extends BaseRepository {
     );
 
     if (response.statusCode == 200) {}
+
+    throw Exception();
+  }
+
+  /// get action item list
+  Future<List<ActionItem>> getActionItemList(String observationId) async {
+    Response response = await super.get('$url/$observationId/actionitems');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => ActionItem.fromMap(e))
+          .toList();
+    }
 
     throw Exception();
   }

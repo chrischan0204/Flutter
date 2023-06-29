@@ -5,9 +5,15 @@ part 'add_action_item_state.dart';
 
 class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   late ActionItemsRepository _actionItemsRepository;
+  late ObservationsRepository _observationsRepository;
   final BuildContext context;
-  AddActionItemBloc(this.context) : super(const AddActionItemState()) {
+  final String observationId;
+  AddActionItemBloc(
+    this.context,
+    this.observationId,
+  ) : super(const AddActionItemState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
+    _observationsRepository = RepositoryProvider.of(context);
 
     _bindEvents();
   }
@@ -37,7 +43,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   ) async {
     try {
       final List<ActionItem> actionItemList =
-          await _actionItemsRepository.getActionItemList(event.observationId);
+          await _observationsRepository.getActionItemList(event.observationId);
       emit(state.copyWith(actionItemList: actionItemList));
     } catch (e) {}
   }
@@ -52,26 +58,40 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     ));
   }
 
-  void _onAddActionItemDetailEdited(
+  Future<void> _onAddActionItemDetailEdited(
     AddActionItemDetailEdited event,
     Emitter<AddActionItemState> emit,
-  ) {
-    // emit(state.copyWith(
-    //   actionItem: Nullable.value(event.actionItem),
-    //   task: event.actionItem.task,
-    //   dueBy: Nullable.value(event.actionItem.due),
-    //   assignee: Nullable.value(User(
-    //     firstName: event.actionItem.assignee.split(' ')[0],
-    //     lastName: event.actionItem.assignee.split(' ')[1],
-    //   )),
-    //   category:
-    //       Nullable.value(AwarenessCategory(name: event.actionItem.category)),
-    //   company: Nullable.value(Company(name: event.actionItem.company)),
-    //   project: Nullable.value(Project(name: event.actionItem.project)),
-    //   location: event.actionItem.location,
-    //   notes: event.actionItem.notes,
-    //   isEditing: true,
-    // ));
+  ) async {
+    try {
+      final actionItem =
+          await _actionItemsRepository.getActionItemById(event.actionItem.id);
+
+      emit(state.copyWith(
+        actionItem: Nullable.value(actionItem),
+        task: actionItem.description,
+        dueBy: Nullable.value(actionItem.dueBy),
+        assignee: Nullable.value(User(
+          id: actionItem.id,
+          firstName: actionItem.assigneeName.split(' ')[0],
+          lastName: actionItem.assigneeName.split(' ')[1],
+        )),
+        category: Nullable.value(AwarenessCategory(
+          name: actionItem.awarenessCategoryName,
+          id: actionItem.awarenessCategoryId,
+        )),
+        company: Nullable.value(Company(
+          name: actionItem.companyName,
+          id: actionItem.companyId,
+        )),
+        project: Nullable.value(Project(
+          name: actionItem.projectName,
+          id: actionItem.projectId,
+        )),
+        location: actionItem.area,
+        notes: actionItem.notes,
+        isEditing: true,
+      ));
+    } catch (e) {}
   }
 
   void _onAddActionItemTaskChanged(
@@ -158,13 +178,31 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     ));
   }
 
-  void _onAddActionItemSaved(
+  Future<void> _onAddActionItemSaved(
     AddActionItemSaved event,
     Emitter<AddActionItemState> emit,
-  ) {
-    emit(state.copyWith(
-      isEditing: false,
-      actionItem: const Nullable.value(null),
-    ));
+  ) async {
+    try {
+      late EntityResponse response;
+
+      if (state.actionItem == null) {
+        response = await _actionItemsRepository.addActionItem(
+            state.actionItemCreate.copyWith(observationId: observationId));
+      } else {
+        response = await _actionItemsRepository.editActionItem(
+            state.actionItemCreate.copyWith(observationId: observationId));
+      }
+
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          isEditing: false,
+          actionItem: const Nullable.value(null),
+          message: response.message,
+          status: EntityStatus.success,
+        ));
+      }
+
+      add(AddActionItemListLoaded(observationId: observationId));
+    } catch (e) {}
   }
 }

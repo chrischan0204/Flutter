@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '/common_libraries.dart';
 
 class ActionItemCreate extends Equatable {
@@ -10,6 +11,8 @@ class ActionItemCreate extends Equatable {
   final String projectId;
   final String location;
   final String notes;
+  final String? observationId;
+  final String? auditSectionItemId;
   const ActionItemCreate({
     this.id,
     required this.task,
@@ -20,10 +23,13 @@ class ActionItemCreate extends Equatable {
     required this.projectId,
     required this.location,
     required this.notes,
+    this.observationId,
+    this.auditSectionItemId,
   });
 
   @override
   List<Object?> get props => [
+        id,
         task,
         dueBy,
         assigneeId,
@@ -32,31 +38,9 @@ class ActionItemCreate extends Equatable {
         projectId,
         location,
         notes,
+        observationId,
+        auditSectionItemId,
       ];
-
-  ActionItemCreate copyWith({
-    String? id,
-    String? task,
-    String? dueBy,
-    String? assigneeId,
-    String? categoryId,
-    String? companyId,
-    String? projectId,
-    String? location,
-    String? notes,
-  }) {
-    return ActionItemCreate(
-      id: id ?? this.id,
-      task: task ?? this.task,
-      dueBy: dueBy ?? this.dueBy,
-      assigneeId: assigneeId ?? this.assigneeId,
-      categoryId: categoryId ?? this.categoryId,
-      companyId: companyId ?? this.companyId,
-      projectId: projectId ?? this.projectId,
-      location: location ?? this.location,
-      notes: notes ?? this.notes,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = <String, dynamic>{
@@ -74,8 +58,44 @@ class ActionItemCreate extends Equatable {
       map.addEntries([MapEntry('id', id)]);
     }
 
+    if (observationId != null) {
+      map.addEntries([MapEntry('observationId', observationId)]);
+    }
+
+    if (auditSectionItemId != null) {
+      map.addEntries([MapEntry('auditSectionItemId', auditSectionItemId)]);
+    }
+
     return map;
   }
 
   String toJson() => json.encode(toMap());
+
+  ActionItemCreate copyWith({
+    String? id,
+    String? task,
+    String? dueBy,
+    String? assigneeId,
+    String? categoryId,
+    String? companyId,
+    String? projectId,
+    String? location,
+    String? notes,
+    String? observationId,
+    String? auditSectionItemId,
+  }) {
+    return ActionItemCreate(
+      id: id ?? this.id,
+      task: task ?? this.task,
+      dueBy: dueBy ?? this.dueBy,
+      assigneeId: assigneeId ?? this.assigneeId,
+      categoryId: categoryId ?? this.categoryId,
+      companyId: companyId ?? this.companyId,
+      projectId: projectId ?? this.projectId,
+      location: location ?? this.location,
+      notes: notes ?? this.notes,
+      observationId: observationId ?? this.observationId,
+      auditSectionItemId: auditSectionItemId ?? this.auditSectionItemId,
+    );
+  }
 }

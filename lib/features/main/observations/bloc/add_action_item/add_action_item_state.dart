@@ -35,6 +35,12 @@ class AddActionItemState extends Equatable {
   /// check if it is editing
   final bool isEditing;
 
+  /// response message
+  final String message;
+
+  /// action item create or update status
+  final EntityStatus status;
+
   const AddActionItemState({
     this.actionItem,
     this.actionItemList = const [],
@@ -47,6 +53,8 @@ class AddActionItemState extends Equatable {
     this.location = '',
     this.notes = '',
     this.isEditing = false,
+    this.message = '',
+    this.status = EntityStatus.initial,
   });
 
   @override
@@ -62,7 +70,21 @@ class AddActionItemState extends Equatable {
         location,
         notes,
         isEditing,
+        message,
+        status,
       ];
+
+  ActionItemCreate get actionItemCreate => ActionItemCreate(
+        id: actionItem?.id,
+        task: task,
+        dueBy: dueBy!.toIso8601String(),
+        assigneeId: assignee!.id!,
+        categoryId: category!.id!,
+        companyId: company!.id!,
+        projectId: project!.id!,
+        location: location,
+        notes: notes,
+      );
 
   AddActionItemState copyWith({
     Nullable<ActionItem?>? actionItem,
@@ -76,6 +98,8 @@ class AddActionItemState extends Equatable {
     String? location,
     String? notes,
     bool? isEditing,
+    String? message,
+    EntityStatus? status,
   }) {
     return AddActionItemState(
       actionItem: actionItem != null ? actionItem.value : this.actionItem,
@@ -89,6 +113,8 @@ class AddActionItemState extends Equatable {
       location: location ?? this.location,
       notes: notes ?? this.notes,
       isEditing: isEditing ?? this.isEditing,
+      message: message ?? this.message,
+      status: status ?? this.status,
     );
   }
 }

@@ -28,7 +28,24 @@ class _AddActionItemViewState extends State<AddActionItemView> {
       child: Column(
         children: [
           const AddActionItemHeaderView(),
-          BlocBuilder<AddActionItemBloc, AddActionItemState>(
+          BlocConsumer<AddActionItemBloc, AddActionItemState>(
+            listener: (context, state) {
+              if (state.status.isSuccess) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.success,
+                  content: state.message,
+                ).showNotification();
+              } else if (state.status.isFailure) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.error,
+                  content: state.message,
+                ).showNotification();
+              }
+            },
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
             builder: (context, state) {
               if (state.isEditing) {
                 return const AddActionItemFormView();

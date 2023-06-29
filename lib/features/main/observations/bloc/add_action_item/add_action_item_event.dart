@@ -85,6 +85,7 @@ class AddActionItemAddActionItemButtonClicked extends AddActionItemEvent {}
 
 class AddActionItemActionItemListButtonClicked extends AddActionItemEvent {}
 
+/// event to create or update action item
 class AddActionItemSaved extends AddActionItemEvent {}
 
 /// event to display detail of selected action item

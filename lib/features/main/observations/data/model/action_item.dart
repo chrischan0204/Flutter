@@ -32,21 +32,21 @@ class ActionItem extends Equatable {
   final String area;
   final String notes;
   const ActionItem({
-    required this.id,
-    required this.description,
+    this.id = '',
+    this.description = '',
     required this.dueBy,
-    required this.assigneeId,
-    required this.assigneeName,
-    required this.awarenessCategoryId,
-    required this.awarenessCategoryName,
-    required this.companyId,
-    required this.companyName,
-    required this.projectId,
-    required this.projectName,
-    required this.observationId,
-    required this.observationName,
-    required this.area,
-    required this.notes,
+    this.assigneeId = '',
+    this.assigneeName = '',
+    this.awarenessCategoryId = '',
+    this.awarenessCategoryName = '',
+    this.companyId = '',
+    this.companyName = '',
+    this.projectId = '',
+    this.projectName = '',
+    this.observationId = '',
+    this.observationName = '',
+    this.area = '',
+    this.notes = '',
   });
 
   String get formatedDue => DateFormat('yyyy-MM-dd').format(dueBy);
@@ -86,21 +86,21 @@ class ActionItem extends Equatable {
 
   factory ActionItem.fromMap(Map<String, dynamic> map) {
     return ActionItem(
-      id: map['id'] as String,
-      description: map['description'] as String,
-      dueBy: DateTime.fromMillisecondsSinceEpoch(map['dueBy'] as int),
-      observationId: map['observationId'] as String,
-      observationName: map['observationName'] as String,
-      assigneeId: map['assigneeId'] as String,
-      assigneeName: map['assigneeName'] as String,
-      awarenessCategoryId: map['awarenessCategoryId'] as String,
-      awarenessCategoryName: map['awarenessCategoryName'] as String,
-      companyId: map['companyId'] as String,
-      companyName: map['companyName'] as String,
-      projectId: map['projectId'] as String,
-      projectName: map['projectName'] as String,
-      area: map['area'] as String,
-      notes: map['notes'] as String,
+      id: map['id'] ?? '',
+      description: map['description'] ?? '',
+      dueBy: DateTime.parse(map['dueBy']),
+      observationId: map['observationId'] ?? '',
+      observationName: map['observationName'] ?? '',
+      assigneeId: map['assigneeId'] ?? '',
+      assigneeName: map['assigneeName'] ?? '',
+      awarenessCategoryId: map['awarenessCategoryId'] ?? '',
+      awarenessCategoryName: map['awarenessCategoryName'] ?? '',
+      companyId: map['companyId'] ?? '',
+      companyName: map['companyName'] ?? '',
+      projectId: map['projectId'] ?? '',
+      projectName: map['projectName'] ?? '',
+      area: map['area'] ?? '',
+      notes: map['notes'] ?? '',
     );
   }
 
