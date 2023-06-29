@@ -35,24 +35,21 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
     emit(state.copyWith(auditListLoadStatus: EntityStatus.loading));
 
     try {
-      final auditList = await auditsRepository.getAuditList();
-      emit(state.copyWith(
-          auditList: auditList,
-          auditListLoadStatus: EntityStatus.success,
-          totalRows: auditList.length));
-      // final filteredauditData =
-      //     await auditsRepository.getFilteredAuditList(event.option);
-      // final List<String> columns = List.from(filteredauditData.headers
-      //     .where((e) => !e.isHidden)
-      //     .map((e) => e.title));
+      final filteredauditData =
+          await auditsRepository.getFilteredAuditList(event.option);
+      final List<String> columns = List.from(filteredauditData.headers
+          .where((e) => !e.isHidden)
+          .map((e) => e.title));
 
-      // emit(state.copyWith(
-      //     auditList: filteredauditData.data
-      //         .map((e) => e.audit.copyWith(columns: columns))
-      //         .toList(),
-      //     auditListLoadStatus: EntityStatus.success,
-      //     totalRows: filteredauditData.totalRows));
+      emit(state.copyWith(
+        auditList: filteredauditData.data
+            .map((e) => e.audit.copyWith(columns: columns))
+            .toList(),
+        auditListLoadStatus: EntityStatus.success,
+        totalRows: filteredauditData.totalRows,
+      ));
     } catch (e) {
+      print(e);
       emit(state.copyWith(auditListLoadStatus: EntityStatus.failure));
     }
   }

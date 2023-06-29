@@ -1,7 +1,7 @@
 part of 'audit_detail_bloc.dart';
 
 class AuditDetailState extends Equatable {
-  final Audit? audit;
+  final AuditSummary? auditSummary;
   final EntityStatus auditLoadStatus;
   final EntityStatus auditDeleteStatus;
 
@@ -10,7 +10,7 @@ class AuditDetailState extends Equatable {
 
   final String message;
   const AuditDetailState({
-    this.audit,
+    this.auditSummary,
     this.auditLoadStatus = EntityStatus.initial,
     this.auditDeleteStatus = EntityStatus.initial,
     this.auditSectionList = const [],
@@ -20,7 +20,7 @@ class AuditDetailState extends Equatable {
 
   @override
   List<Object?> get props => [
-        audit,
+        auditSummary,
         auditLoadStatus,
         auditDeleteStatus,
         auditSectionList,
@@ -29,7 +29,7 @@ class AuditDetailState extends Equatable {
       ];
 
   AuditDetailState copyWith({
-    Audit? audit,
+    AuditSummary? auditSummary,
     EntityStatus? auditLoadStatus,
     EntityStatus? auditDeleteStatus,
     List<AuditSection>? auditSectionList,
@@ -37,7 +37,7 @@ class AuditDetailState extends Equatable {
     String? message,
   }) {
     return AuditDetailState(
-      audit: audit ?? this.audit,
+      auditSummary: auditSummary ?? this.auditSummary,
       auditLoadStatus: auditLoadStatus ?? this.auditLoadStatus,
       auditDeleteStatus: auditDeleteStatus ?? this.auditDeleteStatus,
       auditSectionList: auditSectionList ?? this.auditSectionList,

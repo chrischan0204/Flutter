@@ -10,20 +10,20 @@ class AuditDetailView2 extends StatelessWidget {
       elevation: 3,
       child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
         builder: (context, state) {
-          final audit = state.audit!;
+          final audit = state.auditSummary!;
           return Column(
             children: [
               AuditDetailItemView(
                 label: 'Created on',
-                content: audit.createdOn ?? '--',
+                content: audit.formatedCreatedOn,
               ),
               AuditDetailItemView(
                 label: 'Status',
                 content: audit.auditStatusName ?? '--',
               ),
               AuditDetailItemView(
-                label: 'Questions',
-                content: audit.questions.toString(),
+                label: 'Area',
+                content: audit.area ?? '--',
               ),
               AuditDetailItemView(
                 label: 'Project',
@@ -31,7 +31,7 @@ class AuditDetailView2 extends StatelessWidget {
               ),
               AuditDetailItemView(
                 label: 'Action items',
-                content: '4',
+                content: audit.actionItems.toString(),
                 highlighted: true,
               ),
               AuditDetailItemView(

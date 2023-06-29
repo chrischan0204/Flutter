@@ -28,10 +28,18 @@ class Audit extends Entity {
 
   final double score;
   final double maxScore;
+  final double obtainedScore;
 
   final String companies;
   final String inspectors;
   final String area;
+
+  final DateTime? lastExecutedOn;
+
+  final int observations;
+  final int documents;
+  final int actionItems;
+
   const Audit({
     super.id,
     super.name,
@@ -54,6 +62,11 @@ class Audit extends Entity {
     required this.answeredQuestions,
     required this.maxScore,
     required this.score,
+    required this.obtainedScore,
+    required this.observations,
+    required this.actionItems,
+    required this.documents,
+    this.lastExecutedOn,
     super.createdOn,
     super.createdByUserName,
     super.lastModifiedOn,
@@ -84,7 +97,9 @@ class Audit extends Entity {
         questions,
         answeredQuestions,
         maxScore,
+        obtainedScore,
         score,
+        lastExecutedOn,
         createdOn,
         createdByUserName,
         lastModifiedOn,
@@ -95,16 +110,36 @@ class Audit extends Entity {
 
   String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
 
+  String get formatedLastExecutedOn => lastExecutedOn != null
+      ? DateFormat('d MMMM y').format(lastExecutedOn!)
+      : '--';
+
   @override
   Map<String, dynamic> tableItemsToMap() {
     return {
-      'Audit': name,
-      'Status': auditStatusName,
-      'Complete': completed,
-      'Site': siteName,
-      'Template': templateName,
-      'Onwer': owner,
-      'Score': score,
+      'Name': name,
+      'Audit Number': auditNumber,
+      'Audit Status': auditStatusName,
+      'Percent Completed': completed,
+      'Site Name': siteName,
+      'Template Name': templateName,
+      'Owner': owner,
+      'Questions': questions,
+      'Action Items': actionItems,
+      'Answered Questions': answeredQuestions,
+      'Area': area,
+      'Audit Date': formatedAuditDate,
+      'Companies': companies,
+      'Created By': createdByUserName,
+      'Deleted': deleted,
+      'Documents': documents,
+      'Inspectors': inspectors,
+      'Last Executed On': formatedLastExecutedOn,
+      'Last Modified On': lastModifiedOn,
+      'Modified By': lastModifiedByUserName,
+      'Observations': observations,
+      'Project Name': projectName,
+      'Sections': sections,
     };
   }
 
@@ -144,19 +179,23 @@ class Audit extends Entity {
       auditNumber: map['auditNumber'],
       auditDate: DateTime.parse(map['auditDate']),
       auditStatusName: map['auditStatusName'],
-      completed: map['completed'] as double,
+      completed: map['completed'],
       siteId: map['siteId'],
       siteName: map['siteName'],
       projectId: map['projectId'],
-      projectName: map['projectName'],
+      projectName: map['projectName'] ?? '',
       templateId: map['templateId'],
       templateName: map['templateName'],
       owner: map['owner'] ?? '',
       score: map['score'],
+      obtainedScore: map['obtainedScore'],
       answeredQuestions: map['answeredQuestions'],
       maxScore: map['maxScore'],
       sections: map['sections'],
       questions: map['questions'],
+      actionItems: map['actionItems'],
+      documents: map['documents'],
+      observations: map['observations'],
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
       createdByUserName: entity.createdByUserName,
@@ -168,6 +207,8 @@ class Audit extends Entity {
       Audit.fromMap(json.decode(source) as Map<String, dynamic>);
 
   Audit copyWith({
+    String? id,
+    String? name,
     String? auditNumber,
     DateTime? auditDate,
     String? auditStatusName,
@@ -184,8 +225,24 @@ class Audit extends Entity {
     String? owner,
     double? score,
     double? maxScore,
+    double? obtainedScore,
+    String? companies,
+    String? inspectors,
+    String? area,
+    DateTime? lastExecutedOn,
+    int? observations,
+    int? documents,
+    int? actionItems,
+    String? createdOn,
+    String? createdByUserName,
+    String? lastModifiedOn,
+    String? lastModifiedByUserName,
+    List<String>? columns,
+    bool? deleted,
   }) {
     return Audit(
+      id: id ?? this.id,
+      name: name ?? this.name,
       auditNumber: auditNumber ?? this.auditNumber,
       auditDate: auditDate ?? this.auditDate,
       auditStatusName: auditStatusName ?? this.auditStatusName,
@@ -202,6 +259,21 @@ class Audit extends Entity {
       owner: owner ?? this.owner,
       score: score ?? this.score,
       maxScore: maxScore ?? this.maxScore,
+      obtainedScore: obtainedScore ?? this.obtainedScore,
+      companies: companies ?? this.companies,
+      inspectors: inspectors ?? this.inspectors,
+      area: area ?? this.area,
+      lastExecutedOn: lastExecutedOn ?? this.lastExecutedOn,
+      observations: observations ?? this.observations,
+      documents: documents ?? this.documents,
+      actionItems: actionItems ?? this.actionItems,
+      createdOn: createdOn ?? this.createdOn,
+      createdByUserName: createdByUserName ?? this.createdByUserName,
+      lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
+      lastModifiedByUserName:
+          lastModifiedByUserName ?? this.lastModifiedByUserName,
+      columns: columns ?? this.columns,
+      deleted: deleted ?? this.deleted,
     );
   }
 }

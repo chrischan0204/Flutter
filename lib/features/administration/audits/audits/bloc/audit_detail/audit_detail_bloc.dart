@@ -20,10 +20,13 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     Emitter<AuditDetailState> emit,
   ) async {
     try {
-      Audit audit = await auditsRepository.getAuditById(event.auditId);
+      AuditSummary auditSummary =
+          await auditsRepository.getAuditSummary(event.auditId);
 
-      emit(state.copyWith(audit: audit));
-    } catch (e) {}
+      emit(state.copyWith(auditSummary: auditSummary));
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> _onAuditDetailAuditDeleted(

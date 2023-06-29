@@ -7,3 +7,5 @@ export 'audit_section.dart';
 export 'audit_question.dart';
 export 'audit_question_association.dart';
 export 'audit_section_association.dart';
+export 'audit_section_and_question.dart';
+export 'audit_summary.dart';

@@ -79,9 +79,9 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
           deleteEntity: () => context
               .read<AuditDetailBloc>()
               .add(AuditDetailAuditDeleted(auditId: widget.auditId)),
-          entity: state.audit,
+          entity: state.auditSummary?.audit,
           crudStatus: state.auditDeleteStatus,
-          customDetailWidget: state.audit == null
+          customDetailWidget: state.auditSummary == null
               ? const Center(child: Loader())
               : Column(
                   children: [
@@ -98,7 +98,7 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                                   border:
                                       Border(bottom: BorderSide(color: grey))),
                               child: Text(
-                                state.audit?.name ?? '',
+                                state.auditSummary?.name ?? '',
                                 style: textNormal20,
                               ),
                             ),

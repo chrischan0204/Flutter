@@ -3,42 +3,72 @@ import 'package:intl/intl.dart';
 import '/common_libraries.dart';
 
 class FilteredAudit extends FilteredEntity {
-  final String name;
-
+  final String? name;
   final String? auditNumber;
 
   final DateTime auditDate;
   final String? auditStatusName;
 
-  final double completed;
+  final double? completed;
 
-  final String siteId;
+  final String? siteId;
   final String? siteName;
 
+  final String? projectId;
   final String? projectName;
 
-  final String templateId;
+  final String? templateId;
   final String? templateName;
+
+  final int? sections;
+  final int? questions;
+  final int? answeredQuestions;
 
   final String? owner;
 
-  final double score;
+  final double? score;
+  final double? maxScore;
+  final double? obtainedScore;
+
+  final String companies;
+  final String inspectors;
+  final String area;
+
+  final DateTime? lastExecutedOn;
+
+  final int? observations;
+  final int? documents;
+  final int? actionItems;
 
   const FilteredAudit({
     super.id,
-    required this.name,
+    this.name,
+    this.area = '',
+    this.inspectors = '',
+    this.companies = '',
     this.auditNumber,
     required this.auditDate,
     this.auditStatusName,
     required this.completed,
-    required this.siteId,
+    this.siteId = emptyGuid,
     this.siteName,
+    this.projectId = emptyGuid,
     this.projectName,
-    required this.templateId,
+    this.templateId = emptyGuid,
     this.templateName,
     this.owner,
+    this.sections = 0,
+    this.questions = 0,
+    this.answeredQuestions = 0,
+    required this.maxScore,
     required this.score,
+    required this.obtainedScore,
+    required this.observations,
+    required this.actionItems,
+    required this.documents,
+    this.lastExecutedOn,
     super.createdOn,
+    super.createdBy,
     super.lastModifiedOn,
     super.lastModifiedByUserName,
     super.deleted,
@@ -48,24 +78,113 @@ class FilteredAudit extends FilteredEntity {
   List<Object?> get props => [
         ...super.props,
         name,
+        area,
+        companies,
+        inspectors,
         auditNumber,
         auditDate,
         auditStatusName,
         completed,
         siteId,
         siteName,
+        projectId,
         projectName,
         templateId,
         templateName,
         owner,
+        sections,
+        questions,
+        answeredQuestions,
+        maxScore,
+        obtainedScore,
         score,
+        lastExecutedOn,
         createdOn,
+        createdBy,
         lastModifiedOn,
         lastModifiedByUserName,
         deleted,
       ];
 
   String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
+
+  String get formatedLastExecutedOn => lastExecutedOn != null
+      ? DateFormat('d MMMM y').format(lastExecutedOn!)
+      : '--';
+
+  Audit get audit => Audit(
+        id: id,
+        name: name,
+        auditDate: auditDate,
+        completed: completed ?? 0,
+        auditNumber: auditNumber,
+        auditStatusName: auditStatusName,
+        siteId: siteId ?? emptyGuid,
+        siteName: siteName,
+        projectId: projectId,
+        projectName: projectName,
+        templateId: templateId ?? emptyGuid,
+        templateName: templateName,
+        owner: owner,
+        sections: sections ?? 0,
+        questions: questions ?? 0,
+        answeredQuestions: answeredQuestions ?? 0,
+        maxScore: maxScore ?? 0,
+        score: score ?? 0,
+        area: area,
+        obtainedScore: obtainedScore ?? 0,
+        observations: observations ?? 0,
+        actionItems: actionItems ?? 0,
+        documents: documents ?? 0,
+        companies: companies,
+        inspectors: inspectors,
+        createdByUserName: createdBy,
+        createdOn: createdOn,
+        lastExecutedOn: lastExecutedOn,
+        lastModifiedOn: lastModifiedOn,
+        lastModifiedByUserName: lastModifiedByUserName,
+      );
+
+  factory FilteredAudit.fromMap(Map<String, dynamic> map) {
+    FilteredEntity entity = FilteredEntity.fromMap(map);
+    return FilteredAudit(
+      id: entity.id,
+      name: map['name'],
+      area: map['area'] ?? '',
+      companies: map['companies'] ?? '',
+      inspectors: map['inspectors'] ?? '',
+      auditNumber: map['audit_Number'],
+      auditDate: DateTime.parse(map['audit_Date']),
+      auditStatusName: map['audit_Status'],
+      completed: map['percent_Completed'],
+      // siteId: map['siteId'],
+      siteName: map['site_Name'],
+      // projectId: map['projectId'],
+      projectName: map['project_Name'] ?? '',
+      // templateId: map['templateId'],
+      templateName: map['template_Name'],
+      owner: map['owner'] ?? '',
+      score: map['score'],
+      lastExecutedOn: map['last_Executed_On'] != null
+          ? DateTime.parse(map['last_Executed_On'])
+          : null,
+      obtainedScore: map['obtainedScore'],
+      answeredQuestions: map['answered_Questions'],
+      maxScore: map['maxScore'],
+      sections: map['sections'],
+      questions: map['questions'],
+      actionItems: map['action_Items'],
+      documents: map['documents'],
+      observations: map['observations'],
+      createdOn: entity.createdOn,
+      lastModifiedOn: entity.lastModifiedOn,
+      createdBy: entity.createdBy,
+      lastModifiedByUserName: entity.lastModifiedByUserName,
+    );
+  }
+
+  factory FilteredAudit.fromJson(String source) =>
+      FilteredAudit.fromMap(json.decode(source) as Map<String, dynamic>);
 
   FilteredAudit copyWith({
     String? id,
@@ -76,15 +195,30 @@ class FilteredAudit extends FilteredEntity {
     double? completed,
     String? siteId,
     String? siteName,
+    String? projectId,
     String? projectName,
     String? templateId,
     String? templateName,
+    int? sections,
+    int? questions,
+    int? answeredQuestions,
     String? owner,
     double? score,
-    String? lastModifiedOn,
+    double? maxScore,
+    double? obtainedScore,
+    String? companies,
+    String? inspectors,
+    String? area,
+    DateTime? lastExecutedOn,
+    int? observations,
+    int? documents,
+    int? actionItems,
     String? createdOn,
-    bool? deleted,
+    String? createdBy,
+    String? lastModifiedOn,
+    String? lastModifiedByUserName,
     List<String>? columns,
+    bool? deleted,
   }) {
     return FilteredAudit(
       id: id ?? this.id,
@@ -95,38 +229,30 @@ class FilteredAudit extends FilteredEntity {
       completed: completed ?? this.completed,
       siteId: siteId ?? this.siteId,
       siteName: siteName ?? this.siteName,
+      projectId: projectId ?? this.projectId,
       projectName: projectName ?? this.projectName,
       templateId: templateId ?? this.templateId,
       templateName: templateName ?? this.templateName,
+      sections: sections ?? this.sections,
+      questions: questions ?? this.questions,
+      answeredQuestions: answeredQuestions ?? this.answeredQuestions,
       owner: owner ?? this.owner,
       score: score ?? this.score,
+      maxScore: maxScore ?? this.maxScore,
+      obtainedScore: obtainedScore ?? this.obtainedScore,
+      companies: companies ?? this.companies,
+      inspectors: inspectors ?? this.inspectors,
+      area: area ?? this.area,
+      lastExecutedOn: lastExecutedOn ?? this.lastExecutedOn,
+      observations: observations ?? this.observations,
+      documents: documents ?? this.documents,
+      actionItems: actionItems ?? this.actionItems,
       createdOn: createdOn ?? this.createdOn,
+      createdBy: createdBy ?? this.createdBy,
       lastModifiedOn: lastModifiedOn ?? this.lastModifiedOn,
+      lastModifiedByUserName:
+          lastModifiedByUserName ?? this.lastModifiedByUserName,
       deleted: deleted ?? this.deleted,
     );
   }
-
-  factory FilteredAudit.fromMap(Map<String, dynamic> map) {
-    return FilteredAudit(
-      id: map['id'],
-      auditNumber: map['auditNumber'],
-      auditDate: DateTime.parse(map['auditDate']),
-      auditStatusName: map['auditStatusName'],
-      completed: map['completed'] as double,
-      siteId: map['siteId'],
-      siteName: map['siteName'],
-      projectName: map['projectName'],
-      templateId: map['templateId'],
-      templateName: map['templateName'],
-      owner: map['owner'] ?? '',
-      score: map['score'],
-      createdOn: map['createdOn'],
-      lastModifiedOn: map['lastModifiedOn'],
-      lastModifiedByUserName: map['lastModifiedByUserName'],
-      name: map['name'],
-    );
-  }
-
-  factory FilteredAudit.fromJson(String source) =>
-      FilteredAudit.fromMap(json.decode(source) as Map<String, dynamic>);
 }

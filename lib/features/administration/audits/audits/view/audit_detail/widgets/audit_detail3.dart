@@ -10,21 +10,17 @@ class AuditDetailView3 extends StatelessWidget {
       elevation: 3,
       child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
         builder: (context, state) {
-          final audit = state.audit!;
+          final audit = state.auditSummary!;
           return Column(
             children: [
               AuditDetailItemView(
-                label: 'Area',
-                content: audit.area,
-              ),
-              AuditDetailItemView(
                 label: 'Companies',
-                content: audit.companies,
+                content: audit.companies ?? '--',
                 twoLines: true,
               ),
               AuditDetailItemView(
                 label: 'Inspectors',
-                content: audit.inspectors,
+                content: audit.inspectors ?? '--',
                 twoLines: true,
               ),
             ],

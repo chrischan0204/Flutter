@@ -83,6 +83,16 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  Future<AuditSummary> getAuditSummary(String auditId) async {
+    Response response = await super.get('$url/$auditId/summary');
+
+    if (response.statusCode == 200) {
+      return AuditSummary.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
   Future<FilteredAuditData> getFilteredAuditList(
       FilteredTableParameter option) async {
     Response response = await super.filter(option);
@@ -162,170 +172,6 @@ class AuditsRepository extends BaseRepository {
     }
 
     throw Exception();
-    // return [
-    //   AuditSection(
-    //     id: const Uuid().v1(),
-    //     name: 'Electric Inspection',
-    //     status: AuditSectionStatus.done,
-    //     questionCount: 8,
-    //     maxScore: 32,
-    //     auditQuestionList: [
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 2,
-    //         question: 'Is the WFH employees percentage less than 20%?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 3,
-    //         question: 'Is the current number of employees that are working?',
-    //         responseScaleName: 'Satisfactory/ unsatisfactory',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 4,
-    //         question:
-    //             'Are there signs posted visibly for employees to practice social distancing?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 5,
-    //         question: 'How satisfied are the employees who are WFH?',
-    //         responseScaleName: 'Survey',
-    //         questionStatus: 0,
-    //       ),
-    //     ],
-    //   ),
-    //   AuditSection(
-    //     id: const Uuid().v1(),
-    //     name: 'Signage inspection',
-    //     status: AuditSectionStatus.partial,
-    //     questionCount: 12,
-    //     maxScore: 41,
-    //     auditQuestionList: [
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 2,
-    //         question: 'How well do the employees know about social distancing?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 1,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 3,
-    //         question: 'Does the number of people wearing masks exceed 50%?',
-    //         responseScaleName: 'Satisfactory/ unsatisfactory',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 3,
-    //         question: 'Does the number of people wearing masks exceed 50%?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 2,
-    //         question:
-    //             'Are there safety measures in place for social places like conference rooms?',
-    //         responseScaleName: 'Rating',
-    //         questionStatus: 0,
-    //       ),
-    //     ],
-    //   ),
-    //   AuditSection(
-    //     id: const Uuid().v1(),
-    //     name: 'Housekeeping interviews',
-    //     status: AuditSectionStatus.inProgress,
-    //     questionCount: 4,
-    //     maxScore: 20,
-    //     auditQuestionList: [
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 2,
-    //         question:
-    //             'Does the documentation cover a section about safe distancing?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 3,
-    //         question: 'How well do the employees know about social distancing?',
-    //         responseScaleName: 'Satisfactory/ unsatisfactory',
-    //         questionStatus: 1,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 4,
-    //         question: 'Does the number of people wearing masks exceed 50%?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 0,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 5,
-    //         question:
-    //             'Are there safety measures in place for social places like conference rooms?',
-    //         responseScaleName: 'Rating',
-    //         questionStatus: 1,
-    //       ),
-    //     ],
-    //   ),
-    //   AuditSection(
-    //     id: const Uuid().v1(),
-    //     name: 'Cafe supplies inspection',
-    //     status: AuditSectionStatus.notStarted,
-    //     questionCount: 11,
-    //     maxScore: 28,
-    //     auditQuestionList: [
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 2,
-    //         question: 'Are the soap dispensers cleaned every day?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 1,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 3,
-    //         question:
-    //             'Are the store rooms stocked with at least 6 weeks of cleaning supplies?',
-    //         responseScaleName: 'Satisfactory/ unsatisfactory',
-    //         questionStatus: 1,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 4,
-    //         question: 'Are there sufficient dispensars for hand sanitization?',
-    //         responseScaleName: 'Yes/No',
-    //         questionStatus: 1,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 5,
-    //         question:
-    //             'Is the cleaning crew following workstation cleaning instructions?',
-    //         responseScaleName: 'Survey',
-    //         questionStatus: 1,
-    //       ),
-    //       AuditQuestion(
-    //         id: const Uuid().v1(),
-    //         questionScore: 5,
-    //         question:
-    //             'Have safety instructions being distributed to all employees regularly?',
-    //         responseScaleName: 'Survey',
-    //         questionStatus: 1,
-    //       ),
-    //     ],
-    //   )
-    // ];
   }
 
   Future<EntityResponse> toggleIncludeQuestion(
