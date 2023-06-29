@@ -44,49 +44,12 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                       current.templateSectionItemCreateStatus,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (context
-                                  .read<TemplateDesignerBloc>()
-                                  .state
-                                  .templateSectionItem
-                                  ?.question
-                                  ?.name
-                                  .isNotEmpty ==
-                              true ||
-                          context
-                                  .read<TemplateDesignerBloc>()
-                                  .state
-                                  .templateSectionItem ==
-                              null) {
-                        if (context
-                                .read<TemplateDesignerBloc>()
-                                .state
-                                .templateSectionItem
-                                ?.includedChildren
-                                .isEmpty ==
-                            true) {
-                          CustomNotification(
-                            context: context,
-                            notifyType: NotifyType.info,
-                            content:
-                                FormValidationMessage(fieldName: 'Response scale')
-                                    .requiredMessage,
-                          ).showNotification();
-                        } else {
-                          context.read<TemplateDesignerBloc>().add(
-                              const TemplateDesignerAddNewQuestionViewShowed(
-                                  showAddNewQuestionView: true));
-                          context
-                              .read<TemplateDesignerBloc>()
-                              .add(TemplateDesignerNewQuestionButtonClicked());
-                        }
-                      } else {
-                        CustomNotification(
-                          context: context,
-                          notifyType: NotifyType.info,
-                          content: FormValidationMessage(fieldName: 'Question')
-                              .requiredMessage,
-                        ).showNotification();
-                      }
+                      context.read<TemplateDesignerBloc>().add(
+                          const TemplateDesignerAddNewQuestionViewShowed(
+                              showAddNewQuestionView: true));
+                      context
+                          .read<TemplateDesignerBloc>()
+                          .add(TemplateDesignerNewQuestionButtonClicked());
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(

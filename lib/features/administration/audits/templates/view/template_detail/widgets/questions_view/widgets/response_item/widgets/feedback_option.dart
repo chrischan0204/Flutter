@@ -46,10 +46,7 @@ class FeedbackOptionView extends StatelessWidget {
               // if (l2) const SizedBox(width: 5),
               Text(
                 '$optionName = $feedbackForOption',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: textSemiBold16,
               ),
             ],
           ),

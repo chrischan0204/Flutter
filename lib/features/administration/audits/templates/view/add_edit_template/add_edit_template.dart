@@ -19,11 +19,7 @@ class _AddEditTemplateViewState extends State<AddEditTemplateView> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (context) => AddEditTemplateBloc(
-                  templatesRepository: RepositoryProvider.of(context),
-                  formDirtyBloc: context.read(),
-                )),
+        BlocProvider(create: (context) => AddEditTemplateBloc(context)),
         BlocProvider(
             create: (context) => TemplateDetailBloc(
                 templatesRepository: RepositoryProvider.of(context))),

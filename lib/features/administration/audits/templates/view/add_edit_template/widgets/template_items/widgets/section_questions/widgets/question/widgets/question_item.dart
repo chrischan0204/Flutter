@@ -16,17 +16,22 @@ class QuestionItemView extends StatelessWidget {
           onTap: () => context
               .read<TemplateDesignerBloc>()
               .add(TemplateDesignerQuestionDetailLoaded(question: question)),
-          leading: Icon(
-            PhosphorIcons.regular.dotsThreeVertical,
-            size: 20,
-            color: primaryColor,
-          ),
-          title: Text(
-            question.title,
-            style: TextStyle(
-              fontSize: 14,
-              color: primaryColor,
-            ),
+          title: Row(
+            children: [
+              Icon(
+                PhosphorIcons.regular.dotsThreeVertical,
+                size: 20,
+                color: primaryColor,
+              ),
+              spacerx10,
+              Text(
+                question.title,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: primaryColor,
+                ),
+              ),
+            ],
           ),
           trailing: Text(
             '${question.maxScore} + ${question.questionScorePoint}',

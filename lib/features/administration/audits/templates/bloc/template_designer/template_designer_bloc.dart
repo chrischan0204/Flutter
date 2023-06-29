@@ -7,14 +7,12 @@ part 'template_designer_state.dart';
 
 class TemplateDesignerBloc
     extends Bloc<TemplateDesignerEvent, TemplateDesignerState> {
-      final BuildContext context;
+  final BuildContext context;
   late TemplatesRepository templatesRepository;
   late ResponseScalesRepository responseScalesRepository;
   late SectionsRepository sectionsRepository;
-  TemplateDesignerBloc({
-    required this.context
-  }) : super(const TemplateDesignerState()) {
-
+  TemplateDesignerBloc({required this.context})
+      : super(const TemplateDesignerState()) {
     templatesRepository = context.read();
     responseScalesRepository = context.read();
     sectionsRepository = context.read();
@@ -126,15 +124,11 @@ class TemplateDesignerBloc
           newSection: '',
         ));
         add(const TemplateDesignerNewSectionChanged(newSection: ''));
-
-
       } else if (response.statusCode == 409) {
         emit(state.copyWith(
           templateSectionAddStatus: EntityStatus.failure,
           message: response.message,
         ));
-
-        
       }
     } catch (e) {
       emit(state.copyWith(
@@ -183,8 +177,9 @@ class TemplateDesignerBloc
 
     if (event.templateSection != null) {
       add(TemplateDesignerTemplateSectionItemQuestionListLoaded(
-          templateId: event.templateId!,
-          templateSectionId: event.templateSection!.id,));
+        templateId: event.templateId!,
+        templateSectionId: event.templateSection!.id,
+      ));
     }
   }
 
@@ -336,7 +331,92 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     if (state.templateSectionItem != null) {
-      add(TemplateDesignerTemplateSectionItemCreated());
+      if (state.templateSectionItem?.question?.name.isNotEmpty == true ||
+          state.templateSectionItem == null) {
+        if (state.templateSectionItem?.includedChildren.isEmpty == true) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.info,
+            content: FormValidationMessage(fieldName: 'Response scale')
+                .requiredMessage,
+          ).showNotification();
+        } else {
+          if (state.currentTemplateSectionItemByLevel(1) ==
+              TemplateSectionItem.empty) {
+            add(TemplateDesignerTemplateSectionItemCreated());
+          } else {
+            if (state
+                    .currentTemplateSectionItemByLevel(1)
+                    ?.question
+                    ?.name
+                    .isNotEmpty ==
+                true) {
+              if (state
+                      .currentTemplateSectionItemByLevel(1)
+                      ?.includedChildren
+                      .isEmpty ==
+                  true) {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.info,
+                  content:
+                      FormValidationMessage(fieldName: 'Level 1 response scale')
+                          .requiredMessage,
+                ).showNotification();
+              } else {
+                if (state.currentTemplateSectionItemByLevel(2) ==
+                    TemplateSectionItem.empty) {
+                  add(TemplateDesignerTemplateSectionItemCreated());
+                } else {
+                  if (state
+                          .currentTemplateSectionItemByLevel(2)
+                          ?.question
+                          ?.name
+                          .isNotEmpty ==
+                      true) {
+                    if (state
+                            .currentTemplateSectionItemByLevel(2)
+                            ?.includedChildren
+                            .isEmpty ==
+                        true) {
+                      CustomNotification(
+                        context: context,
+                        notifyType: NotifyType.info,
+                        content: FormValidationMessage(
+                                fieldName: 'Level 2 response scale')
+                            .requiredMessage,
+                      ).showNotification();
+                    } else {
+                      add(TemplateDesignerTemplateSectionItemCreated());
+                    }
+                  } else {
+                    CustomNotification(
+                      context: context,
+                      notifyType: NotifyType.info,
+                      content:
+                          FormValidationMessage(fieldName: 'Level 2 question')
+                              .requiredMessage,
+                    ).showNotification();
+                  }
+                }
+              }
+            } else {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: FormValidationMessage(fieldName: 'Level 1 question')
+                    .requiredMessage,
+              ).showNotification();
+            }
+          }
+        }
+      } else {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: FormValidationMessage(fieldName: 'Question').requiredMessage,
+        ).showNotification();
+      }
     } else {
       final newTemplateSectionItem = Nullable.value(TemplateSectionItem(
           templateSectionId: state.selectedTemplateSection!.id,
@@ -975,7 +1055,7 @@ class TemplateDesignerBloc
             TemplateSectionItem(
               id: '7aad71c1-892c-4bbc-a8c6-3983e9c4d598',
               itemTypeId: 1,
-              templateSectionItemId:'7aad71c1-892c-4bbc-a8c6-3983e9c4d598',
+              templateSectionItemId: '7aad71c1-892c-4bbc-a8c6-3983e9c4d598',
               templateSectionId: state.selectedTemplateSection!.id,
               responseScaleId: responseScaleId,
               question: Question(
@@ -1017,8 +1097,6 @@ class TemplateDesignerBloc
 
       final followUpQuestion =
           templateQuestionDetailList[0].templateSectionItems[0];
-
-
 
       List<TemplateResponseScaleItem> responseScaleItemList =
           await responseScalesRepository
@@ -1101,7 +1179,9 @@ class TemplateDesignerBloc
                                                   state
                                                       .currentLevel2TemplateSectionItemId
                                               ? e.copyWith(
-                                                  id: templateQuestionDetailList[0].id,
+                                                  id: templateQuestionDetailList[
+                                                          0]
+                                                      .id,
                                                   itemTypeId: 3,
                                                   templateSectionId: state
                                                       .selectedTemplateSection!
@@ -1153,7 +1233,8 @@ class TemplateDesignerBloc
                   .toList());
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel2TemplateSectionItemId:  templateQuestionDetailList[0].id,
+            currentLevel2TemplateSectionItemId:
+                templateQuestionDetailList[0].id,
           ));
           break;
       }
