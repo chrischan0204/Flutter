@@ -71,7 +71,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
         task: actionItem.description,
         dueBy: Nullable.value(actionItem.dueBy),
         assignee: Nullable.value(User(
-          id: actionItem.id,
+          id: actionItem.assigneeId,
           firstName: actionItem.assigneeName.split(' ')[0],
           lastName: actionItem.assigneeName.split(' ')[1],
         )),

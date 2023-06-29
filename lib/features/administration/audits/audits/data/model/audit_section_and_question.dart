@@ -82,7 +82,7 @@ class AuditSectionAndQuestion extends Equatable {
       auditSectionName: map['auditSectionName'] as String,
       order: map['order'] as int,
       questions: map['questions'] as int,
-      maxScore: map['maxScore'] as double,
+      maxScore: map['maxscore'] as double,
       excludedQuestions: map['excludedQuestions'] as int,
       unAnsweredQuestions: map['unAnsweredQuestions'] as int,
       answeredQuestions: map['answeredQuestions'] as int,

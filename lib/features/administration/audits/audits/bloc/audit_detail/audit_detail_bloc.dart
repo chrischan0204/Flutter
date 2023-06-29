@@ -38,13 +38,13 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     AuditDetailAuditSectionListLoaded event,
     Emitter<AuditDetailState> emit,
   ) async {
-    final auditSectionList =
-        await auditsRepository.getAuditSectionList(event.auditId);
+    final auditSectionAndQuestion =
+        await auditsRepository.getAuditSectionAndQuestionList(event.auditId);
 
     emit(state.copyWith(
-      auditSectionList: auditSectionList,
+      auditSectionAndQuestionList: auditSectionAndQuestion,
       selectedAuditSection:
-          auditSectionList.isNotEmpty ? auditSectionList.first : null,
+          auditSectionAndQuestion.isNotEmpty ? auditSectionAndQuestion.first : null,
     ));
   }
 

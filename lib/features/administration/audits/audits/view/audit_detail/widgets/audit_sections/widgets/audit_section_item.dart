@@ -2,7 +2,7 @@ import '/common_libraries.dart';
 
 class AuditSectionItemView extends StatefulWidget {
   final bool active;
-  final AuditSection auditSection;
+  final AuditSectionAndQuestion auditSection;
   const AuditSectionItemView({
     super.key,
     required this.active,
@@ -16,17 +16,31 @@ class AuditSectionItemView extends StatefulWidget {
 class _AuditSectionItemViewState extends State<AuditSectionItemView> {
   bool _hover = false;
 
+  Color _getBackgroundColor() {
+    if (_hover) {
+      return const Color(0xfff7fdf1);
+    } else if (widget.active) {
+      return const Color(0xffecfadc);
+    }
+    return Colors.transparent;
+  }
+
+  Color _getBadgeColor(String status) {
+    switch (status) {
+      case 'Not Started':
+        return warnColor;
+      case 'Partial':
+        return Colors.blueGrey;
+      case 'In Progress':
+        return primaryColor;
+      case 'Done':
+        return successColor;
+    }
+    return successColor;
+  }
+
   @override
   Widget build(BuildContext context) {
-    Color _getColor() {
-      if (_hover) {
-        return const Color(0xfff7fdf1);
-      } else if (widget.active) {
-        return const Color(0xffecfadc);
-      }
-      return Colors.transparent;
-    }
-
     return InkWell(
       onTap: () => context.read<AuditDetailBloc>().add(
           AuditDetailSelectedAuditSectionChanged(
@@ -34,7 +48,7 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
       onHover: (value) => setState(() => _hover = value),
       child: Container(
         decoration: BoxDecoration(
-          color: _getColor(),
+          color: _getBackgroundColor(),
           border: Border(bottom: BorderSide(color: grey)),
         ),
         child: Column(
@@ -46,12 +60,12 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.auditSection.name,
+                    widget.auditSection.auditSectionName,
                     style: textNormal14.copyWith(color: primaryColor),
                   ),
                   CustomBadge(
-                    color: widget.auditSection.status.toColor(),
-                    label: widget.auditSection.status.toString(),
+                    color: _getBadgeColor(widget.auditSection.sectionStatus),
+                    label: widget.auditSection.sectionStatus,
                   ),
                 ],
               ),

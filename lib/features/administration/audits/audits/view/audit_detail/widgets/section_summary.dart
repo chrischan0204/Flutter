@@ -46,7 +46,7 @@ class SectionSummaryView extends StatelessWidget {
             ),
             child: SfDataGrid(
               source: AuditSectionDataSource(
-                auditSectionList: state.auditSectionList,
+                auditSectionAndQuestionList: state.auditSectionAndQuestionList,
                 columns: columns,
               ),
               columnWidthMode: ColumnWidthMode.fill,
@@ -66,36 +66,36 @@ class SectionSummaryView extends StatelessWidget {
 }
 
 class AuditSectionDataSource extends DataGridSource {
-  final List<AuditSection> auditSectionList;
+  final List<AuditSectionAndQuestion> auditSectionAndQuestionList;
   final List<String> columns;
 
   AuditSectionDataSource({
-    required this.auditSectionList,
+    required this.auditSectionAndQuestionList,
     required this.columns,
   }) {
-    _entityData = auditSectionList
+    _entityData = auditSectionAndQuestionList
         .map((auditSection) => DataGridRow(
               cells: [
-                DataGridCell(columnName: columns[0], value: auditSection.name),
+                DataGridCell(columnName: columns[0], value: auditSection.auditSectionName),
                 DataGridCell(
-                    columnName: columns[1], value: auditSection.questionCount),
+                    columnName: columns[1], value: auditSection.questions),
                 DataGridCell(
                     columnName: columns[2], value: auditSection.maxScore),
               ],
             ))
         .toList();
-    if (auditSectionList.isNotEmpty) {
+    if (auditSectionAndQuestionList.isNotEmpty) {
       _entityData.add(DataGridRow(
         cells: [
           DataGridCell(columnName: columns[0], value: 'Total:'),
           DataGridCell(
               columnName: columns[1],
-              value: auditSectionList
-                  .map((e) => e.questionCount)
+              value: auditSectionAndQuestionList
+                  .map((e) => e.questions)
                   .reduce((value, element) => value + element)),
           DataGridCell(
               columnName: columns[2],
-              value: auditSectionList
+              value: auditSectionAndQuestionList
                   .map((e) => e.maxScore)
                   .reduce((value, element) => value + element)),
         ],

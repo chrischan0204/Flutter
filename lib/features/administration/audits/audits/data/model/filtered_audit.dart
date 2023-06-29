@@ -6,7 +6,7 @@ class FilteredAudit extends FilteredEntity {
   final String? name;
   final String? auditNumber;
 
-  final DateTime auditDate;
+  final DateTime? auditDate;
   final String? auditStatusName;
 
   final double? completed;
@@ -47,7 +47,7 @@ class FilteredAudit extends FilteredEntity {
     this.inspectors = '',
     this.companies = '',
     this.auditNumber,
-    required this.auditDate,
+    this.auditDate,
     this.auditStatusName,
     required this.completed,
     this.siteId = emptyGuid,
@@ -106,7 +106,8 @@ class FilteredAudit extends FilteredEntity {
         deleted,
       ];
 
-  String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
+  String get formatedAuditDate =>
+      auditDate != null ? DateFormat('d MMMM y').format(auditDate!) : '--';
 
   String get formatedLastExecutedOn => lastExecutedOn != null
       ? DateFormat('d MMMM y').format(lastExecutedOn!)
@@ -153,29 +154,30 @@ class FilteredAudit extends FilteredEntity {
       area: map['area'] ?? '',
       companies: map['companies'] ?? '',
       inspectors: map['inspectors'] ?? '',
-      auditNumber: map['audit_Number'],
-      auditDate: DateTime.parse(map['audit_Date']),
-      auditStatusName: map['audit_Status'],
-      completed: map['percent_Completed'],
+      auditNumber: map['audit_Number'] ?? '',
+      auditDate:
+          map['audit_Date'] != null ? DateTime.parse(map['audit_Date']) : null,
+      auditStatusName: map['audit_Status'] ?? '',
+      completed: map['percent_Completed'] ?? 0,
       // siteId: map['siteId'],
-      siteName: map['site_Name'],
+      siteName: map['site_Name'] ?? '',
       // projectId: map['projectId'],
       projectName: map['project_Name'] ?? '',
       // templateId: map['templateId'],
-      templateName: map['template_Name'],
+      templateName: map['template_Name'] ?? '',
       owner: map['owner'] ?? '',
-      score: map['score'],
+      score: map['score'] ?? 0,
       lastExecutedOn: map['last_Executed_On'] != null
           ? DateTime.parse(map['last_Executed_On'])
           : null,
-      obtainedScore: map['obtainedScore'],
-      answeredQuestions: map['answered_Questions'],
-      maxScore: map['maxScore'],
-      sections: map['sections'],
-      questions: map['questions'],
-      actionItems: map['action_Items'],
-      documents: map['documents'],
-      observations: map['observations'],
+      obtainedScore: map['obtainedScore'] ?? 0,
+      answeredQuestions: map['answered_Questions'] ?? 0,
+      maxScore: map['maxScore'] ?? 0,
+      sections: map['sections'] ?? 0,
+      questions: map['questions'] ?? 0,
+      actionItems: map['action_Items'] ?? 0,
+      documents: map['documents'] ?? 0,
+      observations: map['observations'] ?? 0,
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
       createdBy: entity.createdBy,

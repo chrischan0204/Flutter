@@ -5,15 +5,16 @@ class AuditDetailState extends Equatable {
   final EntityStatus auditLoadStatus;
   final EntityStatus auditDeleteStatus;
 
-  final List<AuditSection> auditSectionList;
-  final AuditSection? selectedAuditSection;
+  // final List<AuditSection> auditSectionList;
+  final List<AuditSectionAndQuestion> auditSectionAndQuestionList;
+  final AuditSectionAndQuestion? selectedAuditSection;
 
   final String message;
   const AuditDetailState({
     this.auditSummary,
     this.auditLoadStatus = EntityStatus.initial,
     this.auditDeleteStatus = EntityStatus.initial,
-    this.auditSectionList = const [],
+    this.auditSectionAndQuestionList = const [],
     this.selectedAuditSection,
     this.message = '',
   });
@@ -23,7 +24,7 @@ class AuditDetailState extends Equatable {
         auditSummary,
         auditLoadStatus,
         auditDeleteStatus,
-        auditSectionList,
+        auditSectionAndQuestionList,
         selectedAuditSection,
         message,
       ];
@@ -32,15 +33,16 @@ class AuditDetailState extends Equatable {
     AuditSummary? auditSummary,
     EntityStatus? auditLoadStatus,
     EntityStatus? auditDeleteStatus,
-    List<AuditSection>? auditSectionList,
-    AuditSection? selectedAuditSection,
+    List<AuditSectionAndQuestion>? auditSectionAndQuestionList,
+    AuditSectionAndQuestion? selectedAuditSection,
     String? message,
   }) {
     return AuditDetailState(
       auditSummary: auditSummary ?? this.auditSummary,
       auditLoadStatus: auditLoadStatus ?? this.auditLoadStatus,
       auditDeleteStatus: auditDeleteStatus ?? this.auditDeleteStatus,
-      auditSectionList: auditSectionList ?? this.auditSectionList,
+      auditSectionAndQuestionList:
+          auditSectionAndQuestionList ?? this.auditSectionAndQuestionList,
       selectedAuditSection: selectedAuditSection ?? this.selectedAuditSection,
       message: message ?? this.message,
     );

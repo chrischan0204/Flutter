@@ -66,6 +66,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
         audit: audit,
       ));
     } catch (e) {
+      print(e);
       emit(state.copyWith(auditLoadStatus: EntityStatus.failure));
     }
   }

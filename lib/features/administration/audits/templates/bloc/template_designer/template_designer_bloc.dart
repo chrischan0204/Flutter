@@ -125,6 +125,7 @@ class TemplateDesignerBloc
           message: response.message,
           newSection: '',
         ));
+        add(const TemplateDesignerNewSectionChanged(newSection: ''));
 
 
       } else if (response.statusCode == 409) {
@@ -134,7 +135,6 @@ class TemplateDesignerBloc
         ));
 
         
-        add(const TemplateDesignerNewSectionChanged(newSection: ''));
       }
     } catch (e) {
       emit(state.copyWith(
@@ -1082,7 +1082,7 @@ class TemplateDesignerBloc
                   .toList());
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel1TemplateSectionItemId:  templateQuestionDetailList[0].id,
+            currentLevel1TemplateSectionItemId: followUpQuestion.id,
           ));
           break;
         case 2:

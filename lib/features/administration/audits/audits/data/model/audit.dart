@@ -6,7 +6,7 @@ import '/common_libraries.dart';
 class Audit extends Entity {
   final String? auditNumber;
 
-  final DateTime auditDate;
+  final DateTime? auditDate;
   final String? auditStatusName;
 
   final double completed;
@@ -20,9 +20,9 @@ class Audit extends Entity {
   final String templateId;
   final String? templateName;
 
-  final int sections;
-  final int questions;
-  final int answeredQuestions;
+  final int? sections;
+  final int? questions;
+  final int? answeredQuestions;
 
   final String? owner;
 
@@ -36,9 +36,9 @@ class Audit extends Entity {
 
   final DateTime? lastExecutedOn;
 
-  final int observations;
-  final int documents;
-  final int actionItems;
+  final int? observations;
+  final int? documents;
+  final int? actionItems;
 
   const Audit({
     super.id,
@@ -47,7 +47,7 @@ class Audit extends Entity {
     this.inspectors = '',
     this.companies = '',
     this.auditNumber,
-    required this.auditDate,
+    this.auditDate,
     this.auditStatusName,
     required this.completed,
     required this.siteId,
@@ -108,7 +108,8 @@ class Audit extends Entity {
         deleted,
       ];
 
-  String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
+  String get formatedAuditDate =>
+      auditDate != null ? DateFormat('d MMMM y').format(auditDate!) : '--';
 
   String get formatedLastExecutedOn => lastExecutedOn != null
       ? DateFormat('d MMMM y').format(lastExecutedOn!)
@@ -124,15 +125,15 @@ class Audit extends Entity {
       'Site Name': siteName,
       'Template Name': templateName,
       'Owner': owner,
-      'Questions': questions,
-      'Action Items': actionItems,
-      'Answered Questions': answeredQuestions,
+      'Questions': questions ?? 0,
+      'Action Items': actionItems ?? 0,
+      'Answered Questions': answeredQuestions ?? 0,
       'Area': area,
       'Audit Date': formatedAuditDate,
       'Companies': companies,
       'Created By': createdByUserName,
       'Deleted': deleted,
-      'Documents': documents,
+      'Documents': documents ?? 0,
       'Inspectors': inspectors,
       'Last Executed On': formatedLastExecutedOn,
       'Last Modified On': lastModifiedOn,
@@ -157,7 +158,7 @@ class Audit extends Entity {
       'Site': siteName,
       'Project': projectName ?? '--',
       'Created on': createdOn,
-      'Created by': createdByUserName,
+      // 'Created by': createdByUserName,
       'Last Updated': lastModifiedOn,
       'Updated by': lastModifiedByUserName,
     };
@@ -187,15 +188,15 @@ class Audit extends Entity {
       templateId: map['templateId'],
       templateName: map['templateName'],
       owner: map['owner'] ?? '',
-      score: map['score'],
-      obtainedScore: map['obtainedScore'],
-      answeredQuestions: map['answeredQuestions'],
-      maxScore: map['maxScore'],
-      sections: map['sections'],
-      questions: map['questions'],
-      actionItems: map['actionItems'],
-      documents: map['documents'],
-      observations: map['observations'],
+      score: map['score'] ?? 0,
+      obtainedScore: map['obtainedScore'] ?? 0,
+      answeredQuestions: map['answeredQuestions'] ?? 0,
+      maxScore: map['maxScore'] ?? 0,
+      sections: map['sections'] ?? 0,
+      questions: map['questions'] ?? 0,
+      actionItems: map['actionItems'] ?? 0,
+      documents: map['documents'] ?? 0,
+      observations: map['observations'] ?? 0,
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
       createdByUserName: entity.createdByUserName,

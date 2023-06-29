@@ -103,6 +103,19 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  Future<List<AuditSectionAndQuestion>> getAuditSectionAndQuestionList(
+      String auditId) async {
+    Response response = await super.get('$url/$auditId/sectionswithquestions');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => AuditSectionAndQuestion.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
   Future<List<AuditQuestionSnapshot>> getAuditQuestionSnapshotList(
       String auditId) async {
     return const [

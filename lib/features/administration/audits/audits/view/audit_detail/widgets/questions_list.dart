@@ -28,7 +28,7 @@ class QuestionsListView extends StatelessWidget {
               CustomBottomBorderContainer(
                 padding: inset20,
                 child: Text(
-                  'Questions for ${state.selectedAuditSection!.name}',
+                  'Questions for ${state.selectedAuditSection!.auditSectionName}',
                   style: textSemiBold14,
                 ),
               ),
@@ -42,7 +42,7 @@ class QuestionsListView extends StatelessWidget {
                   child: SfDataGrid(
                     source: AuditQuestionDataSource(
                       auditQuestionList:
-                          state.selectedAuditSection!.auditQuestionList,
+                          state.selectedAuditSection!.auditQuestions,
                       columns: columnList,
                     ),
                     columnWidthMode: ColumnWidthMode.lastColumnFill,

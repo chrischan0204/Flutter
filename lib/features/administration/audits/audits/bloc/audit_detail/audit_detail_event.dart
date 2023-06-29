@@ -45,7 +45,7 @@ class AuditDetailAuditSectionListLoaded extends AuditDetailEvent {
 
 /// event to change selected audit detail
 class AuditDetailSelectedAuditSectionChanged extends AuditDetailEvent {
-  final AuditSection auditSection;
+  final AuditSectionAndQuestion auditSection;
   const AuditDetailSelectedAuditSectionChanged({
     required this.auditSection,
   });

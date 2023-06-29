@@ -36,7 +36,7 @@ class AuditDetailView2 extends StatelessWidget {
               ),
               AuditDetailItemView(
                 label: 'Images',
-                content: '4',
+                content: audit.documents.toString(),
                 highlighted: true,
               ),
             ],
