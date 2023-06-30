@@ -17,8 +17,7 @@ class _ResponseScaleSelectFieldViewState
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
-        listener: (context, state) => context.read<TemplateDesignerBloc>().add(
-            const TemplateDesignerResponseScaleSelected(responseScaleId: null)),
+        listener: (context, state) {},
         listenWhen: (previous, current) => previous.level != current.level,
         builder: (context, state) {
           Map<String, ResponseScale> items = {};
@@ -27,6 +26,7 @@ class _ResponseScaleSelectFieldViewState
               state.responseScaleList.map((e) => MapEntry(e.name, e)));
           return CustomSingleSelect(
             hint: 'Select response scale',
+            key: ValueKey(state.currentTemplateSectionItemByLevel(state.level)?.id),
             selectedValue: state.selectedResponseScaleItem?.name,
             items: items,
             onChanged: (value) {

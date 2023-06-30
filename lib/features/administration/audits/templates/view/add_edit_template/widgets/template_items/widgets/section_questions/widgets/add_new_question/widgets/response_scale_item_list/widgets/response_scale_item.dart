@@ -123,6 +123,9 @@ class ResponseScaleItemView extends StatelessWidget {
                   templateSectionItemId: templateSectionItem.id!,
                   responseScaleItem: templateSectionItem.response!,
                 ));
+            context.read<TemplateDesignerBloc>().add(
+                const TemplateDesignerResponseScaleSelected(
+                    responseScaleId: null));
 
             if (templateSectionItem.id != null) {
               context.read<TemplateDesignerBloc>().add(

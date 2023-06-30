@@ -15,7 +15,7 @@ class SectionQuestionsView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionQuestionsHeaderView(),
+          SectionQuestionsHeaderView(templateId: templateId),
           Container(
             decoration: BoxDecoration(
               border: Border.all(

@@ -1,7 +1,11 @@
 import '/common_libraries.dart';
 
 class SectionQuestionsHeaderView extends StatelessWidget {
-  const SectionQuestionsHeaderView({super.key});
+  final String templateId;
+  const SectionQuestionsHeaderView({
+    super.key,
+    required this.templateId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,19 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                         notifyType: NotifyType.success,
                         content: state.message,
                       ).showNotification();
+
+                      context.read<TemplateDesignerBloc>()
+                        ..add(const TemplateDesignerAddNewQuestionViewShowed(
+                            showAddNewQuestionView: false))
+                        ..add(
+                          TemplateDesignerTemplateSectionSelected(
+                            templateId: templateId,
+                            templateSection: context
+                                .read<TemplateDesignerBloc>()
+                                .state
+                                .selectedTemplateSection,
+                          ),
+                        );
                     } else if (state
                         .templateSectionItemCreateStatus.isFailure) {
                       CustomNotification(

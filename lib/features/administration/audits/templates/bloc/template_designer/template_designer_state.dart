@@ -124,6 +124,7 @@ class TemplateDesignerState extends Equatable {
         currentLevel2TemplateSectionItemId,
         questionDetailLoadStatus,
         selectedResponseScaleId,
+        selectedResponseScaleItem,
         templateQuestionList,
         selectedQuestionId,
       ];

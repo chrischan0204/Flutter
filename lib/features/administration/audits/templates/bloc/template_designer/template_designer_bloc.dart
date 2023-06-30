@@ -931,7 +931,14 @@ class TemplateDesignerBloc
     TemplateDesignerLevelChanged event,
     Emitter<TemplateDesignerState> emit,
   ) {
-    emit(state.copyWith(level: event.level));
+    print(
+        state.currentTemplateSectionItemByLevel(state.level - 1)?.responseScaleId);
+    emit(state.copyWith(
+      level: event.level,
+      selectedResponseScaleId: Nullable.value(state
+          .currentTemplateSectionItemByLevel(state.level - 1)
+          ?.responseScaleId),
+    ));
   }
 
   void _onTemplateDesignerCurrentTemplateSectionItemChanged(
@@ -1160,7 +1167,10 @@ class TemplateDesignerBloc
                   .toList());
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel1TemplateSectionItemId: followUpQuestion.id,
+            currentLevel1TemplateSectionItemId:
+                templateQuestionDetailList[0].id,
+            selectedResponseScaleId:
+                Nullable.value(followUpQuestion.responseScaleId),
           ));
           break;
         case 2:
@@ -1235,6 +1245,8 @@ class TemplateDesignerBloc
             templateSectionItem: Nullable.value(newTemplateSection),
             currentLevel2TemplateSectionItemId:
                 templateQuestionDetailList[0].id,
+            selectedResponseScaleId:
+                Nullable.value(followUpQuestion.responseScaleId),
           ));
           break;
       }
