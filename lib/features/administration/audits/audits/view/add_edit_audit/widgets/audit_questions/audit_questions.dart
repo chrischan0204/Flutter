@@ -41,7 +41,7 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SummarySectionView(),
+        SummarySectionView(auditId: widget.auditId),
         Padding(
           padding: inset20,
           child: Column(

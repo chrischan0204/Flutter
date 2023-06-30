@@ -14,7 +14,10 @@ class AddEditAuditView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddEditAuditBloc(context, auditId: auditId),
-      child: AddEditAuditWidget(auditId: auditId),
+      child: AddEditAuditWidget(
+        auditId: auditId,
+        view: view,
+      ),
     );
   }
 }
@@ -106,6 +109,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
               userId: context.read<AuthBloc>().state.authUser!.id)),
           crudStatus: state.status,
           tabItems: tabItems,
+          view: widget.view,
           onTabClick: (index) async {
             if (index == 1) {
               bool success = true;
@@ -134,7 +138,6 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
               return true;
             }
           },
-          view: widget.view,
           formDirty: state.formDirty,
           addButtonName: addButtonName,
           child: const AddEditAuditFormView(),

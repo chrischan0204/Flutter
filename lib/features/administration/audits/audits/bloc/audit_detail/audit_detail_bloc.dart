@@ -6,7 +6,11 @@ part 'audit_detail_state.dart';
 class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
   final BuildContext context;
   late AuditsRepository auditsRepository;
-  AuditDetailBloc(this.context) : super(const AuditDetailState()) {
+  final String auditId;
+  AuditDetailBloc(
+    this.context,
+    this.auditId,
+  ) : super(const AuditDetailState()) {
     auditsRepository = RepositoryProvider.of(context);
     on<AuditDetailLoaded>(_onAuditDetailLoaded);
     on<AuditDetailAuditDeleted>(_onAuditDetailAuditDeleted);
@@ -43,8 +47,9 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
 
     emit(state.copyWith(
       auditSectionAndQuestionList: auditSectionAndQuestion,
-      selectedAuditSection:
-          auditSectionAndQuestion.isNotEmpty ? auditSectionAndQuestion.first : null,
+      selectedAuditSection: auditSectionAndQuestion.isNotEmpty
+          ? auditSectionAndQuestion.first
+          : null,
     ));
   }
 

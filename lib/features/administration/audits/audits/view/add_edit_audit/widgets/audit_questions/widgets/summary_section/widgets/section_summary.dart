@@ -3,33 +3,64 @@ import 'package:syncfusion_flutter_core/theme.dart';
 
 import '/common_libraries.dart';
 
-class SectionSummaryView extends StatelessWidget {
-  const SectionSummaryView({super.key});
+class SectionSummaryView extends StatefulWidget {
+  final String auditId;
+  const SectionSummaryView({
+    super.key,
+    required this.auditId,
+  });
+
+  @override
+  State<SectionSummaryView> createState() => _SectionSummaryViewState();
+}
+
+class _SectionSummaryViewState extends State<SectionSummaryView> {
+  @override
+  void initState() {
+    context
+        .read<AuditDetailBloc>()
+        .add(AuditDetailAuditSectionListLoaded(auditId: widget.auditId));
+    super.initState();
+  }
+
   static List<String> columns = [
     'Section',
-    'Total \'s',
+    'Total Q\'s',
     'Included Q\'s',
     'Max Score',
-    'Included Score'
   ];
-
   List<GridColumn> _buildColumns() {
     return [
       ...columns
           .map(
-            (column) => GridColumn(
-              columnName: column,
-              label: Container(
-                alignment: Alignment.centerLeft,
-                padding: insetx12,
-                child: Text(
-                  column,
-                  style: textSemiBold14.copyWith(color: primaryColor),
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
+            (column) => column == 'Section'
+                ? GridColumn(
+                    // width: ,
+                    columnName: column,
+                    label: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: insetx12,
+                      child: Text(
+                        column,
+                        style: textSemiBold14.copyWith(color: primaryColor),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  )
+                : GridColumn(
+                    columnName: column,
+                    label: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: insetx12,
+                      child: Text(
+                        column,
+                        style: textSemiBold14.copyWith(color: primaryColor),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
           )
           .toList(),
     ];
@@ -39,7 +70,7 @@ class SectionSummaryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
+      child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
         builder: (context, state) {
           return SfDataGridTheme(
             data: SfDataGridThemeData(
@@ -48,10 +79,10 @@ class SectionSummaryView extends StatelessWidget {
             ),
             child: SfDataGrid(
               source: EntityDataSource(
-                auditQuestionSnapshotList: state.snapshotList,
+                auditSectionAndQuestionList: state.auditSectionAndQuestionList,
                 columns: columns,
               ),
-              columnWidthMode: ColumnWidthMode.fill,
+              columnWidthMode: ColumnWidthMode.lastColumnFill,
               columnResizeMode: ColumnResizeMode.onResize,
               allowColumnsResizing: true,
               gridLinesVisibility: GridLinesVisibility.none,
@@ -68,55 +99,48 @@ class SectionSummaryView extends StatelessWidget {
 }
 
 class EntityDataSource extends DataGridSource {
-  final List<AuditQuestionSnapshot> auditQuestionSnapshotList;
+  final List<AuditSectionAndQuestion> auditSectionAndQuestionList;
   final List<String> columns;
 
   EntityDataSource({
-    required this.auditQuestionSnapshotList,
+    required this.auditSectionAndQuestionList,
     required this.columns,
   }) {
-    _entityData = auditQuestionSnapshotList
+    _entityData = auditSectionAndQuestionList
         .map((templateSnapshot) => DataGridRow(
               cells: [
                 DataGridCell(
-                    columnName: columns[0], value: templateSnapshot.section),
+                    columnName: columns[0],
+                    value: templateSnapshot.auditSectionName),
                 DataGridCell(
-                    columnName: columns[1],
-                    value: templateSnapshot.totalQuestionCount),
+                    columnName: columns[1], value: templateSnapshot.questions),
                 DataGridCell(
                     columnName: columns[2],
-                    value: templateSnapshot.includedQuestionCount),
+                    value: templateSnapshot.questions -
+                        templateSnapshot.excludedQuestions),
                 DataGridCell(
                     columnName: columns[3], value: templateSnapshot.maxScore),
-                DataGridCell(
-                    columnName: columns[4],
-                    value: templateSnapshot.includedScore),
               ],
             ))
         .toList();
-    if (auditQuestionSnapshotList.isNotEmpty) {
+    if (auditSectionAndQuestionList.isNotEmpty) {
       _entityData.add(DataGridRow(
         cells: [
           DataGridCell(columnName: columns[0], value: 'Total:'),
           DataGridCell(
               columnName: columns[1],
-              value: auditQuestionSnapshotList
-                  .map((e) => e.totalQuestionCount)
+              value: auditSectionAndQuestionList
+                  .map((e) => e.questions)
                   .reduce((value, element) => value + element)),
           DataGridCell(
               columnName: columns[2],
-              value: auditQuestionSnapshotList
-                  .map((e) => e.includedQuestionCount)
+              value: auditSectionAndQuestionList
+                  .map((e) => (e.questions - e.excludedQuestions))
                   .reduce((value, element) => value + element)),
           DataGridCell(
               columnName: columns[3],
-              value: auditQuestionSnapshotList
+              value: auditSectionAndQuestionList
                   .map((e) => e.maxScore)
-                  .reduce((value, element) => value + element)),
-          DataGridCell(
-              columnName: columns[4],
-              value: auditQuestionSnapshotList
-                  .map((e) => e.includedScore)
                   .reduce((value, element) => value + element)),
         ],
       ));

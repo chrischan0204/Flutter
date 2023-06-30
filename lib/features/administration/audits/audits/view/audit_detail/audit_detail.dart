@@ -11,7 +11,10 @@ class AuditDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuditDetailBloc(context),
+      create: (context) => AuditDetailBloc(
+        context,
+        auditId,
+      ),
       child: AuditDetailWidget(auditId: auditId),
     );
   }

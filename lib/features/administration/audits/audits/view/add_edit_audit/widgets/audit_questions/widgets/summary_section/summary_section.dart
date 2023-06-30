@@ -2,7 +2,11 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class SummarySectionView extends StatelessWidget {
-  const SummarySectionView({super.key});
+  final String auditId;
+  const SummarySectionView({
+    super.key,
+    required this.auditId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +28,11 @@ class SummarySectionView extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(
-                  child: SectionSummaryView(),
+                Expanded(
+                  child: BlocProvider(
+                    create: (context) => AuditDetailBloc(context, auditId),
+                    child: SectionSummaryView(auditId: auditId),
+                  ),
                 ),
                 Expanded(
                   child: Row(
