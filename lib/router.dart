@@ -95,7 +95,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: ActionItems(),
+          body: AddEditActionItemView(),
           selectedItemName: 'action-items',
         ),
       ),

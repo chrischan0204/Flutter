@@ -20,22 +20,23 @@ class AuditSummary2 extends StatelessWidget {
                 ),
                 AuditDetailItemView(
                   label: 'Completion',
-                  content: '${audit.completed} of 33',
+                  content:
+                      '${audit.completed}% (${audit.answeredQuestions} of ${audit.questions})',
                   highlighted: true,
                 ),
                 AuditDetailItemView(
                   label: 'Observations',
-                  content: '2',
+                  content: audit.observations.toString(),
                   highlighted: true,
                 ),
                 AuditDetailItemView(
                   label: 'Action Items',
-                  content: '4',
+                  content: audit.actionItems.toString(),
                   highlighted: true,
                 ),
                 AuditDetailItemView(
                   label: 'Images',
-                  content: '4',
+                  content: audit.documents.toString(),
                   highlighted: true,
                 ),
               ],

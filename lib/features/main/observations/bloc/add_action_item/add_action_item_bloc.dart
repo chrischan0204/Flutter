@@ -64,7 +64,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   ) async {
     try {
       final actionItem =
-          await _actionItemsRepository.getActionItemById(event.actionItem.id);
+          await _actionItemsRepository.getActionItemById(event.actionItem.id!);
 
       emit(state.copyWith(
         actionItem: Nullable.value(actionItem),

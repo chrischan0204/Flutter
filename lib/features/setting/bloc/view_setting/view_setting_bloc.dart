@@ -6,10 +6,12 @@ part 'view_setting_event.dart';
 part 'view_setting_state.dart';
 
 class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
-  final SettingsRepository settingsRepository;
+  late SettingsRepository settingsRepository;
+  final BuildContext context;
 
-  ViewSettingBloc({required this.settingsRepository})
-      : super(const ViewSettingState()) {
+  ViewSettingBloc(this.context) : super(const ViewSettingState()) {
+    settingsRepository = RepositoryProvider.of(context);
+
     on<ViewSettingApplied>(_onViewSettingApplied);
     on<ViewSettingLoaded>(_onViewSettingLoaded);
     on<ViewSettingDisplayColumnOrderChanged>(
@@ -235,6 +237,8 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
           key: ValueKey(const Uuid().v1()),
         )
       ]));
+    } else {
+      
     }
   }
 
@@ -250,6 +254,12 @@ class ViewSettingBloc extends Bloc<ViewSettingEvent, ViewSettingState> {
           key: ValueKey(const Uuid().v1()),
         )
       ]));
+    } else {
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.info,
+        content: 'No more column available',
+      ).showNotification();
     }
   }
 

@@ -32,7 +32,7 @@ class ObservationDetailObservationDeleted extends ObservationDetailEvent {
   List<Object> get props => [observationId];
 }
 
-class ObservationDetailObservationCategoryListLoaded
+class ObservationDetailAwarenessCategoryListLoaded
     extends ObservationDetailEvent {}
 
 class ObservationDetailSiteListLoaded extends ObservationDetailEvent {}

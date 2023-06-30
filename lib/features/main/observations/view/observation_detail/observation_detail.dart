@@ -36,7 +36,7 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
   void initState() {
     context.read<ObservationDetailBloc>()
       ..add(ObservationDetailLoaded(observationId: widget.observationId))
-      ..add(ObservationDetailObservationCategoryListLoaded())
+      ..add(ObservationDetailAwarenessCategoryListLoaded())
       ..add(ObservationDetailObservationTypeListLoaded())
       ..add(ObservationDetailPriorityLevelListLoaded())
       ..add(ObservationDetailCompanyListLoaded())

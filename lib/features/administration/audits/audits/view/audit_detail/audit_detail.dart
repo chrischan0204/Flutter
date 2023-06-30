@@ -101,7 +101,7 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                                   border:
                                       Border(bottom: BorderSide(color: grey))),
                               child: Text(
-                                state.auditSummary?.name ?? '',
+                                '${state.auditSummary?.auditNumber}',
                                 style: textNormal20,
                               ),
                             ),

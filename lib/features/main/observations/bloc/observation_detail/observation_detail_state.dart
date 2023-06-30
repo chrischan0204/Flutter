@@ -25,7 +25,7 @@ class ObservationDetailState extends Equatable {
   /// site list
   final List<Site> siteList;
 
-  /// use list
+  /// user list
   final List<User> userList;
 
   final String message;

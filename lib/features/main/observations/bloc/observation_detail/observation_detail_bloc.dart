@@ -38,8 +38,8 @@ class ObservationDetailBloc
     on<ObservationDetailSiteListLoaded>(_onObservationDetailSiteListLoaded);
     on<ObservationDetailProjectListLoaded>(
         _onObservationDetailProjectListLoaded);
-    on<ObservationDetailObservationCategoryListLoaded>(
-        _onObservationDetailObservationCategoryListLoaded);
+    on<ObservationDetailAwarenessCategoryListLoaded>(
+        _onObservationDetailAwarenessCategoryListLoaded);
     on<ObservationDetailPriorityLevelListLoaded>(
         _onObservationDetailPriorityLevelListLoaded);
     on<ObservationDetailUserListLoaded>(_onObservationDetailUserListLoaded);
@@ -62,8 +62,8 @@ class ObservationDetailBloc
     Emitter<ObservationDetailState> emit,
   ) async {}
 
-  Future<void> _onObservationDetailObservationCategoryListLoaded(
-    ObservationDetailObservationCategoryListLoaded event,
+  Future<void> _onObservationDetailAwarenessCategoryListLoaded(
+    ObservationDetailAwarenessCategoryListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
     List<AwarenessCategory> awarenessCategoryList =

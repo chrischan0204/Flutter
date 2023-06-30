@@ -166,8 +166,7 @@ class _MyAppState extends State<MyApp> {
                     settingsRepository: RepositoryProvider.of(context)),
               ),
               BlocProvider(
-                create: (context) => ViewSettingBloc(
-                    settingsRepository: RepositoryProvider.of(context)),
+                create: (context) => ViewSettingBloc(context),
               ),
               BlocProvider(
                 create: (context) => RegionsBloc(

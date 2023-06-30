@@ -23,4 +23,6 @@ export '/features/auth/data/model/model.dart';
 
 export '/features/administration/audits/templates/data/model/model.dart';
 
-export 'package:safety_eta/features/main/observations/data/model/model.dart';
+export '/features/main/observations/data/model/model.dart';
+
+export '/features/main/action_items/data/model/model.dart';

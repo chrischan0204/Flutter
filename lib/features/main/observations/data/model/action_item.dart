@@ -15,8 +15,7 @@ enum ActionItemStatus {
   }
 }
 
-class ActionItem extends Equatable {
-  final String id;
+class ActionItem extends Entity {
   final String description;
   final DateTime dueBy;
   final String observationId;
@@ -32,7 +31,7 @@ class ActionItem extends Equatable {
   final String area;
   final String notes;
   const ActionItem({
-    this.id = '',
+    super.id,
     this.description = '',
     required this.dueBy,
     this.assigneeId = '',
@@ -64,6 +63,7 @@ class ActionItem extends Equatable {
         notes,
       ];
 
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -85,8 +85,9 @@ class ActionItem extends Equatable {
   }
 
   factory ActionItem.fromMap(Map<String, dynamic> map) {
+    Entity entity = Entity.fromMap(map);
     return ActionItem(
-      id: map['id'] ?? '',
+      id: entity.id,
       description: map['description'] ?? '',
       dueBy: DateTime.parse(map['dueBy']),
       observationId: map['observationId'] ?? '',

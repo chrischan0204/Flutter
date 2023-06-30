@@ -31,7 +31,8 @@ class AuditDetailView1 extends StatelessWidget {
               ),
               AuditDetailItemView(
                 label: 'Completion',
-                content: audit.completedPercent.toString(),
+                content:
+                    '${audit.completedPercent}% (${audit.answeredQuestions} of ${audit.questions})',
                 highlighted: true,
               ),
               AuditDetailItemView(

@@ -64,8 +64,18 @@ class _ViewSettingViewState extends State<ViewSettingView> {
           );
         }
         return EntityListViewSettingView(
-          onDisplayColumnAdded: () =>
-              viewSettingBloc.add(ViewSettingDisplayColumnAdded()),
+          onDisplayColumnAdded: () {
+            if (state.undeletedViewSettingDisplayColumnList.length <
+                state.columns.length) {
+              viewSettingBloc.add(ViewSettingDisplayColumnAdded());
+            } else {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: 'No more column available',
+              ).showNotification();
+            }
+          },
           onDisplayColumnOrderChanged: _reorderDisplayColumnCallback,
           onDisplayColumnSelected: (column, value) =>
               viewSettingBloc.add(ViewSettingDisplayColumnSelected(
@@ -81,8 +91,18 @@ class _ViewSettingViewState extends State<ViewSettingView> {
           columns: state.columns,
           usefulDisplayColumns: state.usefulDisplayColumns,
           usefulSortingColumns: state.usefulSortingColumns,
-          onSortingColumnAdded: () =>
-              viewSettingBloc.add(ViewSettingSortingColumnAdded()),
+          onSortingColumnAdded: () {
+            if (state.undeletedViewSettingSortingColumnList.length <
+                state.columns.length) {
+              viewSettingBloc.add(ViewSettingSortingColumnAdded());
+            } else {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: 'No more column available',
+              ).showNotification();
+            }
+          },
           onSortingColumnDeleted: (column) => viewSettingBloc
               .add(ViewSettingSortingColumnDeleted(column: column)),
           onSortingColumnOrderChanged: _reorderSortingColumnCallback,

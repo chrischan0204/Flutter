@@ -3,7 +3,7 @@ import '/common_libraries.dart';
 
 class ActionItemCreate extends Equatable {
   final String? id;
-  final String task;
+  final String name;
   final String dueBy;
   final String assigneeId;
   final String categoryId;
@@ -15,7 +15,7 @@ class ActionItemCreate extends Equatable {
   final String? auditSectionItemId;
   const ActionItemCreate({
     this.id,
-    required this.task,
+    required this.name,
     required this.dueBy,
     required this.assigneeId,
     required this.categoryId,
@@ -30,7 +30,7 @@ class ActionItemCreate extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        task,
+        name,
         dueBy,
         assigneeId,
         categoryId,
@@ -44,7 +44,7 @@ class ActionItemCreate extends Equatable {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = <String, dynamic>{
-      'description': task,
+      'description': name,
       'dueBy': dueBy,
       'assigneeId': assigneeId,
       'awarenessCategoryId': categoryId,
@@ -73,7 +73,7 @@ class ActionItemCreate extends Equatable {
 
   ActionItemCreate copyWith({
     String? id,
-    String? task,
+    String? name,
     String? dueBy,
     String? assigneeId,
     String? categoryId,
@@ -86,7 +86,7 @@ class ActionItemCreate extends Equatable {
   }) {
     return ActionItemCreate(
       id: id ?? this.id,
-      task: task ?? this.task,
+      name: name ?? this.name,
       dueBy: dueBy ?? this.dueBy,
       assigneeId: assigneeId ?? this.assigneeId,
       categoryId: categoryId ?? this.categoryId,
