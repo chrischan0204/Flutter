@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 import '/common_libraries.dart';
 
 class ActionItemsRepository extends BaseRepository {
@@ -7,6 +5,18 @@ class ActionItemsRepository extends BaseRepository {
     required super.token,
     required super.authBloc,
   }) : super(url: '/api/actionItems');
+
+  Future<List<ActionItem>> getActionItemList() async {
+    Response response = await super.get(url);
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => ActionItem.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 
   /// get actionItem by id
   Future<ActionItem> getActionItemById(

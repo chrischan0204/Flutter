@@ -19,30 +19,35 @@ class QuestionListHeaderView extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (state.selectedSection.isIncluded) {
-                    CustomAlert(
-                      context: context,
-                      width: MediaQuery.of(context).size.width / 4,
-                      title: 'Confirm',
-                      description:
-                          'This will exclude all questions that are answered as well. Proceed?',
-                      btnOkText: 'OK',
-                      btnCancelOnPress: () {},
-                      btnOkOnPress: () => context
+                  if (!state.selectedSection.isNew) {
+                    if (state.selectedSection.isIncluded) {
+                      CustomAlert(
+                        context: context,
+                        width: MediaQuery.of(context).size.width / 4,
+                        title: 'Confirm',
+                        description:
+                            'This will exclude all questions that are answered as well. Proceed?',
+                        btnOkText: 'OK',
+                        btnCancelOnPress: () {},
+                        btnOkOnPress: () => context
+                            .read<AuditQuestionsBloc>()
+                            .add(AuditQuestionsSectionIncludedChanged(
+                              isIncluded: !state.selectedSection.isIncluded,
+                              sectionId: state.selectedSection.id,
+                            )),
+                        dialogType: DialogType.question,
+                      ).show();
+                    } else {
+                      context
                           .read<AuditQuestionsBloc>()
                           .add(AuditQuestionsSectionIncludedChanged(
                             isIncluded: !state.selectedSection.isIncluded,
                             sectionId: state.selectedSection.id,
-                          )),
-                      dialogType: DialogType.question,
-                    ).show();
+                          ));
+                    }
                   } else {
-                    context
-                        .read<AuditQuestionsBloc>()
-                        .add(AuditQuestionsSectionIncludedChanged(
-                          isIncluded: !state.selectedSection.isIncluded,
-                          sectionId: state.selectedSection.id,
-                        ));
+                    context.read<AuditQuestionsBloc>().add(AuditQuestionsCopied(
+                        sectionId: state.selectedSection.id));
                   }
                 },
                 style: ElevatedButton.styleFrom(

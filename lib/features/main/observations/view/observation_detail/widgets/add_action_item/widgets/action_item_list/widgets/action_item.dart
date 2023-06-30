@@ -19,7 +19,7 @@ class ActionItemView extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Text(
-                  actionItem.description,
+                  actionItem.name ?? '',
                   style: textNormal12,
                 ),
               ),

@@ -94,8 +94,40 @@ final GoRouter router = GoRouter(
       path: '/action-items',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: Layout(
+        child: const Layout(
+          body: ActionItemListView(),
+          selectedItemName: 'action-items',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/action-items/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ActionItemListView(),
+          selectedItemName: 'action-items',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/action-items/new',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
           body: AddEditActionItemView(),
+          selectedItemName: 'action-items',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/action-items/show/:actionItemId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ActionItemDetailView(
+            actionItemId: state.params['actionItemId']!,
+          ),
           selectedItemName: 'action-items',
         ),
       ),

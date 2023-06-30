@@ -39,7 +39,7 @@ class AddEditActionItemWidget extends StatefulWidget {
 class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
   late AddEditActionItemBloc addEditActionItemBloc;
 
-  static String pageLabel = 'Action Item';
+  static String pageLabel = 'action item';
 
   static String addButtonName = 'Submit';
 

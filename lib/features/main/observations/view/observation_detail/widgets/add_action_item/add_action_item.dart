@@ -51,9 +51,9 @@ class _AddActionItemViewState extends State<AddActionItemView> {
                 return const AddActionItemFormView();
               } else {
                 if (state.actionItem == null) {
-                  return const ActionItemListView();
+                  return const ActionItemListViewForObservation();
                 } else {
-                  return const ActionItemDetailView();
+                  return const ActionItemDetailViewForObservation();
                 }
               }
             },

@@ -1,8 +1,8 @@
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class ActionItemDetailView extends StatelessWidget {
-  const ActionItemDetailView({super.key});
+class ActionItemDetailViewForObservation extends StatelessWidget {
+  const ActionItemDetailViewForObservation({super.key});
 
   @override
   Widget build(BuildContext context) {

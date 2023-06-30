@@ -8,7 +8,7 @@ class ObservationListBloc
   late ObservationsRepository observationsRepository;
   final BuildContext context;
   ObservationListBloc(this.context) : super(const ObservationListState()) {
-    observationsRepository = context.read();
+    observationsRepository = RepositoryProvider.of(context);
 
     on<ObservationListLoaded>(_onObservationListLoaded);
     on<ObservationListFiltered>(_onObservationListFiltered);

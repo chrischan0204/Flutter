@@ -16,7 +16,6 @@ enum ActionItemStatus {
 }
 
 class ActionItem extends Entity {
-  final String description;
   final DateTime dueBy;
   final String observationId;
   final String observationName;
@@ -32,7 +31,7 @@ class ActionItem extends Entity {
   final String notes;
   const ActionItem({
     super.id,
-    this.description = '',
+    super.name,
     required this.dueBy,
     this.assigneeId = '',
     this.assigneeName = '',
@@ -52,8 +51,7 @@ class ActionItem extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        description,
+        ...super.props,
         dueBy,
         assigneeId,
         awarenessCategoryId,
@@ -67,7 +65,7 @@ class ActionItem extends Entity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'description': description,
+      'description': name,
       'dueBy': dueBy.millisecondsSinceEpoch,
       'observationId': observationId,
       'observationName': observationName,
@@ -84,11 +82,40 @@ class ActionItem extends Entity {
     };
   }
 
+  @override
+  Map<String, dynamic> tableItemsToMap() {
+    return <String, dynamic>{
+      'Status': '',
+      'Source': 'source',
+      'Created By': createdByUserName,
+      'Assignee': assigneeName,
+      'Category': awarenessCategoryName,
+      'Site': 'siteName',
+      'Project': projectName,
+    };
+  }
+
+  @override
+  Map<String, dynamic> sideDetailItemsToMap() {
+    return {
+      'Item': name,
+      'Due': formatedDue,
+      'Assignee': assigneeName,
+      'Site': 'site',
+      'Parent': 'Parent',
+      'Category': awarenessCategoryName,
+      'Company': companyName,
+      'Project': projectName,
+      'Location': area,
+      'Notes': {'content': notes},
+    };
+  }
+
   factory ActionItem.fromMap(Map<String, dynamic> map) {
     Entity entity = Entity.fromMap(map);
     return ActionItem(
       id: entity.id,
-      description: map['description'] ?? '',
+      name: map['description'] ?? '',
       dueBy: DateTime.parse(map['dueBy']),
       observationId: map['observationId'] ?? '',
       observationName: map['observationName'] ?? '',

@@ -14,12 +14,12 @@ class AuditQuestionsBloc
     auditsRepository = context.read();
     userId = context.read<AuthBloc>().state.authUser!.id;
 
-    on<AuditQuestionsSnapshotListLoaded>(_onAuditQuestionsSnapshotListLoaded);
     on<AuditQuestionsAuditSectionListLoaded>(
         _onAuditQuestionsAuditSectionListLoaded);
     on<AuditQuestionsSelectedAuditSectionChanged>(
         _onAuditQuestionsSelectedAuditSectionChanged);
     on<AuditQuestionsIncludedChanged>(_onAuditQuestionsIncludedChanged);
+    on<AuditQuestionsCopied>(_onAuditQuestionsCopied);
     on<AuditQuestionsAuditQuestionListLoaded>(
         _onAuditQuestionsAuditQuestionListLoaded);
     on<AuditQuestionsSectionIncludedChanged>(
@@ -37,16 +37,6 @@ class AuditQuestionsBloc
     }
 
     super.onChange(change);
-  }
-
-  Future<void> _onAuditQuestionsSnapshotListLoaded(
-    AuditQuestionsSnapshotListLoaded event,
-    Emitter<AuditQuestionsState> emit,
-  ) async {
-    final auditQuestionSnapshotList =
-        await auditsRepository.getAuditQuestionSnapshotList(event.auditId);
-
-    emit(state.copyWith(auditQuestionSnapshotList: auditQuestionSnapshotList));
   }
 
   Future<void> _onAuditQuestionsAuditSectionListLoaded(
@@ -79,14 +69,6 @@ class AuditQuestionsBloc
     AuditQuestionsSelectedAuditSectionChanged event,
     Emitter<AuditQuestionsState> emit,
   ) async {
-    if (event.auditSection.isNew) {
-      EntityResponse response =
-          await auditsRepository.copySection(auditId, event.auditSection.id);
-
-      if (!response.isSuccess) {
-        return;
-      }
-    }
     emit(state.copyWith(selectedAuditSectionId: event.auditSection.id));
   }
 
@@ -95,15 +77,6 @@ class AuditQuestionsBloc
     Emitter<AuditQuestionsState> emit,
   ) async {
     try {
-      if (event.isNew) {
-        EntityResponse response =
-            await auditsRepository.copyQuestion(auditId, event.questionId);
-
-        if (!response.isSuccess) {
-          // return;
-        }
-      }
-
       EntityResponse response =
           await auditsRepository.toggleIncludeQuestion(AuditQuestionAssociation(
         auditId: auditId,
@@ -137,5 +110,28 @@ class AuditQuestionsBloc
         add(AuditQuestionsAuditQuestionListLoaded());
       }
     } catch (e) {}
+  }
+
+  Future<void> _onAuditQuestionsCopied(
+      AuditQuestionsCopied event, Emitter<AuditQuestionsState> emit) async {
+    emit(state.copyWith(status: EntityStatus.loading));
+
+    EntityResponse response =
+        await auditsRepository.copySection(auditId, event.sectionId);
+
+    if (response.isSuccess) {
+      emit(state.copyWith(
+        status: EntityStatus.success,
+        message: response.message,
+      ));
+    }
+
+    // if (response.isSuccess) {
+    //   for (final question in state.auditQuestionList) {
+    //     if (question.isNew) {
+    //       await auditsRepository.copyQuestion(auditId, question.id);
+    //     }
+    //   }
+    // }
   }
 }

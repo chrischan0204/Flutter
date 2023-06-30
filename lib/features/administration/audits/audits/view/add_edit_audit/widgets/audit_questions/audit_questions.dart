@@ -31,9 +31,9 @@ class AuditQuestionsWidget extends StatefulWidget {
 class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
   @override
   void initState() {
-    context.read<AuditQuestionsBloc>()
-      ..add(AuditQuestionsSnapshotListLoaded(auditId: widget.auditId))
-      ..add(AuditQuestionsAuditSectionListLoaded(auditId: widget.auditId));
+    context
+        .read<AuditQuestionsBloc>()
+        .add(AuditQuestionsAuditSectionListLoaded(auditId: widget.auditId));
     super.initState();
   }
 

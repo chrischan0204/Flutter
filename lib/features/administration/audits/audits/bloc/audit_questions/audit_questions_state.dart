@@ -2,66 +2,50 @@
 part of 'audit_questions_bloc.dart';
 
 class AuditQuestionsState extends Equatable {
-  final List<AuditQuestionSnapshot> auditQuestionSnapshotList;
   final List<AuditSection> auditSectionList;
   final String? selectedAuditSectionId;
 
   final List<AuditQuestion> auditQuestionList;
 
-  // final String message;
+  final EntityStatus status;
+
+  final String message;
 
   const AuditQuestionsState({
-    this.auditQuestionSnapshotList = const [],
     this.auditSectionList = const [],
     this.selectedAuditSectionId,
     this.auditQuestionList = const [],
+    this.message = '',
+    this.status = EntityStatus.initial,
   });
 
   @override
   List<Object?> get props => [
-        auditQuestionSnapshotList,
         auditSectionList,
         selectedAuditSectionId,
         auditQuestionList,
+        message,
+        status,
       ];
 
   AuditSection get selectedSection => auditSectionList.firstWhere(
       (element) => element.id == selectedAuditSectionId,
       orElse: () => const AuditSection());
 
-  List<AuditQuestionSnapshot> get snapshotList => auditSectionList
-      .map((section) => AuditQuestionSnapshot(
-            section: section.name,
-            totalQuestionCount: section.auditQuestionList.length,
-            includedQuestionCount: section.auditQuestionList
-                .where((element) => element.questionIncluded)
-                .length,
-            maxScore: [
-              ...section.auditQuestionList.map((e) => e.questionScore),
-              0.0,
-            ].reduce((value, element) => value > element ? value : element),
-            includedScore: [
-              ...section.auditQuestionList
-                  .where((element) => element.questionIncluded)
-                  .map((e) => e.questionScore),
-              0.0,
-            ].reduce((value, element) => value + element),
-          ))
-      .toList();
-
   AuditQuestionsState copyWith({
-    List<AuditQuestionSnapshot>? auditQuestionSnapshotList,
     List<AuditSection>? auditSectionList,
     String? selectedAuditSectionId,
     List<AuditQuestion>? auditQuestionList,
+    String? message,
+    EntityStatus? status,
   }) {
     return AuditQuestionsState(
-      auditQuestionSnapshotList:
-          auditQuestionSnapshotList ?? this.auditQuestionSnapshotList,
       auditSectionList: auditSectionList ?? this.auditSectionList,
       selectedAuditSectionId:
           selectedAuditSectionId ?? this.selectedAuditSectionId,
       auditQuestionList: auditQuestionList ?? this.auditQuestionList,
+      message: message ?? this.message,
+      status: status ?? this.status,
     );
   }
 }
