@@ -129,6 +129,30 @@ class TemplateDesignerState extends Equatable {
         selectedQuestionId,
       ];
 
+  bool get formDirty =>
+      templateSectionItem?.question?.name.isNotEmpty == true ||
+      templateSectionItem?.children
+              .where((e) => e.children
+                  .where((element) => element.question?.name.isNotEmpty == true)
+                  .isNotEmpty)
+              .isNotEmpty ==
+          true ||
+      templateSectionItem?.children
+              .where((e) => e.children
+                  .where((element) =>
+                      element.children
+                          .where((x) =>
+                              x.children
+                                  .where((y) =>
+                                      y.question?.name.isNotEmpty == true)
+                                  .isNotEmpty ==
+                              true)
+                          .isNotEmpty ==
+                      true)
+                  .isNotEmpty)
+              .isNotEmpty ==
+          true;
+
   TemplateDesignerState copyWith({
     String? newSection,
     List<TemplateSectionListItem>? templateSectionList,
@@ -151,7 +175,6 @@ class TemplateDesignerState extends Equatable {
     EntityStatus? questionDetailLoadStatus,
     Nullable<String?>? selectedResponseScaleId,
     List<TemplateQuestion>? templateQuestionList,
-    
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,

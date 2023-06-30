@@ -8,14 +8,16 @@ part 'template_designer_state.dart';
 class TemplateDesignerBloc
     extends Bloc<TemplateDesignerEvent, TemplateDesignerState> {
   final BuildContext context;
-  late TemplatesRepository templatesRepository;
-  late ResponseScalesRepository responseScalesRepository;
-  late SectionsRepository sectionsRepository;
+  late TemplatesRepository _templatesRepository;
+  late ResponseScalesRepository _responseScalesRepository;
+  late SectionsRepository _sectionsRepository;
+  late FormDirtyBloc _formDirtyBloc;
   TemplateDesignerBloc({required this.context})
       : super(const TemplateDesignerState()) {
-    templatesRepository = context.read();
-    responseScalesRepository = context.read();
-    sectionsRepository = context.read();
+    _templatesRepository = context.read();
+    _responseScalesRepository = context.read();
+    _sectionsRepository = context.read();
+    _formDirtyBloc = context.read();
 
     on<TemplateDesignerTemplateSectionListLoaded>(
         _onTemplateDesignerTemplateSectionListLoaded);
@@ -68,6 +70,10 @@ class TemplateDesignerBloc
           templateId: state.templateId));
     }
 
+    if (currentState.templateSectionItem != nextState.templateSectionItem) {
+      _formDirtyBloc.add(FormDirtyChanged(isDirty: nextState.formDirty));
+    }
+
     // if (currentState.templateSectionItemCreateStatus !=
     //         nextState.templateSectionItemCreateStatus &&
     //     nextState.templateSectionItemCreateStatus.isSuccess) {
@@ -93,7 +99,7 @@ class TemplateDesignerBloc
 
     try {
       List<TemplateSectionListItem> templateSectionList =
-          await templatesRepository.getTemplateSectionList(event.templateId);
+          await _templatesRepository.getTemplateSectionList(event.templateId);
 
       emit(state.copyWith(
         templateSectionListLoadStatus: EntityStatus.success,
@@ -111,7 +117,7 @@ class TemplateDesignerBloc
     emit(state.copyWith(templateSectionAddStatus: EntityStatus.loading));
 
     try {
-      EntityResponse response = await templatesRepository.addTemplateSection(
+      EntityResponse response = await _templatesRepository.addTemplateSection(
           TemplateSectionListItem(
             templateId: event.templateId,
             name: state.newSection,
@@ -153,7 +159,7 @@ class TemplateDesignerBloc
 
     try {
       List<ResponseScale> responseScaleList =
-          await responseScalesRepository.getResponseScaleList();
+          await _responseScalesRepository.getResponseScaleList();
       emit(state.copyWith(
         responseScaleList: responseScaleList,
         responseScaleListLoadStatus: EntityStatus.success,
@@ -192,7 +198,7 @@ class TemplateDesignerBloc
 
     try {
       List<TemplateSection> templateQuestionDetailList =
-          await templatesRepository.getTemplateQuestionDetailList(
+          await _templatesRepository.getTemplateQuestionDetailList(
               event.templateId, 1, event.templateSectionId);
       if (templateQuestionDetailList.isNotEmpty) {
         emit(state.copyWith(
@@ -220,7 +226,7 @@ class TemplateDesignerBloc
 
     try {
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await responseScalesRepository
+          await _responseScalesRepository
               .getResponseScaleItemList(event.responseScaleId);
       late TemplateSectionItem newTemplateSection;
 
@@ -851,7 +857,7 @@ class TemplateDesignerBloc
     try {
       late EntityResponse response;
       if (state.templateSectionItem?.templateSectionItemId == null) {
-        response = await sectionsRepository
+        response = await _sectionsRepository
             .createTemplateSectionItem(state.templateSectionItem!.copyWith(
                 children: state.templateSectionItem!.children
                     .map((a) => a.copyWith(
@@ -903,7 +909,7 @@ class TemplateDesignerBloc
                             .toList()))
                     .toList()));
       } else {
-        response = await sectionsRepository
+        response = await _sectionsRepository
             .editTemplateSectionItem(state.templateSectionItem!);
       }
 
@@ -1041,7 +1047,7 @@ class TemplateDesignerBloc
       final String responseScaleId = event.question.responseScaleId;
 
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await responseScalesRepository
+          await _responseScalesRepository
               .getResponseScaleItemList(responseScaleId);
 
       for (final responseScaleItem in event.question.responseScaleItems) {
@@ -1099,14 +1105,14 @@ class TemplateDesignerBloc
   ) async {
     try {
       List<TemplateSection> templateQuestionDetailList =
-          await templatesRepository.getTemplateQuestionDetailList(
+          await _templatesRepository.getTemplateQuestionDetailList(
               event.id, 2, state.selectedTemplateSection!.id);
 
       final followUpQuestion =
           templateQuestionDetailList[0].templateSectionItems[0];
 
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await responseScalesRepository
+          await _responseScalesRepository
               .getResponseScaleItemList(followUpQuestion.responseScaleId);
 
       for (final responseScaleItem in followUpQuestion.responseScaleItems) {

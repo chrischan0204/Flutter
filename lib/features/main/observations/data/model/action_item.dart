@@ -86,11 +86,11 @@ class ActionItem extends Entity {
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
       'Status': '',
-      'Source': 'source',
+      'Source': '',
       'Created By': createdByUserName,
       'Assignee': assigneeName,
       'Category': awarenessCategoryName,
-      'Site': 'siteName',
+      'Site': '',
       'Project': projectName,
     };
   }
@@ -101,8 +101,8 @@ class ActionItem extends Entity {
       'Item': name,
       'Due': formatedDue,
       'Assignee': assigneeName,
-      'Site': 'site',
-      'Parent': 'Parent',
+      'Site': '',
+      'Parent': '',
       'Category': awarenessCategoryName,
       'Company': companyName,
       'Project': projectName,

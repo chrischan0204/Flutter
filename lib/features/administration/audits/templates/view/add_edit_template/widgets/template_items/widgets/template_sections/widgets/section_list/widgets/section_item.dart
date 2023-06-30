@@ -19,24 +19,44 @@ class SectionItemView extends StatefulWidget {
 
 class _SectionItemViewState extends State<SectionItemView> {
   bool _hover = false;
+
+  Color _getColor() {
+    if (_hover) {
+      return const Color(0xfff7fdf1);
+    } else if (widget.active) {
+      return const Color(0xffecfadc);
+    }
+    return Colors.transparent;
+  }
+
+  void _getQuestionListForSection() {
+    context
+        .read<TemplateDesignerBloc>()
+        .add(TemplateDesignerTemplateSectionSelected(
+          templateId: widget.templateId,
+          templateSection: widget.section,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    Color _getColor() {
-      if (_hover) {
-        return const Color(0xfff7fdf1);
-      } else if (widget.active) {
-        return const Color(0xffecfadc);
-      }
-      return Colors.transparent;
-    }
-
     return InkWell(
-      onTap: () => context
-          .read<TemplateDesignerBloc>()
-          .add(TemplateDesignerTemplateSectionSelected(
-            templateId: widget.templateId,
-            templateSection: widget.section,
-          )),
+      onTap: () {
+        if (context.read<FormDirtyBloc>().state.isDirty) {
+          CustomAlert(
+            context: context,
+            width: MediaQuery.of(context).size.width / 4,
+            title: 'Notification',
+            description: 'Data that was entered will be lost ..... Proceed?',
+            btnOkText: 'Proceed',
+            btnOkOnPress: () => _getQuestionListForSection(),
+            btnCancelOnPress: () {},
+            dialogType: DialogType.info,  
+          ).show();
+        } else {
+          _getQuestionListForSection();
+        }
+      },
       onHover: (value) => setState(() => _hover = value),
       child: Container(
         decoration: widget.active

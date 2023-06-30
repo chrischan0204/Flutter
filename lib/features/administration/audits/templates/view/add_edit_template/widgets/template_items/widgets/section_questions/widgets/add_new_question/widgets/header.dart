@@ -7,6 +7,17 @@ class AddNewQuestionHeaderView extends StatelessWidget {
     super.key,
   });
 
+  void _backToList(BuildContext context) => context.read<TemplateDesignerBloc>()
+    ..add(const TemplateDesignerAddNewQuestionViewShowed(
+        showAddNewQuestionView: false))
+    ..add(
+      TemplateDesignerTemplateSectionSelected(
+        templateId: templateId,
+        templateSection:
+            context.read<TemplateDesignerBloc>().state.selectedTemplateSection,
+      ),
+    );
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,18 +36,21 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    context.read<TemplateDesignerBloc>()
-                      ..add(const TemplateDesignerAddNewQuestionViewShowed(
-                          showAddNewQuestionView: false))
-                      ..add(
-                        TemplateDesignerTemplateSectionSelected(
-                          templateId: templateId,
-                          templateSection: context
-                              .read<TemplateDesignerBloc>()
-                              .state
-                              .selectedTemplateSection,
-                        ),
-                      );
+                    if (context.read<FormDirtyBloc>().state.isDirty) {
+                      CustomAlert(
+                        context: context,
+                        width: MediaQuery.of(context).size.width / 4,
+                        title: 'Notification',
+                        description:
+                            'Data that was entered will be lost ..... Proceed?',
+                        btnOkText: 'Proceed',
+                        btnOkOnPress: () => _backToList(context),
+                        btnCancelOnPress: () {},
+                        dialogType: DialogType.info,
+                      ).show();
+                    } else {
+                      _backToList(context);
+                    }
                   },
                   child: Text(
                     'Back to list',

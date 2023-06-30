@@ -9,13 +9,31 @@ class SummaryView extends StatefulWidget {
 
 class _SummaryViewState extends State<SummaryView> {
   bool _hover = false;
+
+  void _getSummary() => context
+      .read<TemplateDesignerBloc>()
+      .add(const TemplateDesignerTemplateSectionSelected());
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       hoverColor: Colors.transparent,
-      onTap: () => context
-          .read<TemplateDesignerBloc>()
-          .add(const TemplateDesignerTemplateSectionSelected()),
+      onTap: () {
+        if (context.read<FormDirtyBloc>().state.isDirty) {
+          CustomAlert(
+            context: context,
+            width: MediaQuery.of(context).size.width / 4,
+            title: 'Notification',
+            description: 'Data that was entered will be lost ..... Proceed?',
+            btnOkText: 'Proceed',
+            btnOkOnPress: () => _getSummary(),
+            btnCancelOnPress: () {},
+            dialogType: DialogType.info,
+          ).show();
+        } else {
+          _getSummary();
+        }
+      },
       onHover: (value) => setState(() => _hover = value),
       child: Container(
         color: _hover ? const Color(0xfff7fdf1) : const Color(0xffecfadc),
