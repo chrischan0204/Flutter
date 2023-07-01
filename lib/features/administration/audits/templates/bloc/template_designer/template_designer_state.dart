@@ -17,6 +17,7 @@ class TemplateDesignerState extends Equatable {
   final EntityStatus responseScaleItemListLoadStatus;
 
   final TemplateSectionItem? templateSectionItem;
+  final TemplateSectionItem? initialTemplateSectionItem;
   final EntityStatus templateSectionItemCreateStatus;
 
   final String message;
@@ -53,6 +54,7 @@ class TemplateDesignerState extends Equatable {
     this.responseScaleItemListLoadStatus = EntityStatus.initial,
     this.templateSectionItemCreateStatus = EntityStatus.initial,
     this.templateSectionItem,
+    this.initialTemplateSectionItem,
     this.message = '',
     this.showAddNewQuestionView = false,
     this.level = 0,
@@ -116,6 +118,7 @@ class TemplateDesignerState extends Equatable {
         sectionItemQuestionListLoadStatus,
         responseScaleItemListLoadStatus,
         templateSectionItem,
+        initialTemplateSectionItem,
         templateSectionItemCreateStatus,
         message,
         showAddNewQuestionView,
@@ -129,29 +132,132 @@ class TemplateDesignerState extends Equatable {
         selectedQuestionId,
       ];
 
-  bool get formDirty =>
-      templateSectionItem?.question?.name.isNotEmpty == true ||
-      templateSectionItem?.children
-              .where((e) => e.children
-                  .where((element) => element.question?.name.isNotEmpty == true)
-                  .isNotEmpty)
-              .isNotEmpty ==
-          true ||
-      templateSectionItem?.children
-              .where((e) => e.children
-                  .where((element) =>
-                      element.children
-                          .where((x) =>
-                              x.children
-                                  .where((y) =>
-                                      y.question?.name.isNotEmpty == true)
-                                  .isNotEmpty ==
-                              true)
-                          .isNotEmpty ==
-                      true)
-                  .isNotEmpty)
-              .isNotEmpty ==
-          true;
+  bool get formDirty {
+    bool level0 = templateSectionItem?.question?.id == null &&
+            templateSectionItem?.question?.name.isNotEmpty == true ||
+        templateSectionItem?.question?.id != null &&
+            initialTemplateSectionItem?.question?.name !=
+                templateSectionItem?.question?.name;
+
+    bool level1 = templateSectionItem?.children
+            .where((e) => e.children.where((element) {
+                  if (templateSectionItem != null) {
+                    for (int i = 0;
+                        i < templateSectionItem!.children.length;
+                        i++) {
+                      for (int j = 0;
+                          j < templateSectionItem!.children[i].children.length;
+                          j++) {
+                        if (templateSectionItem!
+                                .children[i].children[j].question?.id ==
+                            null) {
+                          if (templateSectionItem!.children[i].children[j]
+                                  .question?.name.isNotEmpty ==
+                              true) {
+                            return true;
+                          }
+                        } else {
+                          if (templateSectionItem!
+                                  .children[i].children[j].question?.name !=
+                              initialTemplateSectionItem!
+                                  .children[i].children[j].question?.name) {
+                            return true;
+                          }
+                        }
+                      }
+                    }
+                    return false;
+                  } else {
+                    return false;
+                  }
+                }).isNotEmpty)
+            .isNotEmpty ==
+        true;
+
+    bool level2 = templateSectionItem?.children
+            .where((e) => e.children
+                .where((element) =>
+                    element.children
+                        .where((x) =>
+                            x.children.where((y) {
+                              if (templateSectionItem != null) {
+                                for (int i = 0;
+                                    i < templateSectionItem!.children.length;
+                                    i++) {
+                                  for (int j = 0;
+                                      j <
+                                          templateSectionItem!
+                                              .children[i].children.length;
+                                      j++) {
+                                    for (int k = 0;
+                                        k <
+                                            templateSectionItem!.children[i]
+                                                .children[j].children.length;
+                                        k++) {
+                                      for (int l = 0;
+                                          l <
+                                              templateSectionItem!
+                                                  .children[i]
+                                                  .children[j]
+                                                  .children[k]
+                                                  .children
+                                                  .length;
+                                          l++) {
+                                        if (templateSectionItem!
+                                                .children[i]
+                                                .children[j]
+                                                .children[k]
+                                                .children[l]
+                                                .question
+                                                ?.id ==
+                                            null) {
+                                          if (templateSectionItem!
+                                                  .children[i]
+                                                  .children[j]
+                                                  .children[k]
+                                                  .children[l]
+                                                  .question
+                                                  ?.name
+                                                  .isNotEmpty ==
+                                              true) {
+                                            return true;
+                                          }
+                                        } else {
+                                          if (templateSectionItem!
+                                                  .children[i]
+                                                  .children[j]
+                                                  .children[k]
+                                                  .children[l]
+                                                  .question
+                                                  ?.name !=
+                                              initialTemplateSectionItem!
+                                                  .children[i]
+                                                  .children[j]
+                                                  .children[k]
+                                                  .children[l]
+                                                  .question
+                                                  ?.name) {
+                                            return true;
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                                return false;
+                              } else {
+                                return false;
+                              }
+                            }).isNotEmpty ==
+                            true)
+                        .isNotEmpty ==
+                    true)
+                .isNotEmpty)
+            .isNotEmpty ==
+        true;
+
+    return level0 || level1 || level2;
+  }
 
   TemplateDesignerState copyWith({
     String? newSection,
@@ -165,6 +271,7 @@ class TemplateDesignerState extends Equatable {
     List<TemplateSectionQuestion>? sectionItemQuestionList,
     EntityStatus? responseScaleItemListLoadStatus,
     Nullable<TemplateSectionItem?>? templateSectionItem,
+    Nullable<TemplateSectionItem?>? initialTemplateSectionItem,
     EntityStatus? templateSectionItemCreateStatus,
     String? message,
     String? templateId,
@@ -198,6 +305,9 @@ class TemplateDesignerState extends Equatable {
       templateSectionItem: templateSectionItem != null
           ? templateSectionItem.value
           : this.templateSectionItem,
+      initialTemplateSectionItem: initialTemplateSectionItem != null
+          ? initialTemplateSectionItem.value
+          : this.initialTemplateSectionItem,
       templateSectionItemCreateStatus: templateSectionItemCreateStatus ??
           this.templateSectionItemCreateStatus,
       message: message ?? this.message,

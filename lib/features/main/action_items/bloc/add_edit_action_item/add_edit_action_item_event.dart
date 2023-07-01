@@ -13,9 +13,25 @@ class AddEditActionItemAwarenessCategoryListLoaded
 
 class AddEditActionItemSiteListLoaded extends AddEditActionItemEvent {}
 
-class AddEditActionItemCompanyListLoaded extends AddEditActionItemEvent {}
+class AddEditActionItemCompanyListLoaded extends AddEditActionItemEvent {
+  /// site id to load company list
+  final String siteId;
 
-class AddEditActionItemProjectListLoaded extends AddEditActionItemEvent {}
+  const AddEditActionItemCompanyListLoaded({required this.siteId});
+
+  @override
+  List<Object> get props => [siteId];
+}
+
+class AddEditActionItemProjectListLoaded extends AddEditActionItemEvent {
+  /// site id to load project list
+  final String siteId;
+
+  const AddEditActionItemProjectListLoaded({required this.siteId});
+
+  @override
+  List<Object> get props => [siteId];
+}
 
 class AddEditActionItemUserListLoaded extends AddEditActionItemEvent {}
 

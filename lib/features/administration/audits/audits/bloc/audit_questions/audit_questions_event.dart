@@ -7,7 +7,7 @@ abstract class AuditQuestionsEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
-  
+
 /// event to load audit section list
 class AuditQuestionsAuditSectionListLoaded extends AuditQuestionsEvent {
   final String auditId;
@@ -38,18 +38,15 @@ class AuditQuestionsSelectedAuditSectionChanged extends AuditQuestionsEvent {
 class AuditQuestionsIncludedChanged extends AuditQuestionsEvent {
   final String questionId;
   final bool isIncluded;
-  final bool isNew;
   const AuditQuestionsIncludedChanged({
     required this.questionId,
     required this.isIncluded,
-    required this.isNew,
   });
 
   @override
   List<Object?> get props => [
         questionId,
         isIncluded,
-        isNew,
       ];
 }
 
@@ -70,11 +67,21 @@ class AuditQuestionsSectionIncludedChanged extends AuditQuestionsEvent {
       ];
 }
 
-/// event to copy questions
-class AuditQuestionsCopied extends AuditQuestionsEvent {
+/// event to copy question
+class AuditQuestionCopied extends AuditQuestionsEvent {
+  final String questionId;
+
+  const AuditQuestionCopied({required this.questionId});
+
+  @override
+  List<Object?> get props => [questionId];
+}
+
+/// event to copy section
+class AuditSectionCopied extends AuditQuestionsEvent {
   final String sectionId;
 
-  const AuditQuestionsCopied({required this.sectionId});
+  const AuditSectionCopied({required this.sectionId});
 
   @override
   List<Object?> get props => [sectionId];

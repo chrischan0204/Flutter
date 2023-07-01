@@ -45,6 +45,7 @@ class ActionItem extends Entity {
     this.observationName = '',
     this.area = '',
     this.notes = '',
+    super.createdByUserName,
   });
 
   String get formatedDue => DateFormat('yyyy-MM-dd').format(dueBy);
@@ -129,6 +130,7 @@ class ActionItem extends Entity {
       projectName: map['projectName'] ?? '',
       area: map['area'] ?? '',
       notes: map['notes'] ?? '',
+      createdByUserName: entity.createdByUserName,
     );
   }
 

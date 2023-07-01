@@ -22,16 +22,20 @@ class DetailItemView2 extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Text(
-                  '$leftLabel:',
-                  style: textSemiBold14.copyWith(
-                    color: primaryColor,
+                Expanded(
+                  child: Text(
+                    '$leftLabel:',
+                    style: textSemiBold14.copyWith(
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-                spacerx50,
-                Text(
-                  leftContent,
-                  style: textNormal14,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    leftContent,
+                    style: textNormal14,
+                  ),
                 )
               ],
             ),
@@ -39,16 +43,20 @@ class DetailItemView2 extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Text(
-                  '$rightLabel:',
-                  style: textSemiBold14.copyWith(
-                    color: primaryColor,
+                Expanded(
+                  child: Text(
+                    '$rightLabel:',
+                    style: textSemiBold14.copyWith(
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-                spacerx50,
-                Text(
-                  rightContent,
-                  style: textNormal14,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    rightContent,
+                    style: textNormal14,
+                  ),
                 )
               ],
             ),

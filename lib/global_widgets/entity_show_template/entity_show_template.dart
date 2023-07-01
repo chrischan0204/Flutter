@@ -12,6 +12,7 @@ class EntityShowTemplate extends StatefulWidget {
   final String descriptionForDelete;
   final bool isDeletable;
   final bool isEditable;
+  final bool isShowName;
 
   const EntityShowTemplate({
     super.key,
@@ -26,6 +27,7 @@ class EntityShowTemplate extends StatefulWidget {
     this.descriptionForDelete = '',
     this.isDeletable = true,
     this.isEditable = true,
+    this.isShowName = true,
   });
 
   @override
@@ -54,6 +56,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               deleteEntity: widget.deleteEntity,
               isDeletable: widget.isDeletable,
               isEditable: widget.isEditable,
+              isShowName: widget.isShowName,
             ),
             Expanded(
               child: Card(

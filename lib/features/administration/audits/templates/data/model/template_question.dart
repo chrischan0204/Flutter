@@ -2,6 +2,7 @@ import '/common_libraries.dart';
 
 class TemplateQuestion extends Equatable {
   final String id;
+  final String questionId;
   final String title;
   final String scaleName;
   final String responseScaleId;
@@ -14,6 +15,7 @@ class TemplateQuestion extends Equatable {
 
   const TemplateQuestion({
     required this.id,
+    required this.questionId,
     required this.title,
     required this.scaleName,
     required this.responseScaleId,
@@ -26,6 +28,7 @@ class TemplateQuestion extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        questionId,
         title,
         scaleName,
         questionScorePoint,
@@ -38,6 +41,7 @@ class TemplateQuestion extends Equatable {
   factory TemplateQuestion.fromMap(Map<String, dynamic> map) {
     return TemplateQuestion(
       id: map['id'] as String,
+      questionId: map['questionId'] ?? '',
       title: map['title'] ?? '',
       scaleName: map['scaleName'] ?? '',
       responseScaleId: map['responseScaleId'],
@@ -56,6 +60,7 @@ class TemplateQuestion extends Equatable {
 
   TemplateQuestion copyWith({
     String? id,
+    String? questionId,
     String? title,
     String? scaleName,
     String? responseScaleId,
@@ -67,6 +72,7 @@ class TemplateQuestion extends Equatable {
   }) {
     return TemplateQuestion(
       id: id ?? this.id,
+      questionId: questionId ?? this.questionId,
       title: title ?? this.title,
       scaleName: scaleName ?? this.scaleName,
       responseScaleId: responseScaleId ?? this.responseScaleId,

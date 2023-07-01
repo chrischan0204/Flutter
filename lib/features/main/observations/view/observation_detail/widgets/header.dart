@@ -6,7 +6,7 @@ class ObservationDetailHeaderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBottomBorderContainer(
-      padding: inset20,
+      padding: inset30,
       child: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, state) {
           if (state.observation == null) {

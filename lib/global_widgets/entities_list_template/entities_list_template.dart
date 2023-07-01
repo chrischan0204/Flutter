@@ -22,6 +22,7 @@ class EntityListTemplate extends StatefulWidget {
   final String? viewName;
   final void Function(int pageNum, int pageRow)? onPaginate;
   final int totalRows;
+  final bool isShowName;
   const EntityListTemplate({
     super.key,
     required this.title,
@@ -44,6 +45,7 @@ class EntityListTemplate extends StatefulWidget {
     this.viewName,
     this.onPaginate,
     this.totalRows = 0,
+    this.isShowName = true,
   });
 
   @override
@@ -619,9 +621,11 @@ class _CrudState extends State<EntityListTemplate> {
                           children: [
                             Expanded(
                               child: Text(
-                                widget.selectedEntity != null
-                                    ? widget.selectedEntity!.name ?? ''
-                                    : '',
+                                widget.isShowName
+                                    ? (widget.selectedEntity != null
+                                        ? widget.selectedEntity!.name ?? ''
+                                        : '')
+                                    : '${camelize(widget.label)} Details',
                                 style: textSemiBold14,
                                 maxLines: 3,
                                 softWrap: false,

@@ -90,11 +90,16 @@ class AuditQuestionDataSource extends DataGridSource {
   List<DataGridRow> get rows => _entityData;
 
   void _changeIncluded(String id, bool isIncluded, bool isNew) {
-    context.read<AuditQuestionsBloc>().add(AuditQuestionsIncludedChanged(
-          questionId: id,
-          isIncluded: !isIncluded,
-          isNew: isNew,
-        ));
+    if (isNew) {
+      context
+          .read<AuditQuestionsBloc>()
+          .add(AuditQuestionCopied(questionId: id));
+    } else {
+      context.read<AuditQuestionsBloc>().add(AuditQuestionsIncludedChanged(
+            questionId: id,
+            isIncluded: !isIncluded,
+          ));
+    }
   }
 
   Widget _buildItem(

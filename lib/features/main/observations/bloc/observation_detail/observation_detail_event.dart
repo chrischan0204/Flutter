@@ -40,9 +40,25 @@ class ObservationDetailSiteListLoaded extends ObservationDetailEvent {}
 class ObservationDetailObservationTypeListLoaded
     extends ObservationDetailEvent {}
 
-class ObservationDetailCompanyListLoaded extends ObservationDetailEvent {}
+class ObservationDetailCompanyListLoaded extends ObservationDetailEvent {
+  /// site id to load company list associated with it
+  final String siteId;
 
-class ObservationDetailProjectListLoaded extends ObservationDetailEvent {}
+  const ObservationDetailCompanyListLoaded({required this.siteId});
+
+  @override
+  List<Object> get props => [siteId];
+}
+
+class ObservationDetailProjectListLoaded extends ObservationDetailEvent {
+  /// site id to load project list associated with it
+  final String siteId;
+
+  const ObservationDetailProjectListLoaded({required this.siteId});
+
+  @override
+  List<Object> get props => [siteId];
+}
 
 class ObservationDetailPriorityLevelListLoaded extends ObservationDetailEvent {}
 

@@ -15,17 +15,28 @@ class DetailItemView1 extends StatelessWidget {
       padding: insetx20y10,
       child: Row(
         children: [
-          Text(
-            '$label:',
-            style: textSemiBold14.copyWith(
-              color: primaryColor,
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '$label:',
+                    style: textSemiBold14.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    content,
+                    style: textNormal14,
+                  ),
+                )
+              ],
             ),
           ),
-          spacerx50,
-          Text(
-            content,
-            style: textNormal14,
-          )
+          const Spacer(),
         ],
       ),
     );

@@ -11,6 +11,7 @@ class HeaderView extends StatelessWidget {
   final VoidCallback deleteEntity;
   final bool isDeletable;
   final bool isEditable;
+  final bool isShowName;
   const HeaderView({
     super.key,
     required this.title,
@@ -22,6 +23,7 @@ class HeaderView extends StatelessWidget {
     required this.deleteEntity,
     required this.isDeletable,
     required this.isEditable,
+    required this.isShowName,
   });
 
   @override
@@ -35,7 +37,7 @@ class HeaderView extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                '$title - $name',
+                isShowName ? '$title - $name' : '$title Details',
                 style: textSemiBold18,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,

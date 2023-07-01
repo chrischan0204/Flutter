@@ -62,6 +62,7 @@ class _ActionItemListState extends State<ActionItemListWidget> {
                     state.actionItemListLoadStatus.isLoading,
             entityDetailLoadStatusLoading: state.actionItemLoadStatus.isLoading,
             selectedEntity: state.actionItem,
+            isShowName: false,
             onViewSettingApplied: () {
               _filterActionItems();
             },

@@ -134,11 +134,24 @@ class SitesRepository extends BaseRepository {
   }
 
   Future<List<Template>> getTemplateListForSite(String siteId) async {
-    Response response = await super.get('$url/$siteId/templates', {'assigned': 'true'});
+    Response response =
+        await super.get('$url/$siteId/templates', {'assigned': 'true'});
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
           .map((e) => Template.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<CompanySite>> getCompanyListForSite(String siteId) async {
+    Response response = await super.get('$url/$siteId/companies');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => CompanySite.fromMap(e))
           .toList();
     }
 

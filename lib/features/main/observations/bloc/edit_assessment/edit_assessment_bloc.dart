@@ -8,11 +8,14 @@ class EditAssessmentBloc
   final BuildContext context;
   final String observationId;
   late ObservationsRepository _observationsRepository;
+  late ObservationDetailBloc _observationDetailBloc;
   EditAssessmentBloc(
     this.context,
     this.observationId,
   ) : super(const EditAssessmentState()) {
     _observationsRepository = context.read();
+    _observationDetailBloc = context.read();
+
     _bindEvents();
   }
 
@@ -100,6 +103,12 @@ class EditAssessmentBloc
     Emitter<EditAssessmentState> emit,
   ) {
     emit(state.copyWith(site: event.site));
+
+    _observationDetailBloc
+        .add(ObservationDetailProjectListLoaded(siteId: event.site.id!));
+
+    _observationDetailBloc
+        .add(ObservationDetailCompanyListLoaded(siteId: event.site.id!));
   }
 
   void _onEditAssessmentObserverChanged(

@@ -50,8 +50,6 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-
-          GoRouter.of(context).go('/actionItems');
         }
         if (state.actionItemDeleteStatus.isFailure) {
           CustomNotification(
@@ -73,6 +71,8 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
           entity: state.actionItem,
           crudStatus: state.actionItemDeleteStatus,
           isEditable: false,
+          isShowName: false,
+
           customDetailWidget: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [

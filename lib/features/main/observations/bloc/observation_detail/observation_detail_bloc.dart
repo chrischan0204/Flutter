@@ -7,22 +7,25 @@ class ObservationDetailBloc
     extends Bloc<ObservationDetailEvent, ObservationDetailState> {
   final BuildContext context;
   late ObservationsRepository observationsRepository;
-  late SitesRepository sitesRepository;
+  late SitesRepository _sitesRepository;
   late ProjectsRepository projectsRepository;
   late PriorityLevelsRepository priorityLevelsRepository;
   late AwarenessCategoriesRepository awarenessCategoriesRepository;
   late CompaniesRepository companiesRepository;
   late ObservationTypesRepository observationTypesRepository;
-  late UsersRepository usersRepository;
+  late UsersRepository _usersRepository;
+  late AuthBloc _authBloc;
   ObservationDetailBloc(this.context) : super(const ObservationDetailState()) {
     observationsRepository = RepositoryProvider.of(context);
-    sitesRepository = RepositoryProvider.of(context);
+    _sitesRepository = RepositoryProvider.of(context);
     projectsRepository = RepositoryProvider.of(context);
     observationTypesRepository = RepositoryProvider.of(context);
     priorityLevelsRepository = RepositoryProvider.of(context);
     awarenessCategoriesRepository = RepositoryProvider.of(context);
     companiesRepository = RepositoryProvider.of(context);
-    usersRepository = RepositoryProvider.of(context);
+    _usersRepository = RepositoryProvider.of(context);
+
+    _authBloc = context.read();
 
     _bindEvents();
   }
@@ -77,30 +80,45 @@ class ObservationDetailBloc
     ObservationDetailSiteListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<Site> siteList = await sitesRepository.getSiteList();
+    try {
+      List<UserSite> siteList = await _usersRepository
+          .getSiteListForUser(_authBloc.state.authUser!.id);
 
-    emit(state.copyWith(siteList: siteList));
-    try {} catch (e) {}
+      emit(state.copyWith(
+          siteList: siteList
+              .map((e) => Site(
+                    id: e.siteId,
+                    name: e.siteName,
+                  ))
+              .toList()));
+    } catch (e) {}
   }
 
   Future<void> _onObservationDetailCompanyListLoaded(
     ObservationDetailCompanyListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<Company> companyList = await companiesRepository.getCompanyList();
+    try {
+      List<CompanySite> companyList =
+          await _sitesRepository.getCompanyListForSite(event.siteId);
 
-    emit(state.copyWith(companyList: companyList));
-    try {} catch (e) {}
+      emit(state.copyWith(
+          companyList: companyList
+              .map((e) => Company(id: e.companyId, name: e.companyName))
+              .toList()));
+    } catch (e) {}
   }
 
   Future<void> _onObservationDetailProjectListLoaded(
     ObservationDetailProjectListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<Project> projectList = await projectsRepository.getProjectList();
+    try {
+      List<Project> projectList =
+          await _sitesRepository.getProjectListForSite(event.siteId);
 
-    emit(state.copyWith(projectList: projectList));
-    try {} catch (e) {}
+      emit(state.copyWith(projectList: projectList));
+    } catch (e) {}
   }
 
   Future<void> _onObservationDetailPriorityLevelListLoaded(
@@ -129,7 +147,7 @@ class ObservationDetailBloc
     ObservationDetailUserListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<User> userList = await usersRepository.getUserList();
+    List<User> userList = await _usersRepository.getUserList();
 
     emit(state.copyWith(userList: userList));
     try {} catch (e) {}

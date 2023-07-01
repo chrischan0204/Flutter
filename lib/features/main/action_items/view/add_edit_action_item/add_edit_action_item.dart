@@ -41,15 +41,13 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
 
   static String pageLabel = 'action item';
 
-  static String addButtonName = 'Submit';
+  static String addButtonName = 'Save';
 
   @override
   void initState() {
     addEditActionItemBloc = context.read()
       ..add(AddEditActionItemAwarenessCategoryListLoaded())
       ..add(AddEditActionItemSiteListLoaded())
-      ..add(AddEditActionItemCompanyListLoaded())
-      ..add(AddEditActionItemProjectListLoaded())
       ..add(AddEditActionItemUserListLoaded());
 
     if (widget.actionItemId != null) {

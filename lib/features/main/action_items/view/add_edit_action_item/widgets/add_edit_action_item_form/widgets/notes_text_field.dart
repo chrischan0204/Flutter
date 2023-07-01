@@ -10,7 +10,7 @@ class NotesTextField extends StatelessWidget {
         return CustomTextField(
           key: ValueKey(state.actionItem?.id),
           initialValue: state.notes,
-          hintText: 'Notes about task',
+          hintText: 'Notes about action item',
           minLines: 3,
           height: null,
           maxLines: 100,

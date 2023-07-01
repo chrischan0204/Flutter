@@ -10,7 +10,7 @@ class ActionItemNameInputBox extends StatelessWidget {
         return CustomTextField(
           key: ValueKey(state.actionItem?.id),
           initialValue: state.name,
-          hintText: 'Task Description',
+          hintText: 'Action Item Description',
           onChanged: (name) { 
             context
                 .read<AddEditActionItemBloc>()

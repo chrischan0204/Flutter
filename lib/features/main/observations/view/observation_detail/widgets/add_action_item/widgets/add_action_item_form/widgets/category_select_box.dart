@@ -17,7 +17,7 @@ class CategorySelectField extends StatelessWidget {
             builder: (context, addActionItemState) {
               return CustomSingleSelect(
                 items: items,
-                hint: 'Select Observation Category',
+                hint: 'Select Awareness Category',
                 selectedValue:
                     observationDetailState.awarenessCategoryList.isEmpty
                         ? null

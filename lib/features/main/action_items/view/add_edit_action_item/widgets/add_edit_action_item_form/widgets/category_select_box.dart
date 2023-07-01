@@ -12,7 +12,7 @@ class CategorySelectField extends StatelessWidget {
             .map((category) => MapEntry(category.name ?? '', category)));
         return CustomSingleSelect(
           items: items,
-          hint: 'Select Observation Category',
+          hint: 'Select Awareness Category',
           selectedValue:
               state.awarenessCategoryList.isEmpty ? null : state.category?.name,
           onChanged: (category) {

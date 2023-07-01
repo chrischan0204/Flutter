@@ -46,8 +46,17 @@ class QuestionListHeaderView extends StatelessWidget {
                           ));
                     }
                   } else {
-                    context.read<AuditQuestionsBloc>().add(AuditQuestionsCopied(
-                        sectionId: state.selectedSection.id));
+                    if (state.auditQuestionList.isNotEmpty) {
+                      context.read<AuditQuestionsBloc>().add(AuditSectionCopied(
+                          sectionId: state.selectedSection.id));
+                    } else {
+                      CustomNotification(
+                        context: context,
+                        notifyType: NotifyType.info,
+                        content:
+                            'The template section was not found or the section does not contain any questions.',
+                      ).showNotification();
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

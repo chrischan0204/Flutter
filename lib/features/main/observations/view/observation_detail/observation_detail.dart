@@ -39,8 +39,6 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
       ..add(ObservationDetailAwarenessCategoryListLoaded())
       ..add(ObservationDetailObservationTypeListLoaded())
       ..add(ObservationDetailPriorityLevelListLoaded())
-      ..add(ObservationDetailCompanyListLoaded())
-      ..add(ObservationDetailProjectListLoaded())
       ..add(ObservationDetailSiteListLoaded())
       ..add(ObservationDetailUserListLoaded());
     super.initState();
@@ -89,6 +87,7 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
           crudStatus: state.observationDeleteStatus,
           isDeletable: false,
           isEditable: false,
+          isShowName: false,
           customDetailWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

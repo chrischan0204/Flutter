@@ -7,21 +7,19 @@ class AddEditActionItemBloc
     extends Bloc<AddEditActionItemEvent, AddEditActionItemState> {
   final BuildContext context;
   late SitesRepository _sitesRepository;
-  late ProjectsRepository _projectsRepository;
   late AwarenessCategoriesRepository _awarenessCategoriesRepository;
-  late CompaniesRepository _companiesRepository;
   late UsersRepository _usersRepository;
   late ActionItemsRepository _actionItemsRepository;
   late FormDirtyBloc _formDirtyBloc;
+  late AuthBloc _authBloc;
   AddEditActionItemBloc(this.context) : super(const AddEditActionItemState()) {
     _sitesRepository = RepositoryProvider.of(context);
-    _projectsRepository = RepositoryProvider.of(context);
     _awarenessCategoriesRepository = RepositoryProvider.of(context);
-    _companiesRepository = RepositoryProvider.of(context);
     _usersRepository = RepositoryProvider.of(context);
     _actionItemsRepository = RepositoryProvider.of(context);
 
     _formDirtyBloc = context.read();
+    _authBloc = context.read();
 
     on<AddEditActionItemCompanyListLoaded>(
         _onAddEditActionItemCompanyListLoaded);
@@ -51,51 +49,68 @@ class AddEditActionItemBloc
     AddEditActionItemAwarenessCategoryListLoaded event,
     Emitter<AddEditActionItemState> emit,
   ) async {
-    List<AwarenessCategory> awarenessCategoryList =
-        await _awarenessCategoriesRepository.getAwarenessCategorieList();
+    try {
+      List<AwarenessCategory> awarenessCategoryList =
+          await _awarenessCategoriesRepository.getAwarenessCategorieList();
 
-    emit(state.copyWith(awarenessCategoryList: awarenessCategoryList));
-    try {} catch (e) {}
+      emit(state.copyWith(awarenessCategoryList: awarenessCategoryList));
+    } catch (e) {}
   }
 
   Future<void> _onAddEditActionItemSiteListLoaded(
     AddEditActionItemSiteListLoaded event,
     Emitter<AddEditActionItemState> emit,
   ) async {
-    List<Site> siteList = await _sitesRepository.getSiteList();
+    try {
+      List<UserSite> siteList = await _usersRepository
+          .getSiteListForUser(_authBloc.state.authUser!.id);
 
-    emit(state.copyWith(siteList: siteList));
-    try {} catch (e) {}
+      emit(state.copyWith(
+          siteList: siteList
+              .map((e) => Site(
+                    id: e.siteId,
+                    name: e.siteName,
+                  ))
+              .toList()));
+    } catch (e) {}
   }
 
   Future<void> _onAddEditActionItemCompanyListLoaded(
     AddEditActionItemCompanyListLoaded event,
     Emitter<AddEditActionItemState> emit,
   ) async {
-    List<Company> companyList = await _companiesRepository.getCompanyList();
+    try {
+      List<CompanySite> companyList =
+          await _sitesRepository.getCompanyListForSite(event.siteId);
 
-    emit(state.copyWith(companyList: companyList));
-    try {} catch (e) {}
+      emit(state.copyWith(
+          companyList: companyList
+              .map((e) => Company(id: e.companyId, name: e.companyName))
+              .toList()));
+    } catch (e) {}
   }
 
   Future<void> _onAddEditActionItemProjectListLoaded(
     AddEditActionItemProjectListLoaded event,
     Emitter<AddEditActionItemState> emit,
   ) async {
-    List<Project> projectList = await _projectsRepository.getProjectList();
+    try {
+      List<Project> projectList =
+          await _sitesRepository.getProjectListForSite(event.siteId);
 
-    emit(state.copyWith(projectList: projectList));
-    try {} catch (e) {}
+      emit(state.copyWith(projectList: projectList));
+    } catch (e) {}
   }
 
   Future<void> _onAddEditActionItemUserListLoaded(
     AddEditActionItemUserListLoaded event,
     Emitter<AddEditActionItemState> emit,
   ) async {
-    List<User> userList = await _usersRepository.getUserList();
+    try {
+      List<User> userList = await _usersRepository.getUserList();
 
-    emit(state.copyWith(userList: userList));
-    try {} catch (e) {}
+      emit(state.copyWith(userList: userList));
+    } catch (e) {}
   }
 
   void _onAddEditActionItemNameChanged(
@@ -118,6 +133,9 @@ class AddEditActionItemBloc
       site: Nullable.value(event.site),
       siteValidationMessage: '',
     ));
+
+    add(AddEditActionItemProjectListLoaded(siteId: event.site.id!));
+    add(AddEditActionItemCompanyListLoaded(siteId: event.site.id!));
 
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
@@ -193,6 +211,7 @@ class AddEditActionItemBloc
     Emitter<AddEditActionItemState> emit,
   ) async {
     if (_validate(emit)) {
+      emit(state.copyWith(status: EntityStatus.loading));
       try {
         EntityResponse response =
             await _actionItemsRepository.addActionItem(state.actionItemCreate);

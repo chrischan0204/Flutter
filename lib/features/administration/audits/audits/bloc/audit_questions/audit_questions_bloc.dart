@@ -19,7 +19,8 @@ class AuditQuestionsBloc
     on<AuditQuestionsSelectedAuditSectionChanged>(
         _onAuditQuestionsSelectedAuditSectionChanged);
     on<AuditQuestionsIncludedChanged>(_onAuditQuestionsIncludedChanged);
-    on<AuditQuestionsCopied>(_onAuditQuestionsCopied);
+    on<AuditQuestionCopied>(_onAuditQuestionCopied);
+    on<AuditSectionCopied>(_onAuditSectionCopied);
     on<AuditQuestionsAuditQuestionListLoaded>(
         _onAuditQuestionsAuditQuestionListLoaded);
     on<AuditQuestionsSectionIncludedChanged>(
@@ -112,26 +113,29 @@ class AuditQuestionsBloc
     } catch (e) {}
   }
 
-  Future<void> _onAuditQuestionsCopied(
-      AuditQuestionsCopied event, Emitter<AuditQuestionsState> emit) async {
+  Future<void> _onAuditQuestionCopied(
+      AuditQuestionCopied event, Emitter<AuditQuestionsState> emit) async {
+    emit(state.copyWith(status: EntityStatus.loading));
+
+    EntityResponse response =
+        await auditsRepository.copyQuestion(auditId, event.questionId);
+
+    if (response.isSuccess) {
+      add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
+      add(AuditQuestionsAuditQuestionListLoaded());
+    }
+  }
+
+  Future<void> _onAuditSectionCopied(
+      AuditSectionCopied event, Emitter<AuditQuestionsState> emit) async {
     emit(state.copyWith(status: EntityStatus.loading));
 
     EntityResponse response =
         await auditsRepository.copySection(auditId, event.sectionId);
 
     if (response.isSuccess) {
-      emit(state.copyWith(
-        status: EntityStatus.success,
-        message: response.message,
-      ));
+      add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
+      add(AuditQuestionsAuditQuestionListLoaded());
     }
-
-    // if (response.isSuccess) {
-    //   for (final question in state.auditQuestionList) {
-    //     if (question.isNew) {
-    //       await auditsRepository.copyQuestion(auditId, question.id);
-    //     }
-    //   }
-    // }
   }
 }
