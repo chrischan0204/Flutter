@@ -24,26 +24,32 @@ class ActionItemView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: IconButton(
-                  onPressed: () => context
-                      .read<AddActionItemBloc>()
-                      .add(AddActionItemDetailShown(actionItem: actionItem)),
-                  icon: Icon(
-                    PhosphorIcons.regular.appWindow,
-                    color: purpleColor,
-                    size: 14,
+                child: Tooltip(
+                  message: 'Action Item Details',
+                  child: IconButton(
+                    onPressed: () => context
+                        .read<AddActionItemBloc>()
+                        .add(AddActionItemDetailShown(actionItem: actionItem)),
+                    icon: Icon(
+                      PhosphorIcons.regular.appWindow,
+                      color: purpleColor,
+                      size: 14,
+                    ),
                   ),
                 ),
               ),
               Expanded(
-                child: IconButton(
-                  onPressed: () => context
-                      .read<AddActionItemBloc>()
-                      .add(AddActionItemDetailEdited(actionItem: actionItem)),
-                  icon: Icon(
-                    PhosphorIcons.regular.wrench,
-                    color: warnColor,
-                    size: 14,
+                child: Tooltip(
+                  message: 'Edit Action Item',
+                  child: IconButton(
+                    onPressed: () => context
+                        .read<AddActionItemBloc>()
+                        .add(AddActionItemDetailEdited(actionItem: actionItem)),
+                    icon: Icon(
+                      PhosphorIcons.regular.wrench,
+                      color: warnColor,
+                      size: 14,
+                    ),
                   ),
                 ),
               ),

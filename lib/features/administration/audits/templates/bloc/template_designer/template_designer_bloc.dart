@@ -242,7 +242,7 @@ class TemplateDesignerBloc
                   itemTypeId: 2,
                   templateSectionId: state.selectedTemplateSection!.id,
                   responseScaleId: event.responseScaleId,
-                  response: e,
+                  response: e.copyWith(responseScaleItemId: e.id, id: const Nullable.value(null),),
                 );
               }).toList());
           break;
@@ -268,7 +268,7 @@ class TemplateDesignerBloc
                                                 .selectedTemplateSection!.id,
                                             responseScaleId:
                                                 event.responseScaleId,
-                                            response: e,
+                                           response: e.copyWith(responseScaleItemId: e.id, id: const Nullable.value(null),),
                                           ))
                                       .toList())
                               : e)
@@ -312,7 +312,7 @@ class TemplateDesignerBloc
                                                                 responseScaleId:
                                                                     event
                                                                         .responseScaleId,
-                                                                response: e,
+                                                                response: e.copyWith(responseScaleItemId: e.id, id: const Nullable.value(null),),
                                                               ))
                                                           .toList())
                                               : child)
@@ -525,7 +525,8 @@ class TemplateDesignerBloc
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             children: children
-                .map((e) => e.id == event.templateSectionItemId
+                .map((e) => e.response?.responseScaleItemId ==
+                        event.responseScaleItemId
                     ? e.copyWith(
                         response: Nullable.value(e.response
                             ?.copyWith(commentRequired: event.commentRequired)))
@@ -539,7 +540,8 @@ class TemplateDesignerBloc
                     children: x.children
                         .map((y) => y.copyWith(
                             children: y.children
-                                .map((e) => e.id == event.templateSectionItemId
+                                .map((e) => e.response?.responseScaleItemId ==
+                                        event.responseScaleItemId
                                     ? e.copyWith(
                                         response: Nullable.value(e.response
                                             ?.copyWith(
@@ -561,10 +563,10 @@ class TemplateDesignerBloc
                                     children: z.children
                                         .map((child) => child.copyWith(
                                             children: child.children
-                                                .map((e) => e.id == event.templateSectionItemId
-                                                    ? e.copyWith(
-                                                        response:
-                                                            Nullable.value(e.response?.copyWith(commentRequired: event.commentRequired)))
+                                                .map((e) => e.response
+                                                            ?.responseScaleItemId ==
+                                                        event.responseScaleItemId
+                                                    ? e.copyWith(response: Nullable.value(e.response?.copyWith(commentRequired: event.commentRequired)))
                                                     : e)
                                                 .toList()))
                                         .toList()))
@@ -593,11 +595,12 @@ class TemplateDesignerBloc
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             children: children
-                .map((e) => e.id == event.templateSectionItemId
-                    ? e.copyWith(
-                        response: Nullable.value(e.response?.copyWith(
-                            actionItemRequired: event.actionItemRequired)))
-                    : e)
+                .map((e) =>
+                    e.response?.responseScaleItemId == event.responseScaleItemId
+                        ? e.copyWith(
+                            response: Nullable.value(e.response?.copyWith(
+                                actionItemRequired: event.actionItemRequired)))
+                        : e)
                 .toList());
         break;
       case 1:
@@ -607,7 +610,8 @@ class TemplateDesignerBloc
                     children: x.children
                         .map((y) => y.copyWith(
                             children: y.children
-                                .map((e) => e.id == event.templateSectionItemId
+                                .map((e) => e.response?.responseScaleItemId ==
+                                        event.responseScaleItemId
                                     ? e.copyWith(
                                         response: Nullable.value(e.response
                                             ?.copyWith(
@@ -629,10 +633,10 @@ class TemplateDesignerBloc
                                     children: z.children
                                         .map((child) => child.copyWith(
                                             children: child.children
-                                                .map((e) => e.id == event.templateSectionItemId
-                                                    ? e.copyWith(
-                                                        response:
-                                                            Nullable.value(e.response?.copyWith(actionItemRequired: event.actionItemRequired)))
+                                                .map((e) => e.response
+                                                            ?.responseScaleItemId ==
+                                                        event.responseScaleItemId
+                                                    ? e.copyWith(response: Nullable.value(e.response?.copyWith(actionItemRequired: event.actionItemRequired)))
                                                     : e)
                                                 .toList()))
                                         .toList()))
@@ -661,11 +665,12 @@ class TemplateDesignerBloc
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             children: children
-                .map((e) => e.id == event.templateSectionItemId
-                    ? e.copyWith(
-                        response: Nullable.value(e.response?.copyWith(
-                            followUpRequired: event.followUpRequired)))
-                    : e)
+                .map((e) =>
+                    e.response?.responseScaleItemId == event.responseScaleItemId
+                        ? e.copyWith(
+                            response: Nullable.value(e.response?.copyWith(
+                                followUpRequired: event.followUpRequired)))
+                        : e)
                 .toList());
         break;
       case 1:
@@ -675,7 +680,8 @@ class TemplateDesignerBloc
                     children: x.children
                         .map((y) => y.copyWith(
                             children: y.children
-                                .map((e) => e.id == event.templateSectionItemId
+                                .map((e) => e.response?.responseScaleItemId ==
+                                        event.responseScaleItemId
                                     ? e.copyWith(
                                         response: Nullable.value(e.response
                                             ?.copyWith(
@@ -697,10 +703,10 @@ class TemplateDesignerBloc
                                     children: z.children
                                         .map((child) => child.copyWith(
                                             children: child.children
-                                                .map((e) => e.id == event.templateSectionItemId
-                                                    ? e.copyWith(
-                                                        response:
-                                                            Nullable.value(e.response?.copyWith(followUpRequired: event.followUpRequired)))
+                                                .map((e) => e.response
+                                                            ?.responseScaleItemId ==
+                                                        event.responseScaleItemId
+                                                    ? e.copyWith(response: Nullable.value(e.response?.copyWith(followUpRequired: event.followUpRequired)))
                                                     : e)
                                                 .toList()))
                                         .toList()))
@@ -729,11 +735,12 @@ class TemplateDesignerBloc
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             children: children
-                .map((e) => e.id == event.templateSectionItemId
-                    ? e.copyWith(
-                        response: Nullable.value(
-                            e.response?.copyWith(score: event.score)))
-                    : e)
+                .map((e) =>
+                    e.response?.responseScaleItemId == event.responseScaleItemId
+                        ? e.copyWith(
+                            response: Nullable.value(
+                                e.response?.copyWith(score: event.score)))
+                        : e)
                 .toList());
         break;
       case 1:
@@ -743,7 +750,8 @@ class TemplateDesignerBloc
                     children: x.children
                         .map((y) => y.copyWith(
                             children: y.children
-                                .map((e) => e.id == event.templateSectionItemId
+                                .map((e) => e.response?.responseScaleItemId ==
+                                        event.responseScaleItemId
                                     ? e.copyWith(
                                         response: Nullable.value(e.response
                                             ?.copyWith(score: event.score)))
@@ -763,10 +771,10 @@ class TemplateDesignerBloc
                                     children: z.children
                                         .map((child) => child.copyWith(
                                             children: child.children
-                                                .map((e) => e.id == event.templateSectionItemId
-                                                    ? e.copyWith(
-                                                        response:
-                                                            Nullable.value(e.response?.copyWith(score: event.score)))
+                                                .map((e) => e.response
+                                                            ?.responseScaleItemId ==
+                                                        event.responseScaleItemId
+                                                    ? e.copyWith(response: Nullable.value(e.response?.copyWith(score: event.score)))
                                                     : e)
                                                 .toList()))
                                         .toList()))
@@ -794,11 +802,12 @@ class TemplateDesignerBloc
       case 0:
         newTemplateSection = state.templateSectionItem!.copyWith(
             children: children
-                .map((e) => e.id == event.templateSectionItemId
-                    ? e.copyWith(
-                        response: Nullable.value(
-                            e.response?.copyWith(included: event.include)))
-                    : e)
+                .map((e) =>
+                    e.response?.responseScaleItemId == event.responseScaleItemId
+                        ? e.copyWith(
+                            response: Nullable.value(
+                                e.response?.copyWith(included: event.include)))
+                        : e)
                 .toList());
         break;
       case 1:
@@ -808,7 +817,8 @@ class TemplateDesignerBloc
                     children: x.children
                         .map((y) => y.copyWith(
                             children: y.children
-                                .map((e) => e.id == event.templateSectionItemId
+                                .map((e) => e.response?.responseScaleItemId ==
+                                        event.responseScaleItemId
                                     ? e.copyWith(
                                         response: Nullable.value(e.response
                                             ?.copyWith(
@@ -829,10 +839,10 @@ class TemplateDesignerBloc
                                     children: z.children
                                         .map((child) => child.copyWith(
                                             children: child.children
-                                                .map((e) => e.id == event.templateSectionItemId
-                                                    ? e.copyWith(
-                                                        response:
-                                                            Nullable.value(e.response?.copyWith(included: event.include)))
+                                                .map((e) => e.response
+                                                            ?.responseScaleItemId ==
+                                                        event.responseScaleItemId
+                                                    ? e.copyWith(response: Nullable.value(e.response?.copyWith(included: event.include)))
                                                     : e)
                                                 .toList()))
                                         .toList()))
@@ -1051,6 +1061,13 @@ class TemplateDesignerBloc
           await _responseScalesRepository
               .getResponseScaleItemList(responseScaleId);
 
+      responseScaleItemList = responseScaleItemList
+          .map((e) => e.copyWith(
+                id: const Nullable.value(null),
+                responseScaleItemId: e.id,
+              ))
+          .toList();
+
       for (final responseScaleItem in event.question.responseScaleItems) {
         int index = responseScaleItemList
             .indexWhere((element) => element.name == responseScaleItem.name);
@@ -1117,6 +1134,8 @@ class TemplateDesignerBloc
           await _responseScalesRepository
               .getResponseScaleItemList(followUpQuestion.responseScaleId);
 
+              responseScaleItemList = responseScaleItemList.map((e) => e.copyWith(id: const Nullable.value(null), responseScaleItemId: e.id)).toList();
+
       for (final responseScaleItem in followUpQuestion.responseScaleItems) {
         int index = responseScaleItemList
             .indexWhere((element) => element.name == responseScaleItem.name);
@@ -1176,8 +1195,7 @@ class TemplateDesignerBloc
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
             initialTemplateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel1TemplateSectionItemId:
-                followUpQuestion.id,
+            currentLevel1TemplateSectionItemId: followUpQuestion.id,
             selectedResponseScaleId:
                 Nullable.value(followUpQuestion.responseScaleId),
           ));
@@ -1210,7 +1228,8 @@ class TemplateDesignerBloc
                                                           .responseScaleId,
                                                   question: Nullable.value(
                                                     e.question?.copyWith(
-                                                      id: followUpQuestion.questionId,
+                                                      id: followUpQuestion
+                                                          .questionId,
                                                       name: followUpQuestion
                                                           .title,
                                                       responseScaleId:
@@ -1251,8 +1270,7 @@ class TemplateDesignerBloc
           emit(state.copyWith(
             templateSectionItem: Nullable.value(newTemplateSection),
             initialTemplateSectionItem: Nullable.value(newTemplateSection),
-            currentLevel2TemplateSectionItemId:
-                followUpQuestion.id,
+            currentLevel2TemplateSectionItemId: followUpQuestion.id,
             selectedResponseScaleId:
                 Nullable.value(followUpQuestion.responseScaleId),
           ));

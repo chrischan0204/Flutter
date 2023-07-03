@@ -25,7 +25,8 @@ class ResponseScaleItemView extends StatelessWidget {
                   .read<TemplateDesignerBloc>()
                   .add(TemplateDesignerIncludedChanged(
                     include: value!,
-                    templateSectionItemId: templateSectionItem.id!,
+                    responseScaleItemId:
+                        templateSectionItem.response!.responseScaleItemId!,
                   )),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
         ),
@@ -58,7 +59,8 @@ class ResponseScaleItemView extends StatelessWidget {
                     .read<TemplateDesignerBloc>()
                     .add(TemplateDesignerScoreChanged(
                       score: double.parse(value),
-                      templateSectionItemId: templateSectionItem.id!,
+                      responseScaleItemId:
+                          templateSectionItem.response!.responseScaleItemId!,
                     )),
               ),
             ),
@@ -77,7 +79,7 @@ class ResponseScaleItemView extends StatelessWidget {
             .read<TemplateDesignerBloc>()
             .add(TemplateDesignerCommentRequiredChanged(
               commentRequired: commentRequired,
-              templateSectionItemId: templateSectionItem.id!,
+              responseScaleItemId: templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
         active: templateSectionItem.response?.commentRequired ?? false,
@@ -91,7 +93,7 @@ class ResponseScaleItemView extends StatelessWidget {
             .read<TemplateDesignerBloc>()
             .add(TemplateDesignerActionItemChanged(
               actionItemRequired: actionItemRequired,
-              templateSectionItemId: templateSectionItem.id!,
+              responseScaleItemId: templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
         active: templateSectionItem.response?.actionItemRequired ?? false,
@@ -106,7 +108,7 @@ class ResponseScaleItemView extends StatelessWidget {
             .read<TemplateDesignerBloc>()
             .add(TemplateDesignerFollowUpRequiredChanged(
               followUpRequired: followUpRequired,
-              templateSectionItemId: templateSectionItem.id!,
+              responseScaleItemId: templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
         title: 'Follow up',

@@ -34,7 +34,7 @@ class QuestionItemView extends StatelessWidget {
             ],
           ),
           trailing: Text(
-            '${question.maxScore} + ${question.questionScorePoint}',
+            '${question.questionScore} + ${question.maxScore - question.questionScore}',
             style: const TextStyle(fontSize: 14),
           ),
         ),

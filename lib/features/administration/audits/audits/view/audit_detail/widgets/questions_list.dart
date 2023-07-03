@@ -85,13 +85,17 @@ class AuditQuestionDataSource extends DataGridSource {
         .map((auditQuestion) => DataGridRow(
               cells: [
                 DataGridCell(
-                    columnName: columns[0], value: auditQuestion.questionScore),
+                    columnName: columns[0],
+                    value:
+                        '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
                 DataGridCell(
                     columnName: columns[1], value: auditQuestion.question),
                 DataGridCell(
-                    columnName: columns[2], value: auditQuestion.responseScaleName),
+                    columnName: columns[2],
+                    value: auditQuestion.responseScaleName),
                 DataGridCell(
-                    columnName: columns[3], value: !(auditQuestion.questionStatus == 0)),
+                    columnName: columns[3],
+                    value: !(auditQuestion.questionStatus == 0)),
               ],
             ))
         .toList();

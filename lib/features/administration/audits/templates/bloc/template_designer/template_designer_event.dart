@@ -108,76 +108,76 @@ class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
 
 class TemplateDesignerCommentRequiredChanged extends TemplateDesignerEvent {
   final bool commentRequired;
-  final String templateSectionItemId;
+  final String responseScaleItemId;
   const TemplateDesignerCommentRequiredChanged({
     required this.commentRequired,
-    required this.templateSectionItemId,
+    required this.responseScaleItemId,
   });
 
   @override
   List<Object> get props => [
         commentRequired,
-        templateSectionItemId,
+        responseScaleItemId,
       ];
 }
 
 class TemplateDesignerActionItemChanged extends TemplateDesignerEvent {
   final bool actionItemRequired;
-  final String templateSectionItemId;
+  final String responseScaleItemId;
   const TemplateDesignerActionItemChanged({
     required this.actionItemRequired,
-    required this.templateSectionItemId,
+    required this.responseScaleItemId,
   });
 
   @override
   List<Object> get props => [
         actionItemRequired,
-        templateSectionItemId,
+        responseScaleItemId,
       ];
 }
 
 class TemplateDesignerFollowUpRequiredChanged extends TemplateDesignerEvent {
   final bool followUpRequired;
-  final String templateSectionItemId;
+  final String responseScaleItemId;
   const TemplateDesignerFollowUpRequiredChanged({
     required this.followUpRequired,
-    required this.templateSectionItemId,
+    required this.responseScaleItemId,
   });
 
   @override
   List<Object> get props => [
         followUpRequired,
-        templateSectionItemId,
+        responseScaleItemId,
       ];
 }
 
 class TemplateDesignerScoreChanged extends TemplateDesignerEvent {
   final double score;
-  final String templateSectionItemId;
+  final String responseScaleItemId;
   const TemplateDesignerScoreChanged({
     required this.score,
-    required this.templateSectionItemId,
+    required this.responseScaleItemId,
   });
 
   @override
   List<Object> get props => [
         score,
-        templateSectionItemId,
+        responseScaleItemId,
       ];
 }
 
 class TemplateDesignerIncludedChanged extends TemplateDesignerEvent {
   final bool include;
-  final String templateSectionItemId;
+  final String responseScaleItemId;
   const TemplateDesignerIncludedChanged({
     required this.include,
-    required this.templateSectionItemId,
+    required this.responseScaleItemId,
   });
 
   @override
   List<Object> get props => [
         include,
-        templateSectionItemId,
+        responseScaleItemId,
       ];
 }
 
