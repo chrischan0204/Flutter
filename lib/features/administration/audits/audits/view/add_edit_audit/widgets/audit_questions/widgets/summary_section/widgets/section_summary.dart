@@ -35,7 +35,6 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
           .map(
             (column) => column == 'Section'
                 ? GridColumn(
-                    // width: ,
                     columnName: column,
                     label: Container(
                       alignment: Alignment.centerLeft,
@@ -49,6 +48,7 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
                     ),
                   )
                 : GridColumn(
+                    width: 120,
                     columnName: column,
                     label: Container(
                       alignment: Alignment.centerLeft,
@@ -82,7 +82,7 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
                 auditSectionAndQuestionList: state.auditSectionAndQuestionList,
                 columns: columns,
               ),
-              columnWidthMode: ColumnWidthMode.lastColumnFill,
+              columnWidthMode: ColumnWidthMode.fill,
               columnResizeMode: ColumnResizeMode.onResize,
               allowColumnsResizing: true,
               gridLinesVisibility: GridLinesVisibility.none,

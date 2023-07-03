@@ -26,7 +26,7 @@ class _ByQuestionCountViewState extends State<ByMaxPointsView> {
     return BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
       builder: (context, state) {
         return SfCircularChart(
-          title: ChartTitle(text: 'By max count'),
+          title: ChartTitle(text: 'By max score'),
           series: _getDefaultPieSeries(state.templateSnapshotList),
           tooltipBehavior: _tooltipBehavior,
         );

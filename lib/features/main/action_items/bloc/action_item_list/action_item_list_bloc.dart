@@ -42,25 +42,20 @@ class ActionItemListBloc
     emit(state.copyWith(actionItemListLoadStatus: EntityStatus.loading));
 
     try {
-      final actionItemList = await _actionItemsRepository.getActionItemList();
+      
+      final filteredactionItemData =
+          await _actionItemsRepository.getFilteredActionItemList(event.option);
+      final List<String> columns = List.from(filteredactionItemData.headers
+          .where((e) => !e.isHidden)
+          .map((e) => e.title));
 
       emit(state.copyWith(
-        actionItemList: actionItemList,
+        actionItemList: filteredactionItemData.data
+            .map((e) => e.actionItem.copyWith(columns: columns))
+            .toList(),
         actionItemListLoadStatus: EntityStatus.success,
+        totalRows: filteredactionItemData.totalRows,
       ));
-      // final filteredactionItemData =
-      //     await _actionItemsRepository.getFilteredActionItemList(event.option);
-      // final List<String> columns = List.from(filteredactionItemData.headers
-      //     .where((e) => !e.isHidden)
-      //     .map((e) => e.title));
-
-      // emit(state.copyWith(
-      //   actionItemList: filteredactionItemData.data
-      //       .map((e) => e.actionItem.copyWith(columns: columns))
-      //       .toList(),
-      //   actionItemListLoadStatus: EntityStatus.success,
-      //   totalRows: filteredactionItemData.totalRows,
-      // ));
     } catch (e) {
       print(e);
       emit(state.copyWith(actionItemListLoadStatus: EntityStatus.failure));

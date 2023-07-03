@@ -24,11 +24,13 @@ class QuestionItemView extends StatelessWidget {
                 color: primaryColor,
               ),
               spacerx10,
-              Text(
-                question.title,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: primaryColor,
+              Expanded(
+                child: Text(
+                  question.title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: primaryColor,
+                  ),
                 ),
               ),
             ],

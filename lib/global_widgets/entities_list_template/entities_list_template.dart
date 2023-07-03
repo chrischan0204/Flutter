@@ -179,27 +179,27 @@ class _CrudState extends State<EntityListTemplate> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            // vertical: 10,
-          ),
+          padding: insetx15,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.title,
-                    style: textSemiBold18,
-                  ),
-                  const SizedBox(width: 10),
-                  if (widget.description.isNotEmpty)
-                    Description(description: widget.description)
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: textSemiBold18,
+                    ),
+                    const SizedBox(width: 10),
+                    if (widget.description.isNotEmpty)
+                      Description(description: widget.description)
+                  ],
+                ),
               ),
+              spacerx20,
               CustomButton(
                 backgroundColor: warnColor,
                 hoverBackgroundColor: warnHoverColor,

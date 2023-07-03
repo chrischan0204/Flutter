@@ -72,11 +72,11 @@ class AuditQuestionDataSource extends DataGridSource {
                   'included': auditQuestion.questionIncluded,
                 }),
                 DataGridCell(
-                    columnName: columns[1],
+                    columnName: columns[1], value: auditQuestion.question),
+                DataGridCell(
+                    columnName: columns[2],
                     value:
                         '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
-                DataGridCell(
-                    columnName: columns[2], value: auditQuestion.questionScore),
                 DataGridCell(columnName: columns[3], value: <String, bool>{
                   'status': !(auditQuestion.questionStatus == 0),
                   'isNew': auditQuestion.isNew,

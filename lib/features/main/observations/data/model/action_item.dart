@@ -16,7 +16,7 @@ enum ActionItemStatus {
 }
 
 class ActionItem extends Entity {
-  final DateTime dueBy;
+  final DateTime? dueBy;
   final String observationId;
   final String observationName;
   final String assigneeId;
@@ -29,10 +29,16 @@ class ActionItem extends Entity {
   final String projectName;
   final String area;
   final String notes;
+  final String source;
+  final String status;
+  final String actionRequired;
+  final String dueOn;
+  final String closedOn;
+  final String comments;
   const ActionItem({
     super.id,
     super.name,
-    required this.dueBy,
+    this.dueBy,
     this.assigneeId = '',
     this.assigneeName = '',
     this.awarenessCategoryId = '',
@@ -45,10 +51,19 @@ class ActionItem extends Entity {
     this.observationName = '',
     this.area = '',
     this.notes = '',
+    this.source = '',
+    this.status = '',
+    this.actionRequired = '',
+    this.dueOn = '',
+    this.closedOn = '',
+    this.comments = '',
     super.createdByUserName,
+    super.columns,
+    super.deleted,
   });
 
-  String get formatedDue => DateFormat('yyyy-MM-dd').format(dueBy);
+  String get formatedDue =>
+      dueBy != null ? DateFormat('yyyy-MM-dd').format(dueBy!) : '--';
 
   @override
   List<Object?> get props => [
@@ -60,6 +75,12 @@ class ActionItem extends Entity {
         projectName,
         area,
         notes,
+        source,
+        status,
+        actionRequired,
+        dueOn,
+        closedOn,
+        comments,
       ];
 
   @override
@@ -67,7 +88,7 @@ class ActionItem extends Entity {
     return <String, dynamic>{
       'id': id,
       'description': name,
-      'dueBy': dueBy.millisecondsSinceEpoch,
+      'dueBy': dueBy?.toIso8601String(),
       'observationId': observationId,
       'observationName': observationName,
       'assigneeId': assigneeId,
@@ -86,12 +107,17 @@ class ActionItem extends Entity {
   @override
   Map<String, dynamic> tableItemsToMap() {
     return <String, dynamic>{
-      'Status': '',
-      'Source': '',
+      'Status': status,
+      'Source': source,
+      'Action required': actionRequired,
       'Created By': createdByUserName,
+      'Due on': dueOn,
+      'Closed on': closedOn,
       'Assignee': assigneeName,
       'Category': awarenessCategoryName,
-      'Site': '',
+      'Comments': comments,
+      'Company': companyName,
+      'Location': area,
       'Project': projectName,
     };
   }
@@ -102,7 +128,6 @@ class ActionItem extends Entity {
       'Item': name,
       'Due': formatedDue,
       'Assignee': assigneeName,
-      'Site': '',
       'Parent': '',
       'Category': awarenessCategoryName,
       'Company': companyName,
@@ -130,6 +155,8 @@ class ActionItem extends Entity {
       projectName: map['projectName'] ?? '',
       area: map['area'] ?? '',
       notes: map['notes'] ?? '',
+      status: map['status'] ?? '',
+      source: map['source'] ?? '',
       createdByUserName: entity.createdByUserName,
     );
   }
@@ -138,4 +165,54 @@ class ActionItem extends Entity {
 
   factory ActionItem.fromJson(String source) =>
       ActionItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  ActionItem copyWith({
+    String? id,
+    String? status,
+    String? source,
+    String? assigneeId,
+    String? assigneeName,
+    String? actionRequired,
+    String? dueOn,
+    String? closedOn,
+    String? awarenessCategoryName,
+    String? awarenessCategoryId,
+    String? observationName,
+    String? observationId,
+    String? comments,
+    String? companyName,
+    String? companyId,
+    String? area,
+    String? projectId,
+    String? projectName,
+    String? createdByUserName,
+    String? lastModifiedOn,
+    String? lastModifiedByUserName,
+    bool? deleted,
+    List<String>? columns,
+  }) {
+    return ActionItem(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      source: source ?? this.source,
+      assigneeId: assigneeId ?? this.assigneeId,
+      assigneeName: assigneeName ?? this.assigneeName,
+      actionRequired: actionRequired ?? this.actionRequired,
+      dueOn: dueOn ?? this.dueOn,
+      closedOn: closedOn ?? this.closedOn,
+      companyName: companyName ?? this.companyName,
+      companyId: companyId ?? this.companyId,
+      awarenessCategoryId: awarenessCategoryId ?? this.awarenessCategoryId,
+      awarenessCategoryName:
+          awarenessCategoryName ?? this.awarenessCategoryName,
+      observationId: observationId ?? this.observationId,
+      observationName: observationName ?? this.observationName,
+      comments: comments ?? this.comments,
+      area: area ?? this.area,
+      projectName: area ?? this.projectName,
+      createdByUserName: createdByUserName ?? this.createdByUserName,
+      deleted: deleted ?? this.deleted,
+      columns: columns ?? this.columns,
+    );
+  }
 }

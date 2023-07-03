@@ -40,6 +40,9 @@ class TemplateDesignerState extends Equatable {
   /// question id to edit question
   final String? selectedQuestionId;
 
+  /// store the loaded id
+  final List<String> loadedTemplateSectionItemIdList;
+
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -64,6 +67,7 @@ class TemplateDesignerState extends Equatable {
     this.selectedResponseScaleId,
     this.templateQuestionList = const [],
     this.selectedQuestionId,
+    this.loadedTemplateSectionItemIdList = const [],
   });
 
   ResponseScale? get selectedResponseScaleItem => responseScaleList
@@ -282,6 +286,7 @@ class TemplateDesignerState extends Equatable {
     EntityStatus? questionDetailLoadStatus,
     Nullable<String?>? selectedResponseScaleId,
     List<TemplateQuestion>? templateQuestionList,
+    List<String>? loadedTemplateSectionItemIdList,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -325,6 +330,8 @@ class TemplateDesignerState extends Equatable {
           ? selectedResponseScaleId.value
           : this.selectedResponseScaleId,
       templateQuestionList: templateQuestionList ?? this.templateQuestionList,
+      loadedTemplateSectionItemIdList: loadedTemplateSectionItemIdList ??
+          this.loadedTemplateSectionItemIdList,
     );
   }
 }

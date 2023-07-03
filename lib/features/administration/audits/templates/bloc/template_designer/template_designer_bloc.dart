@@ -12,12 +12,15 @@ class TemplateDesignerBloc
   late ResponseScalesRepository _responseScalesRepository;
   late SectionsRepository _sectionsRepository;
   late FormDirtyBloc _formDirtyBloc;
+  late List<String> _loadedTemplateSectionItemIdList;
   TemplateDesignerBloc({required this.context})
       : super(const TemplateDesignerState()) {
     _templatesRepository = context.read();
     _responseScalesRepository = context.read();
     _sectionsRepository = context.read();
     _formDirtyBloc = context.read();
+
+_loadedTemplateSectionItemIdList = [];
 
     on<TemplateDesignerTemplateSectionListLoaded>(
         _onTemplateDesignerTemplateSectionListLoaded);
@@ -180,6 +183,8 @@ class TemplateDesignerBloc
       level: 0,
       selectedResponseScaleId: const Nullable.value(null),
     ));
+
+    _loadedTemplateSectionItemIdList = [];
 
     if (event.templateSection != null) {
       add(TemplateDesignerTemplateSectionItemQuestionListLoaded(
@@ -1123,9 +1128,15 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) async {
     try {
+      if (_loadedTemplateSectionItemIdList.contains(event.id)) {
+        return;
+      }
+
       List<TemplateSection> templateQuestionDetailList =
           await _templatesRepository.getTemplateQuestionDetailList(
               event.id, 2, state.selectedTemplateSection!.id);
+
+              _loadedTemplateSectionItemIdList.add(event.id);
 
       final followUpQuestion =
           templateQuestionDetailList[0].templateSectionItems[0];

@@ -15,19 +15,34 @@ class SectionSummaryView extends StatelessWidget {
     return [
       ...columns
           .map(
-            (column) => GridColumn(
-              columnName: column,
-              label: Container(
-                alignment: Alignment.centerLeft,
-                padding: insetx12,
-                child: Text(
-                  column,
-                  style: textSemiBold14.copyWith(color: primaryColor),
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
+            (column) => column == 'Section'
+                ? GridColumn(
+                    columnName: column,
+                    label: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: insetx12,
+                      child: Text(
+                        column,
+                        style: textSemiBold14.copyWith(color: primaryColor),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  )
+                : GridColumn(
+                    width: 100,
+                    columnName: column,
+                    label: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: insetx12,
+                      child: Text(
+                        column,
+                        style: textSemiBold14.copyWith(color: primaryColor),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
           )
           .toList(),
     ];
@@ -76,7 +91,9 @@ class AuditSectionDataSource extends DataGridSource {
     _entityData = auditSectionAndQuestionList
         .map((auditSection) => DataGridRow(
               cells: [
-                DataGridCell(columnName: columns[0], value: auditSection.auditSectionName),
+                DataGridCell(
+                    columnName: columns[0],
+                    value: auditSection.auditSectionName),
                 DataGridCell(
                     columnName: columns[1], value: auditSection.questions),
                 DataGridCell(

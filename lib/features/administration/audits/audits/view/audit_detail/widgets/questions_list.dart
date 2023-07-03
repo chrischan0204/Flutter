@@ -12,6 +12,8 @@ class QuestionsListView extends StatelessWidget {
     'Scale',
     'Status'
   ];
+
+  static List<double> columnWidth = [100, double.nan, double.nan, 120];
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -44,24 +46,24 @@ class QuestionsListView extends StatelessWidget {
                           state.selectedAuditSection!.auditQuestions,
                       columns: columnList,
                     ),
-                    columnWidthMode: ColumnWidthMode.lastColumnFill,
-                    columnResizeMode: ColumnResizeMode.onResize,
-                    allowColumnsResizing: true,
+                    columnWidthMode: ColumnWidthMode.fill,
                     gridLinesVisibility: GridLinesVisibility.none,
                     headerGridLinesVisibility: GridLinesVisibility.none,
                     headerRowHeight: 52,
                     rowHeight: 46,
-                    columns: columnList
-                        .map((e) => GridColumn(
-                            columnName: e,
+                    columns: [
+                      for (int i = 0; i < columnList.length; i++)
+                        GridColumn(
+                            width: columnWidth[i],
+                            columnName: columnList[i],
                             label: Padding(
                               padding: inset10,
                               child: Text(
-                                e,
+                                columnList[i],
                                 style: textSemiBold14,
                               ),
-                            )))
-                        .toList(),
+                            ))
+                    ],
                   ),
                 ),
               )

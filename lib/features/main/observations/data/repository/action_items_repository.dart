@@ -83,4 +83,15 @@ class ActionItemsRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  /// get filtered action item data
+  Future<FilteredActionItemData> getFilteredActionItemList(
+      FilteredTableParameter option) async {
+    Response response = await super.filter(option);
+
+    if (response.statusCode == 200) {
+      return FilteredActionItemData.fromJson(response.body);
+    }
+    throw Exception();
+  }
 }

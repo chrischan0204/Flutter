@@ -79,7 +79,8 @@ class ResponseScaleItemView extends StatelessWidget {
             .read<TemplateDesignerBloc>()
             .add(TemplateDesignerCommentRequiredChanged(
               commentRequired: commentRequired,
-              responseScaleItemId: templateSectionItem.response!.responseScaleItemId!,
+              responseScaleItemId:
+                  templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
         active: templateSectionItem.response?.commentRequired ?? false,
@@ -93,7 +94,8 @@ class ResponseScaleItemView extends StatelessWidget {
             .read<TemplateDesignerBloc>()
             .add(TemplateDesignerActionItemChanged(
               actionItemRequired: actionItemRequired,
-              responseScaleItemId: templateSectionItem.response!.responseScaleItemId!,
+              responseScaleItemId:
+                  templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
         active: templateSectionItem.response?.actionItemRequired ?? false,
@@ -108,7 +110,8 @@ class ResponseScaleItemView extends StatelessWidget {
             .read<TemplateDesignerBloc>()
             .add(TemplateDesignerFollowUpRequiredChanged(
               followUpRequired: followUpRequired,
-              responseScaleItemId: templateSectionItem.response!.responseScaleItemId!,
+              responseScaleItemId:
+                  templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
         title: 'Follow up',

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '/common_libraries.dart';
 
 class Description extends StatelessWidget {
   const Description({
@@ -11,14 +11,10 @@ class Description extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: insety12,
       child: Text(
         description,
-        style: const TextStyle(
-          fontFamily: 'OpenSans',
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-        ),
+        style: textSemiBold12,
       ),
     );
   }

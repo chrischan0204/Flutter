@@ -32,6 +32,11 @@ class QuestionsForSectionView extends StatelessWidget {
           const CustomDivider(),
           BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
             builder: (context, state) {
+              if (state.sectionItemQuestionListLoadStatus.isLoading) {
+                return const Center(
+                  child: Loader(),
+                );
+              }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,

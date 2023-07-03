@@ -51,7 +51,7 @@ class _ActionItemListState extends State<ActionItemListWidget> {
           return EntityListTemplate(
             title: pageTitle,
             label: pageLabel,
-            viewName: pageLabel,
+            viewName: 'actionItem',
             entities: state.actionItemList,
             showTableHeaderButtons: true,
             onRowClick: (selectedActionItem) =>
@@ -78,7 +78,7 @@ class _ActionItemListState extends State<ActionItemListWidget> {
             onPaginate: (pageNum, pageRow) {
               _filterActionItems(null, null, pageNum, pageRow);
             },
-            totalRows: 0,
+            totalRows: state.totalRows,
           );
         },
       ),
