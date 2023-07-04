@@ -26,8 +26,9 @@ class _ResponseScaleSelectFieldViewState
               state.responseScaleList.map((e) => MapEntry(e.name, e)));
           return CustomSingleSelect(
             hint: 'Select response scale',
-            key: ValueKey(state.currentTemplateSectionItemByLevel(state.level)?.id),
-            selectedValue: state.selectedResponseScaleItem?.name,
+            key: ValueKey(
+                state.currentTemplateSectionItemByLevel(state.level)?.id),
+            selectedValue: state.currentResponseScaleItem?.name,
             items: items,
             onChanged: (value) {
               context.read<TemplateDesignerBloc>().add(

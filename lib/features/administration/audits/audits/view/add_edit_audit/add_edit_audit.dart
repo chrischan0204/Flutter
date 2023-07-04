@@ -85,6 +85,9 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
           if (widget.auditId == null) {
             GoRouter.of(context)
                 .go('/audits/edit/${state.createdAuditId}?view=created');
+          } else {
+            GoRouter.of(context)
+                .go('/audits/edit/${widget.auditId}/approve_edit');
           }
         }
         if (state.status.isFailure) {

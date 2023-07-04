@@ -393,6 +393,18 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/audits/edit/:auditId/approve_edit',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: ApproveEditAuditView(
+            auditId: state.params['auditId']!,
+          ),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/audits/show/:auditId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

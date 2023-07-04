@@ -77,6 +77,13 @@ class TemplateDesignerState extends Equatable {
       : responseScaleList
           .firstWhere((element) => element.id == selectedResponseScaleId);
 
+  ResponseScale? get currentResponseScaleItem {
+    final id = currentTemplateSectionItemByLevel(level)?.responseScaleId;
+    return responseScaleList.indexWhere((element) => element.id == id) == -1
+        ? null
+        : responseScaleList.firstWhere((element) => element.id == id);
+  }
+
   TemplateSectionItem? currentTemplateSectionItemByLevel(int level) {
     switch (level) {
       case 0:

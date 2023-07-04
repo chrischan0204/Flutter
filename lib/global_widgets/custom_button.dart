@@ -69,9 +69,11 @@ class _CustomButtonState extends State<CustomButton> {
           padding: widget.padding,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(widget.borderRadius),
-            color: isHover || widget.disabled
+            color: isHover
                 ? widget.hoverBackgroundColor
-                : widget.backgroundColor,
+                : widget.disabled
+                    ? widget.hoverBackgroundColor.withAlpha(150)
+                    : widget.backgroundColor,
           ),
           child: widget.body ??
               Row(
