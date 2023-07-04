@@ -50,7 +50,7 @@ class TemplateResponseScaleItem extends Equatable {
     return <String, dynamic>{
       'id': id,
       'isRequired': isRequired,
-      'included': true,
+      'included': included,
       'name': name,
       'responseScaleItemId': responseScaleItemId,
       'score': score,

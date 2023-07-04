@@ -68,7 +68,10 @@ class TemplateSectionItem extends Equatable {
         MapEntry(
             'children',
             children
-                .where((element) => element.response?.included == true)
+                .where((element) =>
+                    element.response?.included == true ||
+                    (element.response?.included == false &&
+                        element.response?.id != null))
                 .map((e) => e.toMap())
                 .toList())
       ]);

@@ -23,21 +23,25 @@ class _PageShowNumberSelectFieldState extends State<PageShowNumberSelectField> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CustomSingleSelect(
-          width: 100,
-          isSearchable: false,
-          selectedValue: pagePerRow.toString(),
-          items: const {
-            '2': '2',
-            '5': '5',
-            '10': '10',
-            '20': '20',
-            '50': '50',
-            '100': '100',
-          },
-          onChanged: (value) {
-            setState(() => pagePerRow = int.parse(value.key));
-            widget.onPageRowChange(pagePerRow);
+        BlocBuilder<PaginationBloc, PaginationState>(
+          builder: (context, state) {
+            return CustomSingleSelect(
+              width: 100,
+              isSearchable: false,
+              selectedValue: state.rowsPerPage.toString(),
+              items: const {
+                '2': '2',
+                '5': '5',
+                '10': '10',
+                '20': '20',
+                '50': '50',
+                '100': '100',
+              },
+              onChanged: (value) {
+                setState(() => pagePerRow = int.parse(value.key));
+                widget.onPageRowChange(pagePerRow);
+              },
+            );
           },
         ),
         const SizedBox(width: 20),
