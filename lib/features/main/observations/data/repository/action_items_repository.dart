@@ -94,4 +94,16 @@ class ActionItemsRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  /// get action item parent info
+  Future<ActionItemParentInfo> getActionItemParentInfo(
+      String actionItemId) async {
+    Response response = await super.get('$url/$actionItemId/parentinformations');
+
+    if (response.statusCode == 200) {
+      return ActionItemParentInfo.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
 }

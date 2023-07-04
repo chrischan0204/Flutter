@@ -7,13 +7,13 @@ class QuestionsListView extends StatelessWidget {
   const QuestionsListView({super.key});
 
   static List<String> columnList = const [
-    'Score',
     'Question',
     'Scale',
+    'Score',
     'Status'
   ];
 
-  static List<double> columnWidth = [100, double.nan, double.nan, 120];
+  static List<double> columnWidth = [double.nan, 200, 100, 120];
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -87,14 +87,14 @@ class AuditQuestionDataSource extends DataGridSource {
         .map((auditQuestion) => DataGridRow(
               cells: [
                 DataGridCell(
-                    columnName: columns[0],
-                    value:
-                        '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
+                    columnName: columns[0], value: auditQuestion.question),
                 DataGridCell(
-                    columnName: columns[1], value: auditQuestion.question),
+                    columnName: columns[1],
+                    value: auditQuestion.responseScaleName),
                 DataGridCell(
                     columnName: columns[2],
-                    value: auditQuestion.responseScaleName),
+                    value:
+                        '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
                 DataGridCell(
                     columnName: columns[3],
                     value: !(auditQuestion.questionStatus == 0)),

@@ -20,7 +20,7 @@ class TemplateDesignerBloc
     _sectionsRepository = context.read();
     _formDirtyBloc = context.read();
 
-_loadedTemplateSectionItemIdList = [];
+    _loadedTemplateSectionItemIdList = [];
 
     on<TemplateDesignerTemplateSectionListLoaded>(
         _onTemplateDesignerTemplateSectionListLoaded);
@@ -74,7 +74,7 @@ _loadedTemplateSectionItemIdList = [];
     }
 
     if (currentState.templateSectionItem != nextState.templateSectionItem) {
-      _formDirtyBloc.add(FormDirtyChanged(isDirty: nextState.formDirty));
+      _formDirtyBloc.add(FormDirtyChanged(isDirty: nextState.dirty));
     }
 
     // if (currentState.templateSectionItemCreateStatus !=
@@ -152,6 +152,7 @@ _loadedTemplateSectionItemIdList = [];
     Emitter<TemplateDesignerState> emit,
   ) {
     emit(state.copyWith(newSection: event.newSection));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.dirty));
   }
 
   Future<void> _onTemplateDesignerResponseScaleListLoaded(
@@ -247,7 +248,10 @@ _loadedTemplateSectionItemIdList = [];
                   itemTypeId: 2,
                   templateSectionId: state.selectedTemplateSection!.id,
                   responseScaleId: event.responseScaleId,
-                  response: e.copyWith(responseScaleItemId: e.id, id: const Nullable.value(null),),
+                  response: e.copyWith(
+                    responseScaleItemId: e.id,
+                    id: const Nullable.value(null),
+                  ),
                 );
               }).toList());
           break;
@@ -273,7 +277,10 @@ _loadedTemplateSectionItemIdList = [];
                                                 .selectedTemplateSection!.id,
                                             responseScaleId:
                                                 event.responseScaleId,
-                                           response: e.copyWith(responseScaleItemId: e.id, id: const Nullable.value(null),),
+                                            response: e.copyWith(
+                                              responseScaleItemId: e.id,
+                                              id: const Nullable.value(null),
+                                            ),
                                           ))
                                       .toList())
                               : e)
@@ -317,7 +324,14 @@ _loadedTemplateSectionItemIdList = [];
                                                                 responseScaleId:
                                                                     event
                                                                         .responseScaleId,
-                                                                response: e.copyWith(responseScaleItemId: e.id, id: const Nullable.value(null),),
+                                                                response:
+                                                                    e.copyWith(
+                                                                  responseScaleItemId:
+                                                                      e.id,
+                                                                  id: const Nullable
+                                                                          .value(
+                                                                      null),
+                                                                ),
                                                               ))
                                                           .toList())
                                               : child)
@@ -1128,24 +1142,42 @@ _loadedTemplateSectionItemIdList = [];
     Emitter<TemplateDesignerState> emit,
   ) async {
     try {
-      if (_loadedTemplateSectionItemIdList.contains(event.id)) {
-        return;
-      }
-
       List<TemplateSection> templateQuestionDetailList =
           await _templatesRepository.getTemplateQuestionDetailList(
               event.id, 2, state.selectedTemplateSection!.id);
 
-              _loadedTemplateSectionItemIdList.add(event.id);
+      
 
       final followUpQuestion =
-          templateQuestionDetailList[0].templateSectionItems[0];
+            templateQuestionDetailList[0].templateSectionItems[0];
+
+      if (_loadedTemplateSectionItemIdList.contains(event.id)) {
+        if (state.level == 1) {
+          emit(state.copyWith(
+            // currentLevel1TemplateSectionItemId: followUpQuestion.id,
+            selectedResponseScaleId:
+                Nullable.value(followUpQuestion.responseScaleId),
+          ));
+        } else if (state.level == 2) {
+          emit(state.copyWith(
+            // currentLevel2TemplateSectionItemId: followUpQuestion.id,
+            selectedResponseScaleId:
+                Nullable.value(followUpQuestion.responseScaleId),
+          ));
+        }
+        return;
+      }
+
+      _loadedTemplateSectionItemIdList.add(event.id);
 
       List<TemplateResponseScaleItem> responseScaleItemList =
           await _responseScalesRepository
               .getResponseScaleItemList(followUpQuestion.responseScaleId);
 
-              responseScaleItemList = responseScaleItemList.map((e) => e.copyWith(id: const Nullable.value(null), responseScaleItemId: e.id)).toList();
+      responseScaleItemList = responseScaleItemList
+          .map((e) => e.copyWith(
+              id: const Nullable.value(null), responseScaleItemId: e.id))
+          .toList();
 
       for (final responseScaleItem in followUpQuestion.responseScaleItems) {
         int index = responseScaleItemList

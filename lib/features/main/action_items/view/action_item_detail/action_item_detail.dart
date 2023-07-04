@@ -11,7 +11,7 @@ class ActionItemDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActionItemDetailBloc(context),
+      create: (context) => ActionItemDetailBloc(context, actionItemId),
       child: ActionItemDetailWidget(actionItemId: actionItemId),
     );
   }
@@ -34,9 +34,9 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
 
   @override
   void initState() {
-    context
-        .read<ActionItemDetailBloc>()
-        .add(ActionItemDetailLoaded(actionItemId: widget.actionItemId));
+    context.read<ActionItemDetailBloc>()
+      ..add(ActionItemDetailLoaded())
+      ..add(ActionItemDetailParentInfoLoaded());
     super.initState();
   }
 
@@ -65,9 +65,9 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
         return EntityShowTemplate(
           title: pageTitle,
           label: pageLabel,
-          deleteEntity: () => context.read<ActionItemDetailBloc>().add(
-              ActionItemDetailActionItemDeleted(
-                  actionItemId: widget.actionItemId)),
+          deleteEntity: () => context
+              .read<ActionItemDetailBloc>()
+              .add(ActionItemDetailActionItemDeleted()),
           entity: state.actionItem,
           crudStatus: state.actionItemDeleteStatus,
           isEditable: false,

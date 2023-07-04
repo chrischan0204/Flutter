@@ -6,52 +6,60 @@ class AuditViewForActionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ActionItemInformationItemView(
-          label: 'Generated Via',
-          content: 'Audit',
-        ),
-        ActionItemInformationItemView(
-          label: 'ID',
-          content: 'SA0923-0028',
-        ),
-        ActionItemInformationItemView(
-          label: 'Site',
-          content: 'Dallas City Center',
-        ),
-        ActionItemInformationItemView(
-          label: 'Company',
-          content: '--',
-        ),
-        ActionItemInformationItemView(
-          label: 'Project',
-          content: '--',
-        ),
-        ActionItemInformationItemView(
-          label: 'Created By',
-          content: 'Cory Jeter',
-        ),
-        ActionItemInformationItemView(
-          label: 'Audit Date',
-          content: '14th May 2023',
-        ),
-        CustomBottomBorderContainer(
-          padding: inset12,
-          child: Text(
-            'For question',
-            style: textNormal14,
-          ),
-        ),
-        CustomBottomBorderContainer(
-          padding: inset12,
-          child: Text(
-            'Are there any visible cracks or fractures in the staircase?',
-            style: textNormal14,
-          ),
-        )
-      ],
+    return BlocBuilder<ActionItemDetailBloc, ActionItemDetailState>(
+      builder: (context, state) {
+        if (state.actionItemParentInfo != null) {
+          final actionItemParentInfo = state.actionItemParentInfo!;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const ActionItemInformationItemView(
+                label: 'Generated Via',
+                content: 'Audit:',
+              ),
+              ActionItemInformationItemView(
+                label: 'ID',
+                content: actionItemParentInfo.id,
+              ),
+              ActionItemInformationItemView(
+                label: 'Site',
+                content: actionItemParentInfo.siteName,
+              ),
+              ActionItemInformationItemView(
+                label: 'Company',
+                content: actionItemParentInfo.companyName,
+              ),
+              ActionItemInformationItemView(
+                label: 'Project',
+                content: actionItemParentInfo.projectName,
+              ),
+              ActionItemInformationItemView(
+                label: 'Created By',
+                content: actionItemParentInfo.createdByName,
+              ),
+              ActionItemInformationItemView(
+                label: 'Audit Date',
+                content: actionItemParentInfo.date,
+              ),
+              CustomBottomBorderContainer(
+                padding: inset12,
+                child: Text(
+                  'For question',
+                  style: textNormal14,
+                ),
+              ),
+              CustomBottomBorderContainer(
+                padding: inset12,
+                child: Text(
+                  actionItemParentInfo.forQuestion,
+                  style: textNormal14,
+                ),
+              )
+            ],
+          );
+        }
+        return Container();
+      },
     );
   }
 }

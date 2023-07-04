@@ -1,4 +1,3 @@
-import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -10,15 +9,21 @@ class QuestionsListBodyView extends StatelessWidget {
   static List<String> columnList = const [
     'Included?',
     'Question',
+    'Scale',
     'Score',
     'Status'
   ];
+
+  static List<double> columWidth = [100, double.nan, 200, 120, 150];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
       builder: (context, state) {
         if (state.selectedAuditSectionId == null) {
           return Container();
+        }
+        if (state.questionListLoadStatus.isLoading) {
+          return const Center(child: Loader());
         }
         return SfDataGridTheme(
           data: SfDataGridThemeData(
@@ -36,17 +41,19 @@ class QuestionsListBodyView extends StatelessWidget {
             headerGridLinesVisibility: GridLinesVisibility.none,
             headerRowHeight: 52,
             rowHeight: 46,
-            columns: columnList
-                .map((e) => GridColumn(
-                    columnName: e,
+            columns: [
+              for (int i = 0; i < columnList.length; i++)
+                GridColumn(
+                    columnName: columnList[i],
+                    width: columWidth[i],
                     label: Padding(
                       padding: inset10,
                       child: Text(
-                        e,
+                        columnList[i],
                         style: textSemiBold14,
                       ),
-                    )))
-                .toList(),
+                    ))
+            ],
           ),
         );
       },
@@ -75,9 +82,12 @@ class AuditQuestionDataSource extends DataGridSource {
                     columnName: columns[1], value: auditQuestion.question),
                 DataGridCell(
                     columnName: columns[2],
+                    value: auditQuestion.responseScaleName),
+                DataGridCell(
+                    columnName: columns[3],
                     value:
                         '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
-                DataGridCell(columnName: columns[3], value: <String, bool>{
+                DataGridCell(columnName: columns[4], value: <String, bool>{
                   'status': !(auditQuestion.questionStatus == 0),
                   'isNew': auditQuestion.isNew,
                 }),

@@ -26,6 +26,7 @@ class AddEditActionItemFormView extends StatelessWidget {
               leftValidationMessage: state.assigneeValidationMessage,
               rightLabel: 'Due By',
               rightChild: const DueByDatePicker(),
+              rightValidationMessage: state.dueByValidationMessage,
             ),
             const FormItemVertical(
               leftLabel: 'Company',

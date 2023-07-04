@@ -25,11 +25,23 @@ class AddEditActionItemState extends Equatable {
   /// validation message for name
   final String nameValidationMessage;
 
+  /// initial name to check form dirty;
+  final String initialName;
+
   /// dueBy to create action item
   final DateTime? dueBy;
 
+  /// initial due by to check form dirty;
+  final DateTime? initialDueBy;
+
+  /// validation message for due by
+  final String dueByValidationMessage;
+
   /// assignee to create action item
   final User? assignee;
+
+  /// initial assignee to check form dirty;
+  final User? initialAssignee;
 
   /// validation message for assignee
   final String assigneeValidationMessage;
@@ -37,23 +49,41 @@ class AddEditActionItemState extends Equatable {
   /// site to create action item
   final Site? site;
 
+  /// initial site by to check form dirty;
+  final Site? initialSite;
+
   /// validation message for site
   final String siteValidationMessage;
 
   /// category to create action item
   final AwarenessCategory? category;
 
+  /// initial category to check form dirty;
+  final AwarenessCategory? initialCategory;
+
   /// company to create action item
   final Company? company;
+
+  /// initial company to check form dirty;
+  final Company? initialCompany;
 
   /// project to create action item
   final Project? project;
 
+  /// initial project to check form dirty;
+  final Project? initialProject;
+
   /// location to create action item
   final String location;
 
+  /// initial location to check form dirty;
+  final String initialLocation;
+
   /// notes to create action item
   final String notes;
+
+  /// initial notes to check form dirty;
+  final String initialNotes;
 
   /// status
   final EntityStatus status;
@@ -68,17 +98,27 @@ class AddEditActionItemState extends Equatable {
     this.siteList = const [],
     this.userList = const [],
     this.name = '',
+    this.initialName = '',
     this.nameValidationMessage = '',
     this.dueBy,
+    this.dueByValidationMessage = '',
+    this.initialDueBy,
     this.site,
+    this.initialSite,
     this.siteValidationMessage = '',
     this.assignee,
+    this.initialAssignee,
     this.assigneeValidationMessage = '',
     this.category,
+    this.initialCategory,
     this.company,
+    this.initialCompany,
     this.project,
+    this.initialProject,
     this.location = '',
+    this.initialLocation = '',
     this.notes = '',
+    this.initialNotes = '',
     this.status = EntityStatus.initial,
     this.message = '',
   });
@@ -94,6 +134,7 @@ class AddEditActionItemState extends Equatable {
         name,
         nameValidationMessage,
         dueBy,
+        dueByValidationMessage,
         site,
         siteValidationMessage,
         assignee,
@@ -105,18 +146,27 @@ class AddEditActionItemState extends Equatable {
         notes,
         status,
         message,
+        initialAssignee,
+        initialCategory,
+        initialCompany,
+        initialDueBy,
+        initialLocation,
+        initialName,
+        initialNotes,
+        initialProject,
+        initialSite,
       ];
 
   bool get formDirty =>
-      name.isNotEmpty == true ||
-      dueBy != null ||
-      assignee != null ||
-      category != null ||
-      site != null ||
-      company != null ||
-      project != null ||
-      location.isNotEmpty == true ||
-      notes.isNotEmpty == true;
+      (Validation.isNotEmpty(name) && name != initialName) ||
+      (dueBy != null && dueBy != initialDueBy) ||
+      (assignee != null && assignee?.id != initialAssignee?.id) ||
+      (category != null && category?.id != initialCategory?.id) ||
+      (site != null && site?.id != initialSite?.id) ||
+      (company != null && company?.id != initialCompany?.id) ||
+      (project != null && project?.id != initialProject?.id) ||
+      (Validation.isNotEmpty(location) && location != initialLocation) ||
+      (Validation.isNotEmpty(notes) && notes != initialNotes);
 
   ActionItemCreate get actionItemCreate => ActionItemCreate(
         id: actionItem?.id,
@@ -138,17 +188,27 @@ class AddEditActionItemState extends Equatable {
     List<Site>? siteList,
     List<User>? userList,
     String? name,
+    String? initialName,
     String? nameValidationMessage,
     Nullable<DateTime?>? dueBy,
+    String? dueByValidationMessage,
+    Nullable<DateTime?>? initialDueBy,
     Nullable<User?>? assignee,
+    Nullable<User?>? initialAssignee,
     String? assigneeValidationMessage,
     Nullable<AwarenessCategory?>? category,
+    Nullable<AwarenessCategory?>? initialCategory,
     Nullable<Company?>? company,
+    Nullable<Company?>? initialCompany,
     Nullable<Project?>? project,
+    Nullable<Project?>? initialProject,
     Nullable<Site?>? site,
+    Nullable<Site?>? initialSite,
     String? siteValidationMessage,
     String? location,
+    String? initialLocation,
     String? notes,
+    String? initialNotes,
     EntityStatus? status,
     String? message,
   }) {
@@ -161,6 +221,7 @@ class AddEditActionItemState extends Equatable {
       siteList: siteList ?? this.siteList,
       userList: userList ?? this.userList,
       name: name ?? this.name,
+      initialName: initialName ?? this.initialName,
       nameValidationMessage:
           nameValidationMessage ?? this.nameValidationMessage,
       assigneeValidationMessage:
@@ -168,12 +229,29 @@ class AddEditActionItemState extends Equatable {
       siteValidationMessage:
           siteValidationMessage ?? this.siteValidationMessage,
       dueBy: dueBy != null ? dueBy.value : this.dueBy,
+      dueByValidationMessage:
+          dueByValidationMessage ?? this.dueByValidationMessage,
       assignee: assignee != null ? assignee.value : this.assignee,
+      initialAssignee: initialAssignee != null
+          ? initialAssignee.value
+          : this.initialAssignee,
       category: category != null ? category.value : this.category,
+      initialCategory: initialCategory != null
+          ? initialCategory.value
+          : this.initialCategory,
       company: company != null ? company.value : this.company,
+      initialCompany:
+          initialCompany != null ? initialCompany.value : this.initialCompany,
       site: site != null ? site.value : this.site,
+      initialSite: initialSite != null ? initialSite.value : this.initialSite,
       project: project != null ? project.value : this.project,
+      initialProject:
+          initialProject != null ? initialProject.value : this.initialProject,
       location: location ?? this.location,
+      initialDueBy:
+          initialDueBy != null ? initialDueBy.value : this.initialDueBy,
+      initialLocation: initialLocation ?? this.initialLocation,
+      initialNotes: initialNotes ?? this.initialNotes,
       notes: notes ?? this.notes,
       status: status ?? this.status,
       message: message ?? this.message,

@@ -60,10 +60,16 @@ class AuditQuestionsBloc
     AuditQuestionsAuditQuestionListLoaded event,
     Emitter<AuditQuestionsState> emit,
   ) async {
-    final auditQuestionList = await auditsRepository.getAuditQuestionList(
-        auditId, state.selectedAuditSectionId!);
+    emit(state.copyWith(questionListLoadStatus: EntityStatus.loading));
+    try {
+      final auditQuestionList = await auditsRepository.getAuditQuestionList(
+          auditId, state.selectedAuditSectionId!);
 
-    emit(state.copyWith(auditQuestionList: auditQuestionList));
+      emit(state.copyWith(
+        auditQuestionList: auditQuestionList,
+        questionListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {}
   }
 
   Future<void> _onAuditQuestionsSelectedAuditSectionChanged(

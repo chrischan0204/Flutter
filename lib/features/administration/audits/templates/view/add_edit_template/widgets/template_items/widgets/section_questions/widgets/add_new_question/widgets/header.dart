@@ -36,7 +36,7 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (context.read<FormDirtyBloc>().state.isDirty) {
+                    if (context.read<TemplateDesignerBloc>().state.formDirty) {
                       CustomAlert(
                         context: context,
                         width: MediaQuery.of(context).size.width / 4,

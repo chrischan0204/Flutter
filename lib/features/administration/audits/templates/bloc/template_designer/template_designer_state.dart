@@ -263,6 +263,8 @@ class TemplateDesignerState extends Equatable {
     return level0 || level1 || level2;
   }
 
+  bool get dirty => formDirty || newSection.isNotEmpty;
+
   TemplateDesignerState copyWith({
     String? newSection,
     List<TemplateSectionListItem>? templateSectionList,

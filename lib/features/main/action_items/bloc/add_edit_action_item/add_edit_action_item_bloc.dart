@@ -218,9 +218,20 @@ class AddEditActionItemBloc
 
         if (response.isSuccess) {
           emit(state.copyWith(
+            initialAssignee: Nullable.value(state.assignee),
+            initialCategory: Nullable.value(state.category),
+            initialCompany: Nullable.value(state.company),
+            initialDueBy: Nullable.value(state.dueBy),
+            initialLocation: state.location,
+            initialName: state.name,
+            initialNotes: state.notes,
+            initialProject: Nullable.value(state.project),
+            initialSite: Nullable.value(state.site),
             message: response.message,
             status: EntityStatus.success,
           ));
+
+          _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         }
       } catch (e) {
         emit(state.copyWith(
@@ -259,6 +270,14 @@ class AddEditActionItemBloc
       emit(state.copyWith(
           nameValidationMessage:
               FormValidationMessage(fieldName: 'Action item').requiredMessage));
+
+      success = false;
+    }
+
+    if (state.dueBy == null) {
+      emit(state.copyWith(
+          dueByValidationMessage:
+              FormValidationMessage(fieldName: 'Due by').requiredMessage));
 
       success = false;
     }

@@ -8,6 +8,7 @@ class AuditQuestionsState extends Equatable {
   final List<AuditQuestion> auditQuestionList;
 
   final EntityStatus status;
+  final EntityStatus questionListLoadStatus;
 
   final String message;
 
@@ -17,6 +18,7 @@ class AuditQuestionsState extends Equatable {
     this.auditQuestionList = const [],
     this.message = '',
     this.status = EntityStatus.initial,
+    this.questionListLoadStatus = EntityStatus.initial,
   });
 
   @override
@@ -26,6 +28,7 @@ class AuditQuestionsState extends Equatable {
         auditQuestionList,
         message,
         status,
+        questionListLoadStatus,
       ];
 
   AuditSection get selectedSection => auditSectionList.firstWhere(
@@ -38,6 +41,7 @@ class AuditQuestionsState extends Equatable {
     List<AuditQuestion>? auditQuestionList,
     String? message,
     EntityStatus? status,
+    EntityStatus? questionListLoadStatus,
   }) {
     return AuditQuestionsState(
       auditSectionList: auditSectionList ?? this.auditSectionList,
@@ -46,6 +50,8 @@ class AuditQuestionsState extends Equatable {
       auditQuestionList: auditQuestionList ?? this.auditQuestionList,
       message: message ?? this.message,
       status: status ?? this.status,
+      questionListLoadStatus:
+          questionListLoadStatus ?? this.questionListLoadStatus,
     );
   }
 }

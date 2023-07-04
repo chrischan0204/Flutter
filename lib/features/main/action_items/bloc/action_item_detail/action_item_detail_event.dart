@@ -8,25 +8,10 @@ abstract class ActionItemDetailEvent extends Equatable {
 }
 
 /// event to load the actionItem detail
-class ActionItemDetailLoaded extends ActionItemDetailEvent {
-  /// actionItem id to load
-  final String actionItemId;
-  const ActionItemDetailLoaded({
-    required this.actionItemId,
-  });
-
-  @override
-  List<Object> get props => [actionItemId];
-}
+class ActionItemDetailLoaded extends ActionItemDetailEvent {}
 
 /// event to delete actionItem
-class ActionItemDetailActionItemDeleted extends ActionItemDetailEvent {
-  /// actionItem id to delete
-  final String actionItemId;
-  const ActionItemDetailActionItemDeleted({
-    required this.actionItemId,
-  });
+class ActionItemDetailActionItemDeleted extends ActionItemDetailEvent {}
 
-  @override
-  List<Object> get props => [actionItemId];
-}
+/// event to load action item parent info
+class ActionItemDetailParentInfoLoaded extends ActionItemDetailEvent {}

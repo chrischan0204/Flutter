@@ -42,7 +42,7 @@ class _SectionItemViewState extends State<SectionItemView> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (context.read<FormDirtyBloc>().state.isDirty) {
+        if (context.read<TemplateDesignerBloc>().state.formDirty) {
           CustomAlert(
             context: context,
             width: MediaQuery.of(context).size.width / 4,
@@ -51,7 +51,7 @@ class _SectionItemViewState extends State<SectionItemView> {
             btnOkText: 'Proceed',
             btnOkOnPress: () => _getQuestionListForSection(),
             btnCancelOnPress: () {},
-            dialogType: DialogType.info,  
+            dialogType: DialogType.info,
           ).show();
         } else {
           _getQuestionListForSection();
