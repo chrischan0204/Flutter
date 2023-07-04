@@ -133,7 +133,7 @@ class AddEditObservationBloc
     if (Validation.isEmpty(state.observationName)) {
       emit(state.copyWith(
           observationNameValidationMessage:
-              FormValidationMessage(fieldName: 'Observation name')
+              FormValidationMessage(fieldName: 'Observation')
                   .requiredMessage));
       success = false;
     }
