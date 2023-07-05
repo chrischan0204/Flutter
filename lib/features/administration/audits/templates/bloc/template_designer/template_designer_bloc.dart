@@ -58,8 +58,6 @@ class TemplateDesignerBloc
         _onTemplateDesignerQuestionDetailLoaded);
     on<TemplateDesignerFollowUpQuestionDetailLoaded>(
         _onTemplateDesignerFollowUpQuestionDetailLoaded);
-    on<TemplateDesignerResponseScaleSelected>(
-        _onTemplateDesignerResponseScaleSelected);
   }
 
   @override
@@ -182,7 +180,6 @@ class TemplateDesignerBloc
       templateSectionItem: const Nullable.value(null),
       showAddNewQuestionView: false,
       level: 0,
-      selectedResponseScaleId: const Nullable.value(null),
     ));
 
     _loadedTemplateSectionItemIdList = [];
@@ -966,15 +963,7 @@ class TemplateDesignerBloc
     TemplateDesignerLevelChanged event,
     Emitter<TemplateDesignerState> emit,
   ) {
-    print(state
-        .currentTemplateSectionItemByLevel(event.level)
-        ?.responseScaleId);
-    emit(state.copyWith(
-      level: event.level,
-      selectedResponseScaleId: Nullable.value(state
-          .currentTemplateSectionItemByLevel(event.level)
-          ?.responseScaleId),
-    ));
+    emit(state.copyWith(level: event.level));
   }
 
   void _onTemplateDesignerCurrentTemplateSectionItemChanged(
@@ -984,7 +973,6 @@ class TemplateDesignerBloc
     String followUpQuestionId = const Uuid().v1();
     List<TemplateSectionItem> children =
         List.from(state.templateSectionItem!.children);
-
 
     if (state.level == 0) {
       final newTemplateSectionItem = state.templateSectionItem!.copyWith(
@@ -1122,7 +1110,6 @@ class TemplateDesignerBloc
       emit(
         state.copyWith(
           level: state.level,
-          selectedResponseScaleId: Nullable.value(responseScaleId),
           templateSectionItem: Nullable.value(newTemplateSection),
           initialTemplateSectionItem: Nullable.value(newTemplateSection),
           showAddNewQuestionView: true,
@@ -1140,29 +1127,16 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) async {
     try {
+      if (_loadedTemplateSectionItemIdList.contains(event.id)) {
+        return;
+      }
+      emit(state.copyWith(questionDetailLoadStatus: EntityStatus.loading));
       List<TemplateSection> templateQuestionDetailList =
           await _templatesRepository.getTemplateQuestionDetailList(
               event.id, 2, state.selectedTemplateSection!.id);
 
       final followUpQuestion =
           templateQuestionDetailList[0].templateSectionItems[0];
-
-      if (_loadedTemplateSectionItemIdList.contains(event.id)) {
-        if (state.level == 1) {
-          emit(state.copyWith(
-            // currentLevel1TemplateSectionItemId: followUpQuestion.id,
-            selectedResponseScaleId:
-                Nullable.value(followUpQuestion.responseScaleId),
-          ));
-        } else if (state.level == 2) {
-          emit(state.copyWith(
-            // currentLevel2TemplateSectionItemId: followUpQuestion.id,
-            selectedResponseScaleId:
-                Nullable.value(followUpQuestion.responseScaleId),
-          ));
-        }
-        return;
-      }
 
       _loadedTemplateSectionItemIdList.add(event.id);
 
@@ -1235,8 +1209,7 @@ class TemplateDesignerBloc
             templateSectionItem: Nullable.value(newTemplateSection),
             initialTemplateSectionItem: Nullable.value(newTemplateSection),
             currentLevel1TemplateSectionItemId: followUpQuestion.id,
-            selectedResponseScaleId:
-                Nullable.value(followUpQuestion.responseScaleId),
+            questionDetailLoadStatus: EntityStatus.success,
           ));
           break;
         case 2:
@@ -1310,21 +1283,12 @@ class TemplateDesignerBloc
             templateSectionItem: Nullable.value(newTemplateSection),
             initialTemplateSectionItem: Nullable.value(newTemplateSection),
             currentLevel2TemplateSectionItemId: followUpQuestion.id,
-            selectedResponseScaleId:
-                Nullable.value(followUpQuestion.responseScaleId),
+            questionDetailLoadStatus: EntityStatus.success,
           ));
           break;
       }
     } catch (e) {
-      print(e);
+      emit(state.copyWith(questionDetailLoadStatus: EntityStatus.failure));
     }
-  }
-
-  void _onTemplateDesignerResponseScaleSelected(
-    TemplateDesignerResponseScaleSelected event,
-    Emitter<TemplateDesignerState> emit,
-  ) {
-    emit(state.copyWith(
-        selectedResponseScaleId: Nullable.value(event.responseScaleId)));
   }
 }

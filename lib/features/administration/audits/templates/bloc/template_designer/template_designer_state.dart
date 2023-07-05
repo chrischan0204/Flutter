@@ -32,9 +32,6 @@ class TemplateDesignerState extends Equatable {
 
   final EntityStatus questionDetailLoadStatus;
 
-  // selected response scale id
-  final String? selectedResponseScaleId;
-
   final List<TemplateQuestion> templateQuestionList;
 
   /// question id to edit question
@@ -64,18 +61,10 @@ class TemplateDesignerState extends Equatable {
     this.currentLevel1TemplateSectionItemId,
     this.currentLevel2TemplateSectionItemId,
     this.questionDetailLoadStatus = EntityStatus.initial,
-    this.selectedResponseScaleId,
     this.templateQuestionList = const [],
     this.selectedQuestionId,
     this.loadedTemplateSectionItemIdList = const [],
   });
-
-  ResponseScale? get selectedResponseScaleItem => responseScaleList
-              .indexWhere((element) => element.id == selectedResponseScaleId) ==
-          -1
-      ? null
-      : responseScaleList
-          .firstWhere((element) => element.id == selectedResponseScaleId);
 
   ResponseScale? get currentResponseScaleItem {
     final id = currentTemplateSectionItemByLevel(level)?.responseScaleId;
@@ -137,8 +126,6 @@ class TemplateDesignerState extends Equatable {
         currentLevel1TemplateSectionItemId,
         currentLevel2TemplateSectionItemId,
         questionDetailLoadStatus,
-        selectedResponseScaleId,
-        selectedResponseScaleItem,
         templateQuestionList,
         selectedQuestionId,
       ];
@@ -293,7 +280,6 @@ class TemplateDesignerState extends Equatable {
     String? currentLevel1TemplateSectionItemId,
     String? currentLevel2TemplateSectionItemId,
     EntityStatus? questionDetailLoadStatus,
-    Nullable<String?>? selectedResponseScaleId,
     List<TemplateQuestion>? templateQuestionList,
     List<String>? loadedTemplateSectionItemIdList,
   }) {
@@ -335,9 +321,6 @@ class TemplateDesignerState extends Equatable {
           this.currentLevel2TemplateSectionItemId,
       questionDetailLoadStatus:
           questionDetailLoadStatus ?? this.questionDetailLoadStatus,
-      selectedResponseScaleId: selectedResponseScaleId != null
-          ? selectedResponseScaleId.value
-          : this.selectedResponseScaleId,
       templateQuestionList: templateQuestionList ?? this.templateQuestionList,
       loadedTemplateSectionItemIdList: loadedTemplateSectionItemIdList ??
           this.loadedTemplateSectionItemIdList,

@@ -30,8 +30,11 @@ class QuestionsView extends StatelessWidget {
         const CustomDivider(),
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
+            if (state.templateQuestionDetailListLoadStatus.isLoading) {
+              return const Center(child: Loader());
+            }
             return CustomExpansionPanelList(
-              dividerColor: primaryColor,
+              dividerColor: successHoverColor,
               elevation: 3,
               expansionCallback: (int index, bool isExpanded) {
                 context

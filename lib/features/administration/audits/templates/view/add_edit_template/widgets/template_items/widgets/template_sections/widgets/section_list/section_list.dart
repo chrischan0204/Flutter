@@ -20,6 +20,9 @@ class SectionListView extends StatelessWidget {
       ),
       child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
         builder: (context, state) {
+          if (state.templateSectionListLoadStatus.isLoading) {
+            return const Center(child: Loader());
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

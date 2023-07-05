@@ -20,6 +20,9 @@ class TemplateView extends StatelessWidget {
         const CustomDivider(),
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
+            if (state.templateSnapshotListLoadStatus.isLoading) {
+              return const Center(child: Loader());
+            }
             if (state.templateSnapshotList.isNotEmpty) {
               return LayoutBuilder(builder: (context, constraints) {
                 return Row(

@@ -70,6 +70,10 @@ class SitesRepository extends BaseRepository {
     throw Exception();
   }
 
+  // Future<List<SiteType>> getSiteTypeList() async {
+  //   Response response
+  // }
+
   Future<FilteredSiteData> getFilteredSiteList(
       FilteredTableParameter option) async {
     Response response = await super.filter(option);

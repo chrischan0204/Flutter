@@ -35,10 +35,11 @@ class TemplateSectionItemView extends CustomExpansionPanel {
           isExpanded: templateSectionItem.isOpen,
           body: templateSectionItem.responseScaleItems.isNotEmpty
               ? Padding(
-                  padding: inset20,
+                  padding: insetx10y20,
                   child: Card(
                     elevation: 3,
                     child: CustomExpansionPanelList(
+                      expandedHeaderPadding: insety10,
                       noExpanded: templateSectionItem.responseScaleItems
                           .where((element) => !element.followUpRequired)
                           .map((e) => templateSectionItem.responseScaleItems
@@ -76,10 +77,11 @@ class TemplateSectionItemView extends CustomExpansionPanel {
                             body: responseScaleItem
                                     .followUpQuestionList.isNotEmpty
                                 ? Padding(
-                                    padding: inset20,
+                                    padding: insetx10y20,
                                     child: Card(
                                       elevation: 3,
                                       child: CustomExpansionPanelList(
+                                        expandedHeaderPadding: insety10,
                                         expansionCallback:
                                             (int index, bool isExpanded) {
                                           context

@@ -30,20 +30,9 @@ class FeedbackOptionView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: insetx20y10,
           child: Row(
             children: [
-              // Icon(
-              //   PhosphorIcons.regular.caretCircleRight,
-              //   color: Colors.red,
-              // ),
-              // const SizedBox(width: 5),
-              // if (l2)
-              //   Icon(
-              //     PhosphorIcons.regular.caretCircleRight,
-              //     color: Colors.red,
-              //   ),
-              // if (l2) const SizedBox(width: 5),
               Text(
                 '$optionName = $feedbackForOption',
                 style: textSemiBold16,
@@ -56,7 +45,7 @@ class FeedbackOptionView extends StatelessWidget {
           color: Colors.white,
         ),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: insetx20y10,
           child: Row(
             children: [
               Expanded(

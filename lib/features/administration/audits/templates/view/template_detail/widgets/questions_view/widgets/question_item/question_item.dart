@@ -32,7 +32,7 @@ class QuestionItemView extends StatelessWidget {
       children: [
         if (first) const ParallelLineView(),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: insetx20y10,
           child: QuestionItemRowItem(
             title: level > 0 ? 'L$level Question' : 'Question',
             fontSize: 18,
@@ -44,7 +44,7 @@ class QuestionItemView extends StatelessWidget {
           color: Colors.white,
         ),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: insetx20y10,
           child: Row(
             children: [
               Expanded(

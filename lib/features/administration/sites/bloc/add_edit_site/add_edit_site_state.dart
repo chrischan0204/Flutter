@@ -13,6 +13,8 @@ class AddEditSiteState extends Equatable {
   /// time zone list
   final List<TimeZone> timeZoneList;
 
+  
+
   /// site name
   final String siteName;
 

@@ -88,12 +88,20 @@ class TemplateDetailBloc
     try {
       switch (event.level) {
         case 0:
-          List<TemplateSection> templateQuestionDetailList =
-              await templatesRepository.getTemplateQuestionDetailList(
-                  event.id, event.itemType, event.templateSectionId);
           emit(state.copyWith(
-            templateQuestionDetailList: templateQuestionDetailList,
-          ));
+              templateQuestionDetailListLoadStatus: EntityStatus.loading));
+          try {
+            List<TemplateSection> templateQuestionDetailList =
+                await templatesRepository.getTemplateQuestionDetailList(
+                    event.id, event.itemType, event.templateSectionId);
+            emit(state.copyWith(
+              templateQuestionDetailList: templateQuestionDetailList,
+              templateQuestionDetailListLoadStatus: EntityStatus.success,
+            ));
+          } catch (e) {
+            emit(state.copyWith(
+                templateQuestionDetailListLoadStatus: EntityStatus.failure));
+          }
           break;
         case 1:
           if (event.isOpen == true) {
@@ -236,10 +244,7 @@ class TemplateDetailBloc
           await templatesRepository
               .getTemplateSectionListForDetail(event.templateId);
       emit(state.copyWith(templateSectionList: templateSectionList));
-    } catch (e) {
-      emit(
-          state.copyWith(templateSnapshotListLoadStatus: EntityStatus.failure));
-    }
+    } catch (e) {}
   }
 
   void _onTemplateDetailSelectionSelected(

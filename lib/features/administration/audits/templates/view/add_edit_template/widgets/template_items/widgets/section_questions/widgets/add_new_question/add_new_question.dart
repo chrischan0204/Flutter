@@ -26,25 +26,33 @@ class _AddNewQuestionViewState extends State<AddNewQuestionView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
+    return BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+      builder: (context, state) {
+        if (state.questionDetailLoadStatus.isLoading) {
+          return const Center(child: Loader());
+        } else {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              AddNewQuestionHeaderView(templateId: widget.templateId),
-              QuestionTextField(
-                templateSectionItem: widget.templateSectionItem,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    AddNewQuestionHeaderView(templateId: widget.templateId),
+                    QuestionTextField(
+                      templateSectionItem: widget.templateSectionItem,
+                    ),
+                    const ResponseScaleSelectFieldView(),
+                  ],
+                ),
               ),
-              const ResponseScaleSelectFieldView(),
+              ResponseScaleItemListView(
+                templateSectionItemList: widget.templateSectionItem.children,
+              )
             ],
-          ),
-        ),
-        ResponseScaleItemListView(
-          templateSectionItemList: widget.templateSectionItem.children,
-        )
-      ],
+          );
+        }
+      },
     );
   }
 }
