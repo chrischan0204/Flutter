@@ -51,7 +51,7 @@ class ActionItemInformationView extends StatelessWidget {
                 padding: inset12,
                 child: Text(
                   'Notes',
-                  style: textNormal14,
+                  style: textSemiBold14,
                 ),
               ),
               CustomBottomBorderContainer(

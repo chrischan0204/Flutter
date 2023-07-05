@@ -24,7 +24,7 @@ class AddEditActionItemFormView extends StatelessWidget {
               leftLabel: 'Assignee (*)',
               leftChild: const AssigneeSelectField(),
               leftValidationMessage: state.assigneeValidationMessage,
-              rightLabel: 'Due By',
+              rightLabel: 'Due By (*)',
               rightChild: const DueByDatePicker(),
               rightValidationMessage: state.dueByValidationMessage,
             ),
@@ -37,7 +37,7 @@ class AddEditActionItemFormView extends StatelessWidget {
             const FormItemVertical(
               leftLabel: 'Project',
               leftChild: ProjectSelectField(),
-              rightLabel: 'Location',
+              rightLabel: 'Area',
               rightChild: LocationInputBox(),
             ),
             FormItemVertical(

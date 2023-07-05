@@ -44,13 +44,13 @@ class _UsageViewState extends State<UsageView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     UsageSummaryItemView(
-                      label: 'Used in',
+                      label: 'Used In',
                       content:
                           '${state.templateUsageSummary?.usedInAudits ?? ''} Audits',
                     ),
                     const CustomDivider(),
                     UsageSummaryItemView(
-                      label: 'Last Used',
+                      label: 'Last Used In',
                       content:
                           ' Audit # ${state.templateUsageSummary?.auditNumber ?? ''}',
                     ),
@@ -61,7 +61,7 @@ class _UsageViewState extends State<UsageView> {
                     ),
                     const CustomDivider(),
                     UsageSummaryItemView(
-                      label: 'Last used Audit Status',
+                      label: 'Last Audit Status',
                       content: state.templateUsageSummary?.auditStatus ?? '',
                     ),
                   ],

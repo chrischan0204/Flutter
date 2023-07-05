@@ -87,11 +87,9 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
           crudStatus: state.observationDeleteStatus,
           isDeletable: false,
           isEditable: false,
-          isShowName: false,
           customDetailWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const ObservationDetailHeaderView(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

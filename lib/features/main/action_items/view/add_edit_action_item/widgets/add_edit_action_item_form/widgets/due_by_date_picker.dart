@@ -11,7 +11,7 @@ class DueByDatePicker extends StatelessWidget {
       builder: (context, state) {
         return CustomDateTimePicker(
           key: ValueKey(state.actionItem?.id),
-          initialValue: state.dueBy.toString(),
+          initialValue: state.dueBy?.toString(),
           dateTimePickerType: DateTimePickerType.date,
           onChange: (dueBy) {
             context

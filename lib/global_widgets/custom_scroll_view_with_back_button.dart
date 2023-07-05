@@ -54,7 +54,7 @@ class _CustomScrollViewWithBackButtonState
           if (_showBackToTopButton)
             Positioned(
               bottom: 20,
-              right: 20,
+              right: 5,
               child: FloatingActionButton(
                 mini: true,
                 backgroundColor: const Color(0xff247297),

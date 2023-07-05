@@ -17,16 +17,6 @@ class SummaryView extends StatelessWidget {
                 flex: 2,
                 fit: FlexFit.tight,
                 child: SummaryItemView(
-                  backgroundColor: primaryColor,
-                  title: 'Avg Audit Score:',
-                  content: '82 of 112 points',
-                ),
-              ),
-              Flexible(flex: 1, child: Container()),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: SummaryItemView(
                   backgroundColor: const Color(0xff8e70c1),
                   title: 'Last Used In:',
                   content: state.templateUsageSummary?.auditNumber ?? '',
@@ -48,9 +38,19 @@ class SummaryView extends StatelessWidget {
                 fit: FlexFit.tight,
                 child: SummaryItemView(
                   backgroundColor: const Color(0xff8e70c1),
-                  title: 'Used:',
+                  title: 'Used In:',
                   content:
                       '${state.templateUsageSummary?.usedInAudits ?? ''} Audits',
+                ),
+              ),
+              Flexible(flex: 1, child: Container()),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: SummaryItemView(
+                  backgroundColor: const Color(0xff8e70c1),
+                  title: 'Last Used By:',
+                  content: state.templateUsageSummary?.lastCreatedBy ?? '',
                 ),
               ),
             ],

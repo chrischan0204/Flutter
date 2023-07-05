@@ -36,7 +36,7 @@ class TemplateDetailBloc
     emit(state.copyWith(templateLoadStatus: EntityStatus.loading));
     try {
       Template template =
-          await _templatesRepository.getTemplateById(templateId);
+          await _templatesRepository.getTemplateById(event.templateId);
       emit(state.copyWith(
         template: template,
         templateLoadStatus: EntityStatus.success,

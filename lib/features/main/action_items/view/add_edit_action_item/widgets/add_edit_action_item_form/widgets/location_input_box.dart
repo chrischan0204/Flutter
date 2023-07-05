@@ -10,7 +10,7 @@ class LocationInputBox extends StatelessWidget {
         return CustomTextField(
           key: ValueKey(state.actionItem?.id),
           initialValue: state.location,
-          hintText: 'Location Information',
+          hintText: 'Area Information',
           onChanged: (location) {
             context
                 .read<AddEditActionItemBloc>()

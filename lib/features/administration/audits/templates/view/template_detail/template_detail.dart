@@ -115,6 +115,7 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
           deleteEntity: () => _deleteTemplate(state),
           customDetailWidget: _buildCustomDetailWidget(),
           entity: state.template,
+          isShowName: false,
           crudStatus: state.templateDeleteStatus,
           descriptionForDelete: descriptionForDelete,
         );
