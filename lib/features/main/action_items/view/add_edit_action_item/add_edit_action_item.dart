@@ -41,7 +41,6 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
 
   static String pageLabel = 'action item';
 
-  static String addButtonName = 'Save';
 
   @override
   void initState() {
@@ -89,7 +88,6 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
           crudStatus: state.status,
           view: widget.view,
           formDirty: state.formDirty,
-          addButtonName: addButtonName,
           child: const AddEditActionItemFormView(),
         );
       },

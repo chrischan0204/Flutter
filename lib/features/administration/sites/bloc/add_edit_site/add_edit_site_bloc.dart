@@ -4,19 +4,19 @@ part 'add_edit_site_event.dart';
 part 'add_edit_site_state.dart';
 
 class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
-  final FormDirtyBloc formDirtyBloc;
-  final RegionsRepository regionsRepository;
-  final TimeZonesRepository timeZonesRepository;
-  final SitesRepository sitesRepository;
+  late FormDirtyBloc _formDirtyBloc;
+  late RegionsRepository _regionsRepository;
+  late SitesRepository _sitesRepository;
+
+  final BuildContext context;
 
   static String addErrorMessage = ErrorMessage('site').add;
   static String editErrorMessage = ErrorMessage('site').edit;
-  AddEditSiteBloc({
-    required this.formDirtyBloc,
-    required this.regionsRepository,
-    required this.timeZonesRepository,
-    required this.sitesRepository,
-  }) : super(const AddEditSiteState()) {
+  AddEditSiteBloc(this.context) : super(const AddEditSiteState()) {
+    _formDirtyBloc = context.read();
+    _regionsRepository = context.read();
+    _sitesRepository = context.read();
+
     on<AddEditSiteAdded>(_onAddEditSiteAdded);
     on<AddEditSiteEdited>(_onAddEditSiteEdited);
     on<AddEditSiteLoaded>(_onAddEditSiteLoaded);
@@ -28,6 +28,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
     on<AddEditSiteTypeChanged>(_onAddEditSiteTypeChanged);
     on<AddEditSiteCodeChanged>(_onAddEditSiteCodeChanged);
     on<AddEditSiteReferenceCodeChanged>(_onAddEditSiteReferenceCodeChanged);
+    on<AddEditSiteTypeListLoaded>(_onAddEditSiteTypeListLoaded);
   }
 
   void _onAddEditSiteNameChanged(
@@ -39,7 +40,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       siteNameValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditSiteRegionChanged(
@@ -53,7 +54,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
 
     add(AddEditTimeZoneListLoaded(regionId: event.region.id!));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   Future<void> _onAddEditTimeZoneListLoaded(
@@ -62,8 +63,18 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
   ) async {
     try {
       List<TimeZone> timeZoneList =
-          await regionsRepository.getTimeZonesForRegion(event.regionId);
+          await _regionsRepository.getTimeZonesForRegion(event.regionId);
       emit(state.copyWith(timeZoneList: timeZoneList));
+    } catch (e) {}
+  }
+
+  Future<void> _onAddEditSiteTypeListLoaded(
+    AddEditSiteTypeListLoaded event,
+    Emitter<AddEditSiteState> emit,
+  ) async {
+    try {
+      List<SiteType> siteTypeList = await _sitesRepository.getSiteTypeList();
+      emit(state.copyWith(siteTypeList: siteTypeList));
     } catch (e) {}
   }
 
@@ -76,7 +87,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       timeZoneValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditSiteTypeChanged(
@@ -88,7 +99,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       siteTypeValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditSiteCodeChanged(
@@ -100,7 +111,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       siteCodeValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditSiteReferenceCodeChanged(
@@ -112,7 +123,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       referenceCodeValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   Future<void> _onAddEditSiteAdded(
@@ -123,7 +134,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        EntityResponse response = await sitesRepository.addSite(state.site);
+        EntityResponse response = await _sitesRepository.addSite(state.site);
 
         if (response.isSuccess) {
           emit(state.copyWith(
@@ -152,7 +163,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
 
       try {
         EntityResponse response =
-            await sitesRepository.editSite(state.site.copyWith(id: event.id));
+            await _sitesRepository.editSite(state.site.copyWith(id: event.id));
 
         if (response.isSuccess) {
           emit(state.copyWith(
@@ -166,7 +177,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
             status: EntityStatus.success,
           ));
 
-          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+          _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           _checkMessage(emit, response.message);
         }
@@ -184,7 +195,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
     Emitter<AddEditSiteState> emit,
   ) async {
     try {
-      List<Region> regionList = await regionsRepository.getAssignedRegions();
+      List<Region> regionList = await _regionsRepository.getAssignedRegions();
 
       emit(state.copyWith(regionList: regionList));
     } catch (e) {}
@@ -195,7 +206,7 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
     Emitter<AddEditSiteState> emit,
   ) async {
     try {
-      Site site = await sitesRepository.getSiteById(event.id);
+      Site site = await _sitesRepository.getSiteById(event.id);
 
       emit(state.copyWith(
         loadedSite: site,

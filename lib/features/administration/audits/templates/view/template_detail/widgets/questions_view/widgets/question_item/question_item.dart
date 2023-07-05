@@ -49,7 +49,7 @@ class QuestionItemView extends StatelessWidget {
             children: [
               Expanded(
                 child: QuestionItemRowItem(
-                  title: 'Category',
+                  title: 'Section',
                   content: category,
                 ),
               ),
@@ -64,17 +64,10 @@ class QuestionItemView extends StatelessWidget {
                     ),
                     Expanded(
                       child: QuestionItemRowItem(
-                        title: 'Question Score',
-                        content: '$questionScore pts',
+                        title: 'Score',
+                        content: '$questionScore + ${maxScore - questionScore}',
                       ),
                     ),
-                    if (level == 0)
-                      Expanded(
-                        child: QuestionItemRowItem(
-                          title: 'Max Score',
-                          content: '$maxScore pts',
-                        ),
-                      )
                   ],
                 ),
               )

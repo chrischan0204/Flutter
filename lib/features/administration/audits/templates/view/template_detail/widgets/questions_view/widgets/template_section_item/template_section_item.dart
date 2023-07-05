@@ -17,6 +17,7 @@ class TemplateSectionItemView extends CustomExpansionPanel {
     required this.category,
     required this.getTemplateQuestionList,
   }) : super(
+    
           headerBuilder: (BuildContext context, bool isExpanded) {
             return QuestionItemView(
               question: templateSectionItem.title,
@@ -35,11 +36,11 @@ class TemplateSectionItemView extends CustomExpansionPanel {
           isExpanded: templateSectionItem.isOpen,
           body: templateSectionItem.responseScaleItems.isNotEmpty
               ? Padding(
-                  padding: insetx10y20,
+                  padding: insetx12,
                   child: Card(
                     elevation: 3,
                     child: CustomExpansionPanelList(
-                      expandedHeaderPadding: insety10,
+                      expandedHeaderPadding: insety0,
                       noExpanded: templateSectionItem.responseScaleItems
                           .where((element) => !element.followUpRequired)
                           .map((e) => templateSectionItem.responseScaleItems
@@ -77,11 +78,11 @@ class TemplateSectionItemView extends CustomExpansionPanel {
                             body: responseScaleItem
                                     .followUpQuestionList.isNotEmpty
                                 ? Padding(
-                                    padding: insetx10y20,
+                                    padding: insetx12,
                                     child: Card(
                                       elevation: 3,
                                       child: CustomExpansionPanelList(
-                                        expandedHeaderPadding: insety10,
+                                        expandedHeaderPadding: insety0,
                                         expansionCallback:
                                             (int index, bool isExpanded) {
                                           context

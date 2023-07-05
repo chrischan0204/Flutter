@@ -2,10 +2,8 @@ import '/common_libraries.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddNewSectionField extends StatefulWidget {
-  final String templateId;
   const AddNewSectionField({
     super.key,
-    required this.templateId,
   });
 
   @override
@@ -71,8 +69,7 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
                     .requiredMessage,
               ).showNotification();
             } else {
-              templateDesignerBloc.add(TemplateDesignerTemplateSectionAdded(
-                  templateId: widget.templateId));
+              templateDesignerBloc.add(TemplateDesignerTemplateSectionAdded());
             }
           },
           onChange: (value) => templateDesignerBloc

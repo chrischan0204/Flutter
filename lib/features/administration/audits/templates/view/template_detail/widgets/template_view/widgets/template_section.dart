@@ -46,6 +46,7 @@ class _TemplateSectionViewState extends State<TemplateSectionView> {
       child: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
         builder: (context, state) {
           return SfDataGrid(
+            footerFrozenRowsCount: 1,
             source: EntityDataSource(
               templateSnapshotList: state.templateSnapshotList,
             ),

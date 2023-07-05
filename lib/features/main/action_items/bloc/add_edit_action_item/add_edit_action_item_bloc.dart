@@ -144,7 +144,10 @@ class AddEditActionItemBloc
     AddEditActionItemDueByChanged event,
     Emitter<AddEditActionItemState> emit,
   ) {
-    emit(state.copyWith(dueBy: Nullable.value(event.dueBy)));
+    emit(state.copyWith(
+      dueBy: Nullable.value(event.dueBy),
+      dueByValidationMessage: '',
+    ));
 
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }

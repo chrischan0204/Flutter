@@ -15,12 +15,7 @@ class AddEditSiteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddEditSiteBloc(
-        formDirtyBloc: context.read(),
-        regionsRepository: RepositoryProvider.of(context),
-        timeZonesRepository: RepositoryProvider.of(context),
-        sitesRepository: RepositoryProvider.of(context),
-      ),
+      create: (context) => AddEditSiteBloc(context),
       child: AddEditSiteWidget(siteId: siteId),
     );
   }
@@ -46,7 +41,9 @@ class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
 
   @override
   void initState() {
-    addEditSiteBloc = context.read()..add(AddEditSiteRegionListLoaded());
+    addEditSiteBloc = context.read()
+      ..add(AddEditSiteRegionListLoaded())
+      ..add(AddEditSiteTypeListLoaded());
     if (widget.siteId != null) {
       addEditSiteBloc.add(AddEditSiteLoaded(id: widget.siteId!));
     }
@@ -75,7 +72,7 @@ class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
                 .go('/sites/edit/${state.createdSiteId}?view=created');
           }
         }
-        if (state.status .isFailure) {
+        if (state.status.isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,

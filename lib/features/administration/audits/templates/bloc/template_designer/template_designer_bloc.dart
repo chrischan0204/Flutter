@@ -8,12 +8,15 @@ part 'template_designer_state.dart';
 class TemplateDesignerBloc
     extends Bloc<TemplateDesignerEvent, TemplateDesignerState> {
   final BuildContext context;
+  final String templateId;
+
   late TemplatesRepository _templatesRepository;
   late ResponseScalesRepository _responseScalesRepository;
   late SectionsRepository _sectionsRepository;
   late FormDirtyBloc _formDirtyBloc;
   late List<String> _loadedTemplateSectionItemIdList;
-  TemplateDesignerBloc({required this.context})
+  
+  TemplateDesignerBloc({required this.context, required this.templateId,})
       : super(const TemplateDesignerState()) {
     _templatesRepository = context.read();
     _responseScalesRepository = context.read();
@@ -67,8 +70,7 @@ class TemplateDesignerBloc
     if (currentState.templateSectionAddStatus !=
             nextState.templateSectionAddStatus &&
         nextState.templateSectionAddStatus.isSuccess) {
-      add(TemplateDesignerTemplateSectionListLoaded(
-          templateId: state.templateId));
+      add(TemplateDesignerTemplateSectionListLoaded());
     }
 
     if (currentState.templateSectionItem != nextState.templateSectionItem) {
@@ -95,12 +97,12 @@ class TemplateDesignerBloc
   ) async {
     emit(state.copyWith(
       templateSectionListLoadStatus: EntityStatus.loading,
-      templateId: event.templateId,
+      templateId: templateId,
     ));
 
     try {
       List<TemplateSectionListItem> templateSectionList =
-          await _templatesRepository.getTemplateSectionList(event.templateId);
+          await _templatesRepository.getTemplateSectionList(templateId);
 
       emit(state.copyWith(
         templateSectionListLoadStatus: EntityStatus.success,
@@ -120,10 +122,10 @@ class TemplateDesignerBloc
     try {
       EntityResponse response = await _templatesRepository.addTemplateSection(
           TemplateSectionListItem(
-            templateId: event.templateId,
+            templateId: templateId,
             name: state.newSection,
           ),
-          event.templateId);
+          templateId);
       if (response.statusCode == 200) {
         emit(state.copyWith(
           templateSectionAddStatus: EntityStatus.success,
@@ -186,7 +188,6 @@ class TemplateDesignerBloc
 
     if (event.templateSection != null) {
       add(TemplateDesignerTemplateSectionItemQuestionListLoaded(
-        templateId: event.templateId!,
         templateSectionId: event.templateSection!.id,
       ));
     }
@@ -202,7 +203,7 @@ class TemplateDesignerBloc
     try {
       List<TemplateSection> templateQuestionDetailList =
           await _templatesRepository.getTemplateQuestionDetailList(
-              event.templateId, 1, event.templateSectionId);
+              templateId, 1, event.templateSectionId);
       if (templateQuestionDetailList.isNotEmpty) {
         emit(state.copyWith(
           templateQuestionList:

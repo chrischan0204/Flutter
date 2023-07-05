@@ -8,25 +8,9 @@ abstract class TemplateDesignerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class TemplateDesignerTemplateSectionListLoaded extends TemplateDesignerEvent {
-  final String templateId;
-  const TemplateDesignerTemplateSectionListLoaded({
-    required this.templateId,
-  });
+class TemplateDesignerTemplateSectionListLoaded extends TemplateDesignerEvent {}
 
-  @override
-  List<Object> get props => [templateId];
-}
-
-class TemplateDesignerTemplateSectionAdded extends TemplateDesignerEvent {
-  final String templateId;
-  const TemplateDesignerTemplateSectionAdded({
-    required this.templateId,
-  });
-
-  @override
-  List<Object> get props => [templateId];
-}
+class TemplateDesignerTemplateSectionAdded extends TemplateDesignerEvent {}
 
 class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
   final String newSection;
@@ -42,34 +26,27 @@ class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
 
 class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
   final TemplateSectionListItem? templateSection;
-  final String? templateId;
   const TemplateDesignerTemplateSectionSelected({
     this.templateSection,
-    this.templateId,
   });
 
   @override
   List<Object?> get props => [
         templateSection,
-        templateId,
       ];
 }
 
 class TemplateDesignerTemplateSectionItemQuestionListLoaded
     extends TemplateDesignerEvent {
-  final String templateId;
-
   final String templateSectionId;
 
   const TemplateDesignerTemplateSectionItemQuestionListLoaded({
     required this.templateSectionId,
-    required this.templateId,
   });
 
   @override
   List<Object> get props => [
         templateSectionId,
-        templateId,
       ];
 }
 

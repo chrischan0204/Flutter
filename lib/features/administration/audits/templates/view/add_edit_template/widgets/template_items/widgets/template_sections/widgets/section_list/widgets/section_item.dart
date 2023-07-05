@@ -4,13 +4,11 @@ class SectionItemView extends StatefulWidget {
   final TemplateSectionListItem section;
   final bool first;
   final bool active;
-  final String templateId;
   const SectionItemView({
     super.key,
     required this.section,
     this.first = false,
     this.active = false,
-    required this.templateId,
   });
 
   @override
@@ -33,7 +31,6 @@ class _SectionItemViewState extends State<SectionItemView> {
     context
         .read<TemplateDesignerBloc>()
         .add(TemplateDesignerTemplateSectionSelected(
-          templateId: widget.templateId,
           templateSection: widget.section,
         ));
   }

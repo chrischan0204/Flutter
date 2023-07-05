@@ -22,9 +22,10 @@ class _AddEditTemplateViewState extends State<AddEditTemplateView> {
         BlocProvider(create: (context) => AddEditTemplateBloc(context)),
         BlocProvider(
             create: (context) => TemplateDetailBloc(
-                templatesRepository: RepositoryProvider.of(context))),
+                context: context, templateId: widget.templateId ?? '')),
         BlocProvider(
-          create: (context) => TemplateDesignerBloc(context: context),
+          create: (context) => TemplateDesignerBloc(
+              context: context, templateId: widget.templateId ?? ''),
         ),
       ],
       child: AddEditTemplateWidget(

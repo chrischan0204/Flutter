@@ -25,73 +25,54 @@ class FeedbackOptionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: insetx20y10,
-          child: Row(
-            children: [
-              Text(
-                '$optionName = $feedbackForOption',
-                style: textSemiBold16,
-              ),
-            ],
+    return Padding(
+      padding: insetx20y10,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              '$optionName = $feedbackForOption',
+              style: textSemiBold16,
+            ),
           ),
-        ),
-        const CustomDivider(
-          height: 1,
-          color: Colors.white,
-        ),
-        Padding(
-          padding: insetx20y10,
-          child: Row(
-            children: [
-              Expanded(
-                child: QuestionItemRowItem(
-                  title: 'Scale',
-                  content: scale,
-                ),
-              ),
-              Expanded(
-                child: QuestionItemRowItem(
-                  title: 'Question Score',
-                  content: '$questionScore pts',
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    FutherActionItemView(
-                      active: comment,
-                      onClick: (_) {},
-                      disabled: true,
-                      title: 'Comment',
-                      activeColor: primaryColor,
-                    ),
-                    FutherActionItemView(
-                      active: actionItem,
-                      onClick: (_) {},
-                      disabled: true,
-                      title: 'Action Item',
-                      activeColor: primaryColor,
-                    ),
-                    FutherActionItemView(
-                      active: followUp,
-                      onClick: (_) {},
-                      disabled: true,
-                      title: 'Follow Up',
-                      activeColor: warnColor,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          Expanded(
+            child: QuestionItemRowItem(
+              title: 'Score',
+              content: '$questionScore pts',
+            ),
           ),
-        )
-      ],
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FutherActionItemView(
+                  active: comment,
+                  onClick: (_) {},
+                  disabled: true,
+                  title: 'Comment',
+                  activeColor: primaryColor,
+                ),
+                FutherActionItemView(
+                  active: actionItem,
+                  onClick: (_) {},
+                  disabled: true,
+                  title: 'Action Item',
+                  activeColor: primaryColor,
+                ),
+                FutherActionItemView(
+                  active: followUp,
+                  onClick: (_) {},
+                  disabled: true,
+                  title: 'Follow Up',
+                  activeColor: warnColor,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

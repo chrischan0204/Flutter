@@ -2,10 +2,8 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class TemplateSectionsView extends StatefulWidget {
-  final String templateId;
   const TemplateSectionsView({
     super.key,
-    required this.templateId,
   });
 
   @override
@@ -15,9 +13,9 @@ class TemplateSectionsView extends StatefulWidget {
 class _TemplateSectionsViewState extends State<TemplateSectionsView> {
   @override
   void initState() {
-    context.read<TemplateDesignerBloc>().add(
-        TemplateDesignerTemplateSectionListLoaded(
-            templateId: widget.templateId));
+    context
+        .read<TemplateDesignerBloc>()
+        .add(TemplateDesignerTemplateSectionListLoaded());
     super.initState();
   }
 
@@ -36,8 +34,8 @@ class _TemplateSectionsViewState extends State<TemplateSectionsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: [
-          const Padding(
+        children: const [
+          Padding(
             padding: EdgeInsets.all(20.0),
             child: Text(
               'Template Sections',
@@ -47,10 +45,10 @@ class _TemplateSectionsViewState extends State<TemplateSectionsView> {
               ),
             ),
           ),
-          const CustomDivider(height: 1),
-          AddNewSectionField(templateId: widget.templateId),
-          SectionListView(templateId: widget.templateId),
-          const SizedBox(height: 20)
+          CustomDivider(height: 1),
+          AddNewSectionField(),
+          SectionListView(),
+          SizedBox(height: 20)
         ],
       ),
     );

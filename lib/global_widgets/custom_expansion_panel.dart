@@ -373,7 +373,7 @@ class _CustomExpansionPanelListState extends State<CustomExpansionPanelList> {
         child: ExpandIcon(
           color: widget.noExpanded.contains(index) ? Colors.transparent : null,
           isExpanded: _isChildExpanded(index),
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           disabledColor: Colors.transparent,
           onPressed: widget.noExpanded.contains(index)
               ? null

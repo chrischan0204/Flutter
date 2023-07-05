@@ -21,7 +21,7 @@ class ResponseItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: insetx20,
+      padding: insetx10,
       child: FeedbackOptionView(
         feedbackForOption: option,
         scale: scale,

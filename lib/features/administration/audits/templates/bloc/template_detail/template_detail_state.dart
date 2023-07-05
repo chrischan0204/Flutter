@@ -29,6 +29,8 @@ class TemplateDetailState extends Equatable {
   /// template load status
   final EntityStatus templateLoadStatus;
 
+  final TemplateUsageSummary? templateUsageSummary;
+
   /// template delete status
   final EntityStatus templateDeleteStatus;
 
@@ -42,6 +44,7 @@ class TemplateDetailState extends Equatable {
     this.templateQuestionDetailList = const [],
     this.selectedTemplateSection,
     this.auditTemplateSnapshot,
+    this.templateUsageSummary,
     this.templateLoadStatus = EntityStatus.initial,
     this.templateDeleteStatus = EntityStatus.initial,
     this.templateQuestionDetailListLoadStatus = EntityStatus.initial,
@@ -56,6 +59,7 @@ class TemplateDetailState extends Equatable {
         templateQuestionDetailListLoadStatus,
         selectedTemplateSection,
         auditTemplateSnapshot,
+        templateUsageSummary,
         templateSnapshotList,
         templateSectionList,
         templateSnapshotListLoadStatus,
@@ -79,6 +83,7 @@ class TemplateDetailState extends Equatable {
     TemplateSectionListItemForDetail? selectedTemplateSection,
     List<TemplateSection>? templateQuestionDetailList,
     AuditTemplateSnapshot? auditTemplateSnapshot,
+    TemplateUsageSummary? templateUsageSummary,
     EntityStatus? templateSnapshotListLoadStatus,
     EntityStatus? templateLoadStatus,
     EntityStatus? templateDeleteStatus,
@@ -96,6 +101,7 @@ class TemplateDetailState extends Equatable {
       templateQuestionDetailListLoadStatus:
           templateQuestionDetailListLoadStatus ??
               this.templateQuestionDetailListLoadStatus,
+      templateUsageSummary: templateUsageSummary ?? this.templateUsageSummary,
       auditTemplateSnapshot:
           auditTemplateSnapshot ?? this.auditTemplateSnapshot,
       templateSnapshotListLoadStatus:

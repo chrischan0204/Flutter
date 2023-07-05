@@ -29,7 +29,7 @@ class SummaryView extends StatelessWidget {
                 child: SummaryItemView(
                   backgroundColor: const Color(0xff8e70c1),
                   title: 'Last Used In:',
-                  content: state.auditTemplateSnapshot?.lastUsedByInAudit ?? '',
+                  content: state.templateUsageSummary?.auditNumber ?? '',
                 ),
               ),
               Flexible(flex: 1, child: Container()),
@@ -39,7 +39,7 @@ class SummaryView extends StatelessWidget {
                 child: SummaryItemView(
                   backgroundColor: const Color(0xff8e70c1),
                   title: 'Last Audit Status:',
-                  content: state.auditTemplateSnapshot?.lastAuditStatus ?? '',
+                  content: state.templateUsageSummary?.auditStatus ?? '',
                 ),
               ),
               Flexible(flex: 1, child: Container()),
@@ -50,7 +50,7 @@ class SummaryView extends StatelessWidget {
                   backgroundColor: const Color(0xff8e70c1),
                   title: 'Used:',
                   content:
-                      '${state.auditTemplateSnapshot?.usedInAudits ?? ''} Audits',
+                      '${state.templateUsageSummary?.usedInAudits ?? ''} Audits',
                 ),
               ),
             ],

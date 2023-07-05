@@ -32,10 +32,6 @@ class _ResponseScaleSelectFieldViewState
             items: items,
             onChanged: (value) {
               context.read<TemplateDesignerBloc>().add(
-                  TemplateDesignerResponseScaleSelected(
-                      responseScaleId: (value.value as ResponseScale).id));
-
-              context.read<TemplateDesignerBloc>().add(
                     TemplateDesignerResponseScaleItemListLoaded(
                       responseScaleId: (value.value as ResponseScale).id,
                     ),

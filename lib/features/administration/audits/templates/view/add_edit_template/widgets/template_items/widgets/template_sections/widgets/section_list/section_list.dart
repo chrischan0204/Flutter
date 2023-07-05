@@ -2,10 +2,8 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class SectionListView extends StatelessWidget {
-  final String templateId;
   const SectionListView({
     super.key,
-    required this.templateId,
   });
 
   @override
@@ -32,7 +30,6 @@ class SectionListView extends StatelessWidget {
                   index < state.templateSectionList.length;
                   index++)
                 SectionItemView(
-                  templateId: templateId,
                   section: state.templateSectionList[index],
                   active: state.selectedTemplateSection ==
                       state.templateSectionList[index],

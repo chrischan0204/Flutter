@@ -70,9 +70,17 @@ class SitesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // Future<List<SiteType>> getSiteTypeList() async {
-  //   Response response
-  // }
+  Future<List<SiteType>> getSiteTypeList() async {
+    Response response = await super.get('$url/sitetypes');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => SiteType.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 
   Future<FilteredSiteData> getFilteredSiteList(
       FilteredTableParameter option) async {

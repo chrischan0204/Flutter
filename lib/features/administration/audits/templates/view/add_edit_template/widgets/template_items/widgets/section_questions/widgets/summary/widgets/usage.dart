@@ -1,126 +1,104 @@
 import '/common_libraries.dart';
 
-class UsageView extends StatelessWidget {
+class UsageView extends StatefulWidget {
   const UsageView({super.key});
+
+  @override
+  State<UsageView> createState() => _UsageViewState();
+}
+
+class _UsageViewState extends State<UsageView> {
+  @override
+  void initState() {
+    context.read<TemplateDetailBloc>().add(TemplateDetailUsageSummaryLoaded());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            color: lightGreenAccent,
-            padding: const EdgeInsets.all(20.0),
-            child: const Text(
-              'Usage',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+      child: BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                color: lightGreenAccent,
+                padding: const EdgeInsets.all(20.0),
+                child: const Text(
+                  'Usage',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 10,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: RichText(
-                    text: const TextSpan(
-                      text: 'Used In:   ',
-                      children: [
-                        TextSpan(
-                          text: '13 Audits',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        )
-                      ],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 10,
                 ),
-                const CustomDivider(),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: RichText(
-                    text: const TextSpan(
-                      text: 'Last Used:   ',
-                      children: [
-                        TextSpan(
-                          text: 'Audit # 028-19939',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        )
-                      ],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    UsageSummaryItemView(
+                      label: 'Used in',
+                      content:
+                          '${state.templateUsageSummary?.usedInAudits ?? ''} Audits',
                     ),
-                  ),
-                ),
-                const CustomDivider(),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: RichText(
-                    text: const TextSpan(
-                      text: 'Last Used By:   ',
-                      children: [
-                        TextSpan(
-                          text: 'Andrew Gardner',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        )
-                      ],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    const CustomDivider(),
+                    UsageSummaryItemView(
+                      label: 'Last Used',
+                      content:
+                          ' Audit # ${state.templateUsageSummary?.auditNumber ?? ''}',
                     ),
-                  ),
-                ),
-                const CustomDivider(),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: RichText(
-                    text: const TextSpan(
-                      text: 'Last used Audit Status:   ',
-                      children: [
-                        TextSpan(
-                          text: 'In review',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        )
-                      ],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    const CustomDivider(),
+                    UsageSummaryItemView(
+                      label: 'Last Used By',
+                      content: state.templateUsageSummary?.lastCreatedBy ?? '',
                     ),
-                  ),
+                    const CustomDivider(),
+                    UsageSummaryItemView(
+                      label: 'Last used Audit Status',
+                      content: state.templateUsageSummary?.auditStatus ?? '',
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class UsageSummaryItemView extends StatelessWidget {
+  final String label;
+  final String content;
+  const UsageSummaryItemView({
+    super.key,
+    required this.label,
+    required this.content,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: RichText(
+        text: TextSpan(
+          text: '$label:   ',
+          children: [
+            TextSpan(
+              text: content,
+              style: textNormal14,
+            )
+          ],
+          style: textSemiBold14,
+        ),
       ),
     );
   }

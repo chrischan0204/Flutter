@@ -3,8 +3,7 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class SummarySectionView extends StatefulWidget {
-  final String templateId;
-  const SummarySectionView({super.key, required this.templateId});
+  const SummarySectionView({super.key});
 
   @override
   State<SummarySectionView> createState() => _SummarySectionViewState();
@@ -15,7 +14,7 @@ class _SummarySectionViewState extends State<SummarySectionView> {
   void initState() {
     context
         .read<TemplateDetailBloc>()
-        .add(TemplateDetailSnapshotLoaded(templateId: widget.templateId));
+        .add(TemplateDetailSnapshotLoaded());
     super.initState();
   }
 

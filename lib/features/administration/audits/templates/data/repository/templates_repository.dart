@@ -167,4 +167,15 @@ class TemplatesRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  /// get template usage summary 
+  Future<TemplateUsageSummary> getTemplateUsageSummary(String templateId) async {
+    Response response = await super.get('$url/$templateId/usagesummary');
+
+    if (response.statusCode == 200) {
+      return TemplateUsageSummary.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
 }

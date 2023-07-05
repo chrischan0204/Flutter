@@ -14,7 +14,7 @@ class TemplateView extends StatelessWidget {
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
             return TemplateDetailHeaderView(
-                title: 'Template for ${state.template?.name}');
+                title: 'Template for ${state.template?.name ?? ''}');
           },
         ),
         const CustomDivider(),

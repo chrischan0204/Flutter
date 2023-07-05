@@ -13,3 +13,4 @@ export 'template_section_list_item_for_detail.dart';
 export 'template_question.dart';
 export 'template_section.dart';
 export 'audit_template_snapshot.dart';
+export 'template_usage_summary.dart';

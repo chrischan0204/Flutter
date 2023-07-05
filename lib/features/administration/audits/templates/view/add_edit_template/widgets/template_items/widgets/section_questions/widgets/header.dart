@@ -1,10 +1,8 @@
 import '/common_libraries.dart';
 
 class SectionQuestionsHeaderView extends StatelessWidget {
-  final String templateId;
   const SectionQuestionsHeaderView({
     super.key,
-    required this.templateId,
   });
 
   @override
@@ -40,7 +38,6 @@ class SectionQuestionsHeaderView extends StatelessWidget {
                             showAddNewQuestionView: false))
                         ..add(
                           TemplateDesignerTemplateSectionSelected(
-                            templateId: templateId,
                             templateSection: context
                                 .read<TemplateDesignerBloc>()
                                 .state

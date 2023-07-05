@@ -20,7 +20,7 @@ class _TemplateDetailViewState extends State<TemplateDetailView> {
       providers: [
         BlocProvider(
             create: (context) => TemplateDetailBloc(
-                templatesRepository: RepositoryProvider.of(context))),
+                context: context, templateId: widget.templateId)),
       ],
       child: TemplateDetailWidget(templateId: widget.templateId),
     );
@@ -50,14 +50,14 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
   void initState() {
     templatesBloc = context.read<TemplateDetailBloc>()
       ..add(TemplateDetailTemplateLoadedById(templateId: widget.templateId))
-      ..add(TemplateDetailSnapshotLoaded(templateId: widget.templateId))
-      ..add(TemplateDetailAuditTemplateSnapshotLoaded(id: widget.templateId))
-      ..add(TemplateDetailSectionListLoaded(templateId: widget.templateId))
+      ..add(TemplateDetailSnapshotLoaded())
+      ..add(TemplateDetailAuditTemplateSnapshotLoaded())
+      ..add(TemplateDetailSectionListLoaded())
       ..add(TemplateDetailTemplateQuestionDetailLoaded(
         id: widget.templateId,
         itemType: 1,
         level: 0,
-      ));
+      ))..add(TemplateDetailUsageSummaryLoaded());
 
     super.initState();
   }

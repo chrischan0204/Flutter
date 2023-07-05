@@ -5,11 +5,17 @@ part 'template_detail_state.dart';
 
 class TemplateDetailBloc
     extends Bloc<TemplateDetailEvent, TemplateDetailState> {
-  final TemplatesRepository templatesRepository;
+  late TemplatesRepository _templatesRepository;
+  final String templateId;
+  final BuildContext context;
 
   static String deleteErrorMessage = ErrorMessage('site').add;
-  TemplateDetailBloc({required this.templatesRepository})
-      : super(const TemplateDetailState()) {
+  TemplateDetailBloc({
+    required this.context,
+    required this.templateId,
+  }) : super(const TemplateDetailState()) {
+    _templatesRepository = context.read();
+
     on<TemplateDetailTemplateLoadedById>(_onTemplateDetailTemplateLoadedById);
     on<TemplateDetailTemplateDeleted>(_onTemplateDetailTemplateDeleted);
     on<TemplateDetailSnapshotLoaded>(_onTemplateDetailSnapshotLoaded);
@@ -20,6 +26,7 @@ class TemplateDetailBloc
     on<TemplateDetailIsOpenChanged>(_onTemplateDetailIsOpenChanged);
     on<TemplateDetailAuditTemplateSnapshotLoaded>(
         _onTemplateDetailAuditTemplateSnapshotLoaded);
+    on<TemplateDetailUsageSummaryLoaded>(_onTemplateDetailUsageSummaryLoaded);
   }
 
   Future<void> _onTemplateDetailTemplateLoadedById(
@@ -29,7 +36,7 @@ class TemplateDetailBloc
     emit(state.copyWith(templateLoadStatus: EntityStatus.loading));
     try {
       Template template =
-          await templatesRepository.getTemplateById(event.templateId);
+          await _templatesRepository.getTemplateById(templateId);
       emit(state.copyWith(
         template: template,
         templateLoadStatus: EntityStatus.success,
@@ -48,7 +55,7 @@ class TemplateDetailBloc
     emit(state.copyWith(templateDeleteStatus: EntityStatus.loading));
     try {
       EntityResponse response =
-          await templatesRepository.deleteTemplate(event.templateId);
+          await _templatesRepository.deleteTemplate(event.templateId);
       emit(state.copyWith(
         templateDeleteStatus:
             response.isSuccess ? EntityStatus.success : EntityStatus.failure,
@@ -70,7 +77,7 @@ class TemplateDetailBloc
 
     try {
       List<TemplateSnapshot> templateSnapshotList =
-          await templatesRepository.getTemplateSnapshotList(event.templateId);
+          await _templatesRepository.getTemplateSnapshotList(templateId);
       emit(state.copyWith(
         templateSnapshotList: templateSnapshotList,
         templateSnapshotListLoadStatus: EntityStatus.success,
@@ -92,7 +99,7 @@ class TemplateDetailBloc
               templateQuestionDetailListLoadStatus: EntityStatus.loading));
           try {
             List<TemplateSection> templateQuestionDetailList =
-                await templatesRepository.getTemplateQuestionDetailList(
+                await _templatesRepository.getTemplateQuestionDetailList(
                     event.id, event.itemType, event.templateSectionId);
             emit(state.copyWith(
               templateQuestionDetailList: templateQuestionDetailList,
@@ -106,7 +113,7 @@ class TemplateDetailBloc
         case 1:
           if (event.isOpen == true) {
             List<TemplateSection> templateQuestionDetailList =
-                await templatesRepository.getTemplateQuestionDetailList(
+                await _templatesRepository.getTemplateQuestionDetailList(
                     event.id, event.itemType, event.templateSectionId);
             emit(state.copyWith(
               templateQuestionDetailList: state.templateQuestionDetailList
@@ -159,7 +166,7 @@ class TemplateDetailBloc
         case 2:
           if (event.isOpen == true) {
             List<TemplateSection> templateQuestionDetailList =
-                await templatesRepository.getTemplateQuestionDetailList(
+                await _templatesRepository.getTemplateQuestionDetailList(
                     event.id, event.itemType, event.templateSectionId);
 
             emit(state.copyWith(
@@ -241,8 +248,8 @@ class TemplateDetailBloc
   ) async {
     try {
       List<TemplateSectionListItemForDetail> templateSectionList =
-          await templatesRepository
-              .getTemplateSectionListForDetail(event.templateId);
+          await _templatesRepository
+              .getTemplateSectionListForDetail(templateId);
       emit(state.copyWith(templateSectionList: templateSectionList));
     } catch (e) {}
   }
@@ -346,9 +353,21 @@ class TemplateDetailBloc
   ) async {
     try {
       AuditTemplateSnapshot auditTemplateSnapshot =
-          await templatesRepository.getTemplateAuditSnapshot(event.id);
+          await _templatesRepository.getTemplateAuditSnapshot(templateId);
 
       emit(state.copyWith(auditTemplateSnapshot: auditTemplateSnapshot));
+    } catch (e) {}
+  }
+
+  Future<void> _onTemplateDetailUsageSummaryLoaded(
+    TemplateDetailUsageSummaryLoaded event,
+    Emitter<TemplateDetailState> emit,
+  ) async {
+    try {
+      TemplateUsageSummary templateUsageSummary =
+          await _templatesRepository.getTemplateUsageSummary(templateId);
+
+      emit(state.copyWith(templateUsageSummary: templateUsageSummary));
     } catch (e) {}
   }
 }

@@ -2,10 +2,8 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class SectionQuestionsView extends StatelessWidget {
-  final String templateId;
   const SectionQuestionsView({
     super.key,
-    required this.templateId,
   });
 
   @override
@@ -15,7 +13,7 @@ class SectionQuestionsView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionQuestionsHeaderView(templateId: templateId),
+          const SectionQuestionsHeaderView(),
           Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -27,13 +25,12 @@ class SectionQuestionsView extends StatelessWidget {
             child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
               builder: (context, state) {
                 if (state.selectedTemplateSection == null) {
-                  return SummarySectionView(templateId: templateId);
+                  return SummarySectionView();
                 } else if (state.showAddNewQuestionView) {
                   return BlocBuilder<TemplateDesignerBloc,
                       TemplateDesignerState>(
                     builder: (context, state) {
                       return AddNewQuestionView(
-                        templateId: templateId,
                         templateSectionItem: state
                             .currentTemplateSectionItemByLevel(state.level)!,
                       );

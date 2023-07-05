@@ -23,17 +23,17 @@ class TemplateItemsView extends StatelessWidget {
         const CustomDivider(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const [
             Flexible(
               flex: 3,
               fit: FlexFit.tight,
-              child: TemplateSectionsView(templateId: templateId),
+              child: TemplateSectionsView(),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Flexible(
               flex: 8,
               fit: FlexFit.tight,
-              child: SectionQuestionsView(templateId: templateId),
+              child: SectionQuestionsView(),
             )
           ],
         )

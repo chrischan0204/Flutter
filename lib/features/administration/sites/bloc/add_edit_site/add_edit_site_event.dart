@@ -43,6 +43,9 @@ class AddEditTimeZoneListLoaded extends AddEditSiteEvent {
   List<Object> get props => [regionId];
 }
 
+/// event to load the site type list
+class AddEditSiteTypeListLoaded extends AddEditSiteEvent {}
+
 /// event to change the site name
 class AddEditSiteNameChanged extends AddEditSiteEvent {
   /// site name to change

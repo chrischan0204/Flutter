@@ -8,7 +8,6 @@ class TemplateListView extends StatefulWidget {
 }
 
 class _TemplateListViewState extends State<TemplateListView> {
-  String token = '';
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -18,7 +17,9 @@ class _TemplateListViewState extends State<TemplateListView> {
                 templatesRepository: RepositoryProvider.of(context))),
         BlocProvider(
             create: (context) => TemplateDetailBloc(
-                templatesRepository: RepositoryProvider.of(context))),
+                  context: context,
+                  templateId: '',
+                )),
       ],
       child: const TemplateListWidget(),
     );

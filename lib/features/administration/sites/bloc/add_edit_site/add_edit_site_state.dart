@@ -13,7 +13,8 @@ class AddEditSiteState extends Equatable {
   /// time zone list
   final List<TimeZone> timeZoneList;
 
-  
+  /// site type list
+  final List<SiteType> siteTypeList;
 
   /// site name
   final String siteName;
@@ -80,6 +81,7 @@ class AddEditSiteState extends Equatable {
     this.loadedSite,
     this.regionList = const [],
     this.timeZoneList = const [],
+    this.siteTypeList = const [],
     this.siteName = '',
     this.region,
     this.timeZone,
@@ -108,6 +110,7 @@ class AddEditSiteState extends Equatable {
         loadedSite,
         regionList,
         timeZoneList,
+        siteTypeList,
         siteName,
         region,
         timeZone,
@@ -153,6 +156,7 @@ class AddEditSiteState extends Equatable {
     Site? loadedSite,
     List<Region>? regionList,
     List<TimeZone>? timeZoneList,
+    List<SiteType>? siteTypeList,
     String? siteName,
     Region? region,
     TimeZone? timeZone,
@@ -179,6 +183,7 @@ class AddEditSiteState extends Equatable {
       loadedSite: loadedSite ?? this.loadedSite,
       regionList: regionList ?? this.regionList,
       timeZoneList: timeZoneList ?? this.timeZoneList,
+      siteTypeList: siteTypeList ?? this.siteTypeList,
       siteName: siteName ?? this.siteName,
       region: region ?? this.region,
       timeZone: timeZone ?? this.timeZone,

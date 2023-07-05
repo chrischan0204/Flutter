@@ -1,9 +1,7 @@
 import '/common_libraries.dart';
 
 class AddNewQuestionHeaderView extends StatelessWidget {
-  final String templateId;
   const AddNewQuestionHeaderView({
-    required this.templateId,
     super.key,
   });
 
@@ -12,7 +10,6 @@ class AddNewQuestionHeaderView extends StatelessWidget {
         showAddNewQuestionView: false))
     ..add(
       TemplateDesignerTemplateSectionSelected(
-        templateId: templateId,
         templateSection:
             context.read<TemplateDesignerBloc>().state.selectedTemplateSection,
       ),

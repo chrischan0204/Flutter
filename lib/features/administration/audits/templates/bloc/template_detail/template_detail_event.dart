@@ -10,8 +10,9 @@ abstract class TemplateDetailEvent extends Equatable {
 
 class TemplateDetailTemplateLoadedById extends TemplateDetailEvent {
   final String templateId;
-  const TemplateDetailTemplateLoadedById({required this.templateId});
-
+  const TemplateDetailTemplateLoadedById({
+    required this.templateId,
+  });
   @override
   List<Object> get props => [templateId];
 }
@@ -19,16 +20,12 @@ class TemplateDetailTemplateLoadedById extends TemplateDetailEvent {
 class TemplateDetailTemplateDeleted extends TemplateDetailEvent {
   final String templateId;
   const TemplateDetailTemplateDeleted({required this.templateId});
+
   @override
   List<Object> get props => [templateId];
 }
 
-class TemplateDetailSnapshotLoaded extends TemplateDetailEvent {
-  final String templateId;
-  const TemplateDetailSnapshotLoaded({required this.templateId});
-  @override
-  List<Object> get props => [templateId];
-}
+class TemplateDetailSnapshotLoaded extends TemplateDetailEvent {}
 
 class TemplateDetailTemplateQuestionDetailLoaded extends TemplateDetailEvent {
   final String id;
@@ -53,13 +50,7 @@ class TemplateDetailTemplateQuestionDetailLoaded extends TemplateDetailEvent {
       ];
 }
 
-class TemplateDetailSectionListLoaded extends TemplateDetailEvent {
-  final String templateId;
-  const TemplateDetailSectionListLoaded({required this.templateId});
-
-  @override
-  List<Object> get props => [templateId];
-}
+class TemplateDetailSectionListLoaded extends TemplateDetailEvent {}
 
 class TemplateDetailSelectionSelected extends TemplateDetailEvent {
   final TemplateSectionListItemForDetail section;
@@ -91,11 +82,7 @@ class TemplateDetailIsOpenChanged extends TemplateDetailEvent {
 }
 
 /// event to load the audit template snapshot
-class TemplateDetailAuditTemplateSnapshotLoaded extends TemplateDetailEvent {
-  /// template id to load audit template snapshot
-  final String id;
+class TemplateDetailAuditTemplateSnapshotLoaded extends TemplateDetailEvent {}
 
-  const TemplateDetailAuditTemplateSnapshotLoaded({
-    required this.id,
-  });
-}
+/// event to load the usage summary of template
+class TemplateDetailUsageSummaryLoaded extends TemplateDetailEvent {}
