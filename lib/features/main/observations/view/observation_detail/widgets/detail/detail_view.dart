@@ -25,7 +25,7 @@ class DetailView extends StatelessWidget {
             ),
             DetailItemView1(
               label: 'Response',
-              content: 'Reported via ${observation.response}',
+              content: observation.response,
             ),
             DetailItemView2(
               rightLabel: 'Reported At',

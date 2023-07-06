@@ -41,7 +41,6 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
 
   static String pageLabel = 'action item';
 
-
   @override
   void initState() {
     addEditActionItemBloc = context.read()
@@ -88,7 +87,7 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
           crudStatus: state.status,
           view: widget.view,
           formDirty: state.formDirty,
-          child: const AddEditActionItemFormView(),
+          child: AddEditActionItemFormView(),
         );
       },
     );

@@ -10,13 +10,9 @@ class ReportedViaTextField extends StatelessWidget {
       label: 'Reported via',
       content: BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
         builder: (context, state) {
-          return CustomTextField(
-            // key: ValueKey(state.loadedAudit?.id),
-            initialValue: state.reportedVia,
-            onChanged: (reportedVia) {
-              context.read<EditAssessmentBloc>().add(
-                  EditAssessmentReportedViaChanged(reportedVia: reportedVia));
-            },
+          return Text(
+            state.reportedVia,
+            style: textNormal14,
           );
         },
       ),

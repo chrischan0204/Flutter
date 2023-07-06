@@ -12,7 +12,7 @@ class AddEditActionItemBloc
   late ActionItemsRepository _actionItemsRepository;
   late FormDirtyBloc _formDirtyBloc;
   late AuthBloc _authBloc;
-  AddEditActionItemBloc(this.context) : super(const AddEditActionItemState()) {
+  AddEditActionItemBloc(this.context) : super(AddEditActionItemState()) {
     _sitesRepository = RepositoryProvider.of(context);
     _awarenessCategoriesRepository = RepositoryProvider.of(context);
     _usersRepository = RepositoryProvider.of(context);

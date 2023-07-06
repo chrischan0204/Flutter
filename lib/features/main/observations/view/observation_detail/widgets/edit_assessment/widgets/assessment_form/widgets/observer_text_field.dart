@@ -10,14 +10,9 @@ class ObserverTextField extends StatelessWidget {
       label: 'Observer',
       content: BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
         builder: (context, state) {
-          return CustomTextField(
-            // key: ValueKey(state.loadedAudit?.id),
-            initialValue: state.observer,
-            onChanged: (observer) {
-              context
-                  .read<EditAssessmentBloc>()
-                  .add(EditAssessmentObserverChanged(observer: observer));
-            },
+          return Text(
+            state.observer,
+            style: textNormal14,
           );
         },
       ),

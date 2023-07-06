@@ -29,7 +29,7 @@ class AddEditActionItemState extends Equatable {
   final String initialName;
 
   /// dueBy to create action item
-  final DateTime? dueBy;
+  DateTime? dueBy;
 
   /// initial due by to check form dirty;
   final DateTime? initialDueBy;
@@ -90,7 +90,7 @@ class AddEditActionItemState extends Equatable {
 
   /// response message
   final String message;
-  const AddEditActionItemState({
+  AddEditActionItemState({
     this.actionItem,
     this.awarenessCategoryList = const [],
     this.companyList = const [],
@@ -121,7 +121,9 @@ class AddEditActionItemState extends Equatable {
     this.initialNotes = '',
     this.status = EntityStatus.initial,
     this.message = '',
-  });
+  }) {
+    dueBy ??= DateTime.now();
+  }
 
   @override
   List<Object?> get props => [
@@ -173,9 +175,9 @@ class AddEditActionItemState extends Equatable {
         name: name,
         dueBy: dueBy!.toIso8601String(),
         assigneeId: assignee!.id!,
-        categoryId: category!.id!,
-        companyId: company!.id!,
-        projectId: project!.id!,
+        categoryId: category?.id,
+        companyId: company?.id,
+        projectId: project?.id,
         location: location,
         notes: notes,
       );

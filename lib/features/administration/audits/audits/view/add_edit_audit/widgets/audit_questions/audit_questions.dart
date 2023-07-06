@@ -10,8 +10,12 @@ class AuditQuestionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuditQuestionsBloc(context, auditId: auditId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuditDetailBloc(context, auditId)),
+        BlocProvider(
+            create: (context) => AuditQuestionsBloc(context, auditId: auditId))
+      ],
       child: AuditQuestionsWidget(auditId: auditId),
     );
   }
@@ -33,7 +37,7 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
   void initState() {
     context
         .read<AuditQuestionsBloc>()
-        .add(AuditQuestionsAuditSectionListLoaded(auditId: widget.auditId));
+        .add(AuditQuestionsAuditSectionListLoaded());
     super.initState();
   }
 

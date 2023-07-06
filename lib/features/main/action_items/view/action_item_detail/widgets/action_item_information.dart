@@ -60,7 +60,19 @@ class ActionItemInformationView extends StatelessWidget {
                   state.actionItem?.notes ?? '',
                   style: textNormal14,
                 ),
-              )
+              ),
+              ActionItemInformationItemView(
+                label: 'Status',
+                content: state.actionItem?.status ?? '',
+              ),
+              ActionItemInformationItemView(
+                label: 'Closed On',
+                content: state.actionItem?.closedOn ?? '',
+              ),
+              ActionItemInformationItemView(
+                label: 'Closed By',
+                content: state.actionItem?.closedByName ?? '',
+              ),
             ],
           );
         },

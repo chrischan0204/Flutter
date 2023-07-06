@@ -71,6 +71,9 @@ class AddEditObservationState extends Equatable {
   /// images to create observation
   final List<Uint8List> images;
 
+  /// initial images to check form dirty
+  final List<Uint8List> initialImages;
+
   /// creation & edition site status
   final EntityStatus status;
 
@@ -100,6 +103,7 @@ class AddEditObservationState extends Equatable {
     this.observationType,
     this.observationTypeValidationMessage = '',
     this.images = const [],
+    this.initialImages = const [],
     this.status = EntityStatus.initial,
     this.message = '',
   });
@@ -129,6 +133,7 @@ class AddEditObservationState extends Equatable {
         initialObservationType,
         observationTypeValidationMessage,
         images,
+        initialImages,
         status,
         message,
       ];
@@ -153,7 +158,7 @@ class AddEditObservationState extends Equatable {
           priorityLevel?.id != initialPriorityLevel?.id) ||
       (observationType != null &&
           observationType?.id != initialObservationType?.id) ||
-      (images.isNotEmpty);
+      (images.isNotEmpty && initialImages != images);
 
   AddEditObservationState copyWith({
     String? createdObservationId,
@@ -179,6 +184,7 @@ class AddEditObservationState extends Equatable {
     ObservationType? initialObservationType,
     String? observationTypeValidationMessage,
     List<Uint8List>? images,
+    List<Uint8List>? initialImages,
     EntityStatus? status,
     String? message,
   }) {
@@ -213,6 +219,7 @@ class AddEditObservationState extends Equatable {
       observationTypeValidationMessage: observationTypeValidationMessage ??
           this.observationTypeValidationMessage,
       images: images ?? this.images,
+      initialImages: initialImages ?? this.initialImages,
       status: status ?? this.status,
       message: message ?? this.message,
     );

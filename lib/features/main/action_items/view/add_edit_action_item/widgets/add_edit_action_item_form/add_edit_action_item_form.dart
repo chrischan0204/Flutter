@@ -2,7 +2,57 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class AddEditActionItemFormView extends StatelessWidget {
-  const AddEditActionItemFormView({super.key});
+  AddEditActionItemFormView({super.key});
+
+  final Widget _notesInputBox = CustomBottomBorderContainer(
+    child: Column(
+      children: [
+        Padding(
+          padding: inset4,
+          child: Row(
+            children: [
+              Text(
+                '',
+                style: textNormal12.copyWith(
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: insetx20,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Notes:',
+                  style: textSemiBold12,
+                ),
+              ),
+              const Expanded(
+                flex: 4,
+                child: NotesTextField(),
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: inset4,
+          child: Row(
+            children: [
+              Text(
+                '',
+                style: textNormal12.copyWith(
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +90,7 @@ class AddEditActionItemFormView extends StatelessWidget {
               rightLabel: 'Area',
               rightChild: LocationInputBox(),
             ),
-            FormItemVertical(
-              leftLabel: 'Notes',
-              leftChild: const NotesTextField(),
-              secondaryRightChild: Container(),
-            )
+            _notesInputBox,
           ],
         );
       },

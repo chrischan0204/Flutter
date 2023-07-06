@@ -39,7 +39,7 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
   void initState() {
     context.read<AuditDetailBloc>()
       ..add(AuditDetailLoaded(auditId: widget.auditId))
-      ..add(AuditDetailAuditSectionListLoaded(auditId: widget.auditId));
+      ..add(AuditDetailAuditSectionListLoaded());
     super.initState();
   }
 

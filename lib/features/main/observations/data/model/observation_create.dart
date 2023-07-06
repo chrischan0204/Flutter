@@ -38,7 +38,7 @@ class ObservationCreate extends Equatable {
       'userReportedPriorityLevelId': priorityLevelId,
       'userReportedObservationTypeId': observationTypeId,
       'response': response,
-      'base64Image': base64.encode(images[0]),
+      'base64Image': images.isNotEmpty ? base64.encode(images[0]) : '',
       'description': name,
       'area': location,
       'reportedVia': kIsWeb

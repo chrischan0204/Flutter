@@ -32,16 +32,7 @@ class AuditDetailAuditDeleted extends AuditDetailEvent {
 }
 
 /// event to load audit section list
-class AuditDetailAuditSectionListLoaded extends AuditDetailEvent {
-  /// audit id to load audit section list
-  final String auditId;
-  const AuditDetailAuditSectionListLoaded({
-    required this.auditId,
-  });
-
-  @override
-  List<Object> get props => [auditId];
-}
+class AuditDetailAuditSectionListLoaded extends AuditDetailEvent {}
 
 /// event to change selected audit detail
 class AuditDetailSelectedAuditSectionChanged extends AuditDetailEvent {

@@ -63,9 +63,10 @@ class AddEditObservationBloc
             initialLocation: state.location,
             initialObservationName: state.observationName,
             initialObservationType: state.observationType,
-            initialPriorityLevel: state.initialPriorityLevel,
+            initialPriorityLevel: state.priorityLevel,
             initialResponse: state.response,
             initialSite: state.site,
+            initialImages: state.images,
             message: response.message,
             status: EntityStatus.success,
           ));
@@ -133,8 +134,7 @@ class AddEditObservationBloc
     if (Validation.isEmpty(state.observationName)) {
       emit(state.copyWith(
           observationNameValidationMessage:
-              FormValidationMessage(fieldName: 'Observation')
-                  .requiredMessage));
+              FormValidationMessage(fieldName: 'Observation').requiredMessage));
       success = false;
     }
 

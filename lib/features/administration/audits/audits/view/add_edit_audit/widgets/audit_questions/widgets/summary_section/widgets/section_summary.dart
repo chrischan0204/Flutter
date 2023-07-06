@@ -4,11 +4,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import '/common_libraries.dart';
 
 class SectionSummaryView extends StatefulWidget {
-  final String auditId;
-  const SectionSummaryView({
-    super.key,
-    required this.auditId,
-  });
+  const SectionSummaryView({super.key});
 
   @override
   State<SectionSummaryView> createState() => _SectionSummaryViewState();
@@ -17,9 +13,7 @@ class SectionSummaryView extends StatefulWidget {
 class _SectionSummaryViewState extends State<SectionSummaryView> {
   @override
   void initState() {
-    context
-        .read<AuditDetailBloc>()
-        .add(AuditDetailAuditSectionListLoaded(auditId: widget.auditId));
+    context.read<AuditDetailBloc>().add(AuditDetailAuditSectionListLoaded());
     super.initState();
   }
 
@@ -82,9 +76,8 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
                 auditSectionAndQuestionList: state.auditSectionAndQuestionList,
                 columns: columns,
               ),
+              footerFrozenRowsCount: 1,
               columnWidthMode: ColumnWidthMode.fill,
-              columnResizeMode: ColumnResizeMode.onResize,
-              allowColumnsResizing: true,
               gridLinesVisibility: GridLinesVisibility.none,
               headerGridLinesVisibility: GridLinesVisibility.none,
               headerRowHeight: 52,

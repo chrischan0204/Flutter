@@ -9,10 +9,12 @@ class AuditQuestionsBloc
   final String auditId;
   late AuditsRepository auditsRepository;
   late String userId;
+  late AuditDetailBloc _auditDetailBloc;
   AuditQuestionsBloc(this.context, {required this.auditId})
       : super(const AuditQuestionsState()) {
     auditsRepository = context.read();
     userId = context.read<AuthBloc>().state.authUser!.id;
+    _auditDetailBloc = context.read();
 
     on<AuditQuestionsAuditSectionListLoaded>(
         _onAuditQuestionsAuditSectionListLoaded);
@@ -45,7 +47,7 @@ class AuditQuestionsBloc
     Emitter<AuditQuestionsState> emit,
   ) async {
     final auditSectionList =
-        await auditsRepository.getAuditSectionList(event.auditId);
+        await auditsRepository.getAuditSectionList(auditId);
 
     emit(state.copyWith(
       auditSectionList: auditSectionList,
@@ -93,8 +95,7 @@ class AuditQuestionsBloc
       ));
 
       if (response.isSuccess) {
-        add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
-        add(AuditQuestionsAuditQuestionListLoaded());
+        _getInformation();
       }
     } catch (e) {}
   }
@@ -113,8 +114,7 @@ class AuditQuestionsBloc
       ));
 
       if (response.isSuccess) {
-        add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
-        add(AuditQuestionsAuditQuestionListLoaded());
+        _getInformation();
       }
     } catch (e) {}
   }
@@ -127,8 +127,7 @@ class AuditQuestionsBloc
         await auditsRepository.copyQuestion(auditId, event.questionId);
 
     if (response.isSuccess) {
-      add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
-      add(AuditQuestionsAuditQuestionListLoaded());
+      _getInformation();
     }
   }
 
@@ -140,8 +139,13 @@ class AuditQuestionsBloc
         await auditsRepository.copySection(auditId, event.sectionId);
 
     if (response.isSuccess) {
-      add(AuditQuestionsAuditSectionListLoaded(auditId: auditId));
-      add(AuditQuestionsAuditQuestionListLoaded());
+      _getInformation();
     }
+  }
+
+  void _getInformation() {
+    add(AuditQuestionsAuditSectionListLoaded());
+    add(AuditQuestionsAuditQuestionListLoaded());
+    _auditDetailBloc.add(AuditDetailAuditSectionListLoaded());
   }
 }

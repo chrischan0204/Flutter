@@ -34,7 +34,13 @@ class ActionItem extends Entity {
   final String actionRequired;
   final String dueOn;
   final String closedOn;
+  final String closedByName;
   final String comments;
+  final String auditName;
+  final String auditId;
+  final String auditSectionItemId;
+  final String auditSectionName;
+
   const ActionItem({
     super.id,
     super.name,
@@ -57,6 +63,11 @@ class ActionItem extends Entity {
     this.dueOn = '',
     this.closedOn = '',
     this.comments = '',
+    this.closedByName = '',
+    this.auditName = '',
+    this.auditId = '',
+    this.auditSectionItemId = '',
+    this.auditSectionName = '',
     super.createdByUserName,
     super.columns,
     super.deleted,
@@ -81,6 +92,7 @@ class ActionItem extends Entity {
         dueOn,
         closedOn,
         comments,
+        closedByName,
       ];
 
   @override
@@ -128,7 +140,11 @@ class ActionItem extends Entity {
       'Item': name,
       'Due': formatedDue,
       'Assignee': assigneeName,
-      'Parent': '',
+      'Parent': source == 'None'
+          ? 'None'
+          : source == 'Audit'
+              ? auditName
+              : observationName,
       'Category': awarenessCategoryName,
       'Company': companyName,
       'Project': projectName,
@@ -157,6 +173,14 @@ class ActionItem extends Entity {
       notes: map['notes'] ?? '',
       status: map['status'] ?? '',
       source: map['source'] ?? '',
+      auditId: map['auditId'] ?? '',
+      auditName: map['auditName'] ?? '',
+      auditSectionItemId: map['auditSectionItemId'] ?? '',
+      auditSectionName: map['auditSectionName'] ?? '',
+      closedByName: map['closedByName'] ?? '',
+      closedOn: map['closedOn'] != null
+          ? DateFormat('yyyy-MM-dd').format(DateTime.parse(map['closedOn']))
+          : '--',
       createdByUserName: entity.createdByUserName,
     );
   }
@@ -188,6 +212,7 @@ class ActionItem extends Entity {
     String? createdByUserName,
     String? lastModifiedOn,
     String? lastModifiedByUserName,
+    String? closedByName,
     bool? deleted,
     List<String>? columns,
   }) {
@@ -211,6 +236,7 @@ class ActionItem extends Entity {
       area: area ?? this.area,
       projectName: area ?? this.projectName,
       createdByUserName: createdByUserName ?? this.createdByUserName,
+      closedByName: closedByName ?? this.closedByName,
       deleted: deleted ?? this.deleted,
       columns: columns ?? this.columns,
     );

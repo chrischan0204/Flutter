@@ -149,7 +149,7 @@ class Audit extends Entity {
     return {
       'Audit': name,
       'Audit Number': auditNumber,
-      'Onwer': owner,
+      'Owner': owner,
       'Started on': formatedAuditDate,
       'Completion': completed,
       'Score': score,
@@ -158,7 +158,6 @@ class Audit extends Entity {
       'Site': siteName,
       'Project': projectName ?? '--',
       'Created on': createdOn,
-      // 'Created by': createdByUserName,
       'Last Updated': lastModifiedOn,
       'Updated by': lastModifiedByUserName,
     };

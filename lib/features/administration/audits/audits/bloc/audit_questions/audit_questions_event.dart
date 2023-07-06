@@ -9,15 +9,7 @@ abstract class AuditQuestionsEvent extends Equatable {
 }
 
 /// event to load audit section list
-class AuditQuestionsAuditSectionListLoaded extends AuditQuestionsEvent {
-  final String auditId;
-  const AuditQuestionsAuditSectionListLoaded({
-    required this.auditId,
-  });
-
-  @override
-  List<Object> get props => [auditId];
-}
+class AuditQuestionsAuditSectionListLoaded extends AuditQuestionsEvent {}
 
 /// event to load audit question list
 class AuditQuestionsAuditQuestionListLoaded extends AuditQuestionsEvent {}

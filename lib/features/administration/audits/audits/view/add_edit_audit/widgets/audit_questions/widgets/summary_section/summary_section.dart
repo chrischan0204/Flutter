@@ -28,11 +28,8 @@ class SummarySectionView extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: BlocProvider(
-                    create: (context) => AuditDetailBloc(context, auditId),
-                    child: SectionSummaryView(auditId: auditId),
-                  ),
+                const Expanded(
+                  child: SectionSummaryView(),
                 ),
                 Expanded(
                   child: Row(

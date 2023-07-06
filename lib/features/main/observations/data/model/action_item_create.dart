@@ -6,9 +6,9 @@ class ActionItemCreate extends Equatable {
   final String name;
   final String dueBy;
   final String assigneeId;
-  final String categoryId;
-  final String companyId;
-  final String projectId;
+  final String? categoryId;
+  final String? companyId;
+  final String? projectId;
   final String location;
   final String notes;
   final String? observationId;
@@ -18,9 +18,9 @@ class ActionItemCreate extends Equatable {
     required this.name,
     required this.dueBy,
     required this.assigneeId,
-    required this.categoryId,
-    required this.companyId,
-    required this.projectId,
+    this.categoryId,
+    this.companyId,
+    this.projectId,
     required this.location,
     required this.notes,
     this.observationId,

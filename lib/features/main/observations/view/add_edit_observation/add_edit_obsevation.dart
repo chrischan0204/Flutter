@@ -84,6 +84,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
           ).showNotification();
         }
       },
+      listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,
