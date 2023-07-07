@@ -22,13 +22,13 @@ class ObservationsRepository extends BaseRepository {
   }
 
   /// get observation by id
-  Future<Observation> getObservationById(
+  Future<ObservationDetail> getObservationById(
     String observationId,
   ) async {
     Response response = await super.get('$url/$observationId');
 
     if (response.statusCode == 200) {
-      return Observation.fromJson(response.body);
+      return ObservationDetail.fromJson(response.body);
     }
 
     throw Exception();

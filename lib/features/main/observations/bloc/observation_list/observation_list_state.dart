@@ -9,7 +9,7 @@ class ObservationListState extends Equatable {
   final EntityStatus observationListLoadStatus;
 
   /// selected observation for detail
-  final Observation? observation;
+  final ObservationDetail? observation;
 
   /// observation load status
   final EntityStatus observationLoadStatus;
@@ -36,7 +36,7 @@ class ObservationListState extends Equatable {
   ObservationListState copyWith({
     List<Observation>? observationList,
     EntityStatus? observationListLoadStatus,
-    Observation? observation,
+    ObservationDetail? observation,
     EntityStatus? observationLoadStatus,
     int? totalRows,
   }) {

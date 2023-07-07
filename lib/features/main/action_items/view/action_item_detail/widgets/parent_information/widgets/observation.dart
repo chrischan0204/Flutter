@@ -8,38 +8,34 @@ class ObservationViewForActionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ActionItemDetailBloc, ActionItemDetailState>(
       builder: (context, state) {
-        final actionItemParentInfo = state.actionItemParentInfo!;
-        if (state.actionItemParentInfo != null) {
+        if (state.observation != null) {
+          final observation = state.observation!;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const ActionItemInformationItemView(
-                label: 'Generated Via',
-                content: 'Observation:',
-              ),
               ActionItemInformationItemView(
-                label: 'ID',
-                content: actionItemParentInfo.id,
+                label: 'Observation:',
+                content: observation.description ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Site',
-                content: actionItemParentInfo.siteName,
+                content: observation.assessmentSiteName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Company',
-                content: actionItemParentInfo.companyName,
+                content: observation.assessmentCompanyName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Project',
-                content: actionItemParentInfo.projectName,
+                content: observation.assessmentProjectName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Created By',
-                content: actionItemParentInfo.createdByName,
+                content: observation.createdByUserName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Priority Level',
-                content: actionItemParentInfo.priorityLevelName,
+                content: observation.assessmentPriorityLevelName ?? '--',
               ),
             ],
           );

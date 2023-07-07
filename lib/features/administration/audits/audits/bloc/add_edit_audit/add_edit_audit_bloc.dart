@@ -197,7 +197,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     if (state.auditDate == null) {
       emit(state.copyWith(
           auditDateValidationMessage:
-              FormValidationMessage(fieldName: 'Audit date').requiredMessage));
+              FormValidationMessage(fieldName: 'Audit Date/Time').requiredMessage));
       success = false;
     }
 

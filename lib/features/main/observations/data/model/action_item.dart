@@ -40,6 +40,7 @@ class ActionItem extends Entity {
   final String auditId;
   final String auditSectionItemId;
   final String auditSectionName;
+  final bool isClosed;
 
   const ActionItem({
     super.id,
@@ -68,6 +69,7 @@ class ActionItem extends Entity {
     this.auditId = '',
     this.auditSectionItemId = '',
     this.auditSectionName = '',
+    this.isClosed = false,
     super.createdByUserName,
     super.columns,
     super.deleted,
@@ -91,6 +93,7 @@ class ActionItem extends Entity {
         actionRequired,
         dueOn,
         closedOn,
+        isClosed,
         comments,
         closedByName,
       ];
@@ -177,6 +180,7 @@ class ActionItem extends Entity {
       auditName: map['auditName'] ?? '',
       auditSectionItemId: map['auditSectionItemId'] ?? '',
       auditSectionName: map['auditSectionName'] ?? '',
+      isClosed: map['isClosed'] ?? false,
       closedByName: map['closedByName'] ?? '',
       closedOn: map['closedOn'] != null
           ? DateFormat('yyyy-MM-dd').format(DateTime.parse(map['closedOn']))
@@ -207,6 +211,7 @@ class ActionItem extends Entity {
     String? companyName,
     String? companyId,
     String? area,
+    bool? isClosed,
     String? projectId,
     String? projectName,
     String? createdByUserName,
@@ -237,6 +242,7 @@ class ActionItem extends Entity {
       projectName: area ?? this.projectName,
       createdByUserName: createdByUserName ?? this.createdByUserName,
       closedByName: closedByName ?? this.closedByName,
+      isClosed: isClosed ?? this.isClosed,
       deleted: deleted ?? this.deleted,
       columns: columns ?? this.columns,
     );

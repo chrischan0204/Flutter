@@ -3,7 +3,7 @@ part of 'observation_detail_bloc.dart';
 
 class ObservationDetailState extends Equatable {
   /// observation for detail
-  final Observation? observation;
+  final ObservationDetail? observation;
   final EntityStatus observationLoadStatus;
   final EntityStatus observationDeleteStatus;
 
@@ -59,7 +59,7 @@ class ObservationDetailState extends Equatable {
       ];
 
   ObservationDetailState copyWith({
-    Observation? observation,
+    ObservationDetail? observation,
     EntityStatus? observationLoadStatus,
     EntityStatus? observationDeleteStatus,
     List<AwarenessCategory>? awarenessCategoryList,

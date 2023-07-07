@@ -5,3 +5,4 @@ export 'observation_create.dart';
 export 'action_item.dart';
 export 'action_item_create.dart';
 export 'assessement_create.dart';
+export 'observation_detail.dart';

@@ -17,27 +17,27 @@ class DetailView extends StatelessWidget {
           children: [
             DetailItemView1(
               label: 'Observation',
-              content: observation.name ?? '',
+              content: observation.description ?? '',
             ),
             DetailItemView1(
               label: 'Location',
-              content: observation.area,
+              content: observation.area ?? '',
             ),
             DetailItemView1(
               label: 'Response',
-              content: observation.response,
+              content: observation.response ?? '',
             ),
             DetailItemView2(
               rightLabel: 'Reported At',
-              rightContent: observation.formatedReportedAt ?? '--',
+              rightContent: observation.formatedReportedAt,
               leftLabel: 'Reported By',
-              leftContent: observation.reportedBy,
+              leftContent: observation.reportedBy ?? '',
             ),
             DetailItemView2(
-              rightContent: observation.reportedPriorityLevel,
+              rightContent: observation.userReportedPriorityLevelName ?? '',
               rightLabel: 'Reported Level',
               leftLabel: 'Reported Via',
-              leftContent: observation.reportedVia,
+              leftContent: observation.reportedVia ?? '',
             ),
           ],
         );

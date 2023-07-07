@@ -62,7 +62,7 @@ class _ObservationListState extends State<ObservationListWidget> {
                     observationListState.observationListLoadStatus.isLoading,
             entityDetailLoadStatusLoading:
                 observationListState.observationLoadStatus.isLoading,
-            selectedEntity: observationListState.observation,
+            selectedEntity: observationListState.observation?.observation,
             isShowName: false,
             onViewSettingApplied: () {
               _filterObservations();

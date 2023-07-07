@@ -89,7 +89,7 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
         return AddEditEntityTemplate(
           label: pageLabel,
           id: widget.observationId,
-          selectedEntity: state.loadedObservation,
+          selectedEntity: state.loadedObservation?.observation,
           addEntity: () =>
               addEditObservationBloc.add(AddEditObservationAdded()),
           editEntity: () => addEditObservationBloc

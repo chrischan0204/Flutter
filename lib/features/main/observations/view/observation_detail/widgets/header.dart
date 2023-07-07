@@ -14,7 +14,7 @@ class ObservationDetailHeaderView extends StatelessWidget {
           }
 
           return Text(
-            state.observation!.name ?? '',
+            state.observation!.description ?? '',
             style: textNormal20,
           );
         },

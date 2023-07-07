@@ -15,9 +15,11 @@ class TemplateDesignerBloc
   late SectionsRepository _sectionsRepository;
   late FormDirtyBloc _formDirtyBloc;
   late List<String> _loadedTemplateSectionItemIdList;
-  
-  TemplateDesignerBloc({required this.context, required this.templateId,})
-      : super(const TemplateDesignerState()) {
+
+  TemplateDesignerBloc({
+    required this.context,
+    required this.templateId,
+  }) : super(const TemplateDesignerState()) {
     _templatesRepository = context.read();
     _responseScalesRepository = context.read();
     _sectionsRepository = context.read();
@@ -980,25 +982,29 @@ class TemplateDesignerBloc
           children: children.map((child) {
         if (child.id == event.templateSectionItemId) {
           return child.copyWith(
-              children: child.children.isNotEmpty
-                  ? child.children
-                      .map((e) => e.copyWith(
+              children: !event.followUp
+                  ? []
+                  : child.children.isNotEmpty
+                      ? child.children
+                          .map((e) => e.copyWith(
+                                id: followUpQuestionId,
+                                templateSectionId:
+                                    state.selectedTemplateSection!.id,
+                                itemTypeId: 3,
+                                response:
+                                    Nullable.value(event.responseScaleItem),
+                              ))
+                          .toList()
+                      : [
+                          TemplateSectionItem(
                             id: followUpQuestionId,
                             templateSectionId:
                                 state.selectedTemplateSection!.id,
                             itemTypeId: 3,
-                            response: Nullable.value(event.responseScaleItem),
-                          ))
-                      .toList()
-                  : [
-                      TemplateSectionItem(
-                        id: followUpQuestionId,
-                        templateSectionId: state.selectedTemplateSection!.id,
-                        itemTypeId: 3,
-                        response: event.responseScaleItem,
-                        question: const Question(name: '', order: 0),
-                      )
-                    ]);
+                            response: event.responseScaleItem,
+                            question: const Question(name: '', order: 0),
+                          )
+                        ]);
         } else {
           return child;
         }
@@ -1006,9 +1012,14 @@ class TemplateDesignerBloc
 
       emit(state.copyWith(
         templateSectionItem: Nullable.value(newTemplateSectionItem),
-        level: state.level + 1,
-        currentLevel1TemplateSectionItemId: followUpQuestionId,
       ));
+
+      if (event.followUp) {
+        emit(state.copyWith(
+          level: state.level + 1,
+          currentLevel1TemplateSectionItemId: followUpQuestionId,
+        ));
+      }
     } else if (state.level == 1) {
       final newTemplateSectionItem = state.templateSectionItem!.copyWith(
           children: children
@@ -1018,29 +1029,34 @@ class TemplateDesignerBloc
                               children: z.children.map((child) {
                             if (child.id == event.templateSectionItemId) {
                               return child.copyWith(
-                                  children: child.children.isNotEmpty
-                                      ? child.children
-                                          .map((e) => e.copyWith(
+                                  children: !event.followUp
+                                      ? []
+                                      : child.children.isNotEmpty
+                                          ? child.children
+                                              .map((e) => e.copyWith(
+                                                    id: followUpQuestionId,
+                                                    templateSectionId: state
+                                                        .selectedTemplateSection!
+                                                        .id,
+                                                    itemTypeId: 3,
+                                                    response: Nullable.value(
+                                                        event
+                                                            .responseScaleItem),
+                                                  ))
+                                              .toList()
+                                          : [
+                                              TemplateSectionItem(
                                                 id: followUpQuestionId,
                                                 templateSectionId: state
                                                     .selectedTemplateSection!
                                                     .id,
                                                 itemTypeId: 3,
-                                                response: Nullable.value(
-                                                    event.responseScaleItem),
-                                              ))
-                                          .toList()
-                                      : [
-                                          TemplateSectionItem(
-                                            id: followUpQuestionId,
-                                            templateSectionId: state
-                                                .selectedTemplateSection!.id,
-                                            itemTypeId: 3,
-                                            response: event.responseScaleItem,
-                                            question: const Question(
-                                                name: '', order: 0),
-                                          )
-                                        ]);
+                                                response:
+                                                    event.responseScaleItem,
+                                                question: const Question(
+                                                    name: '', order: 0),
+                                              )
+                                            ]);
                             }
                             return child;
                           }).toList()))
@@ -1049,9 +1065,14 @@ class TemplateDesignerBloc
 
       emit(state.copyWith(
         templateSectionItem: Nullable.value(newTemplateSectionItem),
-        level: state.level + 1,
-        currentLevel2TemplateSectionItemId: followUpQuestionId,
       ));
+
+      if (event.followUp) {
+        emit(state.copyWith(
+          level: state.level + 1,
+          currentLevel2TemplateSectionItemId: followUpQuestionId,
+        ));
+      }
     }
   }
 
@@ -1098,7 +1119,7 @@ class TemplateDesignerBloc
         children: responseScaleItemList
             .map((e) => TemplateSectionItem(
                   response: e,
-                  id: e.id,
+                  id: e.id ?? e.responseScaleItemId,
                   itemTypeId: 2,
                   templateSectionItemId: e.id,
                   parentId: event.question.id,
@@ -1193,7 +1214,7 @@ class TemplateDesignerBloc
                                   children: responseScaleItemList
                                       .map((e) => TemplateSectionItem(
                                             response: e,
-                                            id: e.id,
+                                            id: e.id ?? e.responseScaleItemId,
                                             itemTypeId: 2,
                                             parentId: followUpQuestion.id,
                                             templateSectionItemId: e.id,
@@ -1259,7 +1280,8 @@ class TemplateDesignerBloc
                                                           .map((e) =>
                                                               TemplateSectionItem(
                                                                 response: e,
-                                                                id: e.id,
+                                                                id: e.id ??
+                                                                    e.responseScaleItemId,
                                                                 itemTypeId: 2,
                                                                 parentId:
                                                                     followUpQuestion

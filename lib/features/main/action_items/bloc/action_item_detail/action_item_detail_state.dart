@@ -9,18 +9,26 @@ class ActionItemDetailState extends Equatable {
 
   final ActionItemParentInfo? actionItemParentInfo;
 
+  final ObservationDetail? observation;
+
+  final Audit? audit;
+
   final String message;
   const ActionItemDetailState({
     this.actionItem,
     this.actionItemLoadStatus = EntityStatus.initial,
     this.actionItemDeleteStatus = EntityStatus.initial,
     this.actionItemParentInfo,
+    this.observation,
+    this.audit,
     this.message = '',
   });
 
   @override
   List<Object?> get props => [
         actionItem,
+        observation,
+        audit,
         actionItemLoadStatus,
         actionItemDeleteStatus,
         actionItemParentInfo,
@@ -32,6 +40,8 @@ class ActionItemDetailState extends Equatable {
     EntityStatus? actionItemLoadStatus,
     EntityStatus? actionItemDeleteStatus,
     ActionItemParentInfo? actionItemParentInfo,
+    ObservationDetail? observation,
+    Audit? audit,
     String? message,
   }) {
     return ActionItemDetailState(
@@ -40,6 +50,8 @@ class ActionItemDetailState extends Equatable {
       actionItemDeleteStatus:
           actionItemDeleteStatus ?? this.actionItemDeleteStatus,
       actionItemParentInfo: actionItemParentInfo ?? this.actionItemParentInfo,
+      observation: observation ?? this.observation,
+      audit: audit ?? this.audit,
       message: message ?? this.message,
     );
   }

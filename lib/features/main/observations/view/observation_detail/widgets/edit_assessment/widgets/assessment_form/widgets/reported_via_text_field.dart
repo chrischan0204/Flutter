@@ -8,10 +8,10 @@ class ReportedViaTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
       label: 'Reported via',
-      content: BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
+      content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, state) {
           return Text(
-            state.reportedVia,
+            state.observation?.reportedVia ?? '',
             style: textNormal14,
           );
         },

@@ -13,6 +13,10 @@ class EntityShowTemplate extends StatefulWidget {
   final bool isDeletable;
   final bool isEditable;
   final bool isShowName;
+  final bool showSecondaryButton;
+  final String? secondaryLabel;
+  final IconData? secondaryIcon;
+  final VoidCallback? secondaryButtonOnClick;
 
   const EntityShowTemplate({
     super.key,
@@ -28,6 +32,10 @@ class EntityShowTemplate extends StatefulWidget {
     this.isDeletable = true,
     this.isEditable = true,
     this.isShowName = true,
+    this.showSecondaryButton = false,
+    this.secondaryLabel,
+    this.secondaryIcon,
+    this.secondaryButtonOnClick,
   });
 
   @override
@@ -57,6 +65,10 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               isDeletable: widget.isDeletable,
               isEditable: widget.isEditable,
               isShowName: widget.isShowName,
+              showSecondaryButton: widget.showSecondaryButton,
+              secondaryButtonOnClick: widget.secondaryButtonOnClick,
+              secondaryIcon: widget.secondaryIcon,
+              secondaryLabel: widget.secondaryLabel,
             ),
             Expanded(
               child: Card(

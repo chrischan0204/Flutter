@@ -18,14 +18,17 @@ class ParentInformationView extends StatelessWidget {
               style: textSemiBold16,
             ),
           ),
-          CustomTabBar(
-            activeIndex: 0,
-            tabs: const {
-              'Audit': AuditViewForActionItem(),
-              'Observation': ObservationViewForActionItem(),
-            },
-            onTabClick: (index) async {
-              return true;
+          BlocBuilder<ActionItemDetailBloc, ActionItemDetailState>(
+            builder: (context, state) {
+              if (state.actionItem != null) {
+                if (state.actionItem!.source == 'Audit') {
+                  return const AuditViewForActionItem();
+                } else if (state.actionItem!.source == 'Observation') {
+                  return const ObservationViewForActionItem();
+                }
+              }
+
+              return Container();
             },
           )
         ],

@@ -83,7 +83,8 @@ class ResponseScaleItemView extends StatelessWidget {
                   templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
-        active: templateSectionItem.response?.commentRequired ?? false,
+        active: (templateSectionItem.response?.commentRequired ?? false) &&
+            !disabled,
         title: 'Comment',
         activeColor: primaryColor,
       );
@@ -98,21 +99,34 @@ class ResponseScaleItemView extends StatelessWidget {
                   templateSectionItem.response!.responseScaleItemId!,
             )),
         disabled: disabled,
-        active: templateSectionItem.response?.actionItemRequired ?? false,
+        active: (templateSectionItem.response?.actionItemRequired ?? false) &&
+            !disabled,
         title: 'Action Item',
         activeColor: primaryColor,
       );
 
   // build follow up button
   Widget _buildFollowupButton(BuildContext context) => FutherActionItemView(
-        active: templateSectionItem.response?.followUpRequired ?? false,
-        onClick: (followUpRequired) => context
-            .read<TemplateDesignerBloc>()
-            .add(TemplateDesignerFollowUpRequiredChanged(
-              followUpRequired: followUpRequired,
-              responseScaleItemId:
-                  templateSectionItem.response!.responseScaleItemId!,
-            )),
+        active: (templateSectionItem.response?.followUpRequired ?? false) &&
+            !disabled,
+        onClick: (followUpRequired) {
+          context
+              .read<TemplateDesignerBloc>()
+              .add(TemplateDesignerFollowUpRequiredChanged(
+                followUpRequired: followUpRequired,
+                responseScaleItemId:
+                    templateSectionItem.response!.responseScaleItemId!,
+              ));
+          if (!followUpRequired) {
+            context
+                .read<TemplateDesignerBloc>()
+                .add(TemplateDesignerCurrentTemplateSectionItemChanged(
+                  templateSectionItemId: templateSectionItem.id!,
+                  responseScaleItem: templateSectionItem.response!,
+                  followUp: followUpRequired,
+                ));
+          }
+        },
         disabled: disabled,
         title: 'Follow up',
         activeColor: warnColor,
@@ -121,20 +135,22 @@ class ResponseScaleItemView extends StatelessWidget {
   // build level 1 or 2 follow up button
   Widget _buildLevelFollowUpButton(BuildContext context, int level) =>
       ElevatedButton(
-          onPressed: () {
-            context
-                .read<TemplateDesignerBloc>()
-                .add(TemplateDesignerCurrentTemplateSectionItemChanged(
-                  templateSectionItemId: templateSectionItem.id!,
-                  responseScaleItem: templateSectionItem.response!,
-                ));
+          onPressed: disabled
+              ? null
+              : () {
+                  context
+                      .read<TemplateDesignerBloc>()
+                      .add(TemplateDesignerCurrentTemplateSectionItemChanged(
+                        templateSectionItemId: templateSectionItem.id!,
+                        responseScaleItem: templateSectionItem.response!,
+                      ));
 
-            if (templateSectionItem.id != null) {
-              context.read<TemplateDesignerBloc>().add(
-                  TemplateDesignerFollowUpQuestionDetailLoaded(
-                      id: templateSectionItem.id!));
-            }
-          },
+                  if (templateSectionItem.id != null) {
+                    context.read<TemplateDesignerBloc>().add(
+                        TemplateDesignerFollowUpQuestionDetailLoaded(
+                            id: templateSectionItem.id!));
+                  }
+                },
           style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
           child: Icon(
             PhosphorIcons.regular.arrowCircleRight,

@@ -16,7 +16,7 @@ class AddEditAuditFormView extends StatelessWidget {
               leftLabel: 'Name (*)',
               leftChild: const AuditNameTextField(),
               leftValidationMessage: state.auditNameValidationMessage,
-              rightLabel: 'Audit Date (*)',
+              rightLabel: 'Date/Time (*)',
               rightChild: const AuditDatePicker(),
               rightValidationMessage: state.auditDateValidationMessage,
             ),

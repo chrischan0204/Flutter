@@ -185,13 +185,16 @@ class TemplateDesignerCurrentTemplateSectionItemChanged
     extends TemplateDesignerEvent {
   final TemplateResponseScaleItem responseScaleItem;
   final String templateSectionItemId;
+  final bool followUp;
   const TemplateDesignerCurrentTemplateSectionItemChanged({
     required this.templateSectionItemId,
     required this.responseScaleItem,
+    this.followUp = true,
   });
 
   @override
   List<Object> get props => [
+        followUp,
         templateSectionItemId,
         responseScaleItem,
       ];

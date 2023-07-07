@@ -9,6 +9,10 @@ class CrudButtonsView extends StatelessWidget {
   final VoidCallback deleteEntity;
   final bool isDeletable;
   final bool isEditable;
+  final bool showSecondaryButton;
+  final String? secondaryLabel;
+  final IconData? secondaryIcon;
+  final VoidCallback? secondaryButtonOnClick;
   const CrudButtonsView({
     super.key,
     required this.label,
@@ -18,6 +22,10 @@ class CrudButtonsView extends StatelessWidget {
     required this.deleteEntity,
     required this.isDeletable,
     required this.isEditable,
+    this.showSecondaryButton = false,
+    this.secondaryLabel,
+    this.secondaryIcon,
+    this.secondaryButtonOnClick,
   });
 
   @override
@@ -26,6 +34,13 @@ class CrudButtonsView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GoToListButton(label: label),
+        if (showSecondaryButton) spacerx15,
+        if (showSecondaryButton)
+          SecondaryButton(
+            label: secondaryLabel!,
+            icon: secondaryIcon!,
+            onClick: secondaryButtonOnClick!,
+          ),
         if (isEditable) spacerx15,
         if (isEditable) GoToEditButton(label: label),
         if (isDeletable) spacerx15,

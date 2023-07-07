@@ -57,15 +57,14 @@ class ActionItemView extends StatelessWidget {
           ),
         ),
         CustomBottomBorderContainer(
-          // backgroundColor: actionItem.status.isOpen ? lightRedAccent : lightGreenAccent,
-
-          backgroundColor: lightGreenAccent,
+          backgroundColor:
+              actionItem.isClosed ? lightGreenAccent : lightRedAccent,
           padding: insetx20y10,
           child: Row(
             children: [
               Expanded(
                 child: Text(
-                  'Status: Closed',
+                  'Status: ${actionItem.isClosed ? 'Closed' : 'Open'}',
                   style: textNormal10,
                 ),
               ),

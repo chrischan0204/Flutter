@@ -119,7 +119,7 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) async {
     try {
-      Observation observation =
+      ObservationDetail observation =
           await observationsRepository.getObservationById(event.id);
 
       emit(state.copyWith(

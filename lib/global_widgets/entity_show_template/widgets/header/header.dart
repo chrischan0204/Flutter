@@ -12,6 +12,10 @@ class HeaderView extends StatelessWidget {
   final bool isDeletable;
   final bool isEditable;
   final bool isShowName;
+  final bool showSecondaryButton;
+  final String? secondaryLabel;
+  final IconData? secondaryIcon;
+  final VoidCallback? secondaryButtonOnClick;
   const HeaderView({
     super.key,
     required this.title,
@@ -24,6 +28,10 @@ class HeaderView extends StatelessWidget {
     required this.isDeletable,
     required this.isEditable,
     required this.isShowName,
+    this.showSecondaryButton = false,
+    this.secondaryLabel,
+    this.secondaryIcon,
+    this.secondaryButtonOnClick,
   });
 
   @override
@@ -56,6 +64,10 @@ class HeaderView extends StatelessWidget {
                   deleteEntity: deleteEntity,
                   isDeletable: isDeletable,
                   isEditable: isEditable,
+                  showSecondaryButton: showSecondaryButton,
+                  secondaryButtonOnClick: secondaryButtonOnClick,
+                  secondaryIcon: secondaryIcon,
+                  secondaryLabel: secondaryLabel,
                 ),
               ),
             ),

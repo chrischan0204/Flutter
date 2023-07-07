@@ -8,10 +8,10 @@ class ObserverTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
       label: 'Observer',
-      content: BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
+      content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, state) {
           return Text(
-            state.observer,
+            state.observation?.reportedBy ?? '--',
             style: textNormal14,
           );
         },

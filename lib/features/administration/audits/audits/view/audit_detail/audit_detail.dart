@@ -131,6 +131,10 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                     ),
                   ],
                 ),
+          showSecondaryButton: true,
+          secondaryButtonOnClick: () => context.go('/audits/execute/${widget.auditId}'),
+          secondaryIcon: PhosphorIcons.regular.caretCircleDoubleRight,
+          secondaryLabel: 'Excute Audit',
           // descriptionForDelete: descriptionForDelete,
         );
       },

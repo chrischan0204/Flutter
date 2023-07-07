@@ -53,7 +53,7 @@ class ObservationDetailBloc
     Emitter<ObservationDetailState> emit,
   ) async {
     try {
-      Observation observation =
+      ObservationDetail observation =
           await observationsRepository.getObservationById(event.observationId);
 
       emit(state.copyWith(observation: observation));

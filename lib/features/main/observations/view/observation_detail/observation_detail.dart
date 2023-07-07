@@ -83,7 +83,7 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
           deleteEntity: () => context.read<ObservationDetailBloc>().add(
               ObservationDetailObservationDeleted(
                   observationId: widget.observationId)),
-          entity: state.observation,
+          entity: state.observation?.observation,
           crudStatus: state.observationDeleteStatus,
           isDeletable: false,
           isEditable: false,

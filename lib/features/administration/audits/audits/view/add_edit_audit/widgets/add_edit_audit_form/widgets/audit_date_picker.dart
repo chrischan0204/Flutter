@@ -11,7 +11,7 @@ class AuditDatePicker extends StatelessWidget {
       builder: (context, state) {
         return CustomDateTimePicker(
           key: ValueKey(state.loadedAudit?.id),
-          initialValue: state.auditDate.toString(),
+          initialValue: state.auditDate?.toString(),
           dateTimePickerType: DateTimePickerType.dateTime,
           onChange: (date) {
             context

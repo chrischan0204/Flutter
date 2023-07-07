@@ -17,15 +17,15 @@ class NotAssessedYetView extends StatelessWidget {
           children: [
             AssessmentDetailItemView(
               label: 'Assigned to',
-              content: observation.assessedAs,
+              content: '',
             ),
             AssessmentDetailItemView(
               label: 'Assigned by',
-              content: observation.assessedBy,
+              content: '',
             ),
             AssessmentDetailItemView(
               label: 'Assessment Status',
-              content: observation.assessed == false ? 'Not yet assessed' : '',
+              content: 'Not yet assessed',
             ),
           ],
         );

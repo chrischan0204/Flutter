@@ -8,38 +8,38 @@ class AuditViewForActionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ActionItemDetailBloc, ActionItemDetailState>(
       builder: (context, state) {
-        if (state.actionItemParentInfo != null) {
-          final actionItemParentInfo = state.actionItemParentInfo!;
+        if (state.audit != null) {
+          final audit = state.audit!;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const ActionItemInformationItemView(
-                label: 'Generated Via',
-                content: 'Audit:',
+              ActionItemInformationItemView(
+                label: 'Audit',
+                content: audit.name ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'ID',
-                content: actionItemParentInfo.id,
+                content: audit.auditNumber ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Site',
-                content: actionItemParentInfo.siteName,
+                content: audit.siteName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Company',
-                content: actionItemParentInfo.companyName,
+                content: audit.companies,
               ),
               ActionItemInformationItemView(
                 label: 'Project',
-                content: actionItemParentInfo.projectName,
+                content: audit.projectName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Created By',
-                content: actionItemParentInfo.createdByName,
+                content: audit.owner ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Audit Date',
-                content: actionItemParentInfo.date,
+                content: audit.formatedAuditDate,
               ),
               CustomBottomBorderContainer(
                 padding: inset12,
@@ -51,7 +51,7 @@ class AuditViewForActionItem extends StatelessWidget {
               CustomBottomBorderContainer(
                 padding: inset12,
                 child: Text(
-                  actionItemParentInfo.forQuestion,
+                  state.actionItemParentInfo?.forQuestion ?? '--',
                   style: textNormal14,
                 ),
               )

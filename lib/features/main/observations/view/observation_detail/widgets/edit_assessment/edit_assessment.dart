@@ -20,7 +20,7 @@ class EditAssessmentView extends StatelessWidget {
                 return BlocBuilder<ObservationDetailBloc,
                     ObservationDetailState>(
                   builder: (context, state) {
-                    if (state.observation?.assessed == false) {
+                    if (state.observation?.assessmentPriorityLevelName == null) {
                       return const NotAssessedYetView();
                     }
                     return const AssessmentDetailView();

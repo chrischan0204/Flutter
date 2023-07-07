@@ -30,7 +30,7 @@ class AssessmentHeaderView extends StatelessWidget {
                     return Text(
                       state.isEditing
                           ? 'Submit'
-                          : detailState.observation?.assessed == false
+                          : detailState.observation?.assessmentPriorityLevelName == null
                               ? 'Add Assessment'
                               : 'Edit Assessment',
                       style: textNormal12.copyWith(color: Colors.white),

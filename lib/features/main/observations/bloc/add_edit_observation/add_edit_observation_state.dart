@@ -6,7 +6,7 @@ class AddEditObservationState extends Equatable {
   final String? createdObservationId;
 
   /// loaded observation to fill the form to edit observation
-  final Observation? loadedObservation;
+  final ObservationDetail? loadedObservation;
 
   /// site list
   final List<Site> siteList;
@@ -162,7 +162,7 @@ class AddEditObservationState extends Equatable {
 
   AddEditObservationState copyWith({
     String? createdObservationId,
-    Observation? loadedObservation,
+    ObservationDetail? loadedObservation,
     List<Site>? siteList,
     List<PriorityLevel>? priorityLevelList,
     List<ObservationType>? observationTypeList,

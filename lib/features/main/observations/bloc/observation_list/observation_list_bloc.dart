@@ -66,7 +66,7 @@ class ObservationListBloc
     emit(state.copyWith(observationLoadStatus: EntityStatus.loading));
 
     try {
-      Observation observation =
+      ObservationDetail observation =
           await observationsRepository.getObservationById(event.observationId);
 
       emit(state.copyWith(
