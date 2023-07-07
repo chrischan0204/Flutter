@@ -11,7 +11,7 @@ class ActionItemDetailState extends Equatable {
 
   final ObservationDetail? observation;
 
-  final Audit? audit;
+  final AuditQuestionOnActionItem? auditQuestionOnActionitem;
 
   final String message;
   const ActionItemDetailState({
@@ -20,7 +20,7 @@ class ActionItemDetailState extends Equatable {
     this.actionItemDeleteStatus = EntityStatus.initial,
     this.actionItemParentInfo,
     this.observation,
-    this.audit,
+    this.auditQuestionOnActionitem,
     this.message = '',
   });
 
@@ -28,7 +28,7 @@ class ActionItemDetailState extends Equatable {
   List<Object?> get props => [
         actionItem,
         observation,
-        audit,
+        auditQuestionOnActionitem,
         actionItemLoadStatus,
         actionItemDeleteStatus,
         actionItemParentInfo,
@@ -41,7 +41,7 @@ class ActionItemDetailState extends Equatable {
     EntityStatus? actionItemDeleteStatus,
     ActionItemParentInfo? actionItemParentInfo,
     ObservationDetail? observation,
-    Audit? audit,
+    AuditQuestionOnActionItem? auditQuestionOnActionitem,
     String? message,
   }) {
     return ActionItemDetailState(
@@ -51,7 +51,7 @@ class ActionItemDetailState extends Equatable {
           actionItemDeleteStatus ?? this.actionItemDeleteStatus,
       actionItemParentInfo: actionItemParentInfo ?? this.actionItemParentInfo,
       observation: observation ?? this.observation,
-      audit: audit ?? this.audit,
+      auditQuestionOnActionitem: auditQuestionOnActionitem ?? this.auditQuestionOnActionitem,
       message: message ?? this.message,
     );
   }

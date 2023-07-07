@@ -4,7 +4,7 @@ class Validation {
   }
 
   static bool isNotEmpty(String? text) {
-    return !isEmpty(text);
+    return text != null && text.trim().isNotEmpty;
   }
 
   static bool checkAlphanumeric(String str) {
@@ -32,7 +32,7 @@ class Validation {
         r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
     // final mobile = RegExp(r'^[0-9]+.()-$');
     return mobile.hasMatch(str);
-  } 
+  }
 
   static bool isAlphanumbericWithSpecialChars(String str) {
     final reg = RegExp(r'^[ A-Za-z0-9_@$*./#&+-]*$');

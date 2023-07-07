@@ -98,10 +98,24 @@ class ActionItemsRepository extends BaseRepository {
   /// get action item parent info
   Future<ActionItemParentInfo> getActionItemParentInfo(
       String actionItemId) async {
-    Response response = await super.get('$url/$actionItemId/parentinformations');
+    Response response =
+        await super.get('$url/$actionItemId/parentinformations');
 
     if (response.statusCode == 200) {
       return ActionItemParentInfo.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  /// get audit question for action item
+  Future<AuditQuestionOnActionItem> getAuditQuestionForActionItem(
+      {required String actionItemId, required String questionId}) async {
+    Response response =
+        await super.get('$url/$actionItemId/auditquestion/$questionId');
+
+    if (response.statusCode == 200) {
+      return AuditQuestionOnActionItem.fromJson(response.body);
     }
 
     throw Exception();

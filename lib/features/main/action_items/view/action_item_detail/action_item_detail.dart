@@ -34,9 +34,7 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
 
   @override
   void initState() {
-    context.read<ActionItemDetailBloc>()
-      ..add(ActionItemDetailLoaded())
-      ..add(ActionItemDetailParentInfoLoaded());
+    context.read<ActionItemDetailBloc>().add(ActionItemDetailLoaded());
     super.initState();
   }
 
@@ -72,13 +70,14 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
           crudStatus: state.actionItemDeleteStatus,
           isEditable: false,
           isShowName: false,
-
           customDetailWidget: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Expanded(flex: 2, child: ActionItemInformationView()),
-              Expanded(flex: 3, child: ParentInformationView()),
-              Expanded(flex: 2, child: AssestsView())
+            children: [
+              const Expanded(flex: 2, child: ActionItemInformationView()),
+              if (state.actionItem?.source != 'None' &&
+                  state.actionItem != null)
+                const Expanded(flex: 3, child: ParentInformationView()),
+              const Expanded(flex: 2, child: AssestsView())
             ],
           ),
           // descriptionForDelete: descriptionForDelete,

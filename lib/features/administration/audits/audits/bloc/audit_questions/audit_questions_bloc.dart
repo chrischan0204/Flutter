@@ -147,5 +147,6 @@ class AuditQuestionsBloc
     add(AuditQuestionsAuditSectionListLoaded());
     add(AuditQuestionsAuditQuestionListLoaded());
     _auditDetailBloc.add(AuditDetailAuditSectionListLoaded());
+    _auditDetailBloc.add(AuditDetailLoaded(auditId: auditId));
   }
 }

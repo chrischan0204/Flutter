@@ -18,7 +18,7 @@ class AuditDetailView1 extends StatelessWidget {
                 content: audit.owner ?? '--',
               ),
               AuditDetailItemView(
-                label: 'Last touched',
+                label: 'Last executed',
                 content: audit.formatedLastModifiedOn,
               ),
               AuditDetailItemView(

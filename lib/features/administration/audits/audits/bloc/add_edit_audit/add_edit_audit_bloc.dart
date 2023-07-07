@@ -11,8 +11,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   final BuildContext context;
 
   final String? auditId;
-  AddEditAuditBloc(this.context, {this.auditId})
-      : super(const AddEditAuditState()) {
+  AddEditAuditBloc(this.context, {this.auditId}) : super(AddEditAuditState()) {
     formDirtyBloc = context.read();
     auditsRepository = RepositoryProvider.of(context);
     usersRepository = RepositoryProvider.of(context);
@@ -197,7 +196,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     if (state.auditDate == null) {
       emit(state.copyWith(
           auditDateValidationMessage:
-              FormValidationMessage(fieldName: 'Audit Date/Time').requiredMessage));
+              FormValidationMessage(fieldName: 'Audit Date/Time')
+                  .requiredMessage));
       success = false;
     }
 

@@ -27,7 +27,7 @@ class AddEditAuditState extends Equatable {
   final String auditNameValidationMessage;
 
   /// audit date to create audit
-  final DateTime? auditDate;
+  DateTime? auditDate;
 
   /// initial audit date to check form dirty
   final DateTime? initialAuditDate;
@@ -82,7 +82,7 @@ class AddEditAuditState extends Equatable {
 
   /// response message from server
   final String message;
-  const AddEditAuditState({
+  AddEditAuditState({
     this.createdAuditId,
     this.loadedAudit,
     this.siteList = const [],
@@ -110,7 +110,9 @@ class AddEditAuditState extends Equatable {
     this.initialInspectors = '',
     this.status = EntityStatus.initial,
     this.message = '',
-  });
+  }) {
+    auditDate ??= DateTime.now();
+  }
 
   @override
   List<Object?> get props => [

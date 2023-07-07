@@ -356,7 +356,7 @@ class TemplateDesignerBloc
     Emitter<TemplateDesignerState> emit,
   ) {
     if (state.templateSectionItem != null) {
-      if (state.templateSectionItem?.question?.name.isNotEmpty == true ||
+      if (Validation.isNotEmpty(state.templateSectionItem?.question?.name) ||
           state.templateSectionItem == null) {
         if (state.templateSectionItem?.includedChildren.isEmpty == true) {
           CustomNotification(
@@ -370,12 +370,11 @@ class TemplateDesignerBloc
               TemplateSectionItem.empty) {
             add(TemplateDesignerTemplateSectionItemCreated());
           } else {
-            if (state
+            if (Validation.isNotEmpty(state
                     .currentTemplateSectionItemByLevel(1)
                     ?.question
                     ?.name
-                    .isNotEmpty ==
-                true) {
+            )) {
               if (state
                       .currentTemplateSectionItemByLevel(1)
                       ?.includedChildren
@@ -393,12 +392,10 @@ class TemplateDesignerBloc
                     TemplateSectionItem.empty) {
                   add(TemplateDesignerTemplateSectionItemCreated());
                 } else {
-                  if (state
+                  if (Validation.isNotEmpty(state
                           .currentTemplateSectionItemByLevel(2)
                           ?.question
-                          ?.name
-                          .isNotEmpty ==
-                      true) {
+                          ?.name)) {
                     if (state
                             .currentTemplateSectionItemByLevel(2)
                             ?.includedChildren

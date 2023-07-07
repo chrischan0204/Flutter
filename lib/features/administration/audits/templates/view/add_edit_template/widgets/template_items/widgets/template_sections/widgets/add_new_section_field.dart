@@ -61,7 +61,7 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
             ),
           ),
           onSuffixClicked: () {
-            if (sectionController.text.isEmpty) {
+            if (Validation.isEmpty(sectionController.text)) {
               CustomNotification(
                 context: context,
                 notifyType: NotifyType.info,

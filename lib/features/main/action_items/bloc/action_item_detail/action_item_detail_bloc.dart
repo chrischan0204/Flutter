@@ -9,18 +9,15 @@ class ActionItemDetailBloc
   final String actionItemId;
   late ActionItemsRepository _actionItemsRepository;
   late ObservationsRepository _observationsRepository;
-  late AuditsRepository _auditsRepository;
   ActionItemDetailBloc(
     this.context,
     this.actionItemId,
   ) : super(const ActionItemDetailState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
     _observationsRepository = context.read();
-    _auditsRepository = context.read();
 
     on<ActionItemDetailLoaded>(_onActionItemDetailLoaded);
     on<ActionItemDetailActionItemDeleted>(_onActionItemDetailActionItemDeleted);
-    on<ActionItemDetailParentInfoLoaded>(_onActionItemDetailParentInfoLoaded);
   }
 
   Future<void> _onActionItemDetailLoaded(
@@ -39,9 +36,13 @@ class ActionItemDetailBloc
 
         emit(state.copyWith(observation: observation));
       } else if (actionItem.source == 'Audit') {
-        Audit audit = await _auditsRepository.getAuditById(actionItem.auditId);
+        AuditQuestionOnActionItem auditQuestionOnActionitem =
+            await _actionItemsRepository.getAuditQuestionForActionItem(
+                actionItemId: actionItemId,
+                questionId: actionItem.auditSectionItemId);
 
-        emit(state.copyWith(audit: audit));
+        emit(state.copyWith(
+            auditQuestionOnActionitem: auditQuestionOnActionitem));
       }
     } catch (e) {
       print(e);
@@ -53,13 +54,5 @@ class ActionItemDetailBloc
     Emitter<ActionItemDetailState> emit,
   ) async {}
 
-  Future<void> _onActionItemDetailParentInfoLoaded(
-    ActionItemDetailParentInfoLoaded event,
-    Emitter<ActionItemDetailState> emit,
-  ) async {
-    ActionItemParentInfo actionItemParentInfo =
-        await _actionItemsRepository.getActionItemParentInfo(actionItemId);
-
-    emit(state.copyWith(actionItemParentInfo: actionItemParentInfo));
-  }
+  
 }

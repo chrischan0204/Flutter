@@ -27,7 +27,7 @@ class AuditSummary1 extends StatelessWidget {
                   content: audit.auditStatusName ?? '--',
                 ),
                 AuditDetailItemView(
-                  label: 'Last touched',
+                  label: 'Last executed',
                   content: audit.lastModifiedOn ?? '--',
                 ),
                 AuditDetailItemView(

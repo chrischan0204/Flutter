@@ -13,5 +13,3 @@ class ActionItemDetailLoaded extends ActionItemDetailEvent {}
 /// event to delete actionItem
 class ActionItemDetailActionItemDeleted extends ActionItemDetailEvent {}
 
-/// event to load action item parent info
-class ActionItemDetailParentInfoLoaded extends ActionItemDetailEvent {}
