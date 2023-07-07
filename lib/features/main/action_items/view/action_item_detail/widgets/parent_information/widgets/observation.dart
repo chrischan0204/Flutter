@@ -14,7 +14,7 @@ class ObservationViewForActionItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ActionItemInformationItemView(
-                label: 'Observation:',
+                label: 'Observation',
                 content: observation.description ?? '--',
               ),
               ActionItemInformationItemView(
