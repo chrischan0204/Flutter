@@ -32,6 +32,7 @@ class AuditSummary extends Equatable {
   final int questions;
   final int answeredQuestions;
   final double completedPercent;
+  final double score;
   final int actionItems;
   final int observations;
   final int documents;
@@ -69,6 +70,7 @@ class AuditSummary extends Equatable {
     required this.actionItems,
     required this.observations,
     required this.documents,
+    required this.score,
   });
 
   @override
@@ -105,13 +107,20 @@ class AuditSummary extends Equatable {
         actionItems,
         observations,
         documents,
+        score,
       ];
 
   String get formatedLastModifiedOn => lastModifiedOn != null
       ? DateFormat('d MMMM y').format(lastModifiedOn!)
       : '--';
 
+  String get formatedLastExecutedOn => lastExecutedOn != null
+      ? DateFormat('d MMMM y').format(lastExecutedOn!)
+      : '--';
+
   String get formatedCreatedOn => DateFormat('d MMMM y').format(createdOn);
+
+  String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
 
   Audit get audit => Audit(
         name: name,
@@ -125,7 +134,7 @@ class AuditSummary extends Equatable {
         questions: questions,
         answeredQuestions: answeredQuestions,
         maxScore: 0,
-        score: 0,
+        score: score,
         obtainedScore: 0,
         actionItems: 0,
         documents: 0,
@@ -165,6 +174,7 @@ class AuditSummary extends Equatable {
     int? actionItems,
     int? observations,
     int? documents,
+    double? score,
   }) {
     return AuditSummary(
       id: id ?? this.id,
@@ -200,6 +210,7 @@ class AuditSummary extends Equatable {
       actionItems: actionItems ?? this.actionItems,
       observations: observations ?? this.observations,
       documents: documents ?? this.documents,
+      score: score ?? this.score,
     );
   }
 
@@ -253,6 +264,7 @@ class AuditSummary extends Equatable {
       actionItems: map['actionItems'] as int,
       observations: map['observations'] as int,
       documents: map['documents'] as int,
+      score: map['score'] ?? 0,
     );
   }
 

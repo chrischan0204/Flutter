@@ -1,4 +1,5 @@
 import '/common_libraries.dart';
+import 'widgets/widgets.dart';
 
 class AuditQuestionsHeaderView extends StatelessWidget {
   const AuditQuestionsHeaderView({super.key});
@@ -17,13 +18,7 @@ class AuditQuestionsHeaderView extends StatelessWidget {
               style: textSemiBold20,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: CustomSingleSelect(
-              items: {},
-              onChanged: (_) {},
-            ),
-          ),
+          const Expanded(flex: 2, child: QuestionViewOptionSelectBox()),
         ],
       ),
     );

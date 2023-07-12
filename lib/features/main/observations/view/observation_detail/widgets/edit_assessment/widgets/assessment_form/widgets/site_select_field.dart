@@ -15,17 +15,32 @@ class SiteSelectField extends StatelessWidget {
               .map((site) => MapEntry(site.name ?? '', site)));
           return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
             builder: (context, editAssessmentState) {
-              return CustomSingleSelect(
-                items: items,
-                hint: 'Select Site',
-                selectedValue: observationDetailState.siteList.isEmpty
-                    ? null
-                    : editAssessmentState.site?.name,
-                onChanged: (site) {
-                  context
-                      .read<EditAssessmentBloc>()
-                      .add(EditAssessmentSiteChanged(site: site.value));
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomSingleSelect(
+                    items: items,
+                    hint: 'Select Site',
+                    selectedValue: observationDetailState.siteList.isEmpty
+                        ? null
+                        : editAssessmentState.site?.name,
+                    onChanged: (site) {
+                      context.read<EditAssessmentBloc>()
+                        ..add(EditAssessmentSiteChanged(site: site.value))
+                        ..add(const EditAssessmentCompanyChanged(company: null))
+                        ..add(
+                            const EditAssessmentProjectChanged(project: null));
+                    },
+                  ),
+                  if (editAssessmentState.siteValidationMessage.isNotEmpty)
+                    Padding(
+                      padding: inset4,
+                      child: Text(
+                        editAssessmentState.siteValidationMessage,
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    )
+                ],
               );
             },
           );

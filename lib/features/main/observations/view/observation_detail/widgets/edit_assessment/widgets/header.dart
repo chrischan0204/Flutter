@@ -17,26 +17,35 @@ class AssessmentHeaderView extends StatelessWidget {
                 state.isEditing ? 'Assessment' : 'Assessment Reading',
                 style: textSemiBold14,
               ),
-              ElevatedButton(
-                onPressed: () => context
-                    .read<EditAssessmentBloc>()
-                    .add(EditAssessmentIsEditingChanged()),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        state.isEditing ? successColor : primaryColor),
-                child:
-                    BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
-                  builder: (context, detailState) {
-                    return Text(
+              BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
+                builder: (context, detailState) {
+                  return ElevatedButton(
+                    onPressed: detailState.observation?.isClosed == true
+                        ? null
+                        : () {
+                            if (state.isEditing) {
+                              context
+                                  .read<EditAssessmentBloc>()
+                                  .add(EditAssessmentAdded());
+                            } else {
+                              context
+                                  .read<EditAssessmentBloc>()
+                                  .add(EditAssessmentIsEditingChanged());
+                            }
+                          },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            state.isEditing ? successColor : primaryColor),
+                    child: Text(
                       state.isEditing
                           ? 'Submit'
-                          : detailState.observation?.assessmentPriorityLevelName == null
+                          : detailState.observation?.assessedOn == null
                               ? 'Add Assessment'
                               : 'Edit Assessment',
                       style: textNormal12.copyWith(color: Colors.white),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ],
           );

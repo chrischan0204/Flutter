@@ -17,6 +17,7 @@ class EntityShowTemplate extends StatefulWidget {
   final String? secondaryLabel;
   final IconData? secondaryIcon;
   final VoidCallback? secondaryButtonOnClick;
+  final bool isScrollView;
 
   const EntityShowTemplate({
     super.key,
@@ -36,6 +37,7 @@ class EntityShowTemplate extends StatefulWidget {
     this.secondaryLabel,
     this.secondaryIcon,
     this.secondaryButtonOnClick,
+    this.isScrollView = true,
   });
 
   @override
@@ -75,11 +77,15 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
                 elevation: 3,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: CustomScrollViewWithBackButton(
-                    child: widget.tabItems.isNotEmpty
-                        ? _buildTab()
-                        : _buildEntityDetails(),
-                  ),
+                  child: widget.isScrollView
+                      ? CustomScrollViewWithBackButton(
+                          child: widget.tabItems.isNotEmpty
+                              ? _buildTab()
+                              : _buildEntityDetails(),
+                        )
+                      : widget.tabItems.isNotEmpty
+                          ? _buildTab()
+                          : _buildEntityDetails(),
                 ),
               ),
             ),

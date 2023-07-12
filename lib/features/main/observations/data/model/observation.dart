@@ -15,7 +15,7 @@ class Observation extends Entity {
   final bool assessed;
   final String assessedAs;
   final String assessedBy;
-  final String assessedOn;
+  final String? assessedOn;
   final String assessmentAwarenessCategory;
   final String assessmentComment;
   final String assessmentObservationType;
@@ -231,7 +231,7 @@ class Observation extends Entity {
       'Reported At': formatedReportedAt,
       'Via': reportedVia,
       'Assessor': assessedBy,
-      'Assessed?': assessmentComment,
+      'Assessed?': assessedOn == null  ? 'No' : 'Yes',
       'Assessed As': assessed,
       'Action Items': {'content': actionItems}
     };

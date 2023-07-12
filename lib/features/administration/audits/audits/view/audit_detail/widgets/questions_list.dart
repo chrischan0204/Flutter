@@ -33,37 +33,39 @@ class QuestionsListView extends StatelessWidget {
                   style: textSemiBold14,
                 ),
               ),
-              Padding(
-                padding: insetx10y20,
-                child: SfDataGridTheme(
-                  data: SfDataGridThemeData(
-                    headerColor: lightBlueAccent,
-                    rowHoverColor: lightTeal,
-                  ),
-                  child: SfDataGrid(
-                    source: AuditQuestionDataSource(
-                      auditQuestionList:
-                          state.selectedAuditSection!.auditQuestions,
-                      columns: columnList,
+              Expanded(
+                child: Padding(
+                  padding: insetx10y20,
+                  child: SfDataGridTheme(
+                    data: SfDataGridThemeData(
+                      headerColor: lightBlueAccent,
+                      rowHoverColor: lightTeal,
                     ),
-                    columnWidthMode: ColumnWidthMode.fill,
-                    gridLinesVisibility: GridLinesVisibility.none,
-                    headerGridLinesVisibility: GridLinesVisibility.none,
-                    headerRowHeight: 52,
-                    rowHeight: 46,
-                    columns: [
-                      for (int i = 0; i < columnList.length; i++)
-                        GridColumn(
-                            width: columnWidth[i],
-                            columnName: columnList[i],
-                            label: Padding(
-                              padding: inset10,
-                              child: Text(
-                                columnList[i],
-                                style: textSemiBold14,
-                              ),
-                            ))
-                    ],
+                    child: SfDataGrid(
+                      source: AuditQuestionDataSource(
+                        auditQuestionList:
+                            state.selectedAuditSection!.auditQuestions,
+                        columns: columnList,
+                      ),
+                      columnWidthMode: ColumnWidthMode.fill,
+                      gridLinesVisibility: GridLinesVisibility.none,
+                      headerGridLinesVisibility: GridLinesVisibility.none,
+                      headerRowHeight: 52,
+                      rowHeight: 46,
+                      columns: [
+                        for (int i = 0; i < columnList.length; i++)
+                          GridColumn(
+                              width: columnWidth[i],
+                              columnName: columnList[i],
+                              label: Padding(
+                                padding: inset10,
+                                child: Text(
+                                  columnList[i],
+                                  style: textSemiBold14,
+                                ),
+                              ))
+                      ],
+                    ),
                   ),
                 ),
               )

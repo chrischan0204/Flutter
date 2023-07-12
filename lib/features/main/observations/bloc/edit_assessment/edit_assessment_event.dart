@@ -5,7 +5,7 @@ abstract class EditAssessmentEvent extends Equatable {
   const EditAssessmentEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class EditAssessmentCategoryChanged extends EditAssessmentEvent {
@@ -33,19 +33,19 @@ class EditAssessmentPriorityLevelChanged extends EditAssessmentEvent {
 }
 
 class EditAssessmentCompanyChanged extends EditAssessmentEvent {
-  final Company company;
+  final Company? company;
   const EditAssessmentCompanyChanged({required this.company});
 
   @override
-  List<Object> get props => [company];
+  List<Object?> get props => [company];
 }
 
 class EditAssessmentProjectChanged extends EditAssessmentEvent {
-  final Project project;
+  final Project? project;
   const EditAssessmentProjectChanged({required this.project});
 
   @override
-  List<Object> get props => [project];
+  List<Object?> get props => [project];
 }
 
 class EditAssessmentSiteChanged extends EditAssessmentEvent {

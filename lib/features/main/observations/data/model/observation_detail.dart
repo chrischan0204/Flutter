@@ -53,6 +53,7 @@ class ObservationDetail extends Equatable {
   final String? closedById;
   final String? closedByUserName;
   final DateTime? closedOn;
+  final bool notificationSent;
 
   const ObservationDetail({
     required this.id,
@@ -103,6 +104,7 @@ class ObservationDetail extends Equatable {
     this.closedById,
     this.closedByUserName,
     this.closedOn,
+    required this.notificationSent,
   });
 
   @override
@@ -155,11 +157,12 @@ class ObservationDetail extends Equatable {
         closedById,
         closedByUserName,
         closedOn,
+        notificationSent,
       ];
 
-  String get formatedAssessedOn => assessedOn != null
+  String? get formatedAssessedOn => assessedOn != null
       ? DateFormat.yMMMMd('en_US').add_jm().format(assessedOn!)
-      : '--';
+      : null;
 
   String get formatedClosedOn => closedOn != null
       ? DateFormat.yMMMMd('en_US').add_jm().format(closedOn!)
@@ -177,8 +180,8 @@ class ObservationDetail extends Equatable {
         reportedAt: reportedAt,
         reportedVia: reportedVia ?? '',
         assessedBy: assessedByName ?? '',
-        // assessed: ,
-        // acti
+        assessedOn: formatedAssessedOn,
+        assessedAs: assessmentObservationTypeName ?? '',
       );
 
   factory ObservationDetail.fromMap(Map<String, dynamic> map) {
@@ -302,6 +305,7 @@ class ObservationDetail extends Equatable {
           : null,
       closedOn:
           map['closedOn'] != null ? DateTime.parse(map['closedOn']) : null,
+      notificationSent: map['notificationSent'],
     );
   }
 
@@ -357,6 +361,7 @@ class ObservationDetail extends Equatable {
     String? closedById,
     String? closedByUserName,
     DateTime? closedOn,
+    bool? notificationSent,
   }) {
     return ObservationDetail(
       id: id ?? this.id,
@@ -421,6 +426,7 @@ class ObservationDetail extends Equatable {
       closedById: closedById ?? this.closedById,
       closedByUserName: closedByUserName ?? this.closedByUserName,
       closedOn: closedOn ?? this.closedOn,
+      notificationSent: notificationSent ?? this.notificationSent,
     );
   }
 }

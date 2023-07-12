@@ -7,7 +7,7 @@ class TaskDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Task',
+      label: 'Action Required',
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(

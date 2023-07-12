@@ -2,10 +2,8 @@ import '/common_libraries.dart';
 
 class AssessmentCreate {
   final bool notificationSent;
-  // final String observerId;
-  // final String assessorId;
-  final String reportedVia;
-  // final String kioskId;
+  // final String reportedVia;
+  final bool isClosed;
   final String assessmentAwarenessCategoryId;
   final String assessmentObservationTypeId;
   final String assessmentPriorityLevelId;
@@ -13,14 +11,11 @@ class AssessmentCreate {
   final String assessmentCompanyId;
   final String assessmentProjectId;
   final String assessmentSiteId;
-  final String userReportedObservationTypeId;
 
   const AssessmentCreate({
     required this.notificationSent,
-    // required this.observerId,
-    // required this.assessorId,
-    required this.reportedVia,
-    // required this.kioskId,
+    required this.isClosed,
+    // required this.reportedVia,
     required this.assessmentAwarenessCategoryId,
     required this.assessmentObservationTypeId,
     required this.assessmentPriorityLevelId,
@@ -28,16 +23,13 @@ class AssessmentCreate {
     required this.assessmentCompanyId,
     required this.assessmentProjectId,
     required this.assessmentSiteId,
-    required this.userReportedObservationTypeId,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'notificationSent': notificationSent,
-      // 'observerId': observerId,
-      // 'assessorId': assessorId,
-      'reportedVia': reportedVia,
-      // 'kioskId': kioskId,
+      // 'reportedVia': reportedVia,
+      'isClosed': isClosed,
       'assessmentAwarenessCategoryId': assessmentAwarenessCategoryId,
       'assessmentObservationTypeId': assessmentObservationTypeId,
       'assessmentPriorityLevelId': assessmentPriorityLevelId,
@@ -45,7 +37,6 @@ class AssessmentCreate {
       'assessmentCompanyId': assessmentCompanyId,
       'assessmentProjectId': assessmentProjectId,
       'assessmentSiteId': assessmentSiteId,
-      'userReportedObservationTypeId': userReportedObservationTypeId,
     };
   }
 
@@ -53,10 +44,8 @@ class AssessmentCreate {
 
   AssessmentCreate copyWith({
     bool? notificationSent,
-    String? observerId,
-    String? assessorId,
     String? reportedVia,
-    String? kioskId,
+    bool? isClosed,
     String? assessmentAwarenessCategoryId,
     String? assessmentObservationTypeId,
     String? assessmentPriorityLevelId,
@@ -68,10 +57,8 @@ class AssessmentCreate {
   }) {
     return AssessmentCreate(
       notificationSent: notificationSent ?? this.notificationSent,
-      // observerId: observerId ?? this.observerId,
-      // assessorId: assessorId ?? this.assessorId,
-      reportedVia: reportedVia ?? this.reportedVia,
-      // kioskId: kioskId ?? this.kioskId,
+      isClosed: isClosed ?? this.isClosed,
+      // reportedVia: reportedVia ?? this.reportedVia,
       assessmentAwarenessCategoryId:
           assessmentAwarenessCategoryId ?? this.assessmentAwarenessCategoryId,
       assessmentObservationTypeId:
@@ -83,8 +70,6 @@ class AssessmentCreate {
       assessmentCompanyId: assessmentCompanyId ?? this.assessmentCompanyId,
       assessmentProjectId: assessmentProjectId ?? this.assessmentProjectId,
       assessmentSiteId: assessmentSiteId ?? this.assessmentSiteId,
-      userReportedObservationTypeId:
-          userReportedObservationTypeId ?? this.userReportedObservationTypeId,
     );
   }
 }

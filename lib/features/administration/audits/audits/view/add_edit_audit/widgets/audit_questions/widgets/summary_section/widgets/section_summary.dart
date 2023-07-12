@@ -13,7 +13,9 @@ class SectionSummaryView extends StatefulWidget {
 class _SectionSummaryViewState extends State<SectionSummaryView> {
   @override
   void initState() {
-    context.read<AuditDetailBloc>().add(AuditDetailAuditSectionListLoaded());
+    context.read<AuditDetailBloc>()
+      .add(AuditDetailAuditSectionListLoaded());
+      
     super.initState();
   }
 

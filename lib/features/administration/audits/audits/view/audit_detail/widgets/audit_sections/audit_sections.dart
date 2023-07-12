@@ -23,19 +23,23 @@ class AuditSectionsView extends StatelessWidget {
                 style: textSemiBold14,
               ),
             ),
-            BlocBuilder<AuditDetailBloc, AuditDetailState>(
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    for (final section in state.auditSectionAndQuestionList)
-                      AuditSectionItemView(
-                        active: section.auditSectionId ==
-                            state.selectedAuditSection?.auditSectionId,
-                        auditSection: section,
-                      )
-                  ],
-                );
-              },
+            Expanded(
+              child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
+                builder: (context, state) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        for (final section in state.auditSectionAndQuestionList)
+                          AuditSectionItemView(
+                            active: section.auditSectionId ==
+                                state.selectedAuditSection?.auditSectionId,
+                            auditSection: section,
+                          )
+                      ],
+                    ),
+                  );
+                },
+              ),
             )
           ],
         ),

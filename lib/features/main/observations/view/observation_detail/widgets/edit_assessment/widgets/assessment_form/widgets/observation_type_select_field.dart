@@ -16,18 +16,32 @@ class ObservationTypeSelectField extends StatelessWidget {
                       MapEntry(observationType.name ?? '', observationType)));
           return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
             builder: (context, editAssessmentState) {
-              return CustomSingleSelect(
-                items: items,
-                hint: 'Select Observation Type',
-                selectedValue:
-                    observationDetailState.observationTypeList.isEmpty
-                        ? null
-                        : editAssessmentState.observationType?.name,
-                onChanged: (observationType) {
-                  context.read<EditAssessmentBloc>().add(
-                      EditAssessmentObservationTypeChanged(
-                          observationType: observationType.value));
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomSingleSelect(
+                    items: items,
+                    hint: 'Select Observation Type',
+                    selectedValue:
+                        observationDetailState.observationTypeList.isEmpty
+                            ? null
+                            : editAssessmentState.observationType?.name,
+                    onChanged: (observationType) {
+                      context.read<EditAssessmentBloc>().add(
+                          EditAssessmentObservationTypeChanged(
+                              observationType: observationType.value));
+                    },
+                  ),
+                  if (editAssessmentState
+                      .observationTypeValidationMessage.isNotEmpty)
+                    Padding(
+                      padding: inset4,
+                      child: Text(
+                        editAssessmentState.observationTypeValidationMessage,
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    )
+                ],
               );
             },
           );

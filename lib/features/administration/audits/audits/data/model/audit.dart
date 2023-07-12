@@ -200,7 +200,7 @@ class Audit extends Entity {
       createdOn: entity.createdOn,
       lastModifiedOn: entity.lastModifiedOn,
       createdByUserName: entity.createdByUserName,
-      lastModifiedByUserName: entity.lastModifiedByUserName,
+      lastModifiedByUserName: map['lastModifiedBy'] ?? '--',
     );
   }
 

@@ -81,7 +81,7 @@ class AddEditActionItemFormView extends StatelessWidget {
             const FormItemVertical(
               leftLabel: 'Company',
               leftChild: CompanySelectField(),
-              rightLabel: 'Awareness Category',
+              rightLabel: 'Category',
               rightChild: CategorySelectField(),
             ),
             const FormItemVertical(

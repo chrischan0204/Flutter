@@ -15,17 +15,32 @@ class PriorityLevelSelectField extends StatelessWidget {
                   MapEntry(priorityLevel.name ?? '', priorityLevel)));
           return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
             builder: (context, editAssessmentState) {
-              return CustomSingleSelect(
-                items: items,
-                hint: 'Select Priority Level',
-                selectedValue: observationDetailState.priorityLevelList.isEmpty
-                    ? null
-                    : editAssessmentState.priorityLevel?.name,
-                onChanged: (priorityLevel) {
-                  context.read<EditAssessmentBloc>().add(
-                      EditAssessmentPriorityLevelChanged(
-                          priorityLevel: priorityLevel.value));
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomSingleSelect(
+                    items: items,
+                    hint: 'Select Priority Level',
+                    selectedValue:
+                        observationDetailState.priorityLevelList.isEmpty
+                            ? null
+                            : editAssessmentState.priorityLevel?.name,
+                    onChanged: (priorityLevel) {
+                      context.read<EditAssessmentBloc>().add(
+                          EditAssessmentPriorityLevelChanged(
+                              priorityLevel: priorityLevel.value));
+                    },
+                  ),
+                  if (editAssessmentState
+                      .priorityLevelValidationMessage.isNotEmpty)
+                    Padding(
+                      padding: inset4,
+                      child: Text(
+                        editAssessmentState.priorityLevelValidationMessage,
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    )
+                ],
               );
             },
           );

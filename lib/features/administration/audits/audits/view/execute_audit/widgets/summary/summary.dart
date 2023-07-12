@@ -43,28 +43,28 @@ class _SummaryViewState extends State<SummaryView> {
                   padding: inset20,
                   child: Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       SummaryItemView(
                         title: 'Answered',
                         content:
                             '${audit.answeredQuestions} of ${audit.questions} Questions',
                       ),
-                      Spacer(flex: 2),
+                      const Spacer(flex: 2),
                       SummaryItemView(
                         title: 'Score',
-                        content: '${audit.audit.score} pts (23%)',
+                        content: '${audit.score} pts ${audit.completedPercent}%',
                       ),
-                      Spacer(flex: 2),
+                      const Spacer(flex: 2),
                       SummaryItemView(
                         title: 'Started on',
-                        content: '',
+                        content: audit.formatedAuditDate,
                       ),
-                      Spacer(flex: 2),
+                      const Spacer(flex: 2),
                       SummaryItemView(
-                        title: 'Last modified on',
-                        content: audit.formatedLastModifiedOn,
+                        title: 'Last executed on',
+                        content: audit.formatedLastExecutedOn,
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ),

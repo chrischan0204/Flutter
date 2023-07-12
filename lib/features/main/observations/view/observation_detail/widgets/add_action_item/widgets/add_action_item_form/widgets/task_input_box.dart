@@ -7,13 +7,13 @@ class TaskInputBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Task',
+      label: 'Action Required',
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return CustomTextField(
             key: ValueKey(state.actionItem?.id),
             initialValue: state.task,
-            hintText: 'Task Description',
+            hintText: 'Action Required Description',
             onChanged: (task) {
               context
                   .read<AddActionItemBloc>()

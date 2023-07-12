@@ -30,6 +30,7 @@ class AuditQuestion extends Equatable {
   final int questionStatus;
   final int questionOrder;
   final bool questionIncluded;
+  final List<AuditResponseScaleItem> responseScaleItems;
   final bool isNew;
 
   const AuditQuestion({
@@ -42,6 +43,7 @@ class AuditQuestion extends Equatable {
     this.questionOrder = 0,
     this.questionIncluded = true,
     this.isNew = false,
+    this.responseScaleItems = const [],
   });
 
   @override
@@ -54,6 +56,7 @@ class AuditQuestion extends Equatable {
         questionStatus,
         questionOrder,
         questionIncluded,
+        responseScaleItems,
         isNew,
       ];
 
@@ -72,15 +75,19 @@ class AuditQuestion extends Equatable {
 
   factory AuditQuestion.fromMap(Map<String, dynamic> map) {
     return AuditQuestion(
-      id: map['id'] as String,
-      questionScore: map['questionScore'] as double,
-      maxScore: map['maxScore'] as double,
-      question: map['question'] as String,
-      responseScaleName: map['responseScaleName'] as String,
-      questionStatus: map['questionStatus'] as int,
-      questionOrder: map['questionOrder'] as int,
-      questionIncluded: map['questionIncluded'],
-    );
+        id: map['id'] as String,
+        questionScore: map['questionScore'] as double,
+        maxScore: map['maxScore'] as double,
+        question: map['question'] as String,
+        responseScaleName: map['responseScaleName'] as String,
+        questionStatus: map['questionStatus'] as int,
+        questionOrder: map['questionOrder'] as int,
+        questionIncluded: map['questionIncluded'],
+        responseScaleItems: map['responseScaleItems'] == null
+            ? []
+            : List.from(map['responseScaleItems'])
+                .map((e) => AuditResponseScaleItem.fromMap(e))
+                .toList());
   }
 
   String toJson() => json.encode(toMap());
@@ -97,6 +104,7 @@ class AuditQuestion extends Equatable {
     int? questionStatus,
     int? questionOrder,
     bool? questionIncluded,
+    List<AuditResponseScaleItem>? responseScaleItems,
     bool? isNew,
   }) {
     return AuditQuestion(
@@ -108,6 +116,7 @@ class AuditQuestion extends Equatable {
       questionStatus: questionStatus ?? this.questionStatus,
       questionOrder: questionOrder ?? this.questionOrder,
       questionIncluded: questionIncluded ?? this.questionIncluded,
+      responseScaleItems: responseScaleItems ?? this.responseScaleItems,
       isNew: isNew ?? this.isNew,
     );
   }

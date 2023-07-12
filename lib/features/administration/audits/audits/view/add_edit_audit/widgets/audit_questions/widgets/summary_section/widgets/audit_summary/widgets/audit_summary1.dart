@@ -1,4 +1,4 @@
-import '../../../../../../widgets/detail_item.dart';
+import '../../../../../../../../widgets/detail_item.dart';
 import '/common_libraries.dart';
 
 class AuditSummary1 extends StatelessWidget {
@@ -8,10 +8,10 @@ class AuditSummary1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: BlocBuilder<AddEditAuditBloc, AddEditAuditState>(
+      child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
         builder: (context, state) {
-          if (state.loadedAudit != null) {
-            final audit = state.loadedAudit!;
+          if (state.auditSummary != null) {
+            final audit = state.auditSummary!;
             return Column(
               children: [
                 AuditDetailItemView(
@@ -20,7 +20,7 @@ class AuditSummary1 extends StatelessWidget {
                 ),
                 AuditDetailItemView(
                   label: 'Created on',
-                  content: audit.createdOn ?? '--',
+                  content: audit.formatedCreatedOn,
                 ),
                 AuditDetailItemView(
                   label: 'Status',
@@ -28,7 +28,7 @@ class AuditSummary1 extends StatelessWidget {
                 ),
                 AuditDetailItemView(
                   label: 'Last executed',
-                  content: audit.lastModifiedOn ?? '--',
+                  content: audit.formatedLastModifiedOn,
                 ),
                 AuditDetailItemView(
                   label: 'Sections',

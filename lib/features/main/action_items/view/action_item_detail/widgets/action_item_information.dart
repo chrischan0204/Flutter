@@ -20,7 +20,7 @@ class ActionItemInformationView extends StatelessWidget {
                 ),
               ),
               ActionItemInformationItemView(
-                label: 'Task',
+                label: 'Action Required',
                 content: state.actionItem?.name ?? '',
               ),
               ActionItemInformationItemView(
@@ -44,7 +44,7 @@ class ActionItemInformationView extends StatelessWidget {
                 content: state.actionItem?.projectName ?? '',
               ),
               ActionItemInformationItemView(
-                label: 'Location',
+                label: 'Area',
                 content: state.actionItem?.area ?? '',
               ),
               CustomBottomBorderContainer(

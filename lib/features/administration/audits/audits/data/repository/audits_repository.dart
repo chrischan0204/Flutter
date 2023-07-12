@@ -245,4 +245,30 @@ class AuditsRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<AuditQuestionViewOption> getQuestionViewOptionList(
+      String auditId) async {
+    Response response = await super.get('$url/$auditId/questionviewoptions');
+
+    if (response.statusCode == 200) {
+      return AuditQuestionViewOption.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<List<AuditQuestion>> getAuditQuestionListForExecute(
+      QuestionsForViewOptionParameter option) async {
+    Response response = await super.post(
+        '$url/${option.auditId}/questionsforviewoption',
+        body: option.toJson());
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => AuditQuestion.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 }

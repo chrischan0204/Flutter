@@ -7,7 +7,8 @@ class SectionSummaryView extends StatelessWidget {
   const SectionSummaryView({super.key});
   static List<String> columns = [
     'Section',
-    'Questions',
+    'Total Q\'s',
+    'Included Q\'s',
     'Max Score',
   ];
 
@@ -32,14 +33,17 @@ class SectionSummaryView extends StatelessWidget {
                 : GridColumn(
                     width: 100,
                     columnName: column,
-                    label: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: insetx12,
-                      child: Text(
-                        column,
-                        style: textSemiBold14.copyWith(color: primaryColor),
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
+                    label: Tooltip(
+                      message: column,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        padding: insetx12,
+                        child: Text(
+                          column,
+                          style: textSemiBold14.copyWith(color: primaryColor),
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),
@@ -96,7 +100,11 @@ class AuditSectionDataSource extends DataGridSource {
                 DataGridCell(
                     columnName: columns[1], value: auditSection.questions),
                 DataGridCell(
-                    columnName: columns[2], value: auditSection.maxScore),
+                    columnName: columns[2],
+                    value: auditSection.questions -
+                        auditSection.excludedQuestions),
+                DataGridCell(
+                    columnName: columns[3], value: auditSection.maxScore),
               ],
             ))
         .toList();
@@ -111,6 +119,11 @@ class AuditSectionDataSource extends DataGridSource {
                   .reduce((value, element) => value + element)),
           DataGridCell(
               columnName: columns[2],
+              value: auditSectionAndQuestionList
+                  .map((e) => (e.questions - e.excludedQuestions))
+                  .reduce((value, element) => value + element)),
+          DataGridCell(
+              columnName: columns[3],
               value: auditSectionAndQuestionList
                   .map((e) => e.maxScore)
                   .reduce((value, element) => value + element)),

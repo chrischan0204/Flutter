@@ -32,11 +32,11 @@ class AssessmentDetailView extends StatelessWidget {
             ),
             AssessmentDetailItemView(
               label: 'Project',
-              content: observation.assessmentCompanyName ?? '',
+              content: observation.assessmentProjectName ?? '',
             ),
             AssessmentDetailItemView(
               label: 'Site',
-              content: observation.userReportedSiteName ?? '',
+              content: observation.assessmentSiteName ?? '',
             ),
             AssessmentDetailItemView(
               label: 'Follow up closeout',

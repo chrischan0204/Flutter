@@ -15,16 +15,29 @@ class ProjectSelectField extends StatelessWidget {
               .map((project) => MapEntry(project.name ?? '', project)));
           return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
             builder: (context, editAssessmentState) {
-              return CustomSingleSelect(
-                items: items,
-                hint: 'Select Project',
-                selectedValue: observationDetailState.projectList.isEmpty
-                    ? null
-                    : editAssessmentState.project?.name,
-                onChanged: (project) {
-                  context.read<EditAssessmentBloc>().add(
-                      EditAssessmentProjectChanged(project: project.value));
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomSingleSelect(
+                    items: items,
+                    hint: 'Select Project',
+                    selectedValue: observationDetailState.projectList.isEmpty
+                        ? null
+                        : editAssessmentState.project?.name,
+                    onChanged: (project) {
+                      context.read<EditAssessmentBloc>().add(
+                          EditAssessmentProjectChanged(project: project.value));
+                    },
+                  ),
+                  if (editAssessmentState.projectValidationMessage.isNotEmpty)
+                    Padding(
+                      padding: inset4,
+                      child: Text(
+                        editAssessmentState.projectValidationMessage,
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    )
+                ],
               );
             },
           );

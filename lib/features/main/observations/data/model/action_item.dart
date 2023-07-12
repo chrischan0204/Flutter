@@ -132,7 +132,7 @@ class ActionItem extends Entity {
       'Category': awarenessCategoryName,
       'Comments': comments,
       'Company': companyName,
-      'Location': area,
+      'Area': area,
       'Project': projectName,
     };
   }
@@ -151,7 +151,7 @@ class ActionItem extends Entity {
       'Category': awarenessCategoryName,
       'Company': companyName,
       'Project': projectName,
-      'Location': area,
+      'Area': area,
       'Notes': {'content': notes},
     };
   }

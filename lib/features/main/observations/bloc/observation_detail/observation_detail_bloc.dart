@@ -15,6 +15,7 @@ class ObservationDetailBloc
   late ObservationTypesRepository observationTypesRepository;
   late UsersRepository _usersRepository;
   late AuthBloc _authBloc;
+
   ObservationDetailBloc(this.context) : super(const ObservationDetailState()) {
     observationsRepository = RepositoryProvider.of(context);
     _sitesRepository = RepositoryProvider.of(context);
@@ -57,6 +58,8 @@ class ObservationDetailBloc
           await observationsRepository.getObservationById(event.observationId);
 
       emit(state.copyWith(observation: observation));
+
+      
     } catch (e) {}
   }
 

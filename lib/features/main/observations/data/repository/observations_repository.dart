@@ -94,7 +94,7 @@ class ObservationsRepository extends BaseRepository {
   }
 
   /// add aseessment
-  Future<void> addAssessment(
+  Future<EntityResponse> addAssessment(
     String observationId,
     AssessmentCreate assessmentCreate,
   ) async {
@@ -103,7 +103,12 @@ class ObservationsRepository extends BaseRepository {
       body: assessmentCreate.toJson(),
     );
 
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
 
     throw Exception();
   }

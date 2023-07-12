@@ -15,17 +15,32 @@ class CategorySelectField extends StatelessWidget {
                   .map((category) => MapEntry(category.name ?? '', category)));
           return BlocBuilder<EditAssessmentBloc, EditAssessmentState>(
             builder: (context, editAssessmentState) {
-              return CustomSingleSelect(
-                items: items,
-                hint: 'Select Awareness Category',
-                selectedValue:
-                    observationDetailState.awarenessCategoryList.isEmpty
-                        ? null
-                        : editAssessmentState.category?.name,
-                onChanged: (category) {
-                  context.read<EditAssessmentBloc>().add(
-                      EditAssessmentCategoryChanged(category: category.value));
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomSingleSelect(
+                    items: items,
+                    hint: 'Select Awareness Category',
+                    selectedValue:
+                        observationDetailState.awarenessCategoryList.isEmpty
+                            ? null
+                            : editAssessmentState.category?.name,
+                    onChanged: (category) {
+                      context.read<EditAssessmentBloc>().add(
+                          EditAssessmentCategoryChanged(
+                              category: category.value));
+                    },
+                  ),
+                  if (editAssessmentState
+                      .awarenessCategoryValidationMessage.isNotEmpty)
+                    Padding(
+                      padding: inset4,
+                      child: Text(
+                        editAssessmentState.awarenessCategoryValidationMessage,
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    )
+                ],
               );
             },
           );
