@@ -39,14 +39,23 @@ class QuestionsListView extends StatelessWidget {
             children: [
               for (int i = 0; i < state.auditQuestionList.length; i++)
                 QuestionItemView(
-                  index: i + 1,
+                  index: i,
                   collapsed: state.collapsibleList[i],
-                  auditQuestion: state.auditQuestionList[i],
-                  // question: state.auditQuestionList[i].question,
-                  // status: state.auditQuestionList[i].questionStatus == 0
-                  //     ? 'Unanswered'
-                  //     : 'Answered',
-                  // responseList: state.auditQuestionList[i].responseScaleItems,
+                  auditQuestion: state.followUpLevel2QuestionList[i] != null
+                      ? state.followUpLevel2QuestionList[i]!
+                      : state.followUpLevel1QuestionList[i] != null
+                          ? state.followUpLevel1QuestionList[i]!
+                          : state.auditQuestionList[i],
+                  followUpLevel1Question: state.followUpLevel1QuestionList[i],
+                  followUpLevel2Question: state.followUpLevel2QuestionList[i],
+                  selectedResponse: state.followUpLevel2QuestionList[i] != null
+                      ? state.selectedResponseListForFollowUpLevel2[i]
+                      : state.followUpLevel1QuestionList[i] != null
+                          ? state.selectedResponseListForFollowUpLevel1[i]
+                          : state.selectedResponseList[i],
+                  selectedResponseForLevel1:
+                      state.selectedResponseListForFollowUpLevel1[i],
+                  selectedResponseForLevel0: state.selectedResponseList[i],
                   auditId: auditId,
                 )
             ],

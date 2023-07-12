@@ -2,36 +2,113 @@ import '/common_libraries.dart';
 
 class QuestionItemView extends CustomExpansionPanel {
   final String auditId;
-  // final String question;
-  // final String status;
-  // final List<AuditResponseScaleItem> responseList;
   final int index;
   final bool collapsed;
   final AuditQuestion auditQuestion;
+  final AuditQuestion? followUpLevel1Question;
+  final AuditQuestion? followUpLevel2Question;
+  final AuditResponseScaleItem? selectedResponse;
+  final AuditResponseScaleItem? selectedResponseForLevel0;
+  final AuditResponseScaleItem? selectedResponseForLevel1;
   QuestionItemView({
     required this.auditId,
-    // required this.question,
-    // required this.status,
-    // required this.responseList,
     required this.auditQuestion,
     required this.index,
     required this.collapsed,
+    required this.followUpLevel1Question,
+    required this.followUpLevel2Question,
+    required this.selectedResponse,
+    required this.selectedResponseForLevel0,
+    required this.selectedResponseForLevel1,
   }) : super(
           headerBuilder: (BuildContext context, bool isExpanded) {
+            if (followUpLevel1Question != null) {
+              return Padding(
+                padding: insetx12,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => context
+                              .read<ExecuteAuditBloc>()
+                              .add(ExecuteAuditLevelChanged(
+                                questionIndex: index,
+                                isLevel0: true,
+                              )),
+                          child: Text(
+                            'Question',
+                            style: textNormal18.copyWith(
+                              color: textBlue,
+                              decoration: TextDecoration.underline,
+                              decorationColor: textBlue,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '>',
+                          style: TextStyle(
+                            color: textBlue,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => context
+                              .read<ExecuteAuditBloc>()
+                              .add(ExecuteAuditLevelChanged(
+                                questionIndex: index,
+                                isLevel0: false,
+                              )),
+                          child: Text(
+                            'Follow up Question (Option=\'${selectedResponseForLevel0?.name}\')',
+                            style: textNormal14.copyWith(
+                              decoration: TextDecoration.underline,
+                              color: textBlue,
+                              decorationColor: textBlue,
+                            ),
+                          ),
+                        ),
+                        if (followUpLevel2Question != null)
+                          Text(
+                            '>',
+                            style: TextStyle(
+                              color: textBlue,
+                            ),
+                          ),
+                        if (followUpLevel2Question != null)
+                          Text(
+                            'Level Two Follow up Question (For Option=\'${selectedResponseForLevel1?.name}\')',
+                            style: textNormal12.copyWith(
+                              color: textBlue,
+                            ),
+                          )
+                      ],
+                    ),
+                    spacery5,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Q${index + 1}: ${followUpLevel2Question != null ? followUpLevel2Question.question : followUpLevel1Question.question}',
+                        style: textSemiBold16,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
             return Padding(
               padding: insetx12,
               child: Row(
                 children: [
                   Expanded(
                     child: Text(
-                      'Q$index: ${auditQuestion.question}',
+                      'Q${index + 1}: ${auditQuestion.question}',
                       style: textSemiBold16,
                     ),
                   ),
                   CustomBadge(
-                    label: auditQuestion.questionStatus == 0
-                        ? 'Unanswered'
-                        : 'Answered',
+                    label: auditQuestion.questionStatusName,
                     color: auditQuestion.questionStatus == 0
                         ? warnColor
                         : primaryColor,
@@ -48,19 +125,26 @@ class QuestionItemView extends CustomExpansionPanel {
               auditId: auditId,
               auditQuestion: auditQuestion,
             ),
-            child: const QuestionItemBodyView(),
+            child: QuestionItemBodyView(
+              questionIndex: index,
+              auditQuestion: auditQuestion,
+              selectedResponse: selectedResponse,
+            ),
           ),
         );
 }
 
-class QuestionItemBodyView extends StatefulWidget {
-  const QuestionItemBodyView({super.key});
+class QuestionItemBodyView extends StatelessWidget {
+  final int questionIndex;
+  final AuditQuestion auditQuestion;
+  final AuditResponseScaleItem? selectedResponse;
+  const QuestionItemBodyView({
+    super.key,
+    required this.questionIndex,
+    required this.auditQuestion,
+    required this.selectedResponse,
+  });
 
-  @override
-  State<QuestionItemBodyView> createState() => _QuestionItemBodyViewState();
-}
-
-class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ExecuteAuditQuestionBloc, ExecuteAuditQuestionState>(
@@ -90,7 +174,7 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                         style: textNormal14,
                       ),
                     ),
-                    for (final response in state.auditQuestion.responseScaleItems)
+                    for (final response in auditQuestion.responseScaleItems)
                       CustomBottomBorderContainer(
                         padding: inset20,
                         child: Row(
@@ -101,12 +185,14 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                                 children: [
                                   Radio(
                                       value: response,
-                                      groupValue: state.selectedResponse,
+                                      groupValue: selectedResponse,
                                       onChanged: (value) => context
-                                          .read<ExecuteAuditQuestionBloc>()
-                                          .add(
-                                              ExecuteAuditQuestionResponseSelected(
-                                                  response: value!))),
+                                          .read<ExecuteAuditBloc>()
+                                          .add(ExecuteAuditResponseSelected(
+                                            questionId: auditQuestion.id,
+                                            questionIndex: questionIndex,
+                                            response: value!,
+                                          ))),
                                   spacerx20,
                                   Text(
                                     response.name,
@@ -115,7 +201,7 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                                 ],
                               ),
                             ),
-                            if (state.selectedResponse == response)
+                            if (selectedResponse == response)
                               Expanded(
                                 child: Row(
                                   mainAxisAlignment:
@@ -139,6 +225,7 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                                           context
                                               .read<ExecuteAuditQuestionBloc>()
                                               .add(ExecuteAuditQuestionLoaded(
+                                                  questionIndex: questionIndex,
                                                   responseId: response.id));
                                         },
                                       ),

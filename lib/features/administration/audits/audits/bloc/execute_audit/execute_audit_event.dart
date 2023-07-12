@@ -30,3 +30,53 @@ class ExecuteAuditQuestionMenuCollapsed extends ExecuteAuditEvent {
   List<Object> get props => [index];
 }
 
+class ExecuteAuditFollowUpQuestionLoaded extends ExecuteAuditEvent {
+  final AuditQuestion question;
+  final int questionIndex;
+
+  const ExecuteAuditFollowUpQuestionLoaded({
+    required this.question,
+    required this.questionIndex,
+  });
+
+  @override
+  List<Object> get props => [
+        question,
+        questionIndex,
+      ];
+}
+
+class ExecuteAuditLevelChanged extends ExecuteAuditEvent {
+  final int questionIndex;
+  final bool isLevel0;
+
+  const ExecuteAuditLevelChanged({
+    required this.questionIndex,
+    required this.isLevel0,
+  });
+
+  @override
+  List<Object> get props => [
+        questionIndex,
+        isLevel0,
+      ];
+}
+
+class ExecuteAuditResponseSelected extends ExecuteAuditEvent {
+  final int questionIndex;
+  final AuditResponseScaleItem response;
+  final String questionId;
+
+  const ExecuteAuditResponseSelected({
+    required this.questionIndex,
+    required this.response,
+    required this.questionId,
+  });
+
+  @override
+  List<Object> get props => [
+        questionIndex,
+        response,
+        questionId,
+      ];
+}

@@ -10,7 +10,6 @@ class ExecuteAuditQuestionBloc
   final AuditQuestion auditQuestion;
 
   late ExecuteAuditBloc _executeAuditBloc;
-  late AuthBloc _authBloc;
   late AuditsRepository _auditsRepository;
   ExecuteAuditQuestionBloc({
     required this.context,
@@ -18,20 +17,11 @@ class ExecuteAuditQuestionBloc
     required this.auditQuestion,
   }) : super(ExecuteAuditQuestionState(
           auditQuestion: auditQuestion,
-          selectedResponse: auditQuestion.responseScaleItems
-                  .where((element) => element.isSelected)
-                  .isNotEmpty
-              ? auditQuestion.responseScaleItems
-                  .firstWhere((element) => element.isSelected)
-              : null,
         )) {
-    _authBloc = context.read();
     _executeAuditBloc = context.read();
     _auditsRepository = context.read();
 
     on<ExecuteAuditQuestionLoaded>(_onExecuteAuditQuestionLoaded);
-    on<ExecuteAuditQuestionResponseSelected>(
-        _onExecuteAuditQuestionResponseSelected);
   }
 
   Future<void> _onExecuteAuditQuestionLoaded(
@@ -48,25 +38,13 @@ class ExecuteAuditQuestionBloc
         auditQuestion: question,
         questionLoadStatus: EntityStatus.success,
       ));
+
+      _executeAuditBloc.add(ExecuteAuditFollowUpQuestionLoaded(
+        question: question,
+        questionIndex: event.questionIndex,
+      ));
     } catch (e) {
       emit(state.copyWith(questionLoadStatus: EntityStatus.failure));
-    }
-  }
-
-  Future<void> _onExecuteAuditQuestionResponseSelected(
-    ExecuteAuditQuestionResponseSelected event,
-    Emitter<ExecuteAuditQuestionState> emit,
-  ) async {
-    EntityResponse response = await _auditsRepository
-        .recordQuestionResponse(RecordQuestionResponseOnAudit(
-      auditId: auditId,
-      questionId: auditQuestion.id,
-      selectedResponseId: event.response.id,
-      userId: _authBloc.state.authUser!.id,
-    ));
-
-    if (response.isSuccess) {
-      emit(state.copyWith(selectedResponse: event.response));
     }
   }
 }
