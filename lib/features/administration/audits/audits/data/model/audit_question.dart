@@ -28,6 +28,7 @@ class AuditQuestion extends Equatable {
   final String question;
   final String responseScaleName;
   final int questionStatus;
+  final String questionStatusName;
   final int questionOrder;
   final bool questionIncluded;
   final List<AuditResponseScaleItem> responseScaleItems;
@@ -40,6 +41,7 @@ class AuditQuestion extends Equatable {
     required this.question,
     required this.responseScaleName,
     required this.questionStatus,
+    this.questionStatusName = '',
     this.questionOrder = 0,
     this.questionIncluded = true,
     this.isNew = false,
@@ -54,6 +56,7 @@ class AuditQuestion extends Equatable {
         maxScore,
         responseScaleName,
         questionStatus,
+        questionStatusName,
         questionOrder,
         questionIncluded,
         responseScaleItems,
@@ -78,9 +81,10 @@ class AuditQuestion extends Equatable {
         id: map['id'] as String,
         questionScore: map['questionScore'] as double,
         maxScore: map['maxScore'] as double,
-        question: map['question'] as String,
-        responseScaleName: map['responseScaleName'] as String,
-        questionStatus: map['questionStatus'] as int,
+        question: map['question'] ?? '',
+        responseScaleName: map['responseScaleName'] ?? '',
+        questionStatusName: map['questionStatusName'] ?? '',
+        questionStatus: map['questionStatus'] ?? 0,
         questionOrder: map['questionOrder'] as int,
         questionIncluded: map['questionIncluded'],
         responseScaleItems: map['responseScaleItems'] == null

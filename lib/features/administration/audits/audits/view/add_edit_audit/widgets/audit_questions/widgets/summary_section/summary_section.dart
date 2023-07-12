@@ -23,7 +23,7 @@ class SummarySectionView extends StatelessWidget {
             ),
           ),
           Container(
-            padding: inset20.copyWith(bottom: 100),
+            padding: inset20,
             decoration: BoxDecoration(border: Border.all(color: primaryColor)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

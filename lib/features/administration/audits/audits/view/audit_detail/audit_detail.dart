@@ -95,7 +95,7 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               .add(AuditDetailAuditDeleted(auditId: widget.auditId)),
           entity: state.auditSummary?.audit,
           crudStatus: state.auditDeleteStatus,
-          isScrollView: false,
+          // isScrollView: false,
           customDetailWidget: state.auditSummary == null
               ? const Center(child: Loader())
               : Column(
@@ -131,7 +131,8 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                       ),
                     ),
                     spacery20,
-                    Expanded(
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 2,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [

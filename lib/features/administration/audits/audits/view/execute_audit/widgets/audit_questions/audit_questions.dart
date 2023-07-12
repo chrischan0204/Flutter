@@ -2,7 +2,11 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
 class AuditQuestionsView extends StatelessWidget {
-  const AuditQuestionsView({super.key});
+  final String auditId;
+  const AuditQuestionsView({
+    super.key,
+    required this.auditId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,11 +14,11 @@ class AuditQuestionsView extends StatelessWidget {
       child: Padding(
         padding: inset10,
         child: Column(
-          children: const [
-            AuditQuestionsHeaderView(),
+          children: [
+            const AuditQuestionsHeaderView(),
             Expanded(
               child: CustomScrollViewWithBackButton(
-                child: QuestionsListView(),
+                child: QuestionsListView(auditId: auditId),
               ),
             )
           ],

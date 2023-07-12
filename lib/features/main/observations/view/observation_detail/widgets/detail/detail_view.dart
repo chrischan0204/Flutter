@@ -20,7 +20,7 @@ class DetailView extends StatelessWidget {
               content: observation.description ?? '',
             ),
             DetailItemView1(
-              label: 'Location',
+              label: 'Area',
               content: observation.area ?? '',
             ),
             DetailItemView1(

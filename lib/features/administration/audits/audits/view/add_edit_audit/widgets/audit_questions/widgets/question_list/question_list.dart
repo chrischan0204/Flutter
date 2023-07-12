@@ -11,10 +11,12 @@ class QuestionListView extends StatelessWidget {
       child: Column(
         children: [
           const QuestionListHeaderView(),
-          Container(
-            padding: inset10,
-            decoration: BoxDecoration(border: Border.all(color: primaryColor)),
-            child: const QuestionsListBodyView(),
+          Expanded(
+            child: Container(
+              padding: inset10,
+              decoration: BoxDecoration(border: Border.all(color: primaryColor)),
+              child: const QuestionsListBodyView(),
+            ),
           ),
         ],
       ),

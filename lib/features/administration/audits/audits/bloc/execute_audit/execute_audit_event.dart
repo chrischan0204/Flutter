@@ -29,3 +29,4 @@ class ExecuteAuditQuestionMenuCollapsed extends ExecuteAuditEvent {
   @override
   List<Object> get props => [index];
 }
+

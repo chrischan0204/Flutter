@@ -24,7 +24,7 @@ class ExecuteAuditView extends StatelessWidget {
                     create: (context) => AuditDetailBloc(context, auditId),
                     child: SummaryView(auditId: auditId),
                   ),
-                  const Expanded(child: AuditQuestionsView()),
+                  Expanded(child: AuditQuestionsView(auditId: auditId)),
                 ],
               ),
             )

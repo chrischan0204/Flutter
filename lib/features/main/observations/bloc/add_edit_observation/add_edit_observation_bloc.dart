@@ -141,7 +141,7 @@ class AddEditObservationBloc
     if (Validation.isEmpty(state.location)) {
       emit(state.copyWith(
           locationValidationMessage:
-              FormValidationMessage(fieldName: 'Location').requiredMessage));
+              FormValidationMessage(fieldName: 'Area').requiredMessage));
       success = false;
     }
 

@@ -14,7 +14,7 @@ class AddEditObservationFormView extends StatelessWidget {
               leftChild: const ObservationNameTextField(),
               rightChild: const LocationTextField(),
               leftLabel: 'Observation (*)',
-              rightLabel: 'Location (*)',
+              rightLabel: 'Area (*)',
               leftValidationMessage: state.observationNameValidationMessage,
               rightValidationMessage: state.locationValidationMessage,
             ),

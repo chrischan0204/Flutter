@@ -133,6 +133,7 @@ class ActionItem extends Entity {
       'Comments': comments,
       'Company': companyName,
       'Area': area,
+      'Location': area,
       'Project': projectName,
     };
   }

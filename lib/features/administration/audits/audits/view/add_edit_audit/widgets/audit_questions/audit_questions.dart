@@ -60,25 +60,28 @@ class _AuditQuestionsWidgetState extends State<AuditQuestionsWidget> {
             ],
           ),
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Expanded(
-              flex: 2,
-              child: AuditSectionsView(),
-            ),
-            Expanded(
-              flex: 5,
-              child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
-                builder: (context, state) {
-                  if (state.selectedAuditSectionId != null) {
-                    return const QuestionListView();
-                  }
-                  return Container();
-                },
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Expanded(
+                flex: 2,
+                child: AuditSectionsView(),
               ),
-            ),
-          ],
+              Expanded(
+                flex: 5,
+                child: BlocBuilder<AuditQuestionsBloc, AuditQuestionsState>(
+                  builder: (context, state) {
+                    if (state.selectedAuditSectionId != null) {
+                      return const QuestionListView();
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+            ],
+          ),
         )
       ],
     );

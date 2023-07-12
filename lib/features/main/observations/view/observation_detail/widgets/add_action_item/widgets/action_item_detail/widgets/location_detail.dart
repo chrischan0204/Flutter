@@ -7,7 +7,7 @@ class LocationDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Location',
+      label: 'Area',
       content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
         builder: (context, state) {
           return Text(

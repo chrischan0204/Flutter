@@ -226,7 +226,7 @@ class Observation extends Entity {
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
       'Observation': {'content': name},
-      'Location': {'content': area},
+      'Area': {'content': area},
       'Reported By': reportedBy,
       'Reported At': formatedReportedAt,
       'Via': reportedVia,
