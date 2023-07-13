@@ -249,21 +249,35 @@ class AddEditActionItemBloc
     AddEditActionItemEdited event,
     Emitter<AddEditActionItemState> emit,
   ) async {
-    try {
-      EntityResponse response =
-          await _actionItemsRepository.editActionItem(state.actionItemCreate);
+    if (_validate(emit)) {
+      emit(state.copyWith(status: EntityStatus.loading));
+      try {
+        EntityResponse response =
+            await _actionItemsRepository.editActionItem(state.actionItemCreate);
 
-      if (response.isSuccess) {
+        if (response.isSuccess) {
+          emit(state.copyWith(
+            message: response.message,
+            status: EntityStatus.success,
+            initialAssignee: Nullable.value(state.assignee),
+            initialCategory: Nullable.value(state.category),
+            initialCompany: Nullable.value(state.company),
+            initialDueBy: Nullable.value(state.dueBy),
+            initialLocation: state.location,
+            initialName: state.name,
+            initialNotes: state.notes,
+            initialProject: Nullable.value(state.project),
+            initialSite: Nullable.value(state.site),
+          ));
+
+          _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+        }
+      } catch (e) {
         emit(state.copyWith(
-          message: response.message,
-          status: EntityStatus.success,
+          message: 'Some thing went wrong.',
+          status: EntityStatus.failure,
         ));
       }
-    } catch (e) {
-      emit(state.copyWith(
-        message: 'Some thing went wrong.',
-        status: EntityStatus.failure,
-      ));
     }
   }
 
@@ -312,7 +326,62 @@ class AddEditActionItemBloc
       ActionItem actionItem =
           await _actionItemsRepository.getActionItemById(event.actionItemId);
 
-      emit(state.copyWith(actionItem: Nullable.value(actionItem)));
+      add(AddEditActionItemProjectListLoaded(siteId: actionItem.siteId));
+      add(AddEditActionItemCompanyListLoaded(siteId: actionItem.siteId));
+
+      emit(state.copyWith(
+        actionItem: Nullable.value(actionItem),
+        name: actionItem.name,
+        initialName: actionItem.name,
+        dueBy: Nullable.value(actionItem.dueBy),
+        initialDueBy: Nullable.value(actionItem.dueBy),
+        assignee: Nullable.value(User(
+          id: actionItem.assigneeId,
+          firstName: actionItem.assigneeName.split(' ')[0],
+          lastName: actionItem.assigneeName.split(' ')[1],
+        )),
+        initialAssignee: Nullable.value(User(
+          id: actionItem.assigneeId,
+          firstName: actionItem.assigneeName.split(' ')[0],
+          lastName: actionItem.assigneeName.split(' ')[1],
+        )),
+        site: Nullable.value(Site(
+          id: actionItem.siteId,
+          name: actionItem.siteName,
+        )),
+        initialSite: Nullable.value(Site(
+          id: actionItem.siteId,
+          name: actionItem.siteName,
+        )),
+        category: Nullable.value(AwarenessCategory(
+          name: actionItem.awarenessCategoryName,
+          id: actionItem.awarenessCategoryId,
+        )),
+        initialCategory: Nullable.value(AwarenessCategory(
+          name: actionItem.awarenessCategoryName,
+          id: actionItem.awarenessCategoryId,
+        )),
+        company: Nullable.value(Company(
+          name: actionItem.companyName,
+          id: actionItem.companyId,
+        )),
+        initialCompany: Nullable.value(Company(
+          name: actionItem.companyName,
+          id: actionItem.companyId,
+        )),
+        project: Nullable.value(Project(
+          name: actionItem.projectName,
+          id: actionItem.projectId,
+        )),
+        initialProject: Nullable.value(Project(
+          name: actionItem.projectName,
+          id: actionItem.projectId,
+        )),
+        location: actionItem.area,
+        initialLocation: actionItem.area,
+        notes: actionItem.notes,
+        initialNotes: actionItem.notes,
+      ));
     } catch (e) {}
   }
 }

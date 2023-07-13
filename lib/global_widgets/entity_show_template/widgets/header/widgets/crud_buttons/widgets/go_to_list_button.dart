@@ -4,9 +4,11 @@ import '/common_libraries.dart';
 
 class GoToListButton extends StatelessWidget {
   final String label;
+  final VoidCallback? onListButtonClick;
   const GoToListButton({
     super.key,
     required this.label,
+    this.onListButtonClick,
   });
 
   @override
@@ -20,11 +22,13 @@ class GoToListButton extends StatelessWidget {
         iconData: PhosphorIcons.regular.listNumbers,
         text: width < minDesktopWidth ? '' : '${camelize(label)} List',
         isOnlyIcon: width < minDesktopWidth,
-        onClick: () {
-          String location = GoRouter.of(context).location;
-          location = location.replaceRange(location.indexOf('show'), null, '');
-          GoRouter.of(context).go(location);
-        },
+        onClick: onListButtonClick ??
+            () {
+              String location = GoRouter.of(context).location;
+              location =
+                  location.replaceRange(location.indexOf('show'), null, '');
+              GoRouter.of(context).go(location);
+            },
       ),
     );
     ;

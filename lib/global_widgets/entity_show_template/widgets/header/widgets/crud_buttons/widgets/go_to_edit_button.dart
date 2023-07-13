@@ -4,9 +4,11 @@ import '/common_libraries.dart';
 
 class GoToEditButton extends StatelessWidget {
   final String label;
+  final VoidCallback? onEditButtonClick;
   const GoToEditButton({
     super.key,
     required this.label,
+    this.onEditButtonClick,
   });
 
   @override
@@ -20,7 +22,7 @@ class GoToEditButton extends StatelessWidget {
         iconData: PhosphorIcons.regular.gear,
         text: 'Edit ${camelize(label)}',
         isOnlyIcon: width < minDesktopWidth,
-        onClick: () => GoRouter.of(context).go(
+        onClick: onEditButtonClick ?? () => GoRouter.of(context).go(
           GoRouter.of(context).location.replaceAll('show', 'edit'),
         ),
       ),

@@ -121,6 +121,18 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/action-items/edit/:actionItemId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: AddEditActionItemView(
+            actionItemId: state.params['actionItemId']!,
+          ),
+          selectedItemName: 'action-items',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/action-items/show/:actionItemId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
@@ -393,7 +405,7 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/audits/edit/:auditId/approve_edit',
+      path: '/audits/approve_edit/:auditId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(

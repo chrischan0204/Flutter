@@ -16,6 +16,8 @@ class HeaderView extends StatelessWidget {
   final String? secondaryLabel;
   final IconData? secondaryIcon;
   final VoidCallback? secondaryButtonOnClick;
+  final VoidCallback? onListButtonClick;
+  final VoidCallback? onEditButtonClick;
   const HeaderView({
     super.key,
     required this.title,
@@ -32,6 +34,8 @@ class HeaderView extends StatelessWidget {
     this.secondaryLabel,
     this.secondaryIcon,
     this.secondaryButtonOnClick,
+    this.onListButtonClick,
+    this.onEditButtonClick,
   });
 
   @override
@@ -68,6 +72,7 @@ class HeaderView extends StatelessWidget {
                   secondaryButtonOnClick: secondaryButtonOnClick,
                   secondaryIcon: secondaryIcon,
                   secondaryLabel: secondaryLabel,
+                  onListButtonClick: onListButtonClick,
                 ),
               ),
             ),

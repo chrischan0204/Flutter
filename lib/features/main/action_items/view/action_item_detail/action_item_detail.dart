@@ -68,7 +68,6 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
               .add(ActionItemDetailActionItemDeleted()),
           entity: state.actionItem,
           crudStatus: state.actionItemDeleteStatus,
-          isEditable: false,
           isShowName: false,
           customDetailWidget: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

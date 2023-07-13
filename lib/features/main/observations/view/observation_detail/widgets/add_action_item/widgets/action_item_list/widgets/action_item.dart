@@ -42,9 +42,10 @@ class ActionItemView extends StatelessWidget {
                 child: Tooltip(
                   message: 'Edit Action Item',
                   child: IconButton(
-                    onPressed: () => context
-                        .read<AddActionItemBloc>()
-                        .add(AddActionItemDetailEdited(actionItem: actionItem)),
+                    onPressed: actionItem.isClosed
+                        ? null
+                        : () => context.read<AddActionItemBloc>().add(
+                            AddActionItemDetailEdited(actionItem: actionItem)),
                     icon: Icon(
                       PhosphorIcons.regular.wrench,
                       color: warnColor,

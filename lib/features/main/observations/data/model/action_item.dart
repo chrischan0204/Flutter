@@ -38,6 +38,8 @@ class ActionItem extends Entity {
   final String comments;
   final String auditName;
   final String auditId;
+  final String siteId;
+  final String siteName;
   final String auditSectionItemId;
   final String auditSectionName;
   final bool isClosed;
@@ -69,6 +71,8 @@ class ActionItem extends Entity {
     this.auditId = '',
     this.auditSectionItemId = '',
     this.auditSectionName = '',
+    this.siteId = '',
+    this.siteName = '',
     this.isClosed = false,
     super.createdByUserName,
     super.columns,
@@ -83,9 +87,15 @@ class ActionItem extends Entity {
         ...super.props,
         dueBy,
         assigneeId,
+        assigneeName,
         awarenessCategoryId,
+        awarenessCategoryName,
         companyId,
+        companyName,
+        projectId,
         projectName,
+        observationId,
+        observationName,
         area,
         notes,
         source,
@@ -96,6 +106,12 @@ class ActionItem extends Entity {
         isClosed,
         comments,
         closedByName,
+        auditId,
+        auditName,
+        siteId, 
+        siteName,
+        auditSectionItemId,
+        auditSectionName,
       ];
 
   @override
@@ -179,6 +195,8 @@ class ActionItem extends Entity {
       source: map['source'] ?? '',
       auditId: map['auditId'] ?? '',
       auditName: map['auditName'] ?? '',
+      siteId: map['siteId'] ?? '',
+      siteName: map['siteName'] ?? '',
       auditSectionItemId: map['auditSectionItemId'] ?? '',
       auditSectionName: map['auditSectionName'] ?? '',
       isClosed: map['isClosed'] ?? false,
@@ -215,12 +233,15 @@ class ActionItem extends Entity {
     bool? isClosed,
     String? projectId,
     String? projectName,
+    String? siteId,
+    String? siteName,
     String? createdByUserName,
     String? lastModifiedOn,
     String? lastModifiedByUserName,
     String? closedByName,
     bool? deleted,
     List<String>? columns,
+
   }) {
     return ActionItem(
       id: id ?? this.id,
@@ -233,6 +254,8 @@ class ActionItem extends Entity {
       closedOn: closedOn ?? this.closedOn,
       companyName: companyName ?? this.companyName,
       companyId: companyId ?? this.companyId,
+      siteName: siteName ?? this.siteName,
+      siteId: siteId ?? this.siteId,
       awarenessCategoryId: awarenessCategoryId ?? this.awarenessCategoryId,
       awarenessCategoryName:
           awarenessCategoryName ?? this.awarenessCategoryName,

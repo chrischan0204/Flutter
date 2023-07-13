@@ -67,7 +67,8 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
           await _actionItemsRepository.getActionItemById(event.actionItem.id!);
 
       emit(state.copyWith(
-        actionItem: Nullable.value(actionItem),
+        actionItem:
+            Nullable.value(actionItem.copyWith(id: event.actionItem.id)),
         task: actionItem.name,
         dueBy: Nullable.value(actionItem.dueBy),
         assignee: Nullable.value(User(
@@ -200,9 +201,9 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
           message: response.message,
           status: EntityStatus.success,
         ));
-      }
 
-      add(AddActionItemListLoaded(observationId: observationId));
+        add(AddActionItemListLoaded(observationId: observationId));
+      }
     } catch (e) {}
   }
 }

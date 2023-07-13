@@ -6,6 +6,7 @@ class ActionItemCreate extends Equatable {
   final String name;
   final String dueBy;
   final String assigneeId;
+  final String siteId;
   final String? categoryId;
   final String? companyId;
   final String? projectId;
@@ -21,6 +22,7 @@ class ActionItemCreate extends Equatable {
     this.categoryId,
     this.companyId,
     this.projectId,
+    required this.siteId,
     required this.location,
     required this.notes,
     this.observationId,
@@ -33,6 +35,7 @@ class ActionItemCreate extends Equatable {
         name,
         dueBy,
         assigneeId,
+        siteId,
         categoryId,
         companyId,
         projectId,
@@ -47,6 +50,7 @@ class ActionItemCreate extends Equatable {
       'description': name,
       'dueBy': dueBy,
       'assigneeId': assigneeId,
+      'siteId': siteId,
       'awarenessCategoryId': categoryId,
       'companyId': companyId,
       'projectId': projectId,
@@ -76,6 +80,7 @@ class ActionItemCreate extends Equatable {
     String? name,
     String? dueBy,
     String? assigneeId,
+    String? siteId,
     String? categoryId,
     String? companyId,
     String? projectId,
@@ -89,6 +94,7 @@ class ActionItemCreate extends Equatable {
       name: name ?? this.name,
       dueBy: dueBy ?? this.dueBy,
       assigneeId: assigneeId ?? this.assigneeId,
+      siteId: siteId ?? this.siteId,
       categoryId: categoryId ?? this.categoryId,
       companyId: companyId ?? this.companyId,
       projectId: projectId ?? this.projectId,

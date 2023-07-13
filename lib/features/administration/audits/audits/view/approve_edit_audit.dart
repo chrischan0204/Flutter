@@ -51,6 +51,8 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
           deleteEntity: () {},
           isDeletable: false,
           entity: state.auditSummary?.audit,
+          onListButtonClick: () => context.go('/audits/list'),
+          onEditButtonClick: () => context.go('/audits/edit/${widget.auditId}'),
           customDetailWidget: Card(
             elevation: 3,
             child: Column(

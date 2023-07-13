@@ -174,6 +174,7 @@ class AddEditActionItemState extends Equatable {
         id: actionItem?.id,
         name: name,
         dueBy: dueBy!.toIso8601String(),
+        siteId: site!.id!,
         assigneeId: assignee!.id!,
         categoryId: category?.id,
         companyId: company?.id,
