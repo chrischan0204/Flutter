@@ -7,18 +7,34 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
   final BuildContext context;
   final String auditId;
   late AuditsRepository _auditsRepository;
+  late PriorityLevelsRepository _priorityLevelsRepository;
+  late ObservationTypesRepository _observationTypesRepository;
+  late SitesRepository _sitesRepository;
+  late UsersRepository _usersRepository;
+  late AwarenessCategoriesRepository _awarenessCategoriesRepository;
   late AuthBloc _authBloc;
   ExecuteAuditBloc({
     required this.context,
     required this.auditId,
   }) : super(const ExecuteAuditState()) {
     _auditsRepository = context.read();
+    _priorityLevelsRepository = context.read();
+    _observationTypesRepository = context.read();
+    _sitesRepository = context.read();
+    _awarenessCategoriesRepository = context.read();
     _authBloc = context.read();
 
     on<ExecuteAuditQuestionViewOptionLoaded>(
         _onExecuteAuditQuestionViewOptionLoaded);
     on<ExecuteAuditQuestionViewOptionSelected>(
         _onExecuteAuditQuestionViewOptionSelected);
+    on<ExecuteAuditPriorityLevelListLoaded>(
+        _onExecuteAuditPriorityLevelListLoaded);
+    on<ExecuteAuditObservationTypeListLoaded>(
+        _onExecuteAuditObservationTypeListLoaded);
+    on<ExecuteAuditSiteListLoaded>(_onExecuteAuditSiteListLoaded);
+    on<ExecuteAuditAssigneeListLoaded>(_onExecuteAuditAssigneeListLoaded);
+    on<ExecuteAuditCategoryListLoaded>(_onExecuteAuditCategoryListLoaded);
   }
 
   @override
@@ -67,5 +83,63 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
         ));
       }
     }
+  }
+
+  Future<void> _onExecuteAuditPriorityLevelListLoaded(
+    ExecuteAuditPriorityLevelListLoaded event,
+    Emitter<ExecuteAuditState> emit,
+  ) async {
+    try {
+      List<PriorityLevel> priorityLevelList =
+          await _priorityLevelsRepository.getPriorityLevelList();
+
+      emit(state.copyWith(priorityLevelList: priorityLevelList));
+    } catch (e) {}
+  }
+
+  Future<void> _onExecuteAuditObservationTypeListLoaded(
+    ExecuteAuditObservationTypeListLoaded event,
+    Emitter<ExecuteAuditState> emit,
+  ) async {
+    try {
+      List<ObservationType> observationTypeList =
+          await _observationTypesRepository.getObservationTypeList();
+
+      emit(state.copyWith(observationTypeList: observationTypeList));
+    } catch (e) {}
+  }
+
+  Future<void> _onExecuteAuditSiteListLoaded(
+    ExecuteAuditSiteListLoaded event,
+    Emitter<ExecuteAuditState> emit,
+  ) async {
+    try {
+      List<Site> siteList = await _sitesRepository.getSiteList();
+
+      emit(state.copyWith(siteList: siteList));
+    } catch (e) {}
+  }
+
+  Future<void> _onExecuteAuditAssigneeListLoaded(
+    ExecuteAuditAssigneeListLoaded event,
+    Emitter<ExecuteAuditState> emit,
+  ) async {
+    try {
+      List<User> assigneeList = await _usersRepository.getUserList();
+
+      emit(state.copyWith(assigneeList: assigneeList));
+    } catch (e) {}
+  }
+
+  Future<void> _onExecuteAuditCategoryListLoaded(
+    ExecuteAuditCategoryListLoaded event,
+    Emitter<ExecuteAuditState> emit,
+  ) async {
+    try {
+      List<AwarenessCategory> categoryList =
+          await _awarenessCategoriesRepository.getAwarenessCategorieList();
+
+      emit(state.copyWith(categoryList: categoryList));
+    } catch (e) {}
   }
 }

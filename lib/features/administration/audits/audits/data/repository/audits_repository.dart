@@ -308,7 +308,10 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<AuditComment> getAuditCommentById({required String questionId, required String commentId,}) async {
+  Future<AuditComment> getAuditCommentById({
+    required String questionId,
+    required String commentId,
+  }) async {
     Response response =
         await super.get('$url/sectionitems/$questionId/comments/$commentId');
 
@@ -368,17 +371,84 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<ObservationDetail>> getAuditObservationList({
-    required String auditId,
-    required String questionId,
-  }) async {
+  Future<List<ObservationDetail>> getAuditObservationList(
+      String questionId) async {
     Response response =
-        await super.get('$url/$auditId/questions/$questionId/comments');
+        await super.get('$url/sectionitems/$questionId/observations');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
           .map((e) => ObservationDetail.fromMap(e))
           .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<ObservationDetail> getAuditObservationById({
+    required String questionId,
+    required String observationId,
+  }) async {
+    Response response = await super.get(
+        '$url/sectionitems/$questionId/observations/observationid',
+        {'observationId': observationId});
+
+    if (response.statusCode == 200) {
+      return ObservationDetail.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> addObservationForAudit(
+      ObservationCreate observationCreate) async {
+    Response response = await super.post(
+        '$url/sectionitems/${observationCreate.auditSectionItemId}/observations',
+        body: observationCreate.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: '',
+        data: Entity.fromMap(
+          json.decode(response.body),
+        ),
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> editObservationForAudit({
+    required ObservationCreate observationUpdate,
+    required String observationId,
+  }) async {
+    Response response = await super.put(
+        '$url/sectionitems/$observationId/observations',
+        body: observationUpdate.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: '',
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> deleteAuditObservation({
+    required String questionId,
+    required String observationId,
+  }) async {
+    Response response = await super
+        .delete('$url/sectionitems/$questionId/observations/$observationId');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: 'message',
+      );
     }
 
     throw Exception();

@@ -8,6 +8,7 @@ class ExecuteAuditCommentState extends Equatable {
   final EntityStatus auditCommentLoadStatus;
 
   final String commentText;
+  final String commentValidationMessage;
 
   final EntityStatus status;
 
@@ -19,6 +20,7 @@ class ExecuteAuditCommentState extends Equatable {
     this.auditComment,
     this.auditCommentLoadStatus = EntityStatus.initial,
     this.commentText = '',
+    this.commentValidationMessage = '',
     this.status = EntityStatus.initial,
     this.view = CrudView.list,
   });
@@ -30,6 +32,7 @@ class ExecuteAuditCommentState extends Equatable {
         auditComment,
         auditCommentLoadStatus,
         commentText,
+        commentValidationMessage,
         status,
         view,
       ];
@@ -40,6 +43,7 @@ class ExecuteAuditCommentState extends Equatable {
     AuditComment? auditComment,
     EntityStatus? auditCommentLoadStatus,
     String? commentText,
+    String? commentValidationMessage,
     EntityStatus? status,
     CrudView? view,
   }) {
@@ -51,6 +55,8 @@ class ExecuteAuditCommentState extends Equatable {
       auditCommentLoadStatus:
           auditCommentLoadStatus ?? this.auditCommentLoadStatus,
       commentText: commentText ?? this.commentText,
+      commentValidationMessage:
+          commentValidationMessage ?? this.commentValidationMessage,
       status: status ?? this.status,
       view: view ?? this.view,
     );

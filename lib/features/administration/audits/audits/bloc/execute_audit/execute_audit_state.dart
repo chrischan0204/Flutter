@@ -6,11 +6,26 @@ class ExecuteAuditState extends Equatable {
   final Entity? selectedQuestionViewOption;
   final List<AuditQuestion> auditQuestionList;
   final EntityStatus auditQuestionListStatus;
+
+  /// lists to create observation
+  final List<PriorityLevel> priorityLevelList;
+  final List<ObservationType> observationTypeList;
+  final List<Site> siteList;
+
+  /// lists to create action item
+  final List<User> assigneeList;
+  final List<AwarenessCategory> categoryList;
+
   const ExecuteAuditState({
     this.auditQuestionViewOption,
     this.selectedQuestionViewOption,
     this.auditQuestionList = const [],
     this.auditQuestionListStatus = EntityStatus.initial,
+    this.priorityLevelList = const [],
+    this.observationTypeList = const [],
+    this.siteList = const [],
+    this.assigneeList = const [],
+    this.categoryList = const [],
   });
 
   List<Entity> get optionViewList {
@@ -43,6 +58,11 @@ class ExecuteAuditState extends Equatable {
         selectedQuestionViewOption,
         auditQuestionList,
         auditQuestionListStatus,
+        siteList,
+        priorityLevelList,
+        observationTypeList,
+        assigneeList,
+        categoryList,
       ];
 
   ExecuteAuditState copyWith({
@@ -50,6 +70,11 @@ class ExecuteAuditState extends Equatable {
     Entity? selectedQuestionViewOption,
     List<AuditQuestion>? auditQuestionList,
     EntityStatus? auditQuestionListStatus,
+    List<PriorityLevel>? priorityLevelList,
+    List<ObservationType>? observationTypeList,
+    List<Site>? siteList,
+    List<User>? assigneeList,
+    List<AwarenessCategory>? categoryList,
   }) {
     return ExecuteAuditState(
       auditQuestionViewOption:
@@ -59,6 +84,11 @@ class ExecuteAuditState extends Equatable {
       auditQuestionList: auditQuestionList ?? this.auditQuestionList,
       auditQuestionListStatus:
           auditQuestionListStatus ?? this.auditQuestionListStatus,
+      priorityLevelList: priorityLevelList ?? this.priorityLevelList,
+      observationTypeList: observationTypeList ?? this.observationTypeList,
+      siteList: siteList ?? this.siteList,
+      assigneeList: assigneeList ?? this.assigneeList,
+      categoryList: categoryList ?? this.categoryList,
     );
   }
 }

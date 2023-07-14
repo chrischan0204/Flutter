@@ -79,24 +79,32 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentCreated event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
-    emit(state.copyWith(status: EntityStatus.loading));
-
-    try {
-      await _auditsRepository.addCommentForAudit(AuditCommentCreate(
-        userId: _userId,
-        auditId: _auditId,
-        questionId: _questionId,
-        commentText: state.commentText,
-      ));
-
+    if (Validation.isEmpty(state.commentText)) {
       emit(state.copyWith(
-        status: EntityStatus.success,
-        commentText: '',
-      ));
+          commentValidationMessage:
+              FormValidationMessage(fieldName: 'Comment').requiredMessage));
+    } else {
+      emit(state.copyWith(status: EntityStatus.loading));
 
-      add(ExecuteAuditCommentListLoaded());
-    } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      try {
+        await _auditsRepository.addCommentForAudit(AuditCommentCreate(
+          userId: _userId,
+          auditId: _auditId,
+          questionId: _questionId,
+          commentText: state.commentText,
+        ));
+
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          commentText: '',
+        ));
+
+        add(ExecuteAuditCommentListLoaded());
+
+        add(const ExecuteAuditCommentViewChanged(view: CrudView.list));
+      } catch (e) {
+        emit(state.copyWith(status: EntityStatus.failure));
+      }
     }
   }
 
@@ -104,25 +112,33 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentUpdated event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
-    emit(state.copyWith(status: EntityStatus.loading));
-
-    try {
-      await _auditsRepository.editCommentForAudit(AuditCommentUpdate(
-        id: state.auditComment!.id,
-        userId: _userId,
-        auditId: _auditId,
-        questionId: _questionId,
-        commentText: state.commentText,
-      ));
-
+    if (Validation.isEmpty(state.commentText)) {
       emit(state.copyWith(
-        status: EntityStatus.success,
-        commentText: '',
-      ));
+          commentValidationMessage:
+              FormValidationMessage(fieldName: 'Comment').requiredMessage));
+    } else {
+      emit(state.copyWith(status: EntityStatus.loading));
 
-      add(ExecuteAuditCommentListLoaded());
-    } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      try {
+        await _auditsRepository.editCommentForAudit(AuditCommentUpdate(
+          id: state.auditComment!.id,
+          userId: _userId,
+          auditId: _auditId,
+          questionId: _questionId,
+          commentText: state.commentText,
+        ));
+
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          commentText: '',
+        ));
+
+        add(ExecuteAuditCommentListLoaded());
+
+        add(const ExecuteAuditCommentViewChanged(view: CrudView.list));
+      } catch (e) {
+        emit(state.copyWith(status: EntityStatus.failure));
+      }
     }
   }
 
@@ -130,7 +146,10 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentTextChanged event,
     Emitter<ExecuteAuditCommentState> emit,
   ) {
-    emit(state.copyWith(commentText: event.commentText));
+    emit(state.copyWith(
+      commentText: event.commentText,
+      commentValidationMessage: '',
+    ));
   }
 
   void _onExecuteAuditCommentViewChanged(

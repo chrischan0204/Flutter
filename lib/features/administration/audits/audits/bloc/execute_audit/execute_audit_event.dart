@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'execute_audit_bloc.dart';
 
 abstract class ExecuteAuditEvent extends Equatable {
@@ -19,3 +18,13 @@ class ExecuteAuditQuestionViewOptionSelected extends ExecuteAuditEvent {
   @override
   List<Object> get props => [questionViewOption];
 }
+
+class ExecuteAuditPriorityLevelListLoaded extends ExecuteAuditEvent {}
+
+class ExecuteAuditObservationTypeListLoaded extends ExecuteAuditEvent {}
+
+class ExecuteAuditSiteListLoaded extends ExecuteAuditEvent {}
+
+class ExecuteAuditAssigneeListLoaded extends ExecuteAuditEvent {}
+
+class ExecuteAuditCategoryListLoaded extends ExecuteAuditEvent {}

@@ -78,36 +78,18 @@ class ExecuteAuditQuestionBloc
     ExecuteAuditQuestionLevelChanged event,
     Emitter<ExecuteAuditQuestionState> emit,
   ) async {
-    emit(state.copyWith(questionLoadStatus: EntityStatus.loading));
-    await Future.delayed(const Duration(milliseconds: 500));
     if (event.level == 0) {
       emit(state.copyWith(
-        // selectedlevel0Response: Nullable.value(state.level0.responseScaleItems
-        //         .where((element) => element.isSelected)
-        //         .isNotEmpty
-        //     ? state.level0.responseScaleItems
-        //         .firstWhere((element) => element.isSelected)
-        //     : null),
         level1Followup: const Nullable.value(null),
         level2Followup: const Nullable.value(null),
       ));
     } else if (event.level == 1) {
       emit(state.copyWith(
-        // selectedlevel1Response: Nullable.value(state
-        //         .level1Followup!.responseScaleItems
-        //         .where((element) => element.isSelected)
-        //         .isNotEmpty
-        //     ? state.level1Followup!.responseScaleItems
-        //         .firstWhere((element) => element.isSelected)
-        //     : null),
         level2Followup: const Nullable.value(null),
       ));
     }
 
-    emit(state.copyWith(
-      level: event.level,
-      questionLoadStatus: EntityStatus.success,
-    ));
+    emit(state.copyWith(level: event.level));
   }
 
   Future<void> _onExecuteAuditQuestionResponseSelected(

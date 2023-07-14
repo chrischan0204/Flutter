@@ -10,6 +10,9 @@ class ObservationCreate extends Equatable {
   final String response;
   final String priorityLevelId;
   final String observationTypeId;
+  final String? auditId;
+  final String? auditSectionItemId;
+  final String? reportedBy;
 
   const ObservationCreate({
     required this.name,
@@ -18,6 +21,9 @@ class ObservationCreate extends Equatable {
     required this.response,
     required this.priorityLevelId,
     required this.observationTypeId,
+    this.auditId,
+    this.auditSectionItemId,
+    this.reportedBy,
   });
 
   @override
@@ -27,10 +33,13 @@ class ObservationCreate extends Equatable {
         response,
         priorityLevelId,
         observationTypeId,
+        auditId,
+        auditSectionItemId,
+        reportedBy,
       ];
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = <String, dynamic>{
       'siteId': siteId,
       'userReportedPriorityLevelId': priorityLevelId,
       'userReportedObservationTypeId': observationTypeId,
@@ -46,6 +55,19 @@ class ObservationCreate extends Equatable {
               ? 'TapIn'
               : 'Kiosk',
     };
+
+    if (auditId != null && auditSectionItemId != null) {
+      map.addAll({
+        'auditId': auditId,
+        'auditSectionItemId': auditSectionItemId,
+      });
+    }
+
+    if (reportedBy != null) {
+      map.addAll({'reportedBy': reportedBy});
+    }
+
+    return map;
   }
 
   String toJson() => json.encode(toMap());
@@ -57,6 +79,8 @@ class ObservationCreate extends Equatable {
     String? response,
     String? priorityLevelId,
     String? observationTypeId,
+    String? auditId,
+    String? auditSectionItemId,
   }) {
     return ObservationCreate(
       name: name ?? this.name,
@@ -65,6 +89,8 @@ class ObservationCreate extends Equatable {
       response: response ?? this.response,
       priorityLevelId: priorityLevelId ?? this.priorityLevelId,
       observationTypeId: observationTypeId ?? this.observationTypeId,
+      auditId: auditId ?? this.auditId,
+      auditSectionItemId: auditSectionItemId ?? this.auditSectionItemId,
     );
   }
 }

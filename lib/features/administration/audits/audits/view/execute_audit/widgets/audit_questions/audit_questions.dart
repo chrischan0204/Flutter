@@ -1,12 +1,28 @@
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class AuditQuestionsView extends StatelessWidget {
+class AuditQuestionsView extends StatefulWidget {
   final String auditId;
   const AuditQuestionsView({
     super.key,
     required this.auditId,
   });
+
+  @override
+  State<AuditQuestionsView> createState() => _AuditQuestionsViewState();
+}
+
+class _AuditQuestionsViewState extends State<AuditQuestionsView> {
+  @override
+  void initState() {
+    context.read<ExecuteAuditBloc>()
+      ..add(ExecuteAuditPriorityLevelListLoaded())
+      ..add(ExecuteAuditObservationTypeListLoaded())
+      ..add(ExecuteAuditSiteListLoaded())
+      ..add(ExecuteAuditAssigneeListLoaded())
+      ..add(ExecuteAuditCategoryListLoaded());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +34,7 @@ class AuditQuestionsView extends StatelessWidget {
             const AuditQuestionsHeaderView(),
             Expanded(
               child: CustomScrollViewWithBackButton(
-                child: QuestionsListView(auditId: auditId),
+                child: QuestionsListView(auditId: widget.auditId),
               ),
             )
           ],

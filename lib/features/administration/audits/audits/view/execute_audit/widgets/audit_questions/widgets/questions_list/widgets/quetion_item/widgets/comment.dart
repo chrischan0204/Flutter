@@ -39,21 +39,17 @@ class _AuditCommentViewState extends State<AuditCommentView> {
                     radius: 10,
                     onClick: () {
                       if (state.view.isCreate) {
-                        context.read<ExecuteAuditCommentBloc>()
-                          ..add(const ExecuteAuditCommentViewChanged(
-                              view: CrudView.list))
-                          ..add(ExecuteAuditCommentCreated());
-                        ;
+                        context
+                            .read<ExecuteAuditCommentBloc>()
+                            .add(ExecuteAuditCommentCreated());
                       } else if (state.view.isList) {
                         context.read<ExecuteAuditCommentBloc>().add(
                             const ExecuteAuditCommentViewChanged(
                                 view: CrudView.create));
                       } else if (state.view.isUpdate) {
-                        context.read<ExecuteAuditCommentBloc>()
-                          ..add(const ExecuteAuditCommentViewChanged(
-                              view: CrudView.list))
-                          ..add(ExecuteAuditCommentUpdated());
-                        ;
+                        context
+                            .read<ExecuteAuditCommentBloc>()
+                            .add(ExecuteAuditCommentUpdated());
                       }
                     },
                   )
@@ -71,9 +67,9 @@ class _AuditCommentViewState extends State<AuditCommentView> {
               case CrudView.detail:
                 return Container();
               case CrudView.create:
-                return const AuditCommentCreateView();
+                return const AuditCommentCreateUpdateView();
               case CrudView.update:
-                return const AuditCommentUpdateView();
+                return const AuditCommentCreateUpdateView();
             }
           },
         ),
@@ -132,9 +128,9 @@ class AuditCommentListItemView extends StatelessWidget {
                   ..add(ExecuteAuditCommentLoaded(commentId: comment.id));
               },
               icon: Icon(
-                PhosphorIcons.regular.appWindow,
+                PhosphorIcons.regular.wrench,
                 size: 14,
-                color: Colors.purple,
+                color: Colors.orange,
               ),
             ),
           ),
@@ -168,42 +164,8 @@ class AuditCommentListItemView extends StatelessWidget {
   }
 }
 
-class AuditCommentCreateView extends StatelessWidget {
-  const AuditCommentCreateView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomBottomBorderContainer(
-      padding: inset10,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Comment:',
-            style: textSemiBold12,
-          ),
-          spacery20,
-          CustomTextField(
-            hintText: 'please type in comment here...',
-            minLines: 3,
-            height: null,
-            maxLines: 100,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 10,
-            ),
-            onChanged: (value) => context
-                .read<ExecuteAuditCommentBloc>()
-                .add(ExecuteAuditCommentTextChanged(commentText: value)),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AuditCommentUpdateView extends StatelessWidget {
-  const AuditCommentUpdateView({super.key});
+class AuditCommentCreateUpdateView extends StatelessWidget {
+  const AuditCommentCreateUpdateView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -234,6 +196,12 @@ class AuditCommentUpdateView extends StatelessWidget {
                     .read<ExecuteAuditCommentBloc>()
                     .add(ExecuteAuditCommentTextChanged(commentText: value)),
               ),
+              if (state.commentValidationMessage.isNotEmpty) spacery5,
+              if (state.commentValidationMessage.isNotEmpty)
+                Text(
+                  state.commentValidationMessage,
+                  style: textNormal12.copyWith(color: Colors.red),
+                ),
             ],
           ),
         );

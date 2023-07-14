@@ -34,7 +34,7 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
                     columnName: column,
                     label: Container(
                       alignment: Alignment.centerLeft,
-                      padding: insetx12,
+                      padding: insetx10,
                       child: Text(
                         column,
                         style: textSemiBold14.copyWith(color: primaryColor),

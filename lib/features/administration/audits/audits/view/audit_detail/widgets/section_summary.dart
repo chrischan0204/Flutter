@@ -21,7 +21,7 @@ class SectionSummaryView extends StatelessWidget {
                     columnName: column,
                     label: Container(
                       alignment: Alignment.centerLeft,
-                      padding: insetx12,
+                      padding: const EdgeInsets.only(left: 22),
                       child: Text(
                         column,
                         style: textSemiBold14.copyWith(color: primaryColor),

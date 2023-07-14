@@ -63,11 +63,13 @@ class AddEditObservationBloc
             await observationsRepository.addObservation(state.observation);
 
         if (response.isSuccess) {
-          await _documentsRepository.uploadDocuments(
-            ownerId: response.data!.id!,
-            ownerType: 'observation',
-            documentList: state.images,
-          );
+          if (state.images.isNotEmpty) {
+            await _documentsRepository.uploadDocuments(
+              ownerId: response.data!.id!,
+              ownerType: 'observation',
+              documentList: state.images,
+            );
+          }
 
           emit(state.copyWith(
             createdObservationId: response.data?.id,

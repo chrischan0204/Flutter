@@ -52,15 +52,13 @@ class _CustomMultiImagePickerState extends State<CustomMultiFilePicker> {
         ),
         child: Row(
           children: [
-            Expanded(
-              child: Container(
-                // height: 36,
-                color: lightTeal,
-                padding: inset10,
-                child: Text(
-                  'Choose File',
-                  style: textNormal14.copyWith(color: Colors.black),
-                ),
+            Container(
+              width: 100,
+              color: lightTeal,
+              padding: inset10,
+              child: Text(
+                'Choose File',
+                style: textNormal14.copyWith(color: Colors.black),
               ),
             ),
             Expanded(
