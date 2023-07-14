@@ -10,7 +10,6 @@ class ObservationCreate extends Equatable {
   final String response;
   final String priorityLevelId;
   final String observationTypeId;
-  final List<Uint8List> images;
 
   const ObservationCreate({
     required this.name,
@@ -19,7 +18,6 @@ class ObservationCreate extends Equatable {
     required this.response,
     required this.priorityLevelId,
     required this.observationTypeId,
-    this.images = const [],
   });
 
   @override
@@ -29,7 +27,6 @@ class ObservationCreate extends Equatable {
         response,
         priorityLevelId,
         observationTypeId,
-        images,
       ];
 
   Map<String, dynamic> toMap() {
@@ -38,7 +35,7 @@ class ObservationCreate extends Equatable {
       'userReportedPriorityLevelId': priorityLevelId,
       'userReportedObservationTypeId': observationTypeId,
       'response': response,
-      'base64Image': images.isNotEmpty ? base64.encode(images[0]) : '',
+      'base64Image': '',
       'description': name,
       'area': location,
       'reportedVia': kIsWeb
@@ -60,7 +57,6 @@ class ObservationCreate extends Equatable {
     String? response,
     String? priorityLevelId,
     String? observationTypeId,
-    List<Uint8List>? images,
   }) {
     return ObservationCreate(
       name: name ?? this.name,
@@ -69,7 +65,6 @@ class ObservationCreate extends Equatable {
       response: response ?? this.response,
       priorityLevelId: priorityLevelId ?? this.priorityLevelId,
       observationTypeId: observationTypeId ?? this.observationTypeId,
-      images: images ?? this.images,
     );
   }
 }

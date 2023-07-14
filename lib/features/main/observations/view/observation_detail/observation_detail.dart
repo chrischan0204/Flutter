@@ -11,7 +11,10 @@ class ObservationDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ObservationDetailBloc(context),
+      create: (context) => ObservationDetailBloc(
+        context: context,
+        observationId: observationId,
+      ),
       child: ObservationDetailWidget(observationId: observationId),
     );
   }

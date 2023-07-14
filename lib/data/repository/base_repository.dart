@@ -1,3 +1,9 @@
+import 'dart:html';
+import 'dart:io' as io;
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 export 'package:http/http.dart';
 import '/common_libraries.dart';
@@ -103,6 +109,33 @@ class BaseRepository {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
     }
 
+    throw Exception();
+  }
+
+  Future<void> uploadMultipartFile({
+    required String encodedPath,
+    required Map<String, String> queryParams,
+    required List<PlatformFile> fileList,
+  }) async {
+    try {
+      MultipartRequest request = http.MultipartRequest(
+          'POST', Uri.https(ApiUri.host, encodedPath, queryParams));
+
+      request.headers.addAll(headers);
+
+      for (int i = 0; i < fileList.length; i++) {
+        request.files.add(http.MultipartFile.fromBytes(
+          'documents',
+          fileList[i].bytes ?? [],
+          filename: fileList[i].name,
+        ));
+      }
+
+      await request.send();
+      return;
+    } catch (e) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
+    }
     throw Exception();
   }
 }

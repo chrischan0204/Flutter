@@ -6,25 +6,32 @@ part 'observation_detail_state.dart';
 class ObservationDetailBloc
     extends Bloc<ObservationDetailEvent, ObservationDetailState> {
   final BuildContext context;
+  final String observationId;
   late ObservationsRepository observationsRepository;
   late SitesRepository _sitesRepository;
   late ProjectsRepository projectsRepository;
   late PriorityLevelsRepository priorityLevelsRepository;
   late AwarenessCategoriesRepository awarenessCategoriesRepository;
   late CompaniesRepository companiesRepository;
-  late ObservationTypesRepository observationTypesRepository;
+  late ObservationTypesRepository _observationTypesRepository;
   late UsersRepository _usersRepository;
+  late DocumentsRepository _documentsRepository;
+
   late AuthBloc _authBloc;
 
-  ObservationDetailBloc(this.context) : super(const ObservationDetailState()) {
+  ObservationDetailBloc({
+    required this.context,
+    required this.observationId,
+  }) : super(const ObservationDetailState()) {
     observationsRepository = RepositoryProvider.of(context);
     _sitesRepository = RepositoryProvider.of(context);
     projectsRepository = RepositoryProvider.of(context);
-    observationTypesRepository = RepositoryProvider.of(context);
+    _observationTypesRepository = RepositoryProvider.of(context);
     priorityLevelsRepository = RepositoryProvider.of(context);
     awarenessCategoriesRepository = RepositoryProvider.of(context);
     companiesRepository = RepositoryProvider.of(context);
     _usersRepository = RepositoryProvider.of(context);
+    _documentsRepository = context.read();
 
     _authBloc = context.read();
 
@@ -47,6 +54,7 @@ class ObservationDetailBloc
     on<ObservationDetailPriorityLevelListLoaded>(
         _onObservationDetailPriorityLevelListLoaded);
     on<ObservationDetailUserListLoaded>(_onObservationDetailUserListLoaded);
+    on<ObservationDetailImageListLoaded>(_onObservationDetailImageListLoaded);
   }
 
   Future<void> _onObservationDetailLoaded(
@@ -58,8 +66,6 @@ class ObservationDetailBloc
           await observationsRepository.getObservationById(event.observationId);
 
       emit(state.copyWith(observation: observation));
-
-      
     } catch (e) {}
   }
 
@@ -140,7 +146,7 @@ class ObservationDetailBloc
     Emitter<ObservationDetailState> emit,
   ) async {
     List<ObservationType> observationTypeList =
-        await observationTypesRepository.getObservationTypeList();
+        await _observationTypesRepository.getObservationTypeList();
 
     emit(state.copyWith(observationTypeList: observationTypeList));
     try {} catch (e) {}
@@ -154,5 +160,17 @@ class ObservationDetailBloc
 
     emit(state.copyWith(userList: userList));
     try {} catch (e) {}
+  }
+
+  Future<void> _onObservationDetailImageListLoaded(
+    ObservationDetailImageListLoaded event,
+    Emitter<ObservationDetailState> emit,
+  ) async {
+    List<Document> imageList = await _documentsRepository.getDocumentList(
+      ownerId: observationId,
+      ownerType: 'observation',
+    );
+
+    emit(state.copyWith(imageList: imageList));
   }
 }

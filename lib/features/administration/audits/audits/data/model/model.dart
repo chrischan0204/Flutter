@@ -13,3 +13,7 @@ export 'audit_question_view_option.dart';
 export 'audit_response_scale_item.dart';
 export 'questions_for_view_option_paramater.dart';
 export 'record_question_response_on_audit.dart';
+export 'audit_comment.dart';
+export 'audit_comment_create.dart';
+export 'audit_comment_update.dart';
+export 'document.dart';

@@ -1,20 +1,19 @@
-import 'package:flutter/foundation.dart';
-import 'package:image_picker_web/image_picker_web.dart';
-
+import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
 import '/common_libraries.dart';
 
-class CustomMultiImagePicker extends StatefulWidget {
-  final Function(List<Uint8List>) onSelect;
-  const CustomMultiImagePicker({
+class CustomMultiFilePicker extends StatefulWidget {
+  final ValueChanged<List<PlatformFile>> onSelect;
+  const CustomMultiFilePicker({
     super.key,
     required this.onSelect,
   });
 
   @override
-  State<CustomMultiImagePicker> createState() => _CustomMultiImagePickerState();
+  State<CustomMultiFilePicker> createState() => _CustomMultiImagePickerState();
 }
 
-class _CustomMultiImagePickerState extends State<CustomMultiImagePicker> {
+class _CustomMultiImagePickerState extends State<CustomMultiFilePicker> {
   int selectedImageCount = 0;
 
   String _getFilePaths() {
@@ -31,12 +30,20 @@ class _CustomMultiImagePickerState extends State<CustomMultiImagePicker> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        List<Uint8List>? _imgs = await ImagePickerWeb.getMultiImagesAsBytes();
-        setState(() {
-          selectedImageCount = (_imgs ?? []).length;
-        });
+        try {
+          FilePickerResult? result = await FilePickerWeb.platform.pickFiles(
+            allowMultiple: true,
+            type: FileType.custom,
+            allowedExtensions: ['jpg', 'pdf', 'png', 'doc'],
+          );
+          setState(() {
+            selectedImageCount = (result?.files ?? []).length;
+          });
 
-        widget.onSelect(_imgs ?? []);
+          widget.onSelect(result?.files ?? []);
+        } catch (e) {
+          print(e);
+        }
       },
       child: Container(
         decoration: BoxDecoration(

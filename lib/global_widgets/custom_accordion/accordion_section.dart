@@ -186,13 +186,13 @@ class AccordionSection extends StatelessWidget with CommonParams {
                   250.milliseconds,
                   () {
                     listCtrl.controller.cancelAllHighlights();
-                    listCtrl.controller.scrollToIndex(index,
-                        preferPosition: AutoScrollPosition.middle,
-                        duration:
-                            (scrollIntoViewOfItems == ScrollIntoViewOfItems.fast
-                                    ? .5
-                                    : 1)
-                                .seconds);
+                    // listCtrl.controller.scrollToIndex(index,
+                    //     preferPosition: AutoScrollPosition.begin,
+                    //     duration:
+                    //         (scrollIntoViewOfItems == ScrollIntoViewOfItems.fast
+                    //                 ? .5
+                    //                 : 1)
+                    //             .seconds);
                   },
                 );
               }
@@ -203,11 +203,11 @@ class AccordionSection extends StatelessWidget with CommonParams {
                 if (onOpenSection != null) onOpenSection!.call();
               }
             },
-            child: AnimatedContainer(
-              duration: Accordion.sectionAnimation
-                  ? 750.milliseconds
-                  : 0.milliseconds,
-              curve: Curves.easeOut,
+            child: Container(
+              // duration: Accordion.sectionAnimation
+                  // ? 750.milliseconds
+                  // : 0.milliseconds,
+              // curve: Curves.easeOut,
               alignment: Alignment.center,
               padding: headerPadding,
               decoration: BoxDecoration(

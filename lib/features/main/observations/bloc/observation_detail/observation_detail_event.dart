@@ -63,3 +63,5 @@ class ObservationDetailProjectListLoaded extends ObservationDetailEvent {
 class ObservationDetailPriorityLevelListLoaded extends ObservationDetailEvent {}
 
 class ObservationDetailUserListLoaded extends ObservationDetailEvent {}
+
+class ObservationDetailImageListLoaded extends ObservationDetailEvent {}

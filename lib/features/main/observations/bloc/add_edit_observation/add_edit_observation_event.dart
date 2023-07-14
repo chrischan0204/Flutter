@@ -104,7 +104,7 @@ class AddEditObservationSiteChanged extends AddEditObservationEvent {
 /// event to change the image list
 class AddEditObservationImageListChanged extends AddEditObservationEvent {
   /// image list to change
-  final List<Uint8List> imageList;
+  final List<PlatformFile> imageList;
   const AddEditObservationImageListChanged({
     required this.imageList,
   });

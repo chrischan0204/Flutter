@@ -6,23 +6,11 @@ class ExecuteAuditState extends Equatable {
   final Entity? selectedQuestionViewOption;
   final List<AuditQuestion> auditQuestionList;
   final EntityStatus auditQuestionListStatus;
-  final List<bool> collapsibleList;
-  final List<AuditQuestion?> followUpLevel1QuestionList;
-  final List<AuditQuestion?> followUpLevel2QuestionList;
-  final List<AuditResponseScaleItem?> selectedResponseList;
-  final List<AuditResponseScaleItem?> selectedResponseListForFollowUpLevel1;
-  final List<AuditResponseScaleItem?> selectedResponseListForFollowUpLevel2;
   const ExecuteAuditState({
     this.auditQuestionViewOption,
     this.selectedQuestionViewOption,
     this.auditQuestionList = const [],
     this.auditQuestionListStatus = EntityStatus.initial,
-    this.collapsibleList = const [],
-    this.followUpLevel1QuestionList = const [],
-    this.followUpLevel2QuestionList = const [],
-    this.selectedResponseList = const [],
-    this.selectedResponseListForFollowUpLevel1 = const [],
-    this.selectedResponseListForFollowUpLevel2 = const [],
   });
 
   List<Entity> get optionViewList {
@@ -55,12 +43,6 @@ class ExecuteAuditState extends Equatable {
         selectedQuestionViewOption,
         auditQuestionList,
         auditQuestionListStatus,
-        collapsibleList,
-        followUpLevel1QuestionList,
-        followUpLevel2QuestionList,
-        selectedResponseList,
-        selectedResponseListForFollowUpLevel1,
-        selectedResponseListForFollowUpLevel2,
       ];
 
   ExecuteAuditState copyWith({
@@ -68,12 +50,6 @@ class ExecuteAuditState extends Equatable {
     Entity? selectedQuestionViewOption,
     List<AuditQuestion>? auditQuestionList,
     EntityStatus? auditQuestionListStatus,
-    List<bool>? collapsibleList,
-    List<AuditQuestion?>? followUpLevel1QuestionList,
-    List<AuditQuestion?>? followUpLevel2QuestionList,
-    List<AuditResponseScaleItem?>? selectedResponseList,
-    List<AuditResponseScaleItem?>? selectedResponseListForFollowUpLevel1,
-    List<AuditResponseScaleItem?>? selectedResponseListForFollowUpLevel2,
   }) {
     return ExecuteAuditState(
       auditQuestionViewOption:
@@ -83,18 +59,6 @@ class ExecuteAuditState extends Equatable {
       auditQuestionList: auditQuestionList ?? this.auditQuestionList,
       auditQuestionListStatus:
           auditQuestionListStatus ?? this.auditQuestionListStatus,
-      collapsibleList: collapsibleList ?? this.collapsibleList,
-      followUpLevel1QuestionList:
-          followUpLevel1QuestionList ?? this.followUpLevel1QuestionList,
-      followUpLevel2QuestionList:
-          followUpLevel2QuestionList ?? this.followUpLevel2QuestionList,
-      selectedResponseList: selectedResponseList ?? this.selectedResponseList,
-      selectedResponseListForFollowUpLevel1:
-          selectedResponseListForFollowUpLevel1 ??
-              this.selectedResponseListForFollowUpLevel1,
-      selectedResponseListForFollowUpLevel2:
-          selectedResponseListForFollowUpLevel2 ??
-              this.selectedResponseListForFollowUpLevel2,
     );
   }
 }

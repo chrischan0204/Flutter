@@ -5,6 +5,32 @@ class Nullable<T> {
   const Nullable.value(this.value);
 }
 
+enum CrudView {
+  list,
+  detail,
+  create,
+  update;
+
+  bool get isList => this == CrudView.list;
+
+  bool get isDetail => this == CrudView.detail;
+
+  bool get isCreate => this == CrudView.create;
+
+  bool get isUpdate => this == CrudView.update;
+
+  @override
+  String toString() {
+    return isList
+        ? 'Add'
+        : isCreate
+            ? 'Create'
+            : isUpdate
+                ? 'Update'
+                : 'Show list';
+  }
+}
+
 class EntityHeader extends Equatable {
   final String name;
   final String title;

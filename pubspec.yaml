@@ -22,6 +22,8 @@ dependencies:
   dropdown_button2: ^2.0.0
   elegant_notification: ^1.8.1
   equatable: ^2.0.5
+  expandable: ^5.0.1
+  file_picker: ^5.3.1
   flutter:
     sdk: flutter
   flutter_animate: ^4.1.1+1

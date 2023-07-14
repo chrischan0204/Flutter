@@ -5,7 +5,7 @@ class ObservationImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomMultiImagePicker(
+    return CustomMultiFilePicker(
       onSelect: (imageList) => context
           .read<AddEditObservationBloc>()
           .add(AddEditObservationImageListChanged(imageList: imageList)),

@@ -268,4 +268,119 @@ class AuditsRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<AuditComment> addCommentForAudit(
+      AuditCommentCreate auditCommentCreate) async {
+    Response response = await super.post(
+        '$url/sectionitems/${auditCommentCreate.auditId}/comments',
+        body: auditCommentCreate.toJson());
+
+    if (response.statusCode == 200) {
+      return AuditComment.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<AuditComment> editCommentForAudit(
+      AuditCommentUpdate auditCommentUpdate) async {
+    Response response = await super.put(
+        '$url/sectionitems/${auditCommentUpdate.auditId}/comments',
+        body: auditCommentUpdate.toJson());
+
+    if (response.statusCode == 200) {
+      return AuditComment.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<List<AuditComment>> getAuditCommentList(String questionId) async {
+    Response response =
+        await super.get('$url/sectionitems/$questionId/comments');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => AuditComment.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<AuditComment> getAuditCommentById({required String questionId, required String commentId,}) async {
+    Response response =
+        await super.get('$url/sectionitems/$questionId/comments/$commentId');
+
+    if (response.statusCode == 200) {
+      return AuditComment.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> deleteAuditComment({
+    required String auditId,
+    required String commentId,
+  }) async {
+    Response response =
+        await super.delete('$url/sectionitems/$auditId/comments/$commentId');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: 'message',
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<List<Document>> getAuditDocumentList({
+    required String auditId,
+    required String questionId,
+  }) async {
+    Response response =
+        await super.get('$url/$auditId/questions/$questionId/documents');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Document.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<ActionItem>> getAuditActionItemList({
+    required String auditId,
+    required String questionId,
+  }) async {
+    Response response =
+        await super.get('$url/$auditId/questions/$questionId/comments');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => ActionItem.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<ObservationDetail>> getAuditObservationList({
+    required String auditId,
+    required String questionId,
+  }) async {
+    Response response =
+        await super.get('$url/$auditId/questions/$questionId/comments');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => ObservationDetail.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 }

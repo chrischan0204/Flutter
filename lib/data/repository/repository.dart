@@ -16,3 +16,4 @@ export '/features/administration/audits/templates/data/repository/repository.dar
 export '/features/administration/audits/audits/data/repository/audits_repository.dart';
 export '/features/main/observations/data/repository/observations_repository.dart';
 export '/features/main/observations/data/repository/action_items_repository.dart';
+export 'document_repository.dart';

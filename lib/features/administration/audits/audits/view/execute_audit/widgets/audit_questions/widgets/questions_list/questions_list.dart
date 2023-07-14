@@ -1,5 +1,9 @@
+import 'package:accordion/accordion.dart';
+import 'package:accordion/controllers.dart';
+
 import '/common_libraries.dart';
-import 'widgets/widget.dart';
+import 'widgets/widgets.dart';
+// import 'package:accordion/accordion.dart';
 
 class QuestionsListView extends StatelessWidget {
   final String auditId;
@@ -29,35 +33,21 @@ class QuestionsListView extends StatelessWidget {
         }
         return Padding(
           padding: inset12,
-          child: CustomExpansionPanelList(
-            elevation: 3,
-            expansionCallback: (int index, bool isExpanded) {
-              context
-                  .read<ExecuteAuditBloc>()
-                  .add(ExecuteAuditQuestionMenuCollapsed(index: index));
-            },
+          child: Column(
             children: [
               for (int i = 0; i < state.auditQuestionList.length; i++)
-                QuestionItemView(
-                  index: i,
-                  collapsed: state.collapsibleList[i],
-                  auditQuestion: state.followUpLevel2QuestionList[i] != null
-                      ? state.followUpLevel2QuestionList[i]!
-                      : state.followUpLevel1QuestionList[i] != null
-                          ? state.followUpLevel1QuestionList[i]!
-                          : state.auditQuestionList[i],
-                  followUpLevel1Question: state.followUpLevel1QuestionList[i],
-                  followUpLevel2Question: state.followUpLevel2QuestionList[i],
-                  selectedResponse: state.followUpLevel2QuestionList[i] != null
-                      ? state.selectedResponseListForFollowUpLevel2[i]
-                      : state.followUpLevel1QuestionList[i] != null
-                          ? state.selectedResponseListForFollowUpLevel1[i]
-                          : state.selectedResponseList[i],
-                  selectedResponseForLevel1:
-                      state.selectedResponseListForFollowUpLevel1[i],
-                  selectedResponseForLevel0: state.selectedResponseList[i],
-                  auditId: auditId,
-                )
+                BlocProvider(
+                  create: (context) => ExecuteAuditQuestionBloc(
+                    context: context,
+                    auditId: auditId,
+                    auditQuestion: state.auditQuestionList[i],
+                  ),
+                  child: QuestionItemView(
+                    questionIndex: i,
+                    auditId: auditId,
+                    context: context,
+                  ),
+                ),
             ],
           ),
         );

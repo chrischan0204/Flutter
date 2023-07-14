@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
 import '/common_libraries.dart';
@@ -12,6 +15,7 @@ class AddEditObservationBloc
   late ObservationTypesRepository observationTypesRepository;
   late PriorityLevelsRepository priorityLevelsRepository;
   late ObservationsRepository observationsRepository;
+  late DocumentsRepository _documentsRepository;
   final BuildContext context;
   AddEditObservationBloc(this.context)
       : super(const AddEditObservationState()) {
@@ -20,6 +24,7 @@ class AddEditObservationBloc
     observationTypesRepository = RepositoryProvider.of(context);
     priorityLevelsRepository = RepositoryProvider.of(context);
     observationsRepository = RepositoryProvider.of(context);
+    _documentsRepository = context.read();
     _bindEvents();
   }
 
@@ -58,6 +63,12 @@ class AddEditObservationBloc
             await observationsRepository.addObservation(state.observation);
 
         if (response.isSuccess) {
+          await _documentsRepository.uploadDocuments(
+            ownerId: response.data!.id!,
+            ownerType: 'observation',
+            documentList: state.images,
+          );
+
           emit(state.copyWith(
             createdObservationId: response.data?.id,
             initialLocation: state.location,
@@ -74,7 +85,6 @@ class AddEditObservationBloc
           formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {}
       } catch (e) {
-        print(e);
         emit(state.copyWith(
           status: EntityStatus.failure,
           // message: addErrorMessage,

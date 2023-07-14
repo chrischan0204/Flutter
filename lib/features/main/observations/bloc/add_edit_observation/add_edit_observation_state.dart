@@ -69,10 +69,10 @@ class AddEditObservationState extends Equatable {
   final String observationTypeValidationMessage;
 
   /// images to create observation
-  final List<Uint8List> images;
+  final List<PlatformFile> images;
 
   /// initial images to check form dirty
-  final List<Uint8List> initialImages;
+  final List<PlatformFile> initialImages;
 
   /// creation & edition site status
   final EntityStatus status;
@@ -145,7 +145,6 @@ class AddEditObservationState extends Equatable {
         response: response,
         priorityLevelId: priorityLevel!.id!,
         observationTypeId: observationType!.id!,
-        images: images,
       );
 
   bool get formDirty =>
@@ -183,8 +182,8 @@ class AddEditObservationState extends Equatable {
     ObservationType? observationType,
     ObservationType? initialObservationType,
     String? observationTypeValidationMessage,
-    List<Uint8List>? images,
-    List<Uint8List>? initialImages,
+    List<PlatformFile>? images,
+    List<PlatformFile>? initialImages,
     EntityStatus? status,
     String? message,
   }) {
