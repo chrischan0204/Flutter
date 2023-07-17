@@ -21,6 +21,7 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     _priorityLevelsRepository = context.read();
     _observationTypesRepository = context.read();
     _sitesRepository = context.read();
+    _usersRepository = context.read(); 
     _awarenessCategoriesRepository = context.read();
     _authBloc = context.read();
 
@@ -29,7 +30,7 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     on<ExecuteAuditQuestionViewOptionSelected>(
         _onExecuteAuditQuestionViewOptionSelected);
     on<ExecuteAuditPriorityLevelListLoaded>(
-        _onExecuteAuditPriorityLevelListLoaded);
+        _onExecuteAuditPriorityLevelListLoaded);  
     on<ExecuteAuditObservationTypeListLoaded>(
         _onExecuteAuditObservationTypeListLoaded);
     on<ExecuteAuditSiteListLoaded>(_onExecuteAuditSiteListLoaded);

@@ -67,7 +67,24 @@ class AddActionItemHeaderView extends StatelessWidget {
                 _getHeaderTitle(state),
                 style: textSemiBold14,
               ),
-              _getButton(state, context),
+              Row(
+                children: [
+                  if (state.isEditing)
+                    ElevatedButton(
+                      onPressed: () => context
+                          .read<AddActionItemBloc>()
+                          .add(const AddActionItemIsEditingChanged(isEditing: false)),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey),
+                      child: Text(
+                        'Cancel',
+                        style: textNormal12.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  if (state.isEditing) spacerx10,
+                  _getButton(state, context),
+                ],
+              )
             ],
           );
         },

@@ -5,6 +5,9 @@ import '/common_libraries.dart';
 
 class SectionSummaryView extends StatelessWidget {
   const SectionSummaryView({super.key});
+
+  static List<double> columnWidths = [double.nan, 80, 110, 95];
+
   static List<String> columns = [
     'Section',
     'Total Q\'s',
@@ -31,7 +34,7 @@ class SectionSummaryView extends StatelessWidget {
                     ),
                   )
                 : GridColumn(
-                    width: 100,
+                    width: columnWidths[columns.indexOf(column)],
                     columnName: column,
                     label: Tooltip(
                       message: column,

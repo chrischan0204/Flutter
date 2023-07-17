@@ -6,7 +6,6 @@ import 'controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
 /// `AccordionSection` is one section within the `Accordion` widget.
 /// Usage:
@@ -205,8 +204,8 @@ class AccordionSection extends StatelessWidget with CommonParams {
             },
             child: Container(
               // duration: Accordion.sectionAnimation
-                  // ? 750.milliseconds
-                  // : 0.milliseconds,
+              // ? 750.milliseconds
+              // : 0.milliseconds,
               // curve: Curves.easeOut,
               alignment: Alignment.center,
               padding: headerPadding,

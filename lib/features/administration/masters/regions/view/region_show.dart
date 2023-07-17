@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
-import '/data/model/model.dart';
 import '/data/bloc/bloc.dart';
 
 class RegionShowView extends StatefulWidget {

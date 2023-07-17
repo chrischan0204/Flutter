@@ -279,7 +279,13 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                             ),
                             child: const AuditObservationView(),
                           ),
-                          'Action Items': Text('Action Items'),
+                          'Action Items': BlocProvider(
+                            create: (context) => ExecuteAuditActionItemBloc(
+                              context: context,
+                              auditQuestion: state.level0,
+                            ),
+                            child: const AuditActionItemView(),
+                          ),
                           'Comments': state.auditQuestion != null
                               ? BlocProvider(
                                   create: (context) => ExecuteAuditCommentBloc(

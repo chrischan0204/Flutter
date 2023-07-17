@@ -66,6 +66,10 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
+
+          if (widget.actionItemId == null) {
+            context.go('/action-items');
+          }
         }
         if (state.status.isFailure) {
           CustomNotification(

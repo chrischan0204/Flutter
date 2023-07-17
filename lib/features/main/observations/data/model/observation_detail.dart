@@ -171,6 +171,7 @@ class ObservationDetail extends Equatable {
 
   Observation get observation => Observation(
         id: id,
+        site: userReportedSiteName ?? '--',
         name: description,
         reportedBy: reportedBy ?? '',
         area: area ?? '',

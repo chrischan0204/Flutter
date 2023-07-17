@@ -26,10 +26,7 @@ class SiteSelectField extends StatelessWidget {
                         : editAssessmentState.site?.name,
                     onChanged: (site) {
                       context.read<EditAssessmentBloc>()
-                        ..add(EditAssessmentSiteChanged(site: site.value))
-                        ..add(const EditAssessmentCompanyChanged(company: null))
-                        ..add(
-                            const EditAssessmentProjectChanged(project: null));
+                        .add(EditAssessmentSiteChanged(site: site.value));
                     },
                   ),
                   if (editAssessmentState.siteValidationMessage.isNotEmpty)

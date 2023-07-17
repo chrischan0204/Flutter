@@ -16,29 +16,32 @@ class AuditDetailView1 extends StatelessWidget {
               AuditDetailItemView(
                 label: 'Owner',
                 content: audit.owner ?? '--',
+                highlighted: true,
               ),
               AuditDetailItemView(
-                label: 'Last executed',
+                label: 'Created on',
+                content: audit.formatedCreatedOn,
+              ),
+              AuditDetailItemView(
+                label: 'Last executed on',
                 content: audit.formatedLastModifiedOn,
-              ),
-              AuditDetailItemView(
-                label: 'Sections',
-                content: audit.sections.toString(),
               ),
               AuditDetailItemView(
                 label: 'Site',
                 content: audit.siteName ?? '--',
               ),
               AuditDetailItemView(
-                label: 'Completion',
-                content:
-                    '${audit.completedPercent}% (${audit.answeredQuestions} of ${audit.questions})',
-                highlighted: true,
+                label: 'Project',
+                content: audit.projectName ?? '--',
               ),
               AuditDetailItemView(
-                label: 'Observations',
-                content: audit.observations.toString(),
-                highlighted: true,
+                label: 'Area',
+                content: audit.area ?? '--',
+              ),
+              AuditDetailItemView(
+                label: 'Companies',
+                content: audit.companies ?? '--',
+                twoLines: true,
               ),
             ],
           );

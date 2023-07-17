@@ -50,10 +50,17 @@ class EditAssessmentProjectChanged extends EditAssessmentEvent {
 
 class EditAssessmentSiteChanged extends EditAssessmentEvent {
   final Site site;
-  const EditAssessmentSiteChanged({required this.site});
+  final bool isFirst;
+  const EditAssessmentSiteChanged({
+    required this.site,
+    this.isFirst = false,
+  });
 
   @override
-  List<Object> get props => [site];
+  List<Object> get props => [
+        site,
+        isFirst,
+      ];
 }
 
 class EditAssessmentObserverChanged extends EditAssessmentEvent {

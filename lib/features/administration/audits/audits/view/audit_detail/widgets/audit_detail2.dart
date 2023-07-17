@@ -14,30 +14,35 @@ class AuditDetailView2 extends StatelessWidget {
           return Column(
             children: [
               AuditDetailItemView(
-                label: 'Created on',
-                content: audit.formatedCreatedOn,
-              ),
-              AuditDetailItemView(
                 label: 'Status',
                 content: audit.auditStatusName ?? '--',
+                highlighted: true,
               ),
               AuditDetailItemView(
-                label: 'Area',
-                content: audit.area ?? '--',
+                label: 'Completion',
+                content:
+                    '${audit.completedPercent}% (${audit.answeredQuestions} of ${audit.questions})',
               ),
               AuditDetailItemView(
-                label: 'Project',
-                content: audit.projectName ?? '--',
+                label: 'Sections',
+                content: audit.sections.toString(),
+              ),
+              AuditDetailItemView(
+                label: 'Observations',
+                content: audit.observations.toString(),
               ),
               AuditDetailItemView(
                 label: 'Action items',
                 content: audit.actionItems.toString(),
-                highlighted: true,
               ),
               AuditDetailItemView(
                 label: 'Images',
                 content: audit.documents.toString(),
-                highlighted: true,
+              ),
+              AuditDetailItemView(
+                label: 'Inspectors',
+                content: audit.inspectors ?? '--',
+                twoLines: true,
               ),
             ],
           );

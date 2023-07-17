@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 import '/data/repository/repository.dart';
-import '/constants/uri.dart';
 import '/data/model/model.dart';
 
 class AwarenessGroupsRepository extends BaseRepository {

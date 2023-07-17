@@ -13,11 +13,12 @@ class SectionSummaryView extends StatefulWidget {
 class _SectionSummaryViewState extends State<SectionSummaryView> {
   @override
   void initState() {
-    context.read<AuditDetailBloc>()
-      .add(AuditDetailAuditSectionListLoaded());
-      
+    context.read<AuditDetailBloc>().add(AuditDetailAuditSectionListLoaded());
+
     super.initState();
   }
+
+  static List<double> columnWidths = [double.nan, 80, 110, 95];
 
   static List<String> columns = [
     'Section',
@@ -44,7 +45,7 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
                     ),
                   )
                 : GridColumn(
-                    width: 120,
+                    width: columnWidths[columns.indexOf(column)],
                     columnName: column,
                     label: Container(
                       alignment: Alignment.centerLeft,

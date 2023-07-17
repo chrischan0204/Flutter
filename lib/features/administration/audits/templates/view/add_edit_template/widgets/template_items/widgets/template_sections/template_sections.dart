@@ -31,10 +31,10 @@ class _TemplateSectionsViewState extends State<TemplateSectionsView> {
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
       ),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           Padding(
             padding: EdgeInsets.all(20.0),
             child: Text(
@@ -52,6 +52,5 @@ class _TemplateSectionsViewState extends State<TemplateSectionsView> {
         ],
       ),
     );
-    ;
   }
 }

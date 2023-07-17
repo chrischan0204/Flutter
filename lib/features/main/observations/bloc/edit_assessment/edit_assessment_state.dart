@@ -55,6 +55,10 @@ class EditAssessmentState extends Equatable {
   /// check if it is editing
   final bool isEditing;
 
+  final EntityStatus status;
+
+  final String message;
+
   const EditAssessmentState({
     this.category,
     this.awarenessCategoryValidationMessage = '',
@@ -74,6 +78,8 @@ class EditAssessmentState extends Equatable {
     this.markAsClosed = false,
     this.notifySender = false,
     this.isEditing = false,
+    this.status = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -96,6 +102,8 @@ class EditAssessmentState extends Equatable {
         markAsClosed,
         notifySender,
         isEditing,
+        status,
+        message,
       ];
 
   EditAssessmentState copyWith({
@@ -117,6 +125,8 @@ class EditAssessmentState extends Equatable {
     bool? markAsClosed,
     bool? notifySender,
     bool? isEditing,
+    EntityStatus? status,
+    String? message,
   }) {
     return EditAssessmentState(
       category: category ?? this.category,
@@ -143,6 +153,8 @@ class EditAssessmentState extends Equatable {
       markAsClosed: markAsClosed ?? this.markAsClosed,
       notifySender: notifySender ?? this.notifySender,
       isEditing: isEditing ?? this.isEditing,
+      status: status ?? this.status,
+      message: message ?? this.message,
     );
   }
 }

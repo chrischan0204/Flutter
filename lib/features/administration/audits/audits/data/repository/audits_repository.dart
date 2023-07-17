@@ -355,17 +355,81 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<ActionItem>> getAuditActionItemList({
-    required String auditId,
-    required String questionId,
-  }) async {
+  Future<List<AuditActionItem>> getAuditActionItemList(
+      String questionId) async {
     Response response =
-        await super.get('$url/$auditId/questions/$questionId/comments');
+        await super.get('$url/sectionitems/$questionId/actionitems');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
-          .map((e) => ActionItem.fromMap(e))
+          .map((e) => AuditActionItem.fromMap(e))
           .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<ActionItemDetail> getAuditActionItemById({
+    required String questionId,
+    required String actionItemId,
+  }) async {
+    Response response = await super.get(
+        '$url/sectionitems/$questionId/actionitems/actionitemid',
+        {'actionItemId': actionItemId});
+
+    if (response.statusCode == 200) {
+      return ActionItemDetail.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> addActionItemForAudit(
+      ActionItemCreate actionItemCreate) async {
+    Response response = await super.post(
+        '$url/sectionitems/${actionItemCreate.auditSectionItemId}/actionitems',
+        body: actionItemCreate.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: '',
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> editActionItemForAudit({
+    required ActionItemCreate actionItemCreate,
+    required String actionItemId,
+  }) async {
+    Response response = await super.put(
+        '$url/sectionitems/$actionItemId/actionitems',
+        body: actionItemCreate.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: '',
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> deleteAuditActionItem({
+    required String questionId,
+    required String actionItemId,
+  }) async {
+    Response response = await super
+        .delete('$url/sectionitems/$questionId/actionitems/$actionItemId');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: 'message',
+      );
     }
 
     throw Exception();

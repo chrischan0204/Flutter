@@ -6,7 +6,7 @@ class ActionItemCreate extends Equatable {
   final String name;
   final String dueBy;
   final String assigneeId;
-  final String siteId;
+  final String? siteId;
   final String? categoryId;
   final String? companyId;
   final String? projectId;
@@ -14,6 +14,7 @@ class ActionItemCreate extends Equatable {
   final String notes;
   final String? observationId;
   final String? auditSectionItemId;
+  final String? auditId;
   const ActionItemCreate({
     this.id,
     required this.name,
@@ -22,11 +23,12 @@ class ActionItemCreate extends Equatable {
     this.categoryId,
     this.companyId,
     this.projectId,
-    required this.siteId,
+    this.siteId,
     required this.location,
     required this.notes,
     this.observationId,
     this.auditSectionItemId,
+    this.auditId,
   });
 
   @override
@@ -43,6 +45,7 @@ class ActionItemCreate extends Equatable {
         notes,
         observationId,
         auditSectionItemId,
+        auditId,
       ];
 
   Map<String, dynamic> toMap() {
@@ -68,6 +71,10 @@ class ActionItemCreate extends Equatable {
 
     if (auditSectionItemId != null) {
       map.addEntries([MapEntry('auditSectionItemId', auditSectionItemId)]);
+    }
+
+    if (auditId != null) {
+      map.addAll({'auditId': auditId});
     }
 
     return map;

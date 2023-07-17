@@ -40,60 +40,73 @@ class EditAssessmentBloc
     on<EditAssessmentIsEditingChanged>(_onEditAssessmentIsEditingChanged);
     on<EditAssessmentAdded>(_onEditAssessmentAdded);
 
-    subscription = _observationDetailBloc.stream.listen((state) {
-      if (state.observation != null) {
-        final observation = state.observation!;
-        if (observation.assessedOn != null) {
-          add(EditAssessmentCategoryChanged(
-              category: AwarenessCategory(
-            id: observation.assessmentAwarenessCategoryId,
-            name: observation.assessmentAwarenessCategoryName,
-          )));
+    // subscription = _observationDetailBloc.stream.listen((state) {
+    //   if (state.observation != null) {
+    //     final observation = state.observation!;
 
-          add(EditAssessmentObservationTypeChanged(
-              observationType: ObservationType(
-            id: observation.assessmentObservationTypeId,
-            name: observation.assessmentObservationTypeName,
-            severity: '',
-          )));
+    //     if (observation.assessmentAwarenessCategoryId != null) {
+    //       add(EditAssessmentCategoryChanged(
+    //           category: AwarenessCategory(
+    //         id: observation.assessmentAwarenessCategoryId,
+    //         name: observation.assessmentAwarenessCategoryName,
+    //       )));
+    //     }
 
-          add(EditAssessmentPriorityLevelChanged(
-              priorityLevel: PriorityLevel(
-            id: observation.assessmentPriorityLevelId,
-            name: observation.assessmentPriorityLevelName,
-            colorCode: Colors.white,
-            priorityType: '',
-          )));
+    //     if (observation.assessmentObservationTypeId != null) {
+    //       add(EditAssessmentObservationTypeChanged(
+    //           observationType: ObservationType(
+    //         id: observation.assessmentObservationTypeId,
+    //         name: observation.assessmentObservationTypeName,
+    //         severity: '',
+    //       )));
+    //     }
 
-          add(EditAssessmentCompanyChanged(
-              company: Company(
-            id: observation.assessmentCompanyId,
-            name: observation.assessmentCompanyName,
-          )));
+    //     if (observation.assessmentPriorityLevelId != null) {
+    //       add(EditAssessmentPriorityLevelChanged(
+    //           priorityLevel: PriorityLevel(
+    //         id: observation.assessmentPriorityLevelId,
+    //         name: observation.assessmentPriorityLevelName,
+    //         colorCode: Colors.white,
+    //         priorityType: '',
+    //       )));
+    //     }
 
-          add(EditAssessmentProjectChanged(
-              project: Project(
-            id: observation.assessmentProjectId,
-            name: observation.assessmentProjectName,
-          )));
+    //     if (observation.assessmentCompanyId != null) {
+    //       add(EditAssessmentCompanyChanged(
+    //           company: Company(
+    //         id: observation.assessmentCompanyId,
+    //         name: observation.assessmentCompanyName,
+    //       )));
+    //     }
 
-          add(EditAssessmentSiteChanged(
-              site: Site(
-            id: observation.assessmentSiteId,
-            name: observation.assessmentSiteName,
-          )));
+    //     if (observation.assessmentProjectId != null) {
+    //       add(EditAssessmentProjectChanged(
+    //           project: Project(
+    //         id: observation.assessmentProjectId,
+    //         name: observation.assessmentProjectName,
+    //       )));
+    //     }
 
-          add(EditAssessmentFollowUpCloseoutChanged(
-              followUpCloseout: observation.assessmentFollowupComment ?? ''));
+    //     if (observation.assessmentSiteId != null) {
+    //       add(EditAssessmentSiteChanged(
+    //         site: Site(
+    //           id: observation.assessmentSiteId,
+    //           name: observation.assessmentSiteName,
+    //         ),
+    //         isFirst: true,
+    //       ));
+    //     }
 
-          add(EditAssessmentMarkAsClosedChanged(
-              markAsClosed: observation.isClosed ?? false));
+    //     add(EditAssessmentFollowUpCloseoutChanged(
+    //         followUpCloseout: observation.assessmentFollowupComment ?? ''));
 
-          add(EditAssessmentNotifySenderChanged(
-              notifySender: observation.notificationSent));
-        }
-      }
-    });
+    //     add(EditAssessmentMarkAsClosedChanged(
+    //         markAsClosed: observation.isClosed ?? false));
+
+    //     add(EditAssessmentNotifySenderChanged(
+    //         notifySender: observation.notificationSent));
+    //   }
+    // });
   }
 
   Future<void> _onEditAssessmentAdded(
@@ -102,6 +115,8 @@ class EditAssessmentBloc
   ) async {
     if (_validate(emit)) {
       try {
+        emit(state.copyWith(status: EntityStatus.loading));
+
         EntityResponse response = await _observationsRepository.addAssessment(
             observationId,
             AssessmentCreate(
@@ -116,6 +131,11 @@ class EditAssessmentBloc
               assessmentSiteId: state.site!.id!,
             ));
         if (response.isSuccess) {
+          emit(state.copyWith(
+            status: EntityStatus.success,
+            message: response.message,
+          ));
+
           add(EditAssessmentIsEditingChanged());
           _observationDetailBloc
               .add(ObservationDetailLoaded(observationId: observationId));
@@ -238,6 +258,13 @@ class EditAssessmentBloc
       site: event.site,
       siteValidationMessage: '',
     ));
+
+    if (!event.isFirst) {
+      emit(state.copyWith(
+        project: const Nullable.value(null),
+        company: const Nullable.value(null),
+      ));
+    }
 
     if (event.site.id != null) {
       _observationDetailBloc

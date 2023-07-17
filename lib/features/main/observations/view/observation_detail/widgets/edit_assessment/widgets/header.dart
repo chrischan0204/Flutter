@@ -17,35 +17,52 @@ class AssessmentHeaderView extends StatelessWidget {
                 state.isEditing ? 'Assessment' : 'Assessment Reading',
                 style: textSemiBold14,
               ),
-              BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
-                builder: (context, detailState) {
-                  return ElevatedButton(
-                    onPressed: detailState.observation?.isClosed == true
-                        ? null
-                        : () {
-                            if (state.isEditing) {
-                              context
-                                  .read<EditAssessmentBloc>()
-                                  .add(EditAssessmentAdded());
-                            } else {
-                              context
-                                  .read<EditAssessmentBloc>()
-                                  .add(EditAssessmentIsEditingChanged());
-                            }
-                          },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            state.isEditing ? successColor : primaryColor),
-                    child: Text(
-                      state.isEditing
-                          ? 'Submit'
-                          : detailState.observation?.assessedOn == null
-                              ? 'Add Assessment'
-                              : 'Edit Assessment',
-                      style: textNormal12.copyWith(color: Colors.white),
+              Row(
+                children: [
+                  if (state.isEditing)
+                    ElevatedButton(
+                      onPressed: () => context
+                          .read<EditAssessmentBloc>()
+                          .add(EditAssessmentIsEditingChanged()),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey),
+                      child: Text(
+                        'Cancel',
+                        style: textNormal12.copyWith(color: Colors.white),
+                      ),
                     ),
-                  );
-                },
+                  if (state.isEditing) spacerx10,
+                  BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
+                    builder: (context, detailState) {
+                      return ElevatedButton(
+                        onPressed: detailState.observation?.isClosed == true
+                            ? null
+                            : () {
+                                if (state.isEditing) {
+                                  context
+                                      .read<EditAssessmentBloc>()
+                                      .add(EditAssessmentAdded());
+                                } else {
+                                  context
+                                      .read<EditAssessmentBloc>()
+                                      .add(EditAssessmentIsEditingChanged());
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                state.isEditing ? successColor : primaryColor),
+                        child: Text(
+                          state.isEditing
+                              ? 'Submit'
+                              : detailState.observation?.assessedOn == null
+                                  ? 'Add Assessment'
+                                  : 'Edit Assessment',
+                          style: textNormal12.copyWith(color: Colors.white),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           );

@@ -7,7 +7,7 @@ class AssigneeSelectField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Assignee',
+      label: 'Assignee (*)',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {
           Map<String, User> items = {}..addEntries(observationDetailState

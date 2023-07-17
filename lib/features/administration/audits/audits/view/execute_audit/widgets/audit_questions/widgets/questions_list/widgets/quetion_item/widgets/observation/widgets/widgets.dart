@@ -1,3 +1,3 @@
 export 'observation_list.dart';
 export 'observation_detail.dart';
-export 'observation_update.dart';
+export 'observation_create_update.dart';

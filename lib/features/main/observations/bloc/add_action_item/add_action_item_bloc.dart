@@ -35,6 +35,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     on<AddActionItemSaved>(_onAddActionItemSaved);
     on<AddActionItemDetailShown>(_onAddActionItemDetailShown);
     on<AddActionItemDetailEdited>(_onAddActionItemDetailEdited);
+    on<AddActionItemIsEditingChanged>(_onAddActionItemIsEditingChanged);
   }
 
   Future<void> _onAddActionItemListLoaded(
@@ -186,6 +187,8 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     try {
       late EntityResponse response;
 
+      emit(state.copyWith(status: EntityStatus.loading));
+
       if (state.actionItem == null) {
         response = await _actionItemsRepository.addActionItem(
             state.actionItemCreate.copyWith(observationId: observationId));
@@ -205,5 +208,12 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
         add(AddActionItemListLoaded(observationId: observationId));
       }
     } catch (e) {}
+  }
+
+  void _onAddActionItemIsEditingChanged(
+    AddActionItemIsEditingChanged event,
+    Emitter<AddActionItemState> emit,
+  ) {
+    emit(state.copyWith(isEditing: event.isEditing));
   }
 }

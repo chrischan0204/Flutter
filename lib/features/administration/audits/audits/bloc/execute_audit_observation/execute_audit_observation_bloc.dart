@@ -244,9 +244,7 @@ class ExecuteAuditObservationBloc
           );
         }
 
-        emit(state.copyWith(
-          status: EntityStatus.success,
-        ));
+        emit(state.copyWith(status: EntityStatus.success));
 
         _clearForm(emit);
 

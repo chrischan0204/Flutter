@@ -71,10 +71,9 @@ class _AddEditObservationWidgetState extends State<AddEditObservationWidget> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
-          // if (widget.observationId == null) {
-          //   GoRouter.of(context).go(
-          //       '/observations/edit/${state.createdObservationId}?view=created');
-          // }
+          if (widget.observationId == null) {
+            context.go('/observations');
+          }
         }
         if (state.status.isFailure) {
           CustomNotification(

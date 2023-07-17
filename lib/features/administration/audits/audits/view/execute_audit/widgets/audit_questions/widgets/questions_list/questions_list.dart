@@ -1,9 +1,5 @@
-import 'package:accordion/accordion.dart';
-import 'package:accordion/controllers.dart';
-
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
-// import 'package:accordion/accordion.dart';
 
 class QuestionsListView extends StatelessWidget {
   final String auditId;

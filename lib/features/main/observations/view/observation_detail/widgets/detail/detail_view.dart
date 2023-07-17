@@ -23,9 +23,11 @@ class DetailView extends StatelessWidget {
               label: 'Area',
               content: observation.area ?? '',
             ),
-            DetailItemView1(
-              label: 'Response',
-              content: observation.response ?? '',
+            DetailItemView2(
+              rightLabel: 'Site',
+              rightContent: observation.userReportedSiteName ?? '--',
+              leftLabel: 'Response',
+              leftContent: observation.response ?? '',
             ),
             DetailItemView2(
               rightLabel: 'Reported At',

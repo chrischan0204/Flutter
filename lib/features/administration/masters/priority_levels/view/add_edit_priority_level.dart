@@ -4,7 +4,6 @@ import '../bloc/add_edit_priority_level/add_edit_priority_level_bloc.dart';
 import '/utils/custom_notification.dart';
 import '/data/bloc/bloc.dart';
 import '/global_widgets/global_widget.dart';
-import '/data/model/model.dart';
 
 class AddEditPriorityLevelView extends StatelessWidget {
   final String? priorityLevelId;

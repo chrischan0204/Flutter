@@ -73,6 +73,7 @@ class HeaderView extends StatelessWidget {
                   secondaryIcon: secondaryIcon,
                   secondaryLabel: secondaryLabel,
                   onListButtonClick: onListButtonClick,
+                  onEditButtonClick: onEditButtonClick,
                 ),
               ),
             ),

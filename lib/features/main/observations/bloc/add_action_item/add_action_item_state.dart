@@ -77,7 +77,6 @@ class AddActionItemState extends Equatable {
   ActionItemCreate get actionItemCreate => ActionItemCreate(
         id: actionItem?.id,
         name: task,
-        siteId: '',
         dueBy: dueBy!.toIso8601String(),
         assigneeId: assignee!.id!,
         categoryId: category!.id!,

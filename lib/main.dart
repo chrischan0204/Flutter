@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '/common_libraries.dart';
 
@@ -225,11 +225,11 @@ class _MyAppState extends State<MyApp> {
               routerConfig: router,
               // navigatorObservers: [FlutterSmartDialog.observer],
               builder: FlutterSmartDialog.init(),
-              localizationsDelegates: const [
-                GlobalWidgetsLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
+              // localizationsDelegates: const [
+              //   GlobalWidgetsLocalizations.delegate,
+              //   GlobalMaterialLocalizations.delegate,
+              //   GlobalCupertinoLocalizations.delegate,
+              // ],
               supportedLocales: const [Locale('en', 'US')],
             ),
           ),
