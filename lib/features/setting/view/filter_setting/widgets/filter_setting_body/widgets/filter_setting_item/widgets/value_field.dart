@@ -1,5 +1,3 @@
-import 'package:date_time_picker/date_time_picker.dart';
-
 import '/common_libraries.dart';
 
 class ValueField extends StatefulWidget {
@@ -34,7 +32,8 @@ class _ValueFieldState extends State<ValueField> {
             case 'Textbox':
               return widget.userFilterItem.filterValue.isNotEmpty
                   ? CustomTextField(
-                      key: ValueKey(widget.userFilterItem.filterSetting.columnTitle),
+                      key: ValueKey(
+                          widget.userFilterItem.filterSetting.columnTitle),
                       initialValue: widget.userFilterItem.filterValue[0],
                       onChanged: (value) => filterSettingBloc
                               .add(FilterSettingUserFilterItemValueChanged(
@@ -42,7 +41,8 @@ class _ValueFieldState extends State<ValueField> {
                             value: [value],
                           )))
                   : CustomTextField(
-                      key: ValueKey(widget.userFilterItem.filterSetting.columnTitle),
+                      key: ValueKey(
+                          widget.userFilterItem.filterSetting.columnTitle),
                       initialValue: '',
                       onChanged: (value) => filterSettingBloc
                               .add(FilterSettingUserFilterItemValueChanged(

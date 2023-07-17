@@ -77,6 +77,7 @@ class ActionItem extends Entity {
     super.createdByUserName,
     super.columns,
     super.deleted,
+    super.createdOn,
   });
 
   String get formatedDue =>
@@ -108,10 +109,11 @@ class ActionItem extends Entity {
         closedByName,
         auditId,
         auditName,
-        siteId, 
+        siteId,
         siteName,
         auditSectionItemId,
         auditSectionName,
+        createdOn,
       ];
 
   @override
@@ -151,6 +153,7 @@ class ActionItem extends Entity {
       'Area': area,
       'Location': area,
       'Project': projectName,
+      'Created On': createdOn,
     };
   }
 
@@ -204,6 +207,7 @@ class ActionItem extends Entity {
       closedOn: map['closedOn'] != null
           ? DateFormat('yyyy-MM-dd').format(DateTime.parse(map['closedOn']))
           : '--',
+      createdOn: entity.createdOn,
       createdByUserName: entity.createdByUserName,
     );
   }
@@ -239,9 +243,9 @@ class ActionItem extends Entity {
     String? lastModifiedOn,
     String? lastModifiedByUserName,
     String? closedByName,
+    String? createdOn,
     bool? deleted,
     List<String>? columns,
-
   }) {
     return ActionItem(
       id: id ?? this.id,
@@ -269,6 +273,7 @@ class ActionItem extends Entity {
       isClosed: isClosed ?? this.isClosed,
       deleted: deleted ?? this.deleted,
       columns: columns ?? this.columns,
+      createdOn: createdOn ?? this.createdOn,
     );
   }
 }

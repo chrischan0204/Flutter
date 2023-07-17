@@ -129,14 +129,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.4"
-  date_time_picker:
-    dependency: "direct main"
-    description:
-      name: date_time_picker
-      sha256: "6923c568bcb67a66ab7e083708d0adbcae8214b41bb84d49febc17e89e06fc4a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   dotted_line:
     dependency: "direct main"
     description:
@@ -254,6 +246,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -372,10 +369,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.0"
   js:
     dependency: transitive
     description:

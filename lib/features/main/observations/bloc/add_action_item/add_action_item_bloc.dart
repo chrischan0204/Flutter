@@ -6,14 +6,16 @@ part 'add_action_item_state.dart';
 class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   late ActionItemsRepository _actionItemsRepository;
   late ObservationsRepository _observationsRepository;
+  late SitesRepository _sitesRepository;
   final BuildContext context;
   final String observationId;
-  AddActionItemBloc(
-    this.context,
-    this.observationId,
-  ) : super(const AddActionItemState()) {
+  AddActionItemBloc({
+    required this.context,
+    required this.observationId,
+  }) : super(AddActionItemState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
     _observationsRepository = RepositoryProvider.of(context);
+    _sitesRepository = context.read();
 
     _bindEvents();
   }
@@ -24,6 +26,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     on<AddActionItemDueByChanged>(_onAddActionItemDueByChanged);
     on<AddActionItemAssigneeChanged>(_onAddActionItemAssigneeChanged);
     on<AddActionItemCategoryChanged>(_onAddActionItemCategoryChanged);
+    on<AddActionItemSiteChanged>(_onAddActionItemSiteChanged);
     on<AddActionItemCompanyChanged>(_onAddActionItemCompanyChanged);
     on<AddActionItemProjectChanged>(_onAddActionItemProjectChanged);
     on<AddActionItemLocationChanged>(_onAddActionItemLocationChanged);
@@ -59,6 +62,43 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     ));
   }
 
+  bool _validate(Emitter<AddActionItemState> emit) {
+    bool success = true;
+    if (Validation.isEmpty(state.task)) {
+      emit(state.copyWith(
+          actionItemValidationMessage:
+              FormValidationMessage(fieldName: 'Action item').requiredMessage));
+
+      success = false;
+    }
+
+    if (state.dueBy == null) {
+      emit(state.copyWith(
+          dueByValidationMessage:
+              FormValidationMessage(fieldName: 'Due by').requiredMessage));
+
+      success = false;
+    }
+
+    if (state.site == null) {
+      emit(state.copyWith(
+          siteValidationMessage:
+              FormValidationMessage(fieldName: 'Site').requiredMessage));
+
+      success = false;
+    }
+
+    if (state.assignee == null) {
+      emit(state.copyWith(
+          assigneeValidationMessage:
+              FormValidationMessage(fieldName: 'Assignee').requiredMessage));
+
+      success = false;
+    }
+
+    return success;
+  }
+
   Future<void> _onAddActionItemDetailEdited(
     AddActionItemDetailEdited event,
     Emitter<AddActionItemState> emit,
@@ -67,7 +107,17 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
       final actionItem =
           await _actionItemsRepository.getActionItemById(event.actionItem.id!);
 
+      final List<CompanySite> companyList =
+          await _sitesRepository.getCompanyListForSite(actionItem.siteId);
+
+      final List<Project> projectList =
+          await _sitesRepository.getProjectListForSite(actionItem.siteId);
+
       emit(state.copyWith(
+        companyList: companyList
+            .map((e) => Company(id: e.companyId, name: e.companyName))
+            .toList(),
+        projectList: projectList,
         actionItem:
             Nullable.value(actionItem.copyWith(id: event.actionItem.id)),
         task: actionItem.name,
@@ -77,18 +127,28 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
           firstName: actionItem.assigneeName.split(' ')[0],
           lastName: actionItem.assigneeName.split(' ')[1],
         )),
-        category: Nullable.value(AwarenessCategory(
-          name: actionItem.awarenessCategoryName,
-          id: actionItem.awarenessCategoryId,
+        site: Nullable.value(Site(
+          id: actionItem.siteId,
+          name: actionItem.siteName,
         )),
-        company: Nullable.value(Company(
-          name: actionItem.companyName,
-          id: actionItem.companyId,
-        )),
-        project: Nullable.value(Project(
-          name: actionItem.projectName,
-          id: actionItem.projectId,
-        )),
+        category: actionItem.awarenessCategoryId.isNotEmpty
+            ? Nullable.value(AwarenessCategory(
+                name: actionItem.awarenessCategoryName,
+                id: actionItem.awarenessCategoryId,
+              ))
+            : const Nullable.value(null),
+        company: actionItem.companyId.isNotEmpty
+            ? Nullable.value(Company(
+                name: actionItem.companyName,
+                id: actionItem.companyId,
+              ))
+            : const Nullable.value(null),
+        project: actionItem.projectId.isNotEmpty
+            ? Nullable.value(Project(
+                name: actionItem.projectName,
+                id: actionItem.projectId,
+              ))
+            : const Nullable.value(null),
         location: actionItem.area,
         notes: actionItem.notes,
         isEditing: true,
@@ -100,21 +160,57 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemTaskChanged event,
     Emitter<AddActionItemState> emit,
   ) {
-    emit(state.copyWith(task: event.task));
+    emit(state.copyWith(
+      task: event.task,
+      actionItemValidationMessage: '',
+    ));
   }
 
   void _onAddActionItemDueByChanged(
     AddActionItemDueByChanged event,
     Emitter<AddActionItemState> emit,
   ) {
-    emit(state.copyWith(dueBy: Nullable.value(event.dueBy)));
+    emit(state.copyWith(
+      dueBy: Nullable.value(event.dueBy),
+      dueByValidationMessage: '',
+    ));
   }
 
   void _onAddActionItemAssigneeChanged(
     AddActionItemAssigneeChanged event,
     Emitter<AddActionItemState> emit,
   ) {
-    emit(state.copyWith(assignee: Nullable.value(event.assignee)));
+    emit(state.copyWith(
+      assignee: Nullable.value(event.assignee),
+      assigneeValidationMessage: '',
+    ));
+  }
+
+  Future<void> _onAddActionItemSiteChanged(
+    AddActionItemSiteChanged event,
+    Emitter<AddActionItemState> emit,
+  ) async {
+    emit(state.copyWith(
+      site: Nullable.value(event.site),
+      siteValidationMessage: '',
+      company: const Nullable.value(null),
+      project: const Nullable.value(null),
+    ));
+
+    if (event.site.id != null) {
+      List<CompanySite> companyList =
+          await _sitesRepository.getCompanyListForSite(event.site.id!);
+
+      emit(state.copyWith(
+          companyList: companyList
+              .map((e) => Company(id: e.id, name: e.companyName))
+              .toList()));
+
+      List<Project> projectList =
+          await _sitesRepository.getProjectListForSite(event.site.id!);
+
+      emit(state.copyWith(projectList: projectList));
+    }
   }
 
   void _onAddActionItemCategoryChanged(
@@ -164,6 +260,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
       category: const Nullable.value(null),
       company: const Nullable.value(null),
       project: const Nullable.value(null),
+      site: const Nullable.value(null),
       location: '',
       notes: '',
       actionItem: const Nullable.value(null),
@@ -184,6 +281,9 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemSaved event,
     Emitter<AddActionItemState> emit,
   ) async {
+    if (!_validate(emit)) {
+      return;
+    }
     try {
       late EntityResponse response;
 
@@ -214,6 +314,9 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemIsEditingChanged event,
     Emitter<AddActionItemState> emit,
   ) {
-    emit(state.copyWith(isEditing: event.isEditing));
+    emit(state.copyWith(
+      isEditing: event.isEditing,
+      actionItem: const Nullable.value(null),
+    ));
   }
 }

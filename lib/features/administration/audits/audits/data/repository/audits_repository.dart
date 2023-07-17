@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 import '/common_libraries.dart';
 
 class AuditsRepository extends BaseRepository {

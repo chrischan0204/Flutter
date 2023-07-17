@@ -44,6 +44,7 @@ class FilteredActionItem extends FilteredEntity {
         assignee,
         actionRequired,
         dueOn,
+        createdOn,
         closedOn,
         category,
         comments,
@@ -66,6 +67,7 @@ class FilteredActionItem extends FilteredEntity {
         area: location,
         projectName: project,
         createdByUserName: createdBy,
+        createdOn: createdOn,
       );
 
   String get formatedDueOn =>

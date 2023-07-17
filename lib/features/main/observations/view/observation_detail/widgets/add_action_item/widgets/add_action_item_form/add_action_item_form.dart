@@ -6,11 +6,12 @@ class AddActionItemFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
+      children: [
         TaskInputBox(),
         DueByDatePicker(),
+        SiteSelectField(),
         AssigneeSelectField(),
         CategorySelectField(),
         CompanySelectField(),

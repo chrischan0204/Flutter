@@ -109,10 +109,17 @@ class AddActionItemDetailEdited extends AddActionItemEvent {
 class AddActionItemIsEditingChanged extends AddActionItemEvent {
   final bool isEditing;
 
-  const AddActionItemIsEditingChanged({
-    required this.isEditing,
-  });
+  const AddActionItemIsEditingChanged({required this.isEditing});
 
   @override
   List<Object> get props => [isEditing];
+}
+
+class AddActionItemSiteChanged extends AddActionItemEvent {
+  final Site site;
+
+  const AddActionItemSiteChanged({required this.site});
+
+  @override
+  List<Object> get props => [site];
 }

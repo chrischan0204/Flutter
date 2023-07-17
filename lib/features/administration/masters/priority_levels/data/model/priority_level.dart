@@ -7,6 +7,9 @@ import '/data/model/entity.dart';
 
 extension ColorExtension on String {
   toColor() {
+    if (isEmpty) {
+      return Colors.white;
+    }
     var hexColor = replaceAll("#", "");
     if (hexColor.length == 6) {
       hexColor = "FF$hexColor";
@@ -85,10 +88,10 @@ class PriorityLevel extends Entity implements Equatable {
       'colorCode': '#${colorCode.value.toRadixString(16).substring(2)}',
       'priorityType': priorityType,
       'active': active,
-    }; 
+    };
 
     if (id == null) {
-      return map;
+      return map; 
     } else {
       return map..addEntries([MapEntry('id', id)]);
     }
@@ -99,7 +102,7 @@ class PriorityLevel extends Entity implements Equatable {
     return PriorityLevel(
       id: entity.id,
       name: entity.name,
-      colorCode: ('${map['colorCode']}').toColor(),
+      colorCode: ('${map['colorCode'] ?? ''}').toColor(),
       priorityType: map['priorityType'] as String,
       active: entity.active,
       deactivationDate: entity.deactivationDate,

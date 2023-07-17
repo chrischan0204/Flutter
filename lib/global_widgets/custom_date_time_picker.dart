@@ -1,7 +1,7 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/color.dart';
+import 'date_time_pickder.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
   final DateTimePickerType dateTimePickerType;

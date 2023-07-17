@@ -8,24 +8,19 @@ class ProjectSelectField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
       label: 'Project',
-      content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
-        builder: (context, observationDetailState) {
-          Map<String, Project> items = {}..addEntries(observationDetailState
-              .projectList
+      content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
+        builder: (context, state) {
+          Map<String, Project> items = {}..addEntries(state.projectList
               .map((project) => MapEntry(project.name ?? '', project)));
-          return BlocBuilder<AddActionItemBloc, AddActionItemState>(
-            builder: (context, addActionItemState) {
-              return CustomSingleSelect(
-                items: items,
-                hint: 'Select Project',
-                selectedValue: observationDetailState.projectList.isEmpty
-                    ? null
-                    : addActionItemState.project?.name,
-                onChanged: (project) {
-                  context.read<AddActionItemBloc>().add(
-                      AddActionItemProjectChanged(project: project.value));
-                },
-              );
+          return CustomSingleSelect(
+            items: items,
+            hint: 'Select Project',
+            selectedValue:
+                state.projectList.isEmpty ? null : state.project?.name,
+            onChanged: (project) {
+              context
+                  .read<AddActionItemBloc>()
+                  .add(AddActionItemProjectChanged(project: project.value));
             },
           );
         },

@@ -117,7 +117,9 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
                               flex: 2,
                               child: BlocProvider(
                                 create: (context) => AddActionItemBloc(
-                                    context, widget.observationId),
+                                  context: context,
+                                  observationId: widget.observationId,
+                                ),
                                 child: AddActionItemView(
                                     observationId: widget.observationId),
                               ),
