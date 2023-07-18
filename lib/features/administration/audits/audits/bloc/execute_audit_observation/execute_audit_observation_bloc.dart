@@ -85,7 +85,7 @@ class ExecuteAuditObservationBloc
         observationId: event.observationId,
       );
       emit(state.copyWith(
-        auditObservation: auditObservation,
+        auditObservation: Nullable.value(auditObservation),
         auditObservationLoadStatus: EntityStatus.success,
         response: auditObservation.response,
         area: auditObservation.area,
@@ -223,6 +223,7 @@ class ExecuteAuditObservationBloc
       try {
         await _auditsRepository.editObservationForAudit(
           observationUpdate: ObservationCreate(
+            id: state.auditObservation!.id,
             name: state.observation,
             siteId: state.site!.id!,
             location: state.area,
@@ -244,7 +245,10 @@ class ExecuteAuditObservationBloc
           );
         }
 
-        emit(state.copyWith(status: EntityStatus.success));
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          auditObservation: const Nullable.value(null),
+        ));
 
         _clearForm(emit);
 
@@ -350,3 +354,4 @@ class ExecuteAuditObservationBloc
     emit(state.copyWith(fileList: event.fileList));
   }
 }
+  

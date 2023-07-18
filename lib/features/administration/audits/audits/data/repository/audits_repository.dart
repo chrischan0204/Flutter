@@ -371,9 +371,8 @@ class AuditsRepository extends BaseRepository {
     required String questionId,
     required String actionItemId,
   }) async {
-    Response response = await super.get(
-        '$url/sectionitems/$questionId/actionitems/actionitemid',
-        {'actionItemId': actionItemId});
+    Response response = await super
+        .get('$url/sectionitems/$questionId/actionitems/$actionItemId');
 
     if (response.statusCode == 200) {
       return ActionItemDetail.fromJson(response.body);
@@ -392,6 +391,7 @@ class AuditsRepository extends BaseRepository {
       return EntityResponse(
         isSuccess: true,
         message: '',
+        data: Entity(id: json.decode(response.body)['id']),
       );
     }
 
@@ -511,6 +511,19 @@ class AuditsRepository extends BaseRepository {
         isSuccess: true,
         message: 'message',
       );
+    }
+
+    throw Exception();
+  }
+
+  Future<List<Document>> getDocumentList(String questionId) async {
+    Response response =
+        await super.get('$url/sectionitems/$questionId/documents');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Document.fromMap(e))
+          .toList();
     }
 
     throw Exception();

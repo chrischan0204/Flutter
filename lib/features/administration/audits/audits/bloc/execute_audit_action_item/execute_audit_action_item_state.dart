@@ -114,7 +114,7 @@ class ExecuteAuditActionItemState extends Equatable {
   ExecuteAuditActionItemState copyWith({
     List<AuditActionItem>? auditActionItemList,
     EntityStatus? auditActionItemListLoadStatus,
-    ActionItemDetail? auditActionItem,
+    Nullable<ActionItemDetail?>? auditActionItem,
     EntityStatus? auditActionItemLoadStatus,
     EntityStatus? status,
     CrudView? view,
@@ -139,7 +139,9 @@ class ExecuteAuditActionItemState extends Equatable {
       auditActionItemList: auditActionItemList ?? this.auditActionItemList,
       auditActionItemListLoadStatus:
           auditActionItemListLoadStatus ?? this.auditActionItemListLoadStatus,
-      auditActionItem: auditActionItem ?? this.auditActionItem,
+      auditActionItem: auditActionItem != null
+          ? auditActionItem.value
+          : this.auditActionItem,
       auditActionItemLoadStatus:
           auditActionItemLoadStatus ?? this.auditActionItemLoadStatus,
       status: status ?? this.status,

@@ -59,6 +59,9 @@ class AddEditAuditState extends Equatable {
   /// initial companies to check form dirty
   final String initialCompanies;
 
+  /// validation message for companies
+  final String companiesValidationMessage;
+
   /// project to create audit
   final Project? project;
 
@@ -73,6 +76,9 @@ class AddEditAuditState extends Equatable {
 
   /// inspectors to create audit
   final String? inspectors;
+
+  /// validation message for inspectors
+  final String inspectorsValidationMessage;
 
   /// initial inspectors to check form dirty
   final String? initialInspectors;
@@ -102,12 +108,14 @@ class AddEditAuditState extends Equatable {
     this.templateValidationMessage = '',
     this.companies = '',
     this.initialCompanies = '',
+    this.companiesValidationMessage = '',
     this.project,
     this.initialProject,
     this.area = '',
     this.initialArea = '',
     this.inspectors = '',
     this.initialInspectors = '',
+    this.inspectorsValidationMessage = '',
     this.status = EntityStatus.initial,
     this.message = '',
   }) {
@@ -135,12 +143,14 @@ class AddEditAuditState extends Equatable {
         templateValidationMessage,
         companies,
         initialCompanies,
+        companiesValidationMessage,
         project,
         initialProject,
         area,
         initialArea,
         inspectors,
         initialInspectors,
+        inspectorsValidationMessage,
         status,
         message,
       ];
@@ -186,6 +196,7 @@ class AddEditAuditState extends Equatable {
     Template? initialTemplate,
     String? templateValidationMessage,
     String? companies,
+    String? companiesValidationMessage,
     String? initialCompanies,
     Nullable<Project?>? project,
     Project? initialProject,
@@ -193,6 +204,7 @@ class AddEditAuditState extends Equatable {
     String? initialArea,
     String? inspectors,
     String? initialInspectors,
+    String? inspectorsValidationMessage,
     EntityStatus? status,
     String? message,
   }) {
@@ -219,6 +231,8 @@ class AddEditAuditState extends Equatable {
       templateValidationMessage:
           templateValidationMessage ?? this.templateValidationMessage,
       companies: companies ?? this.companies,
+      companiesValidationMessage:
+          companiesValidationMessage ?? this.companiesValidationMessage,
       initialCompanies: initialCompanies ?? this.initialCompanies,
       initialProject: initialProject ?? this.initialProject,
       project: project != null ? project.value : this.project,
@@ -226,6 +240,8 @@ class AddEditAuditState extends Equatable {
       initialArea: initialArea ?? this.initialArea,
       inspectors: inspectors ?? this.inspectors,
       initialInspectors: initialInspectors ?? this.initialInspectors,
+      inspectorsValidationMessage:
+          inspectorsValidationMessage ?? this.inspectorsValidationMessage,
       status: status ?? this.status,
       message: message ?? this.message,
     );

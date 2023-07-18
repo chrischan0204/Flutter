@@ -168,54 +168,35 @@ class ActionItemDetail extends Equatable {
   factory ActionItemDetail.fromMap(Map<String, dynamic> map) {
     return ActionItemDetail(
       id: map['id'] as String,
-      status: map['status'] != null ? map['status'] as String : null,
-      source: map['source'] != null ? map['source'] as String : null,
-      description:
-          map['description'] != null ? map['description'] as String : null,
-      dueBy: map['dueBy'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dueBy'] as int)
-          : null,
-      assingeeId: map['assingeeId'] as String,
-      assigneeName:
-          map['assigneeName'] != null ? map['assigneeName'] as String : null,
-      awarenessCategoryId: map['awarenessCategoryId'] != null
-          ? map['awarenessCategoryId'] as String
-          : null,
-      awarenessCategoryName: map['awarenessCategoryName'] != null
-          ? map['awarenessCategoryName'] as String
-          : null,
-      companyId: map['companyId'] != null ? map['companyId'] as String : null,
-      companyName:
-          map['companyName'] != null ? map['companyName'] as String : null,
-      projectId: map['projectId'] != null ? map['projectId'] as String : null,
-      projectName:
-          map['projectName'] != null ? map['projectName'] as String : null,
-      siteId: map['siteId'] != null ? map['siteId'] as String : null,
-      siteName: map['siteName'] != null ? map['siteName'] as String : null,
-      observationId:
-          map['observationId'] != null ? map['observationId'] as String : null,
-      observationName: map['observationName'] != null
-          ? map['observationName'] as String
-          : null,
-      auditSectionItemId: map['auditSectionItemId'] != null
-          ? map['auditSectionItemId'] as String
-          : null,
-      auditSectionName: map['auditSectionName'] != null
-          ? map['auditSectionName'] as String
-          : null,
-      auditId: map['auditId'] != null ? map['auditId'] as String : null,
-      auditName: map['auditName'] != null ? map['auditName'] as String : null,
-      area: map['area'] != null ? map['area'] as String : null,
-      notes: map['notes'] != null ? map['notes'] as String : null,
-      closedBy: map['closedBy'] != null ? map['closedBy'] as String : null,
-      closedByName:
-          map['closedByName'] != null ? map['closedByName'] as String : null,
-      isClosed: map['isClosed'] != null ? map['isClosed'] as bool : null,
-      closedOn: map['closedOn'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['closedOn'] as int)
-          : null,
-      createdOn: DateTime.fromMillisecondsSinceEpoch(map['createdOn'] as int),
-      createdBy: map['createdBy'] != null ? map['createdBy'] as String : null,
+      status: map['status'] ?? '',
+      source: map['source'] ?? '',
+      description: map['description'] ?? '',
+      dueBy: map['dueBy'] != null ? DateTime.parse(map['dueBy']) : null,
+      assingeeId: map['assigneeId'] ?? '',
+      assigneeName: map['assigneeName'] ?? '',
+      awarenessCategoryId: map['awarenessCategoryId'] ?? '',
+      awarenessCategoryName: map['awarenessCategoryName'] ?? '',
+      companyId: map['companyId'] ?? '',
+      companyName: map['companyName'] ?? '',
+      projectId: map['projectId'] ?? '',
+      projectName: map['projectName'] ?? '',
+      siteId: map['siteId'] ?? '',
+      siteName: map['siteName'] ?? '',
+      observationId: map['observationId'] ?? '',
+      observationName: map['observationName'] ?? '',
+      auditSectionItemId: map['auditSectionItemId'] ?? '',
+      auditSectionName: map['auditSectionName'] ?? '',
+      auditId: map['auditId'] ?? '',
+      auditName: map['auditName'] ?? '',
+      area: map['area'] ?? '',
+      notes: map['notes'] ?? '',
+      closedBy: map['closedBy'] ?? '',
+      closedByName: map['closedByName'] ?? '',
+      isClosed: map['isClosed'] ?? '',
+      closedOn:
+          map['closedOn'] != null ? DateTime.parse(map['closedOn']) : null,
+      createdOn: DateTime.parse(map['createdOn']),
+      createdBy: map['createdBy'] ?? '',
     );
   }
 

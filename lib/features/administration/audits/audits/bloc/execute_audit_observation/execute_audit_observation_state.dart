@@ -77,7 +77,7 @@ class ExecuteAuditObservationState extends Equatable {
   ExecuteAuditObservationState copyWith({
     List<ObservationDetail>? auditObservationList,
     EntityStatus? auditObservationListLoadStatus,
-    ObservationDetail? auditObservation,
+    Nullable<ObservationDetail?>? auditObservation,
     EntityStatus? auditObservationLoadStatus,
     EntityStatus? status,
     CrudView? view,
@@ -98,7 +98,8 @@ class ExecuteAuditObservationState extends Equatable {
       auditObservationList: auditObservationList ?? this.auditObservationList,
       auditObservationListLoadStatus:
           auditObservationListLoadStatus ?? this.auditObservationListLoadStatus,
-      auditObservation: auditObservation ?? this.auditObservation,
+      auditObservation:
+          auditObservation != null ? auditObservation.value : this.auditObservation,
       auditObservationLoadStatus:
           auditObservationLoadStatus ?? this.auditObservationLoadStatus,
       status: status ?? this.status,

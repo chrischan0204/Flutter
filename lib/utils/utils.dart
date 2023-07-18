@@ -6,3 +6,4 @@ export 'timer_service_provider.dart';
 export 'inactivity_detect_widget.dart';
 export 'extentions.dart';
 export 'url.dart';
+export 'download.dart';

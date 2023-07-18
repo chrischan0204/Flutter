@@ -206,6 +206,33 @@ class AreaTextField extends StatelessWidget {
   }
 }
 
+class NotesTextField extends StatelessWidget {
+  const NotesTextField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ExecuteAuditActionItemBloc, ExecuteAuditActionItemState>(
+      builder: (context, state) {
+        return CustomTextField(
+          key: ValueKey(state.auditActionItem?.id),
+          initialValue: state.notes,
+          hintText: 'Notes about action item',
+          minLines: 3,
+          height: null,
+          maxLines: 100,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 10,
+          ),
+          onChanged: (notes) => context
+              .read<ExecuteAuditActionItemBloc>()
+              .add(ExecuteAuditActionItemNotesChanged(notes: notes)),
+        );
+      },
+    );
+  }
+}
+
 class ActionItemFilePicker extends StatelessWidget {
   const ActionItemFilePicker({super.key});
 
@@ -266,6 +293,22 @@ class ActionItemCreateUpdateView extends StatelessWidget {
             const ActionItemCreateUpdateFormItemView(
               label: 'Upload Images or documents',
               content: ActionItemFilePicker(),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomBottomBorderContainer(
+                  padding: insetx20y10,
+                  child: Text(
+                    'Notes:',
+                    style: textNormal12,
+                  ),
+                ),
+                CustomBottomBorderContainer(
+                  padding: insetx20y10,
+                  child: const NotesTextField(),
+                ),
+              ],
             ),
           ],
         );

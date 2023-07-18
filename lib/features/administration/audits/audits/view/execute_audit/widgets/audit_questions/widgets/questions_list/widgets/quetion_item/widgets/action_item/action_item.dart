@@ -31,7 +31,7 @@ class _AuditActionItemViewState extends State<AuditActionItemView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'ActionItems ${capitalize(state.view.name)}',
+                    'Action Item ${capitalize(state.view.name)}',
                     style: textNormal14,
                   ),
                   CustomBadge(

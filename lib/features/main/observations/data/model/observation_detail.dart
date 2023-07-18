@@ -179,7 +179,7 @@ class ObservationDetail extends Equatable {
         reportedVia: reportedVia ?? '',
         assessedBy: assessedByName ?? '',
         assessedOn: formatedAssessedOn,
-        assessedAs: assessmentObservationTypeName ?? '',
+        assessedAs: userReportedObservationTypeName ?? '',
       );
 
   factory ObservationDetail.fromMap(Map<String, dynamic> map) {

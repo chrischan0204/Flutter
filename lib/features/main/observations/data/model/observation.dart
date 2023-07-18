@@ -233,7 +233,7 @@ class Observation extends Entity {
       'Via': reportedVia,
       'Assessor': assessedBy,
       'Assessed?': assessedOn == null  ? 'No' : 'Yes',
-      'Assessed As': assessed,
+      'Assessed As': assessedAs,
       'Action Items': {'content': actionItems}
     };
   }

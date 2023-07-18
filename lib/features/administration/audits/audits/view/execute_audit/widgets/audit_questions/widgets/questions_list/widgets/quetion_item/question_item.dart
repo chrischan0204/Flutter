@@ -286,16 +286,20 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                             ),
                             child: const AuditActionItemView(),
                           ),
-                          'Comments': state.auditQuestion != null
-                              ? BlocProvider(
-                                  create: (context) => ExecuteAuditCommentBloc(
-                                    context: context,
-                                    auditQuestion: state.level0,
-                                  ),
-                                  child: const AuditCommentView(),
-                                )
-                              : Container(),
-                          'Images/Documents': Text('Images/Documents'),
+                          'Comments': BlocProvider(
+                            create: (context) => ExecuteAuditCommentBloc(
+                              context: context,
+                              auditQuestion: state.level0,
+                            ),
+                            child: const AuditCommentView(),
+                          ),
+                          'Images/Documents': BlocProvider(
+                            create: (context) => ExecuteAuditDocumentBloc(
+                              context: context,
+                              auditQuestion: state.level0,
+                            ),
+                            child: const ExecuteAuditDocumentView(),
+                          ),
                         },
                         onTabClick: (questionIndex) async {
                           return true;

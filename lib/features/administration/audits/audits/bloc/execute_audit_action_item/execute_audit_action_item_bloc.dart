@@ -16,7 +16,6 @@ class ExecuteAuditActionItemBloc
   late DocumentsRepository _documentsRepository;
   late String _questionId;
   late String _auditId;
-  late String _userId;
   ExecuteAuditActionItemBloc({
     required this.context,
     required this.auditQuestion,
@@ -30,7 +29,6 @@ class ExecuteAuditActionItemBloc
 
     _auditId = _executeAuditBloc.auditId;
 
-    _userId = context.read<AuthBloc>().state.authUser!.id;
 
     on<ExecuteAuditActionItemListLoaded>(_onExecuteAuditActionItemListLoaded);
     on<ExecuteAuditActionItemCreated>(_onExecuteAuditActionItemCreated);
@@ -78,9 +76,10 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(
-      site: Nullable.value(event.site),
-      siteValidationMessage: '',
-    ));
+        site: Nullable.value(event.site),
+        siteValidationMessage: '',
+        project: const Nullable.value(null),
+        company: const Nullable.value(null)));
   }
 
   void _onExecuteAuditActionItemAssigneeChanged(
@@ -202,8 +201,19 @@ class ExecuteAuditActionItemBloc
         questionId: _questionId,
         actionItemId: event.actionItemId,
       );
+
+      List<Project> projectList =
+          await _sitesRepository.getProjectListForSite(auditActionItem.siteId!);
+
+      List<CompanySite> companyList =
+          await _sitesRepository.getCompanyListForSite(auditActionItem.siteId!);
+
       emit(state.copyWith(
-        auditActionItem: auditActionItem,
+        auditActionItem: Nullable.value(auditActionItem),
+        companyList: companyList
+            .map((e) => Company(id: e.companyId, name: e.companyName))
+            .toList(),
+        projectList: projectList,
         auditActionItemLoadStatus: EntityStatus.success,
         area: auditActionItem.area,
         name: auditActionItem.description,
@@ -222,8 +232,8 @@ class ExecuteAuditActionItemBloc
           name: auditActionItem.siteName,
         )),
         company: Nullable.value(Company(
-          id: auditActionItem.siteId,
-          name: auditActionItem.siteName,
+          id: auditActionItem.companyId,
+          name: auditActionItem.companyName,
         )),
         project: Nullable.value(Project(
           id: auditActionItem.projectId,
@@ -299,7 +309,8 @@ class ExecuteAuditActionItemBloc
     emit(state.copyWith(status: EntityStatus.loading));
 
     try {
-      await _auditsRepository.addActionItemForAudit(ActionItemCreate(
+      EntityResponse response =
+          await _auditsRepository.addActionItemForAudit(ActionItemCreate(
         name: state.name,
         dueBy: state.dueBy!.toIso8601String(),
         assigneeId: state.assignee!.id!,
@@ -312,6 +323,14 @@ class ExecuteAuditActionItemBloc
         auditSectionItemId: _questionId,
         auditId: _auditId,
       ));
+
+      if (state.fileList.isNotEmpty) {
+        await _documentsRepository.uploadDocuments(
+          ownerId: response.data!.id!,
+          ownerType: 'actionitem',
+          documentList: state.fileList,
+        );
+      }
 
       emit(state.copyWith(status: EntityStatus.success));
 
@@ -338,6 +357,7 @@ class ExecuteAuditActionItemBloc
     try {
       await _auditsRepository.editActionItemForAudit(
         actionItemCreate: ActionItemCreate(
+          id: state.auditActionItem!.id,
           name: state.name,
           dueBy: state.dueBy!.toIso8601String(),
           assigneeId: state.assignee!.id!,
@@ -361,7 +381,10 @@ class ExecuteAuditActionItemBloc
         );
       }
 
-      emit(state.copyWith(status: EntityStatus.success));
+      emit(state.copyWith(
+        status: EntityStatus.success,
+        auditActionItem: const Nullable.value(null),
+      ));
 
       _clearForm(emit);
 

@@ -1,9 +1,4 @@
-import 'dart:html';
-import 'dart:io' as io;
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart' as foundation;
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 export 'package:http/http.dart';
 import '/common_libraries.dart';
@@ -53,9 +48,8 @@ class BaseRepository {
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      throw Exception();
     }
-
-    throw Exception();
   }
 
   Future<http.Response> put(
@@ -74,9 +68,8 @@ class BaseRepository {
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      throw Exception();
     }
-
-    throw Exception();
   }
 
   Future<http.Response> delete(
@@ -96,8 +89,8 @@ class BaseRepository {
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      throw Exception();
     }
-    throw Exception();
   }
 
   Future<http.Response> filter(FilteredTableParameter option) async {
@@ -107,9 +100,8 @@ class BaseRepository {
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      throw Exception();
     }
-
-    throw Exception();
   }
 
   Future<void> uploadMultipartFile({
@@ -135,7 +127,7 @@ class BaseRepository {
       return;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      throw Exception();
     }
-    throw Exception();
   }
 }

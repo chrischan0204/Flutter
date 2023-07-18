@@ -6,3 +6,5 @@ abstract class ExecuteAuditDocumentEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ExecuteAuditDocumentListLoaded extends ExecuteAuditDocumentEvent {}

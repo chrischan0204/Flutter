@@ -31,7 +31,7 @@ class _AuditObservationViewState extends State<AuditObservationView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Observations ${capitalize(state.view.name)}',
+                    'Observation ${capitalize(state.view.name)}',
                     style: textNormal14,
                   ),
                   CustomBadge(

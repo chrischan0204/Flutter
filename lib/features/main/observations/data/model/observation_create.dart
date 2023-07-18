@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import '/common_libraries.dart';
 
 class ObservationCreate extends Equatable {
+  final String? id;
   final String name;
   final String siteId;
   final String location;
@@ -15,6 +16,7 @@ class ObservationCreate extends Equatable {
   final String? reportedBy;
 
   const ObservationCreate({
+    this.id,
     required this.name,
     required this.siteId,
     required this.location,
@@ -28,6 +30,7 @@ class ObservationCreate extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         siteId,
         location,
         response,
@@ -56,6 +59,10 @@ class ObservationCreate extends Equatable {
               : 'Kiosk',
     };
 
+    if (id != null) {
+      map.addAll({'id': id});
+    }
+
     if (auditId != null && auditSectionItemId != null) {
       map.addAll({
         'auditId': auditId,
@@ -73,6 +80,7 @@ class ObservationCreate extends Equatable {
   String toJson() => json.encode(toMap());
 
   ObservationCreate copyWith({
+    String? id,
     String? name,
     String? siteId,
     String? location,
@@ -83,6 +91,7 @@ class ObservationCreate extends Equatable {
     String? auditSectionItemId,
   }) {
     return ObservationCreate(
+      id: id ?? this.id,
       name: name ?? this.name,
       siteId: siteId ?? this.siteId,
       location: location ?? this.location,
