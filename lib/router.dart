@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/features/features.dart';
+import 'common_libraries.dart';
 
 final GoRouter router = GoRouter(
   routes: [
@@ -441,7 +442,11 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: AuditFocusModeView(auditId: state.params['auditId']!),
+          body: BlocProvider(
+            create: (context) => ExecuteAuditBloc(
+                context: context, auditId: state.params['auditId']!),
+            child: AuditFocusModeView(auditId: state.params['auditId']!),
+          ),
           selectedItemName: 'audits',
         ),
       ),

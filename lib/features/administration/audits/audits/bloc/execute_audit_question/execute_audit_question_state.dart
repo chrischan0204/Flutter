@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'execute_audit_question_bloc.dart';
 
 class ExecuteAuditQuestionState extends Equatable {
