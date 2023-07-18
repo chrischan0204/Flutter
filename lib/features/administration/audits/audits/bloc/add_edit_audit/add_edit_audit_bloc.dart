@@ -4,18 +4,18 @@ part 'add_edit_audit_event.dart';
 part 'add_edit_audit_state.dart';
 
 class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
-  late FormDirtyBloc formDirtyBloc;
-  late AuditsRepository auditsRepository;
-  late UsersRepository usersRepository;
-  late SitesRepository sitesRepository;
-  final BuildContext context;
+  late FormDirtyBloc _formDirtyBloc;
+  late AuditsRepository _auditsRepository;
+  late UsersRepository _usersRepository;
+  late SitesRepository _sitesRepository;
 
+  final BuildContext context;
   final String? auditId;
   AddEditAuditBloc(this.context, {this.auditId}) : super(AddEditAuditState()) {
-    formDirtyBloc = context.read();
-    auditsRepository = RepositoryProvider.of(context);
-    usersRepository = RepositoryProvider.of(context);
-    sitesRepository = RepositoryProvider.of(context);
+    _formDirtyBloc = context.read();
+    _auditsRepository = RepositoryProvider.of(context);
+    _usersRepository = RepositoryProvider.of(context);
+    _sitesRepository = RepositoryProvider.of(context);
     _bindEvents();
   }
 
@@ -57,7 +57,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        EntityResponse response = await auditsRepository
+        EntityResponse response = await _auditsRepository
             .addAudit(state.audit.copyWith(userId: event.userId));
 
         if (response.isSuccess) {
@@ -75,7 +75,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
             status: EntityStatus.success,
           ));
 
-          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+          _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           if (response.message.contains('already') == true) {
             emit(state.copyWith(
@@ -106,7 +106,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       emit(state.copyWith(status: EntityStatus.loading));
 
       try {
-        EntityResponse response = await auditsRepository
+        EntityResponse response = await _auditsRepository
             .editAudit(state.audit.copyWith(id: event.id));
 
         if (response.isSuccess) {
@@ -123,7 +123,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
             status: EntityStatus.success,
           ));
 
-          formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+          _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           if (response.message.contains('already') == true) {
             emit(state.copyWith(
@@ -151,7 +151,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      Audit audit = await auditsRepository.getAuditById(event.id);
+      Audit audit = await _auditsRepository.getAuditById(event.id);
 
       final site = Site(id: audit.siteId, name: audit.siteName);
 
@@ -178,9 +178,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
         inspectors: audit.inspectors,
         initialInspectors: audit.inspectors,
       ));
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   bool _checkValidation(Emitter<AddEditAuditState> emit) {
@@ -224,7 +222,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   ) async {
     try {
       List<UserSite> siteList =
-          await usersRepository.getSiteListForUser(event.userId);
+          await _usersRepository.getSiteListForUser(event.userId);
       emit(state.copyWith(
         siteList:
             siteList.map((e) => Site(id: e.siteId, name: e.siteName)).toList(),
@@ -238,7 +236,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   ) async {
     try {
       List<Template> templateList =
-          await sitesRepository.getTemplateListForSite(event.siteId);
+          await _sitesRepository.getTemplateListForSite(event.siteId);
       emit(state.copyWith(templateList: templateList));
     } catch (e) {}
   }
@@ -249,7 +247,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   ) async {
     try {
       List<Project> projectList =
-          await sitesRepository.getProjectListForSite(event.siteId);
+          await _sitesRepository.getProjectListForSite(event.siteId);
       emit(state.copyWith(projectList: projectList));
     } catch (e) {}
   }
@@ -263,7 +261,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       auditNameValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditDateChanged(
@@ -275,7 +273,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       auditDateValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditSiteChanged(
@@ -289,7 +287,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       siteValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditTemplateChanged(
@@ -301,7 +299,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       templateValidationMessage: '',
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditCompaniesChanged(
@@ -312,7 +310,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       companies: event.companies,
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditAreaChanged(
@@ -323,7 +321,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       area: event.area,
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditInspectorsChanged(
@@ -334,7 +332,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       inspectors: event.inspectors,
     ));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
   void _onAddEditAuditProjectChanged(
@@ -343,6 +341,6 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
   ) {
     emit(state.copyWith(project: Nullable.value(event.project)));
 
-    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 }

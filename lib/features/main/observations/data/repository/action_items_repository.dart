@@ -39,7 +39,7 @@ class ActionItemsRepository extends BaseRepository {
       if (response.statusCode == 200) {
         return EntityResponse(
           isSuccess: true,
-          message: response.body,
+          message: 'Action item added successfully.',
         );
       }
       return EntityResponse.fromJson(response.body);

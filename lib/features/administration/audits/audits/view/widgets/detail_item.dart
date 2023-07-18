@@ -26,9 +26,9 @@ class AuditDetailItemView extends StatelessWidget {
               style: textSemiBold14.copyWith(
                 color: primaryColor,
               ),
-              maxLines: 3,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
+              // maxLines: 3,
+              // softWrap: false,
+              // overflow: TextOverflow.ellipsis,
             ),
           ),
           CustomBottomBorderContainer(
@@ -36,9 +36,9 @@ class AuditDetailItemView extends StatelessWidget {
             child: Text(
               content,
               style: textNormal14,
-              maxLines: 3,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
+              // maxLines: 3,
+              // softWrap: false,
+              // overflow: TextOverflow.ellipsis,
             ),
           )
         ],
@@ -62,9 +62,9 @@ class AuditDetailItemView extends StatelessWidget {
               child: Text(
                 content,
                 style: textNormal14,
-                maxLines: 2,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
+                // maxLines: 2,
+                // softWrap: false,
+                // overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

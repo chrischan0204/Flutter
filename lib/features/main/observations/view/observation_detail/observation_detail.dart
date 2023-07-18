@@ -130,9 +130,15 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
                     ),
                   ),
                   spacerx10,
-                  const Expanded(
+                  Expanded(
                     flex: 2,
-                    child: ImageDockerView(),
+                    child: BlocProvider(
+                      create: (context) => ObservationImageDockBloc(
+                        context: context,
+                        observationId: widget.observationId,
+                      ),
+                      child: const ObservationImageDockView(),
+                    ),
                   ),
                 ],
               ),

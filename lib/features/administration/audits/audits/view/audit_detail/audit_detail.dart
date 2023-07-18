@@ -54,17 +54,6 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // return Column(
-    //   children: [
-    //     Card(
-    //       child: Container(height: 100),
-    //     ),
-    //     Expanded(
-    //         child: Card(
-    //       child: Container(),
-    //     ))
-    //   ],
-    // );
     return BlocConsumer<AuditDetailBloc, AuditDetailState>(
       listener: (context, state) {
         if (state.auditDeleteStatus.isSuccess) {
@@ -95,7 +84,6 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               .add(AuditDetailAuditDeleted(auditId: widget.auditId)),
           entity: state.auditSummary?.audit,
           crudStatus: state.auditDeleteStatus,
-          // isScrollView: false,
           customDetailWidget: state.auditSummary == null
               ? const Center(child: Loader())
               : Column(
@@ -118,9 +106,9 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                                 style: textNormal20,
                               ),
                             ),
-                            Row(
+                            const Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Expanded(flex: 2, child: SectionSummaryView()),
                                 Expanded(flex: 1, child: AuditDetailView1()),
                                 Expanded(flex: 1, child: AuditDetailView2()),
@@ -133,9 +121,9 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                     spacery20,
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 2,
-                      child: Row(
+                      child: const Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Expanded(child: AuditSectionsView()),
                           Expanded(
                             flex: 3,
@@ -151,7 +139,6 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               context.go('/audits/execute/${widget.auditId}'),
           secondaryIcon: PhosphorIcons.regular.caretCircleDoubleRight,
           secondaryLabel: 'Excute Audit',
-          // descriptionForDelete: descriptionForDelete,
         );
       },
     );

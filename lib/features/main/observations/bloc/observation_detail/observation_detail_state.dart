@@ -28,7 +28,7 @@ class ObservationDetailState extends Equatable {
   /// user list
   final List<User> userList;
 
-  final List<Document> imageList;
+  
 
   final String message;
   const ObservationDetailState({
@@ -43,7 +43,6 @@ class ObservationDetailState extends Equatable {
     this.siteList = const [],
     this.userList = const [],
     this.message = '',
-    this.imageList = const [],
   });
 
   @override
@@ -59,7 +58,6 @@ class ObservationDetailState extends Equatable {
         observationLoadStatus,
         observationDeleteStatus,
         message,
-        imageList,
       ];
 
   ObservationDetailState copyWith({
@@ -73,7 +71,6 @@ class ObservationDetailState extends Equatable {
     List<Project>? projectList,
     List<Site>? siteList,
     List<User>? userList,
-    List<Document>? imageList,
     String? message,
   }) {
     return ObservationDetailState(
@@ -90,7 +87,6 @@ class ObservationDetailState extends Equatable {
       projectList: projectList ?? this.projectList,
       siteList: siteList ?? this.siteList,
       userList: userList ?? this.userList,
-      imageList: imageList ?? this.imageList,
       message: message ?? this.message,
     );
   }

@@ -12,7 +12,6 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
   late SitesRepository _sitesRepository;
   late UsersRepository _usersRepository;
   late AwarenessCategoriesRepository _awarenessCategoriesRepository;
-  late AuthBloc _authBloc;
   ExecuteAuditBloc({
     required this.context,
     required this.auditId,
@@ -23,7 +22,6 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     _sitesRepository = context.read();
     _usersRepository = context.read(); 
     _awarenessCategoriesRepository = context.read();
-    _authBloc = context.read();
 
     on<ExecuteAuditQuestionViewOptionLoaded>(
         _onExecuteAuditQuestionViewOptionLoaded);

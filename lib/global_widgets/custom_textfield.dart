@@ -59,99 +59,97 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: widget.height,
-      child: Form(
-        child: TextFormField(
-          key: widget.key,
-          initialValue: widget.initialValue,
-          controller: widget.controller,
-          focusNode: widget.focusNode,
-          enabled: !(widget.isDisabled ?? false),
-          onChanged: widget.onChanged,
-          onFieldSubmitted: widget.onSubmitted,
-          style: const TextStyle(
-            fontSize: 12,
-            fontFamily: 'OpenSans',
-            fontWeight: FontWeight.w400,
+      child: TextFormField(
+        key: widget.key,
+        initialValue: widget.initialValue,
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        enabled: !(widget.isDisabled ?? false),
+        onChanged: widget.onChanged,
+        onFieldSubmitted: widget.onSubmitted,
+        style: const TextStyle(
+          fontSize: 12,
+          fontFamily: 'OpenSans',
+          fontWeight: FontWeight.w400,
+        ),
+        onTap: widget.onTap,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          contentPadding: widget.contentPadding,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5),
+            ),
+            borderSide: BorderSide(
+              color: grey,
+            ),
           ),
-          onTap: widget.onTap,
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            contentPadding: widget.contentPadding,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: grey,
-              ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
             ),
-            focusedBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: Colors.blue,
-              ),
+            borderSide: BorderSide(
+              color: Colors.blue,
             ),
-            filled: true,
-            fillColor: Colors.white,
-            focusColor: Colors.white,
-            hoverColor: Colors.white,
-            suffixIcon: widget.suffixIconData == null
-                ? widget.suffixWidget == null
-                    ? null
-                    : GestureDetector(
-                        onTap: () => widget.onSuffixIconClick!(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(5),
-                              bottomRight: Radius.circular(5),
-                            ),
-                            border: Border.all(
-                              color: grey,
-                              width: 1,
-                            ),
-                            color: widget.suffixIconBackgroundColor,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          focusColor: Colors.white,
+          hoverColor: Colors.white,
+          suffixIcon: widget.suffixIconData == null
+              ? widget.suffixWidget == null
+                  ? null
+                  : GestureDetector(
+                      onTap: () => widget.onSuffixIconClick!(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(5),
+                            bottomRight: Radius.circular(5),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
+                          border: Border.all(
+                            color: grey,
+                            width: 1,
                           ),
-                          child: widget.suffixWidget,
+                          color: widget.suffixIconBackgroundColor,
                         ),
-                      )
-                : GestureDetector(
-                    onTap: () => widget.onSuffixIconClick!(),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(5),
-                          bottomRight: Radius.circular(5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
                         ),
-                        border: Border.all(
-                          color: grey,
-                          width: 1,
-                        ),
-                        color: widget.suffixIconBackgroundColor,
+                        child: widget.suffixWidget,
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 8,
+                    )
+              : GestureDetector(
+                  onTap: () => widget.onSuffixIconClick!(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(5),
+                        bottomRight: Radius.circular(5),
                       ),
-                      child: Icon(
-                        widget.suffixIconData,
-                        color: widget.suffixIconColor,
-                        size: widget.iconSize,
+                      border: Border.all(
+                        color: grey,
+                        width: 1,
                       ),
+                      color: widget.suffixIconBackgroundColor,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    child: Icon(
+                      widget.suffixIconData,
+                      color: widget.suffixIconColor,
+                      size: widget.iconSize,
                     ),
                   ),
-          ),
-          cursorColor: darkTeal,
-          cursorWidth: 1,
-          minLines: widget.minLines,
-          maxLines: widget.maxLines,
+                ),
         ),
+        cursorColor: darkTeal,
+        cursorWidth: 1,
+        minLines: widget.minLines,
+        maxLines: widget.maxLines,
       ),
     );
   }

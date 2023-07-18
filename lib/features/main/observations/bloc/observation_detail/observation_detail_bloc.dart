@@ -54,7 +54,6 @@ class ObservationDetailBloc
     on<ObservationDetailPriorityLevelListLoaded>(
         _onObservationDetailPriorityLevelListLoaded);
     on<ObservationDetailUserListLoaded>(_onObservationDetailUserListLoaded);
-    on<ObservationDetailImageListLoaded>(_onObservationDetailImageListLoaded);
   }
 
   Future<void> _onObservationDetailLoaded(
@@ -160,17 +159,5 @@ class ObservationDetailBloc
 
     emit(state.copyWith(userList: userList));
     try {} catch (e) {}
-  }
-
-  Future<void> _onObservationDetailImageListLoaded(
-    ObservationDetailImageListLoaded event,
-    Emitter<ObservationDetailState> emit,
-  ) async {
-    List<Document> imageList = await _documentsRepository.getDocumentList(
-      ownerId: observationId,
-      ownerType: 'observation',
-    );
-
-    emit(state.copyWith(imageList: imageList));
   }
 }
