@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class SitesRepository extends BaseRepository {
@@ -164,6 +162,18 @@ class SitesRepository extends BaseRepository {
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
           .map((e) => CompanySite.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<Entity>> getUserListForSite(String siteId) async {
+    Response response = await super.get('$url/$siteId/users');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Entity.fromMap(e))
           .toList();
     }
 

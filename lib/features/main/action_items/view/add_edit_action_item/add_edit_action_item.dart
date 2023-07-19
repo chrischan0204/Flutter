@@ -45,8 +45,7 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
   void initState() {
     addEditActionItemBloc = context.read()
       ..add(AddEditActionItemAwarenessCategoryListLoaded())
-      ..add(AddEditActionItemSiteListLoaded())
-      ..add(AddEditActionItemUserListLoaded());
+      ..add(AddEditActionItemSiteListLoaded());
 
     if (widget.actionItemId != null) {
       addEditActionItemBloc

@@ -60,17 +60,28 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
         EntityResponse response = await _auditsRepository
             .addAudit(state.audit.copyWith(userId: event.userId));
 
+        final now = DateTime.now();
+
         if (response.isSuccess) {
           emit(state.copyWith(
             createdAuditId: response.data?.id ?? emptyGuid,
-            initialArea: state.area,
-            initialAuditDate: state.auditDate,
-            initialAuditName: state.auditName,
-            initialCompanies: state.companies,
-            initialInspectors: state.inspectors,
-            initialProject: state.project,
-            initialSite: state.site,
-            initialTemplate: state.template,
+            initialArea: '',
+            initialAuditDate: now,
+            initialAuditName: '',
+            initialCompanies: '',
+            initialInspectors: '',
+            initialProject: const Nullable.value(null),
+            initialSite: const Nullable.value(null),
+            initialTemplate: const Nullable.value(null),
+            loadedAudit: const Nullable.value(null),
+            area: '',
+            auditDate: now,
+            auditName: '',
+            companies: '',
+            inspectors: '',
+            project: const Nullable.value(null),
+            site: const Nullable.value(null),
+            template: const Nullable.value(null),
             message: 'Audit successfully added.',
             status: EntityStatus.success,
           ));
@@ -116,9 +127,9 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
             initialAuditName: state.auditName,
             initialCompanies: state.companies,
             initialInspectors: state.inspectors,
-            initialProject: state.project,
-            initialSite: state.site,
-            initialTemplate: state.template,
+            initialProject: Nullable.value(state.project),
+            initialSite: Nullable.value(state.site),
+            initialTemplate: Nullable.value(state.template),
             message: 'Audit successfully updated.',
             status: EntityStatus.success,
           ));
@@ -160,17 +171,17 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       final template = Template(id: audit.templateId, name: audit.templateName);
 
       emit(state.copyWith(
-        loadedAudit: audit,
+        loadedAudit: Nullable.value(audit),
         initialAuditName: audit.name,
         auditName: audit.name,
         auditDate: audit.auditDate,
         initialAuditDate: audit.auditDate,
-        site: site,
-        initialSite: site,
+        site: Nullable.value(site),
+        initialSite: Nullable.value(site),
         project: Nullable.value(project),
-        initialProject: project,
+        initialProject: Nullable.value(project),
         template: Nullable.value(template),
-        initialTemplate: template,
+        initialTemplate: Nullable.value(template),
         area: audit.area,
         initialArea: audit.area,
         companies: audit.companies,
@@ -281,7 +292,7 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) {
     emit(state.copyWith(
-      site: event.site,
+      site: Nullable.value(event.site),
       project: const Nullable.value(null),
       template: const Nullable.value(null),
       siteValidationMessage: '',

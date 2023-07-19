@@ -35,7 +35,6 @@ class ActionItem extends Entity {
   final String dueOn;
   final String closedOn;
   final String closedByName;
-  final String comments;
   final String auditName;
   final String auditId;
   final String siteId;
@@ -65,7 +64,6 @@ class ActionItem extends Entity {
     this.actionRequired = '',
     this.dueOn = '',
     this.closedOn = '',
-    this.comments = '',
     this.closedByName = '',
     this.auditName = '',
     this.auditId = '',
@@ -105,7 +103,7 @@ class ActionItem extends Entity {
         dueOn,
         closedOn,
         isClosed,
-        comments,
+        notes,
         closedByName,
         auditId,
         auditName,
@@ -148,7 +146,7 @@ class ActionItem extends Entity {
       'Closed on': closedOn,
       'Assignee': assigneeName,
       'Category': awarenessCategoryName,
-      'Comments': comments,
+      'Notes': notes,
       'Company': companyName,
       'Area': area,
       'Location': area,
@@ -230,7 +228,7 @@ class ActionItem extends Entity {
     String? awarenessCategoryId,
     String? observationName,
     String? observationId,
-    String? comments,
+    String? notes,
     String? companyName,
     String? companyId,
     String? area,
@@ -265,7 +263,7 @@ class ActionItem extends Entity {
           awarenessCategoryName ?? this.awarenessCategoryName,
       observationId: observationId ?? this.observationId,
       observationName: observationName ?? this.observationName,
-      comments: comments ?? this.comments,
+      notes: notes ?? this.notes,
       area: area ?? this.area,
       projectName: area ?? this.projectName,
       createdByUserName: createdByUserName ?? this.createdByUserName,

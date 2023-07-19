@@ -51,6 +51,8 @@ class AddActionItemState extends Equatable {
 
   final List<Company> companyList;
 
+  final List<Entity> userList;
+
   AddActionItemState({
     this.actionItem,
     this.actionItemList = const [],
@@ -72,6 +74,7 @@ class AddActionItemState extends Equatable {
     this.status = EntityStatus.initial,
     this.projectList = const [],
     this.companyList = const [],
+    this.userList = const [],
   }) {
     dueBy ??= DateTime.now();
   }
@@ -98,6 +101,7 @@ class AddActionItemState extends Equatable {
         status,
         projectList,
         companyList,
+        userList,
       ];
 
   ActionItemCreate get actionItemCreate => ActionItemCreate(
@@ -134,6 +138,7 @@ class AddActionItemState extends Equatable {
     EntityStatus? status,
     List<Project>? projectList,
     List<Company>? companyList,
+    List<Entity>? userList,
   }) {
     return AddActionItemState(
       actionItem: actionItem != null ? actionItem.value : this.actionItem,
@@ -160,6 +165,7 @@ class AddActionItemState extends Equatable {
       status: status ?? this.status,
       companyList: companyList ?? this.companyList,
       projectList: projectList ?? this.projectList,
+      userList: userList ?? this.userList,
     );
   }
 }

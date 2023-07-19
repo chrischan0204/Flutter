@@ -107,7 +107,8 @@ class AddEditActionItemBloc
     Emitter<AddEditActionItemState> emit,
   ) async {
     try {
-      List<User> userList = await _usersRepository.getUserList();
+      List<Entity> userList =
+          await _sitesRepository.getUserListForSite(event.siteId);
 
       emit(state.copyWith(userList: userList));
     } catch (e) {}
@@ -131,9 +132,13 @@ class AddEditActionItemBloc
   ) {
     emit(state.copyWith(
       site: Nullable.value(event.site),
+      assignee: const Nullable.value(null),
+      project: const Nullable.value(null),
+      company: const Nullable.value(null),
       siteValidationMessage: '',
     ));
 
+    add(AddEditActionItemUserListLoaded(siteId: event.site.id!));
     add(AddEditActionItemProjectListLoaded(siteId: event.site.id!));
     add(AddEditActionItemCompanyListLoaded(siteId: event.site.id!));
 
@@ -328,6 +333,7 @@ class AddEditActionItemBloc
 
       add(AddEditActionItemProjectListLoaded(siteId: actionItem.siteId));
       add(AddEditActionItemCompanyListLoaded(siteId: actionItem.siteId));
+      add(AddEditActionItemUserListLoaded(siteId: actionItem.siteId));
 
       emit(state.copyWith(
         actionItem: Nullable.value(actionItem),

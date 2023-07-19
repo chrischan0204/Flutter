@@ -90,40 +90,45 @@ class AddEditObservationTypeState extends Equatable {
       );
 
   AddEditObservationTypeState copyWith({
-    ObservationType? loadedObservationType,
+    Nullable<ObservationType?>? loadedObservationType,
     String? observationTypeName,
     String? initialObservationTypeName,
     String? observationTypeNameValidationMessage,
-    String? observationTypeSeverity,
-    String? initialObservationTypeSeverity,
+    Nullable<String?>? observationTypeSeverity,
+    Nullable<String?>? initialObservationTypeSeverity,
     String? observationTypeSeverityValidationMessage,
-    String? observationTypeVisibility,
-    String? initialObservationTypeVisibility,
+    Nullable<String?>? observationTypeVisibility,
+    Nullable<String?>? initialObservationTypeVisibility,
     bool? deactivated,
     bool? initialDeactivated,
     EntityStatus? status,
     String? message,
   }) {
     return AddEditObservationTypeState(
-      loadedObservationType:
-          loadedObservationType ?? this.loadedObservationType,
+      loadedObservationType: loadedObservationType != null
+          ? loadedObservationType.value
+          : this.loadedObservationType,
       observationTypeName: observationTypeName ?? this.observationTypeName,
       initialObservationTypeName:
           initialObservationTypeName ?? this.initialObservationTypeName,
       observationTypeNameValidationMessage:
           observationTypeNameValidationMessage ??
               this.observationTypeNameValidationMessage,
-      observationTypeSeverity:
-          observationTypeSeverity ?? this.observationTypeSeverity,
-      initialObservationTypeSeverity:
-          initialObservationTypeSeverity ?? this.initialObservationTypeSeverity,
+      observationTypeSeverity: observationTypeSeverity != null
+          ? observationTypeSeverity.value
+          : this.observationTypeSeverity,
+      initialObservationTypeSeverity: initialObservationTypeSeverity != null
+          ? initialObservationTypeSeverity.value
+          : this.initialObservationTypeSeverity,
       observationTypeSeverityValidationMessage:
           observationTypeSeverityValidationMessage ??
               this.observationTypeSeverityValidationMessage,
-      observationTypeVisibility:
-          observationTypeVisibility ?? this.observationTypeVisibility,
-      initialObservationTypeVisibility: initialObservationTypeVisibility ??
-          this.initialObservationTypeVisibility,
+      observationTypeVisibility: observationTypeVisibility != null
+          ? observationTypeVisibility.value
+          : this.observationTypeVisibility,
+      initialObservationTypeVisibility: initialObservationTypeVisibility != null
+          ? initialObservationTypeVisibility.value
+          : this.initialObservationTypeVisibility,
       deactivated: deactivated ?? this.deactivated,
       initialDeactivated: initialDeactivated ?? this.initialDeactivated,
       status: status ?? this.status,

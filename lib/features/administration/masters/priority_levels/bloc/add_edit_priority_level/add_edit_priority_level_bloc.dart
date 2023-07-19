@@ -37,10 +37,18 @@ class AddEditPriorityLevelBloc
             .addPriorityLevel(state.priorityLevel);
         if (response.isSuccess) {
           emit(state.copyWith(
-            initialPriorityLevelName: state.priorityLevelName,
-            initialPriorityType: state.priorityType,
-            initialColorCode: state.colorCode,
-            initialDeactivated: state.deactivated,
+            initialPriorityLevelName: '',
+            priorityLevelName: '',
+            initialPriorityType: '',
+            priorityType: const Nullable.value(null),
+            loadedPriorityLevel: Nullable.value(PriorityLevel(
+              colorCode: Colors.white,
+              priorityType: '',
+              id: response.data?.id,
+            )),
+            initialColorCode: Colors.white,
+            colorCode: Colors.white,
+            initialDeactivated: false,
             status: EntityStatus.success,
             message: response.message,
           ));
@@ -105,9 +113,9 @@ class AddEditPriorityLevelBloc
           await priorityLevelsRepository.getPriorityLevelById(event.id);
 
       emit(state.copyWith(
-        loadedPriorityLevel: priorityLevel,
+        loadedPriorityLevel: Nullable.value(priorityLevel),
         priorityLevelName: priorityLevel.name,
-        priorityType: priorityLevel.priorityType,
+        priorityType: Nullable.value(priorityLevel.priorityType),
         colorCode: priorityLevel.colorCode,
         deactivated: !priorityLevel.active,
         initialPriorityLevelName: priorityLevel.name,
@@ -144,7 +152,7 @@ class AddEditPriorityLevelBloc
     Emitter<AddEditPriorityLevelState> emit,
   ) {
     emit(state.copyWith(
-      priorityType: event.priorityType,
+      priorityType: Nullable.value(event.priorityType),
       priorityTypeValidationMessage: '',
     ));
 

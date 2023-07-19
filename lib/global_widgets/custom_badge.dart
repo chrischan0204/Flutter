@@ -6,6 +6,7 @@ class CustomBadge extends StatelessWidget {
   final VoidCallback? onClick;
   final double radius;
   final EdgeInsets padding;
+  final double? width;
   const CustomBadge({
     super.key,
     required this.label,
@@ -13,6 +14,7 @@ class CustomBadge extends StatelessWidget {
     this.onClick,
     this.radius = 3,
     this.padding = const EdgeInsets.all(5),
+    this.width,
   });
 
   @override
@@ -20,8 +22,11 @@ class CustomBadge extends StatelessWidget {
     return InkWell(
       onTap: onClick,
       child: Container(
+        width: width,
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(radius)),
+          color: color,
+          borderRadius: BorderRadius.circular(radius),
+        ),
         padding: padding,
         child: Text(
           label,

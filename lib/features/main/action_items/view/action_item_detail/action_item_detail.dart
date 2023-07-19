@@ -69,6 +69,8 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
           entity: state.actionItem,
           crudStatus: state.actionItemDeleteStatus,
           isShowName: false,
+          isEditable: !(state.actionItem?.isClosed == true),
+          isDeletable: !(state.actionItem?.isClosed == true),
           customDetailWidget: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -79,7 +81,6 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
               const Expanded(flex: 2, child: AssestsView())
             ],
           ),
-          // descriptionForDelete: descriptionForDelete,
         );
       },
     );

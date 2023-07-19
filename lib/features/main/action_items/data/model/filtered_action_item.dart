@@ -10,7 +10,7 @@ class FilteredActionItem extends FilteredEntity {
   final DateTime? dueOn;
   final DateTime? closedOn;
   final String category;
-  final String comments;
+  final String notes;
   final String company;
   final String location;
   final String project;
@@ -23,7 +23,7 @@ class FilteredActionItem extends FilteredEntity {
     this.dueOn,
     this.closedOn,
     required this.category,
-    required this.comments,
+    required this.notes,
     required this.company,
     required this.location,
     required this.project,
@@ -47,7 +47,7 @@ class FilteredActionItem extends FilteredEntity {
         createdOn,
         closedOn,
         category,
-        comments,
+        notes,
         company,
         location,
         project,
@@ -62,7 +62,7 @@ class FilteredActionItem extends FilteredEntity {
         dueOn: formatedDueOn,
         closedOn: formatedClosedOn,
         awarenessCategoryName: category,
-        comments: comments,
+        notes: notes,
         companyName: company,
         area: location,
         projectName: project,
@@ -87,7 +87,7 @@ class FilteredActionItem extends FilteredEntity {
       closedOn:
           map['closed_on'] != null ? DateTime.parse(map['closed_on']) : null,
       category: map['category'] ?? '',
-      comments: map['comments'] ?? '',
+      notes: map['notes'] ?? '',
       location: map['location'] ?? '',
       company: map['company'] ?? '',
       project: map['project'] ?? '',
@@ -111,7 +111,7 @@ class FilteredActionItem extends FilteredEntity {
     DateTime? dueOn,
     DateTime? closedOn,
     String? category,
-    String? comments,
+    String? notes,
     String? company,
     String? location,
     String? project,
@@ -132,7 +132,7 @@ class FilteredActionItem extends FilteredEntity {
       closedOn: closedOn ?? this.closedOn,
       company: company ?? this.company,
       category: category ?? this.category,
-      comments: comments ?? this.comments,
+      notes: notes ?? this.notes,
       location: location ?? this.location,
       project: project ?? this.project,
       createdBy: createdBy ?? this.createdBy,

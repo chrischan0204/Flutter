@@ -89,11 +89,11 @@ class AddEditPriorityLevelState extends Equatable {
       );
 
   AddEditPriorityLevelState copyWith({
-    PriorityLevel? loadedPriorityLevel,
+    Nullable<PriorityLevel?>? loadedPriorityLevel,
     String? priorityLevelName,
     String? initialPriorityLevelName,
     String? priorityLevelNameValidationMessage,
-    String? priorityType,
+    Nullable<String?>? priorityType,
     String? initialPriorityType,
     String? priorityTypeValidationMessage,
     Color? colorCode,
@@ -104,13 +104,16 @@ class AddEditPriorityLevelState extends Equatable {
     String? message,
   }) {
     return AddEditPriorityLevelState(
-      loadedPriorityLevel: loadedPriorityLevel ?? this.loadedPriorityLevel,
+      loadedPriorityLevel: loadedPriorityLevel != null
+          ? loadedPriorityLevel.value
+          : this.loadedPriorityLevel,
       priorityLevelName: priorityLevelName ?? this.priorityLevelName,
       initialPriorityLevelName:
           initialPriorityLevelName ?? this.initialPriorityLevelName,
       priorityLevelNameValidationMessage: priorityLevelNameValidationMessage ??
           this.priorityLevelNameValidationMessage,
-      priorityType: priorityType ?? this.priorityType,
+      priorityType:
+          priorityType != null ? priorityType.value : this.priorityType,
       initialPriorityType: initialPriorityType ?? this.initialPriorityType,
       priorityTypeValidationMessage:
           priorityTypeValidationMessage ?? this.priorityTypeValidationMessage,

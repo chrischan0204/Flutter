@@ -17,7 +17,7 @@ class AddEditActionItemState extends Equatable {
   final List<Site> siteList;
 
   /// user list
-  final List<User> userList;
+  final List<Entity> userList;
 
   /// name to create action item
   final String name;
@@ -189,7 +189,7 @@ class AddEditActionItemState extends Equatable {
     List<Company>? companyList,
     List<Project>? projectList,
     List<Site>? siteList,
-    List<User>? userList,
+    List<Entity>? userList,
     String? name,
     String? initialName,
     String? nameValidationMessage,

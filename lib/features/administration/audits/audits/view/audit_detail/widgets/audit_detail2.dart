@@ -1,3 +1,5 @@
+import 'package:safety_eta/features/administration/audits/audits/view/audit_detail/widgets/widgets.dart';
+
 import '../../../../../../../common_libraries.dart';
 import '../../widgets/widgets.dart';
 
@@ -30,14 +32,38 @@ class AuditDetailView2 extends StatelessWidget {
               AuditDetailItemView(
                 label: 'Observations',
                 content: audit.observations.toString(),
+                onClick: () async {
+                  await showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => AuditDetailObservationListView(
+                        observationList: state.observationList),
+                  );
+                },
               ),
               AuditDetailItemView(
                 label: 'Action items',
                 content: audit.actionItems.toString(),
+                onClick: () async {
+                  await showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => AuditDetailActionItemListView(
+                        actionItemList: state.actionItemList),
+                  );
+                },
               ),
               AuditDetailItemView(
                 label: 'Images',
                 content: audit.documents.toString(),
+                onClick: () async {
+                  await showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) =>
+                        AuditDetailImageListView(imageList: state.documentList),
+                  );
+                },
               ),
               AuditDetailItemView(
                 label: 'Inspectors',

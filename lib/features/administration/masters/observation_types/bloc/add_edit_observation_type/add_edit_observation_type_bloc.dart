@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '/common_libraries.dart';
 
 part 'add_edit_observation_type_event.dart';
@@ -38,9 +40,16 @@ class AddEditObservationTypeBloc
             .addObservationType(state.observationType);
         if (response.isSuccess) {
           emit(state.copyWith(
-            initialObservationTypeName: state.observationTypeName,
-            initialObservationTypeSeverity: state.observationTypeSeverity,
-            initialObservationTypeVisibility: state.observationTypeVisibility,
+            initialObservationTypeName: '',
+            observationTypeName: '',
+            initialObservationTypeSeverity: const Nullable.value(null),
+            observationTypeSeverity: const Nullable.value(null),
+            initialObservationTypeVisibility: const Nullable.value(null),
+            observationTypeVisibility: const Nullable.value(null),
+            loadedObservationType: Nullable.value(ObservationType(
+              severity: '',
+              id: const Uuid().v1(),
+            )),
             initialDeactivated: state.deactivated,
             status: EntityStatus.success,
             message: response.message,
@@ -74,8 +83,10 @@ class AddEditObservationTypeBloc
         if (response.isSuccess) {
           emit(state.copyWith(
             initialObservationTypeName: state.observationTypeName,
-            initialObservationTypeSeverity: state.observationTypeSeverity,
-            initialObservationTypeVisibility: state.observationTypeVisibility,
+            initialObservationTypeSeverity:
+                Nullable.value(state.observationTypeSeverity),
+            initialObservationTypeVisibility:
+                Nullable.value(state.observationTypeVisibility),
             initialDeactivated: state.deactivated,
             status: EntityStatus.success,
             message: response.message,
@@ -105,14 +116,16 @@ class AddEditObservationTypeBloc
       ObservationType observationType = await observationTypesRepository
           .getObservationTypeById(event.observationTypeId);
       emit(state.copyWith(
-        loadedObservationType: observationType,
+        loadedObservationType: Nullable.value(observationType),
         observationTypeName: observationType.name,
-        observationTypeSeverity: observationType.severity,
-        observationTypeVisibility: observationType.visibility,
+        observationTypeSeverity: Nullable.value(observationType.severity),
+        observationTypeVisibility: Nullable.value(observationType.visibility),
         deactivated: !observationType.active,
         initialObservationTypeName: observationType.name,
-        initialObservationTypeSeverity: observationType.severity,
-        initialObservationTypeVisibility: observationType.visibility,
+        initialObservationTypeSeverity:
+            Nullable.value(observationType.severity),
+        initialObservationTypeVisibility:
+            Nullable.value(observationType.visibility),
         initialDeactivated: !observationType.active,
       ));
     } catch (e) {}
@@ -135,7 +148,7 @@ class AddEditObservationTypeBloc
     Emitter<AddEditObservationTypeState> emit,
   ) {
     emit(state.copyWith(
-      observationTypeSeverity: event.observationTypeSeverity,
+      observationTypeSeverity: Nullable.value(event.observationTypeSeverity),
       observationTypeSeverityValidationMessage: '',
     ));
 
@@ -147,7 +160,8 @@ class AddEditObservationTypeBloc
     Emitter<AddEditObservationTypeState> emit,
   ) {
     emit(state.copyWith(
-        observationTypeVisibility: event.observationTypeVisibility));
+        observationTypeVisibility:
+            Nullable.value(event.observationTypeVisibility)));
 
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }

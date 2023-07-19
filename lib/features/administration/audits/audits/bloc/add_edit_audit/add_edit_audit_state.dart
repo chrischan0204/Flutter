@@ -179,7 +179,7 @@ class AddEditAuditState extends Equatable {
 
   AddEditAuditState copyWith({
     String? createdAuditId,
-    Audit? loadedAudit,
+    Nullable<Audit?>? loadedAudit,
     List<Site>? siteList,
     List<Template>? templateList,
     List<Project>? projectList,
@@ -189,17 +189,17 @@ class AddEditAuditState extends Equatable {
     DateTime? auditDate,
     DateTime? initialAuditDate,
     String? auditDateValidationMessage,
-    Site? site,
-    Site? initialSite,
+    Nullable<Site?>? site,
+    Nullable<Site?>? initialSite,
     String? siteValidationMessage,
     Nullable<Template?>? template,
-    Template? initialTemplate,
+    Nullable<Template?>? initialTemplate,
     String? templateValidationMessage,
     String? companies,
     String? companiesValidationMessage,
     String? initialCompanies,
     Nullable<Project?>? project,
-    Project? initialProject,
+    Nullable<Project?>? initialProject,
     String? area,
     String? initialArea,
     String? inspectors,
@@ -210,7 +210,7 @@ class AddEditAuditState extends Equatable {
   }) {
     return AddEditAuditState(
       createdAuditId: createdAuditId ?? this.createdAuditId,
-      loadedAudit: loadedAudit ?? this.loadedAudit,
+      loadedAudit: loadedAudit != null ? loadedAudit.value : this.loadedAudit,
       siteList: siteList ?? this.siteList,
       templateList: templateList ?? this.templateList,
       projectList: projectList ?? this.projectList,
@@ -222,19 +222,22 @@ class AddEditAuditState extends Equatable {
       initialAuditDate: initialAuditDate ?? this.initialAuditDate,
       auditDateValidationMessage:
           auditDateValidationMessage ?? this.auditDateValidationMessage,
-      site: site ?? this.site,
-      initialSite: initialSite ?? this.initialSite,
+      site: site != null ? site.value : this.site,
+      initialSite: initialSite != null ? initialSite.value : this.initialSite,
       siteValidationMessage:
           siteValidationMessage ?? this.siteValidationMessage,
       template: template != null ? template.value : this.template,
-      initialTemplate: initialTemplate ?? this.initialTemplate,
+      initialTemplate: initialTemplate != null
+          ? initialTemplate.value
+          : this.initialTemplate,
       templateValidationMessage:
           templateValidationMessage ?? this.templateValidationMessage,
       companies: companies ?? this.companies,
       companiesValidationMessage:
           companiesValidationMessage ?? this.companiesValidationMessage,
       initialCompanies: initialCompanies ?? this.initialCompanies,
-      initialProject: initialProject ?? this.initialProject,
+      initialProject:
+          initialProject != null ? initialProject.value : this.initialProject,
       project: project != null ? project.value : this.project,
       area: area ?? this.area,
       initialArea: initialArea ?? this.initialArea,

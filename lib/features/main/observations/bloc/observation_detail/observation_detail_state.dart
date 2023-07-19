@@ -26,7 +26,7 @@ class ObservationDetailState extends Equatable {
   final List<Site> siteList;
 
   /// user list
-  final List<User> userList;
+  final List<Entity> userList;
 
   
 
@@ -70,7 +70,7 @@ class ObservationDetailState extends Equatable {
     List<Company>? companyList,
     List<Project>? projectList,
     List<Site>? siteList,
-    List<User>? userList,
+    List<Entity>? userList,
     String? message,
   }) {
     return ObservationDetailState(

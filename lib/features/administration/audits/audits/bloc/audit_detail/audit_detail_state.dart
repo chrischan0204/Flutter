@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'audit_detail_bloc.dart';
 
 class AuditDetailState extends Equatable {
@@ -5,16 +6,25 @@ class AuditDetailState extends Equatable {
   final EntityStatus auditLoadStatus;
   final EntityStatus auditDeleteStatus;
 
-  // final List<AuditSection> auditSectionList;
   final List<AuditSectionAndQuestion> auditSectionAndQuestionList;
   final AuditSectionAndQuestion? selectedAuditSection;
+
+  final List<Document> documentList;
+  final List<AuditActionItem> actionItemList;
+  final List<ObservationDetail> observationList;
+
+  final EntityStatus status;
 
   final String message;
   const AuditDetailState({
     this.auditSummary,
     this.auditLoadStatus = EntityStatus.initial,
     this.auditDeleteStatus = EntityStatus.initial,
+    this.status = EntityStatus.initial,
     this.auditSectionAndQuestionList = const [],
+    this.documentList = const [],
+    this.actionItemList = const [],
+    this.observationList = const [],
     this.selectedAuditSection,
     this.message = '',
   });
@@ -27,6 +37,10 @@ class AuditDetailState extends Equatable {
         auditSectionAndQuestionList,
         selectedAuditSection,
         message,
+        documentList,
+        actionItemList,
+        observationList,
+        status,
       ];
 
   AuditDetailState copyWith({
@@ -35,6 +49,10 @@ class AuditDetailState extends Equatable {
     EntityStatus? auditDeleteStatus,
     List<AuditSectionAndQuestion>? auditSectionAndQuestionList,
     AuditSectionAndQuestion? selectedAuditSection,
+    List<Document>? documentList,
+    List<AuditActionItem>? actionItemList,
+    List<ObservationDetail>? observationList,
+    EntityStatus? status,
     String? message,
   }) {
     return AuditDetailState(
@@ -44,6 +62,10 @@ class AuditDetailState extends Equatable {
       auditSectionAndQuestionList:
           auditSectionAndQuestionList ?? this.auditSectionAndQuestionList,
       selectedAuditSection: selectedAuditSection ?? this.selectedAuditSection,
+      documentList: documentList ?? this.documentList,
+      actionItemList: actionItemList ?? this.actionItemList,
+      observationList: observationList ?? this.observationList,
+      status: status ?? this.status,
       message: message ?? this.message,
     );
   }

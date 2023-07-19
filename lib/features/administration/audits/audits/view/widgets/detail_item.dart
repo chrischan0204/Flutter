@@ -5,12 +5,14 @@ class AuditDetailItemView extends StatelessWidget {
   final String content;
   final bool twoLines;
   final bool highlighted;
+  final VoidCallback? onClick;
   const AuditDetailItemView({
     super.key,
     required this.label,
     required this.content,
     this.twoLines = false,
     this.highlighted = false,
+    this.onClick,
   });
 
   @override
@@ -44,30 +46,33 @@ class AuditDetailItemView extends StatelessWidget {
         ],
       );
     } else {
-      return CustomBottomBorderContainer(
-        padding: inset10,
-        backgroundColor: highlighted ? lightBlueAccent : Colors.transparent,
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: textSemiBold14.copyWith(
-                  color: primaryColor,
+      return InkWell(
+        onTap: onClick,
+        child: CustomBottomBorderContainer(
+          padding: inset10,
+          backgroundColor: highlighted ? lightBlueAccent : Colors.transparent,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  style: textSemiBold14.copyWith(
+                    color: primaryColor,
+                  ),
                 ),
               ),
-            ),
-            spacerx20,
-            Expanded(
-              child: Text(
-                content,
-                style: textNormal14,
-                // maxLines: 2,
-                // softWrap: false,
-                // overflow: TextOverflow.ellipsis,
+              spacerx20,
+              Expanded(
+                child: Text(
+                  content,
+                  style: textNormal14,
+                  // maxLines: 2,
+                  // softWrap: false,
+                  // overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }

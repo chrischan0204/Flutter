@@ -7,7 +7,7 @@ class AssigneeSelectField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddEditActionItemBloc, AddEditActionItemState>(
       builder: (context, state) {
-        Map<String, User> items = {}..addEntries(
+        Map<String, Entity> items = {}..addEntries(
             state.userList.map((user) => MapEntry(user.name!, user)));
         return CustomSingleSelect(
           items: items,
@@ -16,7 +16,12 @@ class AssigneeSelectField extends StatelessWidget {
           onChanged: (assignee) {
             context
                 .read<AddEditActionItemBloc>()
-                .add(AddEditActionItemAssigneeChanged(assignee: assignee.value));
+                .add(AddEditActionItemAssigneeChanged(
+                    assignee: User(
+                  id: (assignee.value as Entity).id,
+                  firstName: (assignee.value as Entity).name!.split(' ').first,
+                  lastName: (assignee.value as Entity).name!.split(' ').last,
+                )));
           },
         );
       },

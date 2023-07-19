@@ -113,11 +113,15 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
       final List<Project> projectList =
           await _sitesRepository.getProjectListForSite(actionItem.siteId);
 
+      final List<Entity> userList =
+          await _sitesRepository.getUserListForSite(actionItem.siteId);
+
       emit(state.copyWith(
         companyList: companyList
             .map((e) => Company(id: e.companyId, name: e.companyName))
             .toList(),
         projectList: projectList,
+        userList: userList,
         actionItem:
             Nullable.value(actionItem.copyWith(id: event.actionItem.id)),
         task: actionItem.name,
@@ -191,25 +195,29 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     Emitter<AddActionItemState> emit,
   ) async {
     emit(state.copyWith(
-      site: Nullable.value(event.site),
-      siteValidationMessage: '',
-      company: const Nullable.value(null),
-      project: const Nullable.value(null),
-    ));
+        site: Nullable.value(event.site),
+        siteValidationMessage: '',
+        company: const Nullable.value(null),
+        project: const Nullable.value(null),
+        assignee: const Nullable.value(null)));
 
     if (event.site.id != null) {
       List<CompanySite> companyList =
           await _sitesRepository.getCompanyListForSite(event.site.id!);
 
-      emit(state.copyWith(
-          companyList: companyList
-              .map((e) => Company(id: e.id, name: e.companyName))
-              .toList()));
-
       List<Project> projectList =
           await _sitesRepository.getProjectListForSite(event.site.id!);
 
-      emit(state.copyWith(projectList: projectList));
+      final List<Entity> userList =
+          await _sitesRepository.getUserListForSite(event.site.id!);
+
+      emit(state.copyWith(
+        projectList: projectList,
+        userList: userList,
+        companyList: companyList
+            .map((e) => Company(id: e.id, name: e.companyName))
+            .toList(),
+      ));
     }
   }
 

@@ -44,3 +44,12 @@ class AuditDetailSelectedAuditSectionChanged extends AuditDetailEvent {
   @override
   List<Object> get props => [auditSection];
 }
+
+/// event to load document list
+class AuditDetailDocumentListLoaded extends AuditDetailEvent {}
+
+/// event to load observation list
+class AuditDetailObservationListLoaded extends AuditDetailEvent {}
+
+/// event to load action item list
+class AuditDetailActionItemListLoaded extends AuditDetailEvent {}

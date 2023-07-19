@@ -33,7 +33,14 @@ class AddEditActionItemProjectListLoaded extends AddEditActionItemEvent {
   List<Object> get props => [siteId];
 }
 
-class AddEditActionItemUserListLoaded extends AddEditActionItemEvent {}
+class AddEditActionItemUserListLoaded extends AddEditActionItemEvent {
+  final String siteId;
+
+  const AddEditActionItemUserListLoaded({required this.siteId});
+
+  @override
+  List<Object> get props => [siteId];
+}
 
 class AddEditActionItemNameChanged extends AddEditActionItemEvent {
   final String name;

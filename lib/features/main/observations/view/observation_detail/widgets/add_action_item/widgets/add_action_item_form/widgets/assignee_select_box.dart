@@ -8,39 +8,40 @@ class AssigneeSelectField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
       label: 'Assignee (*)',
-      content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
-        builder: (context, observationDetailState) {
-          Map<String, User> items = {}..addEntries(observationDetailState
-              .userList
-              .map((user) => MapEntry(user.name!, user)));
-          return BlocBuilder<AddActionItemBloc, AddActionItemState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomSingleSelect(
-                    items: items,
-                    hint: 'Select Assignee',
-                    selectedValue: observationDetailState.userList.isEmpty
-                        ? null
-                        : state.assignee?.name,
-                    onChanged: (assignee) {
-                      context.read<AddActionItemBloc>().add(
-                          AddActionItemAssigneeChanged(
-                              assignee: assignee.value));
-                    },
+      content: BlocBuilder<AddActionItemBloc, AddActionItemState>(
+        builder: (context, state) {
+          Map<String, Entity> items = {}..addEntries(
+              state.userList.map((user) => MapEntry(user.name!, user)));
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomSingleSelect(
+                items: items,
+                hint: 'Select Assignee',
+                selectedValue:
+                    state.userList.isEmpty ? null : state.assignee?.name,
+                onChanged: (assignee) {
+                  context
+                      .read<AddActionItemBloc>()
+                      .add(AddActionItemAssigneeChanged(
+                          assignee: User(
+                        id: (assignee.value as Entity).id,
+                        firstName:
+                            (assignee.value as Entity).name!.split(' ').first,
+                        lastName:
+                            (assignee.value as Entity).name!.split(' ').last,
+                      )));
+                },
+              ),
+              if (state.assigneeValidationMessage.isNotEmpty)
+                Padding(
+                  padding: inset4,
+                  child: Text(
+                    state.assigneeValidationMessage,
+                    style: const TextStyle(fontSize: 12, color: Colors.red),
                   ),
-                  if (state.assigneeValidationMessage.isNotEmpty)
-                    Padding(
-                      padding: inset4,
-                      child: Text(
-                        state.assigneeValidationMessage,
-                        style: const TextStyle(fontSize: 12, color: Colors.red),
-                      ),
-                    )
-                ],
-              );
-            },
+                )
+            ],
           );
         },
       ),

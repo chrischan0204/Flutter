@@ -528,4 +528,42 @@ class AuditsRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<List<Document>> getDocumentListForDetail(String auditId) async {
+    Response response = await super.get('$url/$auditId/documents');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Document.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<ObservationDetail>> getAuditObservationListForDetail(
+      String auditId) async {
+    Response response = await super.get('$url/$auditId/observations');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => ObservationDetail.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<List<AuditActionItem>> getAuditActionItemListForDetail(
+      String auditId) async {
+    Response response = await super.get('$url/$auditId/actionitems');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => AuditActionItem.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 }

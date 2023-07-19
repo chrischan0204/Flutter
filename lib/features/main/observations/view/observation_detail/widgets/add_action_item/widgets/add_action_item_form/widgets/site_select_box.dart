@@ -10,11 +10,11 @@ class SiteSelectField extends StatelessWidget {
       label: 'Site (*)',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {
-          Map<String, Site> items = {}..addEntries(observationDetailState
-              .siteList
-              .map((site) => MapEntry(site.name ?? '', site)));
           return BlocBuilder<AddActionItemBloc, AddActionItemState>(
             builder: (context, state) {
+              Map<String, Site> items = {}..addEntries(observationDetailState
+                  .siteList
+                  .map((site) => MapEntry(site.name ?? '', site)));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
