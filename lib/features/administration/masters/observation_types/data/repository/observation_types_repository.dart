@@ -69,4 +69,16 @@ class ObservationTypesRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  Future<List<Entity>> getActiveObservationTypeList() async {
+    Response response = await super.get('$url/items');
+
+    if (response.statusCode == 200) {
+      return List.from(json.decode(response.body))
+          .map((e) => Entity.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
 }

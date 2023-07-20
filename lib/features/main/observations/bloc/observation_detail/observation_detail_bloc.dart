@@ -133,10 +133,18 @@ class ObservationDetailBloc
     ObservationDetailPriorityLevelListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<PriorityLevel> priorityLevelList =
-        await priorityLevelsRepository.getPriorityLevelList();
+    List<Entity> priorityLevelList =
+        await priorityLevelsRepository.getActivePriorityLevelList();
 
-    emit(state.copyWith(priorityLevelList: priorityLevelList));
+    emit(state.copyWith(
+        priorityLevelList: priorityLevelList
+            .map((e) => PriorityLevel(
+                  colorCode: Colors.white,
+                  priorityType: '',
+                  id: e.id,
+                  name: e.name,
+                ))
+            .toList()));
     try {} catch (e) {}
   }
 
@@ -144,10 +152,14 @@ class ObservationDetailBloc
     ObservationDetailObservationTypeListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<ObservationType> observationTypeList =
-        await _observationTypesRepository.getObservationTypeList();
+    List<Entity> observationTypeList =
+        await _observationTypesRepository.getActiveObservationTypeList();
 
-    emit(state.copyWith(observationTypeList: observationTypeList));
+    emit(state.copyWith(
+      observationTypeList: observationTypeList
+          .map((e) => ObservationType(severity: '', id: e.id, name: e.name))
+          .toList(),
+    ));
     try {} catch (e) {}
   }
 

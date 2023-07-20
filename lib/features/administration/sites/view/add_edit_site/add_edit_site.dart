@@ -80,6 +80,7 @@ class _AddEditSiteWidgetState extends State<AddEditSiteWidget> {
           ).showNotification();
         }
       },
+      listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return AddEditEntityTemplate(
           label: pageLabel,

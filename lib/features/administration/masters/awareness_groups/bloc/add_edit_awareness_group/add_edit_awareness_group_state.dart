@@ -43,7 +43,7 @@ class AddEditAwarenessGroupState extends Equatable {
   AwarenessGroup get awarenessGroup => AwarenessGroup(name: name);
 
   AddEditAwarenessGroupState copyWith({
-    AwarenessGroup? loadedAwarenessGroup,
+    Nullable<AwarenessGroup?>? loadedAwarenessGroup,
     String? name,
     String? initialName,
     String? nameValidationMessage,
@@ -51,7 +51,9 @@ class AddEditAwarenessGroupState extends Equatable {
     String? message,
   }) {
     return AddEditAwarenessGroupState(
-      loadedAwarenessGroup: loadedAwarenessGroup ?? this.loadedAwarenessGroup,
+      loadedAwarenessGroup: loadedAwarenessGroup != null
+          ? loadedAwarenessGroup.value
+          : this.loadedAwarenessGroup,
       name: name ?? this.name,
       initialName: initialName ?? this.initialName,
       nameValidationMessage:

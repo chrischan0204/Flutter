@@ -70,4 +70,15 @@ class PriorityLevelsRepository extends BaseRepository {
     }
     throw Exception();
   }
+
+  Future<List<Entity>> getActivePriorityLevelList() async {
+    Response response = await super.get('$url/items');
+    if (response.statusCode == 200) {
+      List<Entity> priorityLevels = List.from(jsonDecode(response.body))
+          .map((priorityLevelJson) => Entity.fromMap(priorityLevelJson))
+          .toList();
+      return priorityLevels;
+    }
+    throw Exception();
+  }
 }

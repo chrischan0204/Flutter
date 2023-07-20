@@ -37,7 +37,7 @@ class UserNotificationSettingView extends StatelessWidget {
                     ? Padding(
                         padding: insetx20,
                         child: const Text(
-                          'The user gets notifications for the following sites/ awareness categories.',
+                          'The user gets notifications for the following sites/observation types.',
                           style: TextStyle(
                             fontSize: 12,
                             fontFamily: 'OpenSans',

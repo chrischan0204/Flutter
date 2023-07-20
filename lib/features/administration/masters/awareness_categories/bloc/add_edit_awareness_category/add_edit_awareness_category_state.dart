@@ -83,10 +83,10 @@ class AddEditAwarenessCategoryState extends Equatable {
       ];
 
   AddEditAwarenessCategoryState copyWith({
-    AwarenessCategory? loadedAwarenessCategory,
+    Nullable<AwarenessCategory?>? loadedAwarenessCategory,
     List<AwarenessGroup>? awarenessGroupList,
-    AwarenessGroup? awarenessGroup,
-    AwarenessGroup? initialAwarenessGroup,
+    Nullable<AwarenessGroup?>? awarenessGroup,
+    Nullable<AwarenessGroup?>? initialAwarenessGroup,
     String? awarenessGroupValidationMessage,
     String? name,
     String? initialName,
@@ -97,12 +97,15 @@ class AddEditAwarenessCategoryState extends Equatable {
     String? message,
   }) {
     return AddEditAwarenessCategoryState(
-      loadedAwarenessCategory:
-          loadedAwarenessCategory ?? this.loadedAwarenessCategory,
+      loadedAwarenessCategory: loadedAwarenessCategory != null
+          ? loadedAwarenessCategory.value
+          : this.loadedAwarenessCategory,
       awarenessGroupList: awarenessGroupList ?? this.awarenessGroupList,
-      awarenessGroup: awarenessGroup ?? this.awarenessGroup,
-      initialAwarenessGroup:
-          initialAwarenessGroup ?? this.initialAwarenessGroup,
+      awarenessGroup:
+          awarenessGroup != null ? awarenessGroup.value : this.awarenessGroup,
+      initialAwarenessGroup: initialAwarenessGroup != null
+          ? initialAwarenessGroup.value
+          : this.initialAwarenessGroup,
       awarenessGroupValidationMessage: awarenessGroupValidationMessage ??
           this.awarenessGroupValidationMessage,
       name: name ?? this.name,

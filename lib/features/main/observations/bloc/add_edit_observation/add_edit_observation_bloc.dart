@@ -195,9 +195,17 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) async {
     try {
-      List<PriorityLevel> priorityLevelList =
-          await priorityLevelsRepository.getPriorityLevelList();
-      emit(state.copyWith(priorityLevelList: priorityLevelList));
+      List<Entity> priorityLevelList =
+          await priorityLevelsRepository.getActivePriorityLevelList();
+      emit(state.copyWith(
+          priorityLevelList: priorityLevelList
+              .map((e) => PriorityLevel(
+                    colorCode: Colors.white,
+                    priorityType: '',
+                    id: e.id,
+                    name: e.name,
+                  ))
+              .toList()));
     } catch (e) {}
   }
 
@@ -206,9 +214,13 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) async {
     try {
-      List<ObservationType> observationTypeList =
-          await observationTypesRepository.getObservationTypeList();
-      emit(state.copyWith(observationTypeList: observationTypeList));
+      List<Entity> observationTypeList =
+          await observationTypesRepository.getActiveObservationTypeList();
+      emit(state.copyWith(
+        observationTypeList: observationTypeList
+            .map((e) => ObservationType(severity: '', id: e.id, name: e.name))
+            .toList(),
+      ));
     } catch (e) {}
   }
 

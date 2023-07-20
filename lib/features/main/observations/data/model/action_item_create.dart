@@ -54,9 +54,9 @@ class ActionItemCreate extends Equatable {
       'dueBy': dueBy,
       'assigneeId': assigneeId,
       'siteId': siteId,
-      'awarenessCategoryId': categoryId,
-      'companyId': companyId,
-      'projectId': projectId,
+      'awarenessCategoryId': categoryId?.isNotEmpty == true ? categoryId : null,
+      'companyId': companyId?.isNotEmpty == true ? companyId : null,
+      'projectId': projectId?.isNotEmpty == true ? projectId : null,
       'area': location,
       'notes': notes,
     };

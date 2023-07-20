@@ -20,7 +20,7 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     _priorityLevelsRepository = context.read();
     _observationTypesRepository = context.read();
     _sitesRepository = context.read();
-    _usersRepository = context.read(); 
+    _usersRepository = context.read();
     _awarenessCategoriesRepository = context.read();
 
     on<ExecuteAuditQuestionViewOptionLoaded>(
@@ -28,7 +28,7 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     on<ExecuteAuditQuestionViewOptionSelected>(
         _onExecuteAuditQuestionViewOptionSelected);
     on<ExecuteAuditPriorityLevelListLoaded>(
-        _onExecuteAuditPriorityLevelListLoaded);  
+        _onExecuteAuditPriorityLevelListLoaded);
     on<ExecuteAuditObservationTypeListLoaded>(
         _onExecuteAuditObservationTypeListLoaded);
     on<ExecuteAuditSiteListLoaded>(_onExecuteAuditSiteListLoaded);
@@ -89,10 +89,18 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     Emitter<ExecuteAuditState> emit,
   ) async {
     try {
-      List<PriorityLevel> priorityLevelList =
-          await _priorityLevelsRepository.getPriorityLevelList();
+      List<Entity> priorityLevelList =
+          await _priorityLevelsRepository.getActivePriorityLevelList();
 
-      emit(state.copyWith(priorityLevelList: priorityLevelList));
+      emit(state.copyWith(
+          priorityLevelList: priorityLevelList
+              .map((e) => PriorityLevel(
+                    colorCode: Colors.white,
+                    priorityType: '',
+                    id: e.id,
+                    name: e.name,
+                  ))
+              .toList()));
     } catch (e) {}
   }
 
@@ -101,10 +109,14 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     Emitter<ExecuteAuditState> emit,
   ) async {
     try {
-      List<ObservationType> observationTypeList =
-          await _observationTypesRepository.getObservationTypeList();
+      List<Entity> observationTypeList =
+          await _observationTypesRepository.getActiveObservationTypeList();
 
-      emit(state.copyWith(observationTypeList: observationTypeList));
+      emit(state.copyWith(
+        observationTypeList: observationTypeList
+            .map((e) => ObservationType(severity: '', id: e.id, name: e.name))
+            .toList(),
+      ));
     } catch (e) {}
   }
 

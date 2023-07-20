@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '/common_libraries.dart';
 
 part 'add_edit_awareness_category_event.dart';
@@ -39,19 +41,19 @@ class AddEditAwarenessCategoryBloc
           .getAwarenessCategoryById(event.id);
 
       emit(state.copyWith(
-        loadedAwarenessCategory: awarenessCategory,
+        loadedAwarenessCategory: Nullable.value(awarenessCategory),
         initialName: awarenessCategory.name,
         initialDeactivated: !awarenessCategory.active,
-        initialAwarenessGroup: AwarenessGroup(
+        initialAwarenessGroup: Nullable.value(AwarenessGroup(
           id: awarenessCategory.groupId,
           name: awarenessCategory.groupName,
-        ),
+        )),
         name: awarenessCategory.name,
         deactivated: !awarenessCategory.active,
-        awarenessGroup: AwarenessGroup(
+        awarenessGroup: Nullable.value(AwarenessGroup(
           id: awarenessCategory.groupId,
           name: awarenessCategory.groupName,
-        ),
+        )),
       ));
     } catch (e) {}
   }
@@ -80,9 +82,13 @@ class AddEditAwarenessCategoryBloc
 
         if (response.isSuccess) {
           emit(state.copyWith(
-            initialName: state.name,
-            initialDeactivated: state.deactivated,
-            initialAwarenessGroup: state.awarenessGroup,
+            initialName: '',
+            name: '',
+            loadedAwarenessCategory:
+                Nullable.value(AwarenessCategory(id: const Uuid().v1())),
+            initialDeactivated: false,
+            initialAwarenessGroup: Nullable.value(state.awarenessGroup),
+            awarenessGroup: const Nullable.value(null),
             status: EntityStatus.success,
             message: response.message,
           ));
@@ -117,7 +123,7 @@ class AddEditAwarenessCategoryBloc
           emit(state.copyWith(
             initialName: state.name,
             initialDeactivated: state.deactivated,
-            initialAwarenessGroup: state.awarenessGroup,
+            initialAwarenessGroup: Nullable.value(state.awarenessGroup),
             status: EntityStatus.success,
             message: response.message,
           ));
@@ -155,7 +161,7 @@ class AddEditAwarenessCategoryBloc
     Emitter<AddEditAwarenessCategoryState> emit,
   ) {
     emit(state.copyWith(
-      awarenessGroup: event.awarenessGroup,
+      awarenessGroup: Nullable.value(event.awarenessGroup),
       awarenessGroupValidationMessage: '',
     ));
 

@@ -3,7 +3,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '/common_libraries.dart';
 
-class TableView extends StatelessWidget {
+class TableView extends StatefulWidget {
   final double? height;
   final List<String> columns;
   final List<List<Widget>> rows;
@@ -14,7 +14,14 @@ class TableView extends StatelessWidget {
     this.rows = const [],
   });
 
-  List<GridColumn> _buildColumns() => columns
+  @override
+  State<TableView> createState() => _TableViewState();
+}
+
+class _TableViewState extends State<TableView> {
+  late Map<String, double> columnWidths = {};
+
+  List<GridColumn> _buildColumns() => widget.columns
       .map(
         (column) => GridColumn(
           columnName: column,
@@ -22,20 +29,25 @@ class TableView extends StatelessWidget {
               ? 80.0
               : column.contains('Role')
                   ? 100
-                  : 40.0,
+                  : 60.0,
+          width: columnWidths[column] ?? double.nan,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              column,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                fontFamily: 'OpenSans',
+            child: Tooltip(
+              message: column,
+              preferBelow: false,
+              child: Text(
+                column,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  fontFamily: 'OpenSans',
+                ),
+                softWrap: false,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              softWrap: false,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
@@ -43,18 +55,35 @@ class TableView extends StatelessWidget {
       .toList();
 
   @override
+  void initState() {
+    setState(() {
+      for (final column in widget.columns) {
+        columnWidths.addAll({column: double.nan});
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      // padding: consrEdgeInsets.symmetric(horizontal: 20),
-      height: height,
+    return SizedBox(
+      height: widget.height,
       child: SfDataGridTheme(
         data: SfDataGridThemeData(
           headerColor: lightTeal,
           rowHoverColor: const Color(0xffe7f9fc),
         ),
         child: SfDataGrid(
-          source: DataSource(columns: columns, data: rows),
+          source: DataSource(columns: widget.columns, data: widget.rows),
           columnWidthMode: ColumnWidthMode.fill,
+          columnResizeMode: ColumnResizeMode.onResize,
+          onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
+            setState(() {
+              columnWidths[details.column.columnName] = details.width;
+            });
+            return true;
+          },
+          allowColumnsResizing: true,
           gridLinesVisibility: GridLinesVisibility.none,
           headerGridLinesVisibility: GridLinesVisibility.none,
           headerRowHeight: 52,

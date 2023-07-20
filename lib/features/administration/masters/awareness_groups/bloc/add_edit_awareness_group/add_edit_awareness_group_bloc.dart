@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '/common_libraries.dart';
 
 part 'add_edit_awareness_group_event.dart';
@@ -30,7 +32,7 @@ class AddEditAwarenessGroupBloc
           await awarenessGroupsRepository.getAwarenessGroupById(event.id);
 
       emit(state.copyWith(
-        loadedAwarenessGroup: awarenessGroup,
+        loadedAwarenessGroup: Nullable.value(awarenessGroup),
         name: awarenessGroup.name,
         initialName: awarenessGroup.name,
       ));
@@ -48,7 +50,10 @@ class AddEditAwarenessGroupBloc
             .addAwarenessGroup(state.awarenessGroup);
         if (response.isSuccess) {
           emit(state.copyWith(
-            initialName: state.name,
+            initialName: '',
+            name: '',
+            loadedAwarenessGroup:
+                Nullable.value(AwarenessGroup(id: const Uuid().v1())),
             status: EntityStatus.success,
             message: response.message,
           ));

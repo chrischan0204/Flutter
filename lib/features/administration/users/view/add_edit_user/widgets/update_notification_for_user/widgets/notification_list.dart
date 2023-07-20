@@ -60,7 +60,7 @@ class _NotificationListViewState extends State<NotificationListView> {
         Padding(
           padding: insetx20,
           child: const Text(
-            'Mark all Awareness categories for sites where the notification should be routed to this user.',
+            'Mark all observation types for sites where the notification should be routed to this user.',
             style: TextStyle(
               fontSize: 12,
               fontFamily: 'OpenSans',
