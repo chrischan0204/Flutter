@@ -99,7 +99,7 @@ class _FilterSettingWidgetState extends State<FilterSettingWidget> {
                   child: Builder(
                     builder: (context) {
                       if (state.userFilterSettingList.isEmpty &&
-                          state.userFilterUpdate.undeletedUserFilterItems
+                          state.userFilterUpdate!.undeletedUserFilterItems
                               .isEmpty) {
                         return const Center(
                           child: Padding(

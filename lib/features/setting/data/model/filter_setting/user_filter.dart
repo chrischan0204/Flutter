@@ -1,9 +1,4 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
-import 'package:safety_eta/common_libraries.dart';
-
-import 'user_filter_item.dart';
+import '/common_libraries.dart';
 
 class UserFilter extends Equatable {
   final String id;
@@ -14,7 +9,7 @@ class UserFilter extends Equatable {
   final List<UserFilterItem> userFilterItems;
   const UserFilter({
     this.id = emptyGuid,
-    this.filterName = '',
+    this.filterName = 'Unsaved filter',
     required this.viewName,
     this.isDefault = false,
     this.deleted = false,

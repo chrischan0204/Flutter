@@ -5,10 +5,10 @@ class FilterSettingItemHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 26),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 26),
       child: Row(
-        children: const [
+        children: [
           SizedBox(width: 20),
           SizedBox(
             width: 100,

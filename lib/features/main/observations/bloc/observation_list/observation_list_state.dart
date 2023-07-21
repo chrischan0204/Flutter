@@ -14,6 +14,8 @@ class ObservationListState extends Equatable {
   /// observation load status
   final EntityStatus observationLoadStatus;
 
+  
+
   /// total rows of observation list
   final int totalRows;
   const ObservationListState({

@@ -323,7 +323,12 @@ class _CrudState extends State<EntityListTemplate> {
                     builder: (context, state) {
                       final filterNotApplied =
                           state.appliedUserFilterSetting != null &&
-                              !state.appliedUserFilterSetting!.isNew;
+                                  !state.appliedUserFilterSetting!.isNew ||
+                              (state.appliedUserFilterSetting?.filterName !=
+                                      'Add New' &&
+                                  state.appliedUserFilterSetting?.filterName
+                                          .isNotEmpty ==
+                                      true);
                       return Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,

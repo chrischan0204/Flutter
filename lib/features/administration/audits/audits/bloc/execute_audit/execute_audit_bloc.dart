@@ -149,10 +149,13 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     Emitter<ExecuteAuditState> emit,
   ) async {
     try {
-      List<AwarenessCategory> categoryList =
-          await _awarenessCategoriesRepository.getAwarenessCategorieList();
+      List<Entity> categoryList = await _awarenessCategoriesRepository
+          .getActiveAwarenessCategorieList();
 
-      emit(state.copyWith(categoryList: categoryList));
+      emit(state.copyWith(
+          categoryList: categoryList
+              .map((e) => AwarenessCategory(id: e.id, name: e.name))
+              .toList()));
     } catch (e) {}
   }
 }

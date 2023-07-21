@@ -10,7 +10,7 @@ class UserFilterSetting extends Equatable {
   final bool isDefault;
   const UserFilterSetting({
     this.id = emptyGuid,
-    this.filterName = '',
+    this.filterName = 'Unsaved filter',
     this.isDefault = false,
   });
 

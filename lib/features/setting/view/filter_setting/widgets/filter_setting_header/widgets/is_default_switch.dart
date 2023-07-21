@@ -11,7 +11,7 @@ class IsDefaultSwitch extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomSwitch(
-              switchValue: state.userFilterUpdate.isDefault,
+              switchValue: state.userFilterUpdate!.isDefault,
               onChanged: (value) => context.read<FilterSettingBloc>().add(
                   FilterSettingUserFilterIsDefaultChanged(isDefault: value)),
               onlySwitch: true,

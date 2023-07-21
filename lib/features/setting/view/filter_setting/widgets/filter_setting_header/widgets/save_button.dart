@@ -21,7 +21,7 @@ class SaveButton extends StatelessWidget {
                 notifyType: NotifyType.success,
                 content: 'User filter saved successfully',
               ).showNotification();
-              onFilterSaved(state.userFilterUpdate.id);
+              onFilterSaved(state.userFilterUpdate!.id);
               context.read<FilterSettingBloc>().add(
                   FilterSettingAppliedUserFilterSettingChanged(
                       appliedUserFilterSetting:
@@ -38,7 +38,7 @@ class SaveButton extends StatelessWidget {
                   ? null
                   : () {
                       if (Validation.isEmpty(
-                          state.userFilterUpdate.filterName)) {
+                          state.userFilterUpdate!.filterName)) {
                         CustomNotification(
                           context: context,
                           notifyType: NotifyType.error,

@@ -41,7 +41,7 @@ class DeleteButton extends StatelessWidget {
                         btnOkOnPress: () {
                           context.read<FilterSettingBloc>().add(
                               FilterSettingUserFilterSettingDeletedById(
-                                  filterId: state.userFilterUpdate.id));
+                                  filterId: state.userFilterUpdate!.id));
                         },
                         dialogType: DialogType.question,
                       ).show();

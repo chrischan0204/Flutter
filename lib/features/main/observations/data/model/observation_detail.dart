@@ -51,6 +51,7 @@ class ObservationDetail extends Equatable {
   final String? closedByUserName;
   final DateTime? closedOn;
   final bool notificationSent;
+  final String actionItems;
 
   const ObservationDetail({
     required this.id,
@@ -101,6 +102,7 @@ class ObservationDetail extends Equatable {
     this.closedById,
     this.closedByUserName,
     this.closedOn,
+    this.actionItems = '',
     required this.notificationSent,
   });
 
@@ -155,6 +157,7 @@ class ObservationDetail extends Equatable {
         closedByUserName,
         closedOn,
         notificationSent,
+        actionItems,
       ];
 
   String? get formatedAssessedOn => assessedOn != null
@@ -180,6 +183,7 @@ class ObservationDetail extends Equatable {
         assessedBy: assessedByName ?? '',
         assessedOn: formatedAssessedOn,
         assessedAs: userReportedObservationTypeName ?? '',
+        actionItems: actionItems,
       );
 
   factory ObservationDetail.fromMap(Map<String, dynamic> map) {
@@ -360,6 +364,7 @@ class ObservationDetail extends Equatable {
     String? closedByUserName,
     DateTime? closedOn,
     bool? notificationSent,
+    String? actionItems,
   }) {
     return ObservationDetail(
       id: id ?? this.id,
@@ -425,6 +430,7 @@ class ObservationDetail extends Equatable {
       closedByUserName: closedByUserName ?? this.closedByUserName,
       closedOn: closedOn ?? this.closedOn,
       notificationSent: notificationSent ?? this.notificationSent,
+      actionItems: actionItems ?? this.actionItems,
     );
   }
 }

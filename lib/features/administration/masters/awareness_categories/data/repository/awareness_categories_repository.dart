@@ -25,6 +25,20 @@ class AwarenessCategoriesRepository extends BaseRepository {
     return <AwarenessCategory>[];
   }
 
+  // get active awareness categories list from api
+  Future<List<Entity>> getActiveAwarenessCategorieList() async {
+    Response response = await super.get('$url/items');
+
+    if (response.statusCode == 200) {
+      List<Entity> awarenessCategories = List.from(jsonDecode(response.body))
+          .map((awarenessCategoryJson) => Entity.fromMap(awarenessCategoryJson))
+          .toList();
+      return awarenessCategories;
+    }
+
+    throw Exception();
+  }
+
   // get awareness category by id from api
   Future<AwarenessCategory> getAwarenessCategoryById(
     String awarenessCategoryId,

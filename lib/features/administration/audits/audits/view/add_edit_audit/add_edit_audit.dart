@@ -102,9 +102,6 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
       },
       listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return WaitingApproveEditAuditView(
-            auditNumber: state.loadedAudit?.auditNumber ?? '',
-          );
         if (state.status.isLoading &&
             isWithConfirmation &&
             widget.auditId != null) {

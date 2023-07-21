@@ -86,9 +86,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
       includeDeleted: includeDeleted ?? filterSettingBloc.state.includeDeleted,
       pageNum: pageNum ?? paginationBloc.state.selectedPageNum,
       pageSize: rowPerPage ?? paginationBloc.state.rowsPerPage,
-      filterOption: filterSettingBloc.state.appliedUserFilterSetting != null
-          ? filterSettingBloc.state.userFilterUpdate
-          : null,
+      filterOption: filterSettingBloc.state.userFilterUpdate,
     )));
   }
 }

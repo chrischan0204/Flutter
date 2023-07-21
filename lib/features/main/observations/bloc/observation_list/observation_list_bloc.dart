@@ -69,9 +69,17 @@ class ObservationListBloc
       ObservationDetail observation =
           await observationsRepository.getObservationById(event.observationId);
 
+      List<ActionItem> actionItems =
+          await observationsRepository.getActionItemList(event.observationId);
+
       emit(state.copyWith(
         observationLoadStatus: EntityStatus.success,
-        observation: observation,
+        observation: observation.copyWith(
+            actionItems: actionItems.isNotEmpty
+                ? actionItems
+                    .map((e) => e.name)
+                    .reduce((value, element) => '$value, $element')
+                : ''),
       ));
     } catch (e) {
       emit(state.copyWith(observationLoadStatus: EntityStatus.failure));

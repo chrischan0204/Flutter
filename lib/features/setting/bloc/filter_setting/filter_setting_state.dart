@@ -4,7 +4,7 @@ class FilterSettingState extends Equatable {
   final EntityStatus filterSettingListLoadStatus;
   final List<FilterSetting> filterSettingList;
 
-  final UserFilter userFilterUpdate;
+  final UserFilter? userFilterUpdate;
   final EntityStatus userFilterSettingLoadStatus;
 
   final List<UserFilterSetting> userFilterSettingList;
@@ -25,7 +25,7 @@ class FilterSettingState extends Equatable {
   const FilterSettingState({
     this.filterSettingListLoadStatus = EntityStatus.initial,
     this.filterSettingList = const [],
-    this.userFilterUpdate = const UserFilter(viewName: ''),
+    this.userFilterUpdate,
     this.selectedUserFilterSetting,
     this.userFilterSettingLoadStatus = EntityStatus.initial,
     this.userFilterSettingList = const [],
@@ -79,7 +79,7 @@ class FilterSettingState extends Equatable {
       userFilterSettingListLoadStatus.isLoading ||
       filterSettingListLoadStatus.isLoading;
 
-  bool get isFilterUpdateNotFill => userFilterUpdate.userFilterItems
+  bool get isFilterUpdateNotFill => (userFilterUpdate?.userFilterItems ?? [])
       .where((userFilterItem) =>
           userFilterItem.filterValue.isEmpty ||
           userFilterItem.filterValue
@@ -92,7 +92,7 @@ class FilterSettingState extends Equatable {
   FilterSettingState copyWith({
     EntityStatus? filterSettingListLoadStatus,
     List<FilterSetting>? filterSettingList,
-    UserFilter? userFilterUpdate,
+    Nullable<UserFilter?>? userFilterUpdate,
     UserFilterSetting? selectedUserFilterSetting,
     EntityStatus? userFilterSettingLoadStatus,
     List<UserFilterSetting>? userFilterSettingList,
@@ -109,7 +109,9 @@ class FilterSettingState extends Equatable {
       filterSettingListLoadStatus:
           filterSettingListLoadStatus ?? this.filterSettingListLoadStatus,
       filterSettingList: filterSettingList ?? this.filterSettingList,
-      userFilterUpdate: userFilterUpdate ?? this.userFilterUpdate,
+      userFilterUpdate: userFilterUpdate != null
+          ? userFilterUpdate.value
+          : this.userFilterUpdate,
       selectedUserFilterSetting:
           selectedUserFilterSetting ?? this.selectedUserFilterSetting,
       userFilterSettingLoadStatus:

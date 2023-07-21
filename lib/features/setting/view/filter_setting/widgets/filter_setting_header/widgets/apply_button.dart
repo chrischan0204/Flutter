@@ -21,13 +21,18 @@ class ApplyButton extends StatelessWidget {
               onPressed: state.isFilterUpdateNotFill
                   ? null
                   : () {
-                      onFilterApplied(state.userFilterUpdate.id, true);
                       context.read<FilterSettingBloc>().add(
                             FilterSettingAppliedUserFilterSettingChanged(
                               appliedUserFilterSetting:
-                                  state.selectedUserFilterSetting!,
+                                  state.selectedUserFilterSetting?.isNew == true
+                                      ? state.selectedUserFilterSetting!
+                                          .copyWith(
+                                              filterName: 'Unsaved filter')
+                                      : state.selectedUserFilterSetting!,
                             ),
                           );
+
+                      onFilterApplied(state.userFilterUpdate!.id, true);
 
                       if (!(state.selectedUserFilterSetting?.isNew ?? true)) {
                         CustomNotification(

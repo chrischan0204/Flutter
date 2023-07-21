@@ -50,10 +50,13 @@ class AddEditActionItemBloc
     Emitter<AddEditActionItemState> emit,
   ) async {
     try {
-      List<AwarenessCategory> awarenessCategoryList =
-          await _awarenessCategoriesRepository.getAwarenessCategorieList();
+      List<Entity> awarenessCategoryList = await _awarenessCategoriesRepository
+          .getActiveAwarenessCategorieList();
 
-      emit(state.copyWith(awarenessCategoryList: awarenessCategoryList));
+      emit(state.copyWith(
+          awarenessCategoryList: awarenessCategoryList
+              .map((e) => AwarenessCategory(id: e.id, name: e.name))
+              .toList()));
     } catch (e) {}
   }
 

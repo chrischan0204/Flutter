@@ -15,7 +15,6 @@ class ObservationDetailBloc
   late CompaniesRepository companiesRepository;
   late ObservationTypesRepository _observationTypesRepository;
   late UsersRepository _usersRepository;
-  late DocumentsRepository _documentsRepository;
 
   late AuthBloc _authBloc;
 
@@ -31,7 +30,6 @@ class ObservationDetailBloc
     awarenessCategoriesRepository = RepositoryProvider.of(context);
     companiesRepository = RepositoryProvider.of(context);
     _usersRepository = RepositoryProvider.of(context);
-    _documentsRepository = context.read();
 
     _authBloc = context.read();
 
@@ -77,10 +75,13 @@ class ObservationDetailBloc
     ObservationDetailAwarenessCategoryListLoaded event,
     Emitter<ObservationDetailState> emit,
   ) async {
-    List<AwarenessCategory> awarenessCategoryList =
-        await awarenessCategoriesRepository.getAwarenessCategorieList();
+    List<Entity> awarenessCategoryList =
+        await awarenessCategoriesRepository.getActiveAwarenessCategorieList();
 
-    emit(state.copyWith(awarenessCategoryList: awarenessCategoryList));
+    emit(state.copyWith(
+        awarenessCategoryList: awarenessCategoryList
+            .map((e) => AwarenessCategory(id: e.id, name: e.name))
+            .toList()));
     try {} catch (e) {}
   }
 

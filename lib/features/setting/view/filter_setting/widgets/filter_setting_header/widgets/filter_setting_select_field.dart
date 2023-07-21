@@ -46,7 +46,7 @@ class _FilterSettingSelectFieldState extends State<FilterSettingSelectField> {
                 ),
                 child: CustomSingleSelect(
                   selectedValue:
-                      state.selectedUserFilterSetting?.filterName ?? 'Add New',
+                      state.selectedUserFilterSetting?.filterName ?? 'Unsaved filter',
                   items: items,
                   hint: 'Select Filter',
                   onChanged: (value) {

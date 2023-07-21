@@ -42,7 +42,7 @@ class _RenameButtonState extends State<RenameButton> {
                 ? null
                 : () {
                     filterNameController.text =
-                        state.userFilterUpdate.filterName;
+                        state.userFilterUpdate!.filterName;
                     CustomAlert(
                       context: context,
                       width: MediaQuery.of(context).size.width / 4,
@@ -51,7 +51,7 @@ class _RenameButtonState extends State<RenameButton> {
                       btnOkText: 'Rename',
                       btnOkOnPress: () {
                         if (!Validation.isEmpty(
-                            state.userFilterUpdate.filterName)) {
+                            state.userFilterUpdate!.filterName)) {
                           filterSettingBloc
                               .add(const FilterSettingUserFilterSettingSaved());
                         } else {

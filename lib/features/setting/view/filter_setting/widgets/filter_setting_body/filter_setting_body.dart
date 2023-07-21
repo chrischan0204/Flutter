@@ -31,9 +31,9 @@ class _FilterSettingBodyViewState extends State<FilterSettingBodyView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               for (final userFilterItem
-                  in state.userFilterUpdate.undeletedUserFilterItems)
+                  in state.userFilterUpdate!.undeletedUserFilterItems)
                 FilterSettingItemView(
-                  isFirst: state.userFilterUpdate.undeletedUserFilterItems
+                  isFirst: state.userFilterUpdate!.undeletedUserFilterItems
                           .indexOf(userFilterItem) ==
                       0,
                   filterSettingList: state.filterSettingList,
