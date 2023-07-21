@@ -53,7 +53,7 @@ class ObservationImageDockBloc
     if (state.fileList.isNotEmpty) {
       emit(state.copyWith(imageUploadStatus: EntityStatus.loading));
       try {
-        await _documentsRepository.uploadDocuments(
+        EntityResponse response = await _documentsRepository.uploadDocuments(
           ownerId: observationId,
           ownerType: 'observation',
           documentList: state.fileList,
@@ -62,6 +62,7 @@ class ObservationImageDockBloc
         emit(state.copyWith(
           imageUploadStatus: EntityStatus.success,
           isUploadView: false,
+          message: response.message,
         ));
       } catch (e) {
         emit(state.copyWith(imageUploadStatus: EntityStatus.failure));

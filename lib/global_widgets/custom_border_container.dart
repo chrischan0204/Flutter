@@ -8,6 +8,7 @@ class CustomBottomBorderContainer extends Container {
     super.key,
     super.padding,
     super.child,
+    super.alignment,
     this.backgroundColor,
     super.foregroundDecoration,
   }) : super(

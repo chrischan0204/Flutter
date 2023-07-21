@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import '/features/features.dart';
 import 'common_libraries.dart';
 
 final GoRouter router = GoRouter(
@@ -406,11 +402,11 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/audits/approve_edit/:auditId',
+      path: '/audits/approve_delete/:auditId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: ApproveEditAuditView(
+          body: ApproveDeleteAuditView(
             auditId: state.params['auditId']!,
           ),
           selectedItemName: 'audits',

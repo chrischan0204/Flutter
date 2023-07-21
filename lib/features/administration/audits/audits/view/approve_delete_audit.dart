@@ -1,8 +1,8 @@
 import '/common_libraries.dart';
 
-class ApproveEditAuditView extends StatelessWidget {
+class ApproveDeleteAuditView extends StatelessWidget {
   final String auditId;
-  const ApproveEditAuditView({
+  const ApproveDeleteAuditView({
     super.key,
     required this.auditId,
   });
@@ -11,23 +11,24 @@ class ApproveEditAuditView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuditDetailBloc(context, auditId),
-      child: ApproveEditAuditWidget(auditId: auditId),
+      child: ApproveDeleteAuditWidget(auditId: auditId),
     );
   }
 }
 
-class ApproveEditAuditWidget extends StatefulWidget {
+class ApproveDeleteAuditWidget extends StatefulWidget {
   final String auditId;
-  const ApproveEditAuditWidget({
+  const ApproveDeleteAuditWidget({
     super.key,
     required this.auditId,
   });
 
   @override
-  State<ApproveEditAuditWidget> createState() => _ApproveEditAuditViewState();
+  State<ApproveDeleteAuditWidget> createState() =>
+      _ApproveDeleteAuditViewState();
 }
 
-class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
+class _ApproveDeleteAuditViewState extends State<ApproveDeleteAuditWidget> {
   static String pageTitle = 'Audit';
   static String pageLabel = 'Audit';
 
@@ -43,7 +44,17 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuditDetailBloc, AuditDetailState>(
+    return BlocConsumer<AuditDetailBloc, AuditDetailState>(
+      listener: (context, state) {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.success,
+          content: state.message,
+        ).showNotification();
+        context.go('/audits');
+      },
+      listenWhen: (previous, current) =>
+          previous.status != current.status && current.status.isSuccess,
       builder: (context, state) {
         return EntityShowTemplate(
           title: pageTitle,
@@ -52,18 +63,20 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
           isDeletable: false,
           entity: state.auditSummary?.audit,
           onListButtonClick: () => context.go('/audits'),
-          onEditButtonClick: () => context.go('/audits/edit/${widget.auditId}'),
+          onDeleteButtonClick: () =>
+              context.go('/audits/edit/${widget.auditId}'),
           customDetailWidget: Card(
             elevation: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomBottomBorderContainer(
+                  backgroundColor: const Color(0xFFFFEADE),
                   child: Padding(
                     padding: inset20,
                     child: Text(
-                      '${state.auditSummary?.auditNumber ?? ''} - Update Confirmation',
-                      style: textNormal18,
+                      '${state.auditSummary?.auditNumber ?? ''} - Delete Confirmation',
+                      style: textSemiBold18,
                     ),
                   ),
                 ),
@@ -72,53 +85,14 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      CustomBottomBorderContainer(
-                        padding: insety20,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'This update will change the template for this audit and is a significant change. As a result of this change, existing questions will be deleted and replaced with new ones. Any observations, images, action items will also be deleted along with the questions',
-                              style: textNormal14,
-                            ),
-                            spacery30,
-                            RichText(
-                              text: TextSpan(
-                                text: 'From:  ',
-                                style: textNormal18,
-                                children: [
-                                  TextSpan(
-                                    text: 'Check electric wiring',
-                                    style: textNormal18.copyWith(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: 'To:  ',
-                                style: textNormal18,
-                                children: [
-                                  TextSpan(
-                                    text: 'Electric HVAC inspection',
-                                    style: textNormal18.copyWith(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                      Text(
+                        'This action will delete Audit ${state.auditSummary?.auditNumber ?? ''}.',
+                        style: textNormal14,
                       ),
                       Padding(
                         padding: insety20,
                         child: Text(
-                          'There are 6 questions that have answers currently. These will be deleted as a result of this update.',
+                          'There are ${state.auditSummary?.answeredQuestions ?? ''} questions that have answers currently. These will be deleted as a result of this update.',
                           style: textNormal14,
                         ),
                       ),
@@ -141,7 +115,7 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
                               }),
                           spacerx10,
                           Text(
-                            'Confirm delete and to proceed',
+                            'Confirm delete and proceed',
                             style: textNormal14,
                           )
                         ],
@@ -150,10 +124,17 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
                         children: [
                           CustomButton(
                             disabled: !checked,
+                            onClick: checked
+                                ? () {
+                                    context
+                                        .read<AuditDetailBloc>()
+                                        .add(AuditDetailAuditDeleted());
+                                  }
+                                : null,
                             backgroundColor: warnColor,
                             hoverBackgroundColor: warnHoverColor,
                             body: Text(
-                              'Delete and update',
+                              'Delete',
                               style: textNormal14.copyWith(
                                 color: Colors.white,
                               ),
@@ -161,11 +142,11 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
                           ),
                           spacerx20,
                           CustomButton(
-                            onClick: () => GoRouter.of(context).go('/audits'),
+                            onClick: () => context.go('/audits'),
                             backgroundColor: purpleColor,
                             hoverBackgroundColor: purpleHoverColor,
                             body: Text(
-                              'Keep as is',
+                              'Don\'t delete',
                               style: textNormal14.copyWith(
                                 color: Colors.white,
                               ),

@@ -89,17 +89,22 @@ class AuditQuestionDataSource extends DataGridSource {
         .map((auditQuestion) => DataGridRow(
               cells: [
                 DataGridCell(
-                    columnName: columns[0], value: auditQuestion.question),
+                  columnName: columns[0],
+                  value: auditQuestion.question,
+                ),
                 DataGridCell(
-                    columnName: columns[1],
-                    value: auditQuestion.responseScaleName),
+                  columnName: columns[1],
+                  value: auditQuestion.responseScaleName,
+                ),
                 DataGridCell(
-                    columnName: columns[2],
-                    value:
-                        '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
+                  columnName: columns[2],
+                  value:
+                      '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}',
+                ),
                 DataGridCell(
-                    columnName: columns[3],
-                    value: !(auditQuestion.questionStatus == 0)),
+                  columnName: columns[3],
+                  value: auditQuestion.questionStatusName,
+                )
               ],
             ))
         .toList();
@@ -109,11 +114,15 @@ class AuditQuestionDataSource extends DataGridSource {
 
   @override
   List<DataGridRow> get rows => _entityData;
-  Widget _buildItem(dynamic value) {
-    if (value is bool) {
+  Widget _buildItem(dynamic value, int index) {
+    if (index == 3) {
       return CustomBadge(
-        label: value ? 'Answered' : 'Unanswered',
-        color: value ? primaryColor : warnColor,
+        label: value,
+        color: value == 'Answered'
+            ? successColor
+            : value == 'Unanswered'
+                ? warnColor
+                : primaryColor,
       );
     }
     return Text(value.toString());
@@ -142,7 +151,7 @@ class AuditQuestionDataSource extends DataGridSource {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: _buildItem(cells[i].value),
+            child: _buildItem(cells[i].value, i),
           )
       ],
     );

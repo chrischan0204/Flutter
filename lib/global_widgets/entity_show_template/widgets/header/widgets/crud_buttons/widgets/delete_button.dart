@@ -9,6 +9,7 @@ class DeleteButton extends StatelessWidget {
   final bool deletable;
   final String descriptionForDelete;
   final VoidCallback deleteEntity;
+  final VoidCallback? onDeleteButtonClick;
   const DeleteButton({
     super.key,
     required this.label,
@@ -16,6 +17,7 @@ class DeleteButton extends StatelessWidget {
     required this.deletable,
     required this.descriptionForDelete,
     required this.deleteEntity,
+    this.onDeleteButtonClick,
   });
 
   @override
@@ -39,29 +41,31 @@ class DeleteButton extends StatelessWidget {
               iconData: PhosphorIcons.regular.trash,
               text: 'Delete ${camelize(label)}',
               isOnlyIcon: width < minDesktopWidth,
-              onClick: () {
-                if (deletable) {
-                  CustomAlert(
-                    context: context,
-                    title: 'Confirm',
-                    width: MediaQuery.of(context).size.width / 4,
-                    description: 'Do you really want to delete this $label?',
-                    btnOkText: 'Delete',
-                    btnOkOnPress: () => deleteEntity(),
-                    btnCancelOnPress: () {},
-                    dialogType: DialogType.question,
-                  ).show();
-                } else {
-                  CustomAlert(
-                    context: context,
-                    width: MediaQuery.of(context).size.width / 4.5,
-                    description: descriptionForDelete,
-                    btnOkText: 'OK',
-                    btnOkOnPress: () {},
-                    dialogType: DialogType.warning,
-                  ).show();
-                }
-              },
+              onClick: onDeleteButtonClick ??
+                  () {
+                    if (deletable) {
+                      CustomAlert(
+                        context: context,
+                        title: 'Confirm',
+                        width: MediaQuery.of(context).size.width / 4,
+                        description:
+                            'Do you really want to delete this $label?',
+                        btnOkText: 'Delete',
+                        btnOkOnPress: () => deleteEntity(),
+                        btnCancelOnPress: () {},
+                        dialogType: DialogType.question,
+                      ).show();
+                    } else {
+                      CustomAlert(
+                        context: context,
+                        width: MediaQuery.of(context).size.width / 4.5,
+                        description: descriptionForDelete,
+                        btnOkText: 'OK',
+                        btnOkOnPress: () {},
+                        dialogType: DialogType.warning,
+                      ).show();
+                    }
+                  },
             ),
           );
   }

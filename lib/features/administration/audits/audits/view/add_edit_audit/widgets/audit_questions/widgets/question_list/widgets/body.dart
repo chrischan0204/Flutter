@@ -87,8 +87,8 @@ class AuditQuestionDataSource extends DataGridSource {
                     columnName: columns[3],
                     value:
                         '${auditQuestion.questionScore} + ${auditQuestion.maxScore - auditQuestion.questionScore}'),
-                DataGridCell(columnName: columns[4], value: <String, bool>{
-                  'status': !(auditQuestion.questionStatus == 0),
+                DataGridCell(columnName: columns[4], value: <String, dynamic>{
+                  'status': auditQuestion.questionStatusName,
                   'isNew': auditQuestion.isNew,
                 }),
               ],
@@ -119,7 +119,7 @@ class AuditQuestionDataSource extends DataGridSource {
     if (index == 0 && value is Map) {
       return Checkbox(
         value: value['included'] as bool,
-        onChanged: (_) => cells.last.value['status'] == true &&
+        onChanged: (_) => cells.last.value['status'] == 'Answered' &&
                 value['included'] == true
             ? CustomAlert(
                 context: context,
@@ -138,7 +138,7 @@ class AuditQuestionDataSource extends DataGridSource {
       );
     }
 
-    if (value is Map<String, bool>) {
+    if (value is Map<String, dynamic>) {
       // return Container(
       //   width: double.infinity,
       //   foregroundDecoration: const RotatedCornerDecoration.withColor(
@@ -181,14 +181,14 @@ class AuditQuestionDataSource extends DataGridSource {
           CustomBadge(
             label: cells.first.value['included'] == false
                 ? 'Excluded'
-                : value['status'] == true
-                    ? 'Answered'
-                    : 'Unanswered',
+                : value['status'],
             color: cells.first.value['included'] == false
                 ? Colors.red
-                : value['status'] == true
+                : value['status'] == 'Answered'
                     ? successColor
-                    : primaryColor,
+                    : value['status'] == 'Unanswered'
+                        ? warnColor
+                        : primaryColor,
           ),
           if (value['isNew'] == true)
             CustomBadge(

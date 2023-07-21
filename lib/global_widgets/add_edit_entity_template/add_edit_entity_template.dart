@@ -142,16 +142,9 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
             horizontal: 20.0,
             vertical: 6,
           ),
-          child: DefaultTextStyle(
+          child: Text(
+            'Fill in the details below to create ${widget.label}. Fields with (*) are required.',
             style: textSemiBold14,
-            child: AnimatedTextKit(
-              totalRepeatCount: 1,
-              pause: const Duration(milliseconds: 300),
-              animatedTexts: [
-                TyperAnimatedText(
-                    'Fill in the details below to create ${widget.label}. Fields with (*) are required.'),
-              ],
-            ),
           ),
         ),
         const CustomDivider(),

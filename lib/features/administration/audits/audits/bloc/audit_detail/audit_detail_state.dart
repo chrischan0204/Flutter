@@ -43,6 +43,19 @@ class AuditDetailState extends Equatable {
         status,
       ];
 
+  bool get isDeletable {
+    if (auditSummary == null) {
+      return false;
+    }
+    switch (auditSummary!.auditStatusName!.replaceAll(' ', '').toLowerCase()) {
+      case 'draft':
+      case 'inprogress':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   AuditDetailState copyWith({
     AuditSummary? auditSummary,
     EntityStatus? auditLoadStatus,

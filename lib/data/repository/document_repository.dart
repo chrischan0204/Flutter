@@ -29,7 +29,7 @@ class DocumentsRepository extends BaseRepository {
     required List<PlatformFile> documentList,
   }) async {
     try {
-      await super.uploadMultipartFile(
+      String message = await super.uploadMultipartFile(
         encodedPath: '$url/$ownerId',
         queryParams: {'ownertype': ownerType},
         fileList: documentList,
@@ -37,7 +37,7 @@ class DocumentsRepository extends BaseRepository {
 
       return EntityResponse(
         isSuccess: true,
-        message: '',
+        message: message,
       );
     } catch (e) {
       throw Exception();

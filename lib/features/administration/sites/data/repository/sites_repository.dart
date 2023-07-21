@@ -16,6 +16,16 @@ class SitesRepository extends BaseRepository {
     return <Site>[];
   }
 
+  Future<List<Entity>> getActiveSiteList() async {
+    Response response = await super.get('$url/items');
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
+          .map((siteJson) => Entity.fromMap(siteJson))
+          .toList();
+    }
+    throw Exception();
+  }
+
   Future<Site> getSiteById(String siteId) async {
     Response response = await super.get('$url/$siteId');
     if (response.statusCode == 200) {

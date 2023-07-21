@@ -15,6 +15,7 @@ class CrudButtonsView extends StatelessWidget {
   final VoidCallback? secondaryButtonOnClick;
   final VoidCallback? onListButtonClick;
   final VoidCallback? onEditButtonClick;
+  final VoidCallback? onDeleteButtonClick;
   const CrudButtonsView({
     super.key,
     required this.label,
@@ -30,6 +31,7 @@ class CrudButtonsView extends StatelessWidget {
     this.secondaryButtonOnClick,
     this.onListButtonClick,
     this.onEditButtonClick,
+    this.onDeleteButtonClick,
   });
 
   @override
@@ -62,6 +64,7 @@ class CrudButtonsView extends StatelessWidget {
             deleting: deleting,
             descriptionForDelete: descriptionForDelete,
             deleteEntity: deleteEntity,
+            onDeleteButtonClick: onDeleteButtonClick,
           ),
       ],
     );

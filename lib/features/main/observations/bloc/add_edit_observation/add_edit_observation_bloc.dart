@@ -185,8 +185,8 @@ class AddEditObservationBloc
     Emitter<AddEditObservationState> emit,
   ) async {
     try {
-      List<Site> siteList = await sitesRepository.getSiteList();
-      emit(state.copyWith(siteList: siteList));
+      List<Entity> siteList = await sitesRepository.getActiveSiteList();
+      emit(state.copyWith(siteList: siteList.map((e) => Site(id: e.id, name: e.name)).toList()));
     } catch (e) {}
   }
 

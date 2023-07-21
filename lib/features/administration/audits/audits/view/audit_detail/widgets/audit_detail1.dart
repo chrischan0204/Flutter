@@ -16,7 +16,6 @@ class AuditDetailView1 extends StatelessWidget {
               AuditDetailItemView(
                 label: 'Owner',
                 content: audit.owner ?? '--',
-                highlighted: true,
               ),
               AuditDetailItemView(
                 label: 'Created on',

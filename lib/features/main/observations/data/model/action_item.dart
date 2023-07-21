@@ -158,7 +158,7 @@ class ActionItem extends Entity {
   @override
   Map<String, dynamic> sideDetailItemsToMap() {
     return {
-      'Item': name,
+      'Action required': name,
       'Due': formatedDue,
       'Assignee': assigneeName,
       'Parent': source == 'None'

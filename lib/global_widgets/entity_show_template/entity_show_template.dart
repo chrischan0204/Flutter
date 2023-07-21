@@ -20,6 +20,7 @@ class EntityShowTemplate extends StatefulWidget {
   final bool isScrollView;
   final VoidCallback? onListButtonClick;
   final VoidCallback? onEditButtonClick;
+  final VoidCallback? onDeleteButtonClick;
 
   const EntityShowTemplate({
     super.key,
@@ -42,6 +43,7 @@ class EntityShowTemplate extends StatefulWidget {
     this.isScrollView = true,
     this.onListButtonClick,
     this.onEditButtonClick,
+    this.onDeleteButtonClick,
   });
 
   @override
@@ -77,6 +79,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
               secondaryLabel: widget.secondaryLabel,
               onListButtonClick: widget.onListButtonClick,
               onEditButtonClick: widget.onEditButtonClick,
+              onDeleteButtonClick: widget.onDeleteButtonClick,
             ),
             Expanded(
               child: Card(

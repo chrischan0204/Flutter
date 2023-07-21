@@ -37,6 +37,7 @@ class AddEditAuditWidget extends StatefulWidget {
 
 class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
   late AddEditAuditBloc addEditAuditBloc;
+  bool isWithConfirmation = false;
 
   static String pageLabel = 'audit';
 
@@ -86,8 +87,9 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
             GoRouter.of(context)
                 .go('/audits/edit/${state.createdAuditId}?view=created');
           } else {
-            GoRouter.of(context)
-                .go('/audits/approve_edit/${widget.auditId}');
+            if (isWithConfirmation) {
+              context.go('/audits');
+            }
           }
         }
         if (state.status.isFailure) {
@@ -100,6 +102,20 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
       },
       listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
+        return WaitingApproveEditAuditView(
+            auditNumber: state.loadedAudit?.auditNumber ?? '',
+          );
+        if (state.status.isLoading &&
+            isWithConfirmation &&
+            widget.auditId != null) {
+          return WaitingApproveEditAuditView(
+            auditNumber: state.loadedAudit?.auditNumber ?? '',
+          );
+        }
+
+        if (isWithConfirmation && widget.auditId != null) {
+          return ApproveEditAuditView(auditId: widget.auditId!);
+        }
         return AddEditEntityTemplate(
           label: pageLabel,
           id: widget.auditId,
@@ -107,9 +123,17 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
           addEntity: () => addEditAuditBloc.add(AddEditAuditAdded(
               userId:
                   context.read<AuthBloc>().state.authUser?.id ?? emptyGuid)),
-          editEntity: () => addEditAuditBloc.add(AddEditAuditEdited(
-              id: widget.auditId ?? '',
-              userId: context.read<AuthBloc>().state.authUser!.id)),
+          editEntity: () {
+            if (state.isNeedConfirmation) {
+              setState(() {
+                isWithConfirmation = true;
+              });
+            } else {
+              addEditAuditBloc.add(AddEditAuditEdited(
+                  id: widget.auditId ?? '',
+                  userId: context.read<AuthBloc>().state.authUser!.id));
+            }
+          },
           crudStatus: state.status,
           tabItems: tabItems,
           view: widget.view,

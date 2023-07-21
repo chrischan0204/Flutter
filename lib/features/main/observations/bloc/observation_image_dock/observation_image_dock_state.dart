@@ -6,6 +6,7 @@ class ObservationImageDockState extends Equatable {
   final EntityStatus imageListLoadStatus;
   final EntityStatus imageUploadStatus;
   final bool isUploadView;
+  final String message;
 
   const ObservationImageDockState({
     this.imageList = const [],
@@ -13,6 +14,7 @@ class ObservationImageDockState extends Equatable {
     this.imageListLoadStatus = EntityStatus.initial,
     this.imageUploadStatus = EntityStatus.initial,
     this.isUploadView = false,
+    this.message = '',
   });
 
   @override
@@ -22,6 +24,7 @@ class ObservationImageDockState extends Equatable {
         imageListLoadStatus,
         imageUploadStatus,
         isUploadView,
+        message,
       ];
 
   ObservationImageDockState copyWith({
@@ -30,6 +33,7 @@ class ObservationImageDockState extends Equatable {
     EntityStatus? imageListLoadStatus,
     EntityStatus? imageUploadStatus,
     bool? isUploadView,
+    String? message,
   }) {
     return ObservationImageDockState(
       imageList: imageList ?? this.imageList,
@@ -37,6 +41,7 @@ class ObservationImageDockState extends Equatable {
       imageListLoadStatus: imageListLoadStatus ?? this.imageListLoadStatus,
       imageUploadStatus: imageUploadStatus ?? this.imageUploadStatus,
       isUploadView: isUploadView ?? this.isUploadView,
+      message: message ?? this.message,
     );
   }
 }

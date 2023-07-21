@@ -125,9 +125,11 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
     Emitter<ExecuteAuditState> emit,
   ) async {
     try {
-      List<Site> siteList = await _sitesRepository.getSiteList();
+      List<Entity> siteList = await _sitesRepository.getActiveSiteList();
 
-      emit(state.copyWith(siteList: siteList));
+      emit(state.copyWith(
+          siteList:
+              siteList.map((e) => Site(id: e.id, name: e.name)).toList()));
     } catch (e) {}
   }
 

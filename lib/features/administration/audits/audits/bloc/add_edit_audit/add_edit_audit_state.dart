@@ -155,6 +155,23 @@ class AddEditAuditState extends Equatable {
         message,
       ];
 
+  bool get isNeedConfirmation {
+    if (loadedAudit == null) {
+      return false;
+    }
+    return initialTemplate?.id != template?.id &&
+        loadedAudit?.answeredQuestions != 0;
+  }
+
+  bool get isEditable {
+    if (loadedAudit == null) {
+      return true;
+    }
+
+    return loadedAudit!.auditStatusName == 'In Progress' ||
+        loadedAudit!.auditStatusName == 'Draft';
+  }
+
   AuditCreate get audit => AuditCreate(
         name: auditName,
         userId: emptyGuid,

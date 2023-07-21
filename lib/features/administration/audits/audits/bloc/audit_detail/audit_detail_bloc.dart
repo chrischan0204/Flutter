@@ -96,7 +96,22 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
   Future<void> _onAuditDetailAuditDeleted(
     AuditDetailAuditDeleted event,
     Emitter<AuditDetailState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(status: EntityStatus.loading));
+
+    try {
+      EntityResponse response = await _auditsRepository.deleteAudit(auditId);
+
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          message: response.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(status: EntityStatus.failure));
+    }
+  }
 
   Future<void> _onAuditDetailAuditSectionListLoaded(
     AuditDetailAuditSectionListLoaded event,

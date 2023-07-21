@@ -255,7 +255,7 @@ class ActionItemCreateUpdateView extends StatelessWidget {
         return Column(
           children: [
             ActionItemCreateUpdateFormItemView(
-              label: 'ActionItem (*)',
+              label: 'Action required(*)',
               content: const ActionItemTextField(),
               validationMessage: state.nameValidationMessage,
             ),
@@ -290,10 +290,6 @@ class ActionItemCreateUpdateView extends StatelessWidget {
               label: 'Area',
               content: AreaTextField(),
             ),
-            const ActionItemCreateUpdateFormItemView(
-              label: 'Upload Images or documents',
-              content: ActionItemFilePicker(),
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -309,6 +305,10 @@ class ActionItemCreateUpdateView extends StatelessWidget {
                   child: const NotesTextField(),
                 ),
               ],
+            ),
+            const ActionItemCreateUpdateFormItemView(
+              label: 'Upload Images or documents',
+              content: ActionItemFilePicker(),
             ),
           ],
         );

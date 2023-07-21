@@ -72,7 +72,7 @@ class AuditsRepository extends BaseRepository {
         return EntityResponse(
           statusCode: response.statusCode,
           isSuccess: true,
-          message: response.body,
+          message: 'Audit deleted successfully.',
         );
       }
       return EntityResponse.fromJson(response.body);

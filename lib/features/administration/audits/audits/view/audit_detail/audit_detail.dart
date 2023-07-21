@@ -83,9 +83,7 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
         return EntityShowTemplate(
           title: pageTitle,
           label: pageLabel,
-          deleteEntity: () => context
-              .read<AuditDetailBloc>()
-              .add(AuditDetailAuditDeleted(auditId: widget.auditId)),
+          deleteEntity: () {},
           entity: state.auditSummary?.audit,
           crudStatus: state.auditDeleteStatus,
           customDetailWidget: state.auditSummary == null
@@ -143,6 +141,9 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               context.go('/audits/execute/${widget.auditId}'),
           secondaryIcon: PhosphorIcons.regular.caretCircleDoubleRight,
           secondaryLabel: 'Excute Audit',
+          isDeletable: state.isDeletable,
+          onDeleteButtonClick: () =>
+              context.go('/audits/approve_delete/${widget.auditId}'),
         );
       },
     );

@@ -23,7 +23,6 @@ class AuditSummary2 extends StatelessWidget {
                   label: 'Completion',
                   content:
                       '${audit.completedPercent}% (${audit.answeredQuestions} of ${audit.questions})',
-                  highlighted: true,
                 ),
                 AuditDetailItemView(
                   label: 'Observations',
@@ -36,7 +35,7 @@ class AuditSummary2 extends StatelessWidget {
                   highlighted: true,
                 ),
                 AuditDetailItemView(
-                  label: 'Images',
+                  label: 'Documents',
                   content: audit.documents.toString(),
                   highlighted: true,
                 ),

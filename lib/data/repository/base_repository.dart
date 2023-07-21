@@ -104,7 +104,7 @@ class BaseRepository {
     }
   }
 
-  Future<void> uploadMultipartFile({
+  Future<String> uploadMultipartFile({
     required String encodedPath,
     required Map<String, String> queryParams,
     required List<PlatformFile> fileList,
@@ -123,8 +123,14 @@ class BaseRepository {
         ));
       }
 
-      await request.send();
-      return;
+      var streamedResponse = await request.send();
+      var result = await http.Response.fromStream(streamedResponse);
+
+      if (result.statusCode == 200) {
+        return result.body;
+      }
+
+      throw Exception();
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
       throw Exception();

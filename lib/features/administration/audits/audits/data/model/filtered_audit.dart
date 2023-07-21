@@ -144,6 +144,7 @@ class FilteredAudit extends FilteredEntity {
         lastExecutedOn: lastExecutedOn,
         lastModifiedOn: lastModifiedOn,
         lastModifiedByUserName: lastModifiedByUserName,
+        deleted: deleted,
       );
 
   factory FilteredAudit.fromMap(Map<String, dynamic> map) {
@@ -182,6 +183,7 @@ class FilteredAudit extends FilteredEntity {
       lastModifiedOn: entity.lastModifiedOn,
       createdBy: entity.createdBy,
       lastModifiedByUserName: entity.lastModifiedByUserName,
+      deleted: entity.deleted,
     );
   }
 

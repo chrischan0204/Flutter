@@ -21,7 +21,17 @@ class _DockImageListViewState extends State<DockImageListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ObservationImageDockBloc, ObservationImageDockState>(
+    return BlocConsumer<ObservationImageDockBloc, ObservationImageDockState>(
+      listener: (context, state) {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.success,
+          content: state.message,
+        ).showNotification();
+      },
+      listenWhen: (previous, current) =>
+          previous.imageUploadStatus != current.imageUploadStatus &&
+          current.imageUploadStatus.isSuccess,
       builder: (context, state) {
         if (state.imageListLoadStatus.isLoading) {
           return const Center(child: Loader());

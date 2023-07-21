@@ -153,9 +153,11 @@ class AddEditProjectBloc
     Emitter<AddEditProjectState> emit,
   ) async {
     try {
-      List<Site> siteList = await sitesRepository.getSiteList();
+      List<Entity> siteList = await sitesRepository.getActiveSiteList();
 
-      emit(state.copyWith(siteList: siteList));
+      emit(state.copyWith(
+          siteList:
+              siteList.map((e) => Site(id: e.id, name: e.name)).toList()));
     } catch (e) {}
   }
 

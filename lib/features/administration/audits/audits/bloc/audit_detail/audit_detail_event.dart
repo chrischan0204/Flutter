@@ -20,16 +20,7 @@ class AuditDetailLoaded extends AuditDetailEvent {
   List<Object> get props => [auditId];
 }
 
-class AuditDetailAuditDeleted extends AuditDetailEvent {
-  /// audit id to delete
-  final String auditId;
-  const AuditDetailAuditDeleted({
-    required this.auditId,
-  });
-
-  @override
-  List<Object> get props => [auditId];
-}
+class AuditDetailAuditDeleted extends AuditDetailEvent {}
 
 /// event to load audit section list
 class AuditDetailAuditSectionListLoaded extends AuditDetailEvent {}
