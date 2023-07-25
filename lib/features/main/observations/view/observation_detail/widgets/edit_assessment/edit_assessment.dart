@@ -25,6 +25,9 @@ class EditAssessmentView extends StatelessWidget {
             listenWhen: (previous, current) =>
                 previous.status != current.status,
             builder: (context, state) {
+              if (state.status.isLoading) {
+                return const Center(child: Loader());
+              }
               if (state.isEditing) {
                 return const AssessmentFormView();
               } else {
@@ -52,6 +55,15 @@ class EditAssessmentView extends StatelessWidget {
                             name: observation.assessmentObservationTypeName,
                             severity: '',
                           )));
+                    } else {
+                      context
+                          .read<EditAssessmentBloc>()
+                          .add(EditAssessmentObservationTypeChanged(
+                              observationType: ObservationType(
+                            id: observation.userReportedObservationTypeId,
+                            name: observation.userReportedObservationTypeName,
+                            severity: '',
+                          )));
                     }
 
                     if (observation.assessmentPriorityLevelId != null) {
@@ -61,6 +73,16 @@ class EditAssessmentView extends StatelessWidget {
                               priorityLevel: PriorityLevel(
                             id: observation.assessmentPriorityLevelId,
                             name: observation.assessmentPriorityLevelName,
+                            colorCode: Colors.white,
+                            priorityType: '',
+                          )));
+                    } else {
+                      context
+                          .read<EditAssessmentBloc>()
+                          .add(EditAssessmentPriorityLevelChanged(
+                              priorityLevel: PriorityLevel(
+                            id: observation.userReportedPriorityLevelId,
+                            name: observation.userReportedPriorityLevelName,
                             colorCode: Colors.white,
                             priorityType: '',
                           )));
@@ -96,6 +118,16 @@ class EditAssessmentView extends StatelessWidget {
                             ),
                             isFirst: true,
                           ));
+                    } else {
+                      context
+                          .read<EditAssessmentBloc>()
+                          .add(EditAssessmentSiteChanged(
+                            site: Site(
+                              id: observation.userReportedSiteName,
+                              name: observation.userReportedSiteName,
+                            ),
+                            isFirst: true,
+                          ));
                     }
 
                     context.read<EditAssessmentBloc>().add(
@@ -114,8 +146,9 @@ class EditAssessmentView extends StatelessWidget {
                   listenWhen: (previous, current) =>
                       previous.observation == null &&
                       previous.observation != current.observation,
-                  builder: (context, state) {
-                    if (state.observation?.assessedOn == null) {
+                  builder: (context, observationDetailState) {
+                    if (observationDetailState.observation?.assessedOn ==
+                        null) {
                       return Center(
                         child: Padding(
                           padding: insety20,

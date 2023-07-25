@@ -45,8 +45,11 @@ class _AddActionItemViewState extends State<AddActionItemView> {
               }
             },
             listenWhen: (previous, current) =>
-                previous.status != current.status,
+                previous.status != current.status && current.message.isNotEmpty,
             builder: (context, state) {
+              if (state.status.isLoading) {
+                return const Center(child: Loader());
+              }
               if (state.isEditing) {
                 return const AddActionItemFormView();
               } else {

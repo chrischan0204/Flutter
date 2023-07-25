@@ -21,7 +21,6 @@ class AuditDetailView2 extends StatelessWidget {
               ),
               AuditDetailItemView(
                 label: 'Completion',
-                highlighted: true,
                 content:
                     '${audit.completedPercent}% (${audit.answeredQuestions} of ${audit.questions})',
               ),
@@ -31,7 +30,7 @@ class AuditDetailView2 extends StatelessWidget {
               ),
               AuditDetailItemView(
                 label: 'Observations',
-                highlighted: true,
+                highlighted: audit.observations != 0,
                 content: audit.observations.toString(),
                 onClick: () async {
                   await showDialog(
@@ -44,7 +43,7 @@ class AuditDetailView2 extends StatelessWidget {
               ),
               AuditDetailItemView(
                 label: 'Action items',
-                highlighted: true,
+                highlighted: audit.actionItems != 0,
                 content: audit.actionItems.toString(),
                 onClick: () async {
                   await showDialog(
@@ -56,8 +55,8 @@ class AuditDetailView2 extends StatelessWidget {
                 },
               ),
               AuditDetailItemView(
-                label: 'Documents',
-                highlighted: true,
+                label: 'Images/Documents',
+                highlighted: audit.documents != 0,
                 content: audit.documents.toString(),
                 onClick: () async {
                   await showDialog(

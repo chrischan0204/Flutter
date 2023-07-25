@@ -56,6 +56,9 @@ class ExecuteAuditActionItemState extends Equatable {
   /// notes to create action item
   final String notes;
 
+  /// is closed to update action item
+  final bool isClosed;
+
   final List<PlatformFile> fileList;
 
   ExecuteAuditActionItemState({
@@ -81,6 +84,7 @@ class ExecuteAuditActionItemState extends Equatable {
     this.companyList = const [],
     this.projectList = const [],
     this.fileList = const [],
+    this.isClosed = false,
   }) {
     dueBy ??= DateTime.now();
   }
@@ -106,6 +110,7 @@ class ExecuteAuditActionItemState extends Equatable {
         project,
         area,
         notes,
+        isClosed,
         projectList,
         companyList,
         fileList,
@@ -134,6 +139,7 @@ class ExecuteAuditActionItemState extends Equatable {
     String? area,
     String? notes,
     List<PlatformFile>? fileList,
+    bool? isClosed,
   }) {
     return ExecuteAuditActionItemState(
       auditActionItemList: auditActionItemList ?? this.auditActionItemList,
@@ -165,6 +171,7 @@ class ExecuteAuditActionItemState extends Equatable {
       project: project != null ? project.value : this.project,
       area: area ?? this.area,
       notes: notes ?? this.notes,
+      isClosed: isClosed ?? this.isClosed,
       fileList: fileList ?? this.fileList,
     );
   }

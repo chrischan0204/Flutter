@@ -15,6 +15,7 @@ class ActionItemCreate extends Equatable {
   final String? observationId;
   final String? auditSectionItemId;
   final String? auditId;
+  final bool? isClosed;
   const ActionItemCreate({
     this.id,
     required this.name,
@@ -29,6 +30,7 @@ class ActionItemCreate extends Equatable {
     this.observationId,
     this.auditSectionItemId,
     this.auditId,
+    this.isClosed,
   });
 
   @override
@@ -46,6 +48,7 @@ class ActionItemCreate extends Equatable {
         observationId,
         auditSectionItemId,
         auditId,
+        isClosed,
       ];
 
   Map<String, dynamic> toMap() {
@@ -77,6 +80,10 @@ class ActionItemCreate extends Equatable {
       map.addAll({'auditId': auditId});
     }
 
+    if (isClosed != null) {
+      map.addAll({'isClosed': isClosed});
+    }
+
     return map;
   }
 
@@ -95,6 +102,7 @@ class ActionItemCreate extends Equatable {
     String? notes,
     String? observationId,
     String? auditSectionItemId,
+    bool? isClosed,
   }) {
     return ActionItemCreate(
       id: id ?? this.id,
@@ -107,6 +115,7 @@ class ActionItemCreate extends Equatable {
       projectId: projectId ?? this.projectId,
       location: location ?? this.location,
       notes: notes ?? this.notes,
+      isClosed: isClosed ?? this.isClosed,
       observationId: observationId ?? this.observationId,
       auditSectionItemId: auditSectionItemId ?? this.auditSectionItemId,
     );

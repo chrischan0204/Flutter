@@ -48,12 +48,21 @@ class AuditDetailActionItemListView extends StatelessWidget {
               assignee: 'Assignee',
               isBold: true,
             ),
-            for (final actionItem in actionItemList)
-              AuditDetailObservationActionItem(
-                actionRequired: actionItem.description ?? '--',
-                status: actionItem.status ?? '--',
-                assignee: actionItem.assigneeName ?? '--',
-              )
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final actionItem in actionItemList)
+                      AuditDetailObservationActionItem(
+                        actionRequired: actionItem.description ?? '--',
+                        status: actionItem.status ?? '--',
+                        assignee: actionItem.assigneeName ?? '--',
+                      )
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -114,6 +114,14 @@ class AddEditActionItemNotesChanged extends AddEditActionItemEvent {
   List<Object> get props => [notes];
 }
 
+class AddEditActionItemIsClosedChanged extends AddEditActionItemEvent {
+  final bool isClosed;
+  const AddEditActionItemIsClosedChanged({required this.isClosed});
+
+  @override
+  List<Object> get props => [isClosed];
+}
+
 class AddEditActionItemAdded extends AddEditActionItemEvent {}
 
 class AddEditActionItemEdited extends AddEditActionItemEvent {}

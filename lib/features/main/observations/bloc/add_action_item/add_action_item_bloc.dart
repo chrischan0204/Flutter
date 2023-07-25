@@ -31,6 +31,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     on<AddActionItemProjectChanged>(_onAddActionItemProjectChanged);
     on<AddActionItemLocationChanged>(_onAddActionItemLocationChanged);
     on<AddActionItemNotesChanged>(_onAddActionItemNotesChanged);
+    on<AddActionItemIsClosedChanged>(_onAddActionItemIsClosedChanged);
     on<AddActionItemAddActionItemButtonClicked>(
         _onAddActionItemAddActionItemButtonClicked);
     on<AddActionItemActionItemListButtonClicked>(
@@ -45,11 +46,20 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemListLoaded event,
     Emitter<AddActionItemState> emit,
   ) async {
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      message: '',
+    ));
     try {
       final List<ActionItem> actionItemList =
           await _observationsRepository.getActionItemList(event.observationId);
-      emit(state.copyWith(actionItemList: actionItemList));
-    } catch (e) {}
+      emit(state.copyWith(
+        actionItemList: actionItemList,
+        status: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(status: EntityStatus.failure));
+    }
   }
 
   void _onAddActionItemDetailShown(
@@ -103,25 +113,34 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemDetailEdited event,
     Emitter<AddActionItemState> emit,
   ) async {
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      message: '',
+    ));
     try {
       final actionItem =
           await _actionItemsRepository.getActionItemById(event.actionItem.id!);
 
-      final List<CompanySite> companyList =
-          await _sitesRepository.getCompanyListForSite(actionItem.siteId);
+      if (actionItem.siteId.isNotEmpty) {
+        final List<CompanySite> companyList =
+            await _sitesRepository.getCompanyListForSite(actionItem.siteId);
 
-      final List<Project> projectList =
-          await _sitesRepository.getProjectListForSite(actionItem.siteId);
+        final List<Project> projectList =
+            await _sitesRepository.getProjectListForSite(actionItem.siteId);
 
-      final List<Entity> userList =
-          await _sitesRepository.getUserListForSite(actionItem.siteId);
+        final List<Entity> userList =
+            await _sitesRepository.getUserListForSite(actionItem.siteId);
+
+        emit(state.copyWith(
+          companyList: companyList
+              .map((e) => Company(id: e.companyId, name: e.companyName))
+              .toList(),
+          projectList: projectList,
+          userList: userList,
+        ));
+      }
 
       emit(state.copyWith(
-        companyList: companyList
-            .map((e) => Company(id: e.companyId, name: e.companyName))
-            .toList(),
-        projectList: projectList,
-        userList: userList,
         actionItem:
             Nullable.value(actionItem.copyWith(id: event.actionItem.id)),
         task: actionItem.name,
@@ -155,9 +174,13 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
             : const Nullable.value(null),
         location: actionItem.area,
         notes: actionItem.notes,
+        isClosed: false,
         isEditing: true,
+        status: EntityStatus.success,
       ));
-    } catch (e) {}
+    } catch (e) {
+      emit(state.copyWith(status: EntityStatus.failure));
+    }
   }
 
   void _onAddActionItemTaskChanged(
@@ -195,11 +218,12 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     Emitter<AddActionItemState> emit,
   ) async {
     emit(state.copyWith(
-        site: Nullable.value(event.site),
-        siteValidationMessage: '',
-        company: const Nullable.value(null),
-        project: const Nullable.value(null),
-        assignee: const Nullable.value(null)));
+      site: Nullable.value(event.site),
+      siteValidationMessage: '',
+      company: const Nullable.value(null),
+      project: const Nullable.value(null),
+      assignee: const Nullable.value(null),
+    ));
 
     if (event.site.id != null) {
       List<CompanySite> companyList =
@@ -215,7 +239,10 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
         projectList: projectList,
         userList: userList,
         companyList: companyList
-            .map((e) => Company(id: e.id, name: e.companyName))
+            .map((e) => Company(
+                  id: e.companyId,
+                  name: e.companyName,
+                ))
             .toList(),
       ));
     }
@@ -254,6 +281,13 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     Emitter<AddActionItemState> emit,
   ) {
     emit(state.copyWith(notes: event.notes));
+  }
+
+  void _onAddActionItemIsClosedChanged(
+    AddActionItemIsClosedChanged event,
+    Emitter<AddActionItemState> emit,
+  ) {
+    emit(state.copyWith(isClosed: event.isClosed));
   }
 
   void _onAddActionItemAddActionItemButtonClicked(
@@ -319,7 +353,9 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
 
         add(AddActionItemListLoaded(observationId: observationId));
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(state.copyWith(status: EntityStatus.failure));
+    }
   }
 
   void _onAddActionItemIsEditingChanged(

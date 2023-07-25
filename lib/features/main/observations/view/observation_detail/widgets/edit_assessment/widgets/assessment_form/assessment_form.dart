@@ -22,8 +22,8 @@ class AssessmentFormView extends StatelessWidget {
         const FollowUpCloseoutTextField(),
         Padding(
           padding: inset10,
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Expanded(
                 child: NotifySenderCheckBox(),
               ),

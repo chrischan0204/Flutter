@@ -39,74 +39,6 @@ class EditAssessmentBloc
     on<EditAssessmentNotifySenderChanged>(_onEditAssessmentNotifySenderChanged);
     on<EditAssessmentIsEditingChanged>(_onEditAssessmentIsEditingChanged);
     on<EditAssessmentAdded>(_onEditAssessmentAdded);
-
-    // subscription = _observationDetailBloc.stream.listen((state) {
-    //   if (state.observation != null) {
-    //     final observation = state.observation!;
-
-    //     if (observation.assessmentAwarenessCategoryId != null) {
-    //       add(EditAssessmentCategoryChanged(
-    //           category: AwarenessCategory(
-    //         id: observation.assessmentAwarenessCategoryId,
-    //         name: observation.assessmentAwarenessCategoryName,
-    //       )));
-    //     }
-
-    //     if (observation.assessmentObservationTypeId != null) {
-    //       add(EditAssessmentObservationTypeChanged(
-    //           observationType: ObservationType(
-    //         id: observation.assessmentObservationTypeId,
-    //         name: observation.assessmentObservationTypeName,
-    //         severity: '',
-    //       )));
-    //     }
-
-    //     if (observation.assessmentPriorityLevelId != null) {
-    //       add(EditAssessmentPriorityLevelChanged(
-    //           priorityLevel: PriorityLevel(
-    //         id: observation.assessmentPriorityLevelId,
-    //         name: observation.assessmentPriorityLevelName,
-    //         colorCode: Colors.white,
-    //         priorityType: '',
-    //       )));
-    //     }
-
-    //     if (observation.assessmentCompanyId != null) {
-    //       add(EditAssessmentCompanyChanged(
-    //           company: Company(
-    //         id: observation.assessmentCompanyId,
-    //         name: observation.assessmentCompanyName,
-    //       )));
-    //     }
-
-    //     if (observation.assessmentProjectId != null) {
-    //       add(EditAssessmentProjectChanged(
-    //           project: Project(
-    //         id: observation.assessmentProjectId,
-    //         name: observation.assessmentProjectName,
-    //       )));
-    //     }
-
-    //     if (observation.assessmentSiteId != null) {
-    //       add(EditAssessmentSiteChanged(
-    //         site: Site(
-    //           id: observation.assessmentSiteId,
-    //           name: observation.assessmentSiteName,
-    //         ),
-    //         isFirst: true,
-    //       ));
-    //     }
-
-    //     add(EditAssessmentFollowUpCloseoutChanged(
-    //         followUpCloseout: observation.assessmentFollowupComment ?? ''));
-
-    //     add(EditAssessmentMarkAsClosedChanged(
-    //         markAsClosed: observation.isClosed ?? false));
-
-    //     add(EditAssessmentNotifySenderChanged(
-    //         notifySender: observation.notificationSent));
-    //   }
-    // });
   }
 
   Future<void> _onEditAssessmentAdded(
@@ -140,7 +72,9 @@ class EditAssessmentBloc
           _observationDetailBloc
               .add(ObservationDetailLoaded(observationId: observationId));
         }
-      } catch (e) {}
+      } catch (e) {
+        emit(state.copyWith(status: EntityStatus.loading));
+      }
     }
   }
 

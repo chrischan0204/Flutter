@@ -48,6 +48,8 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
+
+          context.go('/action-items');
         }
         if (state.actionItemDeleteStatus.isFailure) {
           CustomNotification(

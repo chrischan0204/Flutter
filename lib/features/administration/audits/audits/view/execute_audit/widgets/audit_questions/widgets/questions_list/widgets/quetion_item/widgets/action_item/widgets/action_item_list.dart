@@ -85,13 +85,15 @@ class AuditActionItemListItemView extends StatelessWidget {
               SizedBox(
                 width: 50,
                 child: IconButton(
-                  onPressed: () {
-                    context.read<ExecuteAuditActionItemBloc>()
-                      ..add(const ExecuteAuditActionItemViewChanged(
-                          view: CrudView.update))
-                      ..add(ExecuteAuditActionItemLoaded(
-                          actionItemId: actionItem.id));
-                  },
+                  onPressed: actionItem.isClosed == true
+                      ? null
+                      : () {
+                          context.read<ExecuteAuditActionItemBloc>()
+                            ..add(const ExecuteAuditActionItemViewChanged(
+                                view: CrudView.update))
+                            ..add(ExecuteAuditActionItemLoaded(
+                                actionItemId: actionItem.id));
+                        },
                   icon: Icon(
                     PhosphorIcons.regular.wrench,
                     size: 14,
@@ -119,21 +121,23 @@ class AuditActionItemListItemView extends StatelessWidget {
               SizedBox(
                 width: 50,
                 child: IconButton(
-                  onPressed: () {
-                    CustomAlert(
-                      context: context,
-                      width: MediaQuery.of(context).size.width / 4,
-                      title: 'Notification',
-                      description: 'Deleting action item. Are you sure?',
-                      btnOkText: 'OK',
-                      btnOkOnPress: () => context
-                          .read<ExecuteAuditActionItemBloc>()
-                          .add(ExecuteAuditActionItemDeleted(
-                              actionItemId: actionItem.id)),
-                      btnCancelOnPress: () {},
-                      dialogType: DialogType.info,
-                    ).show();
-                  },
+                  onPressed: actionItem.isClosed == true
+                      ? null
+                      : () {
+                          CustomAlert(
+                            context: context,
+                            width: MediaQuery.of(context).size.width / 4,
+                            title: 'Notification',
+                            description: 'Deleting action item. Are you sure?',
+                            btnOkText: 'OK',
+                            btnOkOnPress: () => context
+                                .read<ExecuteAuditActionItemBloc>()
+                                .add(ExecuteAuditActionItemDeleted(
+                                    actionItemId: actionItem.id)),
+                            btnCancelOnPress: () {},
+                            dialogType: DialogType.info,
+                          ).show();
+                        },
                   icon: Icon(
                     PhosphorIcons.regular.trash,
                     size: 14,

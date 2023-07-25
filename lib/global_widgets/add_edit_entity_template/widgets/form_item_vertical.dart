@@ -66,13 +66,14 @@ class FormItemVertical extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          '$rightLabel:',
-                          style: textSemiBold12,
+                      if (rightLabel != null)
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            '$rightLabel:',
+                            style: textSemiBold12,
+                          ),
                         ),
-                      ),
                       Expanded(
                         flex: 3,
                         child: Padding(

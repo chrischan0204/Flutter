@@ -85,6 +85,8 @@ class AddEditActionItemState extends Equatable {
   /// initial notes to check form dirty;
   final String initialNotes;
 
+  final bool isClosed;
+
   /// status
   final EntityStatus status;
 
@@ -121,6 +123,7 @@ class AddEditActionItemState extends Equatable {
     this.initialNotes = '',
     this.status = EntityStatus.initial,
     this.message = '',
+    this.isClosed = false,
   }) {
     dueBy ??= DateTime.now();
   }
@@ -146,6 +149,7 @@ class AddEditActionItemState extends Equatable {
         project,
         location,
         notes,
+        isClosed,
         status,
         message,
         initialAssignee,
@@ -181,6 +185,7 @@ class AddEditActionItemState extends Equatable {
         projectId: project?.id,
         location: location,
         notes: notes,
+        isClosed: isClosed,
       );
 
   AddEditActionItemState copyWith({
@@ -211,6 +216,7 @@ class AddEditActionItemState extends Equatable {
     String? location,
     String? initialLocation,
     String? notes,
+    bool? isClosed,
     String? initialNotes,
     EntityStatus? status,
     String? message,
@@ -256,6 +262,7 @@ class AddEditActionItemState extends Equatable {
       initialLocation: initialLocation ?? this.initialLocation,
       initialNotes: initialNotes ?? this.initialNotes,
       notes: notes ?? this.notes,
+      isClosed: isClosed ?? this.isClosed,
       status: status ?? this.status,
       message: message ?? this.message,
     );

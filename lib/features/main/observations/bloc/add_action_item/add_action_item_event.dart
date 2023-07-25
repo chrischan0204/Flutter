@@ -72,6 +72,14 @@ class AddActionItemNotesChanged extends AddActionItemEvent {
   List<Object> get props => [notes];
 }
 
+class AddActionItemIsClosedChanged extends AddActionItemEvent {
+  final bool isClosed;
+  const AddActionItemIsClosedChanged({required this.isClosed});
+
+  @override
+  List<Object> get props => [isClosed];
+}
+
 class AddActionItemListLoaded extends AddActionItemEvent {
   /// observation id to load action item list
   final String observationId;

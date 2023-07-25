@@ -38,6 +38,8 @@ class AddActionItemState extends Equatable {
   /// notes to create action item
   final String notes;
 
+  final bool isClosed;
+
   /// check if it is editing
   final bool isEditing;
 
@@ -75,6 +77,7 @@ class AddActionItemState extends Equatable {
     this.projectList = const [],
     this.companyList = const [],
     this.userList = const [],
+    this.isClosed = false,
   }) {
     dueBy ??= DateTime.now();
   }
@@ -96,6 +99,7 @@ class AddActionItemState extends Equatable {
         project,
         location,
         notes,
+        isClosed,
         isEditing,
         message,
         status,
@@ -115,6 +119,7 @@ class AddActionItemState extends Equatable {
         projectId: project?.id,
         location: location,
         notes: notes,
+        isClosed: isClosed,
       );
 
   AddActionItemState copyWith({
@@ -133,6 +138,7 @@ class AddActionItemState extends Equatable {
     String? siteValidationMessage,
     String? location,
     String? notes,
+    bool? isClosed,
     bool? isEditing,
     String? message,
     EntityStatus? status,
@@ -160,6 +166,7 @@ class AddActionItemState extends Equatable {
           siteValidationMessage ?? this.siteValidationMessage,
       location: location ?? this.location,
       notes: notes ?? this.notes,
+      isClosed: isClosed ?? this.isClosed,
       isEditing: isEditing ?? this.isEditing,
       message: message ?? this.message,
       status: status ?? this.status,

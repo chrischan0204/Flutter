@@ -10,17 +10,21 @@ class MarkAsClosedCheckBox extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Mark as closed:',
-              style: textSemiBold14,
-            ),
-            Checkbox(
-              value: state.markAsClosed,
-              onChanged: (markAsClosed) =>
-                  context.read<EditAssessmentBloc>().add(
-                        EditAssessmentMarkAsClosedChanged(
-                            markAsClosed: markAsClosed!),
-                      ),
+            if (MediaQuery.of(context).size.width > minDesktopWidth)
+              Text(
+                'Mark as closed:',
+                style: textSemiBold14,
+              ),
+            Tooltip(
+              message: 'Mark as closed',
+              child: Checkbox(
+                value: state.markAsClosed,
+                onChanged: (markAsClosed) =>
+                    context.read<EditAssessmentBloc>().add(
+                          EditAssessmentMarkAsClosedChanged(
+                              markAsClosed: markAsClosed!),
+                        ),
+              ),
             )
           ],
         );

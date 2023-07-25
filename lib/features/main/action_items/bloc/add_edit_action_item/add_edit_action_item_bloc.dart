@@ -39,6 +39,7 @@ class AddEditActionItemBloc
     on<AddEditActionItemProjectChanged>(_onAddEditActionItemProjectChanged);
     on<AddEditActionItemLocationChanged>(_onAddEditActionItemLocationChanged);
     on<AddEditActionItemNotesChanged>(_onAddEditActionItemNotesChanged);
+    on<AddEditActionItemIsClosedChanged>(_onAddEditActionItemIsClosedChanged);
 
     on<AddEditActionItemLoaded>(_onAddEditActionItemLoaded);
     on<AddEditActionItemAdded>(_onAddEditActionItemAdded);
@@ -217,6 +218,13 @@ class AddEditActionItemBloc
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
+  void _onAddEditActionItemIsClosedChanged(
+    AddEditActionItemIsClosedChanged event,
+    Emitter<AddEditActionItemState> emit,
+  ) {
+    emit(state.copyWith(isClosed: event.isClosed));
+  }
+
   Future<void> _onAddEditActionItemAdded(
     AddEditActionItemAdded event,
     Emitter<AddEditActionItemState> emit,
@@ -390,6 +398,7 @@ class AddEditActionItemBloc
         initialLocation: actionItem.area,
         notes: actionItem.notes,
         initialNotes: actionItem.notes,
+        isClosed: false,
       ));
     } catch (e) {}
   }

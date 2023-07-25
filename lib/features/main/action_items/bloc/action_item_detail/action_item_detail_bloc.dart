@@ -52,7 +52,18 @@ class ActionItemDetailBloc
   Future<void> _onActionItemDetailActionItemDeleted(
     ActionItemDetailActionItemDeleted event,
     Emitter<ActionItemDetailState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(actionItemDeleteStatus: EntityStatus.loading));
 
-  
+    try {
+      EntityResponse response =
+          await _actionItemsRepository.deleteActionItem(actionItemId);
+      emit(state.copyWith(
+        actionItemDeleteStatus: EntityStatus.success,
+        message: response.message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(actionItemDeleteStatus: EntityStatus.failure));
+    }
+  }
 }

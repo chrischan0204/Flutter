@@ -107,7 +107,7 @@ class FilteredObservation extends FilteredEntity {
         assessmentPriorityLevel: assessmentPriorityLevel,
         assessmentObservationType: assessmentObservationType,
         company: company,
-        imageCount: 0,
+        imageCount: imageCount,
         notificationSentAt: notificationSentAt,
         notificationSentVia: notificationSentVia,
         project: project,
@@ -121,7 +121,7 @@ class FilteredObservation extends FilteredEntity {
       name: map['observation'] ?? '',
       site: map['site'] ?? '',
       reportedVia: map['reported_Via'] ?? '',
-      markedAsClosed: map['marked_As_Closed'] ?? '',
+      markedAsClosed: map['marked_As_Closed'] ?? false,
       reportedBy: map['reported_By'] ?? '',
       reportedAt: map['reported_At'] != null
           ? DateTime.parse(map['reported_At'])

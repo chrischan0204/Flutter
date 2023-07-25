@@ -53,7 +53,7 @@ class AssessmentHeaderView extends StatelessWidget {
                                 state.isEditing ? successColor : primaryColor),
                         child: Text(
                           state.isEditing
-                              ? 'Submit'
+                              ? detailState.observation?.assessedOn == null ? 'Add' : 'Update'
                               : detailState.observation?.assessedOn == null
                                   ? 'Add Assessment'
                                   : 'Edit Assessment',

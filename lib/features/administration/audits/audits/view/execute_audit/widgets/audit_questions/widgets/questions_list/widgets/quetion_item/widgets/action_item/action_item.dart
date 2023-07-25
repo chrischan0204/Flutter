@@ -71,6 +71,9 @@ class _AuditActionItemViewState extends State<AuditActionItemView> {
         spacery20,
         BlocBuilder<ExecuteAuditActionItemBloc, ExecuteAuditActionItemState>(
           builder: (context, state) {
+            if (state.status.isLoading) {
+              return const Center(child: Loader());
+            }
             switch (state.view) {
               case CrudView.list:
                 return const AuditActionItemListView();

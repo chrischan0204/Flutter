@@ -148,6 +148,16 @@ class ExecuteAuditActionItemNotesChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [notes];
 }
 
+class ExecuteAuditActionItemIsClosedChanged
+    extends ExecuteAuditActionItemEvent {
+  final bool isClosed;
+
+  const ExecuteAuditActionItemIsClosedChanged({required this.isClosed});
+
+  @override
+  List<Object> get props => [isClosed];
+}
+
 class ExecuteAuditActionItemFileListChanged
     extends ExecuteAuditActionItemEvent {
   final List<PlatformFile> fileList;

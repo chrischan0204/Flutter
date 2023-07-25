@@ -5,7 +5,11 @@ class AddActionItemHeaderView extends StatelessWidget {
 
   String _getHeaderTitle(AddActionItemState state) {
     if (state.isEditing) {
-      return 'Add Action Item';
+      if (state.actionItem == null) {
+        return 'Add Action Item';
+      } else {
+        return 'Update Action Item';
+      }
     } else {
       if (state.actionItem == null) {
         return 'Action Items';
@@ -17,13 +21,16 @@ class AddActionItemHeaderView extends StatelessWidget {
 
   Widget _getButton(AddActionItemState state, BuildContext context) {
     if (state.isEditing) {
-      return ElevatedButton(
-        onPressed: () =>
-            context.read<AddActionItemBloc>().add(AddActionItemSaved()),
-        style: ElevatedButton.styleFrom(backgroundColor: successColor),
-        child: Text(
-          'Submit',
-          style: textNormal12.copyWith(color: Colors.white),
+      return Tooltip(
+        message: '${state.actionItem == null ? 'Add' : 'Update'} Action Item',
+        child: ElevatedButton(
+          onPressed: () =>
+              context.read<AddActionItemBloc>().add(AddActionItemSaved()),
+          style: ElevatedButton.styleFrom(backgroundColor: successColor),
+          child: Text(
+            state.actionItem == null ? 'Add' : 'Update',
+            style: textNormal12.copyWith(color: Colors.white),
+          ),
         ),
       );
     } else {
@@ -63,17 +70,21 @@ class AddActionItemHeaderView extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _getHeaderTitle(state),
-                style: textSemiBold14,
-              ),
+              if (MediaQuery.of(context).size.width > minDesktopWidth)
+                Text(
+                  _getHeaderTitle(state),
+                  style: textSemiBold14,
+                )
+              else
+                Container(),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (state.isEditing)
                     ElevatedButton(
-                      onPressed: () => context
-                          .read<AddActionItemBloc>()
-                          .add(const AddActionItemIsEditingChanged(isEditing: false)),
+                      onPressed: () => context.read<AddActionItemBloc>().add(
+                          const AddActionItemIsEditingChanged(
+                              isEditing: false)),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey),
                       child: Text(

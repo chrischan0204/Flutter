@@ -61,6 +61,9 @@ class _AuditCommentViewState extends State<AuditCommentView> {
         spacery20,
         BlocBuilder<ExecuteAuditCommentBloc, ExecuteAuditCommentState>(
           builder: (context, state) {
+            if (state.status.isLoading) {
+              return const Center(child: Loader());
+            }
             switch (state.view) {
               case CrudView.list:
                 return const AuditCommentListView();
@@ -88,11 +91,8 @@ class AuditCommentListView extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (state.auditCommentListLoadStatus.isLoading)
-              const Center(child: Loader()),
-            if (state.auditCommentListLoadStatus.isSuccess)
-              for (final comment in state.auditCommentList)
-                AuditCommentListItemView(comment: comment)
+            for (final comment in state.auditCommentList)
+              AuditCommentListItemView(comment: comment)
           ],
         );
       },

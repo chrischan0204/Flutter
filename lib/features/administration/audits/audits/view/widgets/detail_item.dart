@@ -28,9 +28,6 @@ class AuditDetailItemView extends StatelessWidget {
               style: textSemiBold14.copyWith(
                 color: primaryColor,
               ),
-              // maxLines: 3,
-              // softWrap: false,
-              // overflow: TextOverflow.ellipsis,
             ),
           ),
           CustomBottomBorderContainer(
@@ -38,41 +35,58 @@ class AuditDetailItemView extends StatelessWidget {
             child: Text(
               content,
               style: textNormal14,
-              // maxLines: 3,
-              // softWrap: false,
-              // overflow: TextOverflow.ellipsis,
             ),
           )
         ],
       );
     } else {
-      return InkWell(
-        onTap: onClick,
-        child: CustomBottomBorderContainer(
-          padding: inset10,
-          backgroundColor: highlighted ? lightBlueAccent : Colors.transparent,
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  label,
-                  style: textSemiBold14.copyWith(
-                    color: primaryColor,
-                  ),
-                ),
+      return CustomBottomBorderContainer(
+        padding: inset10,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: textSemiBold14.copyWith(color: primaryColor),
               ),
-              spacerx20,
-              Expanded(
-                child: Text(
-                  content,
-                  style: textNormal14,
-                  // maxLines: 2,
-                  // softWrap: false,
-                  // overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
+            ),
+            spacerx20,
+            Expanded(
+              child: highlighted
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        MouseRegion(
+                          cursor: highlighted
+                              ? SystemMouseCursors.click
+                              : MouseCursor.defer,
+                          child: GestureDetector(
+                            onTap: highlighted ? onClick : null,
+                            child: Container(
+                              padding: inset0,
+                              decoration: highlighted
+                                  ? BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                      color: primaryColor,
+                                      width: 1,
+                                    )))
+                                  : null,
+                              child: Text(
+                                content,
+                                style: textNormal14,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      content,
+                      style: textNormal14,
+                    ),
+            ),
+          ],
         ),
       );
     }

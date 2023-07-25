@@ -47,11 +47,20 @@ class AuditDetailObservationListView extends StatelessWidget {
               content: 'Area',
               isBold: true,
             ),
-            for (final observation in observationList)
-              AuditDetailObservationListItemView(
-                title: observation.description ?? '--',
-                content: observation.area ?? '--',
-              )
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final observation in observationList)
+                      AuditDetailObservationListItemView(
+                        title: observation.description ?? '--',
+                        content: observation.area ?? '--',
+                      )
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

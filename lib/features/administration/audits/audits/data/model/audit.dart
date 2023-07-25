@@ -151,7 +151,8 @@ class Audit extends Entity {
       'Audit Number': auditNumber,
       'Owner': owner,
       'Started on': formatedAuditDate,
-      'Completion': '$completed% ($answeredQuestions of $questions answered)',
+      'Completion':
+          '${questions == 0 ? 0 : ((100 * answeredQuestions!) ~/ questions!)}% ($answeredQuestions of $questions answered)',
       'Score':
           '${maxScore == 0 ? 0 : (score * 100 ~/ maxScore)}% ($score of $maxScore max points)',
       'Sections': sections,

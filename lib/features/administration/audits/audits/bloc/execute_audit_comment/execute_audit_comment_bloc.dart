@@ -39,7 +39,7 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentListLoaded event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
-    emit(state.copyWith(auditCommentListLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(status: EntityStatus.loading));
 
     try {
       List<AuditComment> auditCommentList =
@@ -47,10 +47,10 @@ class ExecuteAuditCommentBloc
 
       emit(state.copyWith(
         auditCommentList: auditCommentList,
-        auditCommentListLoadStatus: EntityStatus.success,
+        status: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(auditCommentListLoadStatus: EntityStatus.failure));
+      emit(state.copyWith(status: EntityStatus.failure));
     }
   }
 
@@ -58,7 +58,7 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentLoaded event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
-    emit(state.copyWith(auditCommentLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(status: EntityStatus.loading));
 
     try {
       final auditComment = await _auditsRepository.getAuditCommentById(
@@ -68,10 +68,10 @@ class ExecuteAuditCommentBloc
       emit(state.copyWith(
         auditComment: auditComment,
         commentText: auditComment.commentText,
-        auditCommentLoadStatus: EntityStatus.success,
+        status: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(auditCommentLoadStatus: EntityStatus.failure));
+      emit(state.copyWith(status: EntityStatus.failure));
     }
   }
 

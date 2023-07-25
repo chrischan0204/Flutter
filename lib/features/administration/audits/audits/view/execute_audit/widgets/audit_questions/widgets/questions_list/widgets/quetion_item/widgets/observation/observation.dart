@@ -71,6 +71,9 @@ class _AuditObservationViewState extends State<AuditObservationView> {
         spacery20,
         BlocBuilder<ExecuteAuditObservationBloc, ExecuteAuditObservationState>(
           builder: (context, state) {
+            if (state.status.isLoading) {
+              return const Center(child: Loader());
+            }
             switch (state.view) {
               case CrudView.list:
                 return const AuditObservationListView();

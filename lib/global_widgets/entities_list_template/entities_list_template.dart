@@ -407,24 +407,26 @@ class _CrudState extends State<EntityListTemplate> {
                                       current.appliedUserFilterSetting &&
                                   current.appliedUserFilterSetting == null,
                               builder: (context, state) {
-                                return filterNotApplied
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          filterSettingBloc.add(
-                                            const FilterSettingAppliedUserFilterSettingChanged(
-                                                appliedUserFilterSetting: null),
-                                          );
-                                          paginationBloc.add(
-                                              const PaginationSelectedPageNumChanged(
-                                                  selectedPageNum: 1));
-                                        },
-                                        child: Icon(
-                                          PhosphorIcons.regular.x,
-                                          color: warnColor,
-                                          size: 18,
-                                        ),
-                                      )
-                                    : Container();
+                                if (filterNotApplied) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      filterSettingBloc.add(
+                                        const FilterSettingAppliedUserFilterSettingChanged(
+                                            appliedUserFilterSetting: null),
+                                      );
+                                      paginationBloc.add(
+                                          const PaginationSelectedPageNumChanged(
+                                              selectedPageNum: 1));
+                                    },
+                                    child: Icon(
+                                      PhosphorIcons.regular.x,
+                                      color: warnColor,
+                                      size: 18,
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
                               },
                             ),
                           ],

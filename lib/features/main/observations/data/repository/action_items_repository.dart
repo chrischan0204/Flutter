@@ -75,7 +75,7 @@ class ActionItemsRepository extends BaseRepository {
         return EntityResponse(
           statusCode: response.statusCode,
           isSuccess: true,
-          message: response.body,
+          message: 'Action Item Successfully deleted.',
         );
       }
       return EntityResponse.fromJson(response.body);

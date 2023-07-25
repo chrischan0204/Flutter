@@ -245,6 +245,27 @@ class ActionItemFilePicker extends StatelessWidget {
   }
 }
 
+class IsClosedCheckBox extends StatelessWidget {
+  const IsClosedCheckBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ExecuteAuditActionItemBloc, ExecuteAuditActionItemState>(
+      builder: (context, state) {
+        return Container(
+          alignment: Alignment.centerLeft,
+          child: Checkbox(
+            value: state.isClosed,
+            onChanged: (isClosed) => context
+                .read<ExecuteAuditActionItemBloc>()
+                .add(ExecuteAuditActionItemIsClosedChanged(isClosed: isClosed!)),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class ActionItemCreateUpdateView extends StatelessWidget {
   const ActionItemCreateUpdateView({super.key});
 
@@ -310,6 +331,11 @@ class ActionItemCreateUpdateView extends StatelessWidget {
               label: 'Upload Images or documents',
               content: ActionItemFilePicker(),
             ),
+            if (state.auditActionItem != null)
+              const ActionItemCreateUpdateFormItemView(
+                label: 'Mark As Closed',
+                content: IsClosedCheckBox(),
+              ),
           ],
         );
       },

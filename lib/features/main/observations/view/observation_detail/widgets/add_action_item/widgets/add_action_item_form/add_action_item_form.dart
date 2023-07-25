@@ -6,19 +6,24 @@ class AddActionItemFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TaskInputBox(),
-        DueByDatePicker(),
-        SiteSelectField(),
-        AssigneeSelectField(),
-        CategorySelectField(),
-        CompanySelectField(),
-        ProjectSelectField(),
-        LocationInputBox(),
-        NotesTextField(),
-      ],
+    return BlocBuilder<AddActionItemBloc, AddActionItemState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const TaskInputBox(),
+            const DueByDatePicker(),
+            const SiteSelectField(),
+            const AssigneeSelectField(),
+            const CategorySelectField(),
+            const CompanySelectField(),
+            const ProjectSelectField(),
+            const LocationInputBox(),
+            const NotesTextField(),
+            if (state.actionItem != null) const IsClosedCheckBox(),
+          ],
+        );
+      },
     );
   }
 }

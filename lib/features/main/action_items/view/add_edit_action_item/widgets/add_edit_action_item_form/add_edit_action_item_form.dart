@@ -91,6 +91,12 @@ class AddEditActionItemFormView extends StatelessWidget {
               rightChild: LocationInputBox(),
             ),
             _notesInputBox,
+            if (state.actionItem != null)
+              FormItemVertical(
+                leftLabel: 'Mark As Closed',
+                leftChild: const IsClosedCheckBox(),
+                rightChild: Container(),
+              ),
           ],
         );
       },

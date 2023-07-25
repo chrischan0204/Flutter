@@ -77,7 +77,7 @@ class ExecuteAuditObservationBloc
     ExecuteAuditObservationLoaded event,
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
-    emit(state.copyWith(auditObservationLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(status: EntityStatus.loading));
 
     try {
       final auditObservation = await _auditsRepository.getAuditObservationById(
@@ -86,28 +86,28 @@ class ExecuteAuditObservationBloc
       );
       emit(state.copyWith(
         auditObservation: Nullable.value(auditObservation),
-        auditObservationLoadStatus: EntityStatus.success,
+        status: EntityStatus.success,
         response: auditObservation.response,
         area: auditObservation.area,
         observation: auditObservation.description,
         site: Nullable.value(Site(
-          id: auditObservation.assessmentSiteId,
-          name: auditObservation.assessmentSiteName,
+          id: auditObservation.userReportedSiteId,
+          name: auditObservation.userReportedSiteName,
         )),
         priorityLevel: Nullable.value(PriorityLevel(
-          id: auditObservation.assessmentPriorityLevelId,
-          name: auditObservation.assessmentPriorityLevelName,
+          id: auditObservation.userReportedPriorityLevelId,
+          name: auditObservation.userReportedPriorityLevelName,
           colorCode: Colors.white,
           priorityType: '',
         )),
         observationType: Nullable.value(ObservationType(
-          id: auditObservation.assessmentObservationTypeId,
-          name: auditObservation.assessmentObservationTypeName,
+          id: auditObservation.userReportedObservationTypeId,
+          name: auditObservation.userReportedObservationTypeName,
           severity: '',
         )),
       ));
     } catch (e) {
-      emit(state.copyWith(auditObservationLoadStatus: EntityStatus.failure));
+      emit(state.copyWith(status: EntityStatus.failure));
     }
   }
 

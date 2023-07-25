@@ -10,19 +10,23 @@ class NotifySenderCheckBox extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Notify sender:',
-              style: textSemiBold14,
-            ),
+            if (MediaQuery.of(context).size.width > minDesktopWidth)
+              Text(
+                'Notify sender:',
+                style: textSemiBold14,
+              ),
             Padding(
               padding: insetx20,
-              child: Checkbox(
-                value: state.notifySender,
-                onChanged: (notifySender) =>
-                    context.read<EditAssessmentBloc>().add(
-                          EditAssessmentNotifySenderChanged(
-                              notifySender: notifySender!),
-                        ),
+              child: Tooltip(
+                message: 'Notify sender',
+                child: Checkbox(
+                  value: state.notifySender,
+                  onChanged: (notifySender) =>
+                      context.read<EditAssessmentBloc>().add(
+                            EditAssessmentNotifySenderChanged(
+                                notifySender: notifySender!),
+                          ),
+                ),
               ),
             )
           ],

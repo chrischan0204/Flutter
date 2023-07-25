@@ -29,7 +29,6 @@ class ExecuteAuditActionItemBloc
 
     _auditId = _executeAuditBloc.auditId;
 
-
     on<ExecuteAuditActionItemListLoaded>(_onExecuteAuditActionItemListLoaded);
     on<ExecuteAuditActionItemCreated>(_onExecuteAuditActionItemCreated);
     on<ExecuteAuditActionItemDeleted>(_onExecuteAuditActionItemDeleted);
@@ -57,6 +56,8 @@ class ExecuteAuditActionItemBloc
     on<ExecuteAuditActionItemAreaChanged>(_onExecuteAuditActionItemAreaChanged);
     on<ExecuteAuditActionItemNotesChanged>(
         _onExecuteAuditActionItemNotesChanged);
+    on<ExecuteAuditActionItemIsClosedChanged>(
+        _onExecuteAuditActionItemIsClosedChanged);
     on<ExecuteAuditActionItemFileListChanged>(
         _onExecuteAuditActionItemFileListChanged);
   }
@@ -137,6 +138,13 @@ class ExecuteAuditActionItemBloc
     emit(state.copyWith(notes: event.notes));
   }
 
+  void _onExecuteAuditActionItemIsClosedChanged(
+    ExecuteAuditActionItemIsClosedChanged event,
+    Emitter<ExecuteAuditActionItemState> emit,
+  ) {
+    emit(state.copyWith(isClosed: event.isClosed));
+  }
+
   void _onExecuteAuditActionItemFileListChanged(
     ExecuteAuditActionItemFileListChanged event,
     Emitter<ExecuteAuditActionItemState> emit,
@@ -194,7 +202,7 @@ class ExecuteAuditActionItemBloc
     ExecuteAuditActionItemLoaded event,
     Emitter<ExecuteAuditActionItemState> emit,
   ) async {
-    emit(state.copyWith(auditActionItemLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(status: EntityStatus.loading));
 
     try {
       final auditActionItem = await _auditsRepository.getAuditActionItemById(
@@ -211,10 +219,13 @@ class ExecuteAuditActionItemBloc
       emit(state.copyWith(
         auditActionItem: Nullable.value(auditActionItem),
         companyList: companyList
-            .map((e) => Company(id: e.companyId, name: e.companyName))
+            .map((e) => Company(
+                  id: e.companyId,
+                  name: e.companyName,
+                ))
             .toList(),
         projectList: projectList,
-        auditActionItemLoadStatus: EntityStatus.success,
+        status: EntityStatus.success,
         area: auditActionItem.area,
         name: auditActionItem.description,
         assignee: Nullable.value(User(
@@ -240,9 +251,10 @@ class ExecuteAuditActionItemBloc
           name: auditActionItem.projectName,
         )),
         notes: auditActionItem.notes,
+        isClosed: false,
       ));
     } catch (e) {
-      emit(state.copyWith(auditActionItemLoadStatus: EntityStatus.failure));
+      emit(state.copyWith(status: EntityStatus.failure));
     }
   }
 
@@ -340,7 +352,6 @@ class ExecuteAuditActionItemBloc
 
       add(const ExecuteAuditActionItemViewChanged(view: CrudView.list));
     } catch (e) {
-      print(e);
       emit(state.copyWith(status: EntityStatus.failure));
     }
   }
@@ -369,6 +380,7 @@ class ExecuteAuditActionItemBloc
           categoryId: state.category?.id,
           auditSectionItemId: _questionId,
           auditId: _auditId,
+          isClosed: state.isClosed,
         ),
         actionItemId: state.auditActionItem!.id,
       );
