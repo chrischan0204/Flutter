@@ -131,3 +131,11 @@ class AddActionItemSiteChanged extends AddActionItemEvent {
   @override
   List<Object> get props => [site];
 }
+
+class AddActionItemImageListChanged extends AddActionItemEvent {
+  final List<PlatformFile> imageList;
+  const AddActionItemImageListChanged({required this.imageList});
+
+  @override
+  List<Object> get props => [imageList];
+}

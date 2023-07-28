@@ -41,32 +41,35 @@ class _SummaryViewState extends State<SummaryView> {
                 ),
                 Padding(
                   padding: inset20,
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      SummaryItemView(
-                        title: 'Answered',
-                        content:
-                            '${audit.answeredQuestions} of ${audit.questions} Questions',
-                      ),
-                      const Spacer(flex: 1),
-                      SummaryItemView(
-                        title: 'Score      ',
-                        content:
-                            '${audit.score} pts ${audit.completedPercent}%',
-                      ),
-                      const Spacer(flex: 1),
-                      SummaryItemView(
-                        title: 'Started on      ',
-                        content: audit.formatedAuditDate,
-                      ),
-                      const Spacer(flex: 1),
-                      SummaryItemView(
-                        title: 'Last executed on',
-                        content: audit.formatedLastExecutedOn,
-                      ),
-                      const Spacer(),
-                    ],
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Spacer(),
+                        SummaryItemView(
+                          title: 'Answered',
+                          content:
+                              '${audit.answeredQuestions} of ${audit.questions} Questions',
+                        ),
+                        const Spacer(flex: 1),
+                        SummaryItemView(
+                          title: 'Score      ',
+                          content:
+                              '${audit.score} pts ${audit.completedPercent}%',
+                        ),
+                        const Spacer(flex: 1),
+                        SummaryItemView(
+                          title: 'Started on      ',
+                          content: audit.formatedAuditDate,
+                        ),
+                        const Spacer(flex: 1),
+                        SummaryItemView(
+                          title: 'Last executed on',
+                          content: audit.formatedLastExecutedOn,
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
                   ),
                 ),
               ],

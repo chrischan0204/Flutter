@@ -41,38 +41,43 @@ class _CustomMultiImagePickerState extends State<CustomMultiFilePicker> {
           });
 
           widget.onSelect(result?.files ?? []);
-        } catch (e) {
-          print(e);
-        }
+        } catch (e) {}
       },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: grey),
         ),
-        child: Row(
-          children: [
-            Container(
-              width: 100,
-              color: lightTeal,
-              padding: inset10,
-              child: Text(
-                'Choose File',
-                style: textNormal14.copyWith(color: Colors.black),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                // height: 36,
-                padding: inset10,
-                child: Text(
-                  _getFilePaths(),
-                  style: textNormal14.copyWith(color: Colors.black),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  color: lightTeal,
+                  padding: inset10,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Choose File',
+                    style: textNormal14.copyWith(color: Colors.black),
+                  ),
                 ),
               ),
-            )
-          ],
+              Expanded(
+                flex: 4,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: inset10,
+                  child: Text(
+                    _getFilePaths(),
+                    style: textNormal14.copyWith(color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -20,6 +20,7 @@ class AddActionItemFormView extends StatelessWidget {
             const ProjectSelectField(),
             const LocationInputBox(),
             const NotesTextField(),
+            const ActionItemImagePicker(),
             if (state.actionItem != null) const IsClosedCheckBox(),
           ],
         );

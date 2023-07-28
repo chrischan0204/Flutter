@@ -27,16 +27,13 @@ class _AuditQuestionsViewState extends State<AuditQuestionsView> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 3,
       child: Padding(
         padding: inset10,
         child: Column(
           children: [
             const AuditQuestionsHeaderView(),
-            Expanded(
-              child: CustomScrollViewWithBackButton(
-                child: QuestionsListView(auditId: widget.auditId),
-              ),
-            )
+            QuestionsListView(auditId: widget.auditId)
           ],
         ),
       ),

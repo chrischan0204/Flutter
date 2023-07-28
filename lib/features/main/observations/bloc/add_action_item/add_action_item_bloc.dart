@@ -1,3 +1,5 @@
+import 'package:file_picker/file_picker.dart';
+
 import '/common_libraries.dart';
 
 part 'add_action_item_event.dart';
@@ -7,6 +9,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   late ActionItemsRepository _actionItemsRepository;
   late ObservationsRepository _observationsRepository;
   late SitesRepository _sitesRepository;
+  late DocumentsRepository _documentsRepository;
   final BuildContext context;
   final String observationId;
   AddActionItemBloc({
@@ -15,6 +18,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   }) : super(AddActionItemState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
     _observationsRepository = RepositoryProvider.of(context);
+    _documentsRepository = context.read();
     _sitesRepository = context.read();
 
     _bindEvents();
@@ -40,6 +44,14 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     on<AddActionItemDetailShown>(_onAddActionItemDetailShown);
     on<AddActionItemDetailEdited>(_onAddActionItemDetailEdited);
     on<AddActionItemIsEditingChanged>(_onAddActionItemIsEditingChanged);
+    on<AddActionItemImageListChanged>(_onAddActionItemImageListChanged);
+  }
+
+  void _onAddActionItemImageListChanged(
+    AddActionItemImageListChanged event,
+    Emitter<AddActionItemState> emit,
+  ) async {
+    emit(state.copyWith(imageList: event.imageList));
   }
 
   Future<void> _onAddActionItemListLoaded(
@@ -335,15 +347,29 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
 
       emit(state.copyWith(status: EntityStatus.loading));
 
+      late String id;
+
       if (state.actionItem == null) {
         response = await _actionItemsRepository.addActionItem(
             state.actionItemCreate.copyWith(observationId: observationId));
+
+        id = response.data!.id!;
       } else {
         response = await _actionItemsRepository.editActionItem(
             state.actionItemCreate.copyWith(observationId: observationId));
+
+        id = state.actionItem!.id!;
       }
 
       if (response.isSuccess) {
+        if (state.imageList.isNotEmpty) {
+          await _documentsRepository.uploadDocuments(
+            ownerId: id,
+            ownerType: 'actionitem',
+            documentList: state.imageList,
+          );
+        }
+
         emit(state.copyWith(
           isEditing: false,
           actionItem: const Nullable.value(null),

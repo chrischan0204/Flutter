@@ -20,13 +20,15 @@ class ExecuteAuditView extends StatelessWidget {
             children: [
               ExecuteAuditHeaderView(auditId: auditId),
               Expanded(
-                child: Column(
-                  children: [
-                    SummaryView(auditId: auditId),
-                    Expanded(child: AuditQuestionsView(auditId: auditId)),
-                  ],
+                child: CustomScrollViewWithBackButton(
+                  child: Column(
+                    children: [
+                      SummaryView(auditId: auditId),
+                      AuditQuestionsView(auditId: auditId),
+                    ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
