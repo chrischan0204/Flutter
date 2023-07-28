@@ -35,3 +35,11 @@ class ExecuteAuditQuestionLevelChanged extends ExecuteAuditQuestionEvent {
   @override
   List<Object> get props => [level];
 }
+
+class ExecuteAuditQuestionDetailLoaded extends ExecuteAuditQuestionEvent {
+  final String questionId;
+  const ExecuteAuditQuestionDetailLoaded({required this.questionId});
+
+  @override
+  List<Object> get props => [questionId];
+}

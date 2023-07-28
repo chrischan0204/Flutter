@@ -46,16 +46,7 @@ class AddEditAuditLoaded extends AddEditAuditEvent {
 }
 
 /// even to load site list
-class AddEditAuditSiteListLoaded extends AddEditAuditEvent {
-  /// user id to load site list
-  final String userId;
-  const AddEditAuditSiteListLoaded({
-    required this.userId,
-  });
-
-  @override
-  List<Object> get props => [userId];
-}
+class AddEditAuditSiteListLoaded extends AddEditAuditEvent {}
 
 /// even to load template list
 class AddEditAuditTemplateListLoaded extends AddEditAuditEvent {
@@ -168,4 +159,14 @@ class AddEditAuditInspectorsChanged extends AddEditAuditEvent {
 
   @override
   List<Object> get props => [inspectors];
+}
+
+class AddEditIsWithConfirmationChanged extends AddEditAuditEvent {
+  final bool isWithConfirmation;
+  const AddEditIsWithConfirmationChanged({
+    required this.isWithConfirmation,
+  });
+
+  @override
+  List<Object> get props => [isWithConfirmation];
 }

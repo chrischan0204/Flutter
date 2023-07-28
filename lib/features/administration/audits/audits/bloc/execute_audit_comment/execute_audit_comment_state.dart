@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'execute_audit_comment_bloc.dart';
 
 class ExecuteAuditCommentState extends Equatable {
@@ -12,6 +13,9 @@ class ExecuteAuditCommentState extends Equatable {
 
   final CrudView view;
 
+  final EntityStatus crudStatus;
+  final String message;
+
   const ExecuteAuditCommentState({
     this.auditCommentList = const [],
     this.auditComment,
@@ -19,6 +23,8 @@ class ExecuteAuditCommentState extends Equatable {
     this.commentValidationMessage = '',
     this.status = EntityStatus.initial,
     this.view = CrudView.list,
+    this.crudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -29,6 +35,8 @@ class ExecuteAuditCommentState extends Equatable {
         commentValidationMessage,
         status,
         view,
+        message,
+        crudStatus,
       ];
 
   ExecuteAuditCommentState copyWith({
@@ -38,6 +46,8 @@ class ExecuteAuditCommentState extends Equatable {
     String? commentValidationMessage,
     EntityStatus? status,
     CrudView? view,
+    EntityStatus? crudStatus,
+    String? message,
   }) {
     return ExecuteAuditCommentState(
       auditCommentList: auditCommentList ?? this.auditCommentList,
@@ -47,6 +57,8 @@ class ExecuteAuditCommentState extends Equatable {
           commentValidationMessage ?? this.commentValidationMessage,
       status: status ?? this.status,
       view: view ?? this.view,
+      crudStatus: crudStatus ?? this.crudStatus,
+      message: message ?? this.message,
     );
   }
 }

@@ -38,7 +38,7 @@ class AuditDetailActionItemListView extends StatelessWidget {
             Padding(
               padding: inset10,
               child: Text(
-                'The following action were created items in this audit...',
+                'The following action items were created in this audit...',
                 style: textSemiBold18,
               ),
             ),

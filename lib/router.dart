@@ -438,9 +438,15 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
-          body: BlocProvider(
-            create: (context) => ExecuteAuditBloc(
-                context: context, auditId: state.params['auditId']!),
+          body: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => ExecuteAuditBloc(
+                      context: context, auditId: state.params['auditId']!)),
+              BlocProvider(
+                  create: (context) =>
+                      AuditDetailBloc(context, state.params['auditId']!)),
+            ],
             child: AuditFocusModeView(auditId: state.params['auditId']!),
           ),
           selectedItemName: 'audits',

@@ -28,7 +28,9 @@ class _ExecuteFocusModeViewState extends State<ExecuteFocusModeView> {
               Padding(
                 padding: inset20,
                 child: Text(
-                  'Presenting all questions',
+                  state.selectedQuestionViewOption?.active == true
+                      ? 'Presenting all questions for ${state.selectedQuestionViewOption?.name ?? ''}'
+                      : 'Presenting ${state.selectedQuestionViewOption?.name ?? ''}',
                   style: textSemiBold18,
                 ),
               ),

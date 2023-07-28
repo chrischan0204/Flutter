@@ -21,14 +21,6 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
 
   @override
   void onChange(Change<AddEditAuditState> change) {
-    final current = change.currentState;
-    final next = change.nextState;
-
-    if (current.site?.id != next.site?.id && next.site?.id != null) {
-      add(AddEditAuditProjectListLoaded(siteId: next.site!.id!));
-      add(AddEditAuditTemplateListLoaded(siteId: next.site!.id!));
-    }
-
     super.onChange(change);
   }
 
@@ -47,6 +39,14 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     on<AddEditAuditProjectChanged>(_onAddEditAuditProjectChanged);
     on<AddEditAuditAreaChanged>(_onAddEditAuditAreaChanged);
     on<AddEditAuditInspectorsChanged>(_onAddEditAuditInspectorsChanged);
+    on<AddEditIsWithConfirmationChanged>(_onAddEditIsWithConfirmationChanged);
+  }
+
+  void _onAddEditIsWithConfirmationChanged(
+    AddEditIsWithConfirmationChanged event,
+    Emitter<AddEditAuditState> emit,
+  ) async {
+    emit(state.copyWith(isWithConfirmation: event.isWithConfirmation));
   }
 
   Future<void> _onAddEditAuditAdded(
@@ -166,7 +166,9 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
 
       final site = Site(id: audit.siteId, name: audit.siteName);
 
-      final project = Project(id: audit.projectId, name: audit.projectName);
+      final project = audit.projectId == null
+          ? null
+          : Project(id: audit.projectId, name: audit.projectName);
 
       final template = Template(id: audit.templateId, name: audit.templateName);
 
@@ -189,6 +191,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
         inspectors: audit.inspectors,
         initialInspectors: audit.inspectors,
       ));
+
+      add(AddEditAuditSiteListLoaded());
     } catch (e) {}
   }
 
@@ -232,12 +236,27 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     Emitter<AddEditAuditState> emit,
   ) async {
     try {
-      List<UserSite> siteList =
-          await _usersRepository.getSiteListForUser(event.userId);
+      List<UserSite> siteList = await _usersRepository
+          .getSiteListForUser(context.read<AuthBloc>().state.authUser!.id);
       emit(state.copyWith(
         siteList:
             siteList.map((e) => Site(id: e.siteId, name: e.siteName)).toList(),
       ));
+
+      if (siteList
+          .where((element) => element.siteId == state.loadedAudit?.siteId)
+          .isEmpty) {
+        emit(state.copyWith(
+          site: const Nullable.value(null),
+          projectList: [],
+          project: const Nullable.value(null),
+          template: const Nullable.value(null),
+          templateList: [],
+        ));
+      } else {
+        add(AddEditAuditProjectListLoaded(siteId: state.loadedAudit!.siteId));
+        add(AddEditAuditTemplateListLoaded(siteId: state.loadedAudit!.siteId));
+      }
     } catch (e) {}
   }
 
@@ -297,6 +316,9 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
       template: const Nullable.value(null),
       siteValidationMessage: '',
     ));
+
+    add(AddEditAuditProjectListLoaded(siteId: event.site.id!));
+    add(AddEditAuditTemplateListLoaded(siteId: event.site.id!));
 
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }

@@ -61,6 +61,10 @@ class ExecuteAuditActionItemState extends Equatable {
 
   final List<PlatformFile> fileList;
 
+  final EntityStatus crudStatus;
+
+  final String message;
+
   ExecuteAuditActionItemState({
     this.auditActionItemList = const [],
     this.auditActionItemListLoadStatus = EntityStatus.initial,
@@ -85,6 +89,8 @@ class ExecuteAuditActionItemState extends Equatable {
     this.projectList = const [],
     this.fileList = const [],
     this.isClosed = false,
+    this.crudStatus = EntityStatus.initial,
+    this.message = '',
   }) {
     dueBy ??= DateTime.now();
   }
@@ -114,6 +120,8 @@ class ExecuteAuditActionItemState extends Equatable {
         projectList,
         companyList,
         fileList,
+        crudStatus,
+        message,
       ];
 
   ExecuteAuditActionItemState copyWith({
@@ -140,39 +148,42 @@ class ExecuteAuditActionItemState extends Equatable {
     String? notes,
     List<PlatformFile>? fileList,
     bool? isClosed,
+    EntityStatus? crudStatus,
+    String? message,
   }) {
     return ExecuteAuditActionItemState(
-      auditActionItemList: auditActionItemList ?? this.auditActionItemList,
-      auditActionItemListLoadStatus:
-          auditActionItemListLoadStatus ?? this.auditActionItemListLoadStatus,
-      auditActionItem: auditActionItem != null
-          ? auditActionItem.value
-          : this.auditActionItem,
-      auditActionItemLoadStatus:
-          auditActionItemLoadStatus ?? this.auditActionItemLoadStatus,
-      status: status ?? this.status,
-      view: view ?? this.view,
-      projectList: projectList ?? this.projectList,
-      companyList: companyList ?? this.companyList,
-      name: name ?? this.name,
-      nameValidationMessage:
-          nameValidationMessage ?? this.nameValidationMessage,
-      dueBy: dueBy ?? this.dueBy,
-      dueByValidationMessage:
-          dueByValidationMessage ?? this.dueByValidationMessage,
-      assignee: assignee != null ? assignee.value : this.assignee,
-      assigneeValidationMessage:
-          assigneeValidationMessage ?? this.assigneeValidationMessage,
-      site: site != null ? site.value : this.site,
-      siteValidationMessage:
-          siteValidationMessage ?? this.siteValidationMessage,
-      category: category != null ? category.value : this.category,
-      company: company != null ? company.value : this.company,
-      project: project != null ? project.value : this.project,
-      area: area ?? this.area,
-      notes: notes ?? this.notes,
-      isClosed: isClosed ?? this.isClosed,
-      fileList: fileList ?? this.fileList,
-    );
+        auditActionItemList: auditActionItemList ?? this.auditActionItemList,
+        auditActionItemListLoadStatus:
+            auditActionItemListLoadStatus ?? this.auditActionItemListLoadStatus,
+        auditActionItem: auditActionItem != null
+            ? auditActionItem.value
+            : this.auditActionItem,
+        auditActionItemLoadStatus:
+            auditActionItemLoadStatus ?? this.auditActionItemLoadStatus,
+        status: status ?? this.status,
+        view: view ?? this.view,
+        projectList: projectList ?? this.projectList,
+        companyList: companyList ?? this.companyList,
+        name: name ?? this.name,
+        nameValidationMessage:
+            nameValidationMessage ?? this.nameValidationMessage,
+        dueBy: dueBy ?? this.dueBy,
+        dueByValidationMessage:
+            dueByValidationMessage ?? this.dueByValidationMessage,
+        assignee: assignee != null ? assignee.value : this.assignee,
+        assigneeValidationMessage:
+            assigneeValidationMessage ?? this.assigneeValidationMessage,
+        site: site != null ? site.value : this.site,
+        siteValidationMessage:
+            siteValidationMessage ?? this.siteValidationMessage,
+        category: category != null ? category.value : this.category,
+        company: company != null ? company.value : this.company,
+        project: project != null ? project.value : this.project,
+        area: area ?? this.area,
+        notes: notes ?? this.notes,
+        isClosed: isClosed ?? this.isClosed,
+        fileList: fileList ?? this.fileList,
+        crudStatus: crudStatus ?? this.crudStatus,
+        message: message ?? this.message);
   }
 }

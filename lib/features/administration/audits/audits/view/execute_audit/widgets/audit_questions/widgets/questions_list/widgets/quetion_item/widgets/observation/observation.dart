@@ -23,7 +23,18 @@ class _AuditObservationViewState extends State<AuditObservationView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BlocBuilder<ExecuteAuditObservationBloc, ExecuteAuditObservationState>(
+        BlocConsumer<ExecuteAuditObservationBloc, ExecuteAuditObservationState>(
+          listener: (context, state) {
+            CustomNotification(
+              context: context,
+              notifyType: NotifyType.success,
+              content: state.message,
+            ).showNotification();
+          },
+          listenWhen: (previous, current) =>
+              previous.crudStatus != current.crudStatus &&
+              current.message.isNotEmpty &&
+              current.crudStatus.isSuccess,
           builder: (context, state) {
             return CustomBottomBorderContainer(
               padding: inset8,

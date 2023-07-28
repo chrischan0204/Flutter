@@ -38,7 +38,7 @@ class AuditDetailObservationListView extends StatelessWidget {
             Padding(
               padding: inset10,
               child: Text(
-                'The following observation were created in this audit...',
+                'The following observations were created in this audit...',
                 style: textSemiBold18,
               ),
             ),

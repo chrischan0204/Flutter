@@ -8,9 +8,7 @@ Future<void> downloadFile(
   required String filename,
   required String ext,
 }) async {
-  http
-      .get(Uri.parse('https://api.allorigins.win/raw?url=$url'))
-      .then((response) async {
+  http.get(Uri.parse(url)).then((response) async {
     await FileSaver.instance.saveFile(
       name: filename,
       bytes: response.bodyBytes,
@@ -24,9 +22,7 @@ Future<void> downloadFileUsingDocument(Document document) async {
   String url = document.uri ?? '';
   String filename = document.originalFileName ?? '';
   String ext = document.documentType!.split('.').last;
-  http
-      .get(Uri.parse('https://api.allorigins.win/raw?url=$url'))
-      .then((response) async {
+  http.get(Uri.parse(url)).then((response) async {
     await FileSaver.instance.saveFile(
       name: filename,
       bytes: response.bodyBytes,

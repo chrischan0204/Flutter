@@ -14,21 +14,21 @@ class ExecuteAuditView extends StatelessWidget {
       create: (context) => ExecuteAuditBloc(context: context, auditId: auditId),
       child: Padding(
         padding: inset12,
-        child: Column(
-          children: [
-            ExecuteAuditHeaderView(auditId: auditId),
-            Expanded(
-              child: Column(
-                children: [
-                  BlocProvider(
-                    create: (context) => AuditDetailBloc(context, auditId),
-                    child: SummaryView(auditId: auditId),
-                  ),
-                  Expanded(child: AuditQuestionsView(auditId: auditId)),
-                ],
-              ),
-            )
-          ],
+        child: BlocProvider(
+          create: (context) => AuditDetailBloc(context, auditId),
+          child: Column(
+            children: [
+              ExecuteAuditHeaderView(auditId: auditId),
+              Expanded(
+                child: Column(
+                  children: [
+                    SummaryView(auditId: auditId),
+                    Expanded(child: AuditQuestionsView(auditId: auditId)),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

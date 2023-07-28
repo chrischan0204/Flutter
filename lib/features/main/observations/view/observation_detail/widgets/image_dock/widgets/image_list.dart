@@ -46,8 +46,7 @@ class _DockImageListViewState extends State<DockImageListView> {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                     child: CachedNetworkImage(
-                      imageUrl:
-                          'https://api.allorigins.win/raw?url=${item.uri ?? ''}',
+                      imageUrl: item.uri ?? '',
                       placeholder: (context, url) =>
                           const Center(child: Loader(size: 70)),
                       errorWidget: (context, url, error) =>
@@ -112,8 +111,7 @@ class _DockImageListViewState extends State<DockImageListView> {
                                   : null,
                               child: CachedNetworkImage(
                                 imageUrl: state.imageList
-                                    .map((e) =>
-                                        'https://api.allorigins.win/raw?url=${e.uri ?? ''}')
+                                    .map((e) => e.uri ?? '')
                                     .toList()[pageIndex],
                                 placeholder: (context, url) => const Center(
                                     child: Padding(

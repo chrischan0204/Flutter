@@ -18,6 +18,7 @@ class AuditActionItem extends Equatable {
   final String? status;
   final String? source;
   final String? notes;
+  final String? createdBy;
   const AuditActionItem({
     required this.id,
     this.description,
@@ -34,6 +35,7 @@ class AuditActionItem extends Equatable {
     this.status,
     this.source,
     this.notes,
+    this.createdBy,
   });
 
   @override
@@ -54,6 +56,7 @@ class AuditActionItem extends Equatable {
       status,
       source,
       notes,
+      createdBy,
     ];
   }
 
@@ -75,6 +78,7 @@ class AuditActionItem extends Equatable {
     String? status,
     String? source,
     String? notes,
+    String? createdBy,
   }) {
     return AuditActionItem(
       id: id ?? this.id,
@@ -93,6 +97,7 @@ class AuditActionItem extends Equatable {
       status: status ?? this.status,
       source: source ?? this.source,
       notes: notes ?? this.notes,
+      createdBy: createdBy ?? this.createdBy,
     );
   }
 
@@ -124,6 +129,7 @@ class AuditActionItem extends Equatable {
       status: map['status'] != null ? map['status'] as String : null,
       source: map['source'] != null ? map['source'] as String : null,
       notes: map['notes'] != null ? map['notes'] as String : null,
+      createdBy: map['createdBy'] != null ? map['createdBy'] as String : null,
     );
   }
 

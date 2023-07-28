@@ -236,6 +236,17 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  Future<AuditQuestion> getAuditQuestionByIdForExecute(
+      String questionId) async {
+    Response response = await super.get('$url/questions/$questionId');
+
+    if (response.statusCode == 200) {
+      return AuditQuestion.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
   Future<AuditQuestion> getFollowupAuditQuestionForExecute(
     String auditId,
     String responseScaleId,

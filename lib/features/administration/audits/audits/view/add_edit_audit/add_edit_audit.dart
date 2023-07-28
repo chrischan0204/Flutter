@@ -37,7 +37,6 @@ class AddEditAuditWidget extends StatefulWidget {
 
 class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
   late AddEditAuditBloc addEditAuditBloc;
-  bool isWithConfirmation = false;
 
   static String pageLabel = 'audit';
 
@@ -51,12 +50,12 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
 
   @override
   void initState() {
-    addEditAuditBloc = context.read()
-      ..add(AddEditAuditSiteListLoaded(
-          userId: context.read<AuthBloc>().state.authUser!.id));
+    addEditAuditBloc = context.read();
 
     if (widget.auditId != null) {
       addEditAuditBloc.add(AddEditAuditLoaded(id: widget.auditId!));
+    } else {
+      addEditAuditBloc.add(AddEditAuditSiteListLoaded());
     }
 
     super.initState();
@@ -87,7 +86,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
             GoRouter.of(context)
                 .go('/audits/edit/${state.createdAuditId}?view=created');
           } else {
-            if (isWithConfirmation) {
+            if (state.isWithConfirmation) {
               context.go('/audits');
             }
           }
@@ -103,14 +102,14 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
       listenWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         if (state.status.isLoading &&
-            isWithConfirmation &&
+            state.isWithConfirmation &&
             widget.auditId != null) {
           return WaitingApproveEditAuditView(
             auditNumber: state.loadedAudit?.auditNumber ?? '',
           );
         }
 
-        if (isWithConfirmation && widget.auditId != null) {
+        if (state.isWithConfirmation && widget.auditId != null) {
           return ApproveEditAuditView(auditId: widget.auditId!);
         }
         return AddEditEntityTemplate(
@@ -122,9 +121,9 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
                   context.read<AuthBloc>().state.authUser?.id ?? emptyGuid)),
           editEntity: () {
             if (state.isNeedConfirmation) {
-              setState(() {
-                isWithConfirmation = true;
-              });
+              context.read<AddEditAuditBloc>().add(
+                  const AddEditIsWithConfirmationChanged(
+                      isWithConfirmation: true));
             } else {
               addEditAuditBloc.add(AddEditAuditEdited(
                   id: widget.auditId ?? '',

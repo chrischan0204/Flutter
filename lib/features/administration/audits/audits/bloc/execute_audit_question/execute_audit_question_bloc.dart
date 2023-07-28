@@ -34,6 +34,23 @@ class ExecuteAuditQuestionBloc
     on<ExecuteAuditQuestionResponseSelected>(
         _onExecuteAuditQuestionResponseSelected);
     on<ExecuteAuditQuestionLevelChanged>(_onExecuteAuditQuestionLevelChanged);
+    on<ExecuteAuditQuestionDetailLoaded>(_onExecuteAuditQuestionDetailLoaded);
+  }
+
+  Future<void> _onExecuteAuditQuestionDetailLoaded(
+    ExecuteAuditQuestionDetailLoaded event,
+    Emitter<ExecuteAuditQuestionState> emit,
+  ) async {
+    try {
+      AuditQuestion auditQuestion = await _auditsRepository
+          .getAuditQuestionByIdForExecute(event.questionId);
+
+      emit(state.copyWith(
+          level0: state.level0.copyWith(
+        questionStatusName: auditQuestion.questionStatusName,
+        questionStatus: auditQuestion.questionStatus,
+      )));
+    } catch (e) {}
   }
 
   Future<void> _onExecuteAuditQuestionLoaded(
@@ -115,6 +132,8 @@ class ExecuteAuditQuestionBloc
         emit(state.copyWith(
             selectedlevel2Response: Nullable.value(event.response)));
       }
+
+      add(ExecuteAuditQuestionDetailLoaded(questionId: auditQuestion.id));
     }
   }
 }

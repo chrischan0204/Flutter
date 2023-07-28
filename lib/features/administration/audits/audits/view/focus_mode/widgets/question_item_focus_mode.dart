@@ -18,96 +18,101 @@ class QuestionItemForFocusModeView extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            state.level1Followup != null
-                ? Padding(
-                    padding: insetx12,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                context.read<ExecuteAuditQuestionBloc>().add(
-                                    const ExecuteAuditQuestionLevelChanged(
-                                        level: 0));
-                              },
-                              child: Text(
-                                'Question',
-                                style: textNormal18.copyWith(
-                                  color: textBlue,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: textBlue,
+            Padding(
+              padding: insetx12,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: state.level1Followup != null
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      context.read<ExecuteAuditQuestionBloc>().add(
+                                          const ExecuteAuditQuestionLevelChanged(
+                                              level: 0));
+                                    },
+                                    child: Text(
+                                      'Question',
+                                      style: textNormal18.copyWith(
+                                        color: textBlue,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: textBlue,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '>',
+                                    style: TextStyle(
+                                      color: textBlue,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: state.level2Followup != null
+                                        ? () {
+                                            context
+                                                .read<
+                                                    ExecuteAuditQuestionBloc>()
+                                                .add(
+                                                    const ExecuteAuditQuestionLevelChanged(
+                                                        level: 1));
+                                          }
+                                        : null,
+                                    child: Text(
+                                      'Follow up Question (Option=\'${state.selectedlevel0Response?.name}\')',
+                                      style: textNormal14.copyWith(
+                                        decoration: state.level2Followup != null
+                                            ? TextDecoration.underline
+                                            : null,
+                                        color: textBlue,
+                                        decorationColor: textBlue,
+                                        decorationThickness: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  if (state.level2Followup != null)
+                                    Text(
+                                      '>',
+                                      style: TextStyle(
+                                        color: textBlue,
+                                      ),
+                                    ),
+                                  if (state.level2Followup != null)
+                                    Text(
+                                      'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
+                                      style: textNormal12.copyWith(
+                                        color: textBlue,
+                                      ),
+                                    )
+                                ],
+                              ),
+                              spacery5,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Q${questionIndex + 1}: ${state.level2Followup != null ? state.level2Followup?.question : state.level1Followup?.question}',
+                                  style: textSemiBold16,
                                 ),
                               ),
-                            ),
-                            Text(
-                              '>',
-                              style: TextStyle(
-                                color: textBlue,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.read<ExecuteAuditQuestionBloc>().add(
-                                    const ExecuteAuditQuestionLevelChanged(
-                                        level: 1));
-                              },
-                              child: Text(
-                                'Follow up Question (Option=\'${state.selectedlevel0Response?.name}\')',
-                                style: textNormal14.copyWith(
-                                  decoration: TextDecoration.underline,
-                                  color: textBlue,
-                                  decorationColor: textBlue,
-                                ),
-                              ),
-                            ),
-                            if (state.level2Followup != null)
-                              Text(
-                                '>',
-                                style: TextStyle(
-                                  color: textBlue,
-                                ),
-                              ),
-                            if (state.level2Followup != null)
-                              Text(
-                                'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
-                                style: textNormal12.copyWith(
-                                  color: textBlue,
-                                ),
-                              )
-                          ],
-                        ),
-                        spacery5,
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'Q${questionIndex + 1}: ${state.level2Followup != null ? state.level2Followup?.question : state.level1Followup?.question}',
-                            style: textSemiBold16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: insetx12,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
+                            ],
+                          )
+                        : Text(
                             'Q${questionIndex + 1}: ${state.auditQuestion?.question}',
                             style: textSemiBold16,
                           ),
-                        ),
-                        CustomBadge(
-                          label: state.auditQuestion?.questionStatusName ?? '',
-                          color: state.auditQuestion?.questionStatus == 0
-                              ? warnColor
-                              : primaryColor,
-                        )
-                      ],
-                    ),
                   ),
+                  CustomBadge(
+                    label: state.level0.questionStatusName,
+                    color: state.level0.questionStatus == 0
+                        ? warnColor
+                        : primaryColor,
+                  )
+                ],
+              ),
+            ),
             QuestionItemBodyView(
               questionIndex: questionIndex,
             )

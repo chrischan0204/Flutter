@@ -11,6 +11,7 @@ class ExecuteAuditObservationBloc
   final AuditQuestion auditQuestion;
 
   late ExecuteAuditBloc _executeAuditBloc;
+
   late AuthBloc _authBloc;
   late AuditsRepository _auditsRepository;
   late DocumentsRepository _documentsRepository;
@@ -55,11 +56,19 @@ class ExecuteAuditObservationBloc
         _onExecuteAuditObservationImageListLoaded);
   }
 
+  @override
+  void onChange(Change<ExecuteAuditObservationState> change) {
+    super.onChange(change);
+  }
+
   Future<void> _onExecuteAuditObservationListLoaded(
     ExecuteAuditObservationListLoaded event,
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
-    emit(state.copyWith(auditObservationListLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(
+      auditObservationListLoadStatus: EntityStatus.loading,
+      message: '',
+    ));
 
     try {
       List<ObservationDetail> auditObservationList =
@@ -79,7 +88,10 @@ class ExecuteAuditObservationBloc
     ExecuteAuditObservationLoaded event,
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      message: '',
+    ));
 
     try {
       final auditObservation = await _auditsRepository.getAuditObservationById(
@@ -179,6 +191,7 @@ class ExecuteAuditObservationBloc
       emit(state.copyWith(
         status: EntityStatus.loading,
         crudStatus: EntityStatus.loading,
+        message: '',
       ));
 
       try {
@@ -218,6 +231,7 @@ class ExecuteAuditObservationBloc
         emit(state.copyWith(
           status: EntityStatus.failure,
           crudStatus: EntityStatus.failure,
+          message: '',
         ));
       }
     }
@@ -231,6 +245,7 @@ class ExecuteAuditObservationBloc
       emit(state.copyWith(
         status: EntityStatus.loading,
         crudStatus: EntityStatus.loading,
+        message: '',
       ));
 
       try {
@@ -277,6 +292,7 @@ class ExecuteAuditObservationBloc
         emit(state.copyWith(
           status: EntityStatus.failure,
           crudStatus: EntityStatus.failure,
+          message: '',
         ));
       }
     }

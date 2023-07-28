@@ -26,8 +26,7 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                 child: CachedNetworkImage(
-                  imageUrl:
-                      'https://api.allorigins.win/raw?url=${item.uri ?? ''}',
+                  imageUrl: item.uri ?? '',
                   placeholder: (context, url) =>
                       const Center(child: Loader(size: 70)),
                   errorWidget: (context, url, error) => const Icon(
@@ -117,8 +116,7 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                                               imageUrl: widget.imageList
                                                   .where((element) => element
                                                       .documentType!.isImage)
-                                                  .map((e) =>
-                                                      'https://api.allorigins.win/raw?url=${e.uri ?? ''}')
+                                                  .map((e) => e.uri ?? '')
                                                   .toList()[pageIndex],
                                               placeholder: (context, url) =>
                                                   const Center(

@@ -9,6 +9,7 @@ class ExecuteAuditCommentBloc
   final AuditQuestion auditQuestion;
 
   late ExecuteAuditBloc _executeAuditBloc;
+  late ExecuteAuditQuestionBloc _executeAuditQuestionBloc;
   late AuditsRepository _auditsRepository;
   late String _questionId;
   late String _auditId;
@@ -19,6 +20,7 @@ class ExecuteAuditCommentBloc
   }) : super(const ExecuteAuditCommentState()) {
     _executeAuditBloc = context.read();
     _auditsRepository = context.read();
+    _executeAuditQuestionBloc = context.read();
 
     _questionId = auditQuestion.id;
 
@@ -39,6 +41,8 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentListLoaded event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
+    _executeAuditQuestionBloc
+        .add(ExecuteAuditQuestionDetailLoaded(questionId: _questionId));
     emit(state.copyWith(status: EntityStatus.loading));
 
     try {
@@ -84,7 +88,10 @@ class ExecuteAuditCommentBloc
           commentValidationMessage:
               FormValidationMessage(fieldName: 'Comment').requiredMessage));
     } else {
-      emit(state.copyWith(status: EntityStatus.loading));
+      emit(state.copyWith(
+        status: EntityStatus.loading,
+        crudStatus: EntityStatus.loading,
+      ));
 
       try {
         await _auditsRepository.addCommentForAudit(AuditCommentCreate(
@@ -96,6 +103,8 @@ class ExecuteAuditCommentBloc
 
         emit(state.copyWith(
           status: EntityStatus.success,
+          crudStatus: EntityStatus.success,
+          message: 'Comment added successfully.',
           commentText: '',
         ));
 
@@ -103,7 +112,10 @@ class ExecuteAuditCommentBloc
 
         add(const ExecuteAuditCommentViewChanged(view: CrudView.list));
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          crudStatus: EntityStatus.failure,
+        ));
       }
     }
   }
@@ -117,7 +129,10 @@ class ExecuteAuditCommentBloc
           commentValidationMessage:
               FormValidationMessage(fieldName: 'Comment').requiredMessage));
     } else {
-      emit(state.copyWith(status: EntityStatus.loading));
+      emit(state.copyWith(
+        status: EntityStatus.loading,
+        crudStatus: EntityStatus.loading,
+      ));
 
       try {
         await _auditsRepository.editCommentForAudit(AuditCommentUpdate(
@@ -131,13 +146,18 @@ class ExecuteAuditCommentBloc
         emit(state.copyWith(
           status: EntityStatus.success,
           commentText: '',
+          message: 'Comment updated successfully.',
+          crudStatus: EntityStatus.success,
         ));
 
         add(ExecuteAuditCommentListLoaded());
 
         add(const ExecuteAuditCommentViewChanged(view: CrudView.list));
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          crudStatus: EntityStatus.failure,
+        ));
       }
     }
   }
@@ -163,7 +183,10 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentDeleted event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      crudStatus: EntityStatus.loading,
+    ));
 
     try {
       EntityResponse response = await _auditsRepository.deleteAuditComment(
@@ -172,12 +195,19 @@ class ExecuteAuditCommentBloc
       );
 
       if (response.isSuccess) {
-        emit(state.copyWith(status: EntityStatus.success));
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          crudStatus: EntityStatus.success,
+          message: 'Comment deleted successfully.',
+        ));
 
         add(ExecuteAuditCommentListLoaded());
       }
     } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      emit(state.copyWith(
+        status: EntityStatus.failure,
+        crudStatus: EntityStatus.failure,
+      ));
     }
   }
 }

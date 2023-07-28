@@ -88,6 +88,9 @@ class AddEditAuditState extends Equatable {
 
   /// response message from server
   final String message;
+
+  final bool isWithConfirmation;
+
   AddEditAuditState({
     this.createdAuditId,
     this.loadedAudit,
@@ -118,6 +121,7 @@ class AddEditAuditState extends Equatable {
     this.inspectorsValidationMessage = '',
     this.status = EntityStatus.initial,
     this.message = '',
+    this.isWithConfirmation = false,
   }) {
     auditDate ??= DateTime.now();
   }
@@ -153,6 +157,7 @@ class AddEditAuditState extends Equatable {
         inspectorsValidationMessage,
         status,
         message,
+        isWithConfirmation,
       ];
 
   bool get isNeedConfirmation {
@@ -224,6 +229,7 @@ class AddEditAuditState extends Equatable {
     String? inspectorsValidationMessage,
     EntityStatus? status,
     String? message,
+    bool? isWithConfirmation,
   }) {
     return AddEditAuditState(
       createdAuditId: createdAuditId ?? this.createdAuditId,
@@ -264,6 +270,7 @@ class AddEditAuditState extends Equatable {
           inspectorsValidationMessage ?? this.inspectorsValidationMessage,
       status: status ?? this.status,
       message: message ?? this.message,
+      isWithConfirmation: isWithConfirmation ?? this.isWithConfirmation,
     );
   }
 }

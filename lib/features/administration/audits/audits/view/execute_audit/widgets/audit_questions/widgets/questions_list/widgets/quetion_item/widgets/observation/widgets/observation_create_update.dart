@@ -181,19 +181,8 @@ class ObservationCreateUpdateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ExecuteAuditObservationBloc,
+    return BlocBuilder<ExecuteAuditObservationBloc,
         ExecuteAuditObservationState>(
-      listener: (context, state) {
-        if (state.crudStatus.isSuccess) {
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification(); 
-        }
-      },
-      listenWhen: (previous, current) =>
-          previous.crudStatus != current.crudStatus,
       builder: (context, state) {
         return Column(
           children: [

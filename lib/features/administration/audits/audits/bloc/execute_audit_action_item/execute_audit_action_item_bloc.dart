@@ -11,6 +11,7 @@ class ExecuteAuditActionItemBloc
   final AuditQuestion auditQuestion;
 
   late ExecuteAuditBloc _executeAuditBloc;
+  late ExecuteAuditQuestionBloc _executeAuditQuestionBloc;
   late AuditsRepository _auditsRepository;
   late SitesRepository _sitesRepository;
   late DocumentsRepository _documentsRepository;
@@ -21,6 +22,7 @@ class ExecuteAuditActionItemBloc
     required this.auditQuestion,
   }) : super(ExecuteAuditActionItemState()) {
     _executeAuditBloc = context.read();
+    _executeAuditQuestionBloc = context.read();
     _auditsRepository = context.read();
     _sitesRepository = context.read();
     _documentsRepository = context.read();
@@ -183,6 +185,9 @@ class ExecuteAuditActionItemBloc
     ExecuteAuditActionItemListLoaded event,
     Emitter<ExecuteAuditActionItemState> emit,
   ) async {
+    _executeAuditQuestionBloc
+        .add(ExecuteAuditQuestionDetailLoaded(questionId: _questionId));
+
     emit(state.copyWith(auditActionItemListLoadStatus: EntityStatus.loading));
 
     try {
@@ -318,7 +323,10 @@ class ExecuteAuditActionItemBloc
     if (!_validate(emit)) {
       return;
     }
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      crudStatus: EntityStatus.loading,
+    ));
 
     try {
       EntityResponse response =
@@ -344,7 +352,11 @@ class ExecuteAuditActionItemBloc
         );
       }
 
-      emit(state.copyWith(status: EntityStatus.success));
+      emit(state.copyWith(
+        status: EntityStatus.success,
+        crudStatus: EntityStatus.success,
+        message: 'Action item added successfully.',
+      ));
 
       _clearForm(emit);
 
@@ -352,7 +364,10 @@ class ExecuteAuditActionItemBloc
 
       add(const ExecuteAuditActionItemViewChanged(view: CrudView.list));
     } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      emit(state.copyWith(
+        status: EntityStatus.failure,
+        crudStatus: EntityStatus.failure,
+      ));
     }
   }
 
@@ -363,7 +378,10 @@ class ExecuteAuditActionItemBloc
     if (!_validate(emit)) {
       return;
     }
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      crudStatus: EntityStatus.loading,
+    ));
 
     try {
       await _auditsRepository.editActionItemForAudit(
@@ -396,6 +414,8 @@ class ExecuteAuditActionItemBloc
       emit(state.copyWith(
         status: EntityStatus.success,
         auditActionItem: const Nullable.value(null),
+        crudStatus: EntityStatus.success,
+        message: 'Action item updated successfully.',
       ));
 
       _clearForm(emit);
@@ -404,7 +424,10 @@ class ExecuteAuditActionItemBloc
 
       add(const ExecuteAuditActionItemViewChanged(view: CrudView.list));
     } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      emit(state.copyWith(
+        status: EntityStatus.failure,
+        crudStatus: EntityStatus.failure,
+      ));
     }
   }
 
@@ -419,7 +442,10 @@ class ExecuteAuditActionItemBloc
     ExecuteAuditActionItemDeleted event,
     Emitter<ExecuteAuditActionItemState> emit,
   ) async {
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      crudStatus: EntityStatus.loading,
+    ));
 
     try {
       EntityResponse response = await _auditsRepository.deleteAuditActionItem(
@@ -428,12 +454,19 @@ class ExecuteAuditActionItemBloc
       );
 
       if (response.isSuccess) {
-        emit(state.copyWith(status: EntityStatus.success));
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          crudStatus: EntityStatus.success,
+          message: 'Action item deleted successfully.',
+        ));
 
         add(ExecuteAuditActionItemListLoaded());
       }
     } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      emit(state.copyWith(
+        status: EntityStatus.failure,
+        crudStatus: EntityStatus.failure,
+      ));
     }
   }
 }

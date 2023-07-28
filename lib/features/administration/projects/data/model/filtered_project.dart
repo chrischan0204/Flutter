@@ -55,7 +55,7 @@ class FilteredProject extends FilteredEntity {
       referenceNumber: map['reference_Number'] ?? '',
       active: map['active'] ?? true,
       deactivatedOn: map['deactivated_On'] != null
-          ? DateFormat('yyyy-MM-dd')
+          ? DateFormat('MM/d/yyyy')
               .format(DateTime.parse(map['deactivated_On']))
           : '--',
       createdBy: entity.createdBy,

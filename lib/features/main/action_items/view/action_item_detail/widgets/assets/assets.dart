@@ -109,8 +109,7 @@ class AssetsListItemView extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => showImageDialog(
                   fileName: document.originalFileName ?? '',
-                  url:
-                      'https://api.allorigins.win/raw?url=${document.uri ?? ''}',
+                  url: document.uri ?? '',
                 ),
                 child: Text(
                   '${document.originalFileName ?? ''} (${active ? 'image' : document.documentType!.contains('pdf') ? 'pdf' : 'word'})',

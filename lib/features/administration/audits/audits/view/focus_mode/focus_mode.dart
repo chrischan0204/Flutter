@@ -16,6 +16,10 @@ class _AuditFocusModeViewState extends State<AuditFocusModeView> {
   bool isStart = false;
   @override
   void initState() {
+    context
+        .read<AuditDetailBloc>()
+        .add(AuditDetailLoaded(auditId: widget.auditId));
+
     context.read<ExecuteAuditBloc>()
       ..add(ExecuteAuditPriorityLevelListLoaded())
       ..add(ExecuteAuditObservationTypeListLoaded())
@@ -38,9 +42,13 @@ class _AuditFocusModeViewState extends State<AuditFocusModeView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Execute Audit',
-                    style: textSemiBold18,
+                  BlocBuilder<AuditDetailBloc, AuditDetailState>(
+                    builder: (context, state) {
+                      return Text(
+                        'Execute Audit - ${state.auditSummary?.name ?? ''}',
+                        style: textSemiBold18,
+                      );
+                    },
                   ),
                   Row(
                     children: [

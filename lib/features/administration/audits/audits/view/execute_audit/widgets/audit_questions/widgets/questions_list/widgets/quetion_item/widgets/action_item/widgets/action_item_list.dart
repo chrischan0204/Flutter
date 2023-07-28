@@ -76,7 +76,7 @@ class AuditActionItemListItemView extends StatelessWidget {
                   style: textSemiBold12,
                   children: [
                     TextSpan(
-                      text: actionItem.closedByUserName ?? '',
+                      text: actionItem.createdBy ?? '',
                       style: textNormal12,
                     )
                   ],

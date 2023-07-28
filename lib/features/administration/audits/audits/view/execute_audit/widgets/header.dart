@@ -17,9 +17,13 @@ class ExecuteAuditHeaderView extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Execute Audit',
-              style: textSemiBold18,
+            BlocBuilder<AuditDetailBloc, AuditDetailState>(
+              builder: (context, state) {
+                return Text(
+                  'Execute Audit - ${state.auditSummary?.name ?? ''}',
+                  style: textSemiBold18,
+                );
+              },
             ),
             Row(
               children: [

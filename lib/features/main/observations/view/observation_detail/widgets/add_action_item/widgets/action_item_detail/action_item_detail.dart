@@ -9,8 +9,8 @@ class ActionItemDetailViewForObservation extends StatelessWidget {
     return BlocBuilder<AddActionItemBloc, AddActionItemState>(
       builder: (context, state) {
         if (state.actionItem != null) {
-          return Column(
-            children: const [
+          return const Column(
+            children: [
               TaskDetailView(),
               DueByDetailView(),
               AssigneeDetailView(),

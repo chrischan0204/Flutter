@@ -36,6 +36,7 @@ class _ExecuteAuditDocumentViewState extends State<ExecuteAuditDocumentView> {
             }
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for (final document in state.documentList)
                   CustomBottomBorderContainer(
@@ -45,20 +46,19 @@ class _ExecuteAuditDocumentViewState extends State<ExecuteAuditDocumentView> {
                       children: [
                         Expanded(
                             child: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                  onTap: document.documentType!.isImage
-                                      ? () {
-                                          showImageDialog(
-                                            fileName:
-                                                document.originalFileName ?? '',
-                                            url:
-                                                'https://api.allorigins.win/raw?url=${document.uri ?? ''}',
-                                          );
-                                        }
-                                      : null,
-                                  child: Text(document.originalFileName ?? '')),
-                            )),
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                              onTap: document.documentType!.isImage
+                                  ? () {
+                                      showImageDialog(
+                                        fileName:
+                                            document.originalFileName ?? '',
+                                        url: document.uri ?? '',
+                                      );
+                                    }
+                                  : null,
+                              child: Text(document.originalFileName ?? '')),
+                        )),
                         IconButton(
                           onPressed: () async {
                             await downloadFile(document.uri ?? '',
