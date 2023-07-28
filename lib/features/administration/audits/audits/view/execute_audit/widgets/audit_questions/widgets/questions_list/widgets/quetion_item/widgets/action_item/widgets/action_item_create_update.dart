@@ -276,7 +276,7 @@ class ActionItemCreateUpdateView extends StatelessWidget {
         return Column(
           children: [
             ActionItemCreateUpdateFormItemView(
-              label: 'Action required(*)',
+              label: 'Action required (*)',
               content: const ActionItemTextField(),
               validationMessage: state.nameValidationMessage,
             ),

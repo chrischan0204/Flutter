@@ -6,6 +6,7 @@ class ExecuteAuditCommentState extends Equatable {
 
   final AuditComment? auditComment;
 
+  final String initialCommentText;
   final String commentText;
   final String commentValidationMessage;
 
@@ -20,6 +21,7 @@ class ExecuteAuditCommentState extends Equatable {
     this.auditCommentList = const [],
     this.auditComment,
     this.commentText = '',
+    this.initialCommentText = '',
     this.commentValidationMessage = '',
     this.status = EntityStatus.initial,
     this.view = CrudView.list,
@@ -31,6 +33,7 @@ class ExecuteAuditCommentState extends Equatable {
   List<Object?> get props => [
         auditCommentList,
         auditComment,
+        initialCommentText,
         commentText,
         commentValidationMessage,
         status,
@@ -39,9 +42,13 @@ class ExecuteAuditCommentState extends Equatable {
         crudStatus,
       ];
 
+  bool get isDirty =>
+      Validation.isNotEmpty(commentText) && commentText != initialCommentText;
+
   ExecuteAuditCommentState copyWith({
     List<AuditComment>? auditCommentList,
-    AuditComment? auditComment,
+    Nullable<AuditComment?>? auditComment,
+    String? initialCommentText,
     String? commentText,
     String? commentValidationMessage,
     EntityStatus? status,
@@ -51,7 +58,9 @@ class ExecuteAuditCommentState extends Equatable {
   }) {
     return ExecuteAuditCommentState(
       auditCommentList: auditCommentList ?? this.auditCommentList,
-      auditComment: auditComment ?? this.auditComment,
+      auditComment:
+          auditComment != null ? auditComment.value : this.auditComment,
+      initialCommentText: initialCommentText ?? this.initialCommentText,
       commentText: commentText ?? this.commentText,
       commentValidationMessage:
           commentValidationMessage ?? this.commentValidationMessage,

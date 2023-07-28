@@ -11,6 +11,7 @@ class ExecuteAuditActionItemBloc
   final AuditQuestion auditQuestion;
 
   late ExecuteAuditBloc _executeAuditBloc;
+  late FormDirtyBloc _formDirtyBloc;
   late ExecuteAuditQuestionBloc _executeAuditQuestionBloc;
   late AuditsRepository _auditsRepository;
   late SitesRepository _sitesRepository;
@@ -26,6 +27,7 @@ class ExecuteAuditActionItemBloc
     _auditsRepository = context.read();
     _sitesRepository = context.read();
     _documentsRepository = context.read();
+    _formDirtyBloc = context.read();
 
     _questionId = auditQuestion.id;
 
@@ -72,6 +74,8 @@ class ExecuteAuditActionItemBloc
       name: event.actionItem,
       nameValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemSiteChanged(
@@ -79,10 +83,13 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(
-        site: Nullable.value(event.site),
-        siteValidationMessage: '',
-        project: const Nullable.value(null),
-        company: const Nullable.value(null)));
+      site: Nullable.value(event.site),
+      siteValidationMessage: '',
+      project: const Nullable.value(null),
+      company: const Nullable.value(null),
+    ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemAssigneeChanged(
@@ -93,6 +100,8 @@ class ExecuteAuditActionItemBloc
       assignee: Nullable.value(event.assignee),
       assigneeValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemDueByChanged(
@@ -103,6 +112,8 @@ class ExecuteAuditActionItemBloc
       dueBy: event.dueBy,
       dueByValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemCompanyChanged(
@@ -110,6 +121,8 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(company: Nullable.value(event.company)));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemCategoryChanged(
@@ -117,6 +130,8 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(category: Nullable.value(event.category)));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemProjectChanged(
@@ -124,6 +139,8 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(project: Nullable.value(event.project)));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemAreaChanged(
@@ -131,6 +148,8 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(area: event.area));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemNotesChanged(
@@ -138,6 +157,8 @@ class ExecuteAuditActionItemBloc
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
     emit(state.copyWith(notes: event.notes));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditActionItemIsClosedChanged(
@@ -185,6 +206,7 @@ class ExecuteAuditActionItemBloc
     ExecuteAuditActionItemListLoaded event,
     Emitter<ExecuteAuditActionItemState> emit,
   ) async {
+    _formDirtyBloc.add(const FormDirtyChanged(isDirty: false));
     _executeAuditQuestionBloc
         .add(ExecuteAuditQuestionDetailLoaded(questionId: _questionId));
 
@@ -221,6 +243,39 @@ class ExecuteAuditActionItemBloc
       List<CompanySite> companyList =
           await _sitesRepository.getCompanyListForSite(auditActionItem.siteId!);
 
+      final assignee = Nullable.value(User(
+        id: auditActionItem.assigneeId,
+        firstName: auditActionItem.assigneeName!.split(' ').first,
+        lastName: auditActionItem.assigneeName!.split(' ').last,
+      ));
+
+      final site = Nullable.value(Site(
+        id: auditActionItem.siteId,
+        name: auditActionItem.siteName,
+      ));
+
+      final category =
+          Nullable.value(auditActionItem.awarenessCategoryId == null
+              ? null
+              : AwarenessCategory(
+                  id: auditActionItem.awarenessCategoryId,
+                  name: auditActionItem.awarenessCategoryName,
+                ));
+
+      final company = Nullable.value(auditActionItem.companyId == null
+          ? null
+          : Company(
+              id: auditActionItem.companyId,
+              name: auditActionItem.companyName,
+            ));
+
+      final project = Nullable.value(auditActionItem.projectId == null
+          ? null
+          : Project(
+              id: auditActionItem.projectId,
+              name: auditActionItem.projectName,
+            ));
+
       emit(state.copyWith(
         auditActionItem: Nullable.value(auditActionItem),
         companyList: companyList
@@ -232,33 +287,27 @@ class ExecuteAuditActionItemBloc
         projectList: projectList,
         status: EntityStatus.success,
         area: auditActionItem.area,
+        initialArea: auditActionItem.area,
         name: auditActionItem.description,
-        assignee: Nullable.value(User(
-          id: auditActionItem.assingeeId,
-          firstName: auditActionItem.assigneeName!.split(' ').first,
-          lastName: auditActionItem.assigneeName!.split(' ').last,
-        )),
+        initialName: auditActionItem.description,
+        assignee: assignee,
+        initialAssignee: assignee,
         dueBy: auditActionItem.dueBy,
-        category: Nullable.value(AwarenessCategory(
-          id: auditActionItem.awarenessCategoryId,
-          name: auditActionItem.awarenessCategoryName,
-        )),
-        site: Nullable.value(Site(
-          id: auditActionItem.siteId,
-          name: auditActionItem.siteName,
-        )),
-        company: Nullable.value(Company(
-          id: auditActionItem.companyId,
-          name: auditActionItem.companyName,
-        )),
-        project: Nullable.value(Project(
-          id: auditActionItem.projectId,
-          name: auditActionItem.projectName,
-        )),
+        initialDueBy: auditActionItem.dueBy,
+        category: category,
+        initialCategory: category,
+        site: site,
+        initialSite: site,
+        company: company,
+        initialCompany: company,
+        project: project,
+        initialProject: project,
+        initialNotes: auditActionItem.notes,
         notes: auditActionItem.notes,
         isClosed: false,
       ));
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: EntityStatus.failure));
     }
   }

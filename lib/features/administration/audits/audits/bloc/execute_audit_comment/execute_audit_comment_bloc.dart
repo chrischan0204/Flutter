@@ -11,6 +11,7 @@ class ExecuteAuditCommentBloc
   late ExecuteAuditBloc _executeAuditBloc;
   late ExecuteAuditQuestionBloc _executeAuditQuestionBloc;
   late AuditsRepository _auditsRepository;
+  late FormDirtyBloc _formDirtyBloc;
   late String _questionId;
   late String _auditId;
   late String _userId;
@@ -21,6 +22,7 @@ class ExecuteAuditCommentBloc
     _executeAuditBloc = context.read();
     _auditsRepository = context.read();
     _executeAuditQuestionBloc = context.read();
+    _formDirtyBloc = context.read();
 
     _questionId = auditQuestion.id;
 
@@ -41,6 +43,8 @@ class ExecuteAuditCommentBloc
     ExecuteAuditCommentListLoaded event,
     Emitter<ExecuteAuditCommentState> emit,
   ) async {
+    _formDirtyBloc.add(const FormDirtyChanged(isDirty: false));
+
     _executeAuditQuestionBloc
         .add(ExecuteAuditQuestionDetailLoaded(questionId: _questionId));
     emit(state.copyWith(status: EntityStatus.loading));
@@ -70,8 +74,9 @@ class ExecuteAuditCommentBloc
         commentId: event.commentId,
       );
       emit(state.copyWith(
-        auditComment: auditComment,
+        auditComment: Nullable.value(auditComment),
         commentText: auditComment.commentText,
+        initialCommentText: auditComment.commentText,
         status: EntityStatus.success,
       ));
     } catch (e) {
@@ -146,6 +151,7 @@ class ExecuteAuditCommentBloc
         emit(state.copyWith(
           status: EntityStatus.success,
           commentText: '',
+          auditComment: const Nullable.value(null),
           message: 'Comment updated successfully.',
           crudStatus: EntityStatus.success,
         ));
@@ -170,6 +176,8 @@ class ExecuteAuditCommentBloc
       commentText: event.commentText,
       commentValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditCommentViewChanged(
