@@ -135,7 +135,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
           view: widget.view,
           onTabClick: (index) async {
             if (index == 1) {
-              bool success = true;
+              bool success = false;
 
               if (context.read<FormDirtyBloc>().state.isDirty) {
                 await AwesomeDialog(

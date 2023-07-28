@@ -59,10 +59,13 @@ class _AuditSectionItemViewState extends State<AuditSectionItemView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.auditSection.auditSectionName,
-                    style: textNormal14.copyWith(color: primaryColor),
+                  Expanded(
+                    child: Text(
+                      widget.auditSection.auditSectionName,
+                      style: textNormal14.copyWith(color: primaryColor),
+                    ),
                   ),
+                  spacerx5,
                   CustomBadge(
                     color: _getBadgeColor(widget.auditSection.sectionStatus),
                     label: widget.auditSection.sectionStatus,

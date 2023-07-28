@@ -11,7 +11,7 @@ class ExecuteAuditObservationBloc
   final AuditQuestion auditQuestion;
 
   late ExecuteAuditBloc _executeAuditBloc;
-
+  late FormDirtyBloc _formDirtyBloc;
   late AuthBloc _authBloc;
   late AuditsRepository _auditsRepository;
   late DocumentsRepository _documentsRepository;
@@ -26,6 +26,7 @@ class ExecuteAuditObservationBloc
     _authBloc = context.read();
     _auditsRepository = context.read();
     _documentsRepository = context.read();
+    _formDirtyBloc = context.read();
 
     _questionId = auditQuestion.id;
 
@@ -98,27 +99,39 @@ class ExecuteAuditObservationBloc
         questionId: _auditId,
         observationId: event.observationId,
       );
+
+      final site = Nullable.value(Site(
+        id: auditObservation.userReportedSiteId,
+        name: auditObservation.userReportedSiteName,
+      ));
+
+      final priorityLevel = Nullable.value(PriorityLevel(
+        id: auditObservation.userReportedPriorityLevelId,
+        name: auditObservation.userReportedPriorityLevelName,
+        colorCode: Colors.white,
+        priorityType: '',
+      ));
+
+      final observationType = Nullable.value(ObservationType(
+        id: auditObservation.userReportedObservationTypeId,
+        name: auditObservation.userReportedObservationTypeName,
+        severity: '',
+      ));
+
       emit(state.copyWith(
         auditObservation: Nullable.value(auditObservation),
         status: EntityStatus.success,
+        initialResponse: auditObservation.response,
         response: auditObservation.response,
+        initialArea: auditObservation.area,
         area: auditObservation.area,
         observation: auditObservation.description,
-        site: Nullable.value(Site(
-          id: auditObservation.userReportedSiteId,
-          name: auditObservation.userReportedSiteName,
-        )),
-        priorityLevel: Nullable.value(PriorityLevel(
-          id: auditObservation.userReportedPriorityLevelId,
-          name: auditObservation.userReportedPriorityLevelName,
-          colorCode: Colors.white,
-          priorityType: '',
-        )),
-        observationType: Nullable.value(ObservationType(
-          id: auditObservation.userReportedObservationTypeId,
-          name: auditObservation.userReportedObservationTypeName,
-          severity: '',
-        )),
+        initialSite: site,
+        site: site,
+        initialPriorityLevel: priorityLevel,
+        priorityLevel: priorityLevel,
+        initialObservationType: observationType,
+        observationType: observationType,
       ));
     } catch (e) {
       emit(state.copyWith(status: EntityStatus.failure));
@@ -276,6 +289,12 @@ class ExecuteAuditObservationBloc
         emit(state.copyWith(
           crudStatus: EntityStatus.success,
           message: 'Observation updated successfully.',
+          initialArea: '',
+          initialObservation: '',
+          initialObservationType: const Nullable.value(null),
+          initialPriorityLevel: const Nullable.value(null),
+          initialSite: const Nullable.value(null),
+          initialResponse: '',
         ));
 
         emit(state.copyWith(
@@ -345,6 +364,8 @@ class ExecuteAuditObservationBloc
       observationType: Nullable.value(event.observationType),
       observationTypeValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditObservationPriorityLevelChanged(
@@ -355,6 +376,8 @@ class ExecuteAuditObservationBloc
       priorityLevel: Nullable.value(event.priorityLevel),
       priorityLevelValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditObservationSiteChanged(
@@ -365,6 +388,8 @@ class ExecuteAuditObservationBloc
       site: Nullable.value(event.site),
       siteValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditObservationNameChanged(
@@ -375,6 +400,8 @@ class ExecuteAuditObservationBloc
       observation: event.observation,
       observationValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditObservationResponseChanged(
@@ -382,6 +409,8 @@ class ExecuteAuditObservationBloc
     Emitter<ExecuteAuditObservationState> emit,
   ) {
     emit(state.copyWith(response: event.response));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditObservationAreaChanged(
@@ -392,6 +421,8 @@ class ExecuteAuditObservationBloc
       area: event.area,
       areaValidationMessage: '',
     ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
   void _onExecuteAuditObservationFileListChanged(

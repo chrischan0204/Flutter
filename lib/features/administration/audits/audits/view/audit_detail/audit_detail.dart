@@ -89,7 +89,6 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
           customDetailWidget: state.auditSummary == null
               ? const Center(child: Loader())
               : Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Card(
                       elevation: 3,
@@ -108,13 +107,16 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
                                 style: textNormal20,
                               ),
                             ),
-                            const Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(flex: 2, child: SectionSummaryView()),
-                                Expanded(flex: 1, child: AuditDetailView1()),
-                                Expanded(flex: 1, child: AuditDetailView2()),
-                              ],
+                            const IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(
+                                      flex: 2, child: SectionSummaryView()),
+                                  Expanded(flex: 1, child: AuditDetailView1()),
+                                  Expanded(flex: 1, child: AuditDetailView2()),
+                                ],
+                              ),
                             ),
                           ],
                         ),

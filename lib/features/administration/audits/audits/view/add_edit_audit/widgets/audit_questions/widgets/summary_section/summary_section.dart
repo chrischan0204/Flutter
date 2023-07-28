@@ -23,18 +23,20 @@ class SummarySectionView extends StatelessWidget {
             ),
           ),
           Container(
-            padding: inset20,
+            padding: inset10,
             decoration: BoxDecoration(border: Border.all(color: primaryColor)),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Expanded(
-                  child: SectionSummaryView(),
-                ),
-                Expanded(
-                  child: AuditSummaryView(auditId: auditId),
-                ),
-              ],
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Expanded(
+                    child: SectionSummaryView(),
+                  ),
+                  Expanded(
+                    child: AuditSummaryView(auditId: auditId),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

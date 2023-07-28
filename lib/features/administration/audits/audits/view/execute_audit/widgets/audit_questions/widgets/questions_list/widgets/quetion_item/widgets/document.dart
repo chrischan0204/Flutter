@@ -57,7 +57,7 @@ class _ExecuteAuditDocumentViewState extends State<ExecuteAuditDocumentView> {
                                       );
                                     }
                                   : null,
-                              child: Text(document.originalFileName ?? '')),
+                              child: Text('${document.originalFileName ?? ''} (${document})')),
                         )),
                         IconButton(
                           onPressed: () async {

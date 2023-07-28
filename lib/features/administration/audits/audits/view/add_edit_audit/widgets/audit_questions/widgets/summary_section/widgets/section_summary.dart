@@ -67,28 +67,31 @@ class _SectionSummaryViewState extends State<SectionSummaryView> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
-        builder: (context, state) {
-          return SfDataGridTheme(
-            data: SfDataGridThemeData(
-              headerColor: lightBlueAccent,
-              rowHoverColor: lightTeal,
-            ),
-            child: SfDataGrid(
-              source: EntityDataSource(
-                auditSectionAndQuestionList: state.auditSectionAndQuestionList,
-                columns: columns,
+      child: SizedBox(
+        height: 0,
+        child: BlocBuilder<AuditDetailBloc, AuditDetailState>(
+          builder: (context, state) {
+            return SfDataGridTheme(
+              data: SfDataGridThemeData(
+                headerColor: lightBlueAccent,
+                rowHoverColor: lightTeal,
               ),
-              footerFrozenRowsCount: 1,
-              columnWidthMode: ColumnWidthMode.fill,
-              gridLinesVisibility: GridLinesVisibility.none,
-              headerGridLinesVisibility: GridLinesVisibility.none,
-              headerRowHeight: 52,
-              rowHeight: 46,
-              columns: _buildColumns(),
-            ),
-          );
-        },
+              child: SfDataGrid(
+                source: EntityDataSource(
+                  auditSectionAndQuestionList: state.auditSectionAndQuestionList,
+                  columns: columns,
+                ),
+                footerFrozenRowsCount: 1,
+                columnWidthMode: ColumnWidthMode.fill,
+                gridLinesVisibility: GridLinesVisibility.none,
+                headerGridLinesVisibility: GridLinesVisibility.none,
+                headerRowHeight: 52,
+                rowHeight: 46,
+                columns: _buildColumns(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

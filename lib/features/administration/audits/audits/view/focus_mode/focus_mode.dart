@@ -26,7 +26,36 @@ class _AuditFocusModeViewState extends State<AuditFocusModeView> {
       ..add(ExecuteAuditSiteListLoaded())
       ..add(ExecuteAuditAssigneeListLoaded())
       ..add(ExecuteAuditCategoryListLoaded());
+
+    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
+  }
+
+  void _checkFormDirty(
+    VoidCallback function,
+    BuildContext context,
+  ) {
+    if (context.read<FormDirtyBloc>().state.isDirty) {
+      AwesomeDialog(
+        context: context,
+        width: MediaQuery.of(context).size.width / 4,
+        dialogType: DialogType.question,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Confirm',
+        dialogBorderRadius: BorderRadius.circular(5),
+        desc: 'Data that was entered will be lost ..... Proceed?',
+        buttonsTextStyle: const TextStyle(color: Colors.white),
+        showCloseIcon: true,
+        btnCancelOnPress: () {},
+        btnOkOnPress: function,
+        btnOkText: 'Proceed',
+        buttonsBorderRadius: BorderRadius.circular(3),
+        padding: const EdgeInsets.all(10),
+      ).show();
+    } else {
+      function();
+    }
   }
 
   @override
@@ -58,11 +87,11 @@ class _AuditFocusModeViewState extends State<AuditFocusModeView> {
                           hoverBackgroundColor: successHoverColor,
                           iconData: PhosphorIcons.regular.alignLeft,
                           text: 'Questions Selector',
-                          onClick: () {
+                          onClick: () => _checkFormDirty(() {
                             setState(() {
                               isStart = false;
                             });
-                          },
+                          }, context),
                         ),
                       if (isStart) spacerx10,
                       CustomButton(
@@ -70,8 +99,10 @@ class _AuditFocusModeViewState extends State<AuditFocusModeView> {
                         hoverBackgroundColor: purpleHoverColor,
                         iconData: PhosphorIcons.regular.alignLeft,
                         text: 'Exit Focus Mode',
-                        onClick: () => GoRouter.of(context)
-                            .go('/audits/execute/${widget.auditId}'),
+                        onClick: () => _checkFormDirty(
+                            () => GoRouter.of(context)
+                                .go('/audits/execute/${widget.auditId}'),
+                            context),
                       ),
                     ],
                   ),
