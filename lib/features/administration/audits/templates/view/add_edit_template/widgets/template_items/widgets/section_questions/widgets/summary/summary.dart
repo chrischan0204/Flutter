@@ -12,9 +12,7 @@ class SummarySectionView extends StatefulWidget {
 class _SummarySectionViewState extends State<SummarySectionView> {
   @override
   void initState() {
-    context
-        .read<TemplateDetailBloc>()
-        .add(TemplateDetailSnapshotLoaded());
+    context.read<TemplateDetailBloc>().add(TemplateDetailSnapshotLoaded());
     super.initState();
   }
 
@@ -25,8 +23,8 @@ class _SummarySectionViewState extends State<SummarySectionView> {
         BlocBuilder<TemplateDetailBloc, TemplateDetailState>(
           builder: (context, state) {
             if (state.templateSnapshotList.isNotEmpty) {
-              return Row(
-                children: const [
+              return const Row(
+                children: [
                   Flexible(
                     flex: 3,
                     fit: FlexFit.tight,
@@ -52,11 +50,11 @@ class _SummarySectionViewState extends State<SummarySectionView> {
           },
         ),
         const CustomDivider(height: 1),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
+        const Padding(
+          padding: EdgeInsets.all(20.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Flexible(
                 flex: 1,
                 fit: FlexFit.tight,

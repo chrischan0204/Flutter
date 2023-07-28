@@ -237,27 +237,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         text: 'Show ${camelize(widget.label)}',
         isOnlyIcon: width < minDesktopWidth,
         onClick: () {
-          if (context.read<FormDirtyBloc>().state.isDirty) {
-            AwesomeDialog(
-              context: context,
-              width: MediaQuery.of(context).size.width / 4,
-              dialogType: DialogType.question,
-              headerAnimationLoop: false,
-              animType: AnimType.bottomSlide,
-              title: 'Confirm',
-              dialogBorderRadius: BorderRadius.circular(5),
-              desc: 'Data that was entered will be lost ..... Proceed?',
-              buttonsTextStyle: const TextStyle(color: Colors.white),
-              showCloseIcon: true,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () => _goToShow(),
-              btnOkText: 'Proceed',
-              buttonsBorderRadius: BorderRadius.circular(3),
-              padding: const EdgeInsets.all(10),
-            ).show();
-          } else {
-            _goToShow();
-          }
+          CustomAlert.checkFormDirty(_goToShow, context);
         },
       ),
     );
@@ -281,27 +261,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
         text: '${camelize(widget.label)} List',
         isOnlyIcon: width < minDesktopWidth,
         onClick: () {
-          if (context.read<FormDirtyBloc>().state.isDirty) {
-            AwesomeDialog(
-              context: context,
-              width: MediaQuery.of(context).size.width / 4,
-              dialogType: DialogType.question,
-              headerAnimationLoop: false,
-              animType: AnimType.bottomSlide,
-              title: 'Confirm',
-              dialogBorderRadius: BorderRadius.circular(5),
-              desc: 'Data that was entered will be lost ..... Proceed?',
-              buttonsTextStyle: const TextStyle(color: Colors.white),
-              showCloseIcon: true,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () => _goToList(),
-              btnOkText: 'Proceed',
-              buttonsBorderRadius: BorderRadius.circular(3),
-              padding: const EdgeInsets.all(10),
-            ).show();
-          } else {
-            _goToList();
-          }
+          CustomAlert.checkFormDirty(_goToList, context);
         },
       ),
     );

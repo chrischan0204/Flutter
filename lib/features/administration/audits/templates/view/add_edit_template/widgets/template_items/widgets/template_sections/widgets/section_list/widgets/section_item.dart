@@ -39,20 +39,7 @@ class _SectionItemViewState extends State<SectionItemView> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (context.read<TemplateDesignerBloc>().state.formDirty) {
-          CustomAlert(
-            context: context,
-            width: MediaQuery.of(context).size.width / 4,
-            title: 'Notification',
-            description: 'Data that was entered will be lost ..... Proceed?',
-            btnOkText: 'Proceed',
-            btnOkOnPress: () => _getQuestionListForSection(),
-            btnCancelOnPress: () {},
-            dialogType: DialogType.info,
-          ).show();
-        } else {
-          _getQuestionListForSection();
-        }
+        CustomAlert.checkFormDirty(() => _getQuestionListForSection(), context);
       },
       onHover: (value) => setState(() => _hover = value),
       child: Container(

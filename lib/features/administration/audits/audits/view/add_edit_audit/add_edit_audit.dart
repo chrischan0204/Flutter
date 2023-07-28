@@ -150,7 +150,12 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
                   buttonsTextStyle: const TextStyle(color: Colors.white),
                   showCloseIcon: true,
                   btnCancelOnPress: () => success = false,
-                  btnOkOnPress: () => success = true,
+                  btnOkOnPress: () {
+                    success = true;
+                    context
+                        .read<FormDirtyBloc>()
+                        .add(const FormDirtyChanged(isDirty: false));
+                  },
                   btnOkText: 'Proceed',
                   buttonsBorderRadius: BorderRadius.circular(3),
                   padding: const EdgeInsets.all(10),

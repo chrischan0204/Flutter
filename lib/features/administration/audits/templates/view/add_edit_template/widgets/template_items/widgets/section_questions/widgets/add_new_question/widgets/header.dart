@@ -33,21 +33,8 @@ class AddNewQuestionHeaderView extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (context.read<TemplateDesignerBloc>().state.formDirty) {
-                      CustomAlert(
-                        context: context,
-                        width: MediaQuery.of(context).size.width / 4,
-                        title: 'Notification',
-                        description:
-                            'Data that was entered will be lost ..... Proceed?',
-                        btnOkText: 'Proceed',
-                        btnOkOnPress: () => _backToList(context),
-                        btnCancelOnPress: () {},
-                        dialogType: DialogType.info,
-                      ).show();
-                    } else {
-                      _backToList(context);
-                    }
+                    CustomAlert.checkFormDirty(
+                        () => _backToList(context), context);
                   },
                   child: Text(
                     'Back to list',

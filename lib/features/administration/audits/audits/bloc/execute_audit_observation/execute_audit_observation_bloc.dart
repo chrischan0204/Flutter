@@ -66,6 +66,7 @@ class ExecuteAuditObservationBloc
     ExecuteAuditObservationListLoaded event,
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
+    _formDirtyBloc.add(const FormDirtyChanged(isDirty: false));
     emit(state.copyWith(
       auditObservationListLoadStatus: EntityStatus.loading,
       message: '',
@@ -125,6 +126,7 @@ class ExecuteAuditObservationBloc
         response: auditObservation.response,
         initialArea: auditObservation.area,
         area: auditObservation.area,
+        initialObservation: auditObservation.description,
         observation: auditObservation.description,
         initialSite: site,
         site: site,
