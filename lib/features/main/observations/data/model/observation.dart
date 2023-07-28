@@ -95,7 +95,7 @@ class Observation extends Entity {
       ];
 
   String? get formatedReportedAt => reportedAt != null
-      ? DateFormat.yMMMMd('en_US').add_jm().format(reportedAt!)
+      ? DateFormat('MM/d/yyyy - hh:mm a').format(reportedAt!)
       : null;
 
   Observation copyWith({

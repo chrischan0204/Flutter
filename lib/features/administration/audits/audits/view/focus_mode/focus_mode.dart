@@ -42,13 +42,30 @@ class _AuditFocusModeViewState extends State<AuditFocusModeView> {
                     'Execute Audit',
                     style: textSemiBold18,
                   ),
-                  CustomButton(
-                    backgroundColor: purpleColor,
-                    hoverBackgroundColor: purpleHoverColor,
-                    iconData: PhosphorIcons.regular.alignLeft,
-                    text: 'Exit Focus Mode',
-                    onClick: () => GoRouter.of(context)
-                        .go('/audits/execute/${widget.auditId}'),
+                  Row(
+                    children: [
+                      if (isStart)
+                        CustomButton(
+                          backgroundColor: successColor,
+                          hoverBackgroundColor: successHoverColor,
+                          iconData: PhosphorIcons.regular.alignLeft,
+                          text: 'Questions Selector',
+                          onClick: () {
+                            setState(() {
+                              isStart = false;
+                            });
+                          },
+                        ),
+                      if (isStart) spacerx10,
+                      CustomButton(
+                        backgroundColor: purpleColor,
+                        hoverBackgroundColor: purpleHoverColor,
+                        iconData: PhosphorIcons.regular.alignLeft,
+                        text: 'Exit Focus Mode',
+                        onClick: () => GoRouter.of(context)
+                            .go('/audits/execute/${widget.auditId}'),
+                      ),
+                    ],
                   ),
                 ],
               ),

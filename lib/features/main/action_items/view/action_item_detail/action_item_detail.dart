@@ -34,7 +34,9 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
 
   @override
   void initState() {
-    context.read<ActionItemDetailBloc>().add(ActionItemDetailLoaded());
+    context.read<ActionItemDetailBloc>()
+      ..add(ActionItemDetailLoaded())
+      ..add(ActionItemDetailDocumentListLoaded());
     super.initState();
   }
 

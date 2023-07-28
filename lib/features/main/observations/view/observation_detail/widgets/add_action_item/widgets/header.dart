@@ -70,13 +70,17 @@ class AddActionItemHeaderView extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (MediaQuery.of(context).size.width > minDesktopWidth)
-                Text(
+              Expanded(
+                child: Text(
                   _getHeaderTitle(state),
                   style: textSemiBold14,
-                )
-              else
-                Container(),
+                  softWrap: true,
+                  textAlign: MediaQuery.of(context).size.width > minDesktopWidth
+                      ? TextAlign.left
+                      : TextAlign.center,
+                ),
+              ),
+              spacerx10,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

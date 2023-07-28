@@ -30,7 +30,6 @@ class AssessmentFormView extends StatelessWidget {
               Expanded(
                 child: MarkAsClosedCheckBox(),
               ),
-              Spacer(),
             ],
           ),
         )

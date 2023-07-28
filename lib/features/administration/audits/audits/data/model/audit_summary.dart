@@ -111,16 +111,16 @@ class AuditSummary extends Equatable {
       ];
 
   String get formatedLastModifiedOn => lastModifiedOn != null
-      ? DateFormat('d MMMM y').format(lastModifiedOn!)
+      ? DateFormat('MM/d/yyyy').format(lastModifiedOn!)
       : '--';
 
   String get formatedLastExecutedOn => lastExecutedOn != null
-      ? DateFormat('d MMMM y').format(lastExecutedOn!)
+      ? DateFormat('MM/d/yyyy').format(lastExecutedOn!)
       : '--';
 
-  String get formatedCreatedOn => DateFormat('d MMMM y').format(createdOn);
+  String get formatedCreatedOn => DateFormat('MM/d/yyyy').format(createdOn);
 
-  String get formatedAuditDate => DateFormat('d MMMM y').format(auditDate);
+  String get formatedAuditDate => DateFormat('MM/d/yyyy').format(auditDate);
 
   Audit get audit => Audit(
         name: name,

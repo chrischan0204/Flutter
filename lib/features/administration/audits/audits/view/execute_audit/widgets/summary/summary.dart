@@ -49,17 +49,18 @@ class _SummaryViewState extends State<SummaryView> {
                         content:
                             '${audit.answeredQuestions} of ${audit.questions} Questions',
                       ),
-                      const Spacer(flex: 2),
+                      const Spacer(flex: 1),
                       SummaryItemView(
-                        title: 'Score',
-                        content: '${audit.score} pts ${audit.completedPercent}%',
+                        title: 'Score      ',
+                        content:
+                            '${audit.score} pts ${audit.completedPercent}%',
                       ),
-                      const Spacer(flex: 2),
+                      const Spacer(flex: 1),
                       SummaryItemView(
-                        title: 'Started on',
+                        title: 'Started on      ',
                         content: audit.formatedAuditDate,
                       ),
-                      const Spacer(flex: 2),
+                      const Spacer(flex: 1),
                       SummaryItemView(
                         title: 'Last executed on',
                         content: audit.formatedLastExecutedOn,

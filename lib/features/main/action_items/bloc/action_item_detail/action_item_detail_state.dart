@@ -13,6 +13,11 @@ class ActionItemDetailState extends Equatable {
 
   final AuditQuestionOnActionItem? auditQuestionOnActionitem;
 
+  final List<Document> documentList;
+  final EntityStatus documentListLoadStatus;
+
+  final EntityStatus documentDeleteStatus;
+
   final String message;
   const ActionItemDetailState({
     this.actionItem,
@@ -21,6 +26,9 @@ class ActionItemDetailState extends Equatable {
     this.actionItemParentInfo,
     this.observation,
     this.auditQuestionOnActionitem,
+    this.documentList = const [],
+    this.documentListLoadStatus = EntityStatus.initial,
+    this.documentDeleteStatus = EntityStatus.initial,
     this.message = '',
   });
 
@@ -32,6 +40,9 @@ class ActionItemDetailState extends Equatable {
         actionItemLoadStatus,
         actionItemDeleteStatus,
         actionItemParentInfo,
+        documentList,
+        documentListLoadStatus,
+        documentDeleteStatus,
         message,
       ];
 
@@ -42,6 +53,9 @@ class ActionItemDetailState extends Equatable {
     ActionItemParentInfo? actionItemParentInfo,
     ObservationDetail? observation,
     AuditQuestionOnActionItem? auditQuestionOnActionitem,
+    List<Document>? documentList,
+    EntityStatus? documentListLoadStatus,
+    EntityStatus? documentDeleteStatus,
     String? message,
   }) {
     return ActionItemDetailState(
@@ -51,7 +65,12 @@ class ActionItemDetailState extends Equatable {
           actionItemDeleteStatus ?? this.actionItemDeleteStatus,
       actionItemParentInfo: actionItemParentInfo ?? this.actionItemParentInfo,
       observation: observation ?? this.observation,
-      auditQuestionOnActionitem: auditQuestionOnActionitem ?? this.auditQuestionOnActionitem,
+      auditQuestionOnActionitem:
+          auditQuestionOnActionitem ?? this.auditQuestionOnActionitem,
+      documentList: documentList ?? this.documentList,
+      documentListLoadStatus:
+          documentListLoadStatus ?? this.documentListLoadStatus,
+      documentDeleteStatus: documentDeleteStatus ?? this.documentDeleteStatus,
       message: message ?? this.message,
     );
   }

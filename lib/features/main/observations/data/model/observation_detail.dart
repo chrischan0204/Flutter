@@ -161,15 +161,15 @@ class ObservationDetail extends Equatable {
       ];
 
   String? get formatedAssessedOn => assessedOn != null
-      ? DateFormat.yMMMMd('en_US').add_jm().format(assessedOn!)
+      ? DateFormat('MM/d/yyyy - hh:mm a').format(assessedOn!)
       : null;
 
   String get formatedClosedOn => closedOn != null
-      ? DateFormat.yMMMMd('en_US').add_jm().format(closedOn!)
+      ? DateFormat('MM/d/yyyy - hh:mm a').format(closedOn!)
       : '--';
 
   String get formatedReportedAt => reportedAt != null
-      ? DateFormat.yMMMMd('en_US').add_jm().format(reportedAt!)
+      ? DateFormat('MM/d/yyyy - hh:mm a').format(reportedAt!)
       : '--';
 
   Observation get observation => Observation(

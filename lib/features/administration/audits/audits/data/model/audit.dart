@@ -109,10 +109,10 @@ class Audit extends Entity {
       ];
 
   String get formatedAuditDate =>
-      auditDate != null ? DateFormat('d MMMM y').format(auditDate!) : '--';
+      auditDate != null ? DateFormat('MM/d/yyyy').format(auditDate!) : '--';
 
   String get formatedLastExecutedOn => lastExecutedOn != null
-      ? DateFormat('d MMMM y').format(lastExecutedOn!)
+      ? DateFormat('MM/d/yyyy').format(lastExecutedOn!)
       : '--';
 
   @override

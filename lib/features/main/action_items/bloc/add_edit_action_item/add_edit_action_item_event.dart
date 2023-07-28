@@ -114,6 +114,14 @@ class AddEditActionItemNotesChanged extends AddEditActionItemEvent {
   List<Object> get props => [notes];
 }
 
+class AddEditActionItemImageListChanged extends AddEditActionItemEvent {
+  final List<PlatformFile> imageList;
+  const AddEditActionItemImageListChanged({required this.imageList});
+
+  @override
+  List<Object> get props => [imageList];
+}
+
 class AddEditActionItemIsClosedChanged extends AddEditActionItemEvent {
   final bool isClosed;
   const AddEditActionItemIsClosedChanged({required this.isClosed});

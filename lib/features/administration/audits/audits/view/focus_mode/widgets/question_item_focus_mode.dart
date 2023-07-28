@@ -1,5 +1,4 @@
-import 'package:safety_eta/features/administration/audits/audits/view/execute_audit/widgets/audit_questions/widgets/questions_list/widgets/quetion_item/widgets/widgets.dart';
-
+import '../../execute_audit/widgets/audit_questions/widgets/questions_list/widgets/quetion_item/widgets/widgets.dart';
 import '/common_libraries.dart';
 
 class QuestionItemForFocusModeView extends StatelessWidget {

@@ -22,12 +22,14 @@ class SummaryItemView extends StatelessWidget {
           color: lightBlueAccent,
         ),
         child: Column(
+          
           children: [
             CustomBottomBorderContainer(
               padding: inset20,
               child: Text(
                 title,
                 style: textSemiBold14,
+                textAlign: TextAlign.center,
               ),
             ),
             Padding(
@@ -35,8 +37,9 @@ class SummaryItemView extends StatelessWidget {
               child: Text(
                 content,
                 style: textSemiBold14,
+                textAlign: TextAlign.center,
               ),
-            )
+            ),
           ],
         ),
       ),

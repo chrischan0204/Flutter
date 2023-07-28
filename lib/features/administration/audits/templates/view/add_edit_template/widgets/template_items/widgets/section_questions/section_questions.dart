@@ -25,7 +25,7 @@ class SectionQuestionsView extends StatelessWidget {
             child: BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
               builder: (context, state) {
                 if (state.selectedTemplateSection == null) {
-                  return SummarySectionView();
+                  return const SummarySectionView();
                 } else if (state.showAddNewQuestionView) {
                   return BlocBuilder<TemplateDesignerBloc,
                       TemplateDesignerState>(

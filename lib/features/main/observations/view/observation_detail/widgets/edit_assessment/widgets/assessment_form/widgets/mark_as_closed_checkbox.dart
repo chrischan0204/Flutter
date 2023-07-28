@@ -10,11 +10,13 @@ class MarkAsClosedCheckBox extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (MediaQuery.of(context).size.width > minDesktopWidth)
-              Text(
+            // if (MediaQuery.of(context).size.width > minDesktopWidth)
+            Expanded(
+              child: Text(
                 'Mark as closed:',
                 style: textSemiBold14,
               ),
+            ),
             Tooltip(
               message: 'Mark as closed',
               child: Checkbox(

@@ -63,7 +63,7 @@ class _ApproveDeleteAuditViewState extends State<ApproveDeleteAuditWidget> {
           isDeletable: false,
           entity: state.auditSummary?.audit,
           onListButtonClick: () => context.go('/audits'),
-          onDeleteButtonClick: () =>
+          onEditButtonClick: () =>
               context.go('/audits/edit/${widget.auditId}'),
           customDetailWidget: Card(
             elevation: 3,
@@ -92,7 +92,7 @@ class _ApproveDeleteAuditViewState extends State<ApproveDeleteAuditWidget> {
                       Padding(
                         padding: insety20,
                         child: Text(
-                          'There are ${state.auditSummary?.answeredQuestions ?? ''} questions that have answers currently. These will be deleted as a result of this update.',
+                          'There are ${state.auditSummary?.answeredQuestions ?? ''} questions that have answers currently. These will be deleted as a result of this delete along with its action items, observations and image uploads.',
                           style: textNormal14,
                         ),
                       ),

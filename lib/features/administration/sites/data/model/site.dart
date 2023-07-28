@@ -62,6 +62,10 @@ class Site extends Entity {
       'Region': region,
       'Timezone': timeZone,
       'Active': active,
+      'Created By': createdByUserName,
+      'Created On': createdOn,
+      'Last Modified By': lastModifiedByUserName,
+      'Last Modified On': lastModifiedOn,
     };
   }
 

@@ -42,18 +42,38 @@ class QuestionSelectorForFocusMode extends StatelessWidget {
                   child: const QuestionViewOptionSelectBox(),
                 ),
                 spacerx100,
-                ElevatedButton(
-                  onPressed: onStart,
-                  style: ElevatedButton.styleFrom(
-                    padding: insetx24y12,
-                    backgroundColor: primaryColor,
-                  ),
-                  child: Text(
-                    'Start',
-                    style: textNormal14.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
+                BlocBuilder<ExecuteAuditBloc, ExecuteAuditState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: state.selectedQuestionViewOption == null
+                          ? null
+                          : state.selectedQuestionViewOption!.name!
+                                  .contains('----')
+                              ? null
+                              : () {
+                                  if (state.auditQuestionList.isEmpty) {
+                                    CustomNotification(
+                                      context: context,
+                                      notifyType: NotifyType.info,
+                                      content: 'There is no question.',
+                                    ).showNotification();
+                                    return;
+                                  }
+
+                                  onStart();
+                                },
+                      style: ElevatedButton.styleFrom(
+                        padding: insetx24y12,
+                        backgroundColor: primaryColor,
+                      ),
+                      child: Text(
+                        'Start',
+                        style: textNormal14.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  },
                 )
               ],
             )

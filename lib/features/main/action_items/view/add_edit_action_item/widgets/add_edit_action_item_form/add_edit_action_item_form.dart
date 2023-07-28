@@ -91,6 +91,14 @@ class AddEditActionItemFormView extends StatelessWidget {
               rightChild: LocationInputBox(),
             ),
             _notesInputBox,
+            FormItemVertical(
+              leftChild: const ActionItemImagePicker(),
+              leftLabel: 'Images',
+              secondaryRightChild: Text(
+                '(You can upload multiple images)',
+                style: textNormal12.copyWith(color: darkGrey),
+              ),
+            ),
             if (state.actionItem != null)
               FormItemVertical(
                 leftLabel: 'Mark As Closed',

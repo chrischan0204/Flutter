@@ -62,6 +62,7 @@ class ObservationImageDockBloc
         emit(state.copyWith(
           imageUploadStatus: EntityStatus.success,
           isUploadView: false,
+          fileList: [],
           message: response.message,
         ));
       } catch (e) {

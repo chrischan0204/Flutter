@@ -9,6 +9,9 @@ class ActionItemInformationView extends StatelessWidget {
       elevation: 3,
       child: BlocBuilder<ActionItemDetailBloc, ActionItemDetailState>(
         builder: (context, state) {
+          if (state.actionItemLoadStatus.isLoading) {
+            return const Center(child: Loader());
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

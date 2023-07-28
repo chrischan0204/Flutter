@@ -19,119 +19,125 @@ class QuestionItemView extends StatelessWidget {
     return BlocBuilder<ExecuteAuditQuestionBloc, ExecuteAuditQuestionState>(
       builder: (context, state) {
         return ExpandableNotifier(
-            child: ScrollOnExpand(
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: <Widget>[
-                ExpandablePanel(
-                  theme: const ExpandableThemeData(
-                    headerAlignment: ExpandablePanelHeaderAlignment.center,
-                    tapBodyToExpand: true,
-                    tapBodyToCollapse: true,
-                    iconPlacement: ExpandablePanelIconPlacement.right,
-                  ),
-                  header: state.level1Followup != null
-                      ? Padding(
-                          padding: insetx12,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      context.read<ExecuteAuditQuestionBloc>().add(
-                                          const ExecuteAuditQuestionLevelChanged(
-                                              level: 0));
-                                    },
-                                    child: Text(
-                                      'Question',
-                                      style: textNormal18.copyWith(
-                                        color: textBlue,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: textBlue,
+          child: ScrollOnExpand(
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                children: <Widget>[
+                  ExpandablePanel(
+                    theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                      // tapBodyToExpand: true,
+                      // tapBodyToCollapse: true,
+                      iconPlacement: ExpandablePanelIconPlacement.right,
+                    ),
+                    header: state.level1Followup != null
+                        ? Padding(
+                            padding: insetx12,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<ExecuteAuditQuestionBloc>()
+                                            .add(
+                                                const ExecuteAuditQuestionLevelChanged(
+                                                    level: 0));
+                                      },
+                                      child: Text(
+                                        'Question',
+                                        style: textNormal18.copyWith(
+                                          color: textBlue,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: textBlue,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    '>',
-                                    style: TextStyle(
-                                      color: textBlue,
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      context.read<ExecuteAuditQuestionBloc>().add(
-                                          const ExecuteAuditQuestionLevelChanged(
-                                              level: 1));
-                                    },
-                                    child: Text(
-                                      'Follow up Question (Option=\'${state.selectedlevel0Response?.name}\')',
-                                      style: textNormal14.copyWith(
-                                        decoration: TextDecoration.underline,
-                                        color: textBlue,
-                                        decorationColor: textBlue,
-                                      ),
-                                    ),
-                                  ),
-                                  if (state.level2Followup != null)
                                     Text(
                                       '>',
                                       style: TextStyle(
                                         color: textBlue,
                                       ),
                                     ),
-                                  if (state.level2Followup != null)
-                                    Text(
-                                      'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
-                                      style: textNormal12.copyWith(
-                                        color: textBlue,
+                                    TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<ExecuteAuditQuestionBloc>()
+                                            .add(
+                                                const ExecuteAuditQuestionLevelChanged(
+                                                    level: 1));
+                                      },
+                                      child: Text(
+                                        'Follow up Question (Option=\'${state.selectedlevel0Response?.name}\')',
+                                        style: textNormal14.copyWith(
+                                          decoration: TextDecoration.underline,
+                                          color: textBlue,
+                                          decorationColor: textBlue,
+                                        ),
                                       ),
-                                    )
-                                ],
-                              ),
-                              spacery5,
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  'Q${questionIndex + 1}: ${state.level2Followup != null ? state.level2Followup?.question : state.level1Followup?.question}',
-                                  style: textSemiBold16,
+                                    ),
+                                    if (state.level2Followup != null)
+                                      Text(
+                                        '>',
+                                        style: TextStyle(
+                                          color: textBlue,
+                                        ),
+                                      ),
+                                    if (state.level2Followup != null)
+                                      Text(
+                                        'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
+                                        style: textNormal12.copyWith(
+                                          color: textBlue,
+                                        ),
+                                      )
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: insetx12,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Q${questionIndex + 1}: ${state.auditQuestion?.question}',
-                                  style: textSemiBold16,
+                                spacery5,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Q${questionIndex + 1}: ${state.level2Followup != null ? state.level2Followup?.question : state.level1Followup?.question}',
+                                    style: textSemiBold16,
+                                  ),
                                 ),
-                              ),
-                              CustomBadge(
-                                label:
-                                    state.auditQuestion?.questionStatusName ??
-                                        '',
-                                color: state.auditQuestion?.questionStatus == 0
-                                    ? warnColor
-                                    : primaryColor,
-                              )
-                            ],
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: insetx12,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Q${questionIndex + 1}: ${state.auditQuestion?.question}',
+                                    style: textSemiBold16,
+                                  ),
+                                ),
+                                CustomBadge(
+                                  label:
+                                      state.auditQuestion?.questionStatusName ??
+                                          '',
+                                  color:
+                                      state.auditQuestion?.questionStatus == 0
+                                          ? warnColor
+                                          : primaryColor,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                  collapsed: Container(),
-                  expanded: QuestionItemBodyView(
-                    questionIndex: questionIndex,
+                    collapsed: Container(),
+                    expanded: QuestionItemBodyView(
+                      questionIndex: questionIndex,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ));
+        );
       },
     );
   }

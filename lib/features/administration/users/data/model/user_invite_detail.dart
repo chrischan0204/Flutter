@@ -22,7 +22,7 @@ class UserInviteDetail extends Equatable {
       createdOn: map['createdOn'] == null
           ? ''
           : '${FormatDate(
-              format: 'd MMMM y',
+              format: 'MM/d/yyyy',
               dateString: map['createdOn'],
             ).formatDate} at ${FormatDate(
               format: '',

@@ -76,7 +76,7 @@ class ActionItem extends Entity {
     super.columns,
     super.deleted,
     super.createdOn,
-  });
+  }) ;
 
   String get formatedDue =>
       dueBy != null ? DateFormat('yyyy-MM-dd').format(dueBy!) : '--';
@@ -207,6 +207,7 @@ class ActionItem extends Entity {
           : '--',
       createdOn: entity.createdOn,
       createdByUserName: entity.createdByUserName,
+      deleted: entity.deleted,
     );
   }
 

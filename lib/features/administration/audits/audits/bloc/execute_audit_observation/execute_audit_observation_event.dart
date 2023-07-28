@@ -124,3 +124,13 @@ class ExecuteAuditObservationFileListChanged
   @override
   List<Object> get props => [fileList];
 }
+
+class ExecuteAuditObservationImageListLoaded
+    extends ExecuteAuditObservationEvent {
+  final String observationId;
+
+  const ExecuteAuditObservationImageListLoaded({required this.observationId});
+
+  @override
+  List<Object> get props => [observationId];
+}

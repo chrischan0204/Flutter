@@ -46,10 +46,15 @@ class ActionItemListBloc
           .where((e) => !e.isHidden)
           .map((e) => e.title));
 
+      final List<ActionItem> newActionItemList = filteredactionItemData.data
+          .map((e) => e.actionItem.copyWith(
+                columns: columns,
+                deleted: e.deleted,
+              ))
+          .toList();
+
       emit(state.copyWith(
-        actionItemList: filteredactionItemData.data
-            .map((e) => e.actionItem.copyWith(columns: columns))
-            .toList(),
+        actionItemList: newActionItemList,
         actionItemListLoadStatus: EntityStatus.success,
         totalRows: filteredactionItemData.totalRows,
       ));

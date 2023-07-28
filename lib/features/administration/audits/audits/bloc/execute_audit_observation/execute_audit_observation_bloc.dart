@@ -51,6 +51,8 @@ class ExecuteAuditObservationBloc
         _onExecuteAuditObservationAreaChanged);
     on<ExecuteAuditObservationFileListChanged>(
         _onExecuteAuditObservationFileListChanged);
+    on<ExecuteAuditObservationImageListLoaded>(
+        _onExecuteAuditObservationImageListLoaded);
   }
 
   Future<void> _onExecuteAuditObservationListLoaded(
@@ -174,7 +176,10 @@ class ExecuteAuditObservationBloc
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
     if (_validate(emit)) {
-      emit(state.copyWith(status: EntityStatus.loading));
+      emit(state.copyWith(
+        status: EntityStatus.loading,
+        crudStatus: EntityStatus.loading,
+      ));
 
       try {
         EntityResponse response =
@@ -200,6 +205,8 @@ class ExecuteAuditObservationBloc
 
         emit(state.copyWith(
           status: EntityStatus.success,
+          crudStatus: EntityStatus.success,
+          message: 'Observation added successfully.',
         ));
 
         _clearForm(emit);
@@ -208,7 +215,10 @@ class ExecuteAuditObservationBloc
 
         add(const ExecuteAuditObservationViewChanged(view: CrudView.list));
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          crudStatus: EntityStatus.failure,
+        ));
       }
     }
   }
@@ -218,7 +228,10 @@ class ExecuteAuditObservationBloc
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
     if (_validate(emit)) {
-      emit(state.copyWith(status: EntityStatus.loading));
+      emit(state.copyWith(
+        status: EntityStatus.loading,
+        crudStatus: EntityStatus.loading,
+      ));
 
       try {
         await _auditsRepository.editObservationForAudit(
@@ -246,6 +259,11 @@ class ExecuteAuditObservationBloc
         }
 
         emit(state.copyWith(
+          crudStatus: EntityStatus.success,
+          message: 'Observation updated successfully.',
+        ));
+
+        emit(state.copyWith(
           status: EntityStatus.success,
           auditObservation: const Nullable.value(null),
         ));
@@ -256,7 +274,10 @@ class ExecuteAuditObservationBloc
 
         add(const ExecuteAuditObservationViewChanged(view: CrudView.list));
       } catch (e) {
-        emit(state.copyWith(status: EntityStatus.failure));
+        emit(state.copyWith(
+          status: EntityStatus.failure,
+          crudStatus: EntityStatus.failure,
+        ));
       }
     }
   }
@@ -272,7 +293,10 @@ class ExecuteAuditObservationBloc
     ExecuteAuditObservationDeleted event,
     Emitter<ExecuteAuditObservationState> emit,
   ) async {
-    emit(state.copyWith(status: EntityStatus.loading));
+    emit(state.copyWith(
+      status: EntityStatus.loading,
+      crudStatus: EntityStatus.loading,
+    ));
 
     try {
       EntityResponse response = await _auditsRepository.deleteAuditObservation(
@@ -281,12 +305,19 @@ class ExecuteAuditObservationBloc
       );
 
       if (response.isSuccess) {
-        emit(state.copyWith(status: EntityStatus.success));
+        emit(state.copyWith(
+          status: EntityStatus.success,
+          crudStatus: EntityStatus.success,
+          message: 'Observation deleted successfully.',
+        ));
 
         add(ExecuteAuditObservationListLoaded());
       }
     } catch (e) {
-      emit(state.copyWith(status: EntityStatus.failure));
+      emit(state.copyWith(
+        status: EntityStatus.failure,
+        crudStatus: EntityStatus.failure,
+      ));
     }
   }
 
@@ -353,5 +384,25 @@ class ExecuteAuditObservationBloc
   ) {
     emit(state.copyWith(fileList: event.fileList));
   }
+
+  Future<void> _onExecuteAuditObservationImageListLoaded(
+    ExecuteAuditObservationImageListLoaded event,
+    Emitter<ExecuteAuditObservationState> emit,
+  ) async {
+    emit(state.copyWith(imageListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<Document> imageList = await _documentsRepository.getDocumentList(
+        ownerId: event.observationId,
+        ownerType: 'observation',
+      );
+
+      emit(state.copyWith(
+        imageList: imageList,
+        imageListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(imageListLoadStatus: EntityStatus.failure));
+    }
+  }
 }
-  

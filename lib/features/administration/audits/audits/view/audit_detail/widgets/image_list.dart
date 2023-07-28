@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '/common_libraries.dart';
@@ -24,8 +25,15 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
               margin: inset4,
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                child: Image.network(
-                  'https://api.allorigins.win/raw?url=${item.uri ?? ''}',
+                child: CachedNetworkImage(
+                  imageUrl:
+                      'https://api.allorigins.win/raw?url=${item.uri ?? ''}',
+                  placeholder: (context, url) =>
+                      const Center(child: Loader(size: 70)),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error,
+                    size: 70,
+                  ),
                   fit: BoxFit.fitWidth,
                   width: 1000.0,
                 ),
@@ -105,21 +113,32 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                                           child: InkWell(
                                             onTap: () => _controller
                                                 .animateToPage(pageIndex),
-                                            child: Image.network(
-                                                widget.imageList
-                                                    .where((element) => element
-                                                        .documentType!.isImage)
-                                                    .map((e) =>
-                                                        'https://api.allorigins.win/raw?url=${e.uri ?? ''}')
-                                                    .toList()[pageIndex],
-                                                fit: BoxFit.fitHeight,
-                                                height: 50.0),
+                                            child: CachedNetworkImage(
+                                              imageUrl: widget.imageList
+                                                  .where((element) => element
+                                                      .documentType!.isImage)
+                                                  .map((e) =>
+                                                      'https://api.allorigins.win/raw?url=${e.uri ?? ''}')
+                                                  .toList()[pageIndex],
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                      child: Loader(size: 30)),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(
+                                                Icons.error,
+                                                size: 30,
+                                              ),
+                                              fit: BoxFit.fitHeight,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                       ),
                                       Flexible(
                                         child: IconButton(
-                                          onPressed: () => _controller.nextPage(),
+                                          onPressed: () =>
+                                              _controller.nextPage(),
                                           icon: Icon(
                                             PhosphorIcons.regular.arrowArcRight,
                                             color: primaryColor,

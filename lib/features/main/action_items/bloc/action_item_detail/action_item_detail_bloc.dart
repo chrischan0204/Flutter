@@ -9,21 +9,66 @@ class ActionItemDetailBloc
   final String actionItemId;
   late ActionItemsRepository _actionItemsRepository;
   late ObservationsRepository _observationsRepository;
+  late DocumentsRepository _documentsRepository;
   ActionItemDetailBloc(
     this.context,
     this.actionItemId,
   ) : super(const ActionItemDetailState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
     _observationsRepository = context.read();
+    _documentsRepository = context.read();
 
     on<ActionItemDetailLoaded>(_onActionItemDetailLoaded);
     on<ActionItemDetailActionItemDeleted>(_onActionItemDetailActionItemDeleted);
+    on<ActionItemDetailDocumentListLoaded>(
+        _onActionItemDetailDocumentListLoaded);
+    on<ActionItemDetailDocumentDeleted>(_onActionItemDetailDocumentDeleted);
+  }
+
+  Future<void> _onActionItemDetailDocumentDeleted(
+    ActionItemDetailDocumentDeleted event,
+    Emitter<ActionItemDetailState> emit,
+  ) async {
+    emit(state.copyWith(documentDeleteStatus: EntityStatus.loading));
+    try {
+      EntityResponse response =
+          await _documentsRepository.deleteDocument(event.documentId);
+
+      if (response.isSuccess) {
+        emit(state.copyWith(documentDeleteStatus: EntityStatus.success));
+
+        add(ActionItemDetailDocumentListLoaded());
+      }
+    } catch (e) {
+      emit(state.copyWith(documentDeleteStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onActionItemDetailDocumentListLoaded(
+    ActionItemDetailDocumentListLoaded event,
+    Emitter<ActionItemDetailState> emit,
+  ) async {
+    emit(state.copyWith(documentListLoadStatus: EntityStatus.loading));
+    try {
+      List<Document> documentList = await _documentsRepository.getDocumentList(
+        ownerId: actionItemId,
+        ownerType: 'actionitem',
+      );
+
+      emit(state.copyWith(
+        documentList: documentList,
+        documentListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(documentListLoadStatus: EntityStatus.failure));
+    }
   }
 
   Future<void> _onActionItemDetailLoaded(
     ActionItemDetailLoaded event,
     Emitter<ActionItemDetailState> emit,
   ) async {
+    emit(state.copyWith(actionItemLoadStatus: EntityStatus.loading));
     try {
       ActionItem actionItem =
           await _actionItemsRepository.getActionItemById(actionItemId);
@@ -44,8 +89,10 @@ class ActionItemDetailBloc
         emit(state.copyWith(
             auditQuestionOnActionitem: auditQuestionOnActionitem));
       }
+
+      emit(state.copyWith(actionItemLoadStatus: EntityStatus.success));
     } catch (e) {
-      print(e);
+      emit(state.copyWith(actionItemLoadStatus: EntityStatus.failure));
     }
   }
 

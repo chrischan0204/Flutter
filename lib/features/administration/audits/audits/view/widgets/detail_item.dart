@@ -74,7 +74,8 @@ class AuditDetailItemView extends StatelessWidget {
                                   : null,
                               child: Text(
                                 content,
-                                style: textNormal14,
+                                style: textNormal14.copyWith(
+                                    color: highlighted ? primaryColor : null),
                               ),
                             ),
                           ),

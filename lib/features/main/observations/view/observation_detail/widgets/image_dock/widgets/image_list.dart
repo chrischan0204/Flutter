@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '/common_libraries.dart';
 
@@ -10,6 +11,8 @@ class DockImageListView extends StatefulWidget {
 
 class _DockImageListViewState extends State<DockImageListView> {
   final CarouselController _controller = CarouselController();
+
+  int index = 0;
 
   @override
   void initState() {
@@ -42,10 +45,22 @@ class _DockImageListViewState extends State<DockImageListView> {
                   margin: inset4,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    child: Image.network(
-                        'https://api.allorigins.win/raw?url=${item.uri ?? ''}',
-                        fit: BoxFit.fitWidth,
-                        width: 1000.0),
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          'https://api.allorigins.win/raw?url=${item.uri ?? ''}',
+                      placeholder: (context, url) =>
+                          const Center(child: Loader(size: 70)),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ))
             .toList();
@@ -61,7 +76,15 @@ class _DockImageListViewState extends State<DockImageListView> {
                     children: <Widget>[
                       Flexible(
                         child: IconButton(
-                          onPressed: () => _controller.previousPage(),
+                          onPressed: index >= 0
+                              ? () {
+                                  _controller.previousPage();
+                                  setState(() {
+                                    index--;
+                                    index %= state.imageList.length;
+                                  });
+                                }
+                              : null,
                           icon: Icon(
                             PhosphorIcons.regular.arrowArcLeft,
                             color: primaryColor,
@@ -71,20 +94,54 @@ class _DockImageListViewState extends State<DockImageListView> {
                       ...Iterable<int>.generate(state.imageList.length).map(
                         (int pageIndex) => Flexible(
                           child: InkWell(
-                            onTap: () => _controller.animateToPage(pageIndex),
-                            child: Image.network(
-                                state.imageList
+                            onTap: () {
+                              _controller.animateToPage(pageIndex);
+                              setState(() {
+                                index = pageIndex;
+                              });
+                            },
+                            child: Container(
+                              decoration: pageIndex == index
+                                  ? BoxDecoration(
+                                      border: Border.all(
+                                        color: primaryColor,
+                                        width: 3,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5),
+                                    )
+                                  : null,
+                              child: CachedNetworkImage(
+                                imageUrl: state.imageList
                                     .map((e) =>
                                         'https://api.allorigins.win/raw?url=${e.uri ?? ''}')
                                     .toList()[pageIndex],
+                                placeholder: (context, url) => const Center(
+                                    child: Padding(
+                                  padding: EdgeInsets.only(bottom: 15.0),
+                                  child: Loader(size: 35),
+                                )),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(
+                                  Icons.error,
+                                ),
+                                height: 50,
                                 fit: BoxFit.fitHeight,
-                                height: 50.0),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                       Flexible(
                         child: IconButton(
-                          onPressed: () => _controller.nextPage(),
+                          onPressed: index < state.imageList.length
+                              ? () {
+                                  _controller.nextPage();
+                                  setState(() {
+                                    index++;
+                                    index %= state.imageList.length;
+                                  });
+                                }
+                              : null,
                           icon: Icon(
                             PhosphorIcons.regular.arrowArcRight,
                             color: primaryColor,
@@ -99,6 +156,16 @@ class _DockImageListViewState extends State<DockImageListView> {
                   options: CarouselOptions(enlargeCenterPage: true),
                   carouselController: _controller,
                 ),
+                if (state.imageList.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        state.imageList[index].originalFileName ?? '',
+                        style: textNormal14,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

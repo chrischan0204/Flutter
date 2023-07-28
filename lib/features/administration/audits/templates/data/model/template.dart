@@ -38,7 +38,7 @@ class Template extends Entity {
       ];
 
   String get formatedRevisionDate => revisionDate.isNotEmpty
-      ? FormatDate(format: 'd MMMM y', dateString: revisionDate).formatDate
+      ? FormatDate(format: 'MM/d/yyyy', dateString: revisionDate).formatDate
       : '--';
 
   @override

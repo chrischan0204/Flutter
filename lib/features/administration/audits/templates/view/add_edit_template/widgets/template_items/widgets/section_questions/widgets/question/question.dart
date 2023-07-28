@@ -13,11 +13,11 @@ class QuestionsForSectionView extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
                   'Question',
                   style: TextStyle(fontSize: 14),
@@ -33,10 +33,34 @@ class QuestionsForSectionView extends StatelessWidget {
           BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
             builder: (context, state) {
               if (state.sectionItemQuestionListLoadStatus.isLoading) {
-                return const Center(
-                  child: Loader(),
-                );
+                return const Center(child: Loader());
               }
+
+              return ReorderableListView(
+                buildDefaultDragHandles: false,
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                children: <Widget>[
+                  for (int index = 0;
+                      index < state.templateQuestionList.length;
+                      index += 1)
+                    ReorderableDragStartListener(
+                      key: Key('$index'),
+                      index: index,
+                      child: QuestionItemView(
+                          question: state.templateQuestionList[index]),
+                    ),
+                ],
+                onReorder: (int oldIndex, int newIndex) {
+                  // setState(() {
+                  //   if (oldIndex < newIndex) {
+                  //     newIndex -= 1;
+                  //   }
+                  //   final int item = _items.removeAt(oldIndex);
+                  //   _items.insert(newIndex, item);
+                  // });
+                },
+              );
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,

@@ -10,11 +10,13 @@ class NotifySenderCheckBox extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (MediaQuery.of(context).size.width > minDesktopWidth)
-              Text(
+            // if (MediaQuery.of(context).size.width > minDesktopWidth)
+            Expanded(
+              child: Text(
                 'Notify sender:',
                 style: textSemiBold14,
               ),
+            ),
             Padding(
               padding: insetx20,
               child: Tooltip(

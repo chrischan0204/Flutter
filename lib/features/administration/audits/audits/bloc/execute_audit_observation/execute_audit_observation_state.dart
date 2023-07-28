@@ -31,6 +31,13 @@ class ExecuteAuditObservationState extends Equatable {
 
   final List<PlatformFile> fileList;
 
+  final List<Document> imageList;
+
+  final EntityStatus imageListLoadStatus;
+
+  final EntityStatus crudStatus;
+  final String message;
+
   const ExecuteAuditObservationState({
     this.auditObservationList = const [],
     this.auditObservationListLoadStatus = EntityStatus.initial,
@@ -50,6 +57,10 @@ class ExecuteAuditObservationState extends Equatable {
     this.areaValidationMessage = '',
     this.response = '',
     this.fileList = const [],
+    this.imageList = const [],
+    this.imageListLoadStatus = EntityStatus.initial,
+    this.crudStatus = EntityStatus.initial,
+    this.message = '',
   });
 
   @override
@@ -72,6 +83,10 @@ class ExecuteAuditObservationState extends Equatable {
         areaValidationMessage,
         response,
         fileList,
+        imageList,
+        imageListLoadStatus,
+        crudStatus,
+        message,
       ];
 
   ExecuteAuditObservationState copyWith({
@@ -93,13 +108,18 @@ class ExecuteAuditObservationState extends Equatable {
     String? areaValidationMessage,
     String? response,
     List<PlatformFile>? fileList,
+    List<Document>? imageList,
+    EntityStatus? imageListLoadStatus,
+    EntityStatus? crudStatus,
+    String? message,
   }) {
     return ExecuteAuditObservationState(
       auditObservationList: auditObservationList ?? this.auditObservationList,
       auditObservationListLoadStatus:
           auditObservationListLoadStatus ?? this.auditObservationListLoadStatus,
-      auditObservation:
-          auditObservation != null ? auditObservation.value : this.auditObservation,
+      auditObservation: auditObservation != null
+          ? auditObservation.value
+          : this.auditObservation,
       auditObservationLoadStatus:
           auditObservationLoadStatus ?? this.auditObservationLoadStatus,
       status: status ?? this.status,
@@ -124,6 +144,10 @@ class ExecuteAuditObservationState extends Equatable {
           areaValidationMessage ?? this.areaValidationMessage,
       response: response ?? this.response,
       fileList: fileList ?? this.fileList,
+      imageList: imageList ?? this.imageList,
+      imageListLoadStatus: imageListLoadStatus ?? this.imageListLoadStatus,
+      crudStatus: crudStatus ?? this.crudStatus,
+      message: message ?? this.message,
     );
   }
 }

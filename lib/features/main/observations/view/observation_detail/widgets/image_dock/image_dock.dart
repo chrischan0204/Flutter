@@ -27,9 +27,11 @@ class ObservationImageDockView extends StatelessWidget {
                       children: [
                         if (state.isUploadView)
                           ElevatedButton(
-                            onPressed: () => context
-                                .read<ObservationImageDockBloc>()
-                                .add(ObservationImageDockImageUpLoaded()),
+                            onPressed: state.fileList.isNotEmpty
+                                ? () => context
+                                    .read<ObservationImageDockBloc>()
+                                    .add(ObservationImageDockImageUpLoaded())
+                                : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
                             child: Text(

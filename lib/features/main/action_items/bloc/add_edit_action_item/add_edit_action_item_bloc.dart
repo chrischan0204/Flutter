@@ -1,3 +1,5 @@
+import 'package:file_picker/file_picker.dart';
+
 import '/common_libraries.dart';
 
 part 'add_edit_action_item_event.dart';
@@ -10,6 +12,7 @@ class AddEditActionItemBloc
   late AwarenessCategoriesRepository _awarenessCategoriesRepository;
   late UsersRepository _usersRepository;
   late ActionItemsRepository _actionItemsRepository;
+  late DocumentsRepository _documentsRepository;
   late FormDirtyBloc _formDirtyBloc;
   late AuthBloc _authBloc;
   AddEditActionItemBloc(this.context) : super(AddEditActionItemState()) {
@@ -17,6 +20,7 @@ class AddEditActionItemBloc
     _awarenessCategoriesRepository = RepositoryProvider.of(context);
     _usersRepository = RepositoryProvider.of(context);
     _actionItemsRepository = RepositoryProvider.of(context);
+    _documentsRepository = context.read();
 
     _formDirtyBloc = context.read();
     _authBloc = context.read();
@@ -40,6 +44,7 @@ class AddEditActionItemBloc
     on<AddEditActionItemLocationChanged>(_onAddEditActionItemLocationChanged);
     on<AddEditActionItemNotesChanged>(_onAddEditActionItemNotesChanged);
     on<AddEditActionItemIsClosedChanged>(_onAddEditActionItemIsClosedChanged);
+    on<AddEditActionItemImageListChanged>(_onAddEditActionItemImageListChanged);
 
     on<AddEditActionItemLoaded>(_onAddEditActionItemLoaded);
     on<AddEditActionItemAdded>(_onAddEditActionItemAdded);
@@ -218,6 +223,13 @@ class AddEditActionItemBloc
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
+  void _onAddEditActionItemImageListChanged(
+    AddEditActionItemImageListChanged event,
+    Emitter<AddEditActionItemState> emit,
+  ) {
+    emit(state.copyWith(imageList: event.imageList));
+  }
+
   void _onAddEditActionItemIsClosedChanged(
     AddEditActionItemIsClosedChanged event,
     Emitter<AddEditActionItemState> emit,
@@ -236,6 +248,14 @@ class AddEditActionItemBloc
             await _actionItemsRepository.addActionItem(state.actionItemCreate);
 
         if (response.isSuccess) {
+          if (state.imageList.isNotEmpty) {
+            await _documentsRepository.uploadDocuments(
+              ownerId: response.data!.id!,
+              ownerType: 'actionitem',
+              documentList: state.imageList,
+            );
+          }
+
           emit(state.copyWith(
             initialAssignee: Nullable.value(state.assignee),
             initialCategory: Nullable.value(state.category),
@@ -272,6 +292,14 @@ class AddEditActionItemBloc
             await _actionItemsRepository.editActionItem(state.actionItemCreate);
 
         if (response.isSuccess) {
+          if (state.imageList.isNotEmpty) {
+            await _documentsRepository.uploadDocuments(
+              ownerId: state.actionItem!.id!,
+              ownerType: 'actionitem',
+              documentList: state.imageList,
+            );
+          }
+
           emit(state.copyWith(
             message: response.message,
             status: EntityStatus.success,

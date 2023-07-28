@@ -85,6 +85,8 @@ class AddEditActionItemState extends Equatable {
   /// initial notes to check form dirty;
   final String initialNotes;
 
+  final List<PlatformFile> imageList;
+
   final bool isClosed;
 
   /// status
@@ -124,6 +126,7 @@ class AddEditActionItemState extends Equatable {
     this.status = EntityStatus.initial,
     this.message = '',
     this.isClosed = false,
+    this.imageList = const [],
   }) {
     dueBy ??= DateTime.now();
   }
@@ -159,6 +162,7 @@ class AddEditActionItemState extends Equatable {
         initialLocation,
         initialName,
         initialNotes,
+        imageList,
         initialProject,
         initialSite,
       ];
@@ -216,6 +220,7 @@ class AddEditActionItemState extends Equatable {
     String? location,
     String? initialLocation,
     String? notes,
+    List<PlatformFile>? imageList,
     bool? isClosed,
     String? initialNotes,
     EntityStatus? status,
@@ -262,6 +267,7 @@ class AddEditActionItemState extends Equatable {
       initialLocation: initialLocation ?? this.initialLocation,
       initialNotes: initialNotes ?? this.initialNotes,
       notes: notes ?? this.notes,
+      imageList: imageList ?? this.imageList,
       isClosed: isClosed ?? this.isClosed,
       status: status ?? this.status,
       message: message ?? this.message,

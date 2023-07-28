@@ -94,14 +94,14 @@ class FilteredEntity extends Equatable {
   //       deleted = map['deleted'] ?? false,
   //       createdOn = map['created_On'] != null
   //           ? FormatDate(
-  //                   format: 'd MMMM y', dateString: map['created_On'] ?? '')
+  //                   format: 'MM/d/yyyy', dateString: map['created_On'] ?? '')
   //               .formatDate
   //           : '--',
   //       createdBy = map['created_By'] ?? '',
   //       createdById = map['created_By'] ?? emptyGuid,
   //       lastModifiedOn = map['last_Modified_On'] != null
   //           ? FormatDate(
-  //                   format: 'd MMMM y',
+  //                   format: 'MM/d/yyyy',
   //                   dateString: map['last_Modified_On'] ?? '')
   //               .formatDate
   //           : '--',
@@ -112,14 +112,14 @@ class FilteredEntity extends Equatable {
       id: map['id'] ?? '',
       deleted: map['deleted'] ?? false,
       createdOn: map['created_On'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['created_On'] ?? '')
+          ? FormatDate(format: 'MM/d/yyyy', dateString: map['created_On'] ?? '')
               .formatDate
           : '--',
       createdBy: map['created_By'] ?? '',
       createdById: map['created_By_Id'] ?? emptyGuid,
       lastModifiedOn: map['last_Modified_On'] != null
           ? FormatDate(
-                  format: 'd MMMM y', dateString: map['last_Modified_On'] ?? '')
+                  format: 'MM/d/yyyy', dateString: map['last_Modified_On'] ?? '')
               .formatDate
           : '--',
       lastModifiedByUserName: map['last_Modified_By'] ?? '',
@@ -213,7 +213,7 @@ class Entity extends Equatable {
       name: map['name'] != null ? map['name'] as String : null,
       active: map['active'] != null ? map['active'] as bool : true,
       deactivationDate: map['deactivationDate'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['deactivationDate'])
+          ? FormatDate(format: 'MM/d/yyyy', dateString: map['deactivationDate'])
               .formatDate
           : '',
       deactivationUserName: map['deactivationUserName'] != null
@@ -221,12 +221,12 @@ class Entity extends Equatable {
           : '',
       createdByUserName: map['createdByUserName'] ?? '',
       createdOn: map['createdOn'] != null
-          ? FormatDate(format: 'd MMMM y', dateString: map['createdOn'] ?? '')
+          ? FormatDate(format: 'MM/d/yyyy', dateString: map['createdOn'] ?? '')
               .formatDate
           : '--',
       lastModifiedOn: map['lastModifiedOn'] != null
           ? FormatDate(
-                  format: 'd MMMM y', dateString: map['lastModifiedOn'] ?? '')
+                  format: 'MM/d/yyyy', dateString: map['lastModifiedOn'] ?? '')
               .formatDate
           : '--',
       lastModifiedByUserName:

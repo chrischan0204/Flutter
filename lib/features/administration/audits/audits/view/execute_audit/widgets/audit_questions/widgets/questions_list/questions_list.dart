@@ -27,6 +27,17 @@ class QuestionsListView extends StatelessWidget {
         if (state.auditQuestionListStatus.isLoading) {
           return const Center(child: Loader());
         }
+
+        if (state.auditQuestionList.isEmpty) {
+          return Padding(
+            padding: insety40,
+            child: Text(
+              'There is no question.',
+              style: textNormal14,
+            ),
+          );
+        }
+
         return Padding(
           padding: inset12,
           child: Column(
