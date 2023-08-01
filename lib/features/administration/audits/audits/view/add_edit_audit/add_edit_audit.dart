@@ -160,6 +160,8 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
                   buttonsBorderRadius: BorderRadius.circular(3),
                   padding: const EdgeInsets.all(10),
                 ).show();
+              } else {
+                success = true;
               }
               return success;
             } else {

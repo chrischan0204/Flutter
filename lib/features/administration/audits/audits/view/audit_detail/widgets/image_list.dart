@@ -17,6 +17,9 @@ class AuditDetailImageListView extends StatefulWidget {
 
 class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
   final CarouselController _controller = CarouselController();
+
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> imageSliders = widget.imageList
@@ -73,45 +76,70 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
               Padding(
                 padding: insety20,
                 child: CustomTabBar(
-                    activeIndex: 0,
-                    tabs: {
-                      'Images': Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: inset10,
-                            child: Text(
-                              'These images were uploaded in this audit...',
-                              style: textSemiBold18,
-                            ),
+                  activeIndex: 0,
+                  tabs: {
+                    'Images': Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: inset10,
+                          child: Text(
+                            'These images were uploaded in this audit...',
+                            style: textSemiBold18,
                           ),
-                          Padding(
-                            padding: inset10,
-                            child: Column(
-                              children: <Widget>[
-                                CustomBottomBorderContainer(
-                                  padding: inset10,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Flexible(
-                                        child: IconButton(
-                                          onPressed: () =>
-                                              _controller.previousPage(),
-                                          icon: Icon(
-                                            PhosphorIcons.regular.arrowArcLeft,
-                                            color: primaryColor,
-                                          ),
+                        ),
+                        Padding(
+                          padding: inset10,
+                          child: Column(
+                            children: <Widget>[
+                              CustomBottomBorderContainer(
+                                padding: inset10,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Flexible(
+                                      child: IconButton(
+                                        onPressed: index >= 0
+                                            ? () {
+                                                _controller.previousPage();
+                                                setState(() {
+                                                  index--;
+                                                  index %=
+                                                      widget.imageList.length;
+                                                });
+                                              }
+                                            : null,
+                                        icon: Icon(
+                                          PhosphorIcons.regular.arrowArcLeft,
+                                          color: primaryColor,
                                         ),
                                       ),
-                                      ...Iterable<int>.generate(
-                                              widget.imageList.length)
-                                          .map(
-                                        (int pageIndex) => Flexible(
-                                          child: InkWell(
-                                            onTap: () => _controller
-                                                .animateToPage(pageIndex),
+                                    ),
+                                    ...Iterable<int>.generate(
+                                            widget.imageList.length)
+                                        .map(
+                                      (int pageIndex) => Flexible(
+                                        child: InkWell(
+                                          onTap: () {
+                                            _controller
+                                                .animateToPage(pageIndex);
+                                            setState(() {
+                                              index = pageIndex;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: pageIndex == index
+                                                ? BoxDecoration(
+                                                    border: Border.all(
+                                                      color: primaryColor,
+                                                      width: 3,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  )
+                                                : null,
                                             child: CachedNetworkImage(
                                               imageUrl: widget.imageList
                                                   .where((element) => element
@@ -133,40 +161,63 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                                           ),
                                         ),
                                       ),
-                                      Flexible(
-                                        child: IconButton(
-                                          onPressed: () =>
-                                              _controller.nextPage(),
-                                          icon: Icon(
-                                            PhosphorIcons.regular.arrowArcRight,
-                                            color: primaryColor,
-                                          ),
+                                    ),
+                                    Flexible(
+                                      child: IconButton(
+                                        onPressed: index <
+                                                widget.imageList.length
+                                            ? () {
+                                                _controller.nextPage();
+                                                setState(() {
+                                                  index++;
+                                                  index %=
+                                                      widget.imageList.length;
+                                                });
+                                              }
+                                            : null,
+                                        icon: Icon(
+                                          PhosphorIcons.regular.arrowArcRight,
+                                          color: primaryColor,
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              CarouselSlider(
+                                items: imageSliders,
+                                options:
+                                    CarouselOptions(enlargeCenterPage: true),
+                                carouselController: _controller,
+                              ),
+                              if (widget.imageList.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Text(
+                                      widget.imageList[index]
+                                              .originalFileName ??
+                                          '',
+                                      style: textNormal14,
+                                    ),
                                   ),
                                 ),
-                                CarouselSlider(
-                                  items: imageSliders,
-                                  options:
-                                      CarouselOptions(enlargeCenterPage: true),
-                                  carouselController: _controller,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      'Documents': Column(
-                        children: [
-                          for (final document in documentList)
-                            DocumentListItemView(document: document)
-                        ],
-                      ),
-                    },
-                    onTabClick: (_) async {
-                      return true;
-                    }),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    'Documents': Column(
+                      children: [
+                        for (final document in documentList)
+                          DocumentListItemView(document: document)
+                      ],
+                    ),
+                  },
+                  onTabClick: (_, __) async {
+                    return true;
+                  },
+                ),
               ),
             ],
           ),

@@ -81,10 +81,13 @@ class QuestionItemForFocusModeView extends StatelessWidget {
                                       ),
                                     ),
                                   if (state.level2Followup != null)
-                                    Text(
-                                      'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
-                                      style: textNormal12.copyWith(
-                                        color: textBlue,
+                                    TextButton(
+                                      onPressed: null,
+                                      child: Text(
+                                        'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
+                                        style: textNormal12.copyWith(
+                                          color: textBlue,
+                                        ),
                                       ),
                                     )
                                 ],
@@ -287,7 +290,7 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                             child: const ExecuteAuditDocumentView(),
                           ),
                         },
-                        onTabClick: (questionIndex) async {
+                        onTabClick: (questionIndex, previous) async {
                           if (context.read<FormDirtyBloc>().state.isDirty ==
                               true) {
                             bool success = false;

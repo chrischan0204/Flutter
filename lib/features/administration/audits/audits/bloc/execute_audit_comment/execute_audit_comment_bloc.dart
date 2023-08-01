@@ -37,6 +37,7 @@ class ExecuteAuditCommentBloc
     on<ExecuteAuditCommentViewChanged>(_onExecuteAuditCommentViewChanged);
     on<ExecuteAuditCommentLoaded>(_onExecuteAuditCommentLoaded);
     on<ExecuteAuditCommentUpdated>(_onExecuteAuditCommentUpdated);
+    on<ExecuteAuditCommentInited>(_onExecuteAuditCommentInited);
   }
 
   Future<void> _onExecuteAuditCommentListLoaded(
@@ -217,5 +218,12 @@ class ExecuteAuditCommentBloc
         crudStatus: EntityStatus.failure,
       ));
     }
+  }
+
+  void _onExecuteAuditCommentInited(
+    ExecuteAuditCommentInited event,
+    Emitter<ExecuteAuditCommentState> emit,
+  ) {
+    emit(const ExecuteAuditCommentState());
   }
 }

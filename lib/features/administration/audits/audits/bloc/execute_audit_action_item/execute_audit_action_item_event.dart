@@ -76,11 +76,18 @@ class ExecuteAuditActionItemNameChanged extends ExecuteAuditActionItemEvent {
 
 class ExecuteAuditActionItemSiteChanged extends ExecuteAuditActionItemEvent {
   final Site site;
+  final bool isInit;
 
-  const ExecuteAuditActionItemSiteChanged({required this.site});
+  const ExecuteAuditActionItemSiteChanged({
+    required this.site,
+    this.isInit = false,
+  });
 
   @override
-  List<Object> get props => [site];
+  List<Object> get props => [
+        site,
+        isInit,
+      ];
 }
 
 class ExecuteAuditActionItemAssigneeChanged
@@ -167,3 +174,5 @@ class ExecuteAuditActionItemFileListChanged
   @override
   List<Object> get props => [fileList];
 }
+
+class ExecuteAuditActionItemInited extends ExecuteAuditActionItemEvent {}

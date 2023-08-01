@@ -55,11 +55,14 @@ class ExecuteAuditObservationBloc
         _onExecuteAuditObservationFileListChanged);
     on<ExecuteAuditObservationImageListLoaded>(
         _onExecuteAuditObservationImageListLoaded);
+    on<ExecuteAuditObservationInited>(_onExecuteAuditObservationInited);
   }
 
   @override
   void onChange(Change<ExecuteAuditObservationState> change) {
     super.onChange(change);
+
+    print(change.nextState.isDirty);
   }
 
   Future<void> _onExecuteAuditObservationListLoaded(
@@ -386,6 +389,10 @@ class ExecuteAuditObservationBloc
     ExecuteAuditObservationSiteChanged event,
     Emitter<ExecuteAuditObservationState> emit,
   ) {
+    if (event.isInit) {
+      emit(state.copyWith(initialSite: Nullable.value(event.site)));
+    }
+
     emit(state.copyWith(
       site: Nullable.value(event.site),
       siteValidationMessage: '',
@@ -453,5 +460,12 @@ class ExecuteAuditObservationBloc
     } catch (e) {
       emit(state.copyWith(imageListLoadStatus: EntityStatus.failure));
     }
+  }
+
+  void _onExecuteAuditObservationInited(
+    ExecuteAuditObservationInited event,
+    Emitter<ExecuteAuditObservationState> emit,
+  ) {
+    emit(const ExecuteAuditObservationState());
   }
 }

@@ -108,7 +108,7 @@ class _EntityShowTemplateState extends State<EntityShowTemplate> {
     return CustomTabBar(
       activeIndex: selectedTabIndex,
       tabs: {'Details': _buildEntityDetails(), ...widget.tabItems},
-      onTabClick: (index) async {
+      onTabClick: (current, previous) async {
         return true;
       },
     );

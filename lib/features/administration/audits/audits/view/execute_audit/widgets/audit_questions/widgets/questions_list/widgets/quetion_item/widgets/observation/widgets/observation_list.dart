@@ -166,6 +166,9 @@ class AuditDetailImageListView extends StatefulWidget {
 
 class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
   final CarouselController _controller = CarouselController();
+
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> imageSliders = widget.imageList
@@ -189,9 +192,6 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
             ))
         .toList();
 
-    // final documentList = widget.imageList
-    //     .where((element) => !element.documentType!.isImage)
-    //     .toList();
     return AlertDialog(
       content: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
@@ -242,7 +242,15 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                               children: <Widget>[
                                 Flexible(
                                   child: IconButton(
-                                    onPressed: () => _controller.previousPage(),
+                                    onPressed: index >= 0
+                                        ? () {
+                                            _controller.previousPage();
+                                            setState(() {
+                                              index--;
+                                              index %= widget.imageList.length;
+                                            });
+                                          }
+                                        : null,
                                     icon: Icon(
                                       PhosphorIcons.regular.arrowArcLeft,
                                       color: primaryColor,
@@ -254,31 +262,55 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                                     .map(
                                   (int pageIndex) => Flexible(
                                     child: InkWell(
-                                      onTap: () =>
-                                          _controller.animateToPage(pageIndex),
-                                      child: CachedNetworkImage(
-                                        imageUrl: widget.imageList
-                                            .where((element) =>
-                                                element.documentType!.isImage)
-                                            .map((e) => e.uri ?? '')
-                                            .toList()[pageIndex],
-                                        placeholder: (context, url) =>
-                                            const Center(
-                                                child: Loader(size: 30)),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(
-                                          Icons.error,
-                                          size: 30,
+                                      onTap: () {
+                                        _controller.animateToPage(pageIndex);
+                                        setState(() {
+                                          index = pageIndex;
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: pageIndex == index
+                                            ? BoxDecoration(
+                                                border: Border.all(
+                                                  color: primaryColor,
+                                                  width: 3,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              )
+                                            : null,
+                                        child: CachedNetworkImage(
+                                          imageUrl: widget.imageList
+                                              .where((element) =>
+                                                  element.documentType!.isImage)
+                                              .map((e) => e.uri ?? '')
+                                              .toList()[pageIndex],
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                                  child: Loader(size: 30)),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(
+                                            Icons.error,
+                                            size: 30,
+                                          ),
+                                          fit: BoxFit.fitHeight,
+                                          height: 50.0,
                                         ),
-                                        fit: BoxFit.fitHeight,
-                                        height: 50.0,
                                       ),
                                     ),
                                   ),
                                 ),
                                 Flexible(
                                   child: IconButton(
-                                    onPressed: () => _controller.nextPage(),
+                                    onPressed: index < widget.imageList.length
+                                        ? () {
+                                            _controller.nextPage();
+                                            setState(() {
+                                              index++;
+                                              index %= widget.imageList.length;
+                                            });
+                                          }
+                                        : null,
                                     icon: Icon(
                                       PhosphorIcons.regular.arrowArcRight,
                                       color: primaryColor,
@@ -293,6 +325,17 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                             options: CarouselOptions(enlargeCenterPage: true),
                             carouselController: _controller,
                           ),
+                          if (widget.imageList.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  widget.imageList[index].originalFileName ??
+                                      '',
+                                  style: textNormal14,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     )

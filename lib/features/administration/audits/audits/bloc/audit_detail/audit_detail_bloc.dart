@@ -83,13 +83,17 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     AuditDetailLoaded event,
     Emitter<AuditDetailState> emit,
   ) async {
+    emit(state.copyWith(auditLoadStatus: EntityStatus.loading));
     try {
       AuditSummary auditSummary =
           await _auditsRepository.getAuditSummary(event.auditId);
 
-      emit(state.copyWith(auditSummary: auditSummary));
+      emit(state.copyWith(
+        auditSummary: auditSummary,
+        auditLoadStatus: EntityStatus.success,
+      ));
     } catch (e) {
-      print(e);
+      emit(state.copyWith(auditLoadStatus: EntityStatus.loading));
     }
   }
 

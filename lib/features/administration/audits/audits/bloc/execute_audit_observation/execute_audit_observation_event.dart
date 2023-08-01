@@ -70,13 +70,18 @@ class ExecuteAuditObservationPriorityLevelChanged
 
 class ExecuteAuditObservationSiteChanged extends ExecuteAuditObservationEvent {
   final Site site;
+  final bool isInit;
 
   const ExecuteAuditObservationSiteChanged({
     required this.site,
+    this.isInit = false,
   });
 
   @override
-  List<Object> get props => [site];
+  List<Object> get props => [
+        site,
+        isInit,
+      ];
 }
 
 class ExecuteAuditObservationNameChanged extends ExecuteAuditObservationEvent {
@@ -134,3 +139,5 @@ class ExecuteAuditObservationImageListLoaded
   @override
   List<Object> get props => [observationId];
 }
+
+class ExecuteAuditObservationInited extends ExecuteAuditObservationEvent {}

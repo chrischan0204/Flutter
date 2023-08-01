@@ -21,14 +21,15 @@ class Observation extends Entity {
   final String assessmentObservationType;
   final String assessmentPriorityLevel;
   final String assessmentCompany;
+  final String assessmentProject;
   final String reportedCompany;
+  final String reportedProject;
   final int imageCount;
   final String notificationSentVia;
   final String notificationSentAt;
   final String project;
   final String region;
   final String actionItems;
-
 
   Observation({
     super.id,
@@ -51,6 +52,7 @@ class Observation extends Entity {
     this.assessmentObservationType = '',
     this.assessmentPriorityLevel = '',
     this.reportedCompany = '',
+    this.reportedProject = '',
     this.imageCount = 0,
     this.notificationSentVia = '',
     this.notificationSentAt = '',
@@ -64,6 +66,7 @@ class Observation extends Entity {
     super.deleted,
     this.actionItems = '',
     this.assessmentCompany = '',
+    this.assessmentProject = '',
   }) {
     reportedAt ??= DateTime.now();
   }
@@ -89,13 +92,15 @@ class Observation extends Entity {
         assessmentObservationType,
         assessmentPriorityLevel,
         reportedCompany,
+        reportedProject,
         imageCount,
         notificationSentVia,
         notificationSentAt,
         project,
         region,
         actionItems,
-        assessmentCompany
+        assessmentCompany,
+        assessmentProject,
       ];
 
   String? get formatedReportedAt => reportedAt != null
@@ -123,7 +128,9 @@ class Observation extends Entity {
     String? assessmentObservationType,
     String? assessmentPriorityLevel,
     String? reportedCompany,
+    String? reportedProject,
     String? assessmentCompany,
+    String? assessmentProject,
     int? imageCount,
     String? notificationSentVia,
     String? notificationSentAt,
@@ -162,8 +169,10 @@ class Observation extends Entity {
           assessmentObservationType ?? this.assessmentObservationType,
       assessmentPriorityLevel:
           assessmentPriorityLevel ?? this.assessmentPriorityLevel,
-          assessmentCompany: assessmentCompany ?? this.assessmentCompany,
+      assessmentCompany: assessmentCompany ?? this.assessmentCompany,
+      assessmentProject: assessmentProject ?? this.assessmentProject,
       reportedCompany: reportedCompany ?? this.reportedCompany,
+      reportedProject: reportedProject ?? this.reportedProject,
       imageCount: imageCount ?? this.imageCount,
       notificationSentVia: notificationSentVia ?? this.notificationSentVia,
       notificationSentAt: notificationSentAt ?? this.notificationSentAt,
@@ -215,12 +224,14 @@ class Observation extends Entity {
       'Response': response,
       'Assessed By': assessedBy,
       'Assessed On': assessedOn,
+      'Assessment Project': assessmentProject,
       'Assessment Company': assessmentCompany,
       'Assessment Awareness Category': assessmentAwarenessCategory,
       'Assessment Comment': assessmentComment,
       'Assessment Observation Type': assessmentObservationType,
       'Assessment Priority Level': assessmentPriorityLevel,
       'Reported Company': reportedCompany,
+      'Reported Project': reportedProject,
       'Image Count': imageCount,
       'Notification Sent At': notificationSentAt,
       'Notification Sent Via': notificationSentVia,

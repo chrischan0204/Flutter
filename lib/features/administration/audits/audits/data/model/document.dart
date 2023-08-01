@@ -7,6 +7,9 @@ class Document extends Equatable {
   final String? fileName;
   final String? originalFileName;
   final double documentSize;
+  final String? uploadedOn;
+  final String? observationId;
+  final String? actionItemId;
 
   const Document({
     required this.id,
@@ -15,6 +18,9 @@ class Document extends Equatable {
     this.fileName,
     this.originalFileName,
     required this.documentSize,
+    this.uploadedOn,
+    this.observationId,
+    this.actionItemId,
   });
 
   @override
@@ -26,6 +32,9 @@ class Document extends Equatable {
       fileName,
       originalFileName,
       documentSize,
+      actionItemId,
+      observationId,
+      uploadedOn,
     ];
   }
 
@@ -58,6 +67,12 @@ class Document extends Equatable {
           ? map['originalFileName'] as String
           : null,
       documentSize: map['documentSize'] as double,
+      uploadedOn:
+          map['uploadedOn'] != null ? map['uploadedOn'] as String : null,
+      observationId:
+          map['observationId'] != null ? map['observationId'] as String : null,
+      actionItemId:
+          map['actionItemId'] != null ? map['actionItemId'] as String : null,
     );
   }
 

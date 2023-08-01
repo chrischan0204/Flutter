@@ -53,3 +53,5 @@ class ExecuteAuditCommentLoaded extends ExecuteAuditCommentEvent {
   @override
   List<Object> get props => [commentId];
 }
+
+class ExecuteAuditCommentInited extends ExecuteAuditCommentEvent {}

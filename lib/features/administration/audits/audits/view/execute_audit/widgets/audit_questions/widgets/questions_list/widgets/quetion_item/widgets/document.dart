@@ -20,7 +20,7 @@ class _ExecuteAuditDocumentViewState extends State<ExecuteAuditDocumentView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: insety10,
@@ -45,20 +45,22 @@ class _ExecuteAuditDocumentViewState extends State<ExecuteAuditDocumentView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                            child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                              onTap: document.documentType!.isImage
-                                  ? () {
-                                      showImageDialog(
-                                        fileName:
-                                            document.originalFileName ?? '',
-                                        url: document.uri ?? '',
-                                      );
-                                    }
-                                  : null,
-                              child: Text('${document.originalFileName ?? ''} (${document})')),
-                        )),
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                                onTap: document.documentType!.isImage
+                                    ? () {
+                                        showImageDialog(
+                                          fileName:
+                                              document.originalFileName ?? '',
+                                          url: document.uri ?? '',
+                                        );
+                                      }
+                                    : null,
+                                child: Text(
+                                    '${document.originalFileName ?? ''} ${document.uploadedOn == null ? '' : '(${document.uploadedOn})'}')),
+                          ),
+                        ),
                         IconButton(
                           onPressed: () async {
                             await downloadFile(document.uri ?? '',

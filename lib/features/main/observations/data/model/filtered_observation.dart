@@ -18,7 +18,9 @@ class FilteredObservation extends FilteredEntity {
   final String assessmentObservationType;
   final String assessmentPriorityLevel;
   final String assessmentCompany;
+  final String assessmentProject;
   final String reportedCompany;
+  final String reportedProject;
   final int imageCount;
   final String notificationSentVia;
   final String notificationSentAt;
@@ -43,7 +45,9 @@ class FilteredObservation extends FilteredEntity {
     required this.assessmentObservationType,
     required this.assessmentPriorityLevel,
     required this.assessmentCompany,
+    required this.assessmentProject,
     required this.reportedCompany,
+    required this.reportedProject,
     required this.imageCount,
     required this.notificationSentVia,
     required this.notificationSentAt,
@@ -78,7 +82,9 @@ class FilteredObservation extends FilteredEntity {
         assessmentObservationType,
         assessmentPriorityLevel,
         assessmentCompany,
+        assessmentProject,
         reportedCompany,
+        reportedProject,
         imageCount,
         notificationSentVia,
         notificationSentAt,
@@ -110,7 +116,9 @@ class FilteredObservation extends FilteredEntity {
         assessmentPriorityLevel: assessmentPriorityLevel,
         assessmentObservationType: assessmentObservationType,
         reportedCompany: reportedCompany,
+        reportedProject: reportedProject,
         assessmentCompany: assessmentCompany,
+        assessmentProject: assessmentProject,
         imageCount: imageCount,
         notificationSentAt: notificationSentAt,
         notificationSentVia: notificationSentVia,
@@ -147,6 +155,8 @@ class FilteredObservation extends FilteredEntity {
       assessmentPriorityLevel: map['assessment_Priority_Level'] ?? '',
       assessmentCompany: map['assessment_Company'] ?? '',
       reportedCompany: map['reported_Company'] ?? '',
+      reportedProject: map['reported_Project'] ?? '',
+      assessmentProject: map['assessment_Project'] ?? '',
       imageCount: map['image_Count'] ?? 0,
       notificationSentAt: map['notification_Sent_At'] ?? '',
       notificationSentVia: map['notification_Sent_Via'] ?? '',
@@ -176,7 +186,9 @@ class FilteredObservation extends FilteredEntity {
     String? assessmentObservationType,
     String? assessmentPriorityLevel,
     String? assessmentCompany,
+    String? assessmentProject,
     String? reportedCompany,
+    String? reportedProject,
     int? imageCount,
     String? notificationSentVia,
     String? notificationSentAt,
@@ -211,7 +223,9 @@ class FilteredObservation extends FilteredEntity {
       assessmentPriorityLevel:
           assessmentPriorityLevel ?? this.assessmentPriorityLevel,
       assessmentCompany: assessmentCompany ?? this.assessmentCompany,
+      assessmentProject: assessmentProject ?? this.assessmentProject,
       reportedCompany: reportedCompany ?? this.reportedCompany,
+      reportedProject: reportedProject ?? this.reportedProject,
       imageCount: imageCount ?? this.imageCount,
       notificationSentVia: notificationSentVia ?? this.notificationSentVia,
       notificationSentAt: notificationSentAt ?? this.notificationSentAt,

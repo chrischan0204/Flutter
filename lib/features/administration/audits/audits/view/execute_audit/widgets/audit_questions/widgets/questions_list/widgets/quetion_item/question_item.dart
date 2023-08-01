@@ -103,10 +103,13 @@ class QuestionItemView extends StatelessWidget {
                                               ),
                                             ),
                                           if (state.level2Followup != null)
-                                            Text(
-                                              'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
-                                              style: textNormal12.copyWith(
-                                                color: textBlue,
+                                            TextButton(
+                                              onPressed: null,
+                                              child: Text(
+                                                'Level Two Follow up Question (For Option=\'${state.selectedlevel1Response?.name}\')',
+                                                style: textNormal12.copyWith(
+                                                  color: textBlue,
+                                                ),
                                               ),
                                             )
                                         ],
@@ -137,8 +140,36 @@ class QuestionItemView extends StatelessWidget {
                       ),
                     ),
                     collapsed: Container(),
-                    expanded: QuestionItemBodyView(
-                      questionIndex: questionIndex,
+                    expanded: MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => ExecuteAuditObservationBloc(
+                            context: context,
+                            auditQuestion: state.level0,
+                          ),
+                        ),
+                        BlocProvider(
+                          create: (context) => ExecuteAuditActionItemBloc(
+                            context: context,
+                            auditQuestion: state.level0,
+                          ),
+                        ),
+                        BlocProvider(
+                          create: (context) => ExecuteAuditCommentBloc(
+                            context: context,
+                            auditQuestion: state.level0,
+                          ),
+                        ),
+                        BlocProvider(
+                          create: (context) => ExecuteAuditDocumentBloc(
+                            context: context,
+                            auditQuestion: state.level0,
+                          ),
+                        ),
+                      ],
+                      child: QuestionItemBodyView(
+                        questionIndex: questionIndex,
+                      ),
                     ),
                   ),
                 ],
@@ -163,6 +194,35 @@ class QuestionItemBodyView extends StatefulWidget {
 }
 
 class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
+  Future<bool> checkFormDirty(bool isDirty) async {
+    bool success = false;
+
+    if (isDirty) {
+      await AwesomeDialog(
+        context: context,
+        width: MediaQuery.of(context).size.width / 4,
+        dialogType: DialogType.question,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Confirm',
+        dialogBorderRadius: BorderRadius.circular(5),
+        desc: 'Data that was entered will be lost ..... Proceed?',
+        buttonsTextStyle: const TextStyle(color: Colors.white),
+        showCloseIcon: true,
+        btnCancelOnPress: () => success = false,
+        btnOkOnPress: () {
+          success = true;
+        },
+        btnOkText: 'Proceed',
+        buttonsBorderRadius: BorderRadius.circular(3),
+        padding: const EdgeInsets.all(10),
+      ).show();
+    } else {
+      success = true;
+    }
+    return success;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -285,73 +345,66 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                       padding: insetx12y24,
                       child: CustomTabBar(
                         activeIndex: 0,
-                        tabs: {
-                          'Observations': BlocProvider(
-                            create: (context) => ExecuteAuditObservationBloc(
-                              context: context,
-                              auditQuestion: state.level0,
-                            ),
-                            child: const AuditObservationView(),
-                          ),
-                          'Action Items': BlocProvider(
-                            create: (context) => ExecuteAuditActionItemBloc(
-                              context: context,
-                              auditQuestion: state.level0,
-                            ),
-                            child: const AuditActionItemView(),
-                          ),
-                          'Comments': BlocProvider(
-                            create: (context) => ExecuteAuditCommentBloc(
-                              context: context,
-                              auditQuestion: state.level0,
-                            ),
-                            child: const AuditCommentView(),
-                          ),
-                          'Images/Documents': BlocProvider(
-                            create: (context) => ExecuteAuditDocumentBloc(
-                              context: context,
-                              auditQuestion: state.level0,
-                            ),
-                            child: const ExecuteAuditDocumentView(),
-                          ),
+                        tabs: const {
+                          'Observations': AuditObservationView(),
+                          'Action Items': AuditActionItemView(),
+                          'Comments': AuditCommentView(),
+                          'Images/Documents': ExecuteAuditDocumentView(),
                         },
-                        onTabClick: (questionIndex) async {
-                          if (context.read<FormDirtyBloc>().state.isDirty ==
-                              true) {
-                            bool success = false;
-
-                            if (context.read<FormDirtyBloc>().state.isDirty) {
-                              await AwesomeDialog(
-                                context: context,
-                                width: MediaQuery.of(context).size.width / 4,
-                                dialogType: DialogType.question,
-                                headerAnimationLoop: false,
-                                animType: AnimType.bottomSlide,
-                                title: 'Confirm',
-                                dialogBorderRadius: BorderRadius.circular(5),
-                                desc:
-                                    'Data that was entered will be lost ..... Proceed?',
-                                buttonsTextStyle:
-                                    const TextStyle(color: Colors.white),
-                                showCloseIcon: true,
-                                btnCancelOnPress: () => success = false,
-                                btnOkOnPress: () {
-                                  success = true;
-                                  context.read<FormDirtyBloc>().add(
-                                      const FormDirtyChanged(isDirty: false));
-                                },
-                                btnOkText: 'Proceed',
-                                buttonsBorderRadius: BorderRadius.circular(3),
-                                padding: const EdgeInsets.all(10),
-                              ).show();
-                            }
-                            return success;
-                          } else {
+                        onTabClick: (questionIndex, previous) async {
+                          if (previous == 3) {
+                            context
+                                .read<ExecuteAuditObservationBloc>()
+                                .add(ExecuteAuditObservationInited());
+                            context
+                                .read<ExecuteAuditActionItemBloc>()
+                                .add(ExecuteAuditActionItemInited());
+                            context
+                                .read<ExecuteAuditCommentBloc>()
+                                .add(ExecuteAuditCommentInited());
                             return true;
                           }
+                          late bool isDirty;
+                          if (previous == 0) {
+                            isDirty = context
+                                .read<ExecuteAuditObservationBloc>()
+                                .state
+                                .isDirty;
+                            context
+                                .read<ExecuteAuditActionItemBloc>()
+                                .add(ExecuteAuditActionItemInited());
+                            context
+                                .read<ExecuteAuditCommentBloc>()
+                                .add(ExecuteAuditCommentInited());
+                          } else if (previous == 1) {
+                            isDirty = context
+                                .read<ExecuteAuditActionItemBloc>()
+                                .state
+                                .isDirty;
+
+                            context
+                                .read<ExecuteAuditObservationBloc>()
+                                .add(ExecuteAuditObservationInited());
+                            context
+                                .read<ExecuteAuditCommentBloc>()
+                                .add(ExecuteAuditCommentInited());
+                          } else if (previous == 2) {
+                            isDirty = context
+                                .read<ExecuteAuditCommentBloc>()
+                                .state
+                                .isDirty;
+
+                            context
+                                .read<ExecuteAuditActionItemBloc>()
+                                .add(ExecuteAuditActionItemInited());
+                            context
+                                .read<ExecuteAuditObservationBloc>()
+                                .add(ExecuteAuditObservationInited());
+                          }
+                          return await checkFormDirty(isDirty);
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '/common_libraries.dart';
@@ -114,7 +113,7 @@ class _MyWidgetState extends State<AddEditEntityTemplate> {
     return CustomTabBar(
       activeIndex: selectedTabIndex,
       tabs: {'Details': _buildEditEntityView(), ...widget.tabItems},
-      onTabClick: (index) async {
+      onTabClick: (index, previous) async {
         if (widget.onTabClick != null) {
           return await widget.onTabClick!(index);
         } else {

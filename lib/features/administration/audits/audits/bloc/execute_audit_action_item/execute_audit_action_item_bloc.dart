@@ -64,6 +64,7 @@ class ExecuteAuditActionItemBloc
         _onExecuteAuditActionItemIsClosedChanged);
     on<ExecuteAuditActionItemFileListChanged>(
         _onExecuteAuditActionItemFileListChanged);
+    on<ExecuteAuditActionItemInited>(_onExecuteAuditActionItemInited);
   }
 
   void _onExecuteAuditActionItemNameChanged(
@@ -82,6 +83,10 @@ class ExecuteAuditActionItemBloc
     ExecuteAuditActionItemSiteChanged event,
     Emitter<ExecuteAuditActionItemState> emit,
   ) {
+    if (event.isInit) {
+      emit(state.copyWith(initialSite: Nullable.value(event.site)));
+    }
+
     emit(state.copyWith(
       site: Nullable.value(event.site),
       siteValidationMessage: '',
@@ -517,5 +522,12 @@ class ExecuteAuditActionItemBloc
         crudStatus: EntityStatus.failure,
       ));
     }
+  }
+
+  void _onExecuteAuditActionItemInited(
+    ExecuteAuditActionItemInited event,
+    Emitter<ExecuteAuditActionItemState> emit,
+  ) {
+    emit(ExecuteAuditActionItemState());
   }
 }
