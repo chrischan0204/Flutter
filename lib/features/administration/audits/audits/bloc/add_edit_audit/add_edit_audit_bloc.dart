@@ -46,7 +46,9 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
     AddEditIsWithConfirmationChanged event,
     Emitter<AddEditAuditState> emit,
   ) async {
-    emit(state.copyWith(isWithConfirmation: event.isWithConfirmation));
+    if (_checkValidation(emit)) {
+      emit(state.copyWith(isWithConfirmation: event.isWithConfirmation));
+    }
   }
 
   Future<void> _onAddEditAuditAdded(

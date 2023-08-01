@@ -252,12 +252,12 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                     CustomBottomBorderContainer(
                       padding: insetx12y24,
                       child: Text(
-                        'Assests',
+                        'Assets',
                         style: textNormal14,
                       ),
                     ),
                     Padding(
-                      padding: insetx12y24,
+                      padding: insety20,
                       child: CustomTabBar(
                         activeIndex: 0,
                         tabs: {

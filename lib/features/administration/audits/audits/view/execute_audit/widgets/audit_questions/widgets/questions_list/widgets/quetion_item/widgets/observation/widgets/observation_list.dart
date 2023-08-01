@@ -67,7 +67,7 @@ class AuditObservationListItemView extends StatelessWidget {
               Expanded(
                   child: Text(
                 observation.reportedAt != null
-                    ? DateFormat('MM/d/yyyy').format(observation.reportedAt!)
+                    ? DateFormat('MM/dd/yyyy').format(observation.reportedAt!)
                     : '',
                 style: textNormal12,
               )),
@@ -126,15 +126,15 @@ class AuditObservationListItemView extends StatelessWidget {
                     CustomAlert(
                       context: context,
                       width: MediaQuery.of(context).size.width / 4,
-                      title: 'Notification',
-                      description: 'Deleting observation. Are you sure?',
+                      title: 'Confirm',
+                      description: 'Do you really want to delete this observation?',
                       btnOkText: 'OK',
                       btnOkOnPress: () => context
                           .read<ExecuteAuditObservationBloc>()
                           .add(ExecuteAuditObservationDeleted(
                               observationId: observation.id)),
                       btnCancelOnPress: () {},
-                      dialogType: DialogType.info,
+                      dialogType: DialogType.question,
                     ).show();
                   },
                   icon: Icon(

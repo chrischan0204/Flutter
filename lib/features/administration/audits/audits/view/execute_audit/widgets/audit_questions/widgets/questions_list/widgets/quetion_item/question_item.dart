@@ -212,6 +212,7 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
         btnCancelOnPress: () => success = false,
         btnOkOnPress: () {
           success = true;
+          // context.read<FormDirtyBloc>().add(FormDirtyChanged(isDirty: isDirty));
         },
         btnOkText: 'Proceed',
         buttonsBorderRadius: BorderRadius.circular(3),
@@ -260,8 +261,6 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                             CustomBottomBorderContainer(
                               padding: inset20,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Row(
@@ -277,48 +276,49 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                                                   response: value!,
                                                 ))),
                                         spacerx20,
-                                        Text(
-                                          response.name,
-                                          style: textNormal14,
+                                        Expanded(
+                                          child: Text(
+                                            response.name,
+                                            style: textNormal14,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  spacerx10,
                                   if (state.selectedResponse == response)
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          if (response.commentRequired == true)
-                                            const CustomBadge(
-                                              label: 'Comment',
-                                              color: Color.fromRGBO(
-                                                  36, 114, 151, 1),
-                                            ),
-                                          if (response.actionItemRequired ==
-                                              true)
-                                            const CustomBadge(
-                                              label: 'Action Item',
-                                              color: Color.fromRGBO(
-                                                  36, 114, 151, 1),
-                                            ),
-                                          if (response.followUpRequired == true)
-                                            CustomBadge(
-                                              label: 'Follow up ->',
-                                              color: primaryColor,
-                                              onClick: () {
-                                                context
-                                                    .read<
-                                                        ExecuteAuditQuestionBloc>()
-                                                    .add(
-                                                        ExecuteAuditQuestionLoaded(
-                                                            responseId:
-                                                                response.id));
-                                              },
-                                            ),
-                                        ],
-                                      ),
+                                    Row(
+                                      children: [
+                                        if (response.commentRequired == true)
+                                          const CustomBadge(
+                                            label: 'Comment',
+                                            color:
+                                                Color.fromRGBO(36, 114, 151, 1),
+                                          ),
+                                        spacerx4,
+                                        if (response.actionItemRequired == true)
+                                          const CustomBadge(
+                                            label: 'Action Item',
+                                            color:
+                                                Color.fromRGBO(36, 114, 151, 1),
+                                          ),
+                                        if (response.actionItemRequired == true)
+                                          spacerx4,
+                                        if (response.followUpRequired == true)
+                                          CustomBadge(
+                                            label: 'Follow up ->',
+                                            color: primaryColor,
+                                            onClick: () {
+                                              context
+                                                  .read<
+                                                      ExecuteAuditQuestionBloc>()
+                                                  .add(
+                                                      ExecuteAuditQuestionLoaded(
+                                                          responseId:
+                                                              response.id));
+                                            },
+                                          ),
+                                      ],
                                     )
                                 ],
                               ),
@@ -337,12 +337,12 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
                     CustomBottomBorderContainer(
                       padding: insetx12y24,
                       child: Text(
-                        'Assests',
+                        'Assets',
                         style: textNormal14,
                       ),
                     ),
                     Padding(
-                      padding: insetx12y24,
+                      padding: insety20,
                       child: CustomTabBar(
                         activeIndex: 0,
                         tabs: const {

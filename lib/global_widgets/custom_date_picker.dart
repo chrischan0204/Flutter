@@ -34,7 +34,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     setState(() {
       if (args.value is DateTime) {
         widget.controller.text =
-            DateFormat('MM/d/yyyy').format((args.value as DateTime));
+            DateFormat('MM/dd/yyyy').format((args.value as DateTime));
         widget.onChanged(args.value);
       }
     });

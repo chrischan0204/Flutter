@@ -85,7 +85,7 @@ class ProjectCompany extends Equatable {
       createdByUserName: map['createdByUserName'] ?? '',
       createdOn: map['createdOn'] == null
           ? ''
-          : FormatDate(dateString: map['createdOn'] ?? '', format: 'MM/d/yyyy')
+          : FormatDate(dateString: map['createdOn'] ?? '', format: 'MM/dd/yyyy')
               .formatDate,
     );
   }

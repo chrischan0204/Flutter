@@ -27,7 +27,7 @@ class AuditObservation extends Equatable {
         reportedAt,
       ];
 
-  String get formatedReportedAt => DateFormat('MM/d/yyyy').format(reportedAt);
+  String get formatedReportedAt => DateFormat('MM/dd/yyyy').format(reportedAt);
 
   factory AuditObservation.fromMap(Map<String, dynamic> map) {
     return AuditObservation(

@@ -72,9 +72,9 @@ class FilteredActionItem extends FilteredEntity {
       );
 
   String get formatedDueOn =>
-      dueOn != null ? DateFormat('MM/d/yyyy').format(dueOn!) : '--';
+      dueOn != null ? DateFormat('MM/dd/yyyy').format(dueOn!) : '--';
   String get formatedClosedOn =>
-      closedOn != null ? DateFormat('MM/d/yyyy').format(closedOn!) : '--';
+      closedOn != null ? DateFormat('MM/dd/yyyy').format(closedOn!) : '--';
 
   factory FilteredActionItem.fromMap(Map<String, dynamic> map) {
     FilteredEntity entity = FilteredEntity.fromMap(map);

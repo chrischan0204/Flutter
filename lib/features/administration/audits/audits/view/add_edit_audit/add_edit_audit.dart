@@ -87,7 +87,7 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
                 .go('/audits/edit/${state.createdAuditId}?view=created');
           } else {
             if (state.isWithConfirmation) {
-              context.go('/audits');
+              context.go('/audits/show/${widget.auditId}');
             }
           }
         }

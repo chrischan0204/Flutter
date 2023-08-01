@@ -98,7 +98,7 @@ class ActionItemDetail extends Equatable {
       ];
 
   String get formatedDueBy =>
-      dueBy != null ? DateFormat('MM/d/yyyy').format(dueBy!) : '--';
+      dueBy != null ? DateFormat('MM/dd/yyyy').format(dueBy!) : '--';
 
   ActionItemDetail copyWith({
     String? id,

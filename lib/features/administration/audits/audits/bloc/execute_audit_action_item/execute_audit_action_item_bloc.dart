@@ -94,6 +94,9 @@ class ExecuteAuditActionItemBloc
       company: const Nullable.value(null),
     ));
 
+    add(ExecuteAuditActionItemProjectListLoaded(siteId: event.site.id!));
+    add(ExecuteAuditActionItemCompanyListLoaded(siteId: event.site.id!));
+
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 

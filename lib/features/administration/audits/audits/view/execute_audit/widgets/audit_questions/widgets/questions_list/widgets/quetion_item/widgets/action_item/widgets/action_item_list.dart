@@ -127,15 +127,15 @@ class AuditActionItemListItemView extends StatelessWidget {
                           CustomAlert(
                             context: context,
                             width: MediaQuery.of(context).size.width / 4,
-                            title: 'Notification',
-                            description: 'Deleting action item. Are you sure?',
+                            title: 'Confirm',
+                            description: 'Do you really want to delete this action item?',
                             btnOkText: 'OK',
                             btnOkOnPress: () => context
                                 .read<ExecuteAuditActionItemBloc>()
                                 .add(ExecuteAuditActionItemDeleted(
                                     actionItemId: actionItem.id)),
                             btnCancelOnPress: () {},
-                            dialogType: DialogType.info,
+                            dialogType: DialogType.question,
                           ).show();
                         },
                   icon: Icon(

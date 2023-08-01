@@ -60,7 +60,7 @@ class AuditActionItem extends Equatable {
     ];
   }
 
-  String get formatedDueBy => DateFormat('MM/d/yyyy').format(dueBy);
+  String get formatedDueBy => DateFormat('MM/dd/yyyy').format(dueBy);
 
   AuditActionItem copyWith({
     String? id,

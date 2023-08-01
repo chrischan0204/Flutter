@@ -123,7 +123,7 @@ class EditAssessmentView extends StatelessWidget {
                           .read<EditAssessmentBloc>()
                           .add(EditAssessmentSiteChanged(
                             site: Site(
-                              id: observation.userReportedSiteName,
+                              id: observation.userReportedSiteId,
                               name: observation.userReportedSiteName,
                             ),
                             isFirst: true,

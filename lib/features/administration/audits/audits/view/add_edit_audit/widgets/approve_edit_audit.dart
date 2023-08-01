@@ -198,7 +198,7 @@ class _ApproveEditAuditViewState extends State<ApproveEditAuditWidget> {
                           ),
                           spacerx20,
                           CustomButton(
-                            onClick: () => GoRouter.of(context).go('/audits'),
+                            onClick: () => GoRouter.of(context).go('/audits/show/${widget.auditId}'),
                             backgroundColor: purpleColor,
                             hoverBackgroundColor: purpleHoverColor,
                             body: Text(

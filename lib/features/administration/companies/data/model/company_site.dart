@@ -73,7 +73,7 @@ class CompanySite extends Equatable {
       roleName: map['roleName'] ?? '',
       createdByUserName: map['createdByUserName'] ?? '',
       createdOn:
-          FormatDate(dateString: map['createdOn'] ?? '', format: 'MM/d/yyyy')
+          FormatDate(dateString: map['createdOn'] ?? '', format: 'MM/dd/yyyy')
               .formatDate,
     );
   }

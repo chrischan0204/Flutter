@@ -79,7 +79,7 @@ class ActionItem extends Entity {
   });
 
   String get formatedDue =>
-      dueBy != null ? DateFormat('MM/d/yyyy').format(dueBy!) : '--';
+      dueBy != null ? DateFormat('MM/dd/yyyy').format(dueBy!) : '--';
 
   @override
   List<Object?> get props => [
@@ -203,7 +203,7 @@ class ActionItem extends Entity {
       isClosed: map['isClosed'] ?? false,
       closedByName: map['closedByName'] ?? '',
       closedOn: map['closedOn'] != null
-          ? DateFormat('MM/d/yyyy').format(DateTime.parse(map['closedOn']))
+          ? DateFormat('MM/dd/yyyy').format(DateTime.parse(map['closedOn']))
           : '--',
       createdOn: entity.createdOn,
       createdByUserName: entity.createdByUserName,

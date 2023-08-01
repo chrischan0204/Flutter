@@ -152,14 +152,14 @@ class AuditCommentListItemView extends StatelessWidget {
                 CustomAlert(
                   context: context,
                   width: MediaQuery.of(context).size.width / 4,
-                  title: 'Notification',
-                  description: 'Deleting comment. Are you sure?',
+                  title: 'Confirm',
+                  description: 'Do you really want to delete this comment?',
                   btnOkText: 'OK',
                   btnOkOnPress: () => context
                       .read<ExecuteAuditCommentBloc>()
                       .add(ExecuteAuditCommentDeleted(commentId: comment.id)),
                   btnCancelOnPress: () {},
-                  dialogType: DialogType.info,
+                  dialogType: DialogType.question,
                 ).show();
               },
               icon: Icon(

@@ -45,7 +45,7 @@ class FilteredTemplate extends FilteredEntity {
       inspection: map['inspection'] ?? true,
       revisionDate: map['revision_Date'] != null
           ? FormatDate(
-                  format: 'MM/d/yyyy', dateString: map['revision_Date'] ?? '')
+                  format: 'MM/dd/yyyy', dateString: map['revision_Date'] ?? '')
               .formatDate
           : '--',
       createdById: entity.createdById,

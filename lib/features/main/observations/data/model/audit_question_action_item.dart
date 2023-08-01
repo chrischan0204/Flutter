@@ -58,7 +58,7 @@ class AuditQuestionOnActionItem extends Equatable {
         questionStatus,
       ];
   String get formatedAuditDate =>
-      DateFormat('MM/d/yyyy - hh:mm a').format(auditDate);
+      DateFormat('MM/dd/yyyy - hh:mm a').format(auditDate);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
