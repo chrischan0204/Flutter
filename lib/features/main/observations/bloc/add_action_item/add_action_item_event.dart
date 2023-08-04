@@ -5,7 +5,7 @@ abstract class AddActionItemEvent extends Equatable {
   const AddActionItemEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AddActionItemTaskChanged extends AddActionItemEvent {
@@ -124,12 +124,12 @@ class AddActionItemIsEditingChanged extends AddActionItemEvent {
 }
 
 class AddActionItemSiteChanged extends AddActionItemEvent {
-  final Site site;
+  final Site? site;
 
-  const AddActionItemSiteChanged({required this.site});
+  const AddActionItemSiteChanged({this.site});
 
   @override
-  List<Object> get props => [site];
+  List<Object?> get props => [site];
 }
 
 class AddActionItemImageListChanged extends AddActionItemEvent {

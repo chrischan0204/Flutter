@@ -36,9 +36,17 @@ class AddActionItemHeaderView extends StatelessWidget {
     } else {
       if (state.actionItem == null) {
         return ElevatedButton(
-          onPressed: () => context
-              .read<AddActionItemBloc>()
-              .add(AddActionItemAddActionItemButtonClicked()),
+          onPressed: () {
+            final observation =
+                context.read<ObservationDetailBloc>().state.observation;
+            context.read<AddActionItemBloc>()
+              ..add(AddActionItemAddActionItemButtonClicked())
+              ..add(AddActionItemSiteChanged(
+                  site: observation == null ? null : Site(
+                id: observation!.userReportedSiteId,
+                name: observation.userReportedSiteName,
+              )));
+          },
           style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
           child: Text(
             'Add Action Item',

@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Logo extends StatelessWidget {
   const Logo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Icon(
-          Icons.health_and_safety_sharp,
-          size: 44,
-          color: Colors.amberAccent,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          'Safety ETA',
-          style: GoogleFonts.alumniSans(
-            textStyle: const TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset(
+        'assets/images/logo-login.png',
+        height: 50,
+        fit: BoxFit.fitHeight,
+        filterQuality: FilterQuality.high,
+      ),
     );
   }
 }

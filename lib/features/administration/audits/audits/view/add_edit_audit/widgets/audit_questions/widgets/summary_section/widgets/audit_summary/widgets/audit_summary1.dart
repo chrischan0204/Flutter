@@ -28,7 +28,7 @@ class AuditSummary1 extends StatelessWidget {
                 ),
                 AuditDetailItemView(
                   label: 'Last executed on',
-                  content: audit.formatedLastModifiedOn,
+                  content: audit.formatedLastExecutedOn,
                 ),
                 AuditDetailItemView(
                   label: 'Sections',

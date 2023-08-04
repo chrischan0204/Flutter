@@ -48,25 +48,28 @@ class _CustomScrollViewWithBackButtonState
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       controller: _scrollController,
-      child: Stack(
-        children: [
-          widget.child,
-          if (_showBackToTopButton)
-            Positioned(
-              bottom: 20,
-              right: 5,
-              child: FloatingActionButton(
-                mini: true,
-                backgroundColor: const Color(0xff247297),
-                onPressed: _scrollToTop,
-                child: Icon(
-                  PhosphorIcons.regular.arrowUp,
-                  size: 20,
-                  color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Stack(
+          children: [
+            widget.child,
+            if (_showBackToTopButton)
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: FloatingActionButton(
+                  mini: true,
+                  backgroundColor: const Color(0xff247297),
+                  onPressed: _scrollToTop,
+                  child: Icon(
+                    PhosphorIcons.regular.arrowUp,
+                    size: 20,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            )
-        ],
+              )
+          ],
+        ),
       ),
     );
   }

@@ -34,40 +34,40 @@ class _LoginButtonState extends State<LoginButton> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return BlocConsumer<LoginBloc, LoginState>(
       listenWhen: (previous, current) =>
           previous.valid != current.valid && current.valid,
       listener: (context, loginState) => _login(loginState),
       builder: (context, loginState) => BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, authState) => SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => _validate(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff68767b),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+        builder: (context, authState) => SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () => _validate(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xff68767b),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 24),
+            ),
+            child: authState is AuthAuthenticateInProgress
+                ? LoadingAnimationWidget.staggeredDotsWave(
+                    color: Colors.white,
+                    size: 26,
+                  )
+                : Text(
+                    'Login',
+                    style: GoogleFonts.amaranth(
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        letterSpacing: 4,
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: authState is AuthAuthenticateInProgress
-                      ? LoadingAnimationWidget.staggeredDotsWave(
-                          color: Colors.white,
-                          size: 26,
-                        )
-                      : Text(
-                          'Login',
-                          style: GoogleFonts.amaranth(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: width / 70,
-                              letterSpacing: 2,
-                            ),
-                          ),
-                        ),
-                ),
-              )),
+          ),
+        ),
+      ),
     );
   }
 }

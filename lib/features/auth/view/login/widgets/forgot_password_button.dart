@@ -12,7 +12,7 @@ class ForgotPasswordButton extends StatelessWidget {
         child: const Text(
           'Forgot password?',
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
         ),

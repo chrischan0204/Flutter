@@ -8,7 +8,21 @@ class SiteSelectField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
       label: 'Site (*)',
-      content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
+      content: BlocConsumer<ObservationDetailBloc, ObservationDetailState>(
+        listener: (context, state) {
+          final observation = state.observation!;
+
+          if (observation.userReportedSiteId != null) {
+            context.read<AddActionItemBloc>().add(AddActionItemSiteChanged(
+                    site: Site(
+                  id: observation.userReportedSiteId,
+                  name: observation.userReportedSiteName,
+                )));
+          }
+        },
+        listenWhen: (previous, current) =>
+            previous.observation == null &&
+            previous.observation != current.observation,
         builder: (context, observationDetailState) {
           return BlocBuilder<AddActionItemBloc, AddActionItemState>(
             builder: (context, state) {

@@ -10,6 +10,8 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   late ObservationsRepository _observationsRepository;
   late SitesRepository _sitesRepository;
   late DocumentsRepository _documentsRepository;
+  late ObservationDetailBloc _observationDetailBloc;
+
   final BuildContext context;
   final String observationId;
   AddActionItemBloc({
@@ -18,6 +20,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   }) : super(AddActionItemState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
     _observationsRepository = RepositoryProvider.of(context);
+    _observationDetailBloc = context.read();
     _documentsRepository = context.read();
     _sitesRepository = context.read();
 
@@ -237,15 +240,15 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
       assignee: const Nullable.value(null),
     ));
 
-    if (event.site.id != null) {
+    if (event.site != null) {
       List<CompanySite> companyList =
-          await _sitesRepository.getCompanyListForSite(event.site.id!);
+          await _sitesRepository.getCompanyListForSite(event.site!.id!);
 
       List<Project> projectList =
-          await _sitesRepository.getProjectListForSite(event.site.id!);
+          await _sitesRepository.getProjectListForSite(event.site!.id!);
 
       final List<Entity> userList =
-          await _sitesRepository.getUserListForSite(event.site.id!);
+          await _sitesRepository.getUserListForSite(event.site!.id!);
 
       emit(state.copyWith(
         projectList: projectList,
@@ -306,6 +309,17 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemAddActionItemButtonClicked event,
     Emitter<AddActionItemState> emit,
   ) {
+    // if (_observationDetailBloc.state.observation != null) {
+    //   emit(state.copyWith(
+    //     site: Nullable.value(Site(
+    //       id: _observationDetailBloc.state.observation!.userReportedSiteId,
+    //       name: _observationDetailBloc.state.observation!.userReportedSiteName,
+    //     )),
+    //   ));
+    // } else {
+    //   emit(state.copyWith(site: const Nullable.value(null)));
+    // }
+
     emit(state.copyWith(
       isEditing: true,
       task: '',

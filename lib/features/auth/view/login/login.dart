@@ -44,7 +44,6 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -62,9 +61,9 @@ class _LoginViewState extends State<LoginView> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Container(
-                  width: width * 2 / 7,
+                  width: 500,
                   margin: const EdgeInsets.all(50),
-                  padding: EdgeInsets.all(width / 30),
+                  padding: const EdgeInsets.all(50),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
@@ -73,22 +72,28 @@ class _LoginViewState extends State<LoginView> {
                     listener: (context, state) => _checkAuthentication(state),
                     builder: (context, state) {
                       return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          spacery50,
+                          spacery30,
                           const Logo(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const DecorationText(),
-                              SizedBox(height: width / 20),
-                              const UsernameField(),
-                              const PasswordField(),
-                              const LoginButton(),
-                              SizedBox(height: width / 60),
-                              const ForgotPasswordButton(),
-                            ],
-                          ),
-                          Container(),
+                          spacery30,
+                          const DecorationText(),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const UsernameField(),
+                                spacery10,
+                                const PasswordField(),
+                                spacery20,
+                                const LoginButton(),
+                                spacery20,
+                                const ForgotPasswordButton(),
+                              ],
+                            ),
+                          )
                         ],
                       );
                     },

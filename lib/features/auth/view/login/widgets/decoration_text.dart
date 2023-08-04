@@ -6,12 +6,11 @@ class DecorationText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Text(
       'Empowerment through Awareness',
       style: GoogleFonts.actor(
         textStyle: TextStyle(
-          fontSize: width / 60,
+          fontSize: 35,
           fontWeight: FontWeight.bold,
           
         ),

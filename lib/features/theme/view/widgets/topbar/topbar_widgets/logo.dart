@@ -7,23 +7,11 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset('assets/images/safety_icon.png'),
-        const SizedBox(
-          width: 10,
-        ),
-        const Text(
-          'Safety ETA',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.orangeAccent,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Roboto',
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset(
+        'assets/images/logo-topbar.png',
+      ),
     );
   }
 }
