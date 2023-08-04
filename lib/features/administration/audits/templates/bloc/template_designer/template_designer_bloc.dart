@@ -32,6 +32,8 @@ class TemplateDesignerBloc
     on<TemplateDesignerTemplateSectionAdded>(
         _onTemplateDesignerTemplateSectionAdded);
     on<TemplateDesignerNewSectionChanged>(_onTemplateDesignerNewSectionChanged);
+    on<TemplateDesignerSectionUpdated>(_onTemplateDesignerSectionUpdated);
+    on<TemplateDesignerSectionDeleted>(_onTemplateDesignerSectionDeleted);
     on<TemplateDesignerResponseScaleListLoaded>(
         _onTemplateDesignerResponseScaleListLoaded);
     on<TemplateDesignerTemplateSectionSelected>(
@@ -155,6 +157,56 @@ class TemplateDesignerBloc
   ) {
     emit(state.copyWith(newSection: event.newSection));
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.dirty));
+  }
+
+  Future<void> _onTemplateDesignerSectionUpdated(
+    TemplateDesignerSectionUpdated event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    emit(state.copyWith(templateSectionAddStatus: EntityStatus.loading));
+
+    try {
+      EntityResponse response = await _templatesRepository
+          .updateTemplateSection(TemplateSectionListItem(
+        id: event.sectionId,
+        templateId: templateId,
+        name: event.section,
+      ));
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          templateSectionAddStatus: EntityStatus.success,
+          message: response.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        templateSectionAddStatus: EntityStatus.failure,
+        message: 'Something went wrong!',
+      ));
+    }
+  }
+
+  Future<void> _onTemplateDesignerSectionDeleted(
+    TemplateDesignerSectionDeleted event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    emit(state.copyWith(templateSectionAddStatus: EntityStatus.loading));
+
+    try {
+      EntityResponse response =
+          await _templatesRepository.deleteTemplateSection(event.sectionId);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          templateSectionAddStatus: EntityStatus.success,
+          message: response.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        templateSectionAddStatus: EntityStatus.failure,
+        message: 'Something went wrong!',
+      ));
+    }
   }
 
   Future<void> _onTemplateDesignerResponseScaleListLoaded(
@@ -370,11 +422,8 @@ class TemplateDesignerBloc
               TemplateSectionItem.empty) {
             add(TemplateDesignerTemplateSectionItemCreated());
           } else {
-            if (Validation.isNotEmpty(state
-                    .currentTemplateSectionItemByLevel(1)
-                    ?.question
-                    ?.name
-            )) {
+            if (Validation.isNotEmpty(
+                state.currentTemplateSectionItemByLevel(1)?.question?.name)) {
               if (state
                       .currentTemplateSectionItemByLevel(1)
                       ?.includedChildren
@@ -393,9 +442,9 @@ class TemplateDesignerBloc
                   add(TemplateDesignerTemplateSectionItemCreated());
                 } else {
                   if (Validation.isNotEmpty(state
-                          .currentTemplateSectionItemByLevel(2)
-                          ?.question
-                          ?.name)) {
+                      .currentTemplateSectionItemByLevel(2)
+                      ?.question
+                      ?.name)) {
                     if (state
                             .currentTemplateSectionItemByLevel(2)
                             ?.includedChildren

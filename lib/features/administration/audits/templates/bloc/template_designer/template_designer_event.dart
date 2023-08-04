@@ -22,6 +22,29 @@ class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
   List<Object> get props => [newSection];
 }
 
+class TemplateDesignerSectionUpdated extends TemplateDesignerEvent {
+  final String section;
+  final String sectionId;
+  const TemplateDesignerSectionUpdated({
+    required this.section,
+    required this.sectionId,
+  });
+
+  @override
+  List<Object> get props => [
+        section,
+        sectionId,
+      ];
+}
+
+class TemplateDesignerSectionDeleted extends TemplateDesignerEvent {
+  final String sectionId;
+  const TemplateDesignerSectionDeleted({required this.sectionId});
+
+  @override
+  List<Object> get props => [sectionId];
+}
+
 class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
 
 class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {

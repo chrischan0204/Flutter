@@ -113,6 +113,36 @@ class TemplatesRepository extends BaseRepository {
         .copyWith(statusCode: response.statusCode);
   }
 
+  /// update template section
+  Future<EntityResponse> updateTemplateSection(
+      TemplateSectionListItem templateSection) async {
+    Response response =
+        await super.put('$url/sections', body: templateSection.toJson());
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    throw Exception();
+  }
+
+  /// delete template section
+  Future<EntityResponse> deleteTemplateSection(String sectionId) async {
+    Response response = await super.delete('$url/sections/$sectionId');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    throw Exception();
+  }
+
   /// get template snap shot list for template detail
   Future<List<TemplateSnapshot>> getTemplateSnapshotList(
       String templateId) async {
@@ -168,8 +198,9 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
-  /// get template usage summary 
-  Future<TemplateUsageSummary> getTemplateUsageSummary(String templateId) async {
+  /// get template usage summary
+  Future<TemplateUsageSummary> getTemplateUsageSummary(
+      String templateId) async {
     Response response = await super.get('$url/$templateId/usagesummary');
 
     if (response.statusCode == 200) {

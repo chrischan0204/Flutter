@@ -23,10 +23,15 @@ class TemplateSectionListItem extends Equatable {
       ];
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    final map = <String, dynamic>{
       'templateId': templateId,
       'name': name,
     };
+    if (id.isNotEmpty) {
+      map.addAll({'id': id});
+    }
+
+    return map;
   }
 
   factory TemplateSectionListItem.fromMap(Map<String, dynamic> map) {
@@ -41,5 +46,6 @@ class TemplateSectionListItem extends Equatable {
   String toJson() => json.encode(toMap());
 
   factory TemplateSectionListItem.fromJson(String source) =>
-      TemplateSectionListItem.fromMap(json.decode(source) as Map<String, dynamic>);
+      TemplateSectionListItem.fromMap(
+          json.decode(source) as Map<String, dynamic>);
 }
