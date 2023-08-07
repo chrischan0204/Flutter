@@ -112,14 +112,16 @@ class FilteredEntity extends Equatable {
       id: map['id'] ?? '',
       deleted: map['deleted'] ?? false,
       createdOn: map['created_On'] != null
-          ? FormatDate(format: 'MM/dd/yyyy', dateString: map['created_On'] ?? '')
+          ? FormatDate(
+                  format: 'MM/dd/yyyy', dateString: map['created_On'] ?? '')
               .formatDate
           : '--',
       createdBy: map['created_By'] ?? '',
       createdById: map['created_By_Id'] ?? emptyGuid,
       lastModifiedOn: map['last_Modified_On'] != null
           ? FormatDate(
-                  format: 'MM/dd/yyyy', dateString: map['last_Modified_On'] ?? '')
+                  format: 'MM/dd/yyyy',
+                  dateString: map['last_Modified_On'] ?? '')
               .formatDate
           : '--',
       lastModifiedByUserName: map['last_Modified_By'] ?? '',
@@ -213,7 +215,8 @@ class Entity extends Equatable {
       name: map['name'] != null ? map['name'] as String : null,
       active: map['active'] != null ? map['active'] as bool : true,
       deactivationDate: map['deactivationDate'] != null
-          ? FormatDate(format: 'MM/dd/yyyy', dateString: map['deactivationDate'])
+          ? FormatDate(
+                  format: 'MM/dd/yyyy', dateString: map['deactivationDate'])
               .formatDate
           : '',
       deactivationUserName: map['deactivationUserName'] != null
@@ -281,6 +284,36 @@ class Entity extends Equatable {
         columns,
         deleted,
       ];
+}
+
+class SortOrder extends Equatable {
+  final String id;
+  final int order;
+
+  const SortOrder({required this.id, required this.order});
+
+  @override
+  List<Object?> get props => [
+        id,
+        order,
+      ];
+
+  SortOrder copyWith({
+    String? id,
+    int? order,
+  }) {
+    return SortOrder(
+      id: id ?? this.id,
+      order: order ?? this.order,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'order': order,
+    };
+  }
 }
 
 // response object to get the response from api, which others wil inherit it

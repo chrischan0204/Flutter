@@ -1,8 +1,29 @@
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+
 import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 
-class QuestionsForSectionView extends StatelessWidget {
+class QuestionsForSectionView extends StatefulWidget {
   const QuestionsForSectionView({super.key});
+
+  @override
+  State<QuestionsForSectionView> createState() =>
+      _QuestionsForSectionViewState();
+}
+
+class _QuestionsForSectionViewState extends State<QuestionsForSectionView> {
+  bool _reorderCallback(Key item, Key newPosition) {
+    context
+        .read<TemplateDesignerBloc>()
+        .add(TemplateDesignerTemplateSectionItemQuestionListSorted(
+          currentQuestionId: item,
+          newIndex: newPosition,
+        ));
+
+    return true;
+  }
+
+  void _reorderDone(Key item) {}
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +39,12 @@ class QuestionsForSectionView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Question',
-                  style: TextStyle(fontSize: 14),
+                Padding(
+                  padding: EdgeInsets.only(left: 30),
+                  child: Text(
+                    'Question',
+                    style: TextStyle(fontSize: 14),
+                  ),
                 ),
                 Text(
                   'Score',
@@ -36,37 +60,33 @@ class QuestionsForSectionView extends StatelessWidget {
                 return const Center(child: Loader());
               }
 
-                // return ReorderableListView(
-                //   buildDefaultDragHandles: false,
-                //   padding: const EdgeInsets.symmetric(horizontal: 40),
-                //   children: <Widget>[
-                //     for (int index = 0;
-                //         index < state.templateQuestionList.length;
-                //         index += 1)
-                //       ReorderableDragStartListener(
-                //         key: Key('$index'),
-                //         index: index,
-                //         child: QuestionItemView(
-                //             question: state.templateQuestionList[index]),
-                //       ),
-                //   ],
-                //   onReorder: (int oldIndex, int newIndex) {
-                //     // setState(() {
-                //     //   if (oldIndex < newIndex) {
-                //     //     newIndex -= 1;
-                //     //   }
-                //     //   final int item = _items.removeAt(oldIndex);
-                //     //   _items.insert(newIndex, item);
-                //     // });
-                //   },
-                // );
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: state.templateQuestionList
-                    .map((e) => QuestionItemView(question: e))
-                    .toList(),
+              return SizedBox(
+                height: 50.0 * state.templateQuestionList.length,
+                child: ReorderableList(
+                  onReorder: _reorderCallback,
+                  onReorderDone: _reorderDone,
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverPadding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).padding.bottom),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              return QuestionItemView(
+                                question: state.templateQuestionList[index],
+                                isFirst: index == 0,
+                                isLast: index ==
+                                    state.templateQuestionList.length - 1,
+                              );
+                            },
+                            childCount: state.templateQuestionList.length,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
           ),

@@ -25,8 +25,8 @@ class _SectionItemViewState extends State<SectionItemView> {
 
   Widget dragHandle = ReorderableListener(
     child: Container(
-      width: 30,
-      height: 30,
+      width: 29,
+      height: 29,
       color: Colors.white,
       child: Center(
         child: Icon(
@@ -67,6 +67,107 @@ class _SectionItemViewState extends State<SectionItemView> {
         ));
   }
 
+  Widget _buildEditButtons() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _textEditingController,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.zero,
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  context
+                      .read<TemplateDesignerBloc>()
+                      .add(TemplateDesignerSectionUpdated(
+                        section: _textEditingController.text,
+                        sectionId: widget.section.id,
+                      ));
+                  _isEditing = false;
+                });
+              },
+              icon: PhosphorIcon(
+                PhosphorIcons.regular.check,
+                color: successHoverColor,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _isEditing = false;
+                });
+              },
+              icon: PhosphorIcon(
+                PhosphorIcons.regular.x,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCrudButtons() {
+    return Positioned(
+      right: 0,
+      top: -5,
+      child: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+          _getColor().withOpacity(0.5),
+          _getColor(),
+        ])),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _textEditingController.text = widget.section.name;
+                  _isEditing = true;
+                });
+              },
+              icon: PhosphorIcon(
+                PhosphorIcons.regular.pencil,
+                color: successHoverColor,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                CustomAlert(
+                  context: context,
+                  width: MediaQuery.of(context).size.width / 4,
+                  title: 'Confirm',
+                  description: 'Do you really want to delete this section?',
+                  btnOkText: 'OK',
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () => context.read<TemplateDesignerBloc>().add(
+                      TemplateDesignerSectionDeleted(
+                          sectionId: widget.section.id)),
+                  dialogType: DialogType.question,
+                ).show();
+              },
+              icon: PhosphorIcon(
+                PhosphorIcons.regular.trashSimple,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
 
@@ -90,202 +191,75 @@ class _SectionItemViewState extends State<SectionItemView> {
     Widget content = Container(
       decoration: decoration,
       child: SafeArea(
-          top: false,
-          bottom: false,
-          child: Opacity(
-            // hide content for placeholder
-            opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        CustomAlert.checkFormDirty(
-                            () => _getQuestionListForSection(), context);
-                      },
-                      onHover: (value) => setState(() => _hover = value),
-                      child: Container(
-                        decoration: widget.active
-                            ? BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: primaryColor,
-                                    width: 0.5,
-                                  ),
-                                  left: BorderSide(
-                                    color: primaryColor,
-                                    width: 0.5,
-                                  ),
-                                  right: BorderSide(
-                                    color: primaryColor,
-                                    width: 0.5,
-                                  ),
-                                ),
-                                color: _getColor(),
+        top: false,
+        bottom: false,
+        child: Opacity(
+          opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+          child: InkWell(
+            onTap: () {
+              CustomAlert.checkFormDirty(
+                  () => _getQuestionListForSection(), context);
+            },
+            onHover: (value) => setState(() => _hover = value),
+            child: Container(
+              height: 50,
+              decoration: widget.active
+                  ? BoxDecoration(
+                      border: Border(
+                        top: widget.first
+                            ? BorderSide(
+                                color: primaryColor,
+                                width: 0.5,
                               )
-                            : BoxDecoration(color: _getColor()),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (!widget.first) const CustomDivider(height: 1),
-                            Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 10,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      dragHandle,
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: _isEditing
-                                            ? Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: TextField(
-                                                      controller:
-                                                          _textEditingController,
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.zero,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      IconButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            context
-                                                                .read<
-                                                                    TemplateDesignerBloc>()
-                                                                .add(
-                                                                    TemplateDesignerSectionUpdated(
-                                                                  section:
-                                                                      _textEditingController
-                                                                          .text,
-                                                                  sectionId:
-                                                                      widget
-                                                                          .section
-                                                                          .id,
-                                                                ));
-                                                            _isEditing = false;
-                                                          });
-                                                        },
-                                                        icon: PhosphorIcon(
-                                                          PhosphorIcons
-                                                              .regular.check,
-                                                          color:
-                                                              successHoverColor,
-                                                        ),
-                                                      ),
-                                                      IconButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            _isEditing = false;
-                                                          });
-                                                        },
-                                                        icon: PhosphorIcon(
-                                                          PhosphorIcons
-                                                              .regular.x,
-                                                          color: Colors.red,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                widget.section.name,
-                                                style: TextStyle(
-                                                  color: primaryColor,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (widget.active)
-                                  if (!_isEditing)
-                                    Positioned(
-                                      right: 0,
-                                      top: 0,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(colors: [
-                                          _getColor().withOpacity(0.5),
-                                          _getColor(),
-                                        ])),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 10,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  _textEditingController.text =
-                                                      widget.section.name;
-                                                  _isEditing = true;
-                                                });
-                                              },
-                                              icon: PhosphorIcon(
-                                                PhosphorIcons.regular.pencil,
-                                                color: successHoverColor,
-                                              ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {
-                                                CustomAlert(
-                                                  context: context,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      4,
-                                                  title: 'Confirm',
-                                                  description:
-                                                      'Do you really want to delete this section?',
-                                                  btnOkText: 'OK',
-                                                  btnCancelOnPress: () {},
-                                                  btnOkOnPress: () => context
-                                                      .read<
-                                                          TemplateDesignerBloc>()
-                                                      .add(
-                                                          TemplateDesignerSectionDeleted(
-                                                              sectionId: widget
-                                                                  .section.id)),
-                                                  dialogType:
-                                                      DialogType.question,
-                                                ).show();
-                                              },
-                                              icon: PhosphorIcon(
-                                                PhosphorIcons
-                                                    .regular.trashSimple,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                              ],
-                            ),
-                          ],
+                            : BorderSide(
+                                color: grey,
+                                width: 1,
+                              ),
+                        left: BorderSide(
+                          color: primaryColor,
+                          width: 0.5,
+                        ),
+                        right: BorderSide(
+                          color: primaryColor,
+                          width: 0.5,
                         ),
                       ),
+                      color: _getColor(),
+                    )
+                  : BoxDecoration(color: _getColor()),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    child: Row(
+                      children: [
+                        dragHandle,
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _isEditing
+                              ? _buildEditButtons()
+                              : Text(
+                                  widget.section.name,
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                        ),
+                      ],
                     ),
                   ),
+                  if (widget.active)
+                    if (!_isEditing) _buildCrudButtons(),
                 ],
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
 
     return content;

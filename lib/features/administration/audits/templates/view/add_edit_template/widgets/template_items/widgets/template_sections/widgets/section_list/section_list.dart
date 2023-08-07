@@ -2,32 +2,27 @@ import '/common_libraries.dart';
 import 'widgets/widgets.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 
-class SectionListView extends StatelessWidget {
+class SectionListView extends StatefulWidget {
   const SectionListView({
     super.key,
   });
 
+  @override
+  State<SectionListView> createState() => _SectionListViewState();
+}
+
+class _SectionListViewState extends State<SectionListView> {
   bool _reorderCallback(Key item, Key newPosition) {
-    // int draggingIndex = _indexOfKey(item);
-    // int newPositionIndex = _indexOfKey(newPosition);
-
-    // // Uncomment to allow only even target reorder possition
-    // // if (newPositionIndex % 2 == 1)
-    // //   return false;
-
-    // final draggedItem = _items[draggingIndex];
-    // setState(() {
-    //   debugPrint("Reordering $item -> $newPosition");
-    //   _items.removeAt(draggingIndex);
-    //   _items.insert(newPositionIndex, draggedItem);
-    // });
+    context
+        .read<TemplateDesignerBloc>()
+        .add(TemplateDesignerTemplateSectionListSorted(
+          currentQuestionId: item,
+          newIndex: newPosition,
+        ));
     return true;
   }
 
-  void _reorderDone(Key item) {
-    // final draggedItem = _items[_indexOfKey(item)];
-    // debugPrint("Reordering finished for ${draggedItem.title}}");
-  }
+  void _reorderDone(Key item) {}
 
   @override
   Widget build(BuildContext context) {
@@ -49,44 +44,36 @@ class SectionListView extends StatelessWidget {
             children: [
               const SummaryView(),
               const CustomDivider(height: 1),
-              // for (int index = 0;
-              //     index < state.templateSectionList.length;
-              //     index++)
-              //   SectionItemView(
-              //     section: state.templateSectionList[index],
-              //     active: state.selectedTemplateSection ==
-              //         state.templateSectionList[index],
-              //     first: index == 0,
-              //   ),
-
               SizedBox(
-                height: 500,
+                height: 50.0 * state.templateSectionList.length,
                 child: ReorderableList(
                   onReorder: _reorderCallback,
                   onReorderDone: _reorderDone,
                   child: CustomScrollView(
-                    // cacheExtent: 3000,
                     slivers: <Widget>[
                       SliverPadding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).padding.bottom),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return SectionItemView(
-                                  section: state.templateSectionList[index],
-                                  active: state.selectedTemplateSection ==
-                                      state.templateSectionList[index],
-                                  first: index == 0,
-                                );
-                              },
-                              childCount: state.templateSectionList.length,
-                            ),
-                          )),
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).padding.bottom),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              return SectionItemView(
+                                section: state.templateSectionList[index],
+                                active: state.selectedTemplateSection ==
+                                    state.templateSectionList[index],
+                                first: index == 0,
+                                last: index ==
+                                    state.templateSectionList.length - 1,
+                              );
+                            },
+                            childCount: state.templateSectionList.length,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           );
         },

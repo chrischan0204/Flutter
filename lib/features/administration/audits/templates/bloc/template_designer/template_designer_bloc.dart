@@ -29,6 +29,8 @@ class TemplateDesignerBloc
 
     on<TemplateDesignerTemplateSectionListLoaded>(
         _onTemplateDesignerTemplateSectionListLoaded);
+    on<TemplateDesignerTemplateSectionListSorted>(
+        _onTemplateDesignerTemplateSectionListSorted);
     on<TemplateDesignerTemplateSectionAdded>(
         _onTemplateDesignerTemplateSectionAdded);
     on<TemplateDesignerNewSectionChanged>(_onTemplateDesignerNewSectionChanged);
@@ -40,6 +42,8 @@ class TemplateDesignerBloc
         _onTemplateDesignerTemplateSectionSelected);
     on<TemplateDesignerTemplateSectionItemQuestionListLoaded>(
         _onTemplateDesignerTemplateSectionItemQuestionListLoaded);
+    on<TemplateDesignerTemplateSectionItemQuestionListSorted>(
+        _onTemplateDesignerTemplateSectionItemQuestionListSorted);
     on<TemplateDesignerResponseScaleItemListLoaded>(
         _onTemplateDesignerResponseScaleItemListLoaded);
     on<TemplateDesignerQuestionChanged>(_onTemplateDesignerQuestionChanged);
@@ -114,6 +118,40 @@ class TemplateDesignerBloc
       ));
     } catch (e) {
       emit(state.copyWith(templateSectionListLoadStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onTemplateDesignerTemplateSectionListSorted(
+    TemplateDesignerTemplateSectionListSorted event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    final List<TemplateSectionListItem> templateSectionList =
+        List.from(state.templateSectionList);
+    final List<TemplateSectionListItem> savedTemplateSectionList =
+        List.from(state.templateSectionList);
+
+    int draggingIndex = templateSectionList.indexWhere(
+        (element) => ValueKey(element.id) == event.currentQuestionId);
+    int newIndex = templateSectionList
+        .indexWhere((element) => ValueKey(element.id) == event.newIndex);
+
+    final draggedItem = templateSectionList[draggingIndex];
+
+    templateSectionList.removeAt(draggingIndex);
+    templateSectionList.insert(newIndex, draggedItem);
+
+    List<SortOrder> sortOrderList = [];
+
+    for (int i = 0; i < templateSectionList.length; i++) {
+      sortOrderList.add(SortOrder(id: templateSectionList[i].id, order: i));
+    }
+
+    try {
+      await _templatesRepository.sortTemplateSectionList(sortOrderList);
+      emit(state.copyWith(templateSectionList: templateSectionList));
+    } catch (e) {
+      print(e);
+      emit(state.copyWith(templateSectionList: savedTemplateSectionList));
     }
   }
 
@@ -273,6 +311,40 @@ class TemplateDesignerBloc
     } catch (e) {
       emit(state.copyWith(
           sectionItemQuestionListLoadStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onTemplateDesignerTemplateSectionItemQuestionListSorted(
+    TemplateDesignerTemplateSectionItemQuestionListSorted event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
+    final List<TemplateQuestion> templateQuestionList =
+        List.from(state.templateQuestionList);
+
+    final List<TemplateQuestion> savedTemplateQuestionList =
+        List.from(state.templateQuestionList);
+
+    int draggingIndex = templateQuestionList.indexWhere(
+        (element) => ValueKey(element.id) == event.currentQuestionId);
+    int newIndex = templateQuestionList
+        .indexWhere((element) => ValueKey(element.id) == event.newIndex);
+
+    final draggedItem = templateQuestionList[draggingIndex];
+
+    templateQuestionList.removeAt(draggingIndex);
+    templateQuestionList.insert(newIndex, draggedItem);
+
+    List<SortOrder> sortOrderList = [];
+
+    for (int i = 0; i < templateQuestionList.length; i++) {
+      sortOrderList.add(SortOrder(id: templateQuestionList[i].id, order: i));
+    }
+
+    try {
+      await _templatesRepository.sortTemplateSectionList(sortOrderList);
+      emit(state.copyWith(templateQuestionList: templateQuestionList));
+    } catch (e) {
+      emit(state.copyWith(templateQuestionList: savedTemplateQuestionList));
     }
   }
 

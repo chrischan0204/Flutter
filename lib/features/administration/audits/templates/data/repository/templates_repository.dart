@@ -209,4 +209,34 @@ class TemplatesRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<EntityResponse> sortTemplateSectionList(
+      List<SortOrder> sortOrderList) async {
+    Response response =
+        await super.post('$url/section/sort', body: jsonEncode(sortOrderList));
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: '',
+      );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> sortTemplateSectionQuestionList(
+      List<SortOrder> sortOrderList) async {
+    Response response = await super
+        .post('$url/sectionitems/sort', body: jsonEncode(sortOrderList));
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: '',
+      );
+    }
+
+    throw Exception();
+  }
 }
