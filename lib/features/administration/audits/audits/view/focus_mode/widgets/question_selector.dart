@@ -50,18 +50,20 @@ class QuestionSelectorForFocusMode extends StatelessWidget {
                           : state.selectedQuestionViewOption!.name!
                                   .contains('----')
                               ? null
-                              : () {
-                                  if (state.auditQuestionList.isEmpty) {
-                                    CustomNotification(
-                                      context: context,
-                                      notifyType: NotifyType.info,
-                                      content: 'There is no question.',
-                                    ).showNotification();
-                                    return;
-                                  }
+                              : !state.auditQuestionListStatus.isSuccess
+                                  ? null
+                                  : () {
+                                      if (state.auditQuestionList.isEmpty) {
+                                        CustomNotification(
+                                          context: context,
+                                          notifyType: NotifyType.info,
+                                          content: 'There is no question.',
+                                        ).showNotification();
+                                        return;
+                                      }
 
-                                  onStart();
-                                },
+                                      onStart();
+                                    },
                       style: ElevatedButton.styleFrom(
                         padding: insetx24y12,
                         backgroundColor: primaryColor,

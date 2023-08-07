@@ -20,9 +20,9 @@ class _CustomMultiImagePickerState extends State<CustomMultiFilePicker> {
     if (selectedImageCount == 0) {
       return 'No file choosen';
     } else if (selectedImageCount == 1) {
-      return '1 image selected';
+      return '1 file selected';
     } else {
-      return '$selectedImageCount images selected';
+      return '$selectedImageCount files selected';
     }
   }
 

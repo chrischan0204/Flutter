@@ -1,18 +1,16 @@
-# Introduction 
-Safety ETA Web Application
+# safety_eta
 
-# Getting Started
-1. Install Flutter. You can refer this url. https://docs.flutter.dev/get-started/install
-2. Run the app by running the **commands/run-*.cmd** file.
-- If you run **commands/run-production.cmd** file on **main** branch, it will run as **production** mode.
-- If you run **commands/run-uat.cmd** file on **uat** branch, it will run as **UAT** mode.
-- If you run **commands/run-dev.cmd** file on **dev** branch, it will run as **development** mode.
+A new Flutter project.
 
-# Build
-Build the app by running the **commands/build-*.cmd** file.
-- If you run **commands/build-production.cmd** file on **main** branch, you will get the build for **production**.
-- If you run **commands/build-uat.cmd** file on **uat** branch, you will get the build for **UAT**.
-- If you run **commands/build-dev.cmd** file on **dev** branch, you will get the build for **development**.
+## Getting Started
 
-- [Flutter](https://flutter.dev)
-- [Pub Packages](https://pub.dev)
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

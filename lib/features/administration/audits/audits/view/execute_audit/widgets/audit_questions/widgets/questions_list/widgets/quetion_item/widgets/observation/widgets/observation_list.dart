@@ -80,8 +80,8 @@ class AuditObservationListItemView extends StatelessWidget {
                     : null,
                 child: Text(
                   observation.imageCount < 2
-                      ? '${observation.imageCount} Image'
-                      : '${observation.imageCount} Images',
+                      ? '${observation.imageCount} Image/Document'
+                      : '${observation.imageCount} Images/Documents',
                   style: textNormal12.copyWith(color: primaryColor),
                 ),
               )),
@@ -127,7 +127,8 @@ class AuditObservationListItemView extends StatelessWidget {
                       context: context,
                       width: MediaQuery.of(context).size.width / 4,
                       title: 'Confirm',
-                      description: 'Do you really want to delete this observation?',
+                      description:
+                          'Do you really want to delete this observation?',
                       btnOkText: 'OK',
                       btnOkOnPress: () => context
                           .read<ExecuteAuditObservationBloc>()
@@ -171,8 +172,11 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = widget.imageList
+    final imageList = widget.imageList
         .where((element) => element.documentType!.isImage)
+        .toList();
+
+    final List<Widget> imageSliders = imageList
         .map((item) => Container(
               margin: inset4,
               child: ClipRRect(
@@ -192,6 +196,10 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
             ))
         .toList();
 
+    final documentList = widget.imageList
+        .where((element) => !element.documentType!.isImage)
+        .toList();
+
     return AlertDialog(
       content: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
@@ -206,7 +214,7 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Images',
+                      'Images/Documents',
                       style: textSemiBold18,
                     ),
                     IconButton(
@@ -221,125 +229,174 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
               ),
               Padding(
                 padding: insety20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: inset10,
-                      child: Text(
-                        'These images were uploaded in this observation...',
-                        style: textSemiBold18,
-                      ),
-                    ),
-                    Padding(
-                      padding: inset10,
-                      child: Column(
-                        children: <Widget>[
-                          CustomBottomBorderContainer(
-                            padding: inset10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Flexible(
-                                  child: IconButton(
-                                    onPressed: index >= 0
-                                        ? () {
-                                            _controller.previousPage();
-                                            setState(() {
-                                              index--;
-                                              index %= widget.imageList.length;
-                                            });
-                                          }
-                                        : null,
-                                    icon: Icon(
-                                      PhosphorIcons.regular.arrowArcLeft,
-                                      color: primaryColor,
-                                    ),
-                                  ),
-                                ),
-                                ...Iterable<int>.generate(
-                                        widget.imageList.length)
-                                    .map(
-                                  (int pageIndex) => Flexible(
-                                    child: InkWell(
-                                      onTap: () {
-                                        _controller.animateToPage(pageIndex);
-                                        setState(() {
-                                          index = pageIndex;
-                                        });
-                                      },
-                                      child: Container(
-                                        decoration: pageIndex == index
-                                            ? BoxDecoration(
-                                                border: Border.all(
-                                                  color: primaryColor,
-                                                  width: 3,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              )
-                                            : null,
-                                        child: CachedNetworkImage(
-                                          imageUrl: widget.imageList
-                                              .where((element) =>
-                                                  element.documentType!.isImage)
-                                              .map((e) => e.uri ?? '')
-                                              .toList()[pageIndex],
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                                  child: Loader(size: 30)),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(
-                                            Icons.error,
-                                            size: 30,
-                                          ),
-                                          fit: BoxFit.fitHeight,
-                                          height: 50.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: IconButton(
-                                    onPressed: index < widget.imageList.length
-                                        ? () {
-                                            _controller.nextPage();
-                                            setState(() {
-                                              index++;
-                                              index %= widget.imageList.length;
-                                            });
-                                          }
-                                        : null,
-                                    icon: Icon(
-                                      PhosphorIcons.regular.arrowArcRight,
-                                      color: primaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          CarouselSlider(
-                            items: imageSliders,
-                            options: CarouselOptions(enlargeCenterPage: true),
-                            carouselController: _controller,
-                          ),
-                          if (widget.imageList.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Text(
-                                  widget.imageList[index].originalFileName ??
-                                      '',
-                                  style: textNormal14,
-                                ),
+                child: CustomTabBar(
+                  activeIndex: 0,
+                  tabs: {
+                    'Images': imageList.isEmpty
+                        ? Padding(
+                            padding: insetx10y20,
+                            child: Center(
+                              child: Text(
+                                'There is no image in this observation.',
+                                style: textNormal14,
                               ),
                             ),
-                        ],
-                      ),
-                    )
-                  ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: inset10,
+                                child: Text(
+                                  'These images were uploaded in this observation...',
+                                  style: textSemiBold18,
+                                ),
+                              ),
+                              Padding(
+                                padding: inset10,
+                                child: Column(
+                                  children: <Widget>[
+                                    CustomBottomBorderContainer(
+                                      padding: inset10,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: IconButton(
+                                              onPressed: index >= 0
+                                                  ? () {
+                                                      _controller
+                                                          .previousPage();
+                                                      setState(() {
+                                                        index--;
+                                                        index %=
+                                                            imageList.length;
+                                                      });
+                                                    }
+                                                  : null,
+                                              icon: Icon(
+                                                PhosphorIcons
+                                                    .regular.arrowArcLeft,
+                                                color: primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          ...Iterable<int>.generate(
+                                                  imageList.length)
+                                              .map(
+                                            (int pageIndex) => Flexible(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  _controller
+                                                      .animateToPage(pageIndex);
+                                                  setState(() {
+                                                    index = pageIndex;
+                                                  });
+                                                },
+                                                child: Container(
+                                                  decoration: pageIndex == index
+                                                      ? BoxDecoration(
+                                                          border: Border.all(
+                                                            color: primaryColor,
+                                                            width: 3,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        )
+                                                      : null,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageList
+                                                        .where((element) =>
+                                                            element
+                                                                .documentType!
+                                                                .isImage)
+                                                        .map((e) => e.uri ?? '')
+                                                        .toList()[pageIndex],
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            const Center(
+                                                                child: Loader(
+                                                                    size: 30)),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            const Icon(
+                                                      Icons.error,
+                                                      size: 30,
+                                                    ),
+                                                    fit: BoxFit.fitHeight,
+                                                    height: 50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: IconButton(
+                                              onPressed: index <
+                                                      imageList.length
+                                                  ? () {
+                                                      _controller.nextPage();
+                                                      setState(() {
+                                                        index++;
+                                                        index %=
+                                                            imageList.length;
+                                                      });
+                                                    }
+                                                  : null,
+                                              icon: Icon(
+                                                PhosphorIcons
+                                                    .regular.arrowArcRight,
+                                                color: primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    CarouselSlider(
+                                      items: imageSliders,
+                                      options: CarouselOptions(
+                                          enlargeCenterPage: true),
+                                      carouselController: _controller,
+                                    ),
+                                    if (imageList.isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
+                                          child: Text(
+                                            imageList[index].originalFileName ??
+                                                '',
+                                            style: textNormal14,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                    'Documents': Column(
+                      children: [
+                        for (final document in documentList)
+                          DocumentListItemView(document: document),
+                        if (documentList.isEmpty)
+                          Padding(
+                            padding: insetx10y20,
+                            child: Center(
+                              child: Text(
+                                'There is no document in this observation.',
+                                style: textNormal14,
+                              ),
+                            ),
+                          )
+                      ],
+                    ),
+                  },
+                  onTabClick: (_, __) async {
+                    return true;
+                  },
                 ),
               ),
             ],

@@ -61,7 +61,7 @@ class _ExecuteFocusModeViewState extends State<ExecuteFocusModeView> {
                   children: [
                     if (currentIndex > 0)
                       ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () => CustomAlert.checkFormDirty(() async {
                           setState(() {
                             status = EntityStatus.loading;
                             currentIndex--;
@@ -73,7 +73,7 @@ class _ExecuteFocusModeViewState extends State<ExecuteFocusModeView> {
                           setState(() {
                             status = EntityStatus.success;
                           });
-                        },
+                        }, context),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: purpleColor),
                         child: Text(
@@ -86,7 +86,7 @@ class _ExecuteFocusModeViewState extends State<ExecuteFocusModeView> {
                       spacerx10,
                     if (currentIndex < state.auditQuestionList.length - 1)
                       ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () => CustomAlert.checkFormDirty(() async {
                           setState(() {
                             status = EntityStatus.loading;
                             currentIndex++;
@@ -98,7 +98,7 @@ class _ExecuteFocusModeViewState extends State<ExecuteFocusModeView> {
                           setState(() {
                             status = EntityStatus.success;
                           });
-                        },
+                        }, context),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor),
                         child: Text(
