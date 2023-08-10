@@ -4,7 +4,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../model/sidebar_item.dart';
 
 class SidebarRepsitory {
-  
   static List<SidebarItemModel> mainItems = <SidebarItemModel>[
     SidebarItemModel(
       iconData: PhosphorIcons.regular.command,
@@ -18,12 +17,12 @@ class SidebarRepsitory {
       label: 'Observations',
       path: 'observations',
     ),
-    SidebarItemModel(
-      iconData: PhosphorIcons.regular.scan,
-      color: const Color(0xffe34343),
-      label: 'Audits  ',
-      path: 'audits1',
-    ),
+    // SidebarItemModel(
+    //   iconData: PhosphorIcons.regular.plusMinus,
+    //   color: Colors.teal,
+    //   label: 'Audits ',
+    //   path: 'audits',
+    // ),
     SidebarItemModel(
       iconData: PhosphorIcons.regular.barcode,
       color: const Color(0xff26a196),
@@ -70,6 +69,12 @@ class SidebarRepsitory {
         ),
       ],
     ),
+    // SidebarItemModel(
+    //   iconData: PhosphorIcons.regular.clipboardText,
+    //   color: Colors.teal,
+    //   label: 'Templates',
+    //   path: 'templates',
+    // ),
     SidebarItemModel(
         iconData: PhosphorIcons.regular.aperture,
         color: Colors.teal,

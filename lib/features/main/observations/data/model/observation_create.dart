@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 
 import '/common_libraries.dart';
@@ -14,6 +13,8 @@ class ObservationCreate extends Equatable {
   final String? auditId;
   final String? auditSectionItemId;
   final String? reportedBy;
+  final String projectId;
+  final String companyId;
 
   const ObservationCreate({
     this.id,
@@ -26,6 +27,8 @@ class ObservationCreate extends Equatable {
     this.auditId,
     this.auditSectionItemId,
     this.reportedBy,
+    required this.projectId,
+    required this.companyId,
   });
 
   @override
@@ -39,6 +42,8 @@ class ObservationCreate extends Equatable {
         auditId,
         auditSectionItemId,
         reportedBy,
+        projectId,
+        companyId,
       ];
 
   Map<String, dynamic> toMap() {
@@ -46,6 +51,8 @@ class ObservationCreate extends Equatable {
       'siteId': siteId,
       'userReportedPriorityLevelId': priorityLevelId,
       'userReportedObservationTypeId': observationTypeId,
+      'userReportedProjectId': projectId,
+      'userReportedCompanyId': companyId,
       'response': response,
       'base64Image': '',
       'description': name,
@@ -89,6 +96,10 @@ class ObservationCreate extends Equatable {
     String? observationTypeId,
     String? auditId,
     String? auditSectionItemId,
+    String? reportedBy,
+    String? projectId,
+    String? company,
+    String? companyId,
   }) {
     return ObservationCreate(
       id: id ?? this.id,
@@ -100,6 +111,9 @@ class ObservationCreate extends Equatable {
       observationTypeId: observationTypeId ?? this.observationTypeId,
       auditId: auditId ?? this.auditId,
       auditSectionItemId: auditSectionItemId ?? this.auditSectionItemId,
+      reportedBy: reportedBy ?? this.reportedBy,
+      projectId: projectId ?? this.projectId,
+      companyId: companyId ?? this.companyId,
     );
   }
 }

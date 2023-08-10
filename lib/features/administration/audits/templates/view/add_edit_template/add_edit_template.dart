@@ -71,21 +71,17 @@ class _AddEditTemplateWidgetState extends State<AddEditTemplateWidget> {
     if (widget.templateId != null) {
       addEditTemplateBloc
           .add(AddEditTemplateLoaded(templateId: widget.templateId!));
-    }
 
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (widget.templateId != null) {
       context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
             collapsedItem: 'templates/edit',
             force: true,
           ));
     }
-    super.didChangeDependencies();
+
+    super.initState();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

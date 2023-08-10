@@ -2,31 +2,36 @@ part of 'theme_bloc.dart';
 
 class ThemeState extends Equatable {
   const ThemeState({
-    this.collapsedItems = const [
-      'templates/show',
-      'templates/edit',
-      'audits/show',
-      'audits/edit',
-    ],
+    this.collapsedItems = const [],
     this.hoveredItemName = '',
+    this.isCollapsed = true,
+    this.isSpecialPage = false,
   });
   final String hoveredItemName;
   final List<String> collapsedItems;
+  final bool isCollapsed;
+  final bool isSpecialPage;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         collapsedItems,
         hoveredItemName,
+        isCollapsed,
+        isSpecialPage,
       ];
 
   ThemeState copyWith({
     String? selectedItemName,
     String? hoveredItemName,
     List<String>? collapsedItems,
+    Nullable<bool>? isCollapsed,
+    bool? isSpecialPage,
   }) {
     return ThemeState(
       collapsedItems: collapsedItems ?? this.collapsedItems,
       hoveredItemName: hoveredItemName ?? this.hoveredItemName,
+      isCollapsed: isCollapsed != null ? isCollapsed.value : this.isCollapsed,
+      isSpecialPage: isSpecialPage ?? this.isSpecialPage,
     );
   }
 
@@ -46,6 +51,8 @@ class ThemeState extends Equatable {
     return <String, dynamic>{
       'collapsedItems': collapsedItems,
       'hoveredItemName': '',
+      'isCollapsed': isCollapsed,
+      'isSpecialPage': isSpecialPage,
     };
   }
 
@@ -54,6 +61,8 @@ class ThemeState extends Equatable {
       collapsedItems:
           List.from(map['collapsedItems']).map((e) => e as String).toList(),
       hoveredItemName: map['hoveredItemName'] as String,
+      isCollapsed: map['isCollapsed'],
+      isSpecialPage: map['isSpecialPage'],
     );
   }
 }

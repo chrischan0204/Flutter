@@ -160,6 +160,7 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
             Nullable.value(actionItem.copyWith(id: event.actionItem.id)),
         task: actionItem.name,
         dueBy: Nullable.value(actionItem.dueBy),
+        initialDueBy: Nullable.value(actionItem.dueBy),
         assignee: Nullable.value(User(
           id: actionItem.assigneeId,
           firstName: actionItem.assigneeName.split(' ')[0],

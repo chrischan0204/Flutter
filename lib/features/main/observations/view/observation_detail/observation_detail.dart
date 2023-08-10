@@ -44,17 +44,14 @@ class _ObservationDetailViewState extends State<ObservationDetailWidget> {
       ..add(ObservationDetailPriorityLevelListLoaded())
       ..add(ObservationDetailSiteListLoaded())
       ..add(ObservationDetailUserListLoaded());
-    super.initState();
-  }
 
-  @override
-  void didChangeDependencies() {
     context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
           collapsedItem: 'observations/show',
           force: true,
         ));
-    super.didChangeDependencies();
+    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

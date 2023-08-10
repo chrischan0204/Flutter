@@ -14,6 +14,7 @@ class AddActionItemState extends Equatable {
 
   /// dueBy to create action item
   DateTime? dueBy;
+  DateTime? initialDueBy;
   final String dueByValidationMessage;
 
   /// assignee to create action item
@@ -65,6 +66,7 @@ class AddActionItemState extends Equatable {
     this.site,
     this.siteValidationMessage = '',
     this.dueBy,
+    this.initialDueBy,
     this.dueByValidationMessage = '',
     this.assignee,
     this.assigneeValidationMessage = '',
@@ -91,6 +93,7 @@ class AddActionItemState extends Equatable {
         actionItemList,
         task,
         actionItemValidationMessage,
+        initialDueBy,
         dueBy,
         dueByValidationMessage,
         assignee,
@@ -132,6 +135,7 @@ class AddActionItemState extends Equatable {
     String? task,
     String? actionItemValidationMessage,
     Nullable<DateTime?>? dueBy,
+    Nullable<DateTime?>? initialDueBy,
     String? dueByValidationMessage,
     Nullable<User?>? assignee,
     String? assigneeValidationMessage,
@@ -158,6 +162,8 @@ class AddActionItemState extends Equatable {
       actionItemValidationMessage:
           actionItemValidationMessage ?? this.actionItemValidationMessage,
       dueBy: dueBy != null ? dueBy.value : this.dueBy,
+      initialDueBy:
+          initialDueBy != null ? initialDueBy.value : this.initialDueBy,
       dueByValidationMessage:
           dueByValidationMessage ?? this.dueByValidationMessage,
       assignee: assignee != null ? assignee.value : this.assignee,

@@ -32,6 +32,30 @@ class ObservationTypeSelectField extends StatelessWidget {
   }
 }
 
+class ProjectSelectField extends StatelessWidget {
+  const ProjectSelectField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ExecuteAuditObservationBloc,
+        ExecuteAuditObservationState>(
+      builder: (context, state) {
+        Map<String, Project> items = {}..addEntries(state.projectList
+            .map((project) => MapEntry(project.name ?? '', project)));
+        return CustomSingleSelect(
+          items: items,
+          hint: 'Select Project',
+          selectedValue: state.projectList.isEmpty ? null : state.project?.name,
+          onChanged: (project) {
+            context.read<ExecuteAuditObservationBloc>().add(
+                ExecuteAuditObservationProjectChanged(project: project.value));
+          },
+        );
+      },
+    );
+  }
+}
+
 class PriorityLevelSelectField extends StatelessWidget {
   const PriorityLevelSelectField({super.key});
 
@@ -164,6 +188,30 @@ class ResponseTextField extends StatelessWidget {
   }
 }
 
+class CompanySelectField extends StatelessWidget {
+  const CompanySelectField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ExecuteAuditObservationBloc,
+        ExecuteAuditObservationState>(
+      builder: (context, state) {
+        Map<String, Company> items = {}..addEntries(state.companyList
+            .map((company) => MapEntry(company.name ?? '', company)));
+        return CustomSingleSelect(
+          items: items,
+          hint: 'Select Company',
+          selectedValue: state.companyList.isEmpty ? null : state.company?.name,
+          onChanged: (company) {
+            context.read<ExecuteAuditObservationBloc>().add(
+                ExecuteAuditObservationCompanyChanged(company: company.value));
+          },
+        );
+      },
+    );
+  }
+}
+
 class ObservationFilePicker extends StatelessWidget {
   const ObservationFilePicker({super.key});
 
@@ -214,6 +262,16 @@ class ObservationCreateUpdateView extends StatelessWidget {
               label: 'Observation Type (*)',
               content: const ObservationTypeSelectField(),
               validationMessage: state.observationTypeValidationMessage,
+            ),
+            ObservationCreateUpdateFormItemView(
+              label: 'Company (*)',
+              content: const CompanySelectField(),
+              validationMessage: state.companyValidationMessage,
+            ),
+            ObservationCreateUpdateFormItemView(
+              label: 'Project (*)',
+              content: const ProjectSelectField(),
+              validationMessage: state.projectValidationMessage,
             ),
             const ObservationCreateUpdateFormItemView(
               label: 'Upload Images or documents',

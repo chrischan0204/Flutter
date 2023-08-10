@@ -35,10 +35,12 @@ class AddEditObservationLoaded extends AddEditObservationEvent {
 class AddEditObservationSiteListLoaded extends AddEditObservationEvent {}
 
 /// even to load priority level list
-class AddEditObservationPriorityLevelListLoaded extends AddEditObservationEvent {}
+class AddEditObservationPriorityLevelListLoaded
+    extends AddEditObservationEvent {}
 
 /// even to load observation type list
-class AddEditObservationObservationTypeListLoaded extends AddEditObservationEvent {}
+class AddEditObservationObservationTypeListLoaded
+    extends AddEditObservationEvent {}
 
 /// event to change the observation name
 class AddEditObservationNameChanged extends AddEditObservationEvent {
@@ -99,6 +101,26 @@ class AddEditObservationSiteChanged extends AddEditObservationEvent {
 
   @override
   List<Object> get props => [site];
+}
+
+/// event to change the project
+class AddEditObservationProjectChanged extends AddEditObservationEvent {
+  /// project to change
+  final Project project;
+  const AddEditObservationProjectChanged({required this.project});
+
+  @override
+  List<Object> get props => [project];
+}
+
+/// event to change the project
+class AddEditObservationCompanyChanged extends AddEditObservationEvent {
+  /// company to change
+  final Company company;
+  const AddEditObservationCompanyChanged({required this.company});
+
+  @override
+  List<Object> get props => [company];
 }
 
 /// event to change the image list

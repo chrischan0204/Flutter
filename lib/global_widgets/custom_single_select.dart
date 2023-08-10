@@ -4,6 +4,7 @@ import '/constants/color.dart';
 
 class CustomSingleSelect extends StatefulWidget {
   final Map<String, dynamic> items;
+  final Map<String, bool> disabledItems;
   final String? selectedValue;
   final String? hint;
   final ValueChanged<MapEntry<String, dynamic>> onChanged;
@@ -14,6 +15,7 @@ class CustomSingleSelect extends StatefulWidget {
   const CustomSingleSelect({
     super.key,
     required this.items,
+    this.disabledItems = const {},
     this.selectedValue,
     this.hint,
     required this.onChanged,
@@ -99,6 +101,7 @@ class _CustomSingleSelectState<T> extends State<CustomSingleSelect> {
               .map(
                 (item) => DropdownMenuItem<String>(
                   value: item,
+                  enabled: widget.disabledItems[item] ?? true,
                   child: Text(
                     item,
                     style: const TextStyle(

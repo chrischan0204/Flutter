@@ -11,6 +11,7 @@ class DueByDatePicker extends StatelessWidget {
           key: ValueKey(state.actionItem?.id),
           initialValue: state.dueBy?.toString(),
           dateTimePickerType: DateTimePickerType.date,
+          firstDate:state.initialDueBy ?? DateTime.now(),
           onChange: (dueBy) {
             context
                 .read<AddEditActionItemBloc>()

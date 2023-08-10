@@ -27,6 +27,10 @@ class _QuestionViewOptionSelectBoxState
         return CustomSingleSelect(
           hint: 'Select Questions View',
           items: items,
+          disabledItems: const {
+            '----- By Section -----': false,
+            '----- By Question Status -----': false,
+          },
           selectedValue: state.selectedQuestionViewOption?.name,
           onChanged: (value) => context.read<ExecuteAuditBloc>().add(
               ExecuteAuditQuestionViewOptionSelected(

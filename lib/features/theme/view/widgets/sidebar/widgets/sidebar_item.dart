@@ -131,7 +131,7 @@ class _SidebarItemState extends State<SidebarItem>
                     isHover = false;
                   });
                 },
-                child: _buildItemBody(state),
+                child: _buildItemBody(state, widget.subItems.isNotEmpty),
               ),
             ),
             ...(widget.isSidebarExtended && isSidebarItemExtended
@@ -230,8 +230,9 @@ class _SidebarItemState extends State<SidebarItem>
         : Container();
   }
 
-  void _onClick() {
-    if (context.read<FormDirtyBloc>().state.isDirty &&
+  void _onClick(bool hasChildren) {
+    if (widget.path.isNotEmpty &&
+        context.read<FormDirtyBloc>().state.isDirty &&
         !widget.path.contains('logout')) {
       CustomAlert(
         context: context,
@@ -241,7 +242,7 @@ class _SidebarItemState extends State<SidebarItem>
         btnOkText: 'Proceed',
         btnOkOnPress: () => _navigate(),
         btnCancelOnPress: () {},
-        dialogType: DialogType.info,
+        dialogType: DialogType.question,
       ).show();
     } else {
       _navigate();
@@ -268,18 +269,21 @@ class _SidebarItemState extends State<SidebarItem>
         } else {
           GoRouter.of(context).go('/${widget.path}');
         }
+
+        context
+            .read<FormDirtyBloc>()
+            .add(const FormDirtyChanged(isDirty: false));
       }
 
       setState(() {
         isSidebarItemExtended = !isSidebarItemExtended;
       });
     }
-    context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
   }
 
-  Widget _buildItemBody(ThemeState state) {
+  Widget _buildItemBody(ThemeState state, bool hasChildren) {
     return GestureDetector(
-      onTap: _onClick,
+      onTap: () => _onClick(widget.subItems.isNotEmpty),
       child: MouseRegion(
         onEnter: (event) {
           if (!widget.isSubItem) {

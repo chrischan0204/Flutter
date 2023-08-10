@@ -39,6 +39,17 @@ class ExecuteAuditHeaderView extends StatelessWidget {
                 ),
                 spacerx20,
                 CustomButton(
+                  backgroundColor: const Color(0xff049aad),
+                  hoverBackgroundColor: const Color(0xff048b9c),
+                  iconData: PhosphorIcons.regular.aperture,
+                  text: 'Mark As Completed',
+                  onClick: () => CustomAlert.checkFormDirty(
+                      () => GoRouter.of(context)
+                          .go('/audits/mark_as_completed/$auditId'),
+                      context),
+                ),
+                spacerx20,
+                CustomButton(
                   backgroundColor: successColor,
                   hoverBackgroundColor: successHoverColor,
                   iconData: PhosphorIcons.regular.caretCircleDoubleRight,

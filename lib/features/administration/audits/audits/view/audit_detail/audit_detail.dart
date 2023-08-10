@@ -43,18 +43,13 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
       ..add(AuditDetailDocumentListLoaded())
       ..add(AuditDetailActionItemListLoaded())
       ..add(AuditDetailObservationListLoaded());
-    ;
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
     context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
           collapsedItem: 'audits/show',
           force: true,
         ));
-    super.didChangeDependencies();
+    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -107,6 +107,30 @@ class ExecuteAuditObservationResponseChanged
   List<Object> get props => [response];
 }
 
+class ExecuteAuditObservationCompanyChanged
+    extends ExecuteAuditObservationEvent {
+  final Company company;
+
+  const ExecuteAuditObservationCompanyChanged({
+    required this.company,
+  });
+
+  @override
+  List<Object> get props => [company];
+}
+
+class ExecuteAuditObservationProjectChanged
+    extends ExecuteAuditObservationEvent {
+  final Project project;
+
+  const ExecuteAuditObservationProjectChanged({
+    required this.project,
+  });
+
+  @override
+  List<Object> get props => [project];
+}
+
 class ExecuteAuditObservationAreaChanged extends ExecuteAuditObservationEvent {
   final String area;
 

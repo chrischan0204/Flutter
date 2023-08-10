@@ -28,7 +28,6 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return BlocBuilder<LoginBloc, LoginState>(
         builder: (contex, state) => Column(
               mainAxisSize: MainAxisSize.min,

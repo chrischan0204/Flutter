@@ -57,19 +57,18 @@ class _TemplateDetailWidgetState extends State<TemplateDetailWidget> {
         id: widget.templateId,
         itemType: 1,
         level: 0,
-      ))..add(TemplateDetailUsageSummaryLoaded());
+      ))
+      ..add(TemplateDetailUsageSummaryLoaded());
 
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
     context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
           collapsedItem: 'templates/show',
           force: true,
         ));
-    super.didChangeDependencies();
+
+    super.initState();
   }
+
+
 
   void _deleteTemplate(TemplateDetailState state) {
     templatesBloc

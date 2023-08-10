@@ -50,8 +50,10 @@ class _SidebarState extends State<Sidebar> {
       builder: (context, authState) {
         return BlocBuilder<ThemeBloc, ThemeState>(
           builder: (ctx, state) {
-            final isSidebarExtended =
-                context.read<ThemeBloc>().state.isExtended(context);
+            final isSidebarExtended = state.isSpecialPage
+                ? context.read<ThemeBloc>().state.isExtended(context)
+                : state.isCollapsed;
+            // context.read<ThemeBloc>().state.isExtended(context);
             return Stack(
               children: [
                 Container(

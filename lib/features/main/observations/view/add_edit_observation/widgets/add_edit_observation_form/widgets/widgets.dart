@@ -5,3 +5,5 @@ export 'site_select_field.dart';
 export 'image_picker.dart';
 export 'observation_type_select_field.dart';
 export 'priority_level_select_field.dart';
+export 'project_select_field.dart';
+export 'company_select_field.dart';

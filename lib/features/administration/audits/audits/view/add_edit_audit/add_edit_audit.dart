@@ -58,18 +58,14 @@ class _AddEditAuditWidgetState extends State<AddEditAuditWidget> {
       addEditAuditBloc.add(AddEditAuditSiteListLoaded());
     }
 
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
     if (widget.auditId != null) {
       context.read<ThemeBloc>().add(const ThemeSidebarItemExtended(
             collapsedItem: 'audits/edit',
             force: true,
           ));
     }
-    super.didChangeDependencies();
+
+    super.initState();
   }
 
   @override

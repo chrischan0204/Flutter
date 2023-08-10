@@ -35,9 +35,21 @@ class ExecuteAuditObservationState extends Equatable {
   final String initialResponse;
   final String response;
 
+  final Company? company;
+  final Company? initialCompany;
+  final String companyValidationMessage;
+
+  final Project? project;
+  final Project? initialProject;
+  final String projectValidationMessage;
+
   final List<PlatformFile> fileList;
 
   final List<Document> imageList;
+
+  final List<Project> projectList;
+
+  final List<Company> companyList;
 
   final EntityStatus imageListLoadStatus;
 
@@ -68,8 +80,16 @@ class ExecuteAuditObservationState extends Equatable {
     this.areaValidationMessage = '',
     this.initialResponse = '',
     this.response = '',
+    this.project,
+    this.initialProject,
+    this.projectValidationMessage = '',
+    this.company,
+    this.initialCompany,
+    this.companyValidationMessage = '',
     this.fileList = const [],
     this.imageList = const [],
+    this.projectList = const [],
+    this.companyList = const [],
     this.imageListLoadStatus = EntityStatus.initial,
     this.crudStatus = EntityStatus.initial,
     this.message = '',
@@ -100,10 +120,18 @@ class ExecuteAuditObservationState extends Equatable {
         areaValidationMessage,
         initialResponse,
         response,
+        project,
+        projectValidationMessage,
+        initialProject,
+        company,
+        initialCompany,
+        companyValidationMessage,
         fileList,
         imageList,
         imageListLoadStatus,
         crudStatus,
+        projectList,
+        companyList,
         message,
       ];
 
@@ -113,6 +141,8 @@ class ExecuteAuditObservationState extends Equatable {
           observationType?.id != initialObservationType?.id) ||
       (priorityLevel != null &&
           priorityLevel?.id != initialPriorityLevel?.id) ||
+      (project != null && project?.id != initialProject?.id) ||
+      (company != null && company?.id != initialCompany?.id) ||
       (Validation.isNotEmpty(observation) &&
           observation != initialObservation) ||
       (Validation.isNotEmpty(response) && response != initialResponse) ||
@@ -134,6 +164,12 @@ class ExecuteAuditObservationState extends Equatable {
     Nullable<PriorityLevel?>? initialPriorityLevel,
     Nullable<PriorityLevel?>? priorityLevel,
     String? priorityLevelValidationMessage,
+    Nullable<Project?>? initialProject,
+    Nullable<Project?>? project,
+    String? projectValidationMessage,
+    Nullable<Company?>? initialCompany,
+    Nullable<Company?>? company,
+    String? companyValidationMessage,
     String? initialObservation,
     String? observation,
     String? observationValidationMessage,
@@ -144,6 +180,8 @@ class ExecuteAuditObservationState extends Equatable {
     String? response,
     List<PlatformFile>? fileList,
     List<Document>? imageList,
+    List<Project>? projectList,
+    List<Company>? companyList,
     EntityStatus? imageListLoadStatus,
     EntityStatus? crudStatus,
     String? message,
@@ -182,6 +220,16 @@ class ExecuteAuditObservationState extends Equatable {
       initialObservation: initialObservation ?? this.initialObservation,
       observationValidationMessage:
           observationValidationMessage ?? this.observationValidationMessage,
+      company: company != null ? company.value : this.company,
+      initialCompany:
+          initialCompany != null ? initialCompany.value : this.initialCompany,
+      companyValidationMessage:
+          companyValidationMessage ?? this.companyValidationMessage,
+      project: project != null ? project.value : this.project,
+      initialProject:
+          initialProject != null ? initialProject.value : this.initialProject,
+      projectValidationMessage:
+          projectValidationMessage ?? this.projectValidationMessage,
       initialArea: initialArea ?? this.initialArea,
       area: area ?? this.area,
       areaValidationMessage:
@@ -191,6 +239,8 @@ class ExecuteAuditObservationState extends Equatable {
       fileList: fileList ?? this.fileList,
       imageList: imageList ?? this.imageList,
       imageListLoadStatus: imageListLoadStatus ?? this.imageListLoadStatus,
+      projectList: projectList ?? this.projectList,
+      companyList: companyList ?? this.companyList,
       crudStatus: crudStatus ?? this.crudStatus,
       message: message ?? this.message,
     );

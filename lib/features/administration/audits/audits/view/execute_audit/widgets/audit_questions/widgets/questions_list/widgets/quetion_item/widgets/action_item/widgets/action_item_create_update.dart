@@ -43,6 +43,7 @@ class DueByDatePicker extends StatelessWidget {
         return CustomDateTimePicker(
           key: ValueKey(state.auditActionItem?.id),
           initialValue: state.dueBy?.toString(),
+          firstDate: state.initialDueBy ?? DateTime.now(),
           dateTimePickerType: DateTimePickerType.date,
           onChange: (dueBy) {
             context
@@ -258,7 +259,8 @@ class IsClosedCheckBox extends StatelessWidget {
             value: state.isClosed,
             onChanged: (isClosed) => context
                 .read<ExecuteAuditActionItemBloc>()
-                .add(ExecuteAuditActionItemIsClosedChanged(isClosed: isClosed!)),
+                .add(
+                    ExecuteAuditActionItemIsClosedChanged(isClosed: isClosed!)),
           ),
         );
       },

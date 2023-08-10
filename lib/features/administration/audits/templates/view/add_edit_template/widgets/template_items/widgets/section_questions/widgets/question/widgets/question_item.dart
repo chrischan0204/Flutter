@@ -38,7 +38,7 @@ class QuestionItemView extends StatelessWidget {
     // reordering; For android mode it will be just an empty container
     Widget dragHandle = ReorderableListener(
       child: Icon(
-        PhosphorIcons.regular.dotsThreeVertical,
+        PhosphorIcons.regular.arrowsOutCardinal,
         size: 20,
         color: primaryColor,
       ),

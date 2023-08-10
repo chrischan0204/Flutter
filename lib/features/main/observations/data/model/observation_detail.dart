@@ -17,10 +17,14 @@ class ObservationDetail extends Equatable {
   final DateTime? reportedAt;
   final String? area;
   final String? userReportedCompany;
+  final String? userReportedCompanyId;
+  final String? userReportedCompanyName;
   final String userReportedPriorityLevelId;
   final String? userReportedPriorityLevelName;
   final String userReportedObservationTypeId;
   final String? userReportedObservationTypeName;
+  final String? userReportedProjectId;
+  final String? userReportedProjectName;
   final String? response;
   final String? assessorId;
   final String? assessedByName;
@@ -69,10 +73,14 @@ class ObservationDetail extends Equatable {
     this.reportedAt,
     this.area,
     this.userReportedCompany,
+    this.userReportedCompanyId,
+    this.userReportedCompanyName,
     required this.userReportedPriorityLevelId,
     this.userReportedPriorityLevelName,
     required this.userReportedObservationTypeId,
     this.userReportedObservationTypeName,
+    this.userReportedProjectId,
+    this.userReportedProjectName,
     this.response,
     this.assessorId,
     this.assessedByName,
@@ -127,6 +135,8 @@ class ObservationDetail extends Equatable {
         userReportedPriorityLevelName,
         userReportedObservationTypeId,
         userReportedObservationTypeName,
+        userReportedProjectId,
+        userReportedProjectName,
         response,
         assessorId,
         assessedByName,
@@ -216,8 +226,14 @@ class ObservationDetail extends Equatable {
       reportedAt:
           map['reportedAt'] != null ? DateTime.parse(map['reportedAt']) : null,
       area: map['area'] != null ? map['area'] as String : null,
-      userReportedCompany: map['userReportedCompany'] != null
-          ? map['userReportedCompany'] as String
+      userReportedCompany: map['userReportedCompanyName'] != null
+          ? map['userReportedCompanyName'] as String
+          : null,
+      userReportedCompanyId: map['userReportedCompanyId'] != null
+          ? map['userReportedCompanyId'] as String
+          : null,
+      userReportedCompanyName: map['userReportedCompanyName'] != null
+          ? map['userReportedCompanyName'] as String
           : null,
       userReportedPriorityLevelId: map['userReportedPriorityLevelId'] as String,
       userReportedPriorityLevelName:
@@ -230,6 +246,12 @@ class ObservationDetail extends Equatable {
           map['userReportedObservationTypeName'] != null
               ? map['userReportedObservationTypeName'] as String
               : null,
+      userReportedProjectId: map['userReportedProjectId'] != null
+          ? map['userReportedProjectId'] as String
+          : null,
+      userReportedProjectName: map['userReportedProjectName'] != null
+          ? map['userReportedProjectName'] as String
+          : null,
       response: map['response'] != null ? map['response'] as String : null,
       assessorId:
           map['assessorId'] != null ? map['assessorId'] as String : null,
@@ -334,6 +356,8 @@ class ObservationDetail extends Equatable {
     String? userReportedPriorityLevelName,
     String? userReportedObservationTypeId,
     String? userReportedObservationTypeName,
+    String? userReportedProjectId,
+    String? userReportedProjectName,
     String? response,
     String? assessorId,
     String? assessedByName,
@@ -390,6 +414,10 @@ class ObservationDetail extends Equatable {
           userReportedObservationTypeId ?? this.userReportedObservationTypeId,
       userReportedObservationTypeName: userReportedObservationTypeName ??
           this.userReportedObservationTypeName,
+      userReportedProjectId:
+          userReportedProjectId ?? this.userReportedProjectId,
+      userReportedProjectName:
+          userReportedProjectName ?? this.userReportedProjectName,
       response: response ?? this.response,
       assessorId: assessorId ?? this.assessorId,
       assessedByName: assessedByName ?? this.assessedByName,

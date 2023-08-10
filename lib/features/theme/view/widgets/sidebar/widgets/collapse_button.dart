@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:safety_eta/common_libraries.dart';
-import '/constants/color.dart';
 
-import '../../../../bloc/theme_bloc.dart';
 import '../sidebar_style.dart';
 
 class CollapseButton extends StatefulWidget {
@@ -34,8 +29,9 @@ class _CollapseButtonState extends State<CollapseButton> {
           if (MediaQuery.of(context).size.width < 1000) {
             Navigator.of(context).pop();
           } else {
-            context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
-                collapsedItem: UrlUtil.getPath(context)));
+            context.read<ThemeBloc>().add(const ThemeSidebarItemExtended());
+            // context.read<ThemeBloc>().add(ThemeSidebarItemExtended(
+            //     collapsedItem: UrlUtil.getPath(context)));
           }
         },
         child: Container(

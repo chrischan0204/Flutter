@@ -21,6 +21,7 @@ class DueByDatePicker extends StatelessWidget {
                       .read<AddActionItemBloc>()
                       .add(AddActionItemDueByChanged(dueBy: dueBy));
                 },
+                firstDate: state.initialDueBy ?? DateTime.now(),
               ),
               if (state.dueByValidationMessage.isNotEmpty)
                 Padding(

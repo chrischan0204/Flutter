@@ -414,6 +414,18 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/audits/mark_as_completed/:auditId',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: Layout(
+          body: MarkAsCompletedAuditView(
+            auditId: state.params['auditId']!,
+          ),
+          selectedItemName: 'audits',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/audits/show/:auditId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

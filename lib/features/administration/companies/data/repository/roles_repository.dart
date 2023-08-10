@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-import 'package:safety_eta/constants/uri.dart';
 import 'package:safety_eta/data/repository/repository.dart';
 
 import '/data/model/model.dart';

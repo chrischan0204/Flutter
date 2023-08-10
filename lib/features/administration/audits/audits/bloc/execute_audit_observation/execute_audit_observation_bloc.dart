@@ -15,6 +15,7 @@ class ExecuteAuditObservationBloc
   late AuthBloc _authBloc;
   late AuditsRepository _auditsRepository;
   late DocumentsRepository _documentsRepository;
+  late SitesRepository _sitesRepository;
 
   late String _questionId;
   late String _auditId;
@@ -27,6 +28,7 @@ class ExecuteAuditObservationBloc
     _auditsRepository = context.read();
     _documentsRepository = context.read();
     _formDirtyBloc = context.read();
+    _sitesRepository = context.read();
 
     _questionId = auditQuestion.id;
 
@@ -51,6 +53,10 @@ class ExecuteAuditObservationBloc
         _onExecuteAuditObservationResponseChanged);
     on<ExecuteAuditObservationAreaChanged>(
         _onExecuteAuditObservationAreaChanged);
+    on<ExecuteAuditObservationCompanyChanged>(
+        _onExecuteAuditObservationCompanyChanged);
+    on<ExecuteAuditObservationProjectChanged>(
+        _onExecuteAuditObservationProjectChanged);
     on<ExecuteAuditObservationFileListChanged>(
         _onExecuteAuditObservationFileListChanged);
     on<ExecuteAuditObservationImageListLoaded>(
@@ -109,6 +115,20 @@ class ExecuteAuditObservationBloc
         name: auditObservation.userReportedSiteName,
       ));
 
+      List<CompanySite> companyList = await _sitesRepository
+          .getCompanyListForSite(auditObservation.userReportedSiteId!);
+
+      emit(state.copyWith(
+        companyList: companyList
+            .map((e) => Company(id: e.companyId, name: e.companyName))
+            .toList(),
+      ));
+
+      List<Project> projectList = await _sitesRepository
+          .getProjectListForSite(auditObservation.userReportedSiteId!);
+
+      emit(state.copyWith(projectList: projectList));
+
       final priorityLevel = Nullable.value(PriorityLevel(
         id: auditObservation.userReportedPriorityLevelId,
         name: auditObservation.userReportedPriorityLevelName,
@@ -121,6 +141,22 @@ class ExecuteAuditObservationBloc
         name: auditObservation.userReportedObservationTypeName,
         severity: '',
       ));
+
+      final project = auditObservation.userReportedProjectId == null
+          ? const Nullable.value(null)
+          : Nullable.value(Project(
+              id: auditObservation.userReportedProjectId,
+              name: auditObservation.userReportedProjectName,
+            ));
+
+      late Nullable<Company?> company;
+
+      if (auditObservation.userReportedCompanyId == null) {
+        company = const Nullable.value(null);
+      } else {
+        company = Nullable.value(state.companyList.firstWhere(
+            (element) => element.id == auditObservation.userReportedCompanyId));
+      }
 
       emit(state.copyWith(
         auditObservation: Nullable.value(auditObservation),
@@ -137,6 +173,8 @@ class ExecuteAuditObservationBloc
         priorityLevel: priorityLevel,
         initialObservationType: observationType,
         observationType: observationType,
+        project: project,
+        company: company,
       ));
     } catch (e) {
       emit(state.copyWith(status: EntityStatus.failure));
@@ -149,6 +187,14 @@ class ExecuteAuditObservationBloc
       emit(state.copyWith(
           observationValidationMessage:
               FormValidationMessage(fieldName: 'Observation').requiredMessage));
+
+      valid = false;
+    }
+
+    if (state.company == null) {
+      emit(state.copyWith(
+          companyValidationMessage:
+              FormValidationMessage(fieldName: 'Company').requiredMessage));
 
       valid = false;
     }
@@ -177,6 +223,15 @@ class ExecuteAuditObservationBloc
 
       valid = false;
     }
+
+    if (state.project == null) {
+      emit(state.copyWith(
+          projectValidationMessage:
+              FormValidationMessage(fieldName: 'Project').requiredMessage));
+
+      valid = false;
+    }
+
     if (state.observationType == null) {
       emit(state.copyWith(
           observationTypeValidationMessage:
@@ -197,6 +252,8 @@ class ExecuteAuditObservationBloc
       site: const Nullable.value(null),
       priorityLevel: const Nullable.value(null),
       observationType: const Nullable.value(null),
+      project: const Nullable.value(null),
+      company: const Nullable.value(null),
       fileList: [],
     ));
   }
@@ -224,6 +281,8 @@ class ExecuteAuditObservationBloc
           auditId: _auditId,
           auditSectionItemId: _questionId,
           reportedBy: _authBloc.state.authUser!.name,
+          projectId: state.project!.id!,
+          companyId: state.company!.id!,
         ));
 
         if (state.fileList.isNotEmpty) {
@@ -279,6 +338,8 @@ class ExecuteAuditObservationBloc
             auditId: _auditId,
             auditSectionItemId: _questionId,
             reportedBy: _authBloc.state.authUser!.name,
+            companyId: state.company!.id!,
+            projectId: state.project!.id!,
           ),
           observationId: state.auditObservation!.id,
         );
@@ -300,6 +361,8 @@ class ExecuteAuditObservationBloc
           initialPriorityLevel: const Nullable.value(null),
           initialSite: const Nullable.value(null),
           initialResponse: '',
+          initialCompany: const Nullable.value(null),
+          initialProject: const Nullable.value(null),
         ));
 
         emit(state.copyWith(
@@ -385,10 +448,10 @@ class ExecuteAuditObservationBloc
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
   }
 
-  void _onExecuteAuditObservationSiteChanged(
+  Future<void> _onExecuteAuditObservationSiteChanged(
     ExecuteAuditObservationSiteChanged event,
     Emitter<ExecuteAuditObservationState> emit,
-  ) {
+  ) async {
     if (event.isInit) {
       emit(state.copyWith(initialSite: Nullable.value(event.site)));
     }
@@ -396,6 +459,24 @@ class ExecuteAuditObservationBloc
     emit(state.copyWith(
       site: Nullable.value(event.site),
       siteValidationMessage: '',
+    ));
+
+    List<CompanySite> companyList =
+        await _sitesRepository.getCompanyListForSite(event.site.id!);
+
+    emit(state.copyWith(
+      companyList: companyList
+          .map((e) => Company(id: e.companyId, name: e.companyName))
+          .toList(),
+      company: const Nullable.value(null),
+    ));
+
+    List<Project> projectList =
+        await _sitesRepository.getProjectListForSite(event.site.id!);
+
+    emit(state.copyWith(
+      projectList: projectList,
+      project: const Nullable.value(null),
     ));
 
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
@@ -429,6 +510,30 @@ class ExecuteAuditObservationBloc
     emit(state.copyWith(
       area: event.area,
       areaValidationMessage: '',
+    ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
+  }
+
+  void _onExecuteAuditObservationCompanyChanged(
+    ExecuteAuditObservationCompanyChanged event,
+    Emitter<ExecuteAuditObservationState> emit,
+  ) {
+    emit(state.copyWith(
+      company: Nullable.value(event.company),
+      companyValidationMessage: '',
+    ));
+
+    _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));
+  }
+
+  void _onExecuteAuditObservationProjectChanged(
+    ExecuteAuditObservationProjectChanged event,
+    Emitter<ExecuteAuditObservationState> emit,
+  ) {
+    emit(state.copyWith(
+      project: Nullable.value(event.project),
+      projectValidationMessage: '',
     ));
 
     _formDirtyBloc.add(FormDirtyChanged(isDirty: state.isDirty));

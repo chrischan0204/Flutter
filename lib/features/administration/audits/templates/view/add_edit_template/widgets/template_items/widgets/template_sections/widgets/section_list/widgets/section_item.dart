@@ -30,7 +30,7 @@ class _SectionItemViewState extends State<SectionItemView> {
       color: Colors.white,
       child: Center(
         child: Icon(
-          PhosphorIcons.regular.dotsThreeVertical,
+          PhosphorIcons.regular.arrowsOutCardinal,
           size: 22,
           color: primaryColor,
         ),
@@ -69,102 +69,76 @@ class _SectionItemViewState extends State<SectionItemView> {
 
   Widget _buildEditButtons() {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          child: TextField(
-            controller: _textEditingController,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.zero,
-            ),
+        IconButton(
+          onPressed: () {
+            setState(() {
+              context
+                  .read<TemplateDesignerBloc>()
+                  .add(TemplateDesignerSectionUpdated(
+                    section: _textEditingController.text,
+                    sectionId: widget.section.id,
+                  ));
+              _isEditing = false;
+            });
+          },
+          icon: PhosphorIcon(
+            PhosphorIcons.regular.check,
+            color: successHoverColor,
           ),
         ),
-        Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  context
-                      .read<TemplateDesignerBloc>()
-                      .add(TemplateDesignerSectionUpdated(
-                        section: _textEditingController.text,
-                        sectionId: widget.section.id,
-                      ));
-                  _isEditing = false;
-                });
-              },
-              icon: PhosphorIcon(
-                PhosphorIcons.regular.check,
-                color: successHoverColor,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _isEditing = false;
-                });
-              },
-              icon: PhosphorIcon(
-                PhosphorIcons.regular.x,
-                color: Colors.red,
-              ),
-            ),
-          ],
+        IconButton(
+          onPressed: () {
+            setState(() {
+              _isEditing = false;
+            });
+          },
+          icon: PhosphorIcon(
+            PhosphorIcons.regular.x,
+            color: Colors.red,
+          ),
         ),
       ],
     );
   }
 
   Widget _buildCrudButtons() {
-    return Positioned(
-      right: 0,
-      top: -5,
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          _getColor().withOpacity(0.5),
-          _getColor(),
-        ])),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          onPressed: () {
+            setState(() {
+              _textEditingController.text = widget.section.name;
+              _isEditing = true;
+            });
+          },
+          icon: PhosphorIcon(
+            PhosphorIcons.regular.pencil,
+            color: successHoverColor,
+          ),
         ),
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _textEditingController.text = widget.section.name;
-                  _isEditing = true;
-                });
-              },
-              icon: PhosphorIcon(
-                PhosphorIcons.regular.pencil,
-                color: successHoverColor,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                CustomAlert(
-                  context: context,
-                  width: MediaQuery.of(context).size.width / 4,
-                  title: 'Confirm',
-                  description: 'Do you really want to delete this section?',
-                  btnOkText: 'OK',
-                  btnCancelOnPress: () {},
-                  btnOkOnPress: () => context.read<TemplateDesignerBloc>().add(
-                      TemplateDesignerSectionDeleted(
-                          sectionId: widget.section.id)),
-                  dialogType: DialogType.question,
-                ).show();
-              },
-              icon: PhosphorIcon(
-                PhosphorIcons.regular.trashSimple,
-                color: Colors.red,
-              ),
-            ),
-          ],
+        IconButton(
+          onPressed: () {
+            CustomAlert(
+              context: context,
+              width: MediaQuery.of(context).size.width / 4,
+              title: 'Confirm',
+              description: 'Do you really want to delete this section?',
+              btnOkText: 'OK',
+              btnCancelOnPress: () {},
+              btnOkOnPress: () => context.read<TemplateDesignerBloc>().add(
+                  TemplateDesignerSectionDeleted(sectionId: widget.section.id)),
+              dialogType: DialogType.question,
+            ).show();
+          },
+          icon: PhosphorIcon(
+            PhosphorIcons.regular.trashSimple,
+            color: Colors.red,
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -227,34 +201,30 @@ class _SectionItemViewState extends State<SectionItemView> {
                       color: _getColor(),
                     )
                   : BoxDecoration(color: _getColor()),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        dragHandle,
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: _isEditing
-                              ? _buildEditButtons()
-                              : Text(
-                                  widget.section.name,
-                                  style: TextStyle(
-                                    color: primaryColor,
-                                    fontSize: 14,
-                                  ),
-                                ),
+              child: ListTile(
+                leading: dragHandle,
+                title: _isEditing
+                    ? SizedBox(
+                        height: 40,
+                        child: CustomTextField(
+                          controller: _textEditingController,
                         ),
-                      ],
-                    ),
-                  ),
-                  if (widget.active)
-                    if (!_isEditing) _buildCrudButtons(),
-                ],
+                      )
+                    : Tooltip(
+                        message: widget.section.name,
+                        child: Text(
+                          widget.section.name,
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 14,
+                          ),
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                trailing:
+                    _isEditing ? _buildEditButtons() : _buildCrudButtons(),
               ),
             ),
           ),

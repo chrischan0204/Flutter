@@ -41,6 +41,8 @@ class AddEditObservationBloc
     on<AddEditObservationResponseChanged>(_onAddEditObservationResponseChanged);
     on<AddEditObservationPriorityLevelChanged>(
         _onAddEditObservationPriorityLevelChanged);
+    on<AddEditObservationProjectChanged>(_onAddEditObservationProjectChanged);
+    on<AddEditObservationCompanyChanged>(_onAddEditObservationCompanyChanged);
 
     on<AddEditObservationObservationTypeChanged>(
         _onAddEditObservationObservationTypeChanged);
@@ -154,6 +156,13 @@ class AddEditObservationBloc
       success = false;
     }
 
+    if (state.company == null) {
+      emit(state.copyWith(
+          companyValidationMessage:
+              FormValidationMessage(fieldName: 'Company').requiredMessage));
+      success = false;
+    }
+
     if (state.site == null) {
       emit(state.copyWith(
           siteValidationMessage:
@@ -166,6 +175,13 @@ class AddEditObservationBloc
           priorityLevelValidationMessage:
               FormValidationMessage(fieldName: 'Priority level')
                   .requiredMessage));
+      success = false;
+    }
+
+    if (state.project == null) {
+      emit(state.copyWith(
+          projectValidationMessage:
+              FormValidationMessage(fieldName: 'Project').requiredMessage));
       success = false;
     }
 
@@ -186,7 +202,9 @@ class AddEditObservationBloc
   ) async {
     try {
       List<Entity> siteList = await sitesRepository.getActiveSiteList();
-      emit(state.copyWith(siteList: siteList.map((e) => Site(id: e.id, name: e.name)).toList()));
+      emit(state.copyWith(
+          siteList:
+              siteList.map((e) => Site(id: e.id, name: e.name)).toList()));
     } catch (e) {}
   }
 
@@ -255,14 +273,55 @@ class AddEditObservationBloc
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 
-  void _onAddEditObservationSiteChanged(
-    AddEditObservationSiteChanged event,
+  void _onAddEditObservationProjectChanged(
+    AddEditObservationProjectChanged event,
     Emitter<AddEditObservationState> emit,
   ) {
+    emit(state.copyWith(
+      project: Nullable.value(event.project),
+      projectValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  void _onAddEditObservationCompanyChanged(
+    AddEditObservationCompanyChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) {
+    emit(state.copyWith(
+      company: Nullable.value(event.company),
+      companyValidationMessage: '',
+    ));
+    formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
+  }
+
+  Future<void> _onAddEditObservationSiteChanged(
+    AddEditObservationSiteChanged event,
+    Emitter<AddEditObservationState> emit,
+  ) async {
     emit(state.copyWith(
       site: event.site,
       siteValidationMessage: '',
     ));
+
+    List<Project> projectList =
+        await sitesRepository.getProjectListForSite(event.site.id!);
+
+    emit(state.copyWith(
+      projectList: projectList,
+      project: const Nullable.value(null),
+    ));
+
+    List<CompanySite> companyList =
+        await sitesRepository.getCompanyListForSite(event.site.id!);
+
+    emit(state.copyWith(
+      companyList: companyList
+          .map((e) => Company(id: e.companyId, name: e.companyName))
+          .toList(),
+      company: const Nullable.value(null),
+    ));
+
     formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
   }
 

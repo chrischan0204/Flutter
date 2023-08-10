@@ -337,15 +337,18 @@ class TemplateDesignerBloc
     List<SortOrder> sortOrderList = [];
 
     for (int i = 0; i < templateQuestionList.length; i++) {
-      sortOrderList.add(SortOrder(id: templateQuestionList[i].id, order: i));
+      sortOrderList
+          .add(SortOrder(id: templateQuestionList[i].questionId, order: i));
     }
 
     try {
-      await _templatesRepository.sortTemplateSectionList(sortOrderList);
+      await _templatesRepository.sortTemplateSectionQuestionList(sortOrderList);
       emit(state.copyWith(templateQuestionList: templateQuestionList));
     } catch (e) {
       emit(state.copyWith(templateQuestionList: savedTemplateQuestionList));
     }
+
+    // emit(state.copyWith(templateQuestionList: templateQuestionList));
   }
 
   Future<void> _onTemplateDesignerResponseScaleItemListLoaded(

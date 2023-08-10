@@ -4,18 +4,35 @@ part 'theme_event.dart';
 part 'theme_state.dart';
 
 class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
+  static final List<String> specialItems = [
+    'templates/show',
+    'templates/edit',
+    'audits/show',
+    'audits/edit',
+    'observations/show'
+  ];
   ThemeBloc() : super(const ThemeState()) {
     on<ThemeSidebarItemExtended>(
       (event, emit) {
-        final List<String> collapsedItems = List.from(state.collapsedItems);
-        if (collapsedItems.contains(event.collapsedItem)) {
-          if (!event.force) {
-            collapsedItems.remove(event.collapsedItem);
+        if (specialItems.contains(event.collapsedItem)) {
+          emit(state.copyWith(isSpecialPage: true));
+
+          final List<String> items = List.from(state.collapsedItems);
+
+          if (items.contains(event.collapsedItem)) {
+            if (!event.force) {
+              items.remove(event.collapsedItem);
+            }
+          } else {
+            items.add(event.collapsedItem);
           }
+          emit(state.copyWith(collapsedItems: items));
         } else {
-          collapsedItems.add(event.collapsedItem);
+          emit(state.copyWith(
+            isCollapsed: Nullable.value(!state.isCollapsed),
+            isSpecialPage: false,
+          ));
         }
-        emit(state.copyWith(collapsedItems: collapsedItems));
       },
     );
 

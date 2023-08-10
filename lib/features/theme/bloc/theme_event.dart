@@ -4,18 +4,23 @@ class ThemeEvent extends Equatable {
   const ThemeEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ThemeSidebarItemExtended extends ThemeEvent {
-  final String collapsedItem;
+  final bool? isCollapsed;
+  final String  collapsedItem;
   final bool force;
   const ThemeSidebarItemExtended({
-    required this.collapsedItem,
+    this.collapsedItem = '',
+    this.isCollapsed,
     this.force = false,
   });
   @override
-  List<Object> get props => [collapsedItem];
+  List<Object?> get props => [
+        force,
+        isCollapsed,
+      ];
 }
 
 class ThemeSidebarHovered extends ThemeEvent {

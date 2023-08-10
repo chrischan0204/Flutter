@@ -11,6 +11,10 @@ class AddEditObservationState extends Equatable {
   /// site list
   final List<Site> siteList;
 
+  final List<Project> projectList;
+
+  final List<Company> companyList;
+
   /// priority level list
   final List<PriorityLevel> priorityLevelList;
 
@@ -68,6 +72,18 @@ class AddEditObservationState extends Equatable {
   /// validation message for observation type
   final String observationTypeValidationMessage;
 
+  final Project? project;
+
+  final Project? initialProject;
+
+  final String projectValidationMessage;
+
+  final Company? company;
+
+  final Company? initialCompany;
+
+  final String companyValidationMessage;
+
   /// images to create observation
   final List<PlatformFile> images;
 
@@ -83,6 +99,8 @@ class AddEditObservationState extends Equatable {
     this.createdObservationId,
     this.loadedObservation,
     this.siteList = const [],
+    this.companyList = const [],
+    this.projectList = const [],
     this.priorityLevelList = const [],
     this.observationTypeList = const [],
     this.observationName = '',
@@ -102,6 +120,12 @@ class AddEditObservationState extends Equatable {
     this.initialObservationType,
     this.observationType,
     this.observationTypeValidationMessage = '',
+    this.company,
+    this.initialCompany,
+    this.companyValidationMessage = '',
+    this.project,
+    this.initialProject,
+    this.projectValidationMessage = '',
     this.images = const [],
     this.initialImages = const [],
     this.status = EntityStatus.initial,
@@ -113,6 +137,8 @@ class AddEditObservationState extends Equatable {
         createdObservationId,
         loadedObservation,
         siteList,
+        projectList,
+        companyList,
         priorityLevelList,
         observationTypeList,
         observationName,
@@ -132,6 +158,12 @@ class AddEditObservationState extends Equatable {
         observationType,
         initialObservationType,
         observationTypeValidationMessage,
+        project,
+        initialProject,
+        projectValidationMessage,
+        company,
+        initialCompany,
+        companyValidationMessage,
         images,
         initialImages,
         status,
@@ -145,6 +177,8 @@ class AddEditObservationState extends Equatable {
         response: response,
         priorityLevelId: priorityLevel!.id!,
         observationTypeId: observationType!.id!,
+        companyId: company!.id!,
+        projectId: project!.id!,
       );
 
   bool get formDirty =>
@@ -152,6 +186,8 @@ class AddEditObservationState extends Equatable {
           observationName != initialObservationName) ||
       (Validation.isNotEmpty(location) && location != initialLocation) ||
       (Validation.isNotEmpty(response) && response != initialResponse) ||
+      (project != null && project?.id != initialProject?.id) ||
+      (company != null && company?.id != initialCompany?.id) ||
       (site != null && site?.id != initialSite?.id) ||
       (priorityLevel != null &&
           priorityLevel?.id != initialPriorityLevel?.id) ||
@@ -163,6 +199,8 @@ class AddEditObservationState extends Equatable {
     String? createdObservationId,
     ObservationDetail? loadedObservation,
     List<Site>? siteList,
+    List<Project>? projectList,
+    List<Company>? companyList,
     List<PriorityLevel>? priorityLevelList,
     List<ObservationType>? observationTypeList,
     String? observationName,
@@ -182,6 +220,12 @@ class AddEditObservationState extends Equatable {
     ObservationType? observationType,
     ObservationType? initialObservationType,
     String? observationTypeValidationMessage,
+    Nullable<Project?>? project,
+    Project? initialProject,
+    String? projectValidationMessage,
+    Nullable<Company?>? company,
+    Nullable<Company?>? initialCompany,
+    String? companyValidationMessage,
     List<PlatformFile>? images,
     List<PlatformFile>? initialImages,
     EntityStatus? status,
@@ -191,6 +235,8 @@ class AddEditObservationState extends Equatable {
       createdObservationId: createdObservationId ?? this.createdObservationId,
       loadedObservation: loadedObservation ?? this.loadedObservation,
       siteList: siteList ?? this.siteList,
+      projectList: projectList ?? this.projectList,
+      companyList: companyList ?? this.companyList,
       priorityLevelList: priorityLevelList ?? this.priorityLevelList,
       observationTypeList: observationTypeList ?? this.observationTypeList,
       observationName: observationName ?? this.observationName,
@@ -217,6 +263,15 @@ class AddEditObservationState extends Equatable {
           initialObservationType ?? this.initialObservationType,
       observationTypeValidationMessage: observationTypeValidationMessage ??
           this.observationTypeValidationMessage,
+      project: project != null ? project.value : this.project,
+      initialProject: initialProject ?? this.initialProject,
+      projectValidationMessage:
+          projectValidationMessage ?? this.projectValidationMessage,
+      company: company != null ? company.value : this.company,
+      initialCompany:
+          initialCompany != null ? initialCompany.value : this.initialCompany,
+      companyValidationMessage:
+          companyValidationMessage ?? this.companyValidationMessage,
       images: images ?? this.images,
       initialImages: initialImages ?? this.initialImages,
       status: status ?? this.status,

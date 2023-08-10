@@ -34,6 +34,14 @@ class AddEditObservationFormView extends StatelessWidget {
               rightValidationMessage: state.observationTypeValidationMessage,
             ),
             FormItemVertical(
+              leftChild: const CompanySelectField(),
+              rightChild: const ProjectSelectField(),
+              leftLabel: 'Company (*)',
+              rightLabel: 'Project (*)',
+              leftValidationMessage: state.companyValidationMessage,
+              rightValidationMessage: state.projectValidationMessage,
+            ),
+            FormItemVertical(
               leftChild: const ObservationImagePicker(),
               leftLabel: 'Images',
               secondaryRightChild: Text(

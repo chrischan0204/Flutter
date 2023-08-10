@@ -7,6 +7,7 @@ class CustomDateTimePicker extends StatelessWidget {
   final DateTimePickerType dateTimePickerType;
   final TextEditingController? controller;
   final String? initialValue;
+  final DateTime? firstDate;
   final ValueChanged<DateTime> onChange;
   final double height;
   const CustomDateTimePicker({
@@ -14,6 +15,7 @@ class CustomDateTimePicker extends StatelessWidget {
     this.dateTimePickerType = DateTimePickerType.dateTime,
     this.controller,
     required this.onChange,
+    this.firstDate,
     this.initialValue,
     this.height = 36,
   });
@@ -31,7 +33,7 @@ class CustomDateTimePicker extends StatelessWidget {
                 : null,
         initialValue: initialValue ?? DateTime.now().toString(),
         controller: controller,
-        firstDate: DateTime(2000),
+        firstDate: firstDate ?? DateTime(2000),
         lastDate: DateTime(2100),
         icon: const Icon(Icons.event),
         style: const TextStyle(
