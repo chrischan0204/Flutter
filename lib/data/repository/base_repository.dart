@@ -25,9 +25,12 @@ class BaseRepository {
       response = await http.get(
           Uri.https(ApiUri.host, encodedPath, queryParams),
           headers: headers);
+
+      if (response.statusCode == 401) {
+        authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      }
       return response;
     } on http.ClientException catch (_) {
-      authBloc.add(const AuthUnauthenticated(statusCode: 401));
       throw Exception();
     }
   }
@@ -45,9 +48,13 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
+
+      if (response.statusCode == 401) {
+        authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      }
+
       return response;
     } catch (e) {
-      authBloc.add(const AuthUnauthenticated(statusCode: 401));
       throw Exception();
     }
   }
@@ -65,6 +72,10 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
+      if (response.statusCode == 401) {
+        authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      }
+
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
@@ -85,7 +96,9 @@ class BaseRepository {
         body: body,
         encoding: encoding,
       );
-
+      if (response.statusCode == 401) {
+        authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      }
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
@@ -97,6 +110,9 @@ class BaseRepository {
     late http.Response response;
     try {
       response = await post('$url/list', body: option.toJson());
+      if (response.statusCode == 401) {
+        authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      }
       return response;
     } catch (e) {
       authBloc.add(const AuthUnauthenticated(statusCode: 401));
@@ -125,6 +141,10 @@ class BaseRepository {
 
       var streamedResponse = await request.send();
       var result = await http.Response.fromStream(streamedResponse);
+
+      if (result.statusCode == 401) {
+        authBloc.add(const AuthUnauthenticated(statusCode: 401));
+      }
 
       if (result.statusCode == 200) {
         return result.body;

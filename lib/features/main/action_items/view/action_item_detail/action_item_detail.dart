@@ -51,7 +51,7 @@ class _ActionItemDetailViewState extends State<ActionItemDetailWidget> {
             content: state.message,
           ).showNotification();
 
-          context.go('/action-items');
+          context.go('/action_items');
         }
         if (state.actionItemDeleteStatus.isFailure) {
           CustomNotification(

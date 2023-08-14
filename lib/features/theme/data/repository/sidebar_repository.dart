@@ -27,7 +27,7 @@ class SidebarRepsitory {
       iconData: PhosphorIcons.regular.barcode,
       color: const Color(0xff26a196),
       label: 'Action Items',
-      path: 'action-items',
+      path: 'action_items',
     ),
   ];
 
@@ -64,8 +64,14 @@ class SidebarRepsitory {
         SidebarItemModel(
           iconData: PhosphorIcons.regular.plusMinus,
           color: Colors.teal,
-          label: 'Audits ',
+          label: 'Audits',
           path: 'audits',
+        ),
+        SidebarItemModel(
+          iconData: PhosphorIcons.regular.scales,
+          color: Colors.teal,
+          label: 'Response Scales',
+          path: 'response_scales',
         ),
       ],
     ),

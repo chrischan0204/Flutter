@@ -1,4 +1,5 @@
 import 'common_libraries.dart';
+import 'features/administration/audits/response_scale/view/response_scale.dart';
 
 final GoRouter router = GoRouter(
   routes: [
@@ -78,66 +79,56 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/audits1',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: Layout(
-          body: Audits1(),
-          selectedItemName: 'audits1',
-        ),
-      ),
-    ),
-    GoRoute(
-      path: '/action-items',
+      path: '/action_items',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
           body: ActionItemListView(),
-          selectedItemName: 'action-items',
+          selectedItemName: 'action_items',
         ),
       ),
     ),
     GoRoute(
-      path: '/action-items/index',
+      path: '/action_items/index',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
           body: ActionItemListView(),
-          selectedItemName: 'action-items',
+          selectedItemName: 'action_items',
         ),
       ),
     ),
     GoRoute(
-      path: '/action-items/new',
+      path: '/action_items/new',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Layout(
           body: AddEditActionItemView(),
-          selectedItemName: 'action-items',
+          selectedItemName: 'action_items',
         ),
       ),
     ),
     GoRoute(
-      path: '/action-items/edit/:actionItemId',
+      path: '/action_items/edit/:actionItemId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: AddEditActionItemView(
             actionItemId: state.params['actionItemId']!,
           ),
-          selectedItemName: 'action-items',
+          selectedItemName: 'action_items',
         ),
       ),
     ),
     GoRoute(
-      path: '/action-items/show/:actionItemId',
+      path: '/action_items/show/:actionItemId',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: Layout(
           body: ActionItemDetailView(
             actionItemId: state.params['actionItemId']!,
           ),
-          selectedItemName: 'action-items',
+          selectedItemName: 'action_items',
         ),
       ),
     ),
@@ -355,6 +346,16 @@ final GoRouter router = GoRouter(
         child: Layout(
           body: TemplateDetailView(templateId: state.params['templateId']!),
           selectedItemName: 'templates',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/response_scales',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ResponseScaleCrudView(),
+          selectedItemName: 'response_scales',
         ),
       ),
     ),

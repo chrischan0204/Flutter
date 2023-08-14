@@ -67,7 +67,7 @@ class _AddEditActionItemWidgetState extends State<AddEditActionItemWidget> {
           ).showNotification();
 
           if (widget.actionItemId == null) {
-            context.go('/action-items');
+            context.go('/action_items');
           }
         }
         if (state.status.isFailure) {
