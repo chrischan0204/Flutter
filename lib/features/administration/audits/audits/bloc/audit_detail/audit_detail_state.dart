@@ -12,6 +12,10 @@ class AuditDetailState extends Equatable {
   final List<Document> documentList;
   final List<AuditActionItem> actionItemList;
   final List<ObservationDetail> observationList;
+  final List<User> reviewerList;
+  final List<User?> selectedReviewerList;
+
+  final String? selectedMethod;
 
   final EntityStatus status;
 
@@ -25,7 +29,10 @@ class AuditDetailState extends Equatable {
     this.documentList = const [],
     this.actionItemList = const [],
     this.observationList = const [],
+    this.reviewerList = const [],
+    this.selectedReviewerList = const [null],
     this.selectedAuditSection,
+    this.selectedMethod,
     this.message = '',
   });
 
@@ -40,6 +47,9 @@ class AuditDetailState extends Equatable {
         documentList,
         actionItemList,
         observationList,
+        reviewerList,
+        selectedReviewerList,
+        selectedMethod,
         status,
       ];
 
@@ -65,7 +75,10 @@ class AuditDetailState extends Equatable {
     List<Document>? documentList,
     List<AuditActionItem>? actionItemList,
     List<ObservationDetail>? observationList,
+    List<User?>? selectedReviewerList,
+    List<User>? reviewerList,
     EntityStatus? status,
+    String? selectedMethod,
     String? message,
   }) {
     return AuditDetailState(
@@ -79,6 +92,9 @@ class AuditDetailState extends Equatable {
       actionItemList: actionItemList ?? this.actionItemList,
       observationList: observationList ?? this.observationList,
       status: status ?? this.status,
+      selectedMethod: selectedMethod ?? this.selectedMethod,
+      reviewerList: reviewerList ?? this.reviewerList,
+      selectedReviewerList: selectedReviewerList ?? this.selectedReviewerList,
       message: message ?? this.message,
     );
   }

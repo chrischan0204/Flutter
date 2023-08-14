@@ -5,7 +5,7 @@ part 'add_edit_template_state.dart';
 
 class AddEditTemplateBloc
     extends Bloc<AddEditTemplateEvent, AddEditTemplateState> {
-      final BuildContext context;
+  final BuildContext context;
   late TemplatesRepository templatesRepository;
   late FormDirtyBloc formDirtyBloc;
 
@@ -16,7 +16,6 @@ class AddEditTemplateBloc
       'There was a problem in editing the template. We have made a note of this. Please try again after a few minutes....';
 
   AddEditTemplateBloc(this.context) : super(AddEditTemplateState()) {
-
     templatesRepository = context.read();
     formDirtyBloc = context.read();
 

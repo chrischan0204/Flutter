@@ -146,12 +146,17 @@ class TemplateDesignerBloc
       sortOrderList.add(SortOrder(id: templateSectionList[i].id, order: i));
     }
 
-    try {
-      await _templatesRepository.sortTemplateSectionList(sortOrderList);
-      emit(state.copyWith(templateSectionList: templateSectionList));
-    } catch (e) {
-      print(e);
-      emit(state.copyWith(templateSectionList: savedTemplateSectionList));
+    if (sortOrderList != state.sectionSortOrderList) {
+      emit(state.copyWith(
+        templateSectionList: templateSectionList,
+        sectionSortOrderList: sortOrderList,
+      ));
+
+      try {
+        await _templatesRepository.sortTemplateSectionList(sortOrderList);
+      } catch (e) {
+        emit(state.copyWith(templateSectionList: savedTemplateSectionList));
+      }
     }
   }
 
@@ -341,14 +346,19 @@ class TemplateDesignerBloc
           .add(SortOrder(id: templateQuestionList[i].questionId, order: i));
     }
 
-    try {
-      await _templatesRepository.sortTemplateSectionQuestionList(sortOrderList);
-      emit(state.copyWith(templateQuestionList: templateQuestionList));
-    } catch (e) {
-      emit(state.copyWith(templateQuestionList: savedTemplateQuestionList));
-    }
+    if (sortOrderList != state.sectionItemSortOrderList) {
+      emit(state.copyWith(
+        templateQuestionList: templateQuestionList,
+        sectionItemSortOrderList: sortOrderList,
+      ));
 
-    // emit(state.copyWith(templateQuestionList: templateQuestionList));
+      try {
+        await _templatesRepository
+            .sortTemplateSectionQuestionList(sortOrderList);
+      } catch (e) {
+        emit(state.copyWith(templateQuestionList: savedTemplateQuestionList));
+      }
+    }
   }
 
   Future<void> _onTemplateDesignerResponseScaleItemListLoaded(

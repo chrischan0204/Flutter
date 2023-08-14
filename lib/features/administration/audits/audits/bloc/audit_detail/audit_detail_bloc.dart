@@ -6,12 +6,15 @@ part 'audit_detail_state.dart';
 class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
   final BuildContext context;
   late AuditsRepository _auditsRepository;
+  late UsersRepository _usersRepository;
   final String auditId;
   AuditDetailBloc(
     this.context,
     this.auditId,
   ) : super(const AuditDetailState()) {
     _auditsRepository = RepositoryProvider.of(context);
+    _usersRepository = context.read();
+
     on<AuditDetailLoaded>(_onAuditDetailLoaded);
     on<AuditDetailAuditDeleted>(_onAuditDetailAuditDeleted);
     on<AuditDetailAuditSectionListLoaded>(_onAuditDetailAuditSectionListLoaded);
@@ -20,6 +23,57 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     on<AuditDetailDocumentListLoaded>(_onAuditDetailDocumentListLoaded);
     on<AuditDetailObservationListLoaded>(_onAuditDetailObservationListLoaded);
     on<AuditDetailActionItemListLoaded>(_onAuditDetailActionItemListLoaded);
+    on<AuditDetailMethodSelected>(_onAuditDetailMethodSelected);
+    on<AuditDetailReviewerItemIncreased>(_onAuditDetailReviewerItemIncreased);
+    on<AuditDetailReviewerSelected>(_onAuditDetailReviewerSelected);
+    on<AuditDetailReviewerListLoaded>(_onAuditDetailReviewerListLoaded);
+  }
+
+  Future<void> _onAuditDetailReviewerListLoaded(
+    AuditDetailReviewerListLoaded event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    try {
+      final List<User> reviewerList = await _usersRepository.getUserList();
+      emit(state.copyWith(reviewerList: reviewerList));
+    } catch (e) {}
+  }
+
+  void _onAuditDetailReviewerSelected(
+    AuditDetailReviewerSelected event,
+    Emitter<AuditDetailState> emit,
+  ) {
+    final List<User?> selectedReviewerList =
+        List.from(state.selectedReviewerList);
+
+    selectedReviewerList.removeAt(event.index);
+
+    selectedReviewerList.insert(event.index, event.reviewer);
+
+    emit(state.copyWith(selectedReviewerList: selectedReviewerList));
+  }
+
+  void _onAuditDetailReviewerItemIncreased(
+    AuditDetailReviewerItemIncreased event,
+    Emitter<AuditDetailState> emit,
+  ) {
+    final List<User?> selectedReviewerList =
+        List.from(state.selectedReviewerList);
+
+    selectedReviewerList.insert(event.index + 1, null);
+
+    emit(state.copyWith(selectedReviewerList: selectedReviewerList));
+  }
+
+  void _onAuditDetailMethodSelected(
+    AuditDetailMethodSelected event,
+    Emitter<AuditDetailState> emit,
+  ) {
+    if (event.method == 'Close Audit') {
+      emit(state.copyWith(selectedMethod: event.method));
+    } else {
+      emit(state.copyWith(selectedMethod: event.method));
+    }
   }
 
   Future<void> _onAuditDetailDocumentListLoaded(

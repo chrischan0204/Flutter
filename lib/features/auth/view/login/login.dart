@@ -44,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    bool isSmallScreen = MediaQuery.of(context).size.height < 700;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -63,7 +64,8 @@ class _LoginViewState extends State<LoginView> {
                 child: Container(
                   width: 500,
                   margin: const EdgeInsets.all(50),
-                  padding: const EdgeInsets.all(50),
+                  padding: EdgeInsets.symmetric(
+                      vertical: isSmallScreen ? 30 : 50, horizontal: 50),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
@@ -75,21 +77,20 @@ class _LoginViewState extends State<LoginView> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          spacery50,
-                          spacery30,
+                          if (!isSmallScreen) const SizedBox(height: 50),
                           const Logo(),
-                          spacery30,
+                          if (!isSmallScreen) spacery30,
                           const DecorationText(),
                           Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const UsernameField(),
-                                spacery10,
+                                if (!isSmallScreen) spacery10,
                                 const PasswordField(),
-                                spacery20,
+                                if (isSmallScreen) spacery10 else spacery20,
                                 const LoginButton(),
-                                spacery20,
+                                if (isSmallScreen) spacery10 else spacery20,
                                 const ForgotPasswordButton(),
                               ],
                             ),

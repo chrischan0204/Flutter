@@ -1,5 +1,6 @@
 import '/common_libraries.dart';
-import 'widgets/widgets.dart';
+import 'audit_detail_completed.dart';
+import 'audit_detail_not_completed.dart';
 
 class AuditDetailView extends StatelessWidget {
   final String auditId;
@@ -50,7 +51,6 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuditDetailBloc, AuditDetailState>(
@@ -83,56 +83,8 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
           crudStatus: state.auditDeleteStatus,
           customDetailWidget: state.auditSummary == null
               ? const Center(child: Loader())
-              : Column(
-                  children: [
-                    Card(
-                      elevation: 3,
-                      child: Padding(
-                        padding: inset10,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                              padding: inset20,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border(bottom: BorderSide(color: grey))),
-                              child: Text(
-                                '${state.auditSummary?.auditNumber}',
-                                style: textNormal20,
-                              ),
-                            ),
-                            const IntrinsicHeight(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Expanded(
-                                      flex: 2, child: SectionSummaryView()),
-                                  Expanded(flex: 1, child: AuditDetailView1()),
-                                  Expanded(flex: 1, child: AuditDetailView2()),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    spacery20,
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 2,
-                      child: const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: AuditSectionsView()),
-                          Expanded(
-                            flex: 3,
-                            child: QuestionsListView(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              : AuditDetailForNotCompletedView(
+                  auditNumber: state.auditSummary?.name ?? ''),
           showSecondaryButton: true,
           secondaryButtonOnClick: () =>
               context.go('/audits/execute/${widget.auditId}'),
