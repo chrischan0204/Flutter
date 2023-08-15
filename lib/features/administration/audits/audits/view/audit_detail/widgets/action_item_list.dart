@@ -102,10 +102,9 @@ class AuditDetailObservationActionItem extends StatelessWidget {
                     status,
                     style: textBold14,
                   )
-                : Padding(
-                    padding: const EdgeInsets.only(right: 40),
+                : Align(
+                    alignment: Alignment.centerLeft,
                     child: CustomBadge(
-                      width: 50,
                       label: status,
                       color: status == 'Overdue'
                           ? Colors.red

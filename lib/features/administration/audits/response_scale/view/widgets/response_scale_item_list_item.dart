@@ -1,10 +1,11 @@
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 
 import '../../blocs/bloc/response_scale_bloc.dart';
+import '../../data/model/response_scale_item.dart';
 import '/common_libraries.dart';
 
 class ResponseScaleItemListItemView extends StatelessWidget {
-  final TemplateResponseScaleItem responseScaleItem;
+  final ResponseScaleItem responseScaleItem;
   final bool isFirst;
   final bool isLast;
   final int index;
@@ -113,7 +114,7 @@ class ResponseScaleItemListItemView extends StatelessWidget {
 }
 
 class ResponseScaleItemListItemBodyView extends StatelessWidget {
-  final TemplateResponseScaleItem responseScaleItem;
+  final ResponseScaleItem responseScaleItem;
   final int index;
   const ResponseScaleItemListItemBodyView({
     super.key,
@@ -152,17 +153,20 @@ class ResponseScaleItemListItemBodyView extends StatelessWidget {
         ),
         SizedBox(
           width: 100,
-          child: CustomTextField(
-            key: ValueKey(responseScaleItem.id),
-            initialValue: responseScaleItem.score.toString(),
-            onChanged: (value) => context.read<ResponseScaleBloc>().add(
-                  ResponseScaleItemScoreChanged(
-                    index: index,
-                    score: value,
+          child: Padding(
+            padding: insetx20,
+            child: CustomTextField(
+              key: ValueKey(responseScaleItem.id),
+              initialValue: responseScaleItem.score.toString(),
+              onChanged: (value) => context.read<ResponseScaleBloc>().add(
+                    ResponseScaleItemScoreChanged(
+                      index: index,
+                      score: value,
+                    ),
                   ),
-                ),
+            ),
           ),
-        )
+        ),
       ],
     );
   }

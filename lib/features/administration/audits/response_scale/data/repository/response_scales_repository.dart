@@ -1,13 +1,14 @@
+import '../model/response_scale_item.dart';
 import '/common_libraries.dart';
 
 class ResponseScalesRepository extends BaseRepository {
   ResponseScalesRepository({
     required super.token,
     required super.authBloc,
-  }) : super(url: '/api/audits');
+  }) : super(url: '/api/responsescales');
 
   Future<List<ResponseScale>> getResponseScaleList() async {
-    Response response = await super.get('$url/responsescales');
+    Response response = await super.get(url);
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
@@ -18,24 +19,40 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<TemplateResponseScaleItem>> getResponseScaleItemList(
+  Future<List<ResponseScaleItem>> getResponseScaleItemList(
       String responseScaleId) async {
-    Response response =
-        await super.get('$url/responsescaleitems/$responseScaleId');
+    Response response = await super.get('$url/$responseScaleId');
 
     if (response.statusCode == 200) {
-      return TemplateResponseScaleItem.fromListJson(response.body);
+      return List.from(json.decode(response.body))
+          .map((e) => ResponseScaleItem.fromMap(e))
+          .toList();
     }
 
     throw Exception();
   }
 
-  Future<EntityResponse> addResponseScale(String responseScaleName) async {
-    Response response =
-        await super.post(url, body: {'name': responseScaleName});
+  Future<EntityResponse> updateResponseScaleItemList(String responseScaleId,
+      List<ResponseScaleItem> responseScaleItemList) async {
+    Response response = await super.put(
+        '$url/$responseScaleId/responsescaleitems',
+        body: jsonEncode(responseScaleItemList));
 
     if (response.statusCode == 200) {
-      return EntityResponse(isSuccess: true, message: '');
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+    throw Exception();
+  }
+
+  Future<EntityResponse> addResponseScale(String responseScaleName) async {
+    Response response =
+        await super.post(url, body: jsonEncode({'name': responseScaleName}));
+
+    if (response.statusCode == 200) {
+      return EntityResponse.fromJson(response.body);
     }
 
     throw Exception();
@@ -43,8 +60,11 @@ class ResponseScalesRepository extends BaseRepository {
 
   Future<EntityResponse> editResponseScale(
       String responseScaleId, String responseScaleName) async {
-    Response response = await super
-        .put('$url/$responseScaleId', body: {'name': responseScaleName});
+    Response response = await super.put('$url/$responseScaleId',
+        body: jsonEncode({
+          'id': responseScaleId,
+          'name': responseScaleName,
+        }));
 
     if (response.statusCode == 200) {
       return EntityResponse(isSuccess: true, message: '');

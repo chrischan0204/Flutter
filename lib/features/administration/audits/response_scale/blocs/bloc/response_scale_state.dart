@@ -8,8 +8,9 @@ class ResponseScaleState extends Equatable {
   final String? selectedResponseScaleId;
   final String newResponseScaleName;
 
-  final List<TemplateResponseScaleItem> responseScaleItemList;
+  final List<ResponseScaleItem> responseScaleItemList;
   final EntityStatus responseScaleItemListLoadStatus;
+  final EntityStatus responseScaleItemListCrudStatus;
   final List<SortOrder> responseScaleOrderList;
   final List<SortOrder> responseScaleItemOrderList;
   final String message;
@@ -22,6 +23,7 @@ class ResponseScaleState extends Equatable {
     this.newResponseScaleName = '',
     this.responseScaleItemList = const [],
     this.responseScaleItemListLoadStatus = EntityStatus.initial,
+    this.responseScaleItemListCrudStatus = EntityStatus.initial,
     this.responseScaleOrderList = const [],
     this.responseScaleItemOrderList = const [],
     this.message = '',
@@ -36,6 +38,11 @@ class ResponseScaleState extends Equatable {
     }
   }
 
+  bool get isDirty => responseScaleItemList
+      .where((element) =>
+          Validation.isEmpty(element.name) || Validation.isEmpty(element.score))
+      .isNotEmpty;
+
   @override
   List<Object?> get props => [
         responseScaleList,
@@ -45,6 +52,7 @@ class ResponseScaleState extends Equatable {
         newResponseScaleName,
         responseScaleItemList,
         responseScaleItemListLoadStatus,
+        responseScaleItemListCrudStatus,
         responseScaleOrderList,
         responseScaleItemOrderList,
         message,
@@ -56,8 +64,9 @@ class ResponseScaleState extends Equatable {
     EntityStatus? responseScaleCrudStatus,
     String? selectedResponseScaleId,
     String? newResponseScaleName,
-    List<TemplateResponseScaleItem>? responseScaleItemList,
+    List<ResponseScaleItem>? responseScaleItemList,
     EntityStatus? responseScaleItemListLoadStatus,
+    EntityStatus? responseScaleItemListCrudStatus,
     List<SortOrder>? responseScaleOrderList,
     List<SortOrder>? responseScaleItemOrderList,
     String? message,
@@ -75,6 +84,8 @@ class ResponseScaleState extends Equatable {
           responseScaleItemList ?? this.responseScaleItemList,
       responseScaleItemListLoadStatus: responseScaleItemListLoadStatus ??
           this.responseScaleItemListLoadStatus,
+      responseScaleItemListCrudStatus: responseScaleItemListCrudStatus ??
+          this.responseScaleItemListCrudStatus,
       responseScaleOrderList:
           responseScaleOrderList ?? this.responseScaleOrderList,
       responseScaleItemOrderList:

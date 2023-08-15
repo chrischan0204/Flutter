@@ -46,7 +46,7 @@ class _ResponseScaleListViewState extends State<ResponseScaleListView> {
                     padding: inset20,
                     child: Text(
                       'Response Scales',
-                      style: textNormal18,
+                      style: textBold18,
                     ),
                   ),
                 ),

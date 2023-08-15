@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../common_libraries.dart';
+import '../../data/model/response_scale_item.dart';
 
 part 'response_scale_event.dart';
 part 'response_scale_state.dart';
@@ -29,13 +30,42 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     on<ResponseScaleItemScoreChanged>(_onResponseScaleItemScoreChanged);
     on<ResponseScaleItemDeleted>(_onResponseScaleItemDeleted);
     on<ResponseScaleItemListSorted>(_onResponseScaleItemListSorted);
+    on<ResponseScaleItemListSaved>(_onResponseScaleItemListSaved);
+  }
+
+  Future<void> _onResponseScaleItemListSaved(
+    ResponseScaleItemListSaved event,
+    Emitter<ResponseScaleState> emit,
+  ) async {
+    emit(state.copyWith(responseScaleItemListCrudStatus: EntityStatus.loading));
+
+    try {
+      List<ResponseScaleItem> responseScaleItemList = [];
+
+      for (int i = 0; i < state.responseScaleItemList.length; i++) {
+        responseScaleItemList
+            .add(state.responseScaleItemList[i].copyWith(order: i));
+      }
+
+      EntityResponse response =
+          await _responseScalesRepository.updateResponseScaleItemList(
+              state.selectedResponseScaleId!, responseScaleItemList);
+
+      emit(state.copyWith(
+        responseScaleItemListCrudStatus: EntityStatus.success,
+        message: response.message,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          responseScaleItemListCrudStatus: EntityStatus.failure));
+    }
   }
 
   void _onResponseScaleItemDeleted(
     ResponseScaleItemDeleted event,
     Emitter<ResponseScaleState> emit,
   ) {
-    List<TemplateResponseScaleItem> responseScaleItemList =
+    List<ResponseScaleItem> responseScaleItemList =
         List.from(state.responseScaleItemList);
 
     responseScaleItemList.removeAt(event.index);
@@ -74,7 +104,7 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     emit(state.copyWith(
         responseScaleItemList: state.responseScaleItemList
             .map((e) => e.id == state.responseScaleItemList[event.index].id
-                ? e.copyWith(name: event.score)
+                ? e.copyWith(score: event.score)
                 : e)
             .toList()));
   }
@@ -84,16 +114,14 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     Emitter<ResponseScaleState> emit,
   ) {
     emit(state.copyWith(responseScaleItemList: [
-      TemplateResponseScaleItem(
+      ResponseScaleItem(
         id: const Uuid().v1(),
+        responseScaleId: state.selectedResponseScaleId ?? '',
         name: '',
         isRequired: false,
-        included: false,
-        score: 0,
-        commentRequired: false,
-        actionItemRequired: false,
-        followUpRequired: false,
+        score: '',
         order: 0,
+        isNew: true,
       ),
       ...state.responseScaleItemList
     ]));
@@ -105,7 +133,7 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
   ) async {
     emit(state.copyWith(responseScaleItemListLoadStatus: EntityStatus.loading));
     try {
-      List<TemplateResponseScaleItem> responseScaleItemList =
+      List<ResponseScaleItem> responseScaleItemList =
           await _responseScalesRepository
               .getResponseScaleItemList(event.responseScaleId);
 
@@ -164,10 +192,14 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
           .addResponseScale(state.newResponseScaleName);
 
       if (response.isSuccess) {
-        emit(state.copyWith(responseScaleCrudStatus: EntityStatus.success));
+        emit(state.copyWith(
+          responseScaleCrudStatus: EntityStatus.success,
+          message: response.message,
+        ));
+
+        add(ResponseScaleListLoaded());
       }
     } catch (e) {
-      print(e);
       emit(state.copyWith(responseScaleCrudStatus: EntityStatus.failure));
     }
   }
@@ -176,34 +208,28 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     ResponseScaleEdited event,
     Emitter<ResponseScaleState> emit,
   ) async {
-    emit(state.copyWith(responseScaleCrudStatus: EntityStatus.loading));
     try {
       EntityResponse response = await _responseScalesRepository
           .editResponseScale(event.responseScaleId, event.responseScaleName);
 
       if (response.isSuccess) {
-        emit(state.copyWith(responseScaleCrudStatus: EntityStatus.success));
+        add(ResponseScaleListLoaded());
       }
-    } catch (e) {
-      emit(state.copyWith(responseScaleCrudStatus: EntityStatus.failure));
-    }
+    } catch (e) {}
   }
 
   Future<void> _onResponseScaleDeleted(
     ResponseScaleDeleted event,
     Emitter<ResponseScaleState> emit,
   ) async {
-    emit(state.copyWith(responseScaleCrudStatus: EntityStatus.loading));
     try {
       EntityResponse response = await _responseScalesRepository
           .deleteResponseScale(event.responseScaleId);
 
       if (response.isSuccess) {
-        emit(state.copyWith(responseScaleCrudStatus: EntityStatus.success));
+        add(ResponseScaleListLoaded());
       }
-    } catch (e) {
-      emit(state.copyWith(responseScaleCrudStatus: EntityStatus.failure));
-    }
+    } catch (e) {}
   }
 
   Future<void> _onResponseScaleListSorted(
@@ -249,9 +275,7 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     ResponseScaleItemListSorted event,
     Emitter<ResponseScaleState> emit,
   ) async {
-    final List<TemplateResponseScaleItem> responseScaleItemList =
-        List.from(state.responseScaleItemList);
-    final List<TemplateResponseScaleItem> savedResponseScaleItemList =
+    final List<ResponseScaleItem> responseScaleItemList =
         List.from(state.responseScaleItemList);
 
     int draggingIndex = responseScaleItemList
@@ -264,29 +288,6 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     responseScaleItemList.removeAt(draggingIndex);
     responseScaleItemList.insert(newIndex, draggedItem);
 
-    // List<SortOrder> sortOrderList = [];
-
-    // for (int i = 0; i < responseScaleItemList.length; i++) {
-    // sortOrderList.add(SortOrder(id: responseScaleItemList[i].id!, order: i));
-    // }
-
-    emit(state.copyWith(
-        responseScaleItemList: responseScaleItemList,
-        // responseScaleOrderList: sortOrderList,
-      ));
-
-
-    // if (sortOrderList != state.responseScaleOrderList) {
-    //   emit(state.copyWith(
-    //     responseScaleItemList: responseScaleItemList,
-    //     // responseScaleOrderList: sortOrderList,
-    //   ));
-
-    //   try {
-    //     // await _templatesRepository.sortTemplateSectionList(sortOrderList);
-    //   } catch (e) {
-    //     emit(state.copyWith(responseScaleItemList: savedResponseScaleItemList));
-    //   }
-    // }
+    emit(state.copyWith(responseScaleItemList: responseScaleItemList));
   }
 }

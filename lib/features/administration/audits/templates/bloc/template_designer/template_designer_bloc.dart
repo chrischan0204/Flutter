@@ -11,7 +11,7 @@ class TemplateDesignerBloc
   final String templateId;
 
   late TemplatesRepository _templatesRepository;
-  late ResponseScalesRepository _responseScalesRepository;
+  late AuditsRepository _auditsRepository;
   late SectionsRepository _sectionsRepository;
   late FormDirtyBloc _formDirtyBloc;
   late List<String> _loadedTemplateSectionItemIdList;
@@ -21,7 +21,7 @@ class TemplateDesignerBloc
     required this.templateId,
   }) : super(const TemplateDesignerState()) {
     _templatesRepository = context.read();
-    _responseScalesRepository = context.read();
+    _auditsRepository = context.read();
     _sectionsRepository = context.read();
     _formDirtyBloc = context.read();
 
@@ -260,7 +260,7 @@ class TemplateDesignerBloc
 
     try {
       List<ResponseScale> responseScaleList =
-          await _responseScalesRepository.getResponseScaleList();
+          await _auditsRepository.getResponseScaleList();
       emit(state.copyWith(
         responseScaleList: responseScaleList,
         responseScaleListLoadStatus: EntityStatus.success,
@@ -369,7 +369,7 @@ class TemplateDesignerBloc
 
     try {
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await _responseScalesRepository
+          await _auditsRepository
               .getResponseScaleItemList(event.responseScaleId);
       late TemplateSectionItem newTemplateSection;
 
@@ -1216,7 +1216,7 @@ class TemplateDesignerBloc
       final String responseScaleId = event.question.responseScaleId;
 
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await _responseScalesRepository
+          await _auditsRepository
               .getResponseScaleItemList(responseScaleId);
 
       responseScaleItemList = responseScaleItemList
@@ -1294,7 +1294,7 @@ class TemplateDesignerBloc
       _loadedTemplateSectionItemIdList.add(event.id);
 
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await _responseScalesRepository
+          await _auditsRepository
               .getResponseScaleItemList(followUpQuestion.responseScaleId);
 
       responseScaleItemList = responseScaleItemList

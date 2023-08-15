@@ -67,7 +67,7 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
               CustomNotification(
                 context: context,
                 notifyType: NotifyType.info,
-                content: FormValidationMessage(fieldName: 'Section name')
+                content: FormValidationMessage(fieldName: 'Response scale')
                     .requiredMessage,
               ).showNotification();
             } else {

@@ -23,8 +23,9 @@ class BaseRepository {
     http.Response response;
     try {
       response = await http.get(
-          Uri.https(ApiUri.host, encodedPath, queryParams),
-          headers: headers);
+        Uri.https(ApiUri.host, encodedPath, queryParams),
+        headers: headers,
+      );
 
       if (response.statusCode == 401) {
         authBloc.add(const AuthUnauthenticated(statusCode: 401));
@@ -55,6 +56,7 @@ class BaseRepository {
 
       return response;
     } catch (e) {
+      print(e);
       throw Exception();
     }
   }

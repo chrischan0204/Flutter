@@ -1,4 +1,5 @@
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '/common_libraries.dart';
 
 import '../../blocs/bloc/response_scale_bloc.dart';
@@ -42,107 +43,163 @@ class _ResponseScaleItemListViewState extends State<ResponseScaleItemListView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              text: 'Response Scale Items for ',
-                              style: textSemiBold18,
-                              children: [
-                                TextSpan(
-                                  text: state.selectedResponseScale?.name,
-                                  style: TextStyle(
-                                    color: primaryColor,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          CustomButton(
-                            onClick: () => context
-                                .read<ResponseScaleBloc>()
-                                .add(ResponseScaleItemAdded()),
-                            backgroundColor: successColor,
-                            hoverBackgroundColor: successHoverColor,
-                            body: Text(
-                              'Add Item',
-                              style: textNormal14.copyWith(
-                                color: Colors.white,
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Response Scale Items for ',
+                                style: textSemiBold18,
+                                children: [
+                                  TextSpan(
+                                    text: state.selectedResponseScale?.name,
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
+                          ),
+                          spacerx20,
+                          Row(
+                            children: [
+                              BlocConsumer<ResponseScaleBloc,
+                                  ResponseScaleState>(
+                                listener: (context, state) =>
+                                    CustomNotification(
+                                  context: context,
+                                  notifyType: NotifyType.success,
+                                  content: state.message,
+                                ).showNotification(),
+                                listenWhen: (previous, current) =>
+                                    previous.responseScaleItemListCrudStatus !=
+                                        current
+                                            .responseScaleItemListCrudStatus &&
+                                    current.responseScaleItemListCrudStatus
+                                        .isSuccess,
+                                builder: (context, state) => CustomButton(
+                                  onClick: () {
+                                    if (state.isDirty) {
+                                      CustomNotification(
+                                              context: context,
+                                              notifyType: NotifyType.info,
+                                              content: 'Please fill the form.')
+                                          .showNotification();
+                                    } else {
+                                      context
+                                          .read<ResponseScaleBloc>()
+                                          .add(ResponseScaleItemListSaved());
+                                    }
+                                  },
+                                  backgroundColor: primaryColor,
+                                  hoverBackgroundColor: primaryHoverColor,
+                                  body: state.responseScaleItemListCrudStatus
+                                          .isLoading
+                                      ? LoadingAnimationWidget.prograssiveDots(
+                                          color: Colors.white,
+                                          size: 22,
+                                        )
+                                      : Text(
+                                          'Save',
+                                          style: textNormal14.copyWith(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                              spacerx10,
+                              CustomButton(
+                                onClick: () => context
+                                    .read<ResponseScaleBloc>()
+                                    .add(ResponseScaleItemAdded()),
+                                backgroundColor: successColor,
+                                hoverBackgroundColor: successHoverColor,
+                                body: Text(
+                                  'Add Item',
+                                  style: textNormal14.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),
                     ),
                   ),
-                Builder(builder: (context) {
-                  if (state.responseScaleItemListLoadStatus.isLoading) {
-                    return const Center(child: Loader(topPadding: 100));
-                  }
-                  return Column(
-                    children: [
-                      if (state.selectedResponseScaleId != null)
-                        CustomBottomBorderContainer(
-                          padding: insety10.copyWith(right: 50, left: 50),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Response Scale Item',
-                                  style: textSemiBold16,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 100,
-                                child: Text(
-                                  'Required',
-                                  style: textSemiBold16,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 100,
-                                child: Text(
-                                  'Score',
-                                  style: textSemiBold16,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      SizedBox(
-                        height: 50.0 * state.responseScaleItemList.length,
-                        child: ReorderableList(
-                          onReorder: _reorderCallback,
-                          onReorderDone: _reorderDone,
-                          child: CustomScrollView(
-                            slivers: <Widget>[
-                              SliverPadding(
-                                padding: EdgeInsets.only(
-                                    bottom:
-                                        MediaQuery.of(context).padding.bottom),
-                                sliver: SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (BuildContext context, int index) {
-                                      return ResponseScaleItemListItemView(
-                                        responseScaleItem:
-                                            state.responseScaleItemList[index],
-                                        isFirst: index == 0,
-                                        isLast: index ==
-                                            state.responseScaleItemList.length -
-                                                1,
-                                        index: index,
-                                      );
-                                    },
-                                    childCount:
-                                        state.responseScaleItemList.length,
+                Builder(
+                  builder: (context) {
+                    if (state.responseScaleItemListLoadStatus.isLoading) {
+                      return const Center(child: Loader(topPadding: 100));
+                    }
+                    return Column(
+                      children: [
+                        if (state.selectedResponseScaleId != null)
+                          CustomBottomBorderContainer(
+                            padding: insety10.copyWith(right: 40, left: 65),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Response Scale Item',
+                                    style: textSemiBold16,
                                   ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    'Required',
+                                    style: textSemiBold16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    'Score',
+                                    style: textSemiBold16,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        SizedBox(
+                          height: 50.0 * state.responseScaleItemList.length,
+                          child: ReorderableList(
+                            onReorder: _reorderCallback,
+                            onReorderDone: _reorderDone,
+                            child: CustomScrollView(
+                              slivers: <Widget>[
+                                SliverPadding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .padding
+                                          .bottom),
+                                  sliver: SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (BuildContext context, int index) {
+                                        return ResponseScaleItemListItemView(
+                                          responseScaleItem: state
+                                              .responseScaleItemList[index],
+                                          isFirst: index == 0,
+                                          isLast: index ==
+                                              state.responseScaleItemList
+                                                      .length -
+                                                  1,
+                                          index: index,
+                                        );
+                                      },
+                                      childCount:
+                                          state.responseScaleItemList.length,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                })
+                      ],
+                    );
+                  },
+                ),
               ],
             ),
           ),
