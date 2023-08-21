@@ -24,7 +24,7 @@ class AuditDetail1CompletedView extends StatelessWidget {
                 content: audit.formatedLastExecutedOn,
               ),
               AuditDetailItemView(
-                label: 'Socre',
+                label: 'Score',
                 content:
                     '${audit.answeredQuestions} of ${audit.questions} / (${audit.completedPercent}%)',
               ),

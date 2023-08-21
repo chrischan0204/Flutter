@@ -87,3 +87,16 @@ class AuditDetailAuditMarkInReview extends AuditDetailEvent {}
 
 class AuditDetailReviewersSaved extends AuditDetailEvent {}
 
+class AuditDetailReviewListLoaded extends AuditDetailEvent {}
+
+class AuditDetailCommentChanged extends AuditDetailEvent {
+  final String comment;
+  const AuditDetailCommentChanged({
+    required this.comment,
+  });
+
+  @override
+  List<Object> get props => [comment];
+}
+
+class AuditDetailCommentSaved extends AuditDetailEvent {}

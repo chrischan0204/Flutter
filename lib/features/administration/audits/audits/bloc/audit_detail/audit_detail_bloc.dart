@@ -31,6 +31,62 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     on<AuditDetailAuditMarkClosed>(_onAuditDetailAuditMarkClosed);
     on<AuditDetailAuditMarkInReview>(_onAuditDetailAuditMarkInReview);
     on<AuditDetailReviewersSaved>(_onAuditDetailReviewersSaved);
+    on<AuditDetailReviewListLoaded>(_onAuditDetailReviewListLoaded);
+    on<AuditDetailCommentChanged>(_onAuditDetailCommentChanged);
+    on<AuditDetailCommentSaved>(_onAuditDetailCommentSaved);
+  }
+
+  Future<void> _onAuditDetailCommentSaved(
+    AuditDetailCommentSaved event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    if (state.auditReviewList.length == 1) {
+      AuditReview auditReview = state.auditReviewList[0];
+      emit(state.copyWith(auditReviewCommentSaveStatus: EntityStatus.loading));
+      try {
+        await _auditsRepository.updateAuditReview(auditReview.reviewUpate);
+
+        emit(state.copyWith(
+          auditReviewCommentSaveStatus: EntityStatus.success,
+          message: 'Comment saved successfully.',
+        ));
+      } catch (e) {
+        emit(
+            state.copyWith(auditReviewCommentSaveStatus: EntityStatus.failure));
+      }
+    }
+  }
+
+  void _onAuditDetailCommentChanged(
+    AuditDetailCommentChanged event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    if (state.auditReviewList.length == 1) {
+      AuditReview auditReview = state.auditReviewList[0];
+
+      emit(state.copyWith(auditReviewList: [
+        auditReview.copyWith(reviewComments: event.comment)
+      ]));
+    }
+  }
+
+  Future<void> _onAuditDetailReviewListLoaded(
+    AuditDetailReviewListLoaded event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(auditReviewListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<AuditReview> auditReviewList =
+          await _auditsRepository.getAuditReviewList(auditId);
+
+      emit(state.copyWith(
+        auditReviewListLoadStatus: EntityStatus.success,
+        auditReviewList: auditReviewList,
+      ));
+    } catch (e) {
+      emit(state.copyWith(auditReviewListLoadStatus: EntityStatus.success));
+    }
   }
 
   Future<void> _onAuditDetailReviewersSaved(
@@ -44,8 +100,13 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
           auditId: auditId,
           reviewers: state.selectedReviewerList.map((e) => e!.id!).toList()));
 
-      emit(state.copyWith(auditReviewersSaveStatus: EntityStatus.success));
+      emit(state.copyWith(
+          auditReviewersSaveStatus: EntityStatus.success,
+          auditSummary: state.auditSummary?.copyWith(
+            auditStatusName: 'In Review',
+          )));
       add(AuditDetailAuditMarkInReview());
+      add(AuditDetailReviewListLoaded());
     } catch (e) {
       emit(state.copyWith(auditReviewersSaveStatus: EntityStatus.failure));
     }
@@ -102,6 +163,10 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     try {
       final List<Entity> reviewerList =
           await _sitesRepository.getUserListForSite(state.auditSummary!.siteId);
+
+      reviewerList
+          .removeWhere((element) => element.id == state.auditSummary!.ownerId);
+
       emit(state.copyWith(
           reviewerList: reviewerList
               .map((e) => User(
@@ -230,6 +295,11 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         auditSummary: auditSummary,
         auditLoadStatus: EntityStatus.success,
       ));
+
+      if (auditSummary.auditStatusName == 'In Review') {
+        add(AuditDetailReviewListLoaded());
+      }
+
       if (!state.isEditable) {
         add(AuditDetailReviewerListLoaded());
       }

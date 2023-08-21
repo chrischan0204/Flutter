@@ -4,6 +4,8 @@ class AuthState extends Equatable {
   final AuthUser? authUser;
   const AuthState({this.authUser});
 
+  String? get userId => authUser?.id;
+
   @override
   List<Object?> get props => [authUser];
 

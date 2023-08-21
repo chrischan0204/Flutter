@@ -22,6 +22,11 @@ class AuditDetailState extends Equatable {
   final EntityStatus auditStatusChangeStatus;
   final EntityStatus auditReviewersSaveStatus;
 
+  final List<AuditReview> auditReviewList;
+  final EntityStatus auditReviewListLoadStatus;
+
+  final EntityStatus auditReviewCommentSaveStatus;
+
   final String message;
   const AuditDetailState({
     this.auditSummary,
@@ -38,6 +43,9 @@ class AuditDetailState extends Equatable {
     this.selectedMethod,
     this.auditStatusChangeStatus = EntityStatus.initial,
     this.auditReviewersSaveStatus = EntityStatus.initial,
+    this.auditReviewList = const [],
+    this.auditReviewListLoadStatus = EntityStatus.initial,
+    this.auditReviewCommentSaveStatus = EntityStatus.initial,
     this.message = '',
   });
 
@@ -58,6 +66,9 @@ class AuditDetailState extends Equatable {
         status,
         auditStatusChangeStatus,
         auditReviewersSaveStatus,
+        auditReviewList,
+        auditReviewListLoadStatus,
+        auditReviewCommentSaveStatus,
       ];
 
   bool get isDeletable {
@@ -99,6 +110,9 @@ class AuditDetailState extends Equatable {
     String? message,
     EntityStatus? auditStatusChangeStatus,
     EntityStatus? auditReviewersSaveStatus,
+    List<AuditReview>? auditReviewList,
+    EntityStatus? auditReviewListLoadStatus,
+    EntityStatus? auditReviewCommentSaveStatus,
   }) {
     return AuditDetailState(
       auditSummary: auditSummary ?? this.auditSummary,
@@ -119,6 +133,11 @@ class AuditDetailState extends Equatable {
       auditReviewersSaveStatus:
           auditReviewersSaveStatus ?? this.auditReviewersSaveStatus,
       message: message ?? this.message,
+      auditReviewList: auditReviewList ?? this.auditReviewList,
+      auditReviewListLoadStatus:
+          auditReviewListLoadStatus ?? this.auditReviewListLoadStatus,
+      auditReviewCommentSaveStatus:
+          auditReviewCommentSaveStatus ?? this.auditReviewCommentSaveStatus,
     );
   }
 }

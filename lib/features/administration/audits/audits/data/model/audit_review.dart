@@ -4,14 +4,16 @@ class AuditReview extends Equatable {
   final String id;
   final String auditId;
   final String? reviewerName;
-  final String reviewDate;
+  final String reviewerId;
+  final DateTime? reviewDate;
   final String? reviewComments;
 
   const AuditReview({
     required this.id,
     required this.auditId,
     this.reviewerName,
-    required this.reviewDate,
+    required this.reviewerId,
+    this.reviewDate,
     this.reviewComments,
   });
 
@@ -19,8 +21,9 @@ class AuditReview extends Equatable {
     String? id,
     String? auditId,
     String? reviewerName,
-    String? reviewDate,
+    DateTime? reviewDate,
     String? reviewComments,
+    String? reviewerId,
   }) {
     return AuditReview(
       id: id ?? this.id,
@@ -28,16 +31,24 @@ class AuditReview extends Equatable {
       reviewerName: reviewerName ?? this.reviewerName,
       reviewDate: reviewDate ?? this.reviewDate,
       reviewComments: reviewComments ?? this.reviewComments,
+      reviewerId: reviewerId ?? this.reviewerId,
     );
   }
+
+  AuditReviewUpdate get reviewUpate => AuditReviewUpdate(
+        id: id,
+        reviewComments: reviewComments ?? '',
+        userId: reviewerId,
+      );
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'auditId': auditId,
       'reviewerName': reviewerName,
-      'reviewDate': reviewDate,
+      'reviewDate': reviewDate?.toIso8601String(),
       'reviewComments': reviewComments,
+      'reviewerId': reviewerId,
     };
   }
 
@@ -47,10 +58,12 @@ class AuditReview extends Equatable {
       auditId: map['auditId'] as String,
       reviewerName:
           map['reviewerName'] != null ? map['reviewerName'] as String : null,
-      reviewDate: map['reviewDate'] as String,
+      reviewDate:
+          map['reviewDate'] != null ? DateTime.parse(map['reviewDate']) : null,
       reviewComments: map['reviewComments'] != null
           ? map['reviewComments'] as String
           : null,
+      reviewerId: map['reviewerId'],
     );
   }
 
@@ -66,5 +79,6 @@ class AuditReview extends Equatable {
         reviewerName,
         reviewDate,
         reviewComments,
+        reviewerId,
       ];
 }
