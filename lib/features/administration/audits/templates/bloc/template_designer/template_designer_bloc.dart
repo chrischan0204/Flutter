@@ -100,18 +100,27 @@ class TemplateDesignerBloc
     super.onChange(change);
   }
 
-  Future<void> _onTemplateDesignerQuestionDeleted(TemplateDesignerQuestionDeleted event, 
-  Emitter<TemplateDesignerState> emit,) async {
+  Future<void> _onTemplateDesignerQuestionDeleted(
+    TemplateDesignerQuestionDeleted event,
+    Emitter<TemplateDesignerState> emit,
+  ) async {
     emit(state.copyWith(questionDeleteStatus: EntityStatus.loading));
-    
+
     try {
-      EntityResponse response = await _templatesRepository.deleteQuestion(event.questionId);
+      EntityResponse response =
+          await _templatesRepository.deleteQuestion(event.questionId);
 
       if (response.isSuccess) {
-        emit(state.copyWith(questionDeleteStatus: EntityStatus.success, message: response.message,));
+        emit(state.copyWith(
+          questionDeleteStatus: EntityStatus.success,
+          message: response.message,
+        ));
+
+        add(TemplateDesignerTemplateSectionItemQuestionListLoaded(
+            templateSectionId: state.selectedTemplateSection!.id));
       }
     } catch (e) {
-        emit(state.copyWith(questionDeleteStatus: EntityStatus.failure));
+      emit(state.copyWith(questionDeleteStatus: EntityStatus.failure));
     }
   }
 
@@ -128,10 +137,13 @@ class TemplateDesignerBloc
       List<TemplateSectionListItem> templateSectionList =
           await _templatesRepository.getTemplateSectionList(templateId);
       late Nullable<TemplateSectionListItem?> selectedTemplateSection;
-      if (templateSectionList.where((element) => element.id == state.selectedTemplateSection?.id).isEmpty) {
+      if (templateSectionList
+          .where((element) => element.id == state.selectedTemplateSection?.id)
+          .isEmpty) {
         selectedTemplateSection = const Nullable.value(null);
       } else {
-        selectedTemplateSection =  Nullable.value(templateSectionList.firstWhere((element) => element.id == state.selectedTemplateSection?.id));
+        selectedTemplateSection = Nullable.value(templateSectionList.firstWhere(
+            (element) => element.id == state.selectedTemplateSection?.id));
       }
 
       emit(state.copyWith(
@@ -1240,8 +1252,7 @@ class TemplateDesignerBloc
       final String responseScaleId = event.question.responseScaleId;
 
       List<TemplateResponseScaleItem> responseScaleItemList =
-          await _auditsRepository
-              .getResponseScaleItemList(responseScaleId);
+          await _auditsRepository.getResponseScaleItemList(responseScaleId);
 
       responseScaleItemList = responseScaleItemList
           .map((e) => e.copyWith(

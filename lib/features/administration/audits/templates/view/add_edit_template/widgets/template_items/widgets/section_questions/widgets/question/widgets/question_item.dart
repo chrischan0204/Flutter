@@ -98,7 +98,28 @@ class QuestionItemView extends StatelessWidget {
                             'Do you really want to deleted this section?',
                         btnOkText: 'OK',
                         btnCancelOnPress: () {},
-                        btnOkOnPress: () {},
+                        btnOkOnPress: () {
+                          if (question.isDeletable) {
+                            context.read<TemplateDesignerBloc>().add(
+                                TemplateDesignerQuestionDeleted(
+                                    questionId: question.id));
+                          } else {
+                            CustomAlert(
+                              context: context,
+                              width: MediaQuery.of(context).size.width / 4,
+                              title: 'Confirm',
+                              description:
+                                  'The question you want to delete has a follow-up questions, This action will also delete its associated follow-up questions.',
+                              btnOkText: 'OK',
+                              btnCancelOnPress: () {},
+                              btnOkOnPress: () => context
+                                  .read<TemplateDesignerBloc>()
+                                  .add(TemplateDesignerQuestionDeleted(
+                                      questionId: question.id)),
+                              dialogType: DialogType.question,
+                            ).show();
+                          }
+                        },
                         dialogType: DialogType.question,
                       ).show();
                     },

@@ -242,7 +242,7 @@ class TemplatesRepository extends BaseRepository {
 
   /// delete template by id
   Future<EntityResponse> deleteQuestion(String questionId) async {
-    Response response = await super.delete('$url/questions/$questionId');
+    Response response = await super.delete('$url/sectionitems/$questionId');
 
     if (response.statusCode != 500) {
       if (response.statusCode == 200) {

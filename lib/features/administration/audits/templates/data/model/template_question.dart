@@ -38,6 +38,9 @@ class TemplateQuestion extends Equatable {
         isOpen,
       ];
 
+  bool get isDeletable =>
+      responseScaleItems.every((element) => !element.followUpRequired);
+
   factory TemplateQuestion.fromMap(Map<String, dynamic> map) {
     return TemplateQuestion(
       id: map['id'] as String,
