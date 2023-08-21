@@ -46,15 +46,16 @@ class _MarkAsCompletedAuditViewState extends State<MarkAsCompletedAuditWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuditDetailBloc, AuditDetailState>(
       listener: (context, state) {
-        CustomNotification(
-          context: context,
-          notifyType: NotifyType.success,
-          content: state.message,
-        ).showNotification();
-        context.go('/audits');
+        // CustomNotification(
+        //   context: context,
+        //   notifyType: NotifyType.success,
+        //   content: state.message,
+        // ).showNotification();
+        context.go('/audits/show/${widget.auditId}');
       },
       listenWhen: (previous, current) =>
-          previous.status != current.status && current.status.isSuccess,
+          previous.auditStatusChangeStatus != current.auditStatusChangeStatus &&
+          current.auditStatusChangeStatus.isSuccess,
       builder: (context, state) {
         return EntityShowTemplate(
           title: pageTitle,
@@ -127,7 +128,7 @@ class _MarkAsCompletedAuditViewState extends State<MarkAsCompletedAuditWidget> {
                                 ? () {
                                     context
                                         .read<AuditDetailBloc>()
-                                        .add(AuditDetailAuditDeleted());
+                                        .add(AuditDetailAuditMarkCompleted());
                                   }
                                 : null,
                             backgroundColor: warnColor,

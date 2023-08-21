@@ -67,7 +67,10 @@ class ResponseScalesRepository extends BaseRepository {
         }));
 
     if (response.statusCode == 200) {
-      return EntityResponse(isSuccess: true, message: '');
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
     }
 
     throw Exception();
@@ -77,7 +80,10 @@ class ResponseScalesRepository extends BaseRepository {
     Response response = await super.delete('$url/$responseScaleId');
 
     if (response.statusCode == 200) {
-      return EntityResponse(isSuccess: true, message: '');
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
     }
 
     throw Exception();

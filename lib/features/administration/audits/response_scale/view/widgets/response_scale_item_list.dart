@@ -114,7 +114,7 @@ class _ResponseScaleItemListViewState extends State<ResponseScaleItemListView> {
                                 backgroundColor: successColor,
                                 hoverBackgroundColor: successHoverColor,
                                 body: Text(
-                                  'Add Item',
+                                  'Add More Item',
                                   style: textNormal14.copyWith(
                                     color: Colors.white,
                                   ),
@@ -126,79 +126,87 @@ class _ResponseScaleItemListViewState extends State<ResponseScaleItemListView> {
                       ),
                     ),
                   ),
-                Builder(
-                  builder: (context) {
-                    if (state.responseScaleItemListLoadStatus.isLoading) {
-                      return const Center(child: Loader(topPadding: 100));
-                    }
-                    return Column(
-                      children: [
-                        if (state.selectedResponseScaleId != null)
-                          CustomBottomBorderContainer(
-                            padding: insety10.copyWith(right: 40, left: 65),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Response Scale Item',
-                                    style: textSemiBold16,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    'Required',
-                                    style: textSemiBold16,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    'Score',
-                                    style: textSemiBold16,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        SizedBox(
-                          height: 50.0 * state.responseScaleItemList.length,
-                          child: ReorderableList(
-                            onReorder: _reorderCallback,
-                            onReorderDone: _reorderDone,
-                            child: CustomScrollView(
-                              slivers: <Widget>[
-                                SliverPadding(
-                                  padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context)
-                                          .padding
-                                          .bottom),
-                                  sliver: SliverList(
-                                    delegate: SliverChildBuilderDelegate(
-                                      (BuildContext context, int index) {
-                                        return ResponseScaleItemListItemView(
-                                          responseScaleItem: state
-                                              .responseScaleItemList[index],
-                                          isFirst: index == 0,
-                                          isLast: index ==
-                                              state.responseScaleItemList
-                                                      .length -
-                                                  1,
-                                          index: index,
-                                        );
-                                      },
-                                      childCount:
-                                          state.responseScaleItemList.length,
+                Expanded(
+                  child: Builder(
+                    builder: (context) {
+                      if (state.responseScaleItemListLoadStatus.isLoading) {
+                        return const Center(child: Loader(topPadding: 100));
+                      }
+                      return Column(
+                        children: [
+                          if (state.selectedResponseScaleId != null)
+                            CustomBottomBorderContainer(
+                              padding: insety10.copyWith(right: 40, left: 65),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Response Scale Item',
+                                      style: textSemiBold16,
                                     ),
                                   ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      'Required',
+                                      style: textSemiBold16,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      'Score',
+                                      style: textSemiBold16,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: SizedBox(
+                                height:
+                                    50.0 * state.responseScaleItemList.length,
+                                child: ReorderableList(
+                                  onReorder: _reorderCallback,
+                                  onReorderDone: _reorderDone,
+                                  child: CustomScrollView(
+                                    slivers: <Widget>[
+                                      SliverPadding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .padding
+                                                .bottom),
+                                        sliver: SliverList(
+                                          delegate: SliverChildBuilderDelegate(
+                                            (BuildContext context, int index) {
+                                              return ResponseScaleItemListItemView(
+                                                responseScaleItem:
+                                                    state.responseScaleItemList[
+                                                        index],
+                                                isFirst: index == 0,
+                                                isLast: index ==
+                                                    state.responseScaleItemList
+                                                            .length -
+                                                        1,
+                                                index: index,
+                                              );
+                                            },
+                                            childCount: state
+                                                .responseScaleItemList.length,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

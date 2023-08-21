@@ -25,41 +25,47 @@ class ExecuteAuditHeaderView extends StatelessWidget {
                 );
               },
             ),
-            Row(
-              children: [
-                CustomButton(
-                  backgroundColor: purpleColor,
-                  hoverBackgroundColor: purpleHoverColor,
-                  iconData: PhosphorIcons.regular.aperture,
-                  text: 'Focus Mode',
-                  onClick: () => CustomAlert.checkFormDirty(
-                      () => GoRouter.of(context)
-                          .go('/audits/focus_mode/$auditId'),
-                      context),
-                ),
-                spacerx20,
-                CustomButton(
-                  backgroundColor: const Color(0xff049aad),
-                  hoverBackgroundColor: const Color(0xff048b9c),
-                  iconData: PhosphorIcons.regular.aperture,
-                  text: 'Mark As Completed',
-                  onClick: () => CustomAlert.checkFormDirty(
-                      () => GoRouter.of(context)
-                          .go('/audits/mark_as_completed/$auditId'),
-                      context),
-                ),
-                spacerx20,
-                CustomButton(
-                  backgroundColor: successColor,
-                  hoverBackgroundColor: successHoverColor,
-                  iconData: PhosphorIcons.regular.caretCircleDoubleRight,
-                  text: 'Audit Details',
-                  onClick: () => CustomAlert.checkFormDirty(
-                      () => GoRouter.of(context).go('/audits/show/$auditId'),
-                      context),
-                ),
-              ],
-            )
+            BlocBuilder<AuditDetailBloc, AuditDetailState>(
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    CustomButton(
+                      backgroundColor: purpleColor,
+                      hoverBackgroundColor: purpleHoverColor,
+                      iconData: PhosphorIcons.regular.aperture,
+                      text: 'Focus Mode',
+                      onClick: () => CustomAlert.checkFormDirty(
+                          () => GoRouter.of(context)
+                              .go('/audits/focus_mode/$auditId'),
+                          context),
+                    ),
+                    if (state.isEditable) spacerx20,
+                    if (state.isEditable)
+                      CustomButton(
+                        backgroundColor: const Color(0xff049aad),
+                        hoverBackgroundColor: const Color(0xff048b9c),
+                        iconData: PhosphorIcons.regular.aperture,
+                        text: 'Mark As Completed',
+                        onClick: () => CustomAlert.checkFormDirty(
+                            () => GoRouter.of(context)
+                                .go('/audits/mark_as_completed/$auditId'),
+                            context),
+                      ),
+                    spacerx20,
+                    CustomButton(
+                      backgroundColor: successColor,
+                      hoverBackgroundColor: successHoverColor,
+                      iconData: PhosphorIcons.regular.caretCircleDoubleRight,
+                      text: 'Audit Details',
+                      onClick: () => CustomAlert.checkFormDirty(
+                          () =>
+                              GoRouter.of(context).go('/audits/show/$auditId'),
+                          context),
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),

@@ -44,6 +44,8 @@ class TemplateDesignerState extends Equatable {
 
   final List<SortOrder> sectionItemSortOrderList;
 
+  final EntityStatus questionDeleteStatus;
+
   const TemplateDesignerState({
     this.templateId = '',
     this.newSection = '',
@@ -70,6 +72,7 @@ class TemplateDesignerState extends Equatable {
     this.loadedTemplateSectionItemIdList = const [],
     this.sectionSortOrderList = const [],
     this.sectionItemSortOrderList = const [],
+    this.questionDeleteStatus = EntityStatus.initial,
   });
 
   ResponseScale? get currentResponseScaleItem {
@@ -136,6 +139,7 @@ class TemplateDesignerState extends Equatable {
         selectedQuestionId,
         sectionSortOrderList,
         sectionItemSortOrderList,
+        questionDeleteStatus,
       ];
 
   bool get formDirty {
@@ -292,6 +296,7 @@ class TemplateDesignerState extends Equatable {
     List<String>? loadedTemplateSectionItemIdList,
     List<SortOrder>? sectionSortOrderList,
     List<SortOrder>? sectionItemSortOrderList,
+    EntityStatus? questionDeleteStatus,
   }) {
     return TemplateDesignerState(
       newSection: newSection ?? this.newSection,
@@ -337,6 +342,7 @@ class TemplateDesignerState extends Equatable {
       sectionSortOrderList: sectionSortOrderList ?? this.sectionSortOrderList,
       sectionItemSortOrderList:
           sectionItemSortOrderList ?? this.sectionItemSortOrderList,
+      questionDeleteStatus: questionDeleteStatus ?? this.questionDeleteStatus,
     );
   }
 }

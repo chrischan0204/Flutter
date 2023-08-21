@@ -26,14 +26,14 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
   Widget build(BuildContext context) {
     return BlocConsumer<ResponseScaleBloc, ResponseScaleState>(
       listener: (context, state) {
-        if (state.responseScaleCrudStatus.isSuccess) {
+        if (state.responseScaleAddStatus.isSuccess) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.success,
             content: state.message,
           ).showNotification();
           sectionController.text = '';
-        } else if (state.responseScaleCrudStatus.isFailure) {
+        } else if (state.responseScaleAddStatus.isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,
@@ -42,7 +42,7 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
         }
       },
       listenWhen: (previous, current) =>
-          previous.responseScaleCrudStatus != current.responseScaleCrudStatus,
+          previous.responseScaleAddStatus != current.responseScaleAddStatus,
       builder: (context, state) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: CustomTextFieldWithIcon(
@@ -50,7 +50,7 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
           suffixWidget: SizedBox(
             width: 40,
             child: Center(
-              child: state.responseScaleCrudStatus.isLoading
+              child: state.responseScaleAddStatus.isLoading
                   ? LoadingAnimationWidget.inkDrop(
                       color: Colors.blue,
                       size: 20,

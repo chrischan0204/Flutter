@@ -6,14 +6,14 @@ part 'audit_detail_state.dart';
 class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
   final BuildContext context;
   late AuditsRepository _auditsRepository;
-  late UsersRepository _usersRepository;
+  late SitesRepository _sitesRepository;
   final String auditId;
   AuditDetailBloc(
     this.context,
     this.auditId,
   ) : super(const AuditDetailState()) {
     _auditsRepository = RepositoryProvider.of(context);
-    _usersRepository = context.read();
+    _sitesRepository = context.read();
 
     on<AuditDetailLoaded>(_onAuditDetailLoaded);
     on<AuditDetailAuditDeleted>(_onAuditDetailAuditDeleted);
@@ -27,6 +27,72 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     on<AuditDetailReviewerItemIncreased>(_onAuditDetailReviewerItemIncreased);
     on<AuditDetailReviewerSelected>(_onAuditDetailReviewerSelected);
     on<AuditDetailReviewerListLoaded>(_onAuditDetailReviewerListLoaded);
+    on<AuditDetailAuditMarkCompleted>(_onAuditDetailAuditMarkCompleted);
+    on<AuditDetailAuditMarkClosed>(_onAuditDetailAuditMarkClosed);
+    on<AuditDetailAuditMarkInReview>(_onAuditDetailAuditMarkInReview);
+    on<AuditDetailReviewersSaved>(_onAuditDetailReviewersSaved);
+  }
+
+  Future<void> _onAuditDetailReviewersSaved(
+    AuditDetailReviewersSaved event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(auditReviewersSaveStatus: EntityStatus.loading));
+
+    try {
+      await _auditsRepository.saveAuditReviewers(AuditReviewersCreate(
+          auditId: auditId,
+          reviewers: state.selectedReviewerList.map((e) => e!.id!).toList()));
+
+      emit(state.copyWith(auditReviewersSaveStatus: EntityStatus.success));
+      add(AuditDetailAuditMarkInReview());
+    } catch (e) {
+      emit(state.copyWith(auditReviewersSaveStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onAuditDetailAuditMarkInReview(
+    AuditDetailAuditMarkInReview event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(auditStatusChangeStatus: EntityStatus.loading));
+    try {
+      await _auditsRepository.setAuditStatus(auditId, 'inreview');
+
+      emit(state.copyWith(auditStatusChangeStatus: EntityStatus.success));
+    } catch (e) {
+      emit(state.copyWith(auditStatusChangeStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onAuditDetailAuditMarkCompleted(
+    AuditDetailAuditMarkCompleted event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(auditStatusChangeStatus: EntityStatus.loading));
+    try {
+      await _auditsRepository.setAuditStatus(auditId, 'completed');
+
+      emit(state.copyWith(auditStatusChangeStatus: EntityStatus.success));
+    } catch (e) {
+      emit(state.copyWith(auditStatusChangeStatus: EntityStatus.failure));
+    }
+  }
+
+  Future<void> _onAuditDetailAuditMarkClosed(
+    AuditDetailAuditMarkClosed event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(auditStatusChangeStatus: EntityStatus.loading));
+    try {
+      await _auditsRepository.setAuditStatus(auditId, 'closed');
+
+      emit(state.copyWith(auditStatusChangeStatus: EntityStatus.success));
+
+      add(AuditDetailLoaded(auditId: auditId));
+    } catch (e) {
+      emit(state.copyWith(auditStatusChangeStatus: EntityStatus.failure));
+    }
   }
 
   Future<void> _onAuditDetailReviewerListLoaded(
@@ -34,8 +100,15 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     Emitter<AuditDetailState> emit,
   ) async {
     try {
-      final List<User> reviewerList = await _usersRepository.getUserList();
-      emit(state.copyWith(reviewerList: reviewerList));
+      final List<Entity> reviewerList =
+          await _sitesRepository.getUserListForSite(state.auditSummary!.siteId);
+      emit(state.copyWith(
+          reviewerList: reviewerList
+              .map((e) => User(
+                  id: e.id,
+                  firstName: e.name!.split(' ')[0],
+                  lastName: e.name!.split(' ')[1]))
+              .toList()));
     } catch (e) {}
   }
 
@@ -46,11 +119,22 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     final List<User?> selectedReviewerList =
         List.from(state.selectedReviewerList);
 
-    selectedReviewerList.removeAt(event.index);
+    User? removedUser = selectedReviewerList.removeAt(event.index);
 
     selectedReviewerList.insert(event.index, event.reviewer);
 
-    emit(state.copyWith(selectedReviewerList: selectedReviewerList));
+    final List<User> reviewerList = List.from(state.reviewerList);
+
+    reviewerList.removeWhere((element) => element.id == event.reviewer.id);
+
+    if (removedUser != null) {
+      reviewerList.add(removedUser);
+    }
+
+    emit(state.copyWith(
+      selectedReviewerList: selectedReviewerList,
+      reviewerList: reviewerList,
+    ));
   }
 
   void _onAuditDetailReviewerItemIncreased(
@@ -146,6 +230,9 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         auditSummary: auditSummary,
         auditLoadStatus: EntityStatus.success,
       ));
+      if (!state.isEditable) {
+        add(AuditDetailReviewerListLoaded());
+      }
     } catch (e) {
       emit(state.copyWith(auditLoadStatus: EntityStatus.loading));
     }

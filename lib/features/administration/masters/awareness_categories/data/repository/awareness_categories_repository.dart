@@ -93,6 +93,10 @@ class AwarenessCategoriesRepository extends BaseRepository {
         isSuccess: true,
         message: 'Awareness Category deleted successfully',
       );
+    } else {
+      if (response.statusCode == 409) {
+        return EntityResponse.fromJson(response.body);
+      }
     }
 
     throw Exception();

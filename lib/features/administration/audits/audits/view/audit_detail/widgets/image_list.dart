@@ -47,7 +47,7 @@ class _AuditDetailImageListViewState extends State<AuditDetailImageListView> {
         .toList();
 
     final documentList =
-        imageList.where((element) => !element.documentType!.isImage).toList();
+        widget.imageList.where((element) => !element.documentType!.isImage).toList();
     return AlertDialog(
       content: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),

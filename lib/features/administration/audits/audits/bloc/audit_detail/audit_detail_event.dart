@@ -78,3 +78,12 @@ class AuditDetailReviewerSelected extends AuditDetailEvent {
 }
 
 class AuditDetailReviewerListLoaded extends AuditDetailEvent {}
+
+class AuditDetailAuditMarkCompleted extends AuditDetailEvent {}
+
+class AuditDetailAuditMarkClosed extends AuditDetailEvent {}
+
+class AuditDetailAuditMarkInReview extends AuditDetailEvent {}
+
+class AuditDetailReviewersSaved extends AuditDetailEvent {}
+

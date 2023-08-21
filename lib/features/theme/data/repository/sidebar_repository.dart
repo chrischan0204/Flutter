@@ -12,17 +12,17 @@ class SidebarRepsitory {
       path: 'dashboard',
     ),
     SidebarItemModel(
+      iconData: PhosphorIcons.regular.plusMinus,
+      color: Colors.teal,
+      label: 'Audits ',
+      path: 'audits',
+    ),
+    SidebarItemModel(
       iconData: PhosphorIcons.regular.circlesThreePlus,
       color: Colors.pink,
       label: 'Observations',
       path: 'observations',
     ),
-    // SidebarItemModel(
-    //   iconData: PhosphorIcons.regular.plusMinus,
-    //   color: Colors.teal,
-    //   label: 'Audits ',
-    //   path: 'audits',
-    // ),
     SidebarItemModel(
       iconData: PhosphorIcons.regular.barcode,
       color: const Color(0xff26a196),
@@ -60,12 +60,6 @@ class SidebarRepsitory {
           color: Colors.teal,
           label: 'Templates',
           path: 'templates',
-        ),
-        SidebarItemModel(
-          iconData: PhosphorIcons.regular.plusMinus,
-          color: Colors.teal,
-          label: 'Audits',
-          path: 'audits',
         ),
         SidebarItemModel(
           iconData: PhosphorIcons.regular.scales,

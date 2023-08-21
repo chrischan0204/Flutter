@@ -83,9 +83,13 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
           crudStatus: state.auditDeleteStatus,
           customDetailWidget: state.auditSummary == null
               ? const Center(child: Loader())
-              : AuditDetailForNotCompletedView(
-                  auditNumber: state.auditSummary?.name ?? ''),
-          showSecondaryButton: true,
+              : state.isEditable
+                  ? AuditDetailForNotCompletedView(
+                      auditNumber: state.auditSummary?.name ?? '')
+                  : AuditDetailForCompletedView(
+                      auditNumber: state.auditSummary?.name ?? ''),
+          showSecondaryButton: state.isEditable,
+          isEditable: state.isEditable,
           secondaryButtonOnClick: () =>
               context.go('/audits/execute/${widget.auditId}'),
           secondaryIcon: PhosphorIcons.regular.caretCircleDoubleRight,

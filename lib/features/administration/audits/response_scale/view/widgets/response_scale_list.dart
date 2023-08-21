@@ -1,4 +1,3 @@
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:safety_eta/common_libraries.dart';
 
 import '../../blocs/bloc/response_scale_bloc.dart';
@@ -19,20 +18,18 @@ class _ResponseScaleListViewState extends State<ResponseScaleListView> {
     super.initState();
   }
 
-  bool _reorderCallback(Key item, Key newPosition) {
-    context.read<ResponseScaleBloc>().add(ResponseScaleListSorted(
-          currentId: item,
-          newId: newPosition,
-        ));
-
-    return true;
-  }
-
-  void _reorderDone(Key item) {}
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ResponseScaleBloc, ResponseScaleState>(
+    return BlocConsumer<ResponseScaleBloc, ResponseScaleState>(
+      listener: (context, state) => CustomNotification(
+        context: context,
+        notifyType: NotifyType.success,
+        content: state.message,
+      ).showNotification(),
+      listenWhen: (previous, current) =>
+          previous.responseScaleEditDeleteStatus !=
+              current.responseScaleEditDeleteStatus &&
+          current.responseScaleEditDeleteStatus.isSuccess,
       builder: (context, state) {
         return Card(
           elevation: 3,
@@ -54,36 +51,25 @@ class _ResponseScaleListViewState extends State<ResponseScaleListView> {
                   padding: inset10,
                   child: const AddNewResponseScaleField(),
                 ),
-                SizedBox(
-                  height: 50.0 * state.responseScaleList.length,
-                  child: ReorderableList(
-                    onReorder: _reorderCallback,
-                    onReorderDone: _reorderDone,
-                    child: CustomScrollView(
-                      slivers: <Widget>[
-                        SliverPadding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).padding.bottom),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return ResponseScaleListItemView(
-                                  responseScale: state.responseScaleList[index],
-                                  first: index == 0,
-                                  last:
-                                      index == state.responseScaleList.length - 1,
-                                  active: state.responseScaleList[index].id ==
-                                      state.selectedResponseScaleId,
-                                );
-                              },
-                              childCount: state.responseScaleList.length,
-                            ),
-                          ),
-                        ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (int index = 0;
+                            index < state.responseScaleList.length;
+                            index++)
+                          ResponseScaleListItemView(
+                            responseScale: state.responseScaleList[index],
+                            first: index == 0,
+                            last: index == state.responseScaleList.length - 1,
+                            active: state.responseScaleList[index].id ==
+                                state.selectedResponseScaleId,
+                          )
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

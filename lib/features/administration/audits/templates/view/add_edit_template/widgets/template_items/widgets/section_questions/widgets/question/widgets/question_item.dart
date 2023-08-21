@@ -46,35 +46,68 @@ class QuestionItemView extends StatelessWidget {
 
     Widget content = Container(
       decoration: decoration,
+      height: 50,
       child: SafeArea(
         top: false,
         bottom: false,
         child: Opacity(
           opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            // mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                onTap: () => context.read<TemplateDesignerBloc>().add(
-                    TemplateDesignerQuestionDetailLoaded(question: question)),
-                title: Row(
-                  children: [
-                    dragHandle,
-                    spacerx10,
-                    Expanded(
-                      child: Text(
-                        question.title,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: primaryColor,
+              Expanded(
+                child: ListTile(
+                  onTap: () => context.read<TemplateDesignerBloc>().add(
+                      TemplateDesignerQuestionDetailLoaded(question: question)),
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      dragHandle,
+                      spacerx10,
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 40,
+                          width: double.infinity,
+                          child: Text(
+                            question.title,
+                            maxLines: 2,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: primaryColor,
+                            ),
+                          ),
                         ),
                       ),
+                      spacerx10,
+                      Text(
+                        '${question.questionScore} + ${question.maxScore - question.questionScore}',
+                        style: const TextStyle(fontSize: 14),
+                      )
+                    ],
+                  ),
+                  trailing: IconButton(
+                    onPressed: () {
+                      CustomAlert(
+                        context: context,
+                        width: MediaQuery.of(context).size.width / 4,
+                        title: 'Confirm',
+                        description:
+                            'Do you really want to deleted this section?',
+                        btnOkText: 'OK',
+                        btnCancelOnPress: () {},
+                        btnOkOnPress: () {},
+                        dialogType: DialogType.question,
+                      ).show();
+                    },
+                    icon: PhosphorIcon(
+                      PhosphorIcons.regular.trashSimple,
+                      color: Colors.red,
+                      size: 20,
                     ),
-                  ],
-                ),
-                trailing: Text(
-                  '${question.questionScore} + ${question.maxScore - question.questionScore}',
-                  style: const TextStyle(fontSize: 14),
+                  ),
                 ),
               ),
               const CustomDivider(height: 1),

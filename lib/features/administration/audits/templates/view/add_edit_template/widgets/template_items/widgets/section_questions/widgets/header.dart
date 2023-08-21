@@ -14,15 +14,18 @@ class SectionQuestionsHeaderView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                state.selectedTemplateSection == null
-                    ? 'Summary Section'
-                    : 'Questions for ${state.selectedTemplateSection!.name}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+              Expanded(
+                child: Text(
+                  state.selectedTemplateSection == null
+                      ? 'Summary Section'
+                      : 'Questions for ${state.selectedTemplateSection!.name}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
+              spacerx20,
               if (state.selectedTemplateSection != null)
                 BlocListener<TemplateDesignerBloc, TemplateDesignerState>(
                   listener: (context, state) {

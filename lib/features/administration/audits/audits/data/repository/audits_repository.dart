@@ -601,4 +601,30 @@ class AuditsRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  Future<void> setAuditStatus(String auditId, String status) async {
+    Response response = await super
+        .post('$url/$auditId/status', queryParams: {'status': status});
+
+    if (response.statusCode == 200) {
+      return;
+    }
+
+    throw Exception();
+  }
+
+  Future<void> saveAuditReviewers(
+      AuditReviewersCreate auditReviewersCreate) async {
+    Response response = await super.post(
+        '$url/${auditReviewersCreate.auditId}/reviewers',
+        body: auditReviewersCreate.toJson());
+
+    if (response.statusCode == 200) {
+      return;
+    }
+
+    throw Exception();
+  }
+
+  
 }

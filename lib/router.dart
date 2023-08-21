@@ -360,6 +360,16 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/response_scales/index',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const Layout(
+          body: ResponseScaleCrudView(),
+          selectedItemName: 'response_scales',
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/audits',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,

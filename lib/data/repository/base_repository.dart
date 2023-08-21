@@ -32,19 +32,19 @@ class BaseRepository {
       }
       return response;
     } on http.ClientException catch (_) {
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
       throw Exception();
     }
   }
 
-  Future<http.Response> post(
-    String encodedPath, {
-    Object? body,
-    Encoding? encoding,
-  }) async {
+  Future<http.Response> post(String encodedPath,
+      {Object? body,
+      Encoding? encoding,
+      Map<String, dynamic>? queryParams}) async {
     late http.Response response;
     try {
       response = await http.post(
-        Uri.https(ApiUri.host, encodedPath),
+        Uri.https(ApiUri.host, encodedPath, queryParams),
         headers: headers,
         body: body,
         encoding: encoding,
@@ -56,7 +56,7 @@ class BaseRepository {
 
       return response;
     } catch (e) {
-      print(e);
+      authBloc.add(const AuthUnauthenticated(statusCode: 401));
       throw Exception();
     }
   }

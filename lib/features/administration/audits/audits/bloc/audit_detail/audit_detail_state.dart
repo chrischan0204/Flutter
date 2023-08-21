@@ -19,6 +19,9 @@ class AuditDetailState extends Equatable {
 
   final EntityStatus status;
 
+  final EntityStatus auditStatusChangeStatus;
+  final EntityStatus auditReviewersSaveStatus;
+
   final String message;
   const AuditDetailState({
     this.auditSummary,
@@ -33,6 +36,8 @@ class AuditDetailState extends Equatable {
     this.selectedReviewerList = const [null],
     this.selectedAuditSection,
     this.selectedMethod,
+    this.auditStatusChangeStatus = EntityStatus.initial,
+    this.auditReviewersSaveStatus = EntityStatus.initial,
     this.message = '',
   });
 
@@ -51,6 +56,8 @@ class AuditDetailState extends Equatable {
         selectedReviewerList,
         selectedMethod,
         status,
+        auditStatusChangeStatus,
+        auditReviewersSaveStatus,
       ];
 
   bool get isDeletable {
@@ -66,6 +73,16 @@ class AuditDetailState extends Equatable {
     }
   }
 
+  bool get isEditable => auditSummary == null
+      ? false
+      : auditSummary?.auditStatusName != 'Closed' &&
+          auditSummary?.auditStatusName != 'Completed' &&
+          auditSummary?.auditStatusName != 'In Review';
+
+  bool get canAddReviewer =>
+      selectedReviewerList.where((element) => element == null).length !=
+      reviewerList.length;
+
   AuditDetailState copyWith({
     AuditSummary? auditSummary,
     EntityStatus? auditLoadStatus,
@@ -80,6 +97,8 @@ class AuditDetailState extends Equatable {
     EntityStatus? status,
     String? selectedMethod,
     String? message,
+    EntityStatus? auditStatusChangeStatus,
+    EntityStatus? auditReviewersSaveStatus,
   }) {
     return AuditDetailState(
       auditSummary: auditSummary ?? this.auditSummary,
@@ -95,6 +114,10 @@ class AuditDetailState extends Equatable {
       selectedMethod: selectedMethod ?? this.selectedMethod,
       reviewerList: reviewerList ?? this.reviewerList,
       selectedReviewerList: selectedReviewerList ?? this.selectedReviewerList,
+      auditStatusChangeStatus:
+          auditStatusChangeStatus ?? this.auditStatusChangeStatus,
+      auditReviewersSaveStatus:
+          auditReviewersSaveStatus ?? this.auditReviewersSaveStatus,
       message: message ?? this.message,
     );
   }

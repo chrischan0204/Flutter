@@ -46,6 +46,7 @@ class TemplateDesignerBloc
         _onTemplateDesignerTemplateSectionItemQuestionListSorted);
     on<TemplateDesignerResponseScaleItemListLoaded>(
         _onTemplateDesignerResponseScaleItemListLoaded);
+    on<TemplateDesignerQuestionDeleted>(_onTemplateDesignerQuestionDeleted);
     on<TemplateDesignerQuestionChanged>(_onTemplateDesignerQuestionChanged);
     on<TemplateDesignerTemplateSectionItemCreated>(
         _onTemplateDesignerTemplateSectionItemCreated);
@@ -99,6 +100,21 @@ class TemplateDesignerBloc
     super.onChange(change);
   }
 
+  Future<void> _onTemplateDesignerQuestionDeleted(TemplateDesignerQuestionDeleted event, 
+  Emitter<TemplateDesignerState> emit,) async {
+    emit(state.copyWith(questionDeleteStatus: EntityStatus.loading));
+    
+    try {
+      EntityResponse response = await _templatesRepository.deleteQuestion(event.questionId);
+
+      if (response.isSuccess) {
+        emit(state.copyWith(questionDeleteStatus: EntityStatus.success, message: response.message,));
+      }
+    } catch (e) {
+        emit(state.copyWith(questionDeleteStatus: EntityStatus.failure));
+    }
+  }
+
   Future<void> _onTemplateDesignerTemplateSectionListLoaded(
     TemplateDesignerTemplateSectionListLoaded event,
     Emitter<TemplateDesignerState> emit,
@@ -111,10 +127,17 @@ class TemplateDesignerBloc
     try {
       List<TemplateSectionListItem> templateSectionList =
           await _templatesRepository.getTemplateSectionList(templateId);
+      late Nullable<TemplateSectionListItem?> selectedTemplateSection;
+      if (templateSectionList.where((element) => element.id == state.selectedTemplateSection?.id).isEmpty) {
+        selectedTemplateSection = const Nullable.value(null);
+      } else {
+        selectedTemplateSection =  Nullable.value(templateSectionList.firstWhere((element) => element.id == state.selectedTemplateSection?.id));
+      }
 
       emit(state.copyWith(
         templateSectionListLoadStatus: EntityStatus.success,
         templateSectionList: templateSectionList,
+        selectedTemplateSection: selectedTemplateSection,
       ));
     } catch (e) {
       emit(state.copyWith(templateSectionListLoadStatus: EntityStatus.failure));
@@ -206,7 +229,7 @@ class TemplateDesignerBloc
     TemplateDesignerSectionUpdated event,
     Emitter<TemplateDesignerState> emit,
   ) async {
-    emit(state.copyWith(templateSectionAddStatus: EntityStatus.loading));
+    // emit(state.copyWith(templateSectionAddStatus: EntityStatus.loading));
 
     try {
       EntityResponse response = await _templatesRepository
@@ -216,14 +239,15 @@ class TemplateDesignerBloc
         name: event.section,
       ));
       if (response.isSuccess) {
+        add(TemplateDesignerTemplateSectionListLoaded());
         emit(state.copyWith(
-          templateSectionAddStatus: EntityStatus.success,
+          // templateSectionAddStatus: EntityStatus.success,
           message: response.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        templateSectionAddStatus: EntityStatus.failure,
+        // templateSectionAddStatus: EntityStatus.failure,
         message: 'Something went wrong!',
       ));
     }

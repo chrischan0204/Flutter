@@ -16,28 +16,14 @@ class ResponseScaleListItemView extends StatefulWidget {
   });
 
   @override
-  State<ResponseScaleListItemView> createState() => _ResponseScaleListItemViewState();
+  State<ResponseScaleListItemView> createState() =>
+      _ResponseScaleListItemViewState();
 }
 
 class _ResponseScaleListItemViewState extends State<ResponseScaleListItemView> {
   bool _hover = false;
   bool _isEditing = false;
   late TextEditingController _textEditingController;
-
-  Widget dragHandle = ReorderableListener(
-    child: Container(
-      width: 29,
-      height: 29,
-      color: Colors.white,
-      child: Center(
-        child: Icon(
-          PhosphorIcons.regular.arrowsOutCardinal,
-          size: 22,
-          color: primaryColor,
-        ),
-      ),
-    ),
-  );
 
   @override
   void initState() {
@@ -144,104 +130,66 @@ class _ResponseScaleListItemViewState extends State<ResponseScaleListItemView> {
     );
   }
 
-  Widget _buildChild(BuildContext context, ReorderableItemState state) {
-    BoxDecoration decoration;
-
-    if (state == ReorderableItemState.dragProxy ||
-        state == ReorderableItemState.dragProxyFinished) {
-      // slightly transparent background white dragging (just like on iOS)
-      decoration = const BoxDecoration(color: Color(0xD0FFFFFF));
-    } else {
-      bool placeholder = state == ReorderableItemState.placeholder;
-      decoration = BoxDecoration(
-          border: Border(
-              top: widget.first && !placeholder
-                  ? Divider.createBorderSide(context) //
-                  : BorderSide.none,
-              bottom: widget.last && placeholder
-                  ? BorderSide.none //
-                  : Divider.createBorderSide(context)),
-          color: placeholder ? null : Colors.white);
-    }
-
-    Widget content = Container(
-      decoration: decoration,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Opacity(
-          opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
-          child: InkWell(
-            onTap: () {
-              CustomAlert.checkFormDirty(
-                  () => _getQuestionListForResponseScale(), context);
-            },
-            onHover: (value) => setState(() => _hover = value),
-            child: Container(
-              height: 50,
-              decoration: widget.active
-                  ? BoxDecoration(
-                      border: Border(
-                        top: widget.first
-                            ? BorderSide(
-                                color: primaryColor,
-                                width: 0.5,
-                              )
-                            : BorderSide(
-                                color: grey,
-                                width: 1,
-                              ),
-                        left: BorderSide(
-                          color: primaryColor,
-                          width: 0.5,
-                        ),
-                        right: BorderSide(
-                          color: primaryColor,
-                          width: 0.5,
-                        ),
-                      ),
-                      color: _getColor(),
-                    )
-                  : BoxDecoration(color: _getColor()),
-              child: ListTile(
-                leading: dragHandle,
-                title: _isEditing
-                    ? SizedBox(
-                        height: 40,
-                        child: CustomTextField(
-                          controller: _textEditingController,
-                        ),
-                      )
-                    : Tooltip(
-                        message: widget.responseScale.name,
-                        child: Text(
-                          widget.responseScale.name,
-                          style: TextStyle(
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        CustomAlert.checkFormDirty(
+            () => _getQuestionListForResponseScale(), context);
+      },
+      onHover: (value) => setState(() => _hover = value),
+      child: CustomBottomBorderContainer(
+        child: Container(
+          height: 50,
+          decoration: widget.active
+              ? BoxDecoration(
+                  border: Border(
+                    top: widget.first
+                        ? BorderSide(
                             color: primaryColor,
-                            fontSize: 14,
+                            width: 0.5,
+                          )
+                        : BorderSide(
+                            color: grey,
+                            width: 1,
                           ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
+                    left: BorderSide(
+                      color: primaryColor,
+                      width: 0.5,
+                    ),
+                    right: BorderSide(
+                      color: primaryColor,
+                      width: 0.5,
+                    ),
+                  ),
+                  color: _getColor(),
+                )
+              : BoxDecoration(color: _getColor()),
+          child: ListTile(
+            title: _isEditing
+                ? SizedBox(
+                    height: 40,
+                    child: CustomTextField(
+                      controller: _textEditingController,
+                    ),
+                  )
+                : Tooltip(
+                    message: widget.responseScale.name,
+                    child: Text(
+                      widget.responseScale.name,
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 14,
                       ),
-                trailing:
-                    _isEditing ? _buildEditButtons() : _buildCrudButtons(),
-              ),
-            ),
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+            trailing: _isEditing ? _buildEditButtons() : _buildCrudButtons(),
           ),
         ),
       ),
-    );
-
-    return content;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ReorderableItem(
-      key: ValueKey(widget.responseScale.id), //
-      childBuilder: _buildChild,
     );
   }
 }

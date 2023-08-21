@@ -46,15 +46,26 @@ class _QuestionsForSectionViewState extends State<QuestionsForSectionView> {
                     style: TextStyle(fontSize: 14),
                   ),
                 ),
-                Text(
-                  'Score',
-                  style: TextStyle(fontSize: 14),
+                Padding(
+                  padding: EdgeInsets.only(right: 60),
+                  child: Text(
+                    'Score',
+                    style: TextStyle(fontSize: 14),
+                  ),
                 ),
               ],
             ),
           ),
           const CustomDivider(),
-          BlocBuilder<TemplateDesignerBloc, TemplateDesignerState>(
+          BlocConsumer<TemplateDesignerBloc, TemplateDesignerState>(
+            listener: (context, state) => CustomNotification(
+              context: context,
+              notifyType: NotifyType.success,
+              content: state.message,
+            ).showNotification(),
+            listenWhen: (previous, current) =>
+                previous.questionDeleteStatus != current.questionDeleteStatus &&
+                current.questionDeleteStatus.isSuccess,
             builder: (context, state) {
               if (state.sectionItemQuestionListLoadStatus.isLoading) {
                 return const Center(child: Loader());

@@ -289,3 +289,13 @@ class TemplateDesignerFollowUpQuestionDetailLoaded
   @override
   List<Object?> get props => [id];
 }
+
+class TemplateDesignerQuestionDeleted extends TemplateDesignerEvent {
+  final String questionId;
+  const TemplateDesignerQuestionDeleted({
+    required this.questionId,
+  });
+
+  @override
+  List<Object?> get props => [questionId];
+}

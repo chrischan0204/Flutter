@@ -31,7 +31,7 @@ class _SectionItemViewState extends State<SectionItemView> {
       child: Center(
         child: Icon(
           PhosphorIcons.regular.arrowsOutCardinal,
-          size: 22,
+          size: 20,
           color: primaryColor,
         ),
       ),
@@ -73,19 +73,29 @@ class _SectionItemViewState extends State<SectionItemView> {
       children: [
         IconButton(
           onPressed: () {
-            setState(() {
+            if (Validation.isNotEmpty(_textEditingController.text)) {
               context
                   .read<TemplateDesignerBloc>()
                   .add(TemplateDesignerSectionUpdated(
                     section: _textEditingController.text,
                     sectionId: widget.section.id,
                   ));
-              _isEditing = false;
-            });
+              setState(() {
+                _isEditing = false;
+              });
+            } else {
+              CustomNotification(
+                      context: context,
+                      notifyType: NotifyType.info,
+                      content: FormValidationMessage(fieldName: 'Section name')
+                          .requiredMessage)
+                  .showNotification();
+            }
           },
           icon: PhosphorIcon(
             PhosphorIcons.regular.check,
             color: successHoverColor,
+            size: 20,
           ),
         ),
         IconButton(
@@ -97,6 +107,7 @@ class _SectionItemViewState extends State<SectionItemView> {
           icon: PhosphorIcon(
             PhosphorIcons.regular.x,
             color: Colors.red,
+            size: 20,
           ),
         ),
       ],
@@ -117,6 +128,7 @@ class _SectionItemViewState extends State<SectionItemView> {
           icon: PhosphorIcon(
             PhosphorIcons.regular.pencil,
             color: successHoverColor,
+            size: 20,
           ),
         ),
         IconButton(
@@ -136,10 +148,30 @@ class _SectionItemViewState extends State<SectionItemView> {
           icon: PhosphorIcon(
             PhosphorIcons.regular.trashSimple,
             color: Colors.red,
+            size: 20,
           ),
         ),
       ],
     );
+  }
+
+  String _makeTooltipMessage(String message) {
+    String result = '';
+    int wordPerLine = 70;
+    int count = message.length ~/ wordPerLine;
+    if (count == 0) {
+      return message;
+    }
+    for (int i = 0; i < count; i++) {
+      result += message.substring(
+          count * wordPerLine,
+          (count + 1) * wordPerLine < message.length
+              ? (count + 1) * wordPerLine
+              : message.length);
+      result += '\n';
+    }
+
+    return result;
   }
 
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
@@ -211,7 +243,7 @@ class _SectionItemViewState extends State<SectionItemView> {
                         ),
                       )
                     : Tooltip(
-                        message: widget.section.name,
+                        message: _makeTooltipMessage(widget.section.name),
                         child: Text(
                           widget.section.name,
                           style: TextStyle(

@@ -239,4 +239,22 @@ class TemplatesRepository extends BaseRepository {
 
     throw Exception();
   }
+
+  /// delete template by id
+  Future<EntityResponse> deleteQuestion(String questionId) async {
+    Response response = await super.delete('$url/questions/$questionId');
+
+    if (response.statusCode != 500) {
+      if (response.statusCode == 200) {
+        return EntityResponse(
+          statusCode: response.statusCode,
+          isSuccess: true,
+          message: response.body,
+        );
+      }
+      return EntityResponse.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
 }

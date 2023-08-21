@@ -186,21 +186,21 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     ResponseScaleAdded event,
     Emitter<ResponseScaleState> emit,
   ) async {
-    emit(state.copyWith(responseScaleCrudStatus: EntityStatus.loading));
+    emit(state.copyWith(responseScaleAddStatus: EntityStatus.loading));
     try {
       EntityResponse response = await _responseScalesRepository
           .addResponseScale(state.newResponseScaleName);
 
       if (response.isSuccess) {
         emit(state.copyWith(
-          responseScaleCrudStatus: EntityStatus.success,
+          responseScaleAddStatus: EntityStatus.success,
           message: response.message,
         ));
 
         add(ResponseScaleListLoaded());
       }
     } catch (e) {
-      emit(state.copyWith(responseScaleCrudStatus: EntityStatus.failure));
+      emit(state.copyWith(responseScaleAddStatus: EntityStatus.failure));
     }
   }
 
@@ -208,28 +208,42 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     ResponseScaleEdited event,
     Emitter<ResponseScaleState> emit,
   ) async {
+    emit(state.copyWith(responseScaleEditDeleteStatus: EntityStatus.loading));
     try {
       EntityResponse response = await _responseScalesRepository
           .editResponseScale(event.responseScaleId, event.responseScaleName);
 
       if (response.isSuccess) {
+        emit(state.copyWith(
+          responseScaleEditDeleteStatus: EntityStatus.success,
+          message: response.message,
+        ));
         add(ResponseScaleListLoaded());
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(state.copyWith(responseScaleEditDeleteStatus: EntityStatus.failure));
+    }
   }
 
   Future<void> _onResponseScaleDeleted(
     ResponseScaleDeleted event,
     Emitter<ResponseScaleState> emit,
   ) async {
+    emit(state.copyWith(responseScaleEditDeleteStatus: EntityStatus.loading));
     try {
       EntityResponse response = await _responseScalesRepository
           .deleteResponseScale(event.responseScaleId);
 
       if (response.isSuccess) {
+        emit(state.copyWith(
+          responseScaleEditDeleteStatus: EntityStatus.success,
+          message: response.message,
+        ));
         add(ResponseScaleListLoaded());
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(state.copyWith(responseScaleEditDeleteStatus: EntityStatus.failure));
+    }
   }
 
   Future<void> _onResponseScaleListSorted(

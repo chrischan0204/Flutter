@@ -68,6 +68,15 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
                 content: FormValidationMessage(fieldName: 'Section name')
                     .requiredMessage,
               ).showNotification();
+            }
+            if (sectionController.text.length > 200) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: FormValidationMessage(
+                        fieldName: 'Section name', maxLength: 200)
+                    .maxLengthValidationMessage,
+              ).showNotification();
             } else {
               templateDesignerBloc.add(TemplateDesignerTemplateSectionAdded());
             }
