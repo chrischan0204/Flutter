@@ -24,25 +24,7 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ResponseScaleBloc, ResponseScaleState>(
-      listener: (context, state) {
-        if (state.responseScaleAddStatus.isSuccess) {
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.success,
-            content: state.message,
-          ).showNotification();
-          sectionController.text = '';
-        } else if (state.responseScaleAddStatus.isFailure) {
-          CustomNotification(
-            context: context,
-            notifyType: NotifyType.error,
-            content: state.message,
-          ).showNotification();
-        }
-      },
-      listenWhen: (previous, current) =>
-          previous.responseScaleAddStatus != current.responseScaleAddStatus,
+    return BlocBuilder<ResponseScaleBloc, ResponseScaleState>(
       builder: (context, state) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: CustomTextFieldWithIcon(
@@ -69,6 +51,15 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
                 notifyType: NotifyType.info,
                 content: FormValidationMessage(fieldName: 'Response scale')
                     .requiredMessage,
+              ).showNotification();
+            } else if (sectionController.text.length > 200) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: FormValidationMessage(
+                  fieldName: 'Response scale',
+                  maxLength: 200,
+                ).maxLengthValidationMessage,
               ).showNotification();
             } else {
               responseScaleBloc.add(ResponseScaleAdded());

@@ -8,13 +8,13 @@ abstract class RegionsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AssignedRegionsRetrieved extends RegionsEvent {}
+class AssignedRegionsLoaded extends RegionsEvent {}
 
-class UnassignedRegionsRetrieved extends RegionsEvent {}
+class UnassignedRegionsLoaded extends RegionsEvent {}
 
-class TimeZonesRetrievedForRegion extends RegionsEvent {
+class TimeZonesLoadedForRegion extends RegionsEvent {
   final String regionId;
-  const TimeZonesRetrievedForRegion({
+  const TimeZonesLoadedForRegion({
     required this.regionId,
   });
   @override

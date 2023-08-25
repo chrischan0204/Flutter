@@ -6,9 +6,9 @@ class RegionsState extends Equatable {
   final List<TimeZone> timeZones;
   final Region? selectedRegion;
 
-  final EntityStatus assignedRegionsRetrievedStatus;
-  final EntityStatus unassignedRegionsRetrievedStatus;
-  final EntityStatus timeZonesRetrievedStatus;
+  final EntityStatus assignedRegionsLoadedStatus;
+  final EntityStatus unassignedRegionsLoadedStatus;
+  final EntityStatus timeZonesLoadedStatus;
   final EntityStatus regionSelectedStatus;
   final EntityStatus regionCrudStatus;
 
@@ -18,9 +18,9 @@ class RegionsState extends Equatable {
     this.unassignedRegions = const [],
     this.timeZones = const [],
     this.selectedRegion,
-    this.assignedRegionsRetrievedStatus = EntityStatus.initial,
-    this.unassignedRegionsRetrievedStatus = EntityStatus.initial,
-    this.timeZonesRetrievedStatus = EntityStatus.initial,
+    this.assignedRegionsLoadedStatus = EntityStatus.initial,
+    this.unassignedRegionsLoadedStatus = EntityStatus.initial,
+    this.timeZonesLoadedStatus = EntityStatus.initial,
     this.regionSelectedStatus = EntityStatus.initial,
     this.regionCrudStatus = EntityStatus.initial,
     this.message = '',
@@ -33,9 +33,9 @@ class RegionsState extends Equatable {
         unassignedRegions,
         timeZones,
         selectedRegion,
-        assignedRegionsRetrievedStatus,
-        unassignedRegionsRetrievedStatus,
-        timeZonesRetrievedStatus,
+        assignedRegionsLoadedStatus,
+        unassignedRegionsLoadedStatus,
+        timeZonesLoadedStatus,
         regionSelectedStatus,
         regionCrudStatus,
         message,
@@ -47,9 +47,9 @@ class RegionsState extends Equatable {
     List<Region>? unassignedRegions,
     List<TimeZone>? timeZones,
     Region? selectedRegion,
-    EntityStatus? assignedRegionsRetrievedStatus,
-    EntityStatus? unassignedRegionsRetrievedStatus,
-    EntityStatus? timeZonesRetrievedStatus,
+    EntityStatus? assignedRegionsLoadedStatus,
+    EntityStatus? unassignedRegionsLoadedStatus,
+    EntityStatus? timeZonesLoadedStatus,
     EntityStatus? regionSelectedStatus,
     EntityStatus? regionCrudStatus,
     String? message,
@@ -59,12 +59,12 @@ class RegionsState extends Equatable {
       unassignedRegions: unassignedRegions ?? this.unassignedRegions,
       timeZones: timeZones ?? this.timeZones,
       selectedRegion: selectedRegion ?? this.selectedRegion,
-      assignedRegionsRetrievedStatus:
-          assignedRegionsRetrievedStatus ?? this.assignedRegionsRetrievedStatus,
-      unassignedRegionsRetrievedStatus: unassignedRegionsRetrievedStatus ??
-          this.unassignedRegionsRetrievedStatus,
-      timeZonesRetrievedStatus:
-          timeZonesRetrievedStatus ?? this.timeZonesRetrievedStatus,
+      assignedRegionsLoadedStatus:
+          assignedRegionsLoadedStatus ?? this.assignedRegionsLoadedStatus,
+      unassignedRegionsLoadedStatus:
+          unassignedRegionsLoadedStatus ?? this.unassignedRegionsLoadedStatus,
+      timeZonesLoadedStatus:
+          timeZonesLoadedStatus ?? this.timeZonesLoadedStatus,
       regionSelectedStatus: regionSelectedStatus ?? this.regionSelectedStatus,
       regionCrudStatus: regionCrudStatus ?? this.regionCrudStatus,
       message: message ?? this.message,

@@ -61,44 +61,61 @@ class _AuditObservationViewState extends State<AuditObservationView> {
                       'Observation ${capitalize(state.view.name)}',
                       style: textNormal14,
                     ),
-                    CustomBadge(
-                      label: state.view.toString(),
-                      color: primaryColor,
-                      radius: 10,
-                      onClick: () {
-                        switch (state.view) {
-                          case CrudView.list:
-                            context.read<ExecuteAuditObservationBloc>().add(
-                                const ExecuteAuditObservationViewChanged(
-                                    view: CrudView.create));
-                            context.read<ExecuteAuditObservationBloc>().add(
-                                  ExecuteAuditObservationSiteChanged(
-                                    site: Site(
-                                      id: auditDetailState.auditSummary?.siteId,
-                                      name: auditDetailState
-                                          .auditSummary?.siteName,
-                                    ),
-                                    isInit: true,
-                                  ),
-                                );
-                            break;
-                          case CrudView.detail:
-                            context.read<ExecuteAuditObservationBloc>().add(
-                                const ExecuteAuditObservationViewChanged(
-                                    view: CrudView.list));
-                            break;
-                          case CrudView.create:
-                            context
-                                .read<ExecuteAuditObservationBloc>()
-                                .add(ExecuteAuditObservationCreated());
-                            break;
-                          case CrudView.update:
-                            context
-                                .read<ExecuteAuditObservationBloc>()
-                                .add(ExecuteAuditObservationUpdated());
-                            break;
-                        }
-                      },
+                    Row(
+                      children: [
+                        if (state.view.isCreate || state.view.isUpdate)
+                          CustomBadge(
+                            label: 'Cancel',
+                            color: Colors.grey,
+                            radius: 10,
+                            onClick: () {
+                              context.read<ExecuteAuditObservationBloc>()
+                                ..add(ExecuteAuditObservationInited())
+                                ..add(ExecuteAuditObservationListLoaded());
+                            },
+                          ),
+                        spacerx20,
+                        CustomBadge(
+                          label: state.view.toString(),
+                          color: primaryColor,
+                          radius: 10,
+                          onClick: () {
+                            switch (state.view) {
+                              case CrudView.list:
+                                context.read<ExecuteAuditObservationBloc>().add(
+                                    const ExecuteAuditObservationViewChanged(
+                                        view: CrudView.create));
+                                context.read<ExecuteAuditObservationBloc>().add(
+                                      ExecuteAuditObservationSiteChanged(
+                                        site: Site(
+                                          id: auditDetailState
+                                              .auditSummary?.siteId,
+                                          name: auditDetailState
+                                              .auditSummary?.siteName,
+                                        ),
+                                        isInit: true,
+                                      ),
+                                    );
+                                break;
+                              case CrudView.detail:
+                                context.read<ExecuteAuditObservationBloc>().add(
+                                    const ExecuteAuditObservationViewChanged(
+                                        view: CrudView.list));
+                                break;
+                              case CrudView.create:
+                                context
+                                    .read<ExecuteAuditObservationBloc>()
+                                    .add(ExecuteAuditObservationCreated());
+                                break;
+                              case CrudView.update:
+                                context
+                                    .read<ExecuteAuditObservationBloc>()
+                                    .add(ExecuteAuditObservationUpdated());
+                                break;
+                            }
+                          },
+                        )
+                      ],
                     )
                   ],
                 ),

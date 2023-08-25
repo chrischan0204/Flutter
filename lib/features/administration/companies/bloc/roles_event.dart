@@ -7,4 +7,4 @@ abstract class RolesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RolesRetrieved extends RolesEvent {}
+class RolesLoaded extends RolesEvent {}

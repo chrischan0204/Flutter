@@ -20,8 +20,8 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
     companiesBloc = context.read<CompaniesBloc>()
       ..add(const FilterTextForAssignedChanged(filterText: ''))
       ..add(const FilterTextForUnassignedChanged(filterText: ''))
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId));
+      ..add(AssignedCompanySitesLoaded(companyId: widget.companyId))
+      ..add(UnassignedCompanySitesLoaded(companyId: widget.companyId));
 
     context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
@@ -244,14 +244,14 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         hintText: 'Filter unassigned sites by name.',
         label: 'sites',
         applyFilter: () {
-          companiesBloc.add(UnassignedCompanySitesRetrieved(
+          companiesBloc.add(UnassignedCompanySitesLoaded(
             companyId: widget.companyId,
             name: state.filterTextForUnassigned,
           ));
         },
         clearFilter: () {
           companiesBloc
-            ..add(UnassignedCompanySitesRetrieved(companyId: widget.companyId))
+            ..add(UnassignedCompanySitesLoaded(companyId: widget.companyId))
             ..add(const FilterTextForUnassignedChanged(filterText: ''));
         },
         onChange: (value) => companiesBloc
@@ -267,14 +267,14 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
         hintText: 'Filter assigned sites by name.',
         label: 'sites',
         applyFilter: () {
-          companiesBloc.add(AssignedCompanySitesRetrieved(
+          companiesBloc.add(AssignedCompanySitesLoaded(
             companyId: widget.companyId,
             name: state.filterTextForAssigned,
           ));
         },
         clearFilter: () {
           companiesBloc
-            ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
+            ..add(AssignedCompanySitesLoaded(companyId: widget.companyId))
             ..add(const FilterTextForAssignedChanged(filterText: ''));
         },
         onChange: (value) =>
@@ -286,9 +286,9 @@ class _AssignSitesToCompanyViewState extends State<AssignSitesToCompanyView> {
   _refetchCompanySites(
       String filterTextForAssigned, String filterTextForUnassigned) {
     companiesBloc
-      ..add(AssignedCompanySitesRetrieved(
+      ..add(AssignedCompanySitesLoaded(
           companyId: widget.companyId, name: filterTextForAssigned))
-      ..add(UnassignedCompanySitesRetrieved(
+      ..add(UnassignedCompanySitesLoaded(
         companyId: widget.companyId,
         name: filterTextForUnassigned,
       ));

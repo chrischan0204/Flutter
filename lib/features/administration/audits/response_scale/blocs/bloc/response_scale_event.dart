@@ -159,3 +159,14 @@ class ResponseScaleItemListSorted extends ResponseScaleEvent {
         newId,
       ];
 }
+
+class ResponseScaleDeletionValidated extends ResponseScaleEvent {
+  final String responseScaleId;
+
+  const ResponseScaleDeletionValidated({
+    required this.responseScaleId,
+  });
+
+  @override
+  List<Object> get props => [responseScaleId];
+}

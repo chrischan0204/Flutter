@@ -7,7 +7,7 @@ abstract class SitesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class SitesRetrieved extends SitesEvent {}
+class SitesLoaded extends SitesEvent {}
 
 class SiteListFiltered extends SitesEvent {
   final FilteredTableParameter option;
@@ -54,7 +54,7 @@ class SiteDeleted extends SitesEvent {
 
 class SitesStatusInited extends SitesEvent {}
 
-class AuditTemplatesRetrieved extends SitesEvent {}
+class AuditTemplatesLoaded extends SitesEvent {}
 
 class AuditTemplateAssignedToSite extends SitesEvent {
   final String auditTemplateId;

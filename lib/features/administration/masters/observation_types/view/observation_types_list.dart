@@ -23,7 +23,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
   void initState() {
     super.initState();
     observationTypesBloc = context.read<ObservationTypesBloc>()
-      ..add(ObservationTypesRetrieved());
+      ..add(ObservationTypesLoaded());
   }
 
   @override
@@ -37,7 +37,7 @@ class _ObservationTypesState extends State<ObservationTypesListView> {
           label: label,
           emptyMessage: emptyMessage,
           entityListLoadStatusLoading:
-              state.observationTypesRetrievedStatus.isLoading,
+              state.observationTypesLoadedStatus.isLoading,
           onRowClick: (observationType) {
             observationTypesBloc.add(ObservationTypeSelected(
               observationType: observationType as ObservationType,

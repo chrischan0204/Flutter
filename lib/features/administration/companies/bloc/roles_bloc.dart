@@ -12,22 +12,22 @@ class RolesBloc extends Bloc<RolesEvent, RolesState> {
   RolesBloc({
     required this.rolesRepository,
   }) : super(const RolesState()) {
-    on<RolesRetrieved>(_onRolesRetrieved);
+    on<RolesLoaded>(_onRolesLoaded);
   }
 
-  Future<void> _onRolesRetrieved(
-    RolesRetrieved event,
+  Future<void> _onRolesLoaded(
+    RolesLoaded event,
     Emitter<RolesState> emit,
   ) async {
-    emit(state.copyWith(rolesRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(rolesLoadedStatus: EntityStatus.loading));
     try {
       List<Role> roles = await rolesRepository.getRoles();
       emit(state.copyWith(
         roles: roles,
-        rolesRetrievedStatus: EntityStatus.success,
+        rolesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(rolesRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(rolesLoadedStatus: EntityStatus.failure));
     }
   }
 }

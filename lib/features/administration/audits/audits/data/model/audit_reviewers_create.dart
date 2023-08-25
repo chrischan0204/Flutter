@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import '/common_libraries.dart';
 
 class AuditReviewersCreate extends Equatable {
@@ -43,5 +40,6 @@ class AuditReviewersCreate extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory AuditReviewersCreate.fromJson(String source) => AuditReviewersCreate.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AuditReviewersCreate.fromJson(String source) =>
+      AuditReviewersCreate.fromMap(json.decode(source) as Map<String, dynamic>);
 }

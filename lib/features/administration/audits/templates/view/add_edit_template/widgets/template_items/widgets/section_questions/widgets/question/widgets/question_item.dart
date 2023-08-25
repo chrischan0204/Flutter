@@ -95,7 +95,7 @@ class QuestionItemView extends StatelessWidget {
                         width: MediaQuery.of(context).size.width / 4,
                         title: 'Confirm',
                         description:
-                            'Do you really want to deleted this section?',
+                            'Do you really want to delete this question?',
                         btnOkText: 'OK',
                         btnCancelOnPress: () {},
                         btnOkOnPress: () {

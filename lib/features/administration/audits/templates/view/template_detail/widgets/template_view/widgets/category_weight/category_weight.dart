@@ -6,13 +6,13 @@ class CategoryWeightView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const CategoryWeightHeaderView(),
-        const CustomDivider(),
+        CategoryWeightHeaderView(),
+        CustomDivider(),
         Row(
-          children: const [
+          children: [
             Expanded(child: ByQuestionCountView()),
             SizedBox(width: 30),
             Expanded(child: ByMaxPointsView())

@@ -15,25 +15,25 @@ class PriorityLevelsBloc
   }
 
   void _triggerEvents() {
-    on<PriorityLevelsRetrieved>(_onPriorityLevelsRetrieved);
+    on<PriorityLevelsLoaded>(_onPriorityLevelsLoaded);
     on<PriorityLevelSelected>(_onPriorityLevelSelected);
     on<PriorityLevelSelectedById>(_onPriorityLevelSelectedById);
     on<PriorityLevelDeleted>(_onPriorityLevelDeleted);
     on<PriorityLevelsStatusInited>(_onPriorityLevelsStatusInited);
   }
 
-  void _onPriorityLevelsRetrieved(
-      PriorityLevelsRetrieved event, Emitter<PriorityLevelsState> emit) async {
-    emit(state.copyWith(priorityLevelsRetrievedStatus: EntityStatus.loading));
+  void _onPriorityLevelsLoaded(
+      PriorityLevelsLoaded event, Emitter<PriorityLevelsState> emit) async {
+    emit(state.copyWith(priorityLevelsLoadedStatus: EntityStatus.loading));
     try {
       List<PriorityLevel> priorityLevels =
           await priorityLevelsRepository.getPriorityLevelList();
       emit(state.copyWith(
         priorityLevels: priorityLevels,
-        priorityLevelsRetrievedStatus: EntityStatus.success,
+        priorityLevelsLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(priorityLevelsRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(priorityLevelsLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -108,7 +108,7 @@ class PriorityLevelsBloc
       state.copyWith(
         priorityLevelCrudStatus: EntityStatus.initial,
         priorityLevelSelectedStatus: EntityStatus.initial,
-        priorityLevelsRetrievedStatus: EntityStatus.initial,
+        priorityLevelsLoadedStatus: EntityStatus.initial,
       ),
     );
   }

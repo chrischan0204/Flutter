@@ -22,7 +22,7 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
   @override
   void initState() {
     awarenessGroupsBloc = context.read<AwarenessGroupsBloc>()
-      ..add(AwarenessGroupsRetrieved());
+      ..add(AwarenessGroupsLoaded());
     super.initState();
   }
 
@@ -36,7 +36,8 @@ class _AwarenessGroupsState extends State<AwarenessGroupsListView> {
           title: pageTitle,
           label: pageLabel,
           emptyMessage: emtptyMessage,
-          entityListLoadStatusLoading: state.awarenessGroupsRetrievedStatus.isLoading,
+          entityListLoadStatusLoading:
+              state.awarenessGroupsLoadedStatus.isLoading,
           onRowClick: (awarenessGroup) =>
               _selectAwarenessGroup(awarenessGroup as AwarenessGroup),
           selectedEntity: state.selectedAwarenessGroup,

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:safety_eta/common_libraries.dart';
 
 class AuditCommentCreate extends Equatable {

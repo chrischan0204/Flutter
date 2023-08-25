@@ -165,7 +165,9 @@ class ActionItem extends Entity {
           ? 'None'
           : source == 'Audit'
               ? auditName
-              : observationName,
+              : source == 'Audit'
+                  ? observationName
+                  : '$observationName, $auditName',
       'Category': awarenessCategoryName,
       'Company': companyName,
       'Project': projectName,

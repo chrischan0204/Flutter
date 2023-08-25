@@ -7,7 +7,7 @@ abstract class ProjectsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ProjectsRetrieved extends ProjectsEvent {}
+class ProjectsLoaded extends ProjectsEvent {}
 
 class ProjectListFiltered extends ProjectsEvent {
   final FilteredTableParameter option;
@@ -62,19 +62,19 @@ class ProjectsSorted extends ProjectsEvent {
       ];
 }
 
-class AssignedCompanyProjectsRetrieved extends ProjectsEvent {
+class AssignedCompanyProjectsLoaded extends ProjectsEvent {
   final String projectId;
   final String? name;
-  const AssignedCompanyProjectsRetrieved({
+  const AssignedCompanyProjectsLoaded({
     required this.projectId,
     this.name,
   });
 }
 
-class UnassignedCompanyProjectsRetrieved extends ProjectsEvent {
+class UnassignedCompanyProjectsLoaded extends ProjectsEvent {
   final String projectId;
   final String? name;
-  const UnassignedCompanyProjectsRetrieved({
+  const UnassignedCompanyProjectsLoaded({
     required this.projectId,
     this.name,
   });

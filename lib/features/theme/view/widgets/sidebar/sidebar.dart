@@ -38,6 +38,7 @@ class _SidebarState extends State<Sidebar> {
           selectedItemName: selectedItemName,
           isSidebarExtended: isSidebarExtended,
           subItems: items[i].subItems,
+          context: context,
         ),
       );
     }

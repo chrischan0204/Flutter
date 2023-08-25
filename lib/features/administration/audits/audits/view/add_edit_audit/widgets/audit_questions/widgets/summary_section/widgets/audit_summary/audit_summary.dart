@@ -23,9 +23,9 @@ class _AuditSummaryViewState extends State<AuditSummaryView> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Expanded(child: AuditSummary1()),
         Expanded(child: AuditSummary2())
       ],

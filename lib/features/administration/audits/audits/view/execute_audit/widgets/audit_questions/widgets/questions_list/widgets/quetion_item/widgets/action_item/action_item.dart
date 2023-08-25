@@ -62,45 +62,63 @@ class _AuditActionItemViewState extends State<AuditActionItemView> {
                         'Action Item ${capitalize(state.view.name)}',
                         style: textNormal14,
                       ),
-                      CustomBadge(
-                        label: state.view.toString(),
-                        color: primaryColor,
-                        radius: 10,
-                        onClick: () {
-                          switch (state.view) {
-                            case CrudView.list:
-                              context.read<ExecuteAuditActionItemBloc>().add(
-                                  const ExecuteAuditActionItemViewChanged(
-                                      view: CrudView.create));
-                              context.read<ExecuteAuditActionItemBloc>().add(
-                                    ExecuteAuditActionItemSiteChanged(
-                                      site: Site(
-                                        id: auditDetailState
-                                            .auditSummary?.siteId,
-                                        name: auditDetailState
-                                            .auditSummary?.siteName,
-                                      ),
-                                      isInit: true,
-                                    ),
-                                  );
-                              break;
-                            case CrudView.detail:
-                              context.read<ExecuteAuditActionItemBloc>().add(
-                                  const ExecuteAuditActionItemViewChanged(
-                                      view: CrudView.list));
-                              break;
-                            case CrudView.create:
-                              context
-                                  .read<ExecuteAuditActionItemBloc>()
-                                  .add(ExecuteAuditActionItemCreated());
-                              break;
-                            case CrudView.update:
-                              context
-                                  .read<ExecuteAuditActionItemBloc>()
-                                  .add(ExecuteAuditActionItemUpdated());
-                              break;
-                          }
-                        },
+                      Row(
+                        children: [
+                          if (state.view.isCreate || state.view.isUpdate)
+                            CustomBadge(
+                              label: 'Cancel',
+                              color: Colors.grey,
+                              radius: 10,
+                              onClick: () {
+                                context.read<ExecuteAuditActionItemBloc>()
+                                  ..add(ExecuteAuditActionItemInited())
+                                  ..add(ExecuteAuditActionItemListLoaded());
+                              },
+                            ),
+                          spacerx20,
+                          CustomBadge(
+                            label: state.view.toString(),
+                            color: primaryColor,
+                            radius: 10,
+                            onClick: () {
+                              switch (state.view) {
+                                case CrudView.list:
+                                  context.read<ExecuteAuditActionItemBloc>().add(
+                                      const ExecuteAuditActionItemViewChanged(
+                                          view: CrudView.create));
+                                  context
+                                      .read<ExecuteAuditActionItemBloc>()
+                                      .add(
+                                        ExecuteAuditActionItemSiteChanged(
+                                          site: Site(
+                                            id: auditDetailState
+                                                .auditSummary?.siteId,
+                                            name: auditDetailState
+                                                .auditSummary?.siteName,
+                                          ),
+                                          isInit: true,
+                                        ),
+                                      );
+                                  break;
+                                case CrudView.detail:
+                                  context.read<ExecuteAuditActionItemBloc>().add(
+                                      const ExecuteAuditActionItemViewChanged(
+                                          view: CrudView.list));
+                                  break;
+                                case CrudView.create:
+                                  context
+                                      .read<ExecuteAuditActionItemBloc>()
+                                      .add(ExecuteAuditActionItemCreated());
+                                  break;
+                                case CrudView.update:
+                                  context
+                                      .read<ExecuteAuditActionItemBloc>()
+                                      .add(ExecuteAuditActionItemUpdated());
+                                  break;
+                              }
+                            },
+                          ),
+                        ],
                       )
                     ],
                   ),

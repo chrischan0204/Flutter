@@ -8,8 +8,10 @@ abstract class CompaniesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class CompaniesRetrieved extends CompaniesEvent {}
+/// event to load company list
+class CompanyListLoaded extends CompaniesEvent {}
 
+/// event to load filtered company list
 class CompanyListFiltered extends CompaniesEvent {
   final FilteredTableParameter option;
   const CompanyListFiltered({required this.option});
@@ -18,6 +20,7 @@ class CompanyListFiltered extends CompaniesEvent {
   List<Object?> get props => [option];
 }
 
+/// event to select company
 class CompanySelected extends CompaniesEvent {
   final Company? selectedCompany;
   const CompanySelected({
@@ -29,6 +32,7 @@ class CompanySelected extends CompaniesEvent {
       ];
 }
 
+/// event to load company detail
 class CompanySelectedById extends CompaniesEvent {
   final String companyId;
   const CompanySelectedById({
@@ -40,6 +44,7 @@ class CompanySelectedById extends CompaniesEvent {
       ];
 }
 
+/// delete company by id
 class CompanyDeleted extends CompaniesEvent {
   final String companyId;
   const CompanyDeleted({
@@ -51,6 +56,7 @@ class CompanyDeleted extends CompaniesEvent {
       ];
 }
 
+/// event to sort company list
 class CompaniesSorted extends CompaniesEvent {
   final List<Company> companies;
   const CompaniesSorted({required this.companies});
@@ -61,12 +67,14 @@ class CompaniesSorted extends CompaniesEvent {
       ];
 }
 
+/// event to init state
 class CompaniesStatusInited extends CompaniesEvent {}
 
-class AssignedCompanySitesRetrieved extends CompaniesEvent {
+/// event to load assigned company site list
+class AssignedCompanySitesLoaded extends CompaniesEvent {
   final String companyId;
   final String? name;
-  const AssignedCompanySitesRetrieved({
+  const AssignedCompanySitesLoaded({
     required this.companyId,
     this.name,
   });
@@ -77,10 +85,11 @@ class AssignedCompanySitesRetrieved extends CompaniesEvent {
       ];
 }
 
-class UnassignedCompanySitesRetrieved extends CompaniesEvent {
+/// event to load unassigned company site list
+class UnassignedCompanySitesLoaded extends CompaniesEvent {
   final String companyId;
   final String? name;
-  const UnassignedCompanySitesRetrieved({
+  const UnassignedCompanySitesLoaded({
     required this.companyId,
     this.name,
   });
@@ -91,12 +100,13 @@ class UnassignedCompanySitesRetrieved extends CompaniesEvent {
       ];
 }
 
-class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
+/// event to load assigned project company list
+class AssignedProjectCompanyListLoaded extends CompaniesEvent {
   final String companyId;
   final String? name;
   final String? siteId;
   final bool forFilter;
-  const AssignedProjectCompaniesRetrieved({
+  const AssignedProjectCompanyListLoaded({
     required this.companyId,
     this.name,
     this.siteId,
@@ -111,12 +121,13 @@ class AssignedProjectCompaniesRetrieved extends CompaniesEvent {
       ];
 }
 
-class UnassignedProjectCompaniesRetrieved extends CompaniesEvent {
+/// event to load unassigned project company list
+class UnassignedProjectCompanyListLoaded extends CompaniesEvent {
   final String companyId;
   final String? name;
   final String? siteId;
   final bool forFilter;
-  const UnassignedProjectCompaniesRetrieved({
+  const UnassignedProjectCompanyListLoaded({
     required this.companyId,
     this.name,
     this.siteId,
@@ -131,6 +142,7 @@ class UnassignedProjectCompaniesRetrieved extends CompaniesEvent {
       ];
 }
 
+/// event to assign site to company
 class SiteToCompanyAssigned extends CompaniesEvent {
   final CompanySiteUpdation companySiteUpdation;
   const SiteToCompanyAssigned({
@@ -142,6 +154,7 @@ class SiteToCompanyAssigned extends CompaniesEvent {
       ];
 }
 
+/// event to unassign site from company
 class SiteFromCompanyUnassigned extends CompaniesEvent {
   final String companySiteUpdationId;
   const SiteFromCompanyUnassigned({
@@ -153,6 +166,7 @@ class SiteFromCompanyUnassigned extends CompaniesEvent {
       ];
 }
 
+/// event to assign project to company
 class ProjectToCompanyAssigned extends CompaniesEvent {
   final ProjectCompanyAssignment projectCompanyAssignment;
   const ProjectToCompanyAssigned({
@@ -164,6 +178,7 @@ class ProjectToCompanyAssigned extends CompaniesEvent {
       ];
 }
 
+/// event to unassign project from company
 class ProjectFromCompanyUnassigned extends CompaniesEvent {
   final String projectCompanyAssignmentId;
   const ProjectFromCompanyUnassigned({
@@ -175,6 +190,7 @@ class ProjectFromCompanyUnassigned extends CompaniesEvent {
       ];
 }
 
+/// event to select role 
 class UnAssignedProjectCompanyRoleSelected extends CompaniesEvent {
   final Role role;
   final int projectCompanyIndex;
@@ -190,6 +206,7 @@ class UnAssignedProjectCompanyRoleSelected extends CompaniesEvent {
       ];
 }
 
+/// event to change filter text to filter assigned company list
 class FilterTextForAssignedChanged extends CompaniesEvent {
   final String filterText;
   const FilterTextForAssignedChanged({
@@ -200,6 +217,7 @@ class FilterTextForAssignedChanged extends CompaniesEvent {
   List<Object?> get props => [filterText];
 }
 
+/// event to change filter text to filter unassigned company list
 class FilterTextForUnassignedChanged extends CompaniesEvent {
   final String filterText;
   const FilterTextForUnassignedChanged({
@@ -210,6 +228,7 @@ class FilterTextForUnassignedChanged extends CompaniesEvent {
   List<Object?> get props => [filterText];
 }
 
+/// event to change site to filter unassigned company list
 class FilterSiteIdForUnassignedChanged extends CompaniesEvent {
   final String siteId;
   const FilterSiteIdForUnassignedChanged({
@@ -220,6 +239,7 @@ class FilterSiteIdForUnassignedChanged extends CompaniesEvent {
   List<Object?> get props => [siteId];
 }
 
+/// event to change site to filter assigned company list
 class FilterSiteIdForAssignedChanged extends CompaniesEvent {
   final String siteId;
   const FilterSiteIdForAssignedChanged({
@@ -230,9 +250,10 @@ class FilterSiteIdForAssignedChanged extends CompaniesEvent {
   List<Object?> get props => [siteId];
 }
 
-class AuditTrailsRetrievedByCompanyId extends CompaniesEvent {
+/// event to load audit trails by company id
+class AuditTrailsLoadedByCompanyId extends CompaniesEvent {
   final String companyId;
-  const AuditTrailsRetrievedByCompanyId({
+  const AuditTrailsLoadedByCompanyId({
     required this.companyId,
   });
 

@@ -6,6 +6,7 @@ class ResponseScaleState extends Equatable {
   final EntityStatus responseScaleLoadStatus;
   final EntityStatus responseScaleAddStatus;
   final EntityStatus responseScaleEditDeleteStatus;
+  final EntityStatus responseScaleItemDeleteStatus;
   final String? selectedResponseScaleId;
   final String newResponseScaleName;
 
@@ -20,6 +21,7 @@ class ResponseScaleState extends Equatable {
     this.responseScaleList = const [],
     this.responseScaleLoadStatus = EntityStatus.initial,
     this.responseScaleAddStatus = EntityStatus.initial,
+    this.responseScaleItemDeleteStatus = EntityStatus.initial,
     this.selectedResponseScaleId,
     this.newResponseScaleName = '',
     this.responseScaleItemList = const [],
@@ -45,6 +47,8 @@ class ResponseScaleState extends Equatable {
           Validation.isEmpty(element.name) || Validation.isEmpty(element.score))
       .isNotEmpty;
 
+  bool get isSaveButtonEnable => !isDirty && responseScaleItemList.isNotEmpty;
+
   @override
   List<Object?> get props => [
         responseScaleList,
@@ -55,6 +59,7 @@ class ResponseScaleState extends Equatable {
         responseScaleItemList,
         responseScaleItemListLoadStatus,
         responseScaleItemListCrudStatus,
+        responseScaleItemDeleteStatus,
         responseScaleEditDeleteStatus,
         responseScaleOrderList,
         responseScaleItemOrderList,
@@ -65,12 +70,13 @@ class ResponseScaleState extends Equatable {
     List<ResponseScale>? responseScaleList,
     EntityStatus? responseScaleLoadStatus,
     EntityStatus? responseScaleAddStatus,
-    String? selectedResponseScaleId,
+    Nullable<String?>? selectedResponseScaleId,
     String? newResponseScaleName,
     List<ResponseScaleItem>? responseScaleItemList,
     EntityStatus? responseScaleItemListLoadStatus,
     EntityStatus? responseScaleItemListCrudStatus,
     EntityStatus? responseScaleEditDeleteStatus,
+    EntityStatus? responseScaleItemDeleteStatus,
     List<SortOrder>? responseScaleOrderList,
     List<SortOrder>? responseScaleItemOrderList,
     String? message,
@@ -81,8 +87,9 @@ class ResponseScaleState extends Equatable {
           responseScaleLoadStatus ?? this.responseScaleLoadStatus,
       responseScaleAddStatus:
           responseScaleAddStatus ?? this.responseScaleAddStatus,
-      selectedResponseScaleId:
-          selectedResponseScaleId ?? this.selectedResponseScaleId,
+      selectedResponseScaleId: selectedResponseScaleId != null
+          ? selectedResponseScaleId.value
+          : this.selectedResponseScaleId,
       newResponseScaleName: newResponseScaleName ?? this.newResponseScaleName,
       responseScaleItemList:
           responseScaleItemList ?? this.responseScaleItemList,
@@ -90,6 +97,8 @@ class ResponseScaleState extends Equatable {
           this.responseScaleItemListLoadStatus,
       responseScaleItemListCrudStatus: responseScaleItemListCrudStatus ??
           this.responseScaleItemListCrudStatus,
+      responseScaleItemDeleteStatus:
+          responseScaleItemDeleteStatus ?? this.responseScaleItemDeleteStatus,
       responseScaleEditDeleteStatus:
           responseScaleEditDeleteStatus ?? this.responseScaleEditDeleteStatus,
       responseScaleOrderList:

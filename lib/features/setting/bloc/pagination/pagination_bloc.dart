@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '/common_libraries.dart';
 
 part 'pagination_event.dart';

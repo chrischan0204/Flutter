@@ -5,7 +5,7 @@ class PriorityLevelsState extends Equatable {
   final List<PriorityLevel> priorityLevels;
   final PriorityLevel? selectedPriorityLevel;
 
-  final EntityStatus priorityLevelsRetrievedStatus;
+  final EntityStatus priorityLevelsLoadedStatus;
   final EntityStatus priorityLevelSelectedStatus;
   final EntityStatus priorityLevelCrudStatus;
 
@@ -13,7 +13,7 @@ class PriorityLevelsState extends Equatable {
   const PriorityLevelsState({
     this.priorityLevels = const [],
     this.selectedPriorityLevel,
-    this.priorityLevelsRetrievedStatus = EntityStatus.initial,
+    this.priorityLevelsLoadedStatus = EntityStatus.initial,
     this.priorityLevelSelectedStatus = EntityStatus.initial,
     this.priorityLevelCrudStatus = EntityStatus.initial,
     this.message = '',
@@ -22,7 +22,7 @@ class PriorityLevelsState extends Equatable {
   @override
   List<Object?> get props => [
         priorityLevels,
-        priorityLevelsRetrievedStatus,
+        priorityLevelsLoadedStatus,
         selectedPriorityLevel,
         priorityLevelSelectedStatus,
         priorityLevelCrudStatus,
@@ -32,7 +32,7 @@ class PriorityLevelsState extends Equatable {
   PriorityLevelsState copyWith({
     List<PriorityLevel>? priorityLevels,
     PriorityLevel? selectedPriorityLevel,
-    EntityStatus? priorityLevelsRetrievedStatus,
+    EntityStatus? priorityLevelsLoadedStatus,
     EntityStatus? priorityLevelSelectedStatus,
     EntityStatus? priorityLevelCrudStatus,
     String? message,
@@ -41,8 +41,8 @@ class PriorityLevelsState extends Equatable {
       priorityLevels: priorityLevels ?? this.priorityLevels,
       selectedPriorityLevel:
           selectedPriorityLevel ?? this.selectedPriorityLevel,
-      priorityLevelsRetrievedStatus:
-          priorityLevelsRetrievedStatus ?? this.priorityLevelsRetrievedStatus,
+      priorityLevelsLoadedStatus:
+          priorityLevelsLoadedStatus ?? this.priorityLevelsLoadedStatus,
       priorityLevelSelectedStatus:
           priorityLevelSelectedStatus ?? this.priorityLevelSelectedStatus,
       priorityLevelCrudStatus:

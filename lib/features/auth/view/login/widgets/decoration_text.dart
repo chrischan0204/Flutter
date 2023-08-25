@@ -9,7 +9,7 @@ class DecorationText extends StatelessWidget {
     return Text(
       'Empowerment through Awareness',
       style: GoogleFonts.actor(
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 35,
           fontWeight: FontWeight.bold,
           

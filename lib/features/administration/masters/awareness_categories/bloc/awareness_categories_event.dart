@@ -7,9 +7,11 @@ abstract class AwarenessCategoriesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AwarenessCategoriesRetrieved extends AwarenessCategoriesEvent {}
+/// event to load category list
+class AwarenessCategoriesLoaded extends AwarenessCategoriesEvent {}
 
-class AwarenessGroupsForAwarenessCategoriesRetrieved
+/// event to load awarness group list
+class AwarenessGroupsForAwarenessCategoriesLoaded
     extends AwarenessCategoriesEvent {}
 
 class AwarenessCategorySelected extends AwarenessCategoriesEvent {
@@ -23,6 +25,7 @@ class AwarenessCategorySelected extends AwarenessCategoriesEvent {
       ];
 }
 
+/// event to load awareness category detail by id
 class AwarenessCategorySelectedById extends AwarenessCategoriesEvent {
   final String awarenessCategoryId;
   const AwarenessCategorySelectedById({
@@ -34,6 +37,7 @@ class AwarenessCategorySelectedById extends AwarenessCategoriesEvent {
       ];
 }
 
+/// event to delete awareness category by id
 class AwarenessCategoryDeleted extends AwarenessCategoriesEvent {
   final String awarenessCategoryId;
   const AwarenessCategoryDeleted({
@@ -46,6 +50,7 @@ class AwarenessCategoryDeleted extends AwarenessCategoriesEvent {
       ];
 }
 
+/// event to init state
 class AwarenessCategoriesStatusInited extends AwarenessCategoriesEvent {
   const AwarenessCategoriesStatusInited();
 }

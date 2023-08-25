@@ -15,6 +15,7 @@ class SidebarItem extends StatefulWidget {
   final bool isSidebarExtended;
   final List<SidebarItemModel> subItems;
   final bool isSubItem;
+  final BuildContext context;
   const SidebarItem({
     Key? key,
     required this.iconData,
@@ -25,6 +26,7 @@ class SidebarItem extends StatefulWidget {
     required this.isSidebarExtended,
     this.subItems = const [],
     this.isSubItem = false,
+    required this.context,
   }) : super(key: key);
 
   @override
@@ -109,7 +111,7 @@ class _SidebarItemState extends State<SidebarItem>
                           ),
                         ),
                       ),
-                      ..._buildSubItemsMenu(),
+                      ..._buildSubItemsMenu(widget.context),
                     ],
                   ),
                 ),
@@ -135,7 +137,7 @@ class _SidebarItemState extends State<SidebarItem>
               ),
             ),
             ...(widget.isSidebarExtended && isSidebarItemExtended
-                ? _buildSubItemsMenu()
+                ? _buildSubItemsMenu(widget.context)
                 : []),
           ],
         );
@@ -143,7 +145,7 @@ class _SidebarItemState extends State<SidebarItem>
     );
   }
 
-  List<Widget> _buildSubItemsMenu() {
+  List<Widget> _buildSubItemsMenu(BuildContext context) {
     return widget.subItems
         .map(
           (subItem) => SidebarItem(
@@ -154,6 +156,7 @@ class _SidebarItemState extends State<SidebarItem>
             color: subItem.color,
             isSidebarExtended: widget.isSidebarExtended,
             isSubItem: true,
+            context: widget.context,
           ),
         )
         .toList();
@@ -230,20 +233,29 @@ class _SidebarItemState extends State<SidebarItem>
         : Container();
   }
 
-  void _onClick(bool hasChildren) {
+  void _onClick() async {
     if (widget.path.isNotEmpty &&
         context.read<FormDirtyBloc>().state.isDirty &&
         !widget.path.contains('logout')) {
-      CustomAlert(
-        context: context,
-        width: MediaQuery.of(context).size.width / 4,
-        title: 'Notification',
-        description: 'Data that was entered will be lost ..... Proceed?',
-        btnOkText: 'Proceed',
-        btnOkOnPress: () => _navigate(),
-        btnCancelOnPress: () {},
-        dialogType: DialogType.question,
-      ).show();
+      try {
+        await AwesomeDialog(
+          context: widget.context,
+          width: MediaQuery.of(widget.context).size.width / 4,
+          dialogType: DialogType.question,
+          headerAnimationLoop: false,
+          animType: AnimType.bottomSlide,
+          title: 'Confirm',
+          dialogBorderRadius: BorderRadius.circular(5),
+          desc: 'Data that was entered will be lost ..... Proceed?',
+          buttonsTextStyle: const TextStyle(color: Colors.white),
+          showCloseIcon: true,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () => _navigate(),
+          btnOkText: 'Proceed',
+          buttonsBorderRadius: BorderRadius.circular(3),
+          padding: const EdgeInsets.all(10),
+        ).show();
+      } catch (e) {}
     } else {
       _navigate();
     }
@@ -252,38 +264,39 @@ class _SidebarItemState extends State<SidebarItem>
   void _navigate() {
     if (widget.path.contains('logout')) {
       CustomAlert(
-        context: context,
+        context: widget.context,
         width: MediaQuery.of(context).size.width / 4,
-        title: 'Notification',
+        title: 'Confirm',
         description: 'Do you really want to logout?',
         btnOkText: 'Logout',
         btnOkOnPress: () =>
             context.read<AuthBloc>().add(const AuthUnauthenticated()),
         btnCancelOnPress: () {},
-        dialogType: DialogType.info,
+        dialogType: DialogType.question,
       ).show();
     } else {
       if (widget.path.isNotEmpty) {
-        if ('/${widget.path}' == GoRouter.of(context).location) {
-          GoRouter.of(context).go('/${widget.path}/index');
+        if ('/${widget.path}' == GoRouter.of(widget.context).location) {
+          widget.context.go('/${widget.path}/index');
         } else {
-          GoRouter.of(context).go('/${widget.path}');
+          widget.context.go('/${widget.path}');
         }
 
-        context
+        widget.context
             .read<FormDirtyBloc>()
             .add(const FormDirtyChanged(isDirty: false));
       }
-
-      setState(() {
-        isSidebarItemExtended = !isSidebarItemExtended;
-      });
+      if (mounted) {
+        setState(() {
+          isSidebarItemExtended = !isSidebarItemExtended;
+        });
+      }
     }
   }
 
   Widget _buildItemBody(ThemeState state, bool hasChildren) {
     return GestureDetector(
-      onTap: () => _onClick(widget.subItems.isNotEmpty),
+      onTap: () => _onClick(),
       child: MouseRegion(
         onEnter: (event) {
           if (!widget.isSubItem) {

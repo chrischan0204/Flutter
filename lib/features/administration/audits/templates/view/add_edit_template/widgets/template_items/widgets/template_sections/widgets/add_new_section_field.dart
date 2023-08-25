@@ -68,6 +68,7 @@ class _AddNewSectionFieldState extends State<AddNewSectionField> {
                 content: FormValidationMessage(fieldName: 'Section name')
                     .requiredMessage,
               ).showNotification();
+              return;
             }
             if (sectionController.text.length > 200) {
               CustomNotification(

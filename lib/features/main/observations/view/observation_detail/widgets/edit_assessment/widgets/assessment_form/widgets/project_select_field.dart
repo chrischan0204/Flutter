@@ -7,7 +7,7 @@ class ProjectSelectField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Project',
+      label: 'Project (*)',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {
           Map<String, Project> items = {}..addEntries(observationDetailState

@@ -6,13 +6,13 @@ class AwarenessGroupsState extends Equatable {
 
   final String message;
 
-  final EntityStatus awarenessGroupsRetrievedStatus;
+  final EntityStatus awarenessGroupsLoadedStatus;
   final EntityStatus awarenessGroupSelectedStatus;
   final EntityStatus awarenessGroupCrudStatus;
   const AwarenessGroupsState({
     this.awarenessGroups = const [],
     this.selectedAwarenessGroup,
-    this.awarenessGroupsRetrievedStatus = EntityStatus.initial,
+    this.awarenessGroupsLoadedStatus = EntityStatus.initial,
     this.awarenessGroupSelectedStatus = EntityStatus.initial,
     this.awarenessGroupCrudStatus = EntityStatus.initial,
     this.message = '',
@@ -23,7 +23,7 @@ class AwarenessGroupsState extends Equatable {
   List<Object?> get props => [
         awarenessGroups,
         selectedAwarenessGroup,
-        awarenessGroupsRetrievedStatus,
+        awarenessGroupsLoadedStatus,
         awarenessGroupSelectedStatus,
         awarenessGroupCrudStatus,
         message,
@@ -33,7 +33,7 @@ class AwarenessGroupsState extends Equatable {
   AwarenessGroupsState copyWith({
     List<AwarenessGroup>? awarenessGroups,
     AwarenessGroup? selectedAwarenessGroup,
-    EntityStatus? awarenessGroupsRetrievedStatus,
+    EntityStatus? awarenessGroupsLoadedStatus,
     EntityStatus? awarenessGroupSelectedStatus,
     EntityStatus? awarenessGroupCrudStatus,
     String? message,
@@ -42,8 +42,8 @@ class AwarenessGroupsState extends Equatable {
       awarenessGroups: awarenessGroups ?? this.awarenessGroups,
       selectedAwarenessGroup:
           selectedAwarenessGroup ?? this.selectedAwarenessGroup,
-      awarenessGroupsRetrievedStatus:
-          awarenessGroupsRetrievedStatus ?? this.awarenessGroupsRetrievedStatus,
+      awarenessGroupsLoadedStatus:
+          awarenessGroupsLoadedStatus ?? this.awarenessGroupsLoadedStatus,
       awarenessGroupSelectedStatus:
           awarenessGroupSelectedStatus ?? this.awarenessGroupSelectedStatus,
       awarenessGroupCrudStatus:

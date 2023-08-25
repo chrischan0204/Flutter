@@ -80,6 +80,8 @@ class Project extends Entity {
       'Reference Name': referneceName,
       'Reference Number': referenceNumber,
       'Active': active,
+      'Created By': createdByUserName,
+      'Created On': createdOn,
     };
   }
 

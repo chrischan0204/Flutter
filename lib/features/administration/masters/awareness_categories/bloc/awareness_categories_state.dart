@@ -4,23 +4,23 @@ class AwarenessCategoriesState extends Equatable {
   final List<AwarenessCategory> awarenessCategories;
   final AwarenessCategory? selectedAwarenessCategory;
 
-  final EntityStatus awarenessCategoriesRetrievedStatus;
+  final EntityStatus awarenessCategoriesLoadedStatus;
   final EntityStatus awarenessCategorySelectedStatus;
   final EntityStatus awarenessCategoryCrudStatus;
 
   final String message;
 
   final List<AwarenessGroup> awarenessGroups;
-  final EntityStatus awarenessGroupsRetrievedStatus;
+  final EntityStatus awarenessGroupsLoadedStatus;
 
   const AwarenessCategoriesState({
     this.awarenessCategories = const [],
     this.awarenessGroups = const [],
     this.selectedAwarenessCategory,
-    this.awarenessCategoriesRetrievedStatus = EntityStatus.initial,
+    this.awarenessCategoriesLoadedStatus = EntityStatus.initial,
     this.awarenessCategorySelectedStatus = EntityStatus.initial,
     this.awarenessCategoryCrudStatus = EntityStatus.initial,
-    this.awarenessGroupsRetrievedStatus = EntityStatus.initial,
+    this.awarenessGroupsLoadedStatus = EntityStatus.initial,
     this.message = '',
   });
 
@@ -30,10 +30,10 @@ class AwarenessCategoriesState extends Equatable {
         awarenessCategories,
         awarenessGroups,
         selectedAwarenessCategory,
-        awarenessCategoriesRetrievedStatus,
+        awarenessCategoriesLoadedStatus,
         awarenessCategorySelectedStatus,
         awarenessCategoryCrudStatus,
-        awarenessGroupsRetrievedStatus,
+        awarenessGroupsLoadedStatus,
         message,
       ];
 
@@ -41,26 +41,26 @@ class AwarenessCategoriesState extends Equatable {
   AwarenessCategoriesState copyWith({
     List<AwarenessCategory>? awarenessCategories,
     AwarenessCategory? selectedAwarenessCategory,
-    EntityStatus? awarenessCategoriesRetrievedStatus,
+    EntityStatus? awarenessCategoriesLoadedStatus,
     EntityStatus? awarenessCategorySelectedStatus,
     EntityStatus? awarenessCategoryCrudStatus,
     List<AwarenessGroup>? awarenessGroups,
-    EntityStatus? awarenessGroupsRetrievedStatus,
+    EntityStatus? awarenessGroupsLoadedStatus,
     String? message,
   }) {
     return AwarenessCategoriesState(
       awarenessCategories: awarenessCategories ?? this.awarenessCategories,
       selectedAwarenessCategory:
           selectedAwarenessCategory ?? this.selectedAwarenessCategory,
-      awarenessCategoriesRetrievedStatus: awarenessCategoriesRetrievedStatus ??
-          this.awarenessCategoriesRetrievedStatus,
+      awarenessCategoriesLoadedStatus: awarenessCategoriesLoadedStatus ??
+          this.awarenessCategoriesLoadedStatus,
       awarenessCategorySelectedStatus: awarenessCategorySelectedStatus ??
           this.awarenessCategorySelectedStatus,
       awarenessCategoryCrudStatus:
           awarenessCategoryCrudStatus ?? this.awarenessCategoryCrudStatus,
       awarenessGroups: awarenessGroups ?? this.awarenessGroups,
-      awarenessGroupsRetrievedStatus:
-          awarenessGroupsRetrievedStatus ?? this.awarenessGroupsRetrievedStatus,
+      awarenessGroupsLoadedStatus:
+          awarenessGroupsLoadedStatus ?? this.awarenessGroupsLoadedStatus,
       message: message ?? this.message,
     );
   }

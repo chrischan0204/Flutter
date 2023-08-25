@@ -7,7 +7,7 @@ class CompanySelectField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Company',
+      label: 'Company (*)',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {
           Map<String, Company> items = {}..addEntries(observationDetailState

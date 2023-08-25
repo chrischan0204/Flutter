@@ -19,15 +19,15 @@ class ObservationViewForActionItem extends StatelessWidget {
               ),
               ActionItemInformationItemView(
                 label: 'Site',
-                content: observation.assessmentSiteName ?? '--',
+                content: observation.userReportedSiteName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Company',
-                content: observation.assessmentCompanyName ?? '--',
+                content: observation.userReportedCompanyName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Project',
-                content: observation.assessmentProjectName ?? '--',
+                content: observation.userReportedProjectName ?? '--',
               ),
               ActionItemInformationItemView(
                 label: 'Created By',
@@ -35,7 +35,7 @@ class ObservationViewForActionItem extends StatelessWidget {
               ),
               ActionItemInformationItemView(
                 label: 'Priority Level',
-                content: observation.assessmentPriorityLevelName ?? '--',
+                content: observation.userReportedPriorityLevelName ?? '--',
               ),
             ],
           );

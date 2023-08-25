@@ -7,7 +7,7 @@ abstract class AwarenessGroupsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AwarenessGroupsRetrieved extends AwarenessGroupsEvent {}
+class AwarenessGroupsLoaded extends AwarenessGroupsEvent {}
 
 class AwarenessGroupSelected extends AwarenessGroupsEvent {
   final AwarenessGroup? awarenessGroup;

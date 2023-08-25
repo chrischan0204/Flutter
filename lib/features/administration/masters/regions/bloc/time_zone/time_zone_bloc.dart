@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:safety_eta/common_libraries.dart';
 
 part 'time_zone_event.dart';

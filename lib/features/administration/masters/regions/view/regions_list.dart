@@ -24,7 +24,7 @@ class _RegionsState extends State<RegionsListView> {
   @override
   void initState() {
     super.initState();
-    regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsRetrieved());
+    regionsBloc = context.read<RegionsBloc>()..add(AssignedRegionsLoaded());
   }
 
   @override
@@ -39,7 +39,7 @@ class _RegionsState extends State<RegionsListView> {
           emptyMessage: emptyMessage,
           onRowClick: (region) => _selectRegion(region),
           entityListLoadStatusLoading:
-              state.assignedRegionsRetrievedStatus.isLoading,
+              state.assignedRegionsLoadedStatus.isLoading,
           selectedEntity: state.selectedRegion,
         );
       },

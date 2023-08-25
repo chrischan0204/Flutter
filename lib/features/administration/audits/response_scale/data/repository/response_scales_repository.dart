@@ -44,6 +44,10 @@ class ResponseScalesRepository extends BaseRepository {
         message: response.body,
       );
     }
+
+    if (response.statusCode == 409) {
+      return EntityResponse.fromJson(response.body);
+    }
     throw Exception();
   }
 
@@ -55,12 +59,16 @@ class ResponseScalesRepository extends BaseRepository {
       return EntityResponse.fromJson(response.body);
     }
 
+    if (response.statusCode == 409) {
+      return EntityResponse.fromJson(response.body);
+    }
+
     throw Exception();
   }
 
   Future<EntityResponse> editResponseScale(
       String responseScaleId, String responseScaleName) async {
-    Response response = await super.put('$url/$responseScaleId',
+    Response response = await super.put(url,
         body: jsonEncode({
           'id': responseScaleId,
           'name': responseScaleName,
@@ -71,6 +79,10 @@ class ResponseScalesRepository extends BaseRepository {
         isSuccess: true,
         message: response.body,
       );
+    }
+
+    if (response.statusCode == 409) {
+      return EntityResponse.fromJson(response.body);
     }
 
     throw Exception();
@@ -84,6 +96,44 @@ class ResponseScalesRepository extends BaseRepository {
         isSuccess: true,
         message: response.body,
       );
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> validateResponseScaleDeletion(
+      String responseScaleId) async {
+    Response response =
+        await super.post('$url/$responseScaleId/validateresponsescaledeletion');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    if (response.statusCode == 409) {
+      return EntityResponse.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<EntityResponse> deleteResponseScaleItem(
+      String responseScaleItemId) async {
+    Response response =
+        await super.delete('$url/$responseScaleItemId/responsescaleitems');
+
+    if (response.statusCode == 200) {
+      return EntityResponse(
+        isSuccess: true,
+        message: response.body,
+      );
+    }
+
+    if (response.statusCode == 409) {
+      return EntityResponse.fromJson(response.body);
     }
 
     throw Exception();

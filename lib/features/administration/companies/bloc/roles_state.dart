@@ -2,25 +2,25 @@ part of 'roles_bloc.dart';
 
 class RolesState extends Equatable {
   final List<Role> roles;
-  final EntityStatus rolesRetrievedStatus;
+  final EntityStatus rolesLoadedStatus;
   const RolesState({
     this.roles = const [],
-    this.rolesRetrievedStatus = EntityStatus.initial,
+    this.rolesLoadedStatus = EntityStatus.initial,
   });
 
   @override
   List<Object> get props => [
         roles,
-        rolesRetrievedStatus,
+        rolesLoadedStatus,
       ];
 
   RolesState copyWith({
     List<Role>? roles,
-    EntityStatus? rolesRetrievedStatus,
+    EntityStatus? rolesLoadedStatus,
   }) {
     return RolesState(
       roles: roles ?? this.roles,
-      rolesRetrievedStatus: rolesRetrievedStatus ?? this.rolesRetrievedStatus,
+      rolesLoadedStatus: rolesLoadedStatus ?? this.rolesLoadedStatus,
     );
   }
 }

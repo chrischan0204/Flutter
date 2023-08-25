@@ -23,9 +23,9 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
   void initState() {
     companiesBloc = context.read<CompaniesBloc>()
       ..add(CompanySelectedById(companyId: widget.companyId))
-      ..add(AssignedCompanySitesRetrieved(companyId: widget.companyId))
-      ..add(AssignedProjectCompaniesRetrieved(companyId: widget.companyId))
-      ..add(AuditTrailsRetrievedByCompanyId(companyId: widget.companyId));
+      ..add(AssignedCompanySitesLoaded(companyId: widget.companyId))
+      ..add(AssignedProjectCompanyListLoaded(companyId: widget.companyId))
+      ..add(AuditTrailsLoadedByCompanyId(companyId: widget.companyId));
     super.initState();
   }
 
@@ -71,7 +71,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
         )
         .toList();
     var columns = const ['Site', 'Added By', 'Added on'];
-    return state.assignedCompanySitesRetrievedStatus == EntityStatus.loading
+    return state.assignedCompanySitesLoadedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
             child: Center(child: Loader()),
@@ -151,7 +151,7 @@ class _ShowCompanyViewState extends State<ShowCompanyView> {
         )
         .toList();
     var columns = const ['Project', 'Site', 'Role', 'Added By', 'Added on'];
-    return state.assignedProjectCompaniesRetrievedStatus == EntityStatus.loading
+    return state.assignedProjectCompanyListLoadedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
             child: Center(child: Loader()),

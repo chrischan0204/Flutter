@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '/common_libraries.dart';
 
 enum AuditSectionStatus {
@@ -83,7 +82,7 @@ class AuditSection extends Equatable {
       questionCount: map['questionCount'] ?? 0,
       maxScore: map['maxScore'] ?? 0,
       status: AuditSectionStatus.done,
-      auditQuestionList: [],
+      auditQuestionList: const [],
     );
   }
 

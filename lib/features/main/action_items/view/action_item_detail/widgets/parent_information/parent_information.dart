@@ -20,11 +20,26 @@ class ParentInformationView extends StatelessWidget {
           ),
           BlocBuilder<ActionItemDetailBloc, ActionItemDetailState>(
             builder: (context, state) {
+              if (state.parentInfomationLoadStatus.isLoading) {
+                return const Center(child: Loader());
+              }
               if (state.actionItem != null) {
                 if (state.actionItem!.source == 'Audit') {
                   return const AuditViewForActionItem();
                 } else if (state.actionItem!.source == 'Observation') {
                   return const ObservationViewForActionItem();
+                }
+                if (state.actionItem!.source == 'Observation, Audit') {
+                  return CustomTabBar(
+                    activeIndex: 0,
+                    tabs: const {
+                      'Observation': ObservationViewForActionItem(),
+                      'Audit': AuditViewForActionItem(),
+                    },
+                    onTabClick: (current, previous) async {
+                      return true;
+                    },
+                  );
                 }
               }
 

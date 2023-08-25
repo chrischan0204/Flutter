@@ -30,8 +30,8 @@ class _AssignCompaniesToProjectViewState
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()
       ..add(const FilterTextForUnassignedCompanyChanged(filterText: ''))
-      ..add(AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
-      ..add(UnassignedCompanyProjectsRetrieved(projectId: widget.projectId));
+      ..add(AssignedCompanyProjectsLoaded(projectId: widget.projectId))
+      ..add(UnassignedCompanyProjectsLoaded(projectId: widget.projectId));
 
     context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
     super.initState();
@@ -284,17 +284,16 @@ class _AssignCompaniesToProjectViewState
       padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter unassigned companies by name.',
-        label: 'sites',
+        label: 'companies',
         applyFilter: () {
-          projectsBloc.add(UnassignedCompanyProjectsRetrieved(
+          projectsBloc.add(UnassignedCompanyProjectsLoaded(
             projectId: widget.projectId,
             name: state.filterTextForUnassignedCompany,
           ));
         },
         clearFilter: () {
           projectsBloc
-            ..add(
-                UnassignedCompanyProjectsRetrieved(projectId: widget.projectId))
+            ..add(UnassignedCompanyProjectsLoaded(projectId: widget.projectId))
             ..add(const FilterTextForUnassignedCompanyChanged(filterText: ''));
         },
         onChange: (value) => projectsBloc
@@ -308,16 +307,16 @@ class _AssignCompaniesToProjectViewState
       padding: insetx20,
       child: FilterTextField(
         hintText: 'Filter assigned companies by name.',
-        label: 'sites',
+        label: 'companies',
         applyFilter: () {
-          projectsBloc.add(AssignedCompanyProjectsRetrieved(
+          projectsBloc.add(AssignedCompanyProjectsLoaded(
             projectId: widget.projectId,
             name: state.filterTextForAssignedCompany,
           ));
         },
         clearFilter: () {
           projectsBloc
-            ..add(AssignedCompanyProjectsRetrieved(projectId: widget.projectId))
+            ..add(AssignedCompanyProjectsLoaded(projectId: widget.projectId))
             ..add(const FilterTextForAssignedCompanyChanged(filterText: ''));
         },
         onChange: (value) => projectsBloc
@@ -328,11 +327,11 @@ class _AssignCompaniesToProjectViewState
 
   _refetchProjectCompanies(ProjectsState state) {
     projectsBloc
-      ..add(AssignedCompanyProjectsRetrieved(
+      ..add(AssignedCompanyProjectsLoaded(
         projectId: widget.projectId,
         name: state.filterTextForAssignedCompany,
       ))
-      ..add(UnassignedCompanyProjectsRetrieved(
+      ..add(UnassignedCompanyProjectsLoaded(
         projectId: widget.projectId,
         name: state.filterTextForUnassignedCompany,
       ));

@@ -12,7 +12,7 @@ dependencies:
   animate_do: ^3.0.2
   animate_icons: ^2.0.0
   animated_text_kit: ^4.2.2
-  awesome_dialog: ^3.0.2
+  awesome_dialog: ^3.1.0
   bloc: ^8.1.1
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1

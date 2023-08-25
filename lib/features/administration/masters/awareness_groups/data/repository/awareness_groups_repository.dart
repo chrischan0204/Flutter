@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:http/http.dart';
 
 import '/data/repository/repository.dart';
 import '/data/model/model.dart';

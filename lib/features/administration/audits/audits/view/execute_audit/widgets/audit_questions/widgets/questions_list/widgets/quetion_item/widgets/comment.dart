@@ -44,25 +44,41 @@ class _AuditCommentViewState extends State<AuditCommentView> {
                     'Comments ${capitalize(state.view.name)}',
                     style: textNormal14,
                   ),
-                  CustomBadge(
-                    label: state.view.toString(),
-                    color: primaryColor,
-                    radius: 10,
-                    onClick: () {
-                      if (state.view.isCreate) {
-                        context
-                            .read<ExecuteAuditCommentBloc>()
-                            .add(ExecuteAuditCommentCreated());
-                      } else if (state.view.isList) {
-                        context.read<ExecuteAuditCommentBloc>().add(
-                            const ExecuteAuditCommentViewChanged(
-                                view: CrudView.create));
-                      } else if (state.view.isUpdate) {
-                        context
-                            .read<ExecuteAuditCommentBloc>()
-                            .add(ExecuteAuditCommentUpdated());
-                      }
-                    },
+                  Row(
+                    children: [
+                      if (state.view.isCreate || state.view.isUpdate)
+                        CustomBadge(
+                          label: 'Cancel',
+                          color: Colors.grey,
+                          radius: 10,
+                          onClick: () {
+                            context.read<ExecuteAuditCommentBloc>()
+                              ..add(ExecuteAuditCommentInited())
+                              ..add(ExecuteAuditCommentListLoaded());
+                          },
+                        ),
+                      spacerx20,
+                      CustomBadge(
+                        label: state.view.toString(),
+                        color: primaryColor,
+                        radius: 10,
+                        onClick: () {
+                          if (state.view.isCreate) {
+                            context
+                                .read<ExecuteAuditCommentBloc>()
+                                .add(ExecuteAuditCommentCreated());
+                          } else if (state.view.isList) {
+                            context.read<ExecuteAuditCommentBloc>().add(
+                                const ExecuteAuditCommentViewChanged(
+                                    view: CrudView.create));
+                          } else if (state.view.isUpdate) {
+                            context
+                                .read<ExecuteAuditCommentBloc>()
+                                .add(ExecuteAuditCommentUpdated());
+                          }
+                        },
+                      ),
+                    ],
                   )
                 ],
               ),

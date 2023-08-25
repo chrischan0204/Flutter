@@ -140,7 +140,7 @@ class ResponseScaleItemListItemBodyView extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 100,
+          width: 160,
           child: Checkbox(
               key: ValueKey(responseScaleItem.id),
               value: responseScaleItem.isRequired,

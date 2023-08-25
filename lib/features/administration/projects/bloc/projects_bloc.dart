@@ -16,15 +16,14 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   }
 
   void _triggerEvents() {
-    on<ProjectsRetrieved>(_onProjectsRetrieved);
+    on<ProjectsLoaded>(_onProjectsLoaded);
     on<ProjectListFiltered>(_onProjectListFiltered);
     on<ProjectSelected>(_onProjectSelected);
     on<ProjectSelectedById>(_onProjectSelectedById);
     on<ProjectDeleted>(_onProjectDeleted);
     on<ProjectsSorted>(_onProjectsSorted);
-    on<AssignedCompanyProjectsRetrieved>(_onAssignedCompanyProjectsRetrieved);
-    on<UnassignedCompanyProjectsRetrieved>(
-        _onUnassignedCompanyProjectsRetrieved);
+    on<AssignedCompanyProjectsLoaded>(_onAssignedCompanyProjectsLoaded);
+    on<UnassignedCompanyProjectsLoaded>(_onUnassignedCompanyProjectsLoaded);
     on<ProjectsStatusInited>(_onProjectsStatusInited);
     on<FilterTextForUnassignedCompanyChanged>(
         _onFilterTextForUnassignedCompanyChanged);
@@ -36,19 +35,19 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         _onUnAssignedCompanyProjectRoleSelected);
   }
 
-  Future<void> _onProjectsRetrieved(
-    ProjectsRetrieved event,
+  Future<void> _onProjectsLoaded(
+    ProjectsLoaded event,
     Emitter<ProjectsState> emit,
   ) async {
-    emit(state.copyWith(projectsRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(projectsLoadedStatus: EntityStatus.loading));
     try {
       List<Project> projects = await projectsRepository.getProjectList();
       emit(state.copyWith(
         projects: projects,
-        projectsRetrievedStatus: EntityStatus.success,
+        projectsLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(projectsRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(projectsLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -56,7 +55,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     ProjectListFiltered event,
     Emitter<ProjectsState> emit,
   ) async {
-    emit(state.copyWith(projectsRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(projectsLoadedStatus: EntityStatus.loading));
 
     try {
       FilteredProjectData data =
@@ -68,10 +67,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         projects: data.data
             .map((e) => e.toProject().copyWith(columns: columns))
             .toList(),
-        projectsRetrievedStatus: EntityStatus.success,
+        projectsLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(projectsRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(projectsLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -132,41 +131,41 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  void _onAssignedCompanyProjectsRetrieved(
-    AssignedCompanyProjectsRetrieved event,
+  void _onAssignedCompanyProjectsLoaded(
+    AssignedCompanyProjectsLoaded event,
     Emitter<ProjectsState> emit,
   ) async {
     emit(state.copyWith(
-        assignedCompanyProjectsRetrievedStatus: EntityStatus.loading));
+        assignedCompanyProjectsLoadedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> assignedCompanyProjects = await projectsRepository
           .getCompanyListForProject(event.projectId, true, event.name);
       emit(state.copyWith(
         assignedCompanyProjects: assignedCompanyProjects,
-        assignedCompanyProjectsRetrievedStatus: EntityStatus.success,
+        assignedCompanyProjectsLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(
-          assignedCompanyProjectsRetrievedStatus: EntityStatus.failure));
+          assignedCompanyProjectsLoadedStatus: EntityStatus.failure));
     }
   }
 
-  void _onUnassignedCompanyProjectsRetrieved(
-    UnassignedCompanyProjectsRetrieved event,
+  void _onUnassignedCompanyProjectsLoaded(
+    UnassignedCompanyProjectsLoaded event,
     Emitter<ProjectsState> emit,
   ) async {
     emit(state.copyWith(
-        unassignedCompanyProjectsRetrievedStatus: EntityStatus.loading));
+        unassignedCompanyProjectsLoadedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> unassignedCompanyProjects = await projectsRepository
           .getCompanyListForProject(event.projectId, false, event.name);
       emit(state.copyWith(
         unassignedCompanyProjects: unassignedCompanyProjects,
-        unassignedCompanyProjectsRetrievedStatus: EntityStatus.success,
+        unassignedCompanyProjectsLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(
-          unassignedCompanyProjectsRetrievedStatus: EntityStatus.failure));
+          unassignedCompanyProjectsLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -183,7 +182,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       state.copyWith(
         projectCrudStatus: EntityStatus.initial,
         projectSelectedStatus: EntityStatus.initial,
-        projectsRetrievedStatus: EntityStatus.initial,
+        projectsLoadedStatus: EntityStatus.initial,
       ),
     );
   }

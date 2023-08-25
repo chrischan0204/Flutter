@@ -14,6 +14,7 @@ class ExecuteAuditState extends Equatable {
 
   /// lists to create action item
   final List<User> assigneeList;
+
   final List<AwarenessCategory> categoryList;
 
   const ExecuteAuditState({

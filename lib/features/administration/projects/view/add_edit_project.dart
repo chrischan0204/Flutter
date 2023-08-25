@@ -54,10 +54,10 @@ class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
   @override
   void initState() {
     addEditProjectBloc = context.read()..add(AddEditProjectSiteListLoaded());
-    context.read<SitesBloc>().add(SitesRetrieved());
+    context.read<SitesBloc>().add(SitesLoaded());
     if (widget.projectId != null) {
       addEditProjectBloc.add(AddEditProjectLoaded(id: widget.projectId!));
-      context.read<RolesBloc>().add(RolesRetrieved());
+      context.read<RolesBloc>().add(RolesLoaded());
     }
 
     super.initState();
@@ -87,7 +87,7 @@ class _AddEditProjectWidgetState extends State<AddEditProjectWidget> {
                 .go('/projects/edit/${state.createdProjectId}?view=created');
           }
         }
-        if (state.status .isFailure) {
+        if (state.status.isFailure) {
           CustomNotification(
             context: context,
             notifyType: NotifyType.error,

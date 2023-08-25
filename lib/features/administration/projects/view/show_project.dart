@@ -23,7 +23,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
   void initState() {
     projectsBloc = context.read<ProjectsBloc>()
       ..add(ProjectSelectedById(projectId: widget.projectId))
-      ..add(AssignedCompanyProjectsRetrieved(
+      ..add(AssignedCompanyProjectsLoaded(
         projectId: widget.projectId,
       ));
     super.initState();
@@ -71,7 +71,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
         )
         .toList();
     var columns = const ['Company Name', 'Role', 'Added By', 'Added on'];
-    return state.assignedCompanyProjectsRetrievedStatus == EntityStatus.loading
+    return state.assignedCompanyProjectsLoadedStatus == EntityStatus.loading
         ? const Padding(
             padding: EdgeInsets.only(top: 300),
             child: Center(child: Loader()),
@@ -82,7 +82,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
               state.assignedCompanyProjects.isNotEmpty
                   ? Padding(
                       padding: insetx20,
-                      child: Text(
+                      child: const Text(
                         'The following companies are associated with this project. Edit project to associate/ remove companies from this project',
                         style: TextStyle(
                           fontSize: 14,
@@ -104,7 +104,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children:  [
+                        children: [
                           Padding(
                             padding: insetx20,
                             child: const Text(
@@ -147,7 +147,7 @@ class _ShowProjectViewState extends State<ShowProjectView> {
 
       GoRouter.of(context).go('/projects');
     }
-    if (state.projectCrudStatus .isFailure) {
+    if (state.projectCrudStatus.isFailure) {
       projectsBloc.add(ProjectsStatusInited());
       CustomNotification(
         context: context,

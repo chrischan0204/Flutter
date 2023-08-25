@@ -16,7 +16,7 @@ class AwarenessGroupsBloc
   }
 
   void _triggerEvents() {
-    on<AwarenessGroupsRetrieved>(_onAwarenessGroupsRetrieved);
+    on<AwarenessGroupsLoaded>(_onAwarenessGroupsLoaded);
     on<AwarenessGroupSelected>(_onAwarenessGroupSelected);
     on<AwarenessGroupSelectedById>(_onAwarenessGroupSelectedById);
     on<AwarenessGroupDeleted>(_onAwarenessGroupDeleted);
@@ -24,19 +24,18 @@ class AwarenessGroupsBloc
   }
 
   // get awareness groups list
-  void _onAwarenessGroupsRetrieved(AwarenessGroupsRetrieved event,
-      Emitter<AwarenessGroupsState> emit) async {
-    emit(state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.loading));
+  void _onAwarenessGroupsLoaded(
+      AwarenessGroupsLoaded event, Emitter<AwarenessGroupsState> emit) async {
+    emit(state.copyWith(awarenessGroupsLoadedStatus: EntityStatus.loading));
     try {
       List<AwarenessGroup> awarenessGroups =
           await awarenessGroupsRepository.getAwarenessGroups();
       emit(state.copyWith(
-        awarenessGroupsRetrievedStatus: EntityStatus.success,
+        awarenessGroupsLoadedStatus: EntityStatus.success,
         awarenessGroups: awarenessGroups,
       ));
     } catch (e) {
-      emit(
-          state.copyWith(awarenessGroupsRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(awarenessGroupsLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -115,7 +114,7 @@ class AwarenessGroupsBloc
       state.copyWith(
         awarenessGroupCrudStatus: EntityStatus.initial,
         awarenessGroupSelectedStatus: EntityStatus.initial,
-        awarenessGroupsRetrievedStatus: EntityStatus.initial,
+        awarenessGroupsLoadedStatus: EntityStatus.initial,
       ),
     );
   }

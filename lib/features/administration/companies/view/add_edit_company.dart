@@ -65,8 +65,8 @@ class _AddEditCompanyWidgetState extends State<AddEditCompanyWidget> {
 
     if (widget.companyId != null) {
       _addEditCompanyBloc.add(AddEditCompanyLoaded(id: widget.companyId!));
-      context.read<SitesBloc>().add(SitesRetrieved());
-      context.read<RolesBloc>().add(RolesRetrieved());
+      context.read<SitesBloc>().add(SitesLoaded());
+      context.read<RolesBloc>().add(RolesLoaded());
     }
 
     super.initState();

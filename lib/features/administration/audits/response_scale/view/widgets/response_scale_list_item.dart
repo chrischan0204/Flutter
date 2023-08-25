@@ -1,6 +1,5 @@
 import '../../blocs/bloc/response_scale_bloc.dart';
 import '/common_libraries.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 
 class ResponseScaleListItemView extends StatefulWidget {
   final ResponseScale responseScale;
@@ -58,13 +57,31 @@ class _ResponseScaleListItemViewState extends State<ResponseScaleListItemView> {
       children: [
         IconButton(
           onPressed: () {
-            setState(() {
+            if (Validation.isEmpty(_textEditingController.text)) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: FormValidationMessage(fieldName: 'Response scale')
+                    .requiredMessage,
+              ).showNotification();
+            } else if (_textEditingController.text.length > 200) {
+              CustomNotification(
+                context: context,
+                notifyType: NotifyType.info,
+                content: FormValidationMessage(
+                  fieldName: 'Response scale',
+                  maxLength: 200,
+                ).maxLengthValidationMessage,
+              ).showNotification();
+            } else {
               context.read<ResponseScaleBloc>().add(ResponseScaleEdited(
                     responseScaleName: _textEditingController.text,
                     responseScaleId: widget.responseScale.id,
                   ));
-              _isEditing = false;
-            });
+              setState(() {
+                _isEditing = false;
+              });
+            }
           },
           icon: PhosphorIcon(
             PhosphorIcons.regular.check,
@@ -113,10 +130,10 @@ class _ResponseScaleListItemViewState extends State<ResponseScaleListItemView> {
               title: 'Confirm',
               description: 'Do you really want to delete this response scale?',
               btnOkText: 'OK',
-              btnCancelOnPress: () {},
               btnOkOnPress: () => context.read<ResponseScaleBloc>().add(
-                  ResponseScaleDeleted(
+                  ResponseScaleDeletionValidated(
                       responseScaleId: widget.responseScale.id)),
+              btnCancelOnPress: () {},
               dialogType: DialogType.question,
             ).show();
           },

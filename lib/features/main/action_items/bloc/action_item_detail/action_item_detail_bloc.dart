@@ -69,6 +69,7 @@ class ActionItemDetailBloc
     Emitter<ActionItemDetailState> emit,
   ) async {
     emit(state.copyWith(actionItemLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(parentInfomationLoadStatus: EntityStatus.loading));
     try {
       ActionItem actionItem =
           await _actionItemsRepository.getActionItemById(actionItemId);
@@ -76,18 +77,53 @@ class ActionItemDetailBloc
       emit(state.copyWith(actionItem: actionItem));
 
       if (actionItem.source == 'Observation') {
-        ObservationDetail observation = await _observationsRepository
-            .getObservationById(actionItem.observationId);
+        try {
+          ObservationDetail observation = await _observationsRepository
+              .getObservationById(actionItem.observationId);
 
-        emit(state.copyWith(observation: observation));
+          emit(state.copyWith(
+            parentInfomationLoadStatus: EntityStatus.success,
+            observation: observation,
+          ));
+        } catch (e) {
+          emit(
+              state.copyWith(parentInfomationLoadStatus: EntityStatus.failure));
+        }
       } else if (actionItem.source == 'Audit') {
-        AuditQuestionOnActionItem auditQuestionOnActionitem =
-            await _actionItemsRepository.getAuditQuestionForActionItem(
-                actionItemId: actionItemId,
-                questionId: actionItem.auditSectionItemId);
+        try {
+          AuditQuestionOnActionItem auditQuestionOnActionitem =
+              await _actionItemsRepository.getAuditQuestionForActionItem(
+            actionItemId: actionItemId,
+            questionId: actionItem.auditSectionItemId,
+          );
 
-        emit(state.copyWith(
-            auditQuestionOnActionitem: auditQuestionOnActionitem));
+          emit(state.copyWith(
+            auditQuestionOnActionitem: auditQuestionOnActionitem,
+            parentInfomationLoadStatus: EntityStatus.success,
+          ));
+        } catch (e) {
+          emit(
+              state.copyWith(parentInfomationLoadStatus: EntityStatus.failure));
+        }
+      } else if (actionItem.source == 'Observation, Audit') {
+        try {
+          ObservationDetail observation = await _observationsRepository
+              .getObservationById(actionItem.observationId);
+
+          AuditQuestionOnActionItem auditQuestionOnActionitem =
+              await _actionItemsRepository.getAuditQuestionForActionItem(
+                  actionItemId: actionItemId,
+                  questionId: actionItem.auditSectionItemId);
+
+          emit(state.copyWith(
+            observation: observation,
+            auditQuestionOnActionitem: auditQuestionOnActionitem,
+            parentInfomationLoadStatus: EntityStatus.success,
+          ));
+        } catch (e) {
+          emit(
+              state.copyWith(parentInfomationLoadStatus: EntityStatus.failure));
+        }
       }
 
       emit(state.copyWith(actionItemLoadStatus: EntityStatus.success));

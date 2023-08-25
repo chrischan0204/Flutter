@@ -27,7 +27,7 @@ class _AwarenessCategoriesListViewState
   void initState() {
     super.initState();
     awarenessCategoriesBloc = context.read<AwarenessCategoriesBloc>()
-      ..add(AwarenessCategoriesRetrieved());
+      ..add(AwarenessCategoriesLoaded());
   }
 
   @override
@@ -43,7 +43,7 @@ class _AwarenessCategoriesListViewState
           onRowClick: (awarenessCategory) =>
               _selectAwarenessCategory(awarenessCategory as AwarenessCategory),
           entityListLoadStatusLoading:
-              state.awarenessCategoriesRetrievedStatus.isLoading,
+              state.awarenessCategoriesLoadedStatus.isLoading,
           selectedEntity: state.selectedAwarenessCategory,
         );
       },

@@ -24,7 +24,7 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
   void initState() {
     super.initState();
     priorityLevelsBloc = context.read<PriorityLevelsBloc>()
-      ..add(PriorityLevelsRetrieved());
+      ..add(PriorityLevelsLoaded());
   }
 
   @override
@@ -42,7 +42,8 @@ class _PriorityLevelsListViewState extends State<PriorityLevelsListView> {
               priorityLevel: priorityLevel as PriorityLevel,
             ));
           },
-          entityListLoadStatusLoading: state.priorityLevelsRetrievedStatus.isLoading,
+          entityListLoadStatusLoading:
+              state.priorityLevelsLoadedStatus.isLoading,
           selectedEntity: state.selectedPriorityLevel,
         );
       },

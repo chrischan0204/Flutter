@@ -33,10 +33,10 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
   @override
   void initState() {
     regionsBloc = context.read<RegionsBloc>();
-    regionsBloc.add(UnassignedRegionsRetrieved());
+    regionsBloc.add(UnassignedRegionsLoaded());
     regionsBloc.add(const RegionsStatusInited());
     if (widget.regionId != null) {
-      regionsBloc.add(TimeZonesRetrievedForRegion(regionId: widget.regionId!));
+      regionsBloc.add(TimeZonesLoadedForRegion(regionId: widget.regionId!));
       regionsBloc.add(RegionSelectedById(regionId: widget.regionId!));
     } else {
       regionsBloc.add(const RegionSelected(region: Region()));
@@ -182,9 +182,9 @@ class _AddEditRegionViewState extends State<AddEditRegionView> {
           ).showNotification();
         },
         listenWhen: (previous, current) =>
-            previous.unassignedRegionsRetrievedStatus !=
-                current.unassignedRegionsRetrievedStatus &&
-            current.unassignedRegionsRetrievedStatus.isFailure,
+            previous.unassignedRegionsLoadedStatus !=
+                current.unassignedRegionsLoadedStatus &&
+            current.unassignedRegionsLoadedStatus.isFailure,
         child: CustomSingleSelect(
           items: regionItems,
           hint: 'Select Region',

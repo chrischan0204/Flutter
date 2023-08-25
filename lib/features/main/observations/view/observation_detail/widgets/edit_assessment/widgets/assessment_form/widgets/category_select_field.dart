@@ -7,7 +7,7 @@ class CategorySelectField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservationDetailFormItemView(
-      label: 'Category',
+      label: 'Category (*)',
       content: BlocBuilder<ObservationDetailBloc, ObservationDetailState>(
         builder: (context, observationDetailState) {
           Map<String, AwarenessCategory> items = {}..addEntries(

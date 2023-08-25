@@ -5,7 +5,7 @@ class ObservationTypesState extends Equatable {
   final List<ObservationType> observationTypes;
   final ObservationType? selectedObservationType;
 
-  final EntityStatus observationTypesRetrievedStatus;
+  final EntityStatus observationTypesLoadedStatus;
   final EntityStatus observationTypeSelectedStatus;
   final EntityStatus observationTypeCrudStatus;
 
@@ -13,7 +13,7 @@ class ObservationTypesState extends Equatable {
   const ObservationTypesState({
     this.observationTypes = const [],
     this.selectedObservationType,
-    this.observationTypesRetrievedStatus = EntityStatus.initial,
+    this.observationTypesLoadedStatus = EntityStatus.initial,
     this.observationTypeSelectedStatus = EntityStatus.initial,
     this.observationTypeCrudStatus = EntityStatus.initial,
     this.message = '',
@@ -23,7 +23,7 @@ class ObservationTypesState extends Equatable {
   @override
   List<Object?> get props => [
         observationTypes,
-        observationTypesRetrievedStatus,
+        observationTypesLoadedStatus,
         selectedObservationType,
         observationTypeSelectedStatus,
         observationTypeCrudStatus,
@@ -34,7 +34,7 @@ class ObservationTypesState extends Equatable {
   ObservationTypesState copyWith({
     List<ObservationType>? observationTypes,
     ObservationType? selectedObservationType,
-    EntityStatus? observationTypesRetrievedStatus,
+    EntityStatus? observationTypesLoadedStatus,
     EntityStatus? observationTypeSelectedStatus,
     EntityStatus? observationTypeCrudStatus,
     String? message,
@@ -43,8 +43,8 @@ class ObservationTypesState extends Equatable {
       observationTypes: observationTypes ?? this.observationTypes,
       selectedObservationType:
           selectedObservationType ?? this.selectedObservationType,
-      observationTypesRetrievedStatus: observationTypesRetrievedStatus ??
-          this.observationTypesRetrievedStatus,
+      observationTypesLoadedStatus:
+          observationTypesLoadedStatus ?? this.observationTypesLoadedStatus,
       observationTypeSelectedStatus:
           observationTypeSelectedStatus ?? this.observationTypeSelectedStatus,
       observationTypeCrudStatus:

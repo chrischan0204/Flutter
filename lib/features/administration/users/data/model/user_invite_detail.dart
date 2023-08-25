@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import 'package:safety_eta/common_libraries.dart';
 
 class UserInviteDetail extends Equatable {

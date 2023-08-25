@@ -19,9 +19,9 @@ class AwarenessCategoriesBloc
 
   // trigger the event
   void _triggerEvents() {
-    on<AwarenessCategoriesRetrieved>(_onAwarenessCategoriesRetrieved);
-    on<AwarenessGroupsForAwarenessCategoriesRetrieved>(
-        _onAwarenessGroupsForAwarenessCategoriesRetrieved);
+    on<AwarenessCategoriesLoaded>(_onAwarenessCategoriesLoaded);
+    on<AwarenessGroupsForAwarenessCategoriesLoaded>(
+        _onAwarenessGroupsForAwarenessCategoriesLoaded);
     on<AwarenessCategorySelected>(_onAwarenessCategorySelected);
     on<AwarenessCategorySelectedById>(_onAwarenessCategorySelectedById);
     on<AwarenessCategoryDeleted>(_onAwarenessCategoryDeleted);
@@ -29,12 +29,12 @@ class AwarenessCategoriesBloc
   }
 
   // get awareness groups list
-  void _onAwarenessGroupsForAwarenessCategoriesRetrieved(
-      AwarenessGroupsForAwarenessCategoriesRetrieved event,
+  void _onAwarenessGroupsForAwarenessCategoriesLoaded(
+      AwarenessGroupsForAwarenessCategoriesLoaded event,
       Emitter<AwarenessCategoriesState> emit) async {
     emit(
       state.copyWith(
-        awarenessGroupsRetrievedStatus: EntityStatus.loading,
+        awarenessGroupsLoadedStatus: EntityStatus.loading,
       ),
     );
     try {
@@ -42,26 +42,25 @@ class AwarenessCategoriesBloc
           await awarenessGroupsRepository.getAwarenessGroups();
       emit(
         state.copyWith(
-          awarenessGroupsRetrievedStatus: EntityStatus.success,
+          awarenessGroupsLoadedStatus: EntityStatus.success,
           awarenessGroups: awarenessGroups,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          awarenessGroupsRetrievedStatus: EntityStatus.failure,
+          awarenessGroupsLoadedStatus: EntityStatus.failure,
         ),
       );
     }
   }
 
   // get awareness categories list
-  Future<void> _onAwarenessCategoriesRetrieved(
-      AwarenessCategoriesRetrieved event,
+  Future<void> _onAwarenessCategoriesLoaded(AwarenessCategoriesLoaded event,
       Emitter<AwarenessCategoriesState> emit) async {
     emit(
       state.copyWith(
-        awarenessCategoriesRetrievedStatus: EntityStatus.loading,
+        awarenessCategoriesLoadedStatus: EntityStatus.loading,
       ),
     );
     try {
@@ -69,14 +68,14 @@ class AwarenessCategoriesBloc
           await awarenessCategoriesRepository.getAwarenessCategorieList();
       emit(
         state.copyWith(
-          awarenessCategoriesRetrievedStatus: EntityStatus.success,
+          awarenessCategoriesLoadedStatus: EntityStatus.success,
           awarenessCategories: awarenessCategories,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          awarenessCategoriesRetrievedStatus: EntityStatus.failure,
+          awarenessCategoriesLoadedStatus: EntityStatus.failure,
         ),
       );
     }
@@ -157,7 +156,7 @@ class AwarenessCategoriesBloc
     emit(
       state.copyWith(
         awarenessCategorySelectedStatus: EntityStatus.initial,
-        awarenessCategoriesRetrievedStatus: EntityStatus.initial,
+        awarenessCategoriesLoadedStatus: EntityStatus.initial,
         awarenessCategoryCrudStatus: EntityStatus.initial,
       ),
     );

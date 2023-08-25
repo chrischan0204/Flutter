@@ -64,6 +64,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete audit by id
   Future<EntityResponse> deleteAudit(String auditId) async {
     Response response = await super.delete('$url/$auditId');
 
@@ -81,6 +82,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// load audit summary
   Future<AuditSummary> getAuditSummary(String auditId) async {
     Response response = await super.get('$url/$auditId/summary');
 
@@ -91,6 +93,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get filtered audit list
   Future<FilteredAuditData> getFilteredAuditList(
       FilteredTableParameter option) async {
     Response response = await super.filter(option);
@@ -101,6 +104,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit section and question list for detail
   Future<List<AuditSectionAndQuestion>> getAuditSectionAndQuestionList(
       String auditId) async {
     Response response = await super.get('$url/$auditId/sectionswithquestions');
@@ -114,6 +118,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit question list
   Future<List<AuditQuestion>> getAuditQuestionList(
       String auditId, String sectionId) async {
     Response response = await super.get(
@@ -133,6 +138,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit section list
   Future<List<AuditSection>> getAuditSectionList(String auditId) async {
     Response response =
         await super.get('$url/$auditId/auditandtemplatesections');
@@ -151,6 +157,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// toggle include question
   Future<EntityResponse> toggleIncludeQuestion(
       AuditQuestionAssociation auditQuestionAssociation) async {
     Response response = await super.post(
@@ -167,6 +174,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// toggle include section
   Future<EntityResponse> toggleIncludeSection(
       AuditSectionAssociation auditSectionAssociation) async {
     Response response = await super.post(
@@ -184,6 +192,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// copy section
   Future<EntityResponse> copySection(
     String auditId,
     String sectionId,
@@ -197,6 +206,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// copy question
   Future<EntityResponse> copyQuestion(
     String auditId,
     String questionId,
@@ -210,6 +220,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get question view option list
   Future<AuditQuestionViewOption> getQuestionViewOptionList(
       String auditId) async {
     Response response = await super.get('$url/$auditId/questionviewoptions');
@@ -221,6 +232,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit question list 
   Future<List<AuditQuestion>> getAuditQuestionListForExecute(
       QuestionsForViewOptionParameter option) async {
     Response response = await super.post(
@@ -236,6 +248,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit question detail
   Future<AuditQuestion> getAuditQuestionByIdForExecute(
       String questionId) async {
     Response response = await super.get('$url/questions/$questionId');
@@ -247,6 +260,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get follow up
   Future<AuditQuestion> getFollowupAuditQuestionForExecute(
     String auditId,
     String responseScaleId,

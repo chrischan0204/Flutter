@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:uuid/uuid.dart';
 
 import '/common_libraries.dart';
@@ -269,23 +271,25 @@ class TemplateDesignerBloc
     TemplateDesignerSectionDeleted event,
     Emitter<TemplateDesignerState> emit,
   ) async {
-    emit(state.copyWith(templateSectionAddStatus: EntityStatus.loading));
-
     try {
       EntityResponse response =
           await _templatesRepository.deleteTemplateSection(event.sectionId);
       if (response.isSuccess) {
-        emit(state.copyWith(
-          templateSectionAddStatus: EntityStatus.success,
-          message: response.message,
-        ));
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.success,
+          content: response.message,
+        ).showNotification();
+
+        add(TemplateDesignerTemplateSectionListLoaded());
+      } else {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: response.message,
+        ).showNotification();
       }
-    } catch (e) {
-      emit(state.copyWith(
-        templateSectionAddStatus: EntityStatus.failure,
-        message: 'Something went wrong!',
-      ));
-    }
+    } catch (e) {}
   }
 
   Future<void> _onTemplateDesignerResponseScaleListLoaded(

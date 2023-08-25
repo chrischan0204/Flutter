@@ -16,7 +16,7 @@ class ObservationTypesBloc
 
   // trigger events
   void _triggerEvents() {
-    on<ObservationTypesRetrieved>(_onObservationTypesRetrieved);
+    on<ObservationTypesLoaded>(_onObservationTypesLoaded);
     on<ObservationTypeSelected>(_onObservationTypeSelected);
     on<ObservationTypeSelectedById>(_onObservationTypeSelectedById);
     on<ObservationTypeDeleted>(_onObservationTypeDeleted);
@@ -24,23 +24,23 @@ class ObservationTypesBloc
   }
 
   // get observation types list
-  Future<void> _onObservationTypesRetrieved(
-    ObservationTypesRetrieved event,
+  Future<void> _onObservationTypesLoaded(
+    ObservationTypesLoaded event,
     Emitter<ObservationTypesState> emit,
   ) async {
     emit(state.copyWith(
-      observationTypesRetrievedStatus: EntityStatus.loading,
+      observationTypesLoadedStatus: EntityStatus.loading,
     ));
     try {
       List<ObservationType> observationTypes =
           await observationTypesRepository.getObservationTypeList();
       emit(state.copyWith(
         observationTypes: observationTypes,
-        observationTypesRetrievedStatus: EntityStatus.success,
+        observationTypesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(
-        observationTypesRetrievedStatus: EntityStatus.failure,
+        observationTypesLoadedStatus: EntityStatus.failure,
       ));
     }
   }
@@ -120,7 +120,7 @@ class ObservationTypesBloc
     emit(
       state.copyWith(
         observationTypeSelectedStatus: EntityStatus.initial,
-        observationTypesRetrievedStatus: EntityStatus.initial,
+        observationTypesLoadedStatus: EntityStatus.initial,
         observationTypeCrudStatus: EntityStatus.initial,
       ),
     );

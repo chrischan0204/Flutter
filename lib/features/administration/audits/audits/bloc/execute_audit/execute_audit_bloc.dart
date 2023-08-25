@@ -38,9 +38,6 @@ class ExecuteAuditBloc extends Bloc<ExecuteAuditEvent, ExecuteAuditState> {
 
   @override
   void onChange(Change<ExecuteAuditState> change) {
-    final currentState = change.currentState;
-    final nextState = change.nextState;
-
     super.onChange(change);
   }
 

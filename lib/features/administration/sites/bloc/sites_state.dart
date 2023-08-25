@@ -4,7 +4,7 @@ class SitesState extends Equatable {
   final List<Site> sites;
   final Site? selectedSite;
   final List<AuditTemplate> templates;
-  final EntityStatus sitesRetrievedStatus;
+  final EntityStatus sitesLoadedStatus;
   final EntityStatus siteSelectedStatus;
   final EntityStatus siteCrudStatus;
   final String message;
@@ -16,7 +16,7 @@ class SitesState extends Equatable {
     this.selectedSite,
     this.message = '',
     this.templates = const [],
-    this.sitesRetrievedStatus = EntityStatus.initial,
+    this.sitesLoadedStatus = EntityStatus.initial,
     this.siteSelectedStatus = EntityStatus.initial,
     this.siteCrudStatus = EntityStatus.initial,
   });
@@ -27,7 +27,7 @@ class SitesState extends Equatable {
         selectedSite,
         message,
         templates,
-        sitesRetrievedStatus,
+        sitesLoadedStatus,
         siteSelectedStatus,
         siteCrudStatus,
         totalRows,
@@ -38,7 +38,7 @@ class SitesState extends Equatable {
     Site? selectedSite,
     String? message,
     List<AuditTemplate>? templates,
-    EntityStatus? sitesRetrievedStatus,
+    EntityStatus? sitesLoadedStatus,
     EntityStatus? siteSelectedStatus,
     EntityStatus? siteCrudStatus,
     int? totalRows,
@@ -48,7 +48,7 @@ class SitesState extends Equatable {
       selectedSite: selectedSite ?? this.selectedSite,
       message: message ?? this.message,
       templates: templates ?? this.templates,
-      sitesRetrievedStatus: sitesRetrievedStatus ?? this.sitesRetrievedStatus,
+      sitesLoadedStatus: sitesLoadedStatus ?? this.sitesLoadedStatus,
       siteSelectedStatus: siteSelectedStatus ?? this.siteSelectedStatus,
       siteCrudStatus: siteCrudStatus ?? this.siteCrudStatus,
       totalRows: totalRows ?? this.totalRows,

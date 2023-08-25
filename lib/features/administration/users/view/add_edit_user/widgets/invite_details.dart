@@ -151,14 +151,14 @@ class _InviteDetailViewState extends State<InviteDetailView> {
           }
         } else {
           if (state.inviteSentStatus.isLoading) {
-            return InviteItem(
+            return const InviteItem(
               title: 'Send an invite to the user?',
               content: Padding(
-                padding: const EdgeInsets.all(25),
+                padding: EdgeInsets.all(25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Loader(),
                     SizedBox(height: 10),
                     Text(

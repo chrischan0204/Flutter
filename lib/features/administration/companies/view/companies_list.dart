@@ -38,7 +38,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
             emptyMessage: emptyMessage,
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
-                    state.companiesRetrievedStatus.isLoading,
+                    state.companiesLoadedStatus.isLoading,
             entityDetailLoadStatusLoading:
                 state.companySelectedStatus.isLoading,
             selectedEntity: state.selectedCompany,

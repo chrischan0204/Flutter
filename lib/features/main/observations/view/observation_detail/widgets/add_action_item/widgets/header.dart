@@ -43,7 +43,7 @@ class AddActionItemHeaderView extends StatelessWidget {
               ..add(AddActionItemAddActionItemButtonClicked())
               ..add(AddActionItemSiteChanged(
                   site: observation == null ? null : Site(
-                id: observation!.userReportedSiteId,
+                id: observation.userReportedSiteId,
                 name: observation.userReportedSiteName,
               )));
           },

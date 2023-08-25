@@ -140,6 +140,10 @@ class TemplatesRepository extends BaseRepository {
       );
     }
 
+    if (response.statusCode == 409) {
+      return EntityResponse.fromJson(response.body);
+    }
+
     throw Exception();
   }
 

@@ -38,7 +38,7 @@ class _SitesListViewState extends State<SitesListView> {
             emptyMessage: emptyMessage,
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
-                    state.sitesRetrievedStatus.isLoading,
+                    state.sitesLoadedStatus.isLoading,
             entityDetailLoadStatusLoading: state.siteSelectedStatus.isLoading,
             selectedEntity: state.selectedSite,
             onViewSettingApplied: () => _filterSites(),

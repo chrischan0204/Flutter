@@ -10,20 +10,20 @@ class TemplateItemsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'A page to define a template. A template\'s sections, questions and other composition can be defined here.',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const CustomDivider(),
+        CustomDivider(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Flexible(
               flex: 3,
               fit: FlexFit.tight,

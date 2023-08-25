@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../common_libraries.dart';
@@ -18,6 +20,7 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     on<ResponseScaleSelected>(_onResponseScaleSelected);
     on<ResponseScaleAdded>(_onResponseScaleAdded);
     on<ResponseScaleEdited>(_onResponseScaleEdited);
+    on<ResponseScaleDeletionValidated>(_onResponseScaleDeletionValidated);
     on<ResponseScaleDeleted>(_onResponseScaleDeleted);
     on<ResponseScaleListSorted>(_onResponseScaleListSorted);
     on<ResponseScaleNewResponseScaleChanged>(
@@ -50,27 +53,70 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
       EntityResponse response =
           await _responseScalesRepository.updateResponseScaleItemList(
               state.selectedResponseScaleId!, responseScaleItemList);
+      if (response.isSuccess) {
+        emit(state.copyWith(
+          responseScaleItemListCrudStatus: EntityStatus.success,
+          message: response.message,
+        ));
 
-      emit(state.copyWith(
-        responseScaleItemListCrudStatus: EntityStatus.success,
-        message: response.message,
-      ));
+        add(ResponseScaleItemListLoaded(
+            responseScaleId: state.selectedResponseScaleId!));
+      } else {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: response.message,
+        ).showNotification();
+        emit(state.copyWith(
+            responseScaleItemListCrudStatus: EntityStatus.failure));
+      }
     } catch (e) {
       emit(state.copyWith(
           responseScaleItemListCrudStatus: EntityStatus.failure));
     }
   }
 
-  void _onResponseScaleItemDeleted(
+  Future<void> _onResponseScaleItemDeleted(
     ResponseScaleItemDeleted event,
     Emitter<ResponseScaleState> emit,
-  ) {
-    List<ResponseScaleItem> responseScaleItemList =
-        List.from(state.responseScaleItemList);
+  ) async {
+    if (state.responseScaleItemList[event.index].isNew) {
+      List<ResponseScaleItem> responseScaleItemList =
+          List.from(state.responseScaleItemList);
 
-    responseScaleItemList.removeAt(event.index);
+      responseScaleItemList.removeAt(event.index);
 
-    emit(state.copyWith(responseScaleItemList: responseScaleItemList));
+      emit(state.copyWith(responseScaleItemList: responseScaleItemList));
+    } else {
+      emit(state.copyWith(responseScaleItemDeleteStatus: EntityStatus.loading));
+      try {
+        EntityResponse response =
+            await _responseScalesRepository.deleteResponseScaleItem(
+                state.responseScaleItemList[event.index].id!);
+        emit(state.copyWith(
+            responseScaleItemDeleteStatus: EntityStatus.success));
+        if (response.isSuccess) {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.success,
+            content: response.message,
+          ).showNotification();
+
+          add(ResponseScaleItemListLoaded(
+              responseScaleId:
+                  state.responseScaleItemList[event.index].responseScaleId));
+        } else {
+          CustomNotification(
+            context: context,
+            notifyType: NotifyType.info,
+            content: response.message,
+          ).showNotification();
+        }
+      } catch (e) {
+        emit(state.copyWith(
+            responseScaleItemDeleteStatus: EntityStatus.failure));
+      }
+    }
   }
 
   void _onResponseScaleItemNameChanged(
@@ -158,8 +204,9 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     ResponseScaleSelected event,
     Emitter<ResponseScaleState> emit,
   ) async {
-    emit(
-        state.copyWith(selectedResponseScaleId: event.selectedResponseScaleId));
+    emit(state.copyWith(
+        selectedResponseScaleId:
+            Nullable.value(event.selectedResponseScaleId)));
 
     add(ResponseScaleItemListLoaded(
         responseScaleId: event.selectedResponseScaleId));
@@ -197,7 +244,23 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
           message: response.message,
         ));
 
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.success,
+          content: response.message,
+        ).showNotification();
+
         add(ResponseScaleListLoaded());
+      } else {
+        emit(state.copyWith(
+          responseScaleAddStatus: EntityStatus.failure,
+          message: response.message,
+        ));
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: response.message,
+        ).showNotification();
       }
     } catch (e) {
       emit(state.copyWith(responseScaleAddStatus: EntityStatus.failure));
@@ -215,14 +278,61 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
 
       if (response.isSuccess) {
         emit(state.copyWith(
-          responseScaleEditDeleteStatus: EntityStatus.success,
           message: response.message,
         ));
+
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.success,
+          content: response.message,
+        ).showNotification();
+
         add(ResponseScaleListLoaded());
+      } else {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: response.message,
+        ).showNotification();
       }
     } catch (e) {
       emit(state.copyWith(responseScaleEditDeleteStatus: EntityStatus.failure));
     }
+  }
+
+  Future<void> _onResponseScaleDeletionValidated(
+    ResponseScaleDeletionValidated event,
+    Emitter<ResponseScaleState> emit,
+  ) async {
+    try {
+      EntityResponse response = await _responseScalesRepository
+          .validateResponseScaleDeletion(event.responseScaleId);
+
+      if (response.isSuccess) {
+        if (response.message.isEmpty) {
+          add(ResponseScaleDeleted(responseScaleId: event.responseScaleId));
+        } else {
+          await CustomAlert(
+            context: context,
+            width: MediaQuery.of(context).size.width / 4,
+            title: 'Confirm',
+            description: response.message,
+            btnOkText: 'OK',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () => add(
+                ResponseScaleDeleted(responseScaleId: event.responseScaleId)),
+            dialogType: DialogType.question,
+          ).show();
+        }
+        return;
+      }
+
+      CustomNotification(
+        context: context,
+        notifyType: NotifyType.info,
+        content: response.message,
+      ).showNotification();
+    } catch (e) {}
   }
 
   Future<void> _onResponseScaleDeleted(
@@ -230,6 +340,7 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
     Emitter<ResponseScaleState> emit,
   ) async {
     emit(state.copyWith(responseScaleEditDeleteStatus: EntityStatus.loading));
+
     try {
       EntityResponse response = await _responseScalesRepository
           .deleteResponseScale(event.responseScaleId);
@@ -239,6 +350,11 @@ class ResponseScaleBloc extends Bloc<ResponseScaleEvent, ResponseScaleState> {
           responseScaleEditDeleteStatus: EntityStatus.success,
           message: response.message,
         ));
+
+        if (event.responseScaleId == state.selectedResponseScaleId) {
+          emit(state.copyWith(
+              selectedResponseScaleId: const Nullable.value(null)));
+        }
         add(ResponseScaleListLoaded());
       }
     } catch (e) {

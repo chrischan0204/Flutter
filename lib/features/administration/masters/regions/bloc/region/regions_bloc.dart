@@ -17,9 +17,9 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   }
 
   void _triggerEvents() {
-    on<AssignedRegionsRetrieved>(_onAssignedRegionsRetrieved);
-    on<UnassignedRegionsRetrieved>(_onUnassignedRegionsRetrieved);
-    on<TimeZonesRetrievedForRegion>(_onTimeZonesRetrievedForRegion);
+    on<AssignedRegionsLoaded>(_onAssignedRegionsLoaded);
+    on<UnassignedRegionsLoaded>(_onUnassignedRegionsLoaded);
+    on<TimeZonesLoadedForRegion>(_onTimeZonesLoadedForRegion);
     on<RegionSelected>(_onRegionSelected);
     on<RegionSelectedById>(_onRegionSelectedById);
     on<RegionAdded>(_onRegionAdded);
@@ -30,11 +30,11 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
   }
 
   // get assigned regions list
-  Future<void> _onAssignedRegionsRetrieved(
-      AssignedRegionsRetrieved event, Emitter<RegionsState> emit) async {
+  Future<void> _onAssignedRegionsLoaded(
+      AssignedRegionsLoaded event, Emitter<RegionsState> emit) async {
     emit(
       state.copyWith(
-        assignedRegionsRetrievedStatus: EntityStatus.loading,
+        assignedRegionsLoadedStatus: EntityStatus.loading,
       ),
     );
     try {
@@ -43,26 +43,26 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           assignedRegions: assignedRegions,
-          assignedRegionsRetrievedStatus: EntityStatus.success,
+          assignedRegionsLoadedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          assignedRegionsRetrievedStatus: EntityStatus.failure,
+          assignedRegionsLoadedStatus: EntityStatus.failure,
         ),
       );
     }
   }
 
   // get unassigned regions list
-  Future<void> _onUnassignedRegionsRetrieved(
-    UnassignedRegionsRetrieved event,
+  Future<void> _onUnassignedRegionsLoaded(
+    UnassignedRegionsLoaded event,
     Emitter<RegionsState> emit,
   ) async {
     emit(
       state.copyWith(
-        unassignedRegionsRetrievedStatus: EntityStatus.loading,
+        unassignedRegionsLoadedStatus: EntityStatus.loading,
         timeZones: [],
       ),
     );
@@ -74,34 +74,34 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
               ? !state.selectedRegion!.deletable
               : true)) {
         emit(state.copyWith(
-          unassignedRegionsRetrievedStatus: EntityStatus.failure,
+          unassignedRegionsLoadedStatus: EntityStatus.failure,
           message: 'No region available for Add',
           selectedRegion: null,
         ));
       } else {
         emit(state.copyWith(
           unassignedRegions: unassignedRegions,
-          unassignedRegionsRetrievedStatus: EntityStatus.success,
+          unassignedRegionsLoadedStatus: EntityStatus.success,
           selectedRegion: null,
         ));
       }
     } catch (e) {
       emit(
         state.copyWith(
-          unassignedRegionsRetrievedStatus: EntityStatus.failure,
+          unassignedRegionsLoadedStatus: EntityStatus.failure,
         ),
       );
     }
   }
 
   // get time zones by region id
-  Future<void> _onTimeZonesRetrievedForRegion(
-    TimeZonesRetrievedForRegion event,
+  Future<void> _onTimeZonesLoadedForRegion(
+    TimeZonesLoadedForRegion event,
     Emitter<RegionsState> emit,
   ) async {
     emit(
       state.copyWith(
-        timeZonesRetrievedStatus: EntityStatus.loading,
+        timeZonesLoadedStatus: EntityStatus.loading,
         timeZones: [],
       ),
     );
@@ -112,13 +112,13 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       emit(
         state.copyWith(
           timeZones: timezones,
-          timeZonesRetrievedStatus: EntityStatus.success,
+          timeZonesLoadedStatus: EntityStatus.success,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          timeZonesRetrievedStatus: EntityStatus.failure,
+          timeZonesLoadedStatus: EntityStatus.failure,
           timeZones: [],
         ),
       );
@@ -134,7 +134,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       selectedRegion: event.region,
     ));
     if (event.region != null && event.region!.id != null) {
-      add(TimeZonesRetrievedForRegion(regionId: event.region!.id!));
+      add(TimeZonesLoadedForRegion(regionId: event.region!.id!));
     }
   }
 
@@ -156,7 +156,7 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
           regionSelectedStatus: EntityStatus.success,
         ),
       );
-      add(TimeZonesRetrievedForRegion(regionId: event.regionId));
+      add(TimeZonesLoadedForRegion(regionId: event.regionId));
     } catch (e) {
       emit(state.copyWith(
         selectedRegion: null,
@@ -264,9 +264,9 @@ class RegionsBloc extends Bloc<RegionsEvent, RegionsState> {
       state.copyWith(
         regionCrudStatus: EntityStatus.initial,
         regionSelectedStatus: EntityStatus.initial,
-        assignedRegionsRetrievedStatus: EntityStatus.initial,
-        unassignedRegionsRetrievedStatus: EntityStatus.initial,
-        timeZonesRetrievedStatus: EntityStatus.initial,
+        assignedRegionsLoadedStatus: EntityStatus.initial,
+        unassignedRegionsLoadedStatus: EntityStatus.initial,
+        timeZonesLoadedStatus: EntityStatus.initial,
       ),
     );
   }

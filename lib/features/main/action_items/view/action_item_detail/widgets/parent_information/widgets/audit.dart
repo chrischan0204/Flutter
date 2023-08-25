@@ -45,7 +45,7 @@ class AuditViewForActionItem extends StatelessWidget {
                 padding: inset12,
                 child: Text(
                   'For question',
-                  style: textNormal14,
+                  style: textSemiBold14,
                 ),
               ),
               CustomBottomBorderContainer(

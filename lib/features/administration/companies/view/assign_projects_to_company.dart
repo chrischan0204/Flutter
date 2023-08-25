@@ -17,8 +17,8 @@ class AssignProjectsToCompanyView extends StatefulWidget {
 class _AssignProjectsToCompanyViewState
     extends State<AssignProjectsToCompanyView> {
   late CompaniesBloc companiesBloc;
-  late String? selectedFilterSiteNameForUnassign = null;
-  late String? selectedFilterSiteNameForAssign = null;
+  String? selectedFilterSiteNameForUnassign;
+  String? selectedFilterSiteNameForAssign;
 
   @override
   void initState() {
@@ -27,9 +27,9 @@ class _AssignProjectsToCompanyViewState
       ..add(const FilterSiteIdForAssignedChanged(siteId: ''))
       ..add(const FilterTextForUnassignedChanged(filterText: ''))
       ..add(const FilterSiteIdForUnassignedChanged(siteId: ''))
-      ..add(AssignedProjectCompaniesRetrieved(
+      ..add(AssignedProjectCompanyListLoaded(
           companyId: widget.companyId, forFilter: true))
-      ..add(UnassignedProjectCompaniesRetrieved(
+      ..add(UnassignedProjectCompanyListLoaded(
           companyId: widget.companyId, forFilter: true));
 
     context.read<FormDirtyBloc>().add(const FormDirtyChanged(isDirty: false));
@@ -277,7 +277,7 @@ class _AssignProjectsToCompanyViewState
         label: 'sites',
         canFilter: state.filterSiteIdForUnassigned.isNotEmpty,
         applyFilter: () {
-          companiesBloc.add(UnassignedProjectCompaniesRetrieved(
+          companiesBloc.add(UnassignedProjectCompanyListLoaded(
             companyId: widget.companyId,
             name: state.filterTextForUnassigned,
             siteId: state.filterSiteIdForUnassigned,
@@ -286,7 +286,7 @@ class _AssignProjectsToCompanyViewState
         },
         clearFilter: () {
           companiesBloc
-            ..add(UnassignedProjectCompaniesRetrieved(
+            ..add(UnassignedProjectCompanyListLoaded(
               companyId: widget.companyId,
               siteId: state.filterSiteIdForUnassigned,
               // forFilter: true,
@@ -321,7 +321,7 @@ class _AssignProjectsToCompanyViewState
                     onChanged: (site) {
                       companiesBloc.add(
                           FilterSiteIdForUnassignedChanged(siteId: site.value));
-                      companiesBloc.add(UnassignedProjectCompaniesRetrieved(
+                      companiesBloc.add(UnassignedProjectCompanyListLoaded(
                         companyId: widget.companyId,
                         name: state.filterTextForUnassigned,
                         siteId: site.value,
@@ -343,7 +343,7 @@ class _AssignProjectsToCompanyViewState
                   companiesBloc
                       .add(const FilterSiteIdForUnassignedChanged(siteId: ''));
 
-                  companiesBloc.add(UnassignedProjectCompaniesRetrieved(
+                  companiesBloc.add(UnassignedProjectCompanyListLoaded(
                     companyId: widget.companyId,
                     name: state.filterTextForUnassigned,
                   ));
@@ -380,7 +380,7 @@ class _AssignProjectsToCompanyViewState
         label: 'sites',
         canFilter: state.filterSiteIdForAssigned.isNotEmpty,
         applyFilter: () {
-          companiesBloc.add(AssignedProjectCompaniesRetrieved(
+          companiesBloc.add(AssignedProjectCompanyListLoaded(
             companyId: widget.companyId,
             name: state.filterTextForAssigned,
             siteId: state.filterSiteIdForAssigned,
@@ -389,7 +389,7 @@ class _AssignProjectsToCompanyViewState
         },
         clearFilter: () {
           companiesBloc
-            ..add(AssignedProjectCompaniesRetrieved(
+            ..add(AssignedProjectCompanyListLoaded(
               companyId: widget.companyId,
               siteId: state.filterSiteIdForAssigned,
               // forFilter: true,
@@ -424,7 +424,7 @@ class _AssignProjectsToCompanyViewState
                     onChanged: (site) {
                       companiesBloc.add(
                           FilterSiteIdForAssignedChanged(siteId: site.value));
-                      companiesBloc.add(AssignedProjectCompaniesRetrieved(
+                      companiesBloc.add(AssignedProjectCompanyListLoaded(
                         companyId: widget.companyId,
                         name: state.filterTextForAssigned,
                         siteId: site.value,
@@ -446,7 +446,7 @@ class _AssignProjectsToCompanyViewState
                   companiesBloc
                       .add(const FilterSiteIdForAssignedChanged(siteId: ''));
 
-                  companiesBloc.add(AssignedProjectCompaniesRetrieved(
+                  companiesBloc.add(AssignedProjectCompanyListLoaded(
                     companyId: widget.companyId,
                     name: state.filterTextForAssigned,
                   ));
@@ -522,13 +522,13 @@ class _AssignProjectsToCompanyViewState
 
   _refetchProjectCompanies(CompaniesState state) {
     companiesBloc
-      ..add(AssignedProjectCompaniesRetrieved(
+      ..add(AssignedProjectCompanyListLoaded(
         companyId: widget.companyId,
         name: state.filterTextForAssigned,
         siteId: state.filterSiteIdForAssigned,
         forFilter: true,
       ))
-      ..add(UnassignedProjectCompaniesRetrieved(
+      ..add(UnassignedProjectCompanyListLoaded(
         companyId: widget.companyId,
         name: state.filterTextForUnassigned,
         siteId: state.filterSiteIdForUnassigned,

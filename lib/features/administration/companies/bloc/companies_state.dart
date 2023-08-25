@@ -2,17 +2,17 @@ part of 'companies_bloc.dart';
 
 class CompaniesState extends Equatable {
   final List<Company> companies;
-  final EntityStatus companiesRetrievedStatus;
+  final EntityStatus companiesLoadedStatus;
   final List<CompanySite> assignedCompanySites;
-  final EntityStatus assignedCompanySitesRetrievedStatus;
+  final EntityStatus assignedCompanySitesLoadedStatus;
   final List<CompanySite> unassignedCompanySites;
-  final EntityStatus unassignedCompanySitesRetrievedStatus;
+  final EntityStatus unassignedCompanySitesLoadedStatus;
   final List<ProjectCompany> assignedProjectCompanies;
   final List<ProjectCompany> assignedProjectCompaniesForFilter;
-  final EntityStatus assignedProjectCompaniesRetrievedStatus;
+  final EntityStatus assignedProjectCompanyListLoadedStatus;
   final List<ProjectCompany> unassignedProjectCompanies;
   final List<ProjectCompany> unassignedProjectCompaniesForFilter;
-  final EntityStatus unassignedProjectCompaniesRetrievedStatus;
+  final EntityStatus unassignedProjectCompanyListLoadedStatus;
   final List<AuditTrail> auditTrails;
   final EntityStatus auditTrailsRerievedStatus;
   final EntityStatus siteToCompanyAssignedStatus;
@@ -38,15 +38,15 @@ class CompaniesState extends Equatable {
     this.unassignedProjectCompaniesForFilter = const [],
     this.auditTrails = const [],
     this.selectedCompany,
-    this.companiesRetrievedStatus = EntityStatus.initial,
+    this.companiesLoadedStatus = EntityStatus.initial,
     this.projectToCompanyAssignedStatus = EntityStatus.initial,
     this.projectFromCompanyUnassignedStatus = EntityStatus.initial,
     this.siteToCompanyAssignedStatus = EntityStatus.initial,
     this.siteFromCompanyUnassignedStatus = EntityStatus.initial,
-    this.assignedCompanySitesRetrievedStatus = EntityStatus.initial,
-    this.unassignedCompanySitesRetrievedStatus = EntityStatus.initial,
-    this.assignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
-    this.unassignedProjectCompaniesRetrievedStatus = EntityStatus.initial,
+    this.assignedCompanySitesLoadedStatus = EntityStatus.initial,
+    this.unassignedCompanySitesLoadedStatus = EntityStatus.initial,
+    this.assignedProjectCompanyListLoadedStatus = EntityStatus.initial,
+    this.unassignedProjectCompanyListLoadedStatus = EntityStatus.initial,
     this.auditTrailsRerievedStatus = EntityStatus.initial,
     this.companyCrudStatus = EntityStatus.initial,
     this.companySelectedStatus = EntityStatus.initial,
@@ -71,16 +71,16 @@ class CompaniesState extends Equatable {
         unassignedProjectCompanies,
         auditTrails,
         selectedCompany,
-        companiesRetrievedStatus,
+        companiesLoadedStatus,
         siteToCompanyAssignedStatus,
         siteFromCompanyUnassignedStatus,
         projectToCompanyAssignedStatus,
         projectFromCompanyUnassignedStatus,
         auditTrailsRerievedStatus,
-        assignedCompanySitesRetrievedStatus,
-        assignedProjectCompaniesRetrievedStatus,
-        unassignedCompanySitesRetrievedStatus,
-        unassignedProjectCompaniesRetrievedStatus,
+        assignedCompanySitesLoadedStatus,
+        assignedProjectCompanyListLoadedStatus,
+        unassignedCompanySitesLoadedStatus,
+        unassignedProjectCompanyListLoadedStatus,
         companyCrudStatus,
         companySelectedStatus,
         message,
@@ -105,17 +105,17 @@ class CompaniesState extends Equatable {
     List<ProjectCompany>? unassignedProjectCompaniesForFilter,
     List<AuditTrail>? auditTrails,
     Company? selectedCompany,
-    EntityStatus? companiesRetrievedStatus,
+    EntityStatus? companiesLoadedStatus,
     EntityStatus? companySelectedStatus,
     EntityStatus? siteToCompanyAssignedStatus,
     EntityStatus? siteFromCompanyUnassignedStatus,
     EntityStatus? projectToCompanyAssignedStatus,
     EntityStatus? projectFromCompanyUnassignedStatus,
     EntityStatus? companyCrudStatus,
-    EntityStatus? assignedProjectCompaniesRetrievedStatus,
-    EntityStatus? assignedCompanySitesRetrievedStatus,
-    EntityStatus? unassignedProjectCompaniesRetrievedStatus,
-    EntityStatus? unassignedCompanySitesRetrievedStatus,
+    EntityStatus? assignedProjectCompanyListLoadedStatus,
+    EntityStatus? assignedCompanySitesLoadedStatus,
+    EntityStatus? unassignedProjectCompanyListLoadedStatus,
+    EntityStatus? unassignedCompanySitesLoadedStatus,
     EntityStatus? auditTrailsRerievedStatus,
     String? message,
     String? filterTextForAssigned,
@@ -139,23 +139,21 @@ class CompaniesState extends Equatable {
       auditTrails: auditTrails ?? this.auditTrails,
       unassignedProjectCompanies:
           unassignedProjectCompanies ?? this.unassignedProjectCompanies,
-      assignedCompanySitesRetrievedStatus:
-          assignedCompanySitesRetrievedStatus ??
-              this.assignedCompanySitesRetrievedStatus,
-      assignedProjectCompaniesRetrievedStatus:
-          assignedProjectCompaniesRetrievedStatus ??
-              this.assignedProjectCompaniesRetrievedStatus,
-      unassignedCompanySitesRetrievedStatus:
-          unassignedCompanySitesRetrievedStatus ??
-              this.unassignedCompanySitesRetrievedStatus,
-      unassignedProjectCompaniesRetrievedStatus:
-          unassignedProjectCompaniesRetrievedStatus ??
-              this.unassignedProjectCompaniesRetrievedStatus,
+      assignedCompanySitesLoadedStatus: assignedCompanySitesLoadedStatus ??
+          this.assignedCompanySitesLoadedStatus,
+      assignedProjectCompanyListLoadedStatus:
+          assignedProjectCompanyListLoadedStatus ??
+              this.assignedProjectCompanyListLoadedStatus,
+      unassignedCompanySitesLoadedStatus: unassignedCompanySitesLoadedStatus ??
+          this.unassignedCompanySitesLoadedStatus,
+      unassignedProjectCompanyListLoadedStatus:
+          unassignedProjectCompanyListLoadedStatus ??
+              this.unassignedProjectCompanyListLoadedStatus,
       auditTrailsRerievedStatus:
           auditTrailsRerievedStatus ?? this.auditTrailsRerievedStatus,
       selectedCompany: selectedCompany ?? this.selectedCompany,
-      companiesRetrievedStatus:
-          companiesRetrievedStatus ?? this.companiesRetrievedStatus,
+      companiesLoadedStatus:
+          companiesLoadedStatus ?? this.companiesLoadedStatus,
       companySelectedStatus:
           companySelectedStatus ?? this.companySelectedStatus,
       companyCrudStatus: companyCrudStatus ?? this.companyCrudStatus,

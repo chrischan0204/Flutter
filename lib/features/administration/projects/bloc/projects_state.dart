@@ -4,12 +4,12 @@ class ProjectsState extends Equatable {
   final List<Project> projects;
   final List<ProjectCompany> unassignedCompanyProjects;
   final List<ProjectCompany> assignedCompanyProjects;
-  final EntityStatus assignedCompanyProjectsRetrievedStatus;
-  final EntityStatus unassignedCompanyProjectsRetrievedStatus;
+  final EntityStatus assignedCompanyProjectsLoadedStatus;
+  final EntityStatus unassignedCompanyProjectsLoadedStatus;
   final EntityStatus companyToProjectAssignedStatus;
   final EntityStatus companyFromProjectUnassignedStatus;
   final Project? selectedProject;
-  final EntityStatus projectsRetrievedStatus;
+  final EntityStatus projectsLoadedStatus;
   final EntityStatus projectSelectedStatus;
   final EntityStatus projectCrudStatus;
   final String message;
@@ -21,13 +21,13 @@ class ProjectsState extends Equatable {
     this.unassignedCompanyProjects = const [],
     this.assignedCompanyProjects = const [],
     this.selectedProject,
-    this.projectsRetrievedStatus = EntityStatus.initial,
+    this.projectsLoadedStatus = EntityStatus.initial,
     this.projectCrudStatus = EntityStatus.initial,
     this.projectSelectedStatus = EntityStatus.initial,
     this.companyToProjectAssignedStatus = EntityStatus.initial,
     this.companyFromProjectUnassignedStatus = EntityStatus.initial,
-    this.assignedCompanyProjectsRetrievedStatus = EntityStatus.initial,
-    this.unassignedCompanyProjectsRetrievedStatus = EntityStatus.initial,
+    this.assignedCompanyProjectsLoadedStatus = EntityStatus.initial,
+    this.unassignedCompanyProjectsLoadedStatus = EntityStatus.initial,
     this.message = '',
     this.filterTextForAssignedCompany = '',
     this.filterTextForUnassignedCompany = '',
@@ -40,11 +40,11 @@ class ProjectsState extends Equatable {
         assignedCompanyProjects,
         unassignedCompanyProjects,
         selectedProject,
-        projectsRetrievedStatus,
+        projectsLoadedStatus,
         projectCrudStatus,
         projectSelectedStatus,
-        assignedCompanyProjectsRetrievedStatus,
-        unassignedCompanyProjectsRetrievedStatus,
+        assignedCompanyProjectsLoadedStatus,
+        unassignedCompanyProjectsLoadedStatus,
         companyToProjectAssignedStatus,
         companyFromProjectUnassignedStatus,
         message,
@@ -60,11 +60,11 @@ class ProjectsState extends Equatable {
     List<ProjectCompany>? assignedCompanyProjects,
     List<ProjectCompany>? unassignedCompanyProjects,
     Project? selectedProject,
-    EntityStatus? projectsRetrievedStatus,
+    EntityStatus? projectsLoadedStatus,
     EntityStatus? projectSelectedStatus,
     EntityStatus? projectCrudStatus,
-    EntityStatus? assignedCompanyProjectsRetrievedStatus,
-    EntityStatus? unassignedCompanyProjectsRetrievedStatus,
+    EntityStatus? assignedCompanyProjectsLoadedStatus,
+    EntityStatus? unassignedCompanyProjectsLoadedStatus,
     EntityStatus? companyToProjectAssignedStatus,
     EntityStatus? companyFromProjectUnassignedStatus,
     String? message,
@@ -79,17 +79,16 @@ class ProjectsState extends Equatable {
       unassignedCompanyProjects:
           unassignedCompanyProjects ?? this.unassignedCompanyProjects,
       selectedProject: selectedProject ?? this.selectedProject,
-      projectsRetrievedStatus:
-          projectsRetrievedStatus ?? this.projectsRetrievedStatus,
+      projectsLoadedStatus: projectsLoadedStatus ?? this.projectsLoadedStatus,
       projectSelectedStatus:
           projectSelectedStatus ?? this.projectSelectedStatus,
       projectCrudStatus: projectCrudStatus ?? this.projectCrudStatus,
-      assignedCompanyProjectsRetrievedStatus:
-          assignedCompanyProjectsRetrievedStatus ??
-              this.assignedCompanyProjectsRetrievedStatus,
-      unassignedCompanyProjectsRetrievedStatus:
-          unassignedCompanyProjectsRetrievedStatus ??
-              this.unassignedCompanyProjectsRetrievedStatus,
+      assignedCompanyProjectsLoadedStatus:
+          assignedCompanyProjectsLoadedStatus ??
+              this.assignedCompanyProjectsLoadedStatus,
+      unassignedCompanyProjectsLoadedStatus:
+          unassignedCompanyProjectsLoadedStatus ??
+              this.unassignedCompanyProjectsLoadedStatus,
       companyToProjectAssignedStatus:
           companyToProjectAssignedStatus ?? this.companyToProjectAssignedStatus,
       companyFromProjectUnassignedStatus: companyFromProjectUnassignedStatus ??

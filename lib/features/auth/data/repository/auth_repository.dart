@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import '/common_libraries.dart';
 
 class AuthRepository {

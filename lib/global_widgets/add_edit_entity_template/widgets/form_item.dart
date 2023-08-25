@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:safety_eta/common_libraries.dart';
 
-import '/constants/color.dart';
 
 class FormItem extends StatelessWidget {
   final String label;

@@ -7,7 +7,7 @@ abstract class PriorityLevelsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class PriorityLevelsRetrieved extends PriorityLevelsEvent {}
+class PriorityLevelsLoaded extends PriorityLevelsEvent {}
 
 class PriorityLevelSelected extends PriorityLevelsEvent {
   final PriorityLevel? priorityLevel;

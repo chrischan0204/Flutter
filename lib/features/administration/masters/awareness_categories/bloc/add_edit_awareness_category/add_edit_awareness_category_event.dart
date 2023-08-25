@@ -7,6 +7,7 @@ abstract class AddEditAwarenessCategoryEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load category detail by id
 class AddEditAwarenessCategoryLoaded extends AddEditAwarenessCategoryEvent {
   /// awareness category id to load
   final String id;
@@ -15,11 +16,14 @@ class AddEditAwarenessCategoryLoaded extends AddEditAwarenessCategoryEvent {
   });
 }
 
+/// event to load category group list
 class AddEditAwarenessCategoryGroupListLoaded
     extends AddEditAwarenessCategoryEvent {}
 
+/// event to add awareness category
 class AddEditAwarenessCategoryAdded extends AddEditAwarenessCategoryEvent {}
 
+/// event to edit awareness category
 class AddEditAwarenessCategoryEdited extends AddEditAwarenessCategoryEvent {
   /// awareness category id to edit
   final String id;
@@ -28,6 +32,7 @@ class AddEditAwarenessCategoryEdited extends AddEditAwarenessCategoryEvent {
   });
 }
 
+/// event to change awareness category name
 class AddEditAwarenessCategoryNameChanged
     extends AddEditAwarenessCategoryEvent {
   /// awareness category name to change
@@ -40,6 +45,7 @@ class AddEditAwarenessCategoryNameChanged
   List<Object> get props => [name];
 }
 
+/// event to change category group
 class AddEditAwarenessCategoryGroupChanged
     extends AddEditAwarenessCategoryEvent {
   /// awareness group to change
@@ -52,6 +58,7 @@ class AddEditAwarenessCategoryGroupChanged
   List<Object> get props => [awarenessGroup];
 }
 
+/// event to change deactivated
 class AddEditAwarenessCategoryDeactivatedChanged
     extends AddEditAwarenessCategoryEvent {
   /// deactivated to change

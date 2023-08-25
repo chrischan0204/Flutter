@@ -8,6 +8,7 @@ abstract class ExecuteAuditActionItemEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load project list
 class ExecuteAuditActionItemProjectListLoaded
     extends ExecuteAuditActionItemEvent {
   final String siteId;
@@ -18,6 +19,7 @@ class ExecuteAuditActionItemProjectListLoaded
   List<Object> get props => [siteId];
 }
 
+/// event to load company list
 class ExecuteAuditActionItemCompanyListLoaded
     extends ExecuteAuditActionItemEvent {
   final String siteId;
@@ -28,14 +30,20 @@ class ExecuteAuditActionItemCompanyListLoaded
   List<Object> get props => [siteId];
 }
 
+
+/// event to load action item list 
 class ExecuteAuditActionItemListLoaded extends ExecuteAuditActionItemEvent {}
 
+/// event to created action item
 class ExecuteAuditActionItemCreated extends ExecuteAuditActionItemEvent {}
 
+/// event to update action item
 class ExecuteAuditActionItemUpdated extends ExecuteAuditActionItemEvent {}
 
+/// event to select action item
 class ExecuteAuditActionItemSelected extends ExecuteAuditActionItemEvent {}
 
+/// event to delete action item by id
 class ExecuteAuditActionItemDeleted extends ExecuteAuditActionItemEvent {
   final String actionItemId;
 
@@ -47,6 +55,7 @@ class ExecuteAuditActionItemDeleted extends ExecuteAuditActionItemEvent {
   List<Object> get props => [actionItemId];
 }
 
+/// event to change view - list, create, update, detail
 class ExecuteAuditActionItemViewChanged extends ExecuteAuditActionItemEvent {
   final CrudView view;
 
@@ -56,6 +65,7 @@ class ExecuteAuditActionItemViewChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [view];
 }
 
+/// event to load action item detail
 class ExecuteAuditActionItemLoaded extends ExecuteAuditActionItemEvent {
   final String actionItemId;
 
@@ -65,6 +75,7 @@ class ExecuteAuditActionItemLoaded extends ExecuteAuditActionItemEvent {
   List<Object> get props => [actionItemId];
 }
 
+/// event to change action required
 class ExecuteAuditActionItemNameChanged extends ExecuteAuditActionItemEvent {
   final String actionItem;
 
@@ -74,6 +85,7 @@ class ExecuteAuditActionItemNameChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [actionItem];
 }
 
+/// event to change site
 class ExecuteAuditActionItemSiteChanged extends ExecuteAuditActionItemEvent {
   final Site site;
   final bool isInit;
@@ -90,6 +102,7 @@ class ExecuteAuditActionItemSiteChanged extends ExecuteAuditActionItemEvent {
       ];
 }
 
+/// event to change assignee
 class ExecuteAuditActionItemAssigneeChanged
     extends ExecuteAuditActionItemEvent {
   final User assignee;
@@ -100,6 +113,7 @@ class ExecuteAuditActionItemAssigneeChanged
   List<Object> get props => [assignee];
 }
 
+/// event to change due by
 class ExecuteAuditActionItemDueByChanged extends ExecuteAuditActionItemEvent {
   final DateTime dueBy;
 
@@ -109,6 +123,7 @@ class ExecuteAuditActionItemDueByChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [dueBy];
 }
 
+/// event to change company
 class ExecuteAuditActionItemCompanyChanged extends ExecuteAuditActionItemEvent {
   final Company company;
 
@@ -118,6 +133,7 @@ class ExecuteAuditActionItemCompanyChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [company];
 }
 
+/// event to change category
 class ExecuteAuditActionItemCategoryChanged
     extends ExecuteAuditActionItemEvent {
   final AwarenessCategory category;
@@ -128,6 +144,7 @@ class ExecuteAuditActionItemCategoryChanged
   List<Object> get props => [category];
 }
 
+/// event to change project
 class ExecuteAuditActionItemProjectChanged extends ExecuteAuditActionItemEvent {
   final Project project;
 
@@ -137,6 +154,7 @@ class ExecuteAuditActionItemProjectChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [project];
 }
 
+/// event to change area
 class ExecuteAuditActionItemAreaChanged extends ExecuteAuditActionItemEvent {
   final String area;
 
@@ -146,6 +164,7 @@ class ExecuteAuditActionItemAreaChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [area];
 }
 
+/// event to change notes
 class ExecuteAuditActionItemNotesChanged extends ExecuteAuditActionItemEvent {
   final String notes;
 
@@ -155,6 +174,7 @@ class ExecuteAuditActionItemNotesChanged extends ExecuteAuditActionItemEvent {
   List<Object> get props => [notes];
 }
 
+/// event to change isClosed
 class ExecuteAuditActionItemIsClosedChanged
     extends ExecuteAuditActionItemEvent {
   final bool isClosed;
@@ -165,6 +185,7 @@ class ExecuteAuditActionItemIsClosedChanged
   List<Object> get props => [isClosed];
 }
 
+/// event to change file list
 class ExecuteAuditActionItemFileListChanged
     extends ExecuteAuditActionItemEvent {
   final List<PlatformFile> fileList;
@@ -175,4 +196,5 @@ class ExecuteAuditActionItemFileListChanged
   List<Object> get props => [fileList];
 }
 
+/// event to init state
 class ExecuteAuditActionItemInited extends ExecuteAuditActionItemEvent {}

@@ -17,29 +17,29 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
   }
 
   void _triggerEvents() {
-    on<SitesRetrieved>(_onSitesRetrieved);
+    on<SitesLoaded>(_onSitesLoaded);
     on<SiteListFiltered>(_onSiteListFiltered);
     on<SiteSelected>(_onSiteSelected);
     on<SiteSelectedById>(_onSiteSelectedById);
-    on<AuditTemplatesRetrieved>(_onAuditTemplatesRetrieved);
+    on<AuditTemplatesLoaded>(_onAuditTemplatesLoaded);
     on<AuditTemplateAssignedToSite>(_onAuditTemplateAssignedToSite);
 
     on<SitesStatusInited>(_onSitesStatusInited);
   }
 
-  Future<void> _onSitesRetrieved(
-    SitesRetrieved event,
+  Future<void> _onSitesLoaded(
+    SitesLoaded event,
     Emitter<SitesState> emit,
   ) async {
-    emit(state.copyWith(sitesRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(sitesLoadedStatus: EntityStatus.loading));
     try {
       List<Site> sites = await sitesRepository.getSiteList();
       emit(state.copyWith(
         sites: sites,
-        sitesRetrievedStatus: EntityStatus.success,
+        sitesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(sitesRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(sitesLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -47,7 +47,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     SiteListFiltered event,
     Emitter<SitesState> emit,
   ) async {
-    emit(state.copyWith(sitesRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(sitesLoadedStatus: EntityStatus.loading));
 
     try {
       FilteredSiteData data =
@@ -60,10 +60,10 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
         sites: (data.data)
             .map((e) => e.toSite().copyWith(columns: columns))
             .toList(),
-        sitesRetrievedStatus: EntityStatus.success,
+        sitesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(sitesRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(sitesLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -92,36 +92,36 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
     }
   }
 
-  Future<void> _onAuditTemplatesRetrieved(
-    AuditTemplatesRetrieved event,
+  Future<void> _onAuditTemplatesLoaded(
+    AuditTemplatesLoaded event,
     Emitter<SitesState> emit,
   ) async {
     List<AuditTemplate> templates = <AuditTemplate>[
-      AuditTemplate(
+      const AuditTemplate(
           id: '1',
           name: 'Electric Wiring Audit',
           createdBy: 'Adam Drobot',
           lastRevisedOn: '3rd Oct 2022',
           templateDescription: ''),
-      AuditTemplate(
+      const AuditTemplate(
           id: '2',
           name: 'Kitchen floor inspection',
           createdBy: 'Kenny Cross',
           lastRevisedOn: '23rd Apr 2020',
           templateDescription: ''),
-      AuditTemplate(
+      const AuditTemplate(
           id: '3',
           name: 'Parking lot frozen',
           createdBy: 'Carl Adams',
           lastRevisedOn: '13th Feb 2022',
           templateDescription: ''),
-      AuditTemplate(
+      const AuditTemplate(
           id: '4',
           name: 'AC unit leakage',
           createdBy: 'Peter Gittleman',
           lastRevisedOn: '19th Sep 2021',
           templateDescription: ''),
-      AuditTemplate(
+      const AuditTemplate(
           id: '5',
           name: 'Cafeteria Gas Check',
           createdBy: 'Prince Bogotey',
@@ -149,7 +149,7 @@ class SitesBloc extends Bloc<SitesEvent, SitesState> {
       state.copyWith(
         siteCrudStatus: EntityStatus.initial,
         siteSelectedStatus: EntityStatus.initial,
-        sitesRetrievedStatus: EntityStatus.initial,
+        sitesLoadedStatus: EntityStatus.initial,
         message: '',
       ),
     );

@@ -62,14 +62,19 @@ class ExecuteAuditObservationBloc
     on<ExecuteAuditObservationImageListLoaded>(
         _onExecuteAuditObservationImageListLoaded);
     on<ExecuteAuditObservationInited>(_onExecuteAuditObservationInited);
+    on<ExecuteAuditObservationCreateUpdateCanceled>(
+        _onExecuteAuditObservationCreateUpdateCanceled);
   }
 
   @override
   void onChange(Change<ExecuteAuditObservationState> change) {
     super.onChange(change);
-
-    print(change.nextState.isDirty);
   }
+
+  void _onExecuteAuditObservationCreateUpdateCanceled(
+    ExecuteAuditObservationCreateUpdateCanceled event,
+    Emitter<ExecuteAuditObservationState> emit,
+  ) {}
 
   Future<void> _onExecuteAuditObservationListLoaded(
     ExecuteAuditObservationListLoaded event,

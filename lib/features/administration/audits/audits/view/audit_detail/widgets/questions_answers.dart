@@ -17,50 +17,50 @@ class QuestionsAndAnswersView extends StatelessWidget {
               style: textSemiBold16,
             ),
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question: 'Question',
             answer: 'Answer',
             score: 'Score',
             isTitle: true,
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question:
                 'Were the leaflets on social distancing distributed at least 3 months before the lockdown was removed?',
             answer: 'Yes',
             score: '2',
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question:
                 'Was the distribution elctronic as well as printed copies?',
             answer: 'Yes',
             score: '2',
             isSubQuestion: true,
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question: 'Was the open rate on electronic emails about 50%?',
             answer: 'Yes',
             score: '2',
             isSubQuestion: true,
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question:
                 'Were there visible signs in the office that promoted social distancing?',
             answer: 'Satisfactory',
             score: '2',
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question:
                 'Were the workstations wiped everyday by the cleaning crew?',
             answer: 'Yes',
             score: '2',
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question: 'Were FDA approved disinfectants used for this purpose?',
             answer: 'Yes',
             score: '2',
             isSubQuestion: true,
           ),
-          QuestionItemView(
+          const QuestionItemView(
             question:
                 'Were the leaflets on social distancing distributed at least 3 months before the lockdown was removed?',
             answer: 'Yes',

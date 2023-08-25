@@ -8,8 +8,10 @@ abstract class AuditListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load audit list
 class AuditListLoaded extends AuditListEvent {}
 
+/// event to get filtered audit list
 class AuditListFiltered extends AuditListEvent {
   final FilteredTableParameter option;
   const AuditListFiltered({
@@ -20,6 +22,7 @@ class AuditListFiltered extends AuditListEvent {
   List<Object?> get props => [option];
 }
 
+/// event to load audit detail for side panel
 class AuditListAuditForSideDetailLoaded extends AuditListEvent {
   final String auditId;
   const AuditListAuditForSideDetailLoaded({required this.auditId});

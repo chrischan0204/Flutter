@@ -8,6 +8,7 @@ abstract class ExecuteAuditQuestionEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load audit question
 class ExecuteAuditQuestionLoaded extends ExecuteAuditQuestionEvent {
   final String responseId;
 
@@ -19,6 +20,7 @@ class ExecuteAuditQuestionLoaded extends ExecuteAuditQuestionEvent {
   List<Object> get props => [responseId];
 }
 
+/// event to select question response
 class ExecuteAuditQuestionResponseSelected extends ExecuteAuditQuestionEvent {
   final AuditResponseScaleItem response;
 
@@ -28,6 +30,7 @@ class ExecuteAuditQuestionResponseSelected extends ExecuteAuditQuestionEvent {
   List<Object> get props => [response];
 }
 
+/// event to change question level
 class ExecuteAuditQuestionLevelChanged extends ExecuteAuditQuestionEvent {
   final int level;
   const ExecuteAuditQuestionLevelChanged({required this.level});
@@ -36,6 +39,7 @@ class ExecuteAuditQuestionLevelChanged extends ExecuteAuditQuestionEvent {
   List<Object> get props => [level];
 }
 
+/// event to load question detail
 class ExecuteAuditQuestionDetailLoaded extends ExecuteAuditQuestionEvent {
   final String questionId;
   const ExecuteAuditQuestionDetailLoaded({required this.questionId});

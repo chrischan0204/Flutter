@@ -18,6 +18,8 @@ class ActionItemDetailState extends Equatable {
 
   final EntityStatus documentDeleteStatus;
 
+  final EntityStatus parentInfomationLoadStatus;
+
   final String message;
   const ActionItemDetailState({
     this.actionItem,
@@ -29,6 +31,7 @@ class ActionItemDetailState extends Equatable {
     this.documentList = const [],
     this.documentListLoadStatus = EntityStatus.initial,
     this.documentDeleteStatus = EntityStatus.initial,
+    this.parentInfomationLoadStatus = EntityStatus.initial,
     this.message = '',
   });
 
@@ -43,6 +46,7 @@ class ActionItemDetailState extends Equatable {
         documentList,
         documentListLoadStatus,
         documentDeleteStatus,
+        parentInfomationLoadStatus,
         message,
       ];
 
@@ -56,6 +60,7 @@ class ActionItemDetailState extends Equatable {
     List<Document>? documentList,
     EntityStatus? documentListLoadStatus,
     EntityStatus? documentDeleteStatus,
+    EntityStatus? parentInfomationLoadStatus,
     String? message,
   }) {
     return ActionItemDetailState(
@@ -71,6 +76,8 @@ class ActionItemDetailState extends Equatable {
       documentListLoadStatus:
           documentListLoadStatus ?? this.documentListLoadStatus,
       documentDeleteStatus: documentDeleteStatus ?? this.documentDeleteStatus,
+      parentInfomationLoadStatus:
+          parentInfomationLoadStatus ?? this.parentInfomationLoadStatus,
       message: message ?? this.message,
     );
   }

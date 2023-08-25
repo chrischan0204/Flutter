@@ -80,23 +80,23 @@ class ActionItemsView extends StatelessWidget {
               style: textSemiBold14,
             ),
           ),
-          ActionItemView(
+          const ActionItemView(
             status: 'Status',
             task: 'Task',
             assignee: 'Assignee',
             isTitle: true,
           ),
-          ActionItemView(
+          const ActionItemView(
             status: 'Done',
             task: 'Inspect the staircase after cleaning',
             assignee: 'Hugh Tulley',
           ),
-          ActionItemView(
+          const ActionItemView(
             status: 'Due soon',
             task: 'Call contractor to hide wire',
             assignee: 'Hugh Tulley',
           ),
-          ActionItemView(
+          const ActionItemView(
             status: 'Overdue',
             task: 'Change the outlet in basement',
             assignee: 'Hugh Tulley',

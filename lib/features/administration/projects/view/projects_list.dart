@@ -38,7 +38,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
             emptyMessage: emptyMessage,
             entityListLoadStatusLoading:
                 filterSettingState.filterSettingLoading ||
-                    state.projectsRetrievedStatus.isLoading,
+                    state.projectsLoadedStatus.isLoading,
             entityDetailLoadStatusLoading:
                 state.projectSelectedStatus.isLoading,
             selectedEntity: state.selectedProject,

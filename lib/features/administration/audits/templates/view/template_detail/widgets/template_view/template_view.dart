@@ -25,8 +25,8 @@ class TemplateView extends StatelessWidget {
             }
             if (state.templateSnapshotList.isNotEmpty) {
               return LayoutBuilder(builder: (context, constraints) {
-                return Row(
-                  children: const [
+                return const Row(
+                  children: [
                     Flexible(
                       flex: 3,
                       fit: FlexFit.tight,

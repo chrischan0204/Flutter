@@ -23,8 +23,8 @@ class _AddEditTemplateDetailsViewState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         TemplateDescriptionField(),
         RevisionDatePicker(),
       ],

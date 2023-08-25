@@ -216,41 +216,6 @@ class ActionItemDetail extends Equatable {
     );
   }
 
-  // factory ActionItemDetail.fromMap(Map<String, dynamic> map) {
-  //   return ActionItemDetail(
-  //     id: map['id'] as String,
-  //     status: map['status'] ?? '',
-  //     source: map['source'] ?? '',
-  //     description: map['description'] ?? '',
-  //     dueBy: map['dueBy'] != null ? DateTime.parse(map['dueBy']) : null,
-  //     assigneeId: map['assigneeId'] ?? '',
-  //     assigneeName: map['assigneeName'] ?? '',
-  //     awarenessCategoryId: map['awarenessCategoryId'] ?? '',
-  //     awarenessCategoryName: map['awarenessCategoryName'] ?? '',
-  //     companyId: map['companyId'] ?? '',
-  //     companyName: map['companyName'] ?? '',
-  //     projectId: map['projectId'] ?? '',
-  //     projectName: map['projectName'] ?? '',
-  //     siteId: map['siteId'] ?? '',
-  //     siteName: map['siteName'] ?? '',
-  //     observationId: map['observationId'] ?? '',
-  //     observationName: map['observationName'] ?? '',
-  //     auditSectionItemId: map['auditSectionItemId'] ?? '',
-  //     auditSectionName: map['auditSectionName'] ?? '',
-  //     auditId: map['auditId'] ?? '',
-  //     auditName: map['auditName'] ?? '',
-  //     area: map['area'] ?? '',
-  //     notes: map['notes'] ?? '',
-  //     closedBy: map['closedBy'] ?? '',
-  //     closedByName: map['closedByName'] ?? '',
-  //     isClosed: map['isClosed'] ?? '',
-  //     closedOn:
-  //         map['closedOn'] != null ? DateTime.parse(map['closedOn']) : null,
-  //     createdOn: DateTime.parse(map['createdOn']),
-  //     createdBy: map['createdBy'] ?? '',
-  //   );
-  // }
-
   factory ActionItemDetail.fromJson(String source) =>
       ActionItemDetail.fromMap(json.decode(source) as Map<String, dynamic>);
 }

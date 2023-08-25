@@ -19,13 +19,13 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
   }
 
   void _triggerEvents() {
-    on<CompaniesRetrieved>(_onCompaniesRetrieved);
-    on<AssignedCompanySitesRetrieved>(_onAssignedCompanySitesRetrieved);
+    on<CompanyListLoaded>(_onCompanyListLoaded);
+    on<AssignedCompanySitesLoaded>(_onAssignedCompanySitesLoaded);
     on<CompanyListFiltered>(_onCompanyListFiltered);
-    on<AssignedProjectCompaniesRetrieved>(_onAssignedProjectCompaniesRetrieved);
-    on<UnassignedCompanySitesRetrieved>(_onUnassignedCompanySitesRetrieved);
-    on<UnassignedProjectCompaniesRetrieved>(
-        _onUnassignedProjectCompaniesRetrieved);
+    on<AssignedProjectCompanyListLoaded>(_onAssignedProjectCompanyListLoaded);
+    on<UnassignedCompanySitesLoaded>(_onUnassignedCompanySitesLoaded);
+    on<UnassignedProjectCompanyListLoaded>(
+        _onUnassignedProjectCompanyListLoaded);
     on<CompanySelected>(_onCompanySelected);
     on<SiteToCompanyAssigned>(_onSiteToCompanyAssigned);
     on<SiteFromCompanyUnassigned>(_onSiteFromCompanyUnassigned);
@@ -41,23 +41,23 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<FilterTextForUnassignedChanged>(_onFilterTextUnassignedChanged);
     on<FilterSiteIdForUnassignedChanged>(_onFilterSiteIdForUnassignedChanged);
     on<FilterSiteIdForAssignedChanged>(_onFilterSiteIdForAssignedChanged);
-    on<AuditTrailsRetrievedByCompanyId>(_onAuditTrailsRetrievedByCompanyId);
+    on<AuditTrailsLoadedByCompanyId>(_onAuditTrailsLoadedByCompanyId);
   }
 
   // get companies list from repository
-  Future<void> _onCompaniesRetrieved(
-    CompaniesRetrieved event,
+  Future<void> _onCompanyListLoaded(
+    CompanyListLoaded event,
     Emitter<CompaniesState> emit,
   ) async {
-    emit(state.copyWith(companiesRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(companiesLoadedStatus: EntityStatus.loading));
     try {
       List<Company> companies = await companiesRepository.getCompanyList();
       emit(state.copyWith(
         companies: companies,
-        companiesRetrievedStatus: EntityStatus.success,
+        companiesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(companiesRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(companiesLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -65,7 +65,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     CompanyListFiltered event,
     Emitter<CompaniesState> emit,
   ) async {
-    emit(state.copyWith(companiesRetrievedStatus: EntityStatus.loading));
+    emit(state.copyWith(companiesLoadedStatus: EntityStatus.loading));
 
     try {
       FilteredCompanyData data =
@@ -77,95 +77,95 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
         companies: data.data
             .map((e) => e.toCompany().copyWith(columns: columns))
             .toList(),
-        companiesRetrievedStatus: EntityStatus.success,
+        companiesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
-      emit(state.copyWith(companiesRetrievedStatus: EntityStatus.failure));
+      emit(state.copyWith(companiesLoadedStatus: EntityStatus.failure));
     }
   }
 
   // get assigned sites list to company
-  Future<void> _onAssignedCompanySitesRetrieved(
-    AssignedCompanySitesRetrieved event,
+  Future<void> _onAssignedCompanySitesLoaded(
+    AssignedCompanySitesLoaded event,
     Emitter<CompaniesState> emit,
   ) async {
-    emit(state.copyWith(
-        assignedCompanySitesRetrievedStatus: EntityStatus.loading));
+    emit(
+        state.copyWith(assignedCompanySitesLoadedStatus: EntityStatus.loading));
     try {
       List<CompanySite> companySites = await companiesRepository
           .getCompanySites(event.companyId, true, event.name);
       emit(state.copyWith(
         assignedCompanySites: companySites,
-        assignedCompanySitesRetrievedStatus: EntityStatus.success,
+        assignedCompanySitesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(
-          assignedCompanySitesRetrievedStatus: EntityStatus.failure));
+          assignedCompanySitesLoadedStatus: EntityStatus.failure));
     }
   }
 
   // get unassigned sites list from company
-  Future<void> _onUnassignedCompanySitesRetrieved(
-    UnassignedCompanySitesRetrieved event,
+  Future<void> _onUnassignedCompanySitesLoaded(
+    UnassignedCompanySitesLoaded event,
     Emitter<CompaniesState> emit,
   ) async {
     emit(state.copyWith(
-        unassignedCompanySitesRetrievedStatus: EntityStatus.loading));
+        unassignedCompanySitesLoadedStatus: EntityStatus.loading));
     try {
       List<CompanySite> companySites = await companiesRepository
           .getCompanySites(event.companyId, false, event.name);
       emit(state.copyWith(
         unassignedCompanySites: companySites,
-        unassignedCompanySitesRetrievedStatus: EntityStatus.success,
+        unassignedCompanySitesLoadedStatus: EntityStatus.success,
       ));
     } catch (e) {
       emit(state.copyWith(
-          unassignedCompanySitesRetrievedStatus: EntityStatus.failure));
+          unassignedCompanySitesLoadedStatus: EntityStatus.failure));
     }
   }
 
   // get assigned projects list to company
-  Future<void> _onAssignedProjectCompaniesRetrieved(
-    AssignedProjectCompaniesRetrieved event,
+  Future<void> _onAssignedProjectCompanyListLoaded(
+    AssignedProjectCompanyListLoaded event,
     Emitter<CompaniesState> emit,
   ) async {
     emit(state.copyWith(
-        assignedProjectCompaniesRetrievedStatus: EntityStatus.loading));
+        assignedProjectCompanyListLoadedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> projectCompanies = await companiesRepository
           .getProjectCompanies(event.companyId, true, event.name, event.siteId);
       emit(state.copyWith(
         assignedProjectCompanies: projectCompanies,
-        assignedProjectCompaniesRetrievedStatus: EntityStatus.success,
+        assignedProjectCompanyListLoadedStatus: EntityStatus.success,
         assignedProjectCompaniesForFilter:
             event.forFilter ? projectCompanies : null,
       ));
     } catch (e) {
       emit(state.copyWith(
-          assignedProjectCompaniesRetrievedStatus: EntityStatus.failure));
+          assignedProjectCompanyListLoadedStatus: EntityStatus.failure));
     }
   }
 
   // get unassigned projects list from company
-  Future<void> _onUnassignedProjectCompaniesRetrieved(
-    UnassignedProjectCompaniesRetrieved event,
+  Future<void> _onUnassignedProjectCompanyListLoaded(
+    UnassignedProjectCompanyListLoaded event,
     Emitter<CompaniesState> emit,
   ) async {
     emit(state.copyWith(
-        unassignedProjectCompaniesRetrievedStatus: EntityStatus.loading));
+        unassignedProjectCompanyListLoadedStatus: EntityStatus.loading));
     try {
       List<ProjectCompany> projectCompanies =
           await companiesRepository.getProjectCompanies(
               event.companyId, false, event.name, event.siteId);
       emit(state.copyWith(
         unassignedProjectCompanies: projectCompanies,
-        unassignedProjectCompaniesRetrievedStatus: EntityStatus.success,
+        unassignedProjectCompanyListLoadedStatus: EntityStatus.success,
         unassignedProjectCompaniesForFilter:
             event.forFilter ? projectCompanies : null,
       ));
     } catch (e) {
       emit(state.copyWith(
-          unassignedProjectCompaniesRetrievedStatus: EntityStatus.failure));
+          unassignedProjectCompanyListLoadedStatus: EntityStatus.failure));
     }
   }
 
@@ -392,7 +392,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     emit(state.copyWith(
       companyCrudStatus: EntityStatus.initial,
       companySelectedStatus: EntityStatus.initial,
-      companiesRetrievedStatus: EntityStatus.initial,
+      companiesLoadedStatus: EntityStatus.initial,
     ));
   }
 
@@ -445,8 +445,8 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     emit(state.copyWith(filterSiteIdForUnassigned: event.siteId));
   }
 
-  void _onAuditTrailsRetrievedByCompanyId(
-    AuditTrailsRetrievedByCompanyId event,
+  void _onAuditTrailsLoadedByCompanyId(
+    AuditTrailsLoadedByCompanyId event,
     Emitter<CompaniesState> emit,
   ) async {
     emit(state.copyWith(auditTrailsRerievedStatus: EntityStatus.loading));

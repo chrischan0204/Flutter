@@ -67,31 +67,41 @@ class _SectionItemViewState extends State<SectionItemView> {
         ));
   }
 
+  void _saveSection() {
+    if (Validation.isNotEmpty(_textEditingController.text)) {
+      if (_textEditingController.text.length > 200) {
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content:
+              FormValidationMessage(fieldName: 'Section name', maxLength: 200)
+                  .maxLengthValidationMessage,
+        ).showNotification();
+        return;
+      }
+      context.read<TemplateDesignerBloc>().add(TemplateDesignerSectionUpdated(
+            section: _textEditingController.text,
+            sectionId: widget.section.id,
+          ));
+      setState(() {
+        _isEditing = false;
+      });
+    } else {
+      CustomNotification(
+              context: context,
+              notifyType: NotifyType.info,
+              content: FormValidationMessage(fieldName: 'Section name')
+                  .requiredMessage)
+          .showNotification();
+    }
+  }
+
   Widget _buildEditButtons() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          onPressed: () {
-            if (Validation.isNotEmpty(_textEditingController.text)) {
-              context
-                  .read<TemplateDesignerBloc>()
-                  .add(TemplateDesignerSectionUpdated(
-                    section: _textEditingController.text,
-                    sectionId: widget.section.id,
-                  ));
-              setState(() {
-                _isEditing = false;
-              });
-            } else {
-              CustomNotification(
-                      context: context,
-                      notifyType: NotifyType.info,
-                      content: FormValidationMessage(fieldName: 'Section name')
-                          .requiredMessage)
-                  .showNotification();
-            }
-          },
+          onPressed: () => _saveSection(),
           icon: PhosphorIcon(
             PhosphorIcons.regular.check,
             color: successHoverColor,
@@ -240,6 +250,7 @@ class _SectionItemViewState extends State<SectionItemView> {
                         height: 40,
                         child: CustomTextField(
                           controller: _textEditingController,
+                          onSubmitted: (value) => _saveSection(),
                         ),
                       )
                     : Tooltip(

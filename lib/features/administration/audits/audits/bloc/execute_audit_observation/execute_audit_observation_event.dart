@@ -8,14 +8,19 @@ abstract class ExecuteAuditObservationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load observation list
 class ExecuteAuditObservationListLoaded extends ExecuteAuditObservationEvent {}
 
+/// event to create observation on audit execute
 class ExecuteAuditObservationCreated extends ExecuteAuditObservationEvent {}
 
+/// event to update observation on audit execute
 class ExecuteAuditObservationUpdated extends ExecuteAuditObservationEvent {}
 
+/// event to select observation
 class ExecuteAuditObservationSelected extends ExecuteAuditObservationEvent {}
 
+/// event to delete observation by id
 class ExecuteAuditObservationDeleted extends ExecuteAuditObservationEvent {
   final String observationId;
 
@@ -27,6 +32,7 @@ class ExecuteAuditObservationDeleted extends ExecuteAuditObservationEvent {
   List<Object> get props => [observationId];
 }
 
+/// event to change view - list, create, update, detail
 class ExecuteAuditObservationViewChanged extends ExecuteAuditObservationEvent {
   final CrudView view;
 
@@ -36,6 +42,7 @@ class ExecuteAuditObservationViewChanged extends ExecuteAuditObservationEvent {
   List<Object> get props => [view];
 }
 
+/// event to load observation detail
 class ExecuteAuditObservationLoaded extends ExecuteAuditObservationEvent {
   final String observationId;
 
@@ -45,6 +52,7 @@ class ExecuteAuditObservationLoaded extends ExecuteAuditObservationEvent {
   List<Object> get props => [observationId];
 }
 
+/// event to change observation type to create observation
 class ExecuteAuditObservationTypeChanged extends ExecuteAuditObservationEvent {
   final ObservationType observationType;
 
@@ -56,6 +64,7 @@ class ExecuteAuditObservationTypeChanged extends ExecuteAuditObservationEvent {
   List<Object> get props => [observationType];
 }
 
+/// event to change priority level to create observation
 class ExecuteAuditObservationPriorityLevelChanged
     extends ExecuteAuditObservationEvent {
   final PriorityLevel priorityLevel;
@@ -68,6 +77,7 @@ class ExecuteAuditObservationPriorityLevelChanged
   List<Object> get props => [priorityLevel];
 }
 
+/// event to change site to create observation
 class ExecuteAuditObservationSiteChanged extends ExecuteAuditObservationEvent {
   final Site site;
   final bool isInit;
@@ -84,6 +94,7 @@ class ExecuteAuditObservationSiteChanged extends ExecuteAuditObservationEvent {
       ];
 }
 
+/// event to change observation name to create observation
 class ExecuteAuditObservationNameChanged extends ExecuteAuditObservationEvent {
   final String observation;
 
@@ -95,6 +106,7 @@ class ExecuteAuditObservationNameChanged extends ExecuteAuditObservationEvent {
   List<Object> get props => [observation];
 }
 
+/// event to change response to create observation
 class ExecuteAuditObservationResponseChanged
     extends ExecuteAuditObservationEvent {
   final String response;
@@ -107,6 +119,7 @@ class ExecuteAuditObservationResponseChanged
   List<Object> get props => [response];
 }
 
+/// event to change company to create observation
 class ExecuteAuditObservationCompanyChanged
     extends ExecuteAuditObservationEvent {
   final Company company;
@@ -119,6 +132,7 @@ class ExecuteAuditObservationCompanyChanged
   List<Object> get props => [company];
 }
 
+/// event to change project to create observation
 class ExecuteAuditObservationProjectChanged
     extends ExecuteAuditObservationEvent {
   final Project project;
@@ -131,6 +145,7 @@ class ExecuteAuditObservationProjectChanged
   List<Object> get props => [project];
 }
 
+/// event to change area to create observation
 class ExecuteAuditObservationAreaChanged extends ExecuteAuditObservationEvent {
   final String area;
 
@@ -142,6 +157,7 @@ class ExecuteAuditObservationAreaChanged extends ExecuteAuditObservationEvent {
   List<Object> get props => [area];
 }
 
+/// event to change observation type to create observation
 class ExecuteAuditObservationFileListChanged
     extends ExecuteAuditObservationEvent {
   final List<PlatformFile> fileList;
@@ -154,6 +170,7 @@ class ExecuteAuditObservationFileListChanged
   List<Object> get props => [fileList];
 }
 
+/// event to change image list to create observation
 class ExecuteAuditObservationImageListLoaded
     extends ExecuteAuditObservationEvent {
   final String observationId;
@@ -164,4 +181,9 @@ class ExecuteAuditObservationImageListLoaded
   List<Object> get props => [observationId];
 }
 
+/// event to init state
 class ExecuteAuditObservationInited extends ExecuteAuditObservationEvent {}
+
+/// event to cancel create or edit mode
+class ExecuteAuditObservationCreateUpdateCanceled
+    extends ExecuteAuditObservationEvent {}

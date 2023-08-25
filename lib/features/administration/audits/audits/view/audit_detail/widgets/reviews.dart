@@ -82,7 +82,8 @@ class ReviewsView extends StatelessWidget {
                             style: textSemiBold16,
                           ),
                         ),
-                        for (final review in state.auditReviewList)
+                        for (final review in state.auditReviewList
+                            .where((element) => element.reviewComments != null))
                           ReviewItemView(
                             review: review.reviewComments ?? '',
                             reviewer: review.reviewerName ?? '',

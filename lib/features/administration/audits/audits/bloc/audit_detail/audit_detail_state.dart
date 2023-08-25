@@ -71,6 +71,12 @@ class AuditDetailState extends Equatable {
         auditReviewCommentSaveStatus,
       ];
 
+  bool isNextStepsAvailable(String userId) =>
+      auditReviewList.isNotEmpty &&
+      (auditReviewList.length > 1 ||
+          auditReviewList.length == 1 &&
+              userId != auditReviewList[0].reviewerId);
+
   bool get isDeletable {
     if (auditSummary == null) {
       return false;
