@@ -10,6 +10,7 @@ class RolesRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/Roles');
 
+  /// get user role list
   Future<List<Role>> getRoles() async {
     Response response = await super.get(url);
 

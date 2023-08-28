@@ -1,73 +1,56 @@
 import '../../../../../../../common_libraries.dart';
 
-class QuestionsAndAnswersView extends StatelessWidget {
+class QuestionsAndAnswersView extends StatefulWidget {
   const QuestionsAndAnswersView({super.key});
 
   @override
+  State<QuestionsAndAnswersView> createState() =>
+      _QuestionsAndAnswersViewState();
+}
+
+class _QuestionsAndAnswersViewState extends State<QuestionsAndAnswersView> {
+  @override
+  void initState() {
+    context
+        .read<AuditDetailBloc>()
+        .add(AuditDetailAuditCompletedQuestionsWithFollowupsListLoaded());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          CustomBottomBorderContainer(
-            padding: inset10,
-            child: Text(
-              'Questions and Answers',
-              style: textSemiBold16,
-            ),
+    return BlocBuilder<AuditDetailBloc, AuditDetailState>(
+      builder: (context, state) {
+        return Card(
+          elevation: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomBottomBorderContainer(
+                padding: inset10,
+                child: Text(
+                  'Questions and Answers',
+                  style: textSemiBold16,
+                ),
+              ),
+              const QuestionItemView(
+                question: 'Question',
+                answer: 'Answer',
+                score: 'Score',
+                isTitle: true,
+              ),
+              for (final question
+                  in state.auditCompletedQuestionsWithFollowupsList)
+                QuestionItemView(
+                  question: question.question ?? '',
+                  answer: question.response ?? '',
+                  score: question.score.toString(),
+                  isSubQuestion: question.parentId != null,
+                ),
+            ],
           ),
-          const QuestionItemView(
-            question: 'Question',
-            answer: 'Answer',
-            score: 'Score',
-            isTitle: true,
-          ),
-          const QuestionItemView(
-            question:
-                'Were the leaflets on social distancing distributed at least 3 months before the lockdown was removed?',
-            answer: 'Yes',
-            score: '2',
-          ),
-          const QuestionItemView(
-            question:
-                'Was the distribution elctronic as well as printed copies?',
-            answer: 'Yes',
-            score: '2',
-            isSubQuestion: true,
-          ),
-          const QuestionItemView(
-            question: 'Was the open rate on electronic emails about 50%?',
-            answer: 'Yes',
-            score: '2',
-            isSubQuestion: true,
-          ),
-          const QuestionItemView(
-            question:
-                'Were there visible signs in the office that promoted social distancing?',
-            answer: 'Satisfactory',
-            score: '2',
-          ),
-          const QuestionItemView(
-            question:
-                'Were the workstations wiped everyday by the cleaning crew?',
-            answer: 'Yes',
-            score: '2',
-          ),
-          const QuestionItemView(
-            question: 'Were FDA approved disinfectants used for this purpose?',
-            answer: 'Yes',
-            score: '2',
-            isSubQuestion: true,
-          ),
-          const QuestionItemView(
-            question:
-                'Were the leaflets on social distancing distributed at least 3 months before the lockdown was removed?',
-            answer: 'Yes',
-            score: '2',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -103,6 +86,7 @@ class QuestionItemView extends StatelessWidget {
                       : null,
             ),
           ),
+          spacerx10,
           SizedBox(
             width: 150,
             child: Text(
@@ -111,6 +95,7 @@ class QuestionItemView extends StatelessWidget {
                   isTitle ? const TextStyle(fontWeight: FontWeight.w600) : null,
             ),
           ),
+          spacerx10,
           SizedBox(
             width: 60,
             child: Text(

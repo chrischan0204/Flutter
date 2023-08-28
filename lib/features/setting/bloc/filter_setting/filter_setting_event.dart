@@ -8,6 +8,7 @@ abstract class FilterSettingEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to init filter setting
 class FilterSettingInit extends FilterSettingEvent {
   final String viewName;
   const FilterSettingInit({
@@ -17,6 +18,7 @@ class FilterSettingInit extends FilterSettingEvent {
   List<Object?> get props => [viewName];
 }
 
+/// event to load filter setting list
 class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
   const FilterSettingFilterSettingListLoaded({
@@ -27,6 +29,7 @@ class FilterSettingFilterSettingListLoaded extends FilterSettingEvent {
   List<Object> get props => [name];
 }
 
+/// event to load user filter setting list
 class FilterSettingUserFilterSettingListLoaded extends FilterSettingEvent {
   final String name;
   final bool deleted;
@@ -39,6 +42,7 @@ class FilterSettingUserFilterSettingListLoaded extends FilterSettingEvent {
   List<Object> get props => [name];
 }
 
+/// event to load user filter setting detail by id
 class FilterSettingUserFilterSettingLoadedById extends FilterSettingEvent {
   final String filterId;
   const FilterSettingUserFilterSettingLoadedById({
@@ -49,6 +53,7 @@ class FilterSettingUserFilterSettingLoadedById extends FilterSettingEvent {
   List<Object> get props => [filterId];
 }
 
+/// event to delete user filter setting by id
 class FilterSettingUserFilterSettingDeletedById extends FilterSettingEvent {
   final String filterId;
   const FilterSettingUserFilterSettingDeletedById({
@@ -59,6 +64,7 @@ class FilterSettingUserFilterSettingDeletedById extends FilterSettingEvent {
   List<Object> get props => [filterId];
 }
 
+/// event to change user filter name to create or update filter setting
 class FilterSettingUserFilterNameChanged extends FilterSettingEvent {
   final String filterName;
   const FilterSettingUserFilterNameChanged({
@@ -69,6 +75,7 @@ class FilterSettingUserFilterNameChanged extends FilterSettingEvent {
   List<Object> get props => [filterName];
 }
 
+/// event to change is default to create or update user filter setting
 class FilterSettingUserFilterIsDefaultChanged extends FilterSettingEvent {
   final bool isDefault;
   const FilterSettingUserFilterIsDefaultChanged({
@@ -79,14 +86,12 @@ class FilterSettingUserFilterIsDefaultChanged extends FilterSettingEvent {
   List<Object> get props => [isDefault];
 }
 
+/// event to save user filter setting
 class FilterSettingUserFilterSettingSaved extends FilterSettingEvent {
-  // final String viewName;
   const FilterSettingUserFilterSettingSaved();
-
-  // @override
-  // List<Object> get props => [viewName];
 }
 
+/// event to save as user filter setting
 class FilterSettingUserFilterSettingSavedAs extends FilterSettingEvent {
   final String saveAsName;
   const FilterSettingUserFilterSettingSavedAs({
@@ -97,6 +102,7 @@ class FilterSettingUserFilterSettingSavedAs extends FilterSettingEvent {
   List<Object> get props => [saveAsName];
 }
 
+/// event to select user filter setting to update or delete
 class FilterSettingUserFilterSettingSelected extends FilterSettingEvent {
   final UserFilterSetting? userFilterSetting;
 
@@ -108,6 +114,7 @@ class FilterSettingUserFilterSettingSelected extends FilterSettingEvent {
   List<Object?> get props => [userFilterSetting];
 }
 
+/// event to add new user filter item
 class FilterSettingUserFilterItemAdded extends FilterSettingEvent {
   final UserFilterItem? userFilterItem;
   const FilterSettingUserFilterItemAdded({
@@ -118,6 +125,7 @@ class FilterSettingUserFilterItemAdded extends FilterSettingEvent {
   List<Object?> get props => [userFilterItem];
 }
 
+/// event to add new user filter
 class FilterSettingUserFilterAdded extends FilterSettingEvent {
   final String viewName;
   const FilterSettingUserFilterAdded({
@@ -128,6 +136,7 @@ class FilterSettingUserFilterAdded extends FilterSettingEvent {
   List<Object?> get props => [viewName];
 }
 
+/// event to delete user filter item
 class FilterSettingUserFilterItemDeleted extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   const FilterSettingUserFilterItemDeleted({
@@ -138,6 +147,7 @@ class FilterSettingUserFilterItemDeleted extends FilterSettingEvent {
   List<Object> get props => [userFilterItem];
 }
 
+/// event to change boolean condition to create user filter item
 class FilterSettingUserFilterItemBooleanConditionChanged
     extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
@@ -154,6 +164,7 @@ class FilterSettingUserFilterItemBooleanConditionChanged
       ];
 }
 
+/// event to change operator to create user filter item
 class FilterSettingUserFilterItemOperatorChanged extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   final String operator;
@@ -169,6 +180,7 @@ class FilterSettingUserFilterItemOperatorChanged extends FilterSettingEvent {
       ];
 }
 
+/// event to change value to create user filter item
 class FilterSettingUserFilterItemValueChanged extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   final List<String> value;
@@ -184,6 +196,7 @@ class FilterSettingUserFilterItemValueChanged extends FilterSettingEvent {
       ];
 }
 
+/// event to change filter item column
 class FilterSettingUserFilterItemColumnChanged extends FilterSettingEvent {
   final UserFilterItem userFilterItem;
   final FilterSetting column;
@@ -199,6 +212,7 @@ class FilterSettingUserFilterItemColumnChanged extends FilterSettingEvent {
       ];
 }
 
+/// event to change include deleted 
 class FilterSettingIncludeDeletedChanged extends FilterSettingEvent {
   final bool includeDeleted;
   const FilterSettingIncludeDeletedChanged({
@@ -209,6 +223,7 @@ class FilterSettingIncludeDeletedChanged extends FilterSettingEvent {
   List<Object> get props => [includeDeleted];
 }
 
+/// event to change user filter setting
 class FilterSettingAppliedUserFilterSettingChanged extends FilterSettingEvent {
   final UserFilterSetting? appliedUserFilterSetting;
   const FilterSettingAppliedUserFilterSettingChanged({
@@ -219,6 +234,7 @@ class FilterSettingAppliedUserFilterSettingChanged extends FilterSettingEvent {
   List<Object?> get props => [appliedUserFilterSetting];
 }
 
+/// event to add new user filter setting
 class FilterSettingUserFilterSettingNewAdded extends FilterSettingEvent {
   final String viewName;
   const FilterSettingUserFilterSettingNewAdded({

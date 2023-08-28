@@ -10,7 +10,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/AwarenessCategory');
 
-  // get awareness categories list from api
+  /// get awareness categories list from api
   Future<List<AwarenessCategory>> getAwarenessCategorieList() async {
     Response response = await super.get(url);
 
@@ -25,7 +25,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     return <AwarenessCategory>[];
   }
 
-  // get active awareness categories list from api
+  /// get active awareness categories list from api
   Future<List<Entity>> getActiveAwarenessCategorieList() async {
     Response response = await super.get('$url/items');
 
@@ -39,7 +39,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // get awareness category by id from api
+  /// get awareness category by id from api
   Future<AwarenessCategory> getAwarenessCategoryById(
     String awarenessCategoryId,
   ) async {
@@ -51,7 +51,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // add awareness category using api
+  /// add awareness category using api
   Future<EntityResponse> addAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
@@ -66,7 +66,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // awareness category using api
+  /// awareness category using api
   Future<EntityResponse> editAwarenessCategory(
     AwarenessCategory awarenessCategory,
   ) async {
@@ -81,7 +81,7 @@ class AwarenessCategoriesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // delete awarness category by id
+  /// delete awarness category by id
   Future<EntityResponse> deleteAwarenessCategory(
     String awarenessCategoryId,
   ) async {

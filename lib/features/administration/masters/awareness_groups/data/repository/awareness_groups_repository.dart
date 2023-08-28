@@ -9,7 +9,7 @@ class AwarenessGroupsRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/AwarenessGroups');
 
-  // get awareness groups list
+  /// get awareness groups list
   Future<List<AwarenessGroup>> getAwarenessGroups() async {
     Response response = await super.get(
       url,
@@ -26,7 +26,7 @@ class AwarenessGroupsRepository extends BaseRepository {
     return [];
   }
 
-  // get awareness group by id
+  /// get awareness group by id
   Future<AwarenessGroup> getAwarenessGroupById(
     String awarenessGroupId,
   ) async {
@@ -38,7 +38,7 @@ class AwarenessGroupsRepository extends BaseRepository {
     throw Exception();
   }
 
-  // add awareness group
+  /// add awareness group
   Future<EntityResponse> addAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
@@ -53,7 +53,7 @@ class AwarenessGroupsRepository extends BaseRepository {
     throw Exception();
   }
 
-  // edit awareness group
+  /// edit awareness group
   Future<EntityResponse> editAwarenessGroup(
     AwarenessGroup awarenessGroup,
   ) async {
@@ -68,7 +68,7 @@ class AwarenessGroupsRepository extends BaseRepository {
     throw Exception();
   }
 
-  // delete awareness group
+  /// delete awareness group
   Future<EntityResponse> deleteAwarenessGroup(String awarenessGroupId) async {
     Response response = await super.delete('$url/$awarenessGroupId');
 

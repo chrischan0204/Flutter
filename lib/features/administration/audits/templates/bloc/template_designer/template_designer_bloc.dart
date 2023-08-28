@@ -1251,7 +1251,8 @@ class TemplateDesignerBloc
     TemplateDesignerQuestionDetailLoaded event,
     Emitter<TemplateDesignerState> emit,
   ) async {
-    emit(state.copyWith(questionDetailLoadStatus: EntityStatus.loading));
+    emit(state.copyWith(
+        sectionItemQuestionListLoadStatus: EntityStatus.loading));
     try {
       final String responseScaleId = event.question.responseScaleId;
 
@@ -1308,9 +1309,11 @@ class TemplateDesignerBloc
         ),
       );
 
-      emit(state.copyWith(questionDetailLoadStatus: EntityStatus.success));
+      emit(state.copyWith(
+          sectionItemQuestionListLoadStatus: EntityStatus.success));
     } catch (e) {
-      emit(state.copyWith(questionDetailLoadStatus: EntityStatus.failure));
+      emit(state.copyWith(
+          sectionItemQuestionListLoadStatus: EntityStatus.failure));
     }
   }
 

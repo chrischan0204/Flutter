@@ -7,14 +7,17 @@ abstract class TemplateListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load template list
 class TemplateListLoaded extends TemplateListEvent {}
 
+/// event to sort template list
 class TemplateListSorted extends TemplateListEvent {
   final List<Template> sortedTemplateList;
 
   const TemplateListSorted({required this.sortedTemplateList});
 }
 
+/// event to filer template list
 class TemplateListFiltered extends TemplateListEvent {
   final FilteredTableParameter option;
   const TemplateListFiltered({required this.option});

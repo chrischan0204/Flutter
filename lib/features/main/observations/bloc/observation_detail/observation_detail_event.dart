@@ -32,14 +32,18 @@ class ObservationDetailObservationDeleted extends ObservationDetailEvent {
   List<Object> get props => [observationId];
 }
 
+/// event to load awarness category list
 class ObservationDetailAwarenessCategoryListLoaded
     extends ObservationDetailEvent {}
 
+/// event to load site list
 class ObservationDetailSiteListLoaded extends ObservationDetailEvent {}
 
+/// event to load observation type list
 class ObservationDetailObservationTypeListLoaded
     extends ObservationDetailEvent {}
 
+/// event to load company list
 class ObservationDetailCompanyListLoaded extends ObservationDetailEvent {
   /// site id to load company list associated with it
   final String siteId;
@@ -50,6 +54,7 @@ class ObservationDetailCompanyListLoaded extends ObservationDetailEvent {
   List<Object> get props => [siteId];
 }
 
+/// event to load project list
 class ObservationDetailProjectListLoaded extends ObservationDetailEvent {
   /// site id to load project list associated with it
   final String siteId;
@@ -60,8 +65,11 @@ class ObservationDetailProjectListLoaded extends ObservationDetailEvent {
   List<Object> get props => [siteId];
 }
 
+/// event to load priority level list
 class ObservationDetailPriorityLevelListLoaded extends ObservationDetailEvent {}
 
+/// event to load user list
 class ObservationDetailUserListLoaded extends ObservationDetailEvent {}
 
+/// event to load image list
 class ObservationDetailImageListLoaded extends ObservationDetailEvent {}

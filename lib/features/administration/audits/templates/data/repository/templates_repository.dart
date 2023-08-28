@@ -214,6 +214,7 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// sort section list
   Future<EntityResponse> sortTemplateSectionList(
       List<SortOrder> sortOrderList) async {
     Response response =
@@ -229,6 +230,7 @@ class TemplatesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// sort question list for section
   Future<EntityResponse> sortTemplateSectionQuestionList(
       List<SortOrder> sortOrderList) async {
     Response response = await super

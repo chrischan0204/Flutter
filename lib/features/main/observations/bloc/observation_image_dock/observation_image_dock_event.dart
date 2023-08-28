@@ -8,10 +8,13 @@ abstract class ObservationImageDockEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load image list
 class ObservationImageDockImageListLoaded extends ObservationImageDockEvent {}
 
+/// event to upload images
 class ObservationImageDockImageUpLoaded extends ObservationImageDockEvent {}
 
+/// event to change image dock view mode
 class ObservationImageDockViewChanged extends ObservationImageDockEvent {
   /// if false, list view
   /// if true, upload view
@@ -25,6 +28,7 @@ class ObservationImageDockViewChanged extends ObservationImageDockEvent {
   List<Object> get props => [view];
 }
 
+/// event to change image list to upload
 class ObservatioinImageDockFileListChanged extends ObservationImageDockEvent {
   final List<PlatformFile> fileList; 
 

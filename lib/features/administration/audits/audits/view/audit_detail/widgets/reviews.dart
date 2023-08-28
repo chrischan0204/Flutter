@@ -72,6 +72,11 @@ class ReviewsView extends StatelessWidget {
                       ),
                     );
                   } else {
+                    List<AuditReview> reviewList = state.auditReviewList
+                        .where((element) =>
+                            element.reviewComments != null &&
+                            element.reviewComments?.isNotEmpty == true)
+                        .toList();
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -82,12 +87,20 @@ class ReviewsView extends StatelessWidget {
                             style: textSemiBold16,
                           ),
                         ),
-                        for (final review in state.auditReviewList
-                            .where((element) => element.reviewComments != null))
-                          ReviewItemView(
-                            review: review.reviewComments ?? '',
-                            reviewer: review.reviewerName ?? '',
-                          ),
+                        if (reviewList.isNotEmpty)
+                          for (final review in reviewList)
+                            ReviewItemView(
+                              review: review.reviewComments ?? '',
+                              reviewer: review.reviewerName ?? '',
+                            )
+                        else
+                          Center(
+                            child: Padding(
+                              padding: inset20,
+                              child: const Text(
+                                  'There is no review yet on this audit.'),
+                            ),
+                          )
                       ],
                     );
                   }

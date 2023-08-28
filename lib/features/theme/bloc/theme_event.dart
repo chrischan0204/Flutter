@@ -7,6 +7,7 @@ class ThemeEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to extend side bar item
 class ThemeSidebarItemExtended extends ThemeEvent {
   final bool? isCollapsed;
   final String  collapsedItem;
@@ -23,6 +24,7 @@ class ThemeSidebarItemExtended extends ThemeEvent {
       ];
 }
 
+/// event to hover side bar
 class ThemeSidebarHovered extends ThemeEvent {
   final String hoveredItemName;
   const ThemeSidebarHovered({

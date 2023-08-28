@@ -7,6 +7,7 @@ abstract class NotificationSettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load site notification list for user
 class NotificationSettingUserSiteNotificationLoaded
     extends NotificationSettingEvent {
   final String userId;
@@ -17,6 +18,7 @@ class NotificationSettingUserSiteNotificationLoaded
   List<Object> get props => [userId];
 }
 
+/// event to update notifation
 class NotificationSettingNotificationUpdated extends NotificationSettingEvent {
   final UserSiteNotificationSetting userSiteNotificationSetting;
   const NotificationSettingNotificationUpdated({
@@ -27,6 +29,7 @@ class NotificationSettingNotificationUpdated extends NotificationSettingEvent {
   List<Object> get props => [userSiteNotificationSetting];
 }
 
+/// event to change all notification
 class NotificationObservationTypeNotificationAllChanged
     extends NotificationSettingEvent {
   final UserSiteNotificationSetting userSiteNotificationSetting;
@@ -43,6 +46,7 @@ class NotificationObservationTypeNotificationAllChanged
       ];
 }
 
+/// event to change observation type notification
 class NotificationObservationTypeNotificationChanged
     extends NotificationSettingEvent {
   final UserSiteNotificationSetting userSiteNotificationSetting;

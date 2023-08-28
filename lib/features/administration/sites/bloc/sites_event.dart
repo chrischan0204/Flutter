@@ -7,6 +7,7 @@ abstract class SitesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load site list
 class SitesLoaded extends SitesEvent {}
 
 class SiteListFiltered extends SitesEvent {
@@ -17,6 +18,7 @@ class SiteListFiltered extends SitesEvent {
   List<Object?> get props => [option];
 }
 
+/// event to select site for side detail
 class SiteSelected extends SitesEvent {
   final Site? selectedSite;
   const SiteSelected({
@@ -24,6 +26,7 @@ class SiteSelected extends SitesEvent {
   });
 }
 
+/// event to load site detail by id
 class SiteSelectedById extends SitesEvent {
   final String siteId;
   const SiteSelectedById({
@@ -31,6 +34,7 @@ class SiteSelectedById extends SitesEvent {
   });
 }
 
+/// event to add new site
 class SiteAdded extends SitesEvent {
   final Site site;
   const SiteAdded({
@@ -38,6 +42,7 @@ class SiteAdded extends SitesEvent {
   });
 }
 
+/// event to edit site 
 class SiteEdited extends SitesEvent {
   final Site site;
   const SiteEdited({
@@ -45,17 +50,20 @@ class SiteEdited extends SitesEvent {
   });
 }
 
+/// event to delete site by id
 class SiteDeleted extends SitesEvent {
   final String siteId;
   const SiteDeleted({
     required this.siteId,
   });
 }
-
+/// event to init status of site
 class SitesStatusInited extends SitesEvent {}
 
+/// event to load template list
 class AuditTemplatesLoaded extends SitesEvent {}
 
+/// event to assign template to site
 class AuditTemplateAssignedToSite extends SitesEvent {
   final String auditTemplateId;
   const AuditTemplateAssignedToSite({

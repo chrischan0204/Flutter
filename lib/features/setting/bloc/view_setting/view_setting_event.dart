@@ -7,6 +7,7 @@ abstract class ViewSettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to apply view setting
 class ViewSettingApplied extends ViewSettingEvent {
   final String viewName;
   const ViewSettingApplied({
@@ -17,6 +18,7 @@ class ViewSettingApplied extends ViewSettingEvent {
   List<Object> get props => [viewName];
 }
 
+/// event to load view setting
 class ViewSettingLoaded extends ViewSettingEvent {
   final String viewName;
   const ViewSettingLoaded({
@@ -27,6 +29,7 @@ class ViewSettingLoaded extends ViewSettingEvent {
   List<Object> get props => [viewName];
 }
 
+/// event to change display column order
 class ViewSettingDisplayColumnOrderChanged extends ViewSettingEvent {
   final int draggingIndex;
   final int newPositionIndex;
@@ -42,8 +45,10 @@ class ViewSettingDisplayColumnOrderChanged extends ViewSettingEvent {
       ];
 }
 
+/// event to add display column
 class ViewSettingDisplayColumnAdded extends ViewSettingEvent {}
 
+/// event to select column to display
 class ViewSettingDisplayColumnSelected extends ViewSettingEvent {
   final ViewSettingItemData column;
   final ViewSettingColumn selectedValue;
@@ -59,6 +64,7 @@ class ViewSettingDisplayColumnSelected extends ViewSettingEvent {
       ];
 }
 
+/// event to delete display column
 class ViewSettingDisplayColumnDeleted extends ViewSettingEvent {
   final ViewSettingItemData column;
   const ViewSettingDisplayColumnDeleted({
@@ -69,6 +75,7 @@ class ViewSettingDisplayColumnDeleted extends ViewSettingEvent {
   List<Object> get props => [column];
 }
 
+/// event to change column order for sorting
 class ViewSettingSortingColumnOrderChanged extends ViewSettingEvent {
   final int draggingIndex;
   final int newPositionIndex;
@@ -84,8 +91,10 @@ class ViewSettingSortingColumnOrderChanged extends ViewSettingEvent {
       ];
 }
 
+/// event to add new column for sorting
 class ViewSettingSortingColumnAdded extends ViewSettingEvent {}
 
+/// event to select column for sorting
 class ViewSettingSortingColumnSelected extends ViewSettingEvent {
   final ViewSettingItemData column;
   final ViewSettingColumn selectedValue;
@@ -101,6 +110,7 @@ class ViewSettingSortingColumnSelected extends ViewSettingEvent {
       ];
 }
 
+/// event to change sort direction of column for sorting
 class ViewSettingSortingColumnSortDirectionChanged extends ViewSettingEvent {
   final ViewSettingItemData column;
   final String sortDirection;
@@ -116,6 +126,7 @@ class ViewSettingSortingColumnSortDirectionChanged extends ViewSettingEvent {
       ];
 }
 
+/// event to delete column for sorting
 class ViewSettingSortingColumnDeleted extends ViewSettingEvent {
   final ViewSettingItemData column;
   const ViewSettingSortingColumnDeleted({

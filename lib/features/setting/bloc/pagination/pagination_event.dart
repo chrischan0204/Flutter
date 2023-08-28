@@ -7,6 +7,7 @@ abstract class PaginationEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to change row count per page
 class PaginationRowsPerPageChanged extends PaginationEvent {
   final int rowsPerPage;
   const PaginationRowsPerPageChanged({
@@ -17,6 +18,7 @@ class PaginationRowsPerPageChanged extends PaginationEvent {
   List<Object> get props => [rowsPerPage];
 }
 
+/// event to change page number
 class PaginationSelectedPageNumChanged extends PaginationEvent {
   final int selectedPageNum;
   const PaginationSelectedPageNumChanged({
@@ -27,4 +29,5 @@ class PaginationSelectedPageNumChanged extends PaginationEvent {
   List<Object> get props => [selectedPageNum];
 }
 
+/// event to init status
 class PaginationInit extends PaginationEvent {}

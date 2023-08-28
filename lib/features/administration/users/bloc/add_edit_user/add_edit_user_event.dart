@@ -8,6 +8,7 @@ abstract class AddEditUserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to change first name to create user
 class AddEditUserFirstNameChanged extends AddEditUserEvent {
   final String firstName;
   const AddEditUserFirstNameChanged({required this.firstName});
@@ -16,6 +17,7 @@ class AddEditUserFirstNameChanged extends AddEditUserEvent {
   List<Object?> get props => [firstName];
 }
 
+/// event to change last name to create user
 class AddEditUserLastNameChanged extends AddEditUserEvent {
   final String lastName;
   const AddEditUserLastNameChanged({required this.lastName});
@@ -24,6 +26,7 @@ class AddEditUserLastNameChanged extends AddEditUserEvent {
   List<Object?> get props => [lastName];
 }
 
+/// event to change user title to create user
 class AddEditUserTitleChanged extends AddEditUserEvent {
   final String title;
   const AddEditUserTitleChanged({required this.title});
@@ -32,6 +35,7 @@ class AddEditUserTitleChanged extends AddEditUserEvent {
   List<Object?> get props => [title];
 }
 
+/// event to change email to cteate user
 class AddEditUserEmailChanged extends AddEditUserEvent {
   final String email;
   const AddEditUserEmailChanged({required this.email});
@@ -40,6 +44,7 @@ class AddEditUserEmailChanged extends AddEditUserEvent {
   List<Object?> get props => [email];
 }
 
+/// event to change mobile phone to create user
 class AddEditUserMobilePhoneChanged extends AddEditUserEvent {
   final String mobilePhone;
   const AddEditUserMobilePhoneChanged({required this.mobilePhone});
@@ -48,6 +53,7 @@ class AddEditUserMobilePhoneChanged extends AddEditUserEvent {
   List<Object?> get props => [mobilePhone];
 }
 
+/// event to change default site to create user
 class AddEditUserDefaultSiteChanged extends AddEditUserEvent {
   final Site defaultSite;
 
@@ -57,6 +63,7 @@ class AddEditUserDefaultSiteChanged extends AddEditUserEvent {
   List<Object?> get props => [defaultSite];
 }
 
+/// event to change role to create user
 class AddEditUserRoleChanged extends AddEditUserEvent {
   final Role role;
   const AddEditUserRoleChanged({required this.role});
@@ -65,6 +72,7 @@ class AddEditUserRoleChanged extends AddEditUserEvent {
   List<Object?> get props => [role];
 }
 
+/// event to change time zone to create user
 class AddEditUserTimeZoneChanged extends AddEditUserEvent {
   final TimeZone timeZone;
   const AddEditUserTimeZoneChanged({required this.timeZone});
@@ -73,8 +81,10 @@ class AddEditUserTimeZoneChanged extends AddEditUserEvent {
   List<Object?> get props => [timeZone];
 }
 
+/// event to add new user
 class AddEditUserUserAdded extends AddEditUserEvent {}
 
+/// event to edit current user
 class AddEditUserUserEdited extends AddEditUserEvent {
   final String userId;
   const AddEditUserUserEdited({required this.userId});
@@ -83,6 +93,7 @@ class AddEditUserUserEdited extends AddEditUserEvent {
   List<Object?> get props => [userId];
 }
 
+/// event to load user detail
 class AddEditUserLoaded extends AddEditUserEvent {
   final String userId;
   const AddEditUserLoaded({
@@ -93,8 +104,11 @@ class AddEditUserLoaded extends AddEditUserEvent {
   List<Object?> get props => [userId];
 }
 
+/// event to load role list to create user
 class AddEditUserRoleListLoaded extends AddEditUserEvent {}
 
+/// event to load site list to create user
 class AddEditUserSiteListLoaded extends AddEditUserEvent {}
 
+/// event to load time zone list to create user
 class AddEditUserTimeZoneListLoaded extends AddEditUserEvent {}

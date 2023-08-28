@@ -10,7 +10,6 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   late ObservationsRepository _observationsRepository;
   late SitesRepository _sitesRepository;
   late DocumentsRepository _documentsRepository;
-  late ObservationDetailBloc _observationDetailBloc;
 
   final BuildContext context;
   final String observationId;
@@ -20,7 +19,6 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
   }) : super(AddActionItemState()) {
     _actionItemsRepository = RepositoryProvider.of(context);
     _observationsRepository = RepositoryProvider.of(context);
-    _observationDetailBloc = context.read();
     _documentsRepository = context.read();
     _sitesRepository = context.read();
 
@@ -310,17 +308,6 @@ class AddActionItemBloc extends Bloc<AddActionItemEvent, AddActionItemState> {
     AddActionItemAddActionItemButtonClicked event,
     Emitter<AddActionItemState> emit,
   ) {
-    // if (_observationDetailBloc.state.observation != null) {
-    //   emit(state.copyWith(
-    //     site: Nullable.value(Site(
-    //       id: _observationDetailBloc.state.observation!.userReportedSiteId,
-    //       name: _observationDetailBloc.state.observation!.userReportedSiteName,
-    //     )),
-    //   ));
-    // } else {
-    //   emit(state.copyWith(site: const Nullable.value(null)));
-    // }
-
     emit(state.copyWith(
       isEditing: true,
       task: '',

@@ -8,6 +8,7 @@ abstract class ObservationListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load observation list
 class ObservationListLoaded extends ObservationListEvent {}
 
 class ObservationListFiltered extends ObservationListEvent {
@@ -20,6 +21,7 @@ class ObservationListFiltered extends ObservationListEvent {
   List<Object?> get props => [option];
 }
 
+/// event to load observation detail for side
 class ObservationListObservationForSideDetailLoaded
     extends ObservationListEvent {
   final String observationId;

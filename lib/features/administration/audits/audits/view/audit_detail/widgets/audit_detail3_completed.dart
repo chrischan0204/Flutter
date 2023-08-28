@@ -165,13 +165,39 @@ class _AuditDetail3CompletedViewState extends State<AuditDetail3CompletedView> {
                                     },
                                   ),
                                 ),
-                                if (state.auditReviewList.isNotEmpty)
-                                  for (final reviewer in state.auditReviewList)
-                                    ReviewerListItemView(
-                                      reviewer: reviewer.reviewerName ?? '',
-                                      addedOn:
-                                          reviewer.reviewDate ?? DateTime.now(),
-                                    )
+                              ],
+                            ),
+                        if (state.auditSummary?.auditStatusName == 'In Review')
+                          if (state.auditReviewList.isNotEmpty)
+                            Column(
+                              children: [
+                                CustomBottomBorderContainer(
+                                  padding: inset10,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'Reviewer',
+                                          style: textSemiBold14,
+                                        ),
+                                      ),
+                                      spacerx10,
+                                      Expanded(
+                                        child: Text(
+                                          'Added On',
+                                          style: textSemiBold14,
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                for (final reviewer in state.auditReviewList)
+                                  ReviewerListItemView(
+                                    reviewer: reviewer.reviewerName ?? '',
+                                    addedOn:
+                                        reviewer.reviewDate ?? DateTime.now(),
+                                  )
                               ],
                             ),
                       ],
@@ -197,15 +223,23 @@ class ReviewerListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            reviewer,
+    return CustomBottomBorderContainer(
+      padding: inset10,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              reviewer,
+            ),
           ),
-        ),
-        Expanded(child: Text(DateFormat('MM/dd/yyy').format(addedOn)))
-      ],
+          spacerx10,
+          Expanded(
+              child: Text(
+            DateFormat('MM/dd/yyy').format(addedOn),
+            textAlign: TextAlign.end,
+          ))
+        ],
+      ),
     );
   }
 }

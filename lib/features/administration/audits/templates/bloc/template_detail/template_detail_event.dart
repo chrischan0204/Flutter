@@ -8,6 +8,7 @@ abstract class TemplateDetailEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load template detail by id
 class TemplateDetailTemplateLoadedById extends TemplateDetailEvent {
   final String templateId;
   const TemplateDetailTemplateLoadedById({
@@ -17,6 +18,7 @@ class TemplateDetailTemplateLoadedById extends TemplateDetailEvent {
   List<Object> get props => [templateId];
 }
 
+/// event to delete template by id
 class TemplateDetailTemplateDeleted extends TemplateDetailEvent {
   final String templateId;
   const TemplateDetailTemplateDeleted({required this.templateId});
@@ -25,8 +27,10 @@ class TemplateDetailTemplateDeleted extends TemplateDetailEvent {
   List<Object> get props => [templateId];
 }
 
+/// event to load template snapshot for detail
 class TemplateDetailSnapshotLoaded extends TemplateDetailEvent {}
 
+/// event to load question detail
 class TemplateDetailTemplateQuestionDetailLoaded extends TemplateDetailEvent {
   final String id;
   final int itemType;
@@ -50,8 +54,10 @@ class TemplateDetailTemplateQuestionDetailLoaded extends TemplateDetailEvent {
       ];
 }
 
+/// event to load template section list
 class TemplateDetailSectionListLoaded extends TemplateDetailEvent {}
 
+/// event to  select template section
 class TemplateDetailSelectionSelected extends TemplateDetailEvent {
   final TemplateSectionListItemForDetail section;
   const TemplateDetailSelectionSelected({

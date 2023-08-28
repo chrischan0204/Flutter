@@ -7,6 +7,7 @@ abstract class UserInviteEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load user invite details
 class UserInviteDetailsLoaded extends UserInviteEvent {
   final String userId;
   const UserInviteDetailsLoaded({
@@ -17,6 +18,7 @@ class UserInviteDetailsLoaded extends UserInviteEvent {
   List<Object> get props => [userId];
 }
 
+/// event to send user invitation
 class UserInviteInviteSent extends UserInviteEvent {
   final String userId;
   const UserInviteInviteSent({
@@ -27,6 +29,7 @@ class UserInviteInviteSent extends UserInviteEvent {
   List<Object> get props => [userId];
 }
 
+/// event to register invitation
 class UserInviteRegistered extends UserInviteEvent {
   final String userId;
   const UserInviteRegistered({
@@ -37,6 +40,7 @@ class UserInviteRegistered extends UserInviteEvent {
   List<Object> get props => [userId];
 }
 
+/// event to download app
 class UserInviteAppDownloaded extends UserInviteEvent {
   final String userId;
   const UserInviteAppDownloaded({

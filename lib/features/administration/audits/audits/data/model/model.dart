@@ -22,4 +22,6 @@ export 'action_item_detail.dart';
 export 'audit_action_item.dart';
 export 'audit_reviewers_create.dart';
 export 'audit_review.dart';
+export 'audit_completed_questions_with_followups.dart';
 export 'audit_review_update.dart';
+export 'action_items_stats.dart';

@@ -6,7 +6,7 @@ class CompaniesRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/Companies');
 
-  // get companies list
+  /// get companies list
   Future<List<Company>> getCompanyList() async {
     Response response = await super.get(url);
 
@@ -18,7 +18,7 @@ class CompaniesRepository extends BaseRepository {
     return [];
   }
 
-  // get company by id
+  /// get company by id
   Future<Company> getCompanyById(String companyId) async {
     Response response = await super.get('$url/$companyId');
 
@@ -28,7 +28,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // add company
+  /// add company
   Future<EntityResponse> addCompany(Company company) async {
     Response response = await super.post(url, body: company.toJson());
 
@@ -38,7 +38,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
-  // edit company
+  /// edit company
   Future<EntityResponse> editCompany(Company company) async {
     Response response = await super.put(url, body: company.toJson());
 
@@ -54,6 +54,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete company by id
   Future<EntityResponse> deleteCompany(String companyId) async {
     Response response = await super.delete('$url/$companyId');
 
@@ -70,6 +71,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// assign site to company
   Future<EntityResponse> assignSiteToCompany(
       CompanySiteUpdation companySiteUpdation) async {
     Response response = await super
@@ -88,6 +90,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// unassign site from company
   Future<EntityResponse> unassignSiteFromCompany(String companySiteId) async {
     Response response = await super.post('$url/unassign/$companySiteId/site');
     if (response.statusCode != 500) {
@@ -103,6 +106,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// assign project to company
   Future<EntityResponse> assignProjectToCompany(
       ProjectCompanyAssignment projectCompanyAssignment) async {
     Response response = await super
@@ -121,6 +125,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// unassign project from company
   Future<EntityResponse> unassignProjectFromCompany(
       String projectCompanyId) async {
     Response response =
@@ -138,6 +143,7 @@ class CompaniesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get site list associated to company
   Future<List<CompanySite>> getCompanySites(
     String companyId,
     bool? assigned,
@@ -159,6 +165,7 @@ class CompaniesRepository extends BaseRepository {
     return [];
   }
 
+  /// get project list associated to company
   Future<List<ProjectCompany>> getProjectCompanies(
     String companyId, [
     bool? assigned,
@@ -186,6 +193,7 @@ class CompaniesRepository extends BaseRepository {
     return [];
   }
 
+  /// get audit trail list by company id
   Future<List<AuditTrail>> getAuditTrailsByCompanyId(String companyId) async {
     Response response = await super.get('$url/$companyId/AuditTrails');
     if (response.statusCode == 200) {

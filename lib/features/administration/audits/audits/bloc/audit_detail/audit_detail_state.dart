@@ -27,6 +27,11 @@ class AuditDetailState extends Equatable {
 
   final EntityStatus auditReviewCommentSaveStatus;
 
+  final List<AuditCompletedQuestionsWithFollowups>
+      auditCompletedQuestionsWithFollowupsList;
+
+  final ActionItemsStats? actionItemsStats;
+
   final String message;
   const AuditDetailState({
     this.auditSummary,
@@ -46,6 +51,8 @@ class AuditDetailState extends Equatable {
     this.auditReviewList = const [],
     this.auditReviewListLoadStatus = EntityStatus.initial,
     this.auditReviewCommentSaveStatus = EntityStatus.initial,
+    this.auditCompletedQuestionsWithFollowupsList = const [],
+    this.actionItemsStats,
     this.message = '',
   });
 
@@ -69,13 +76,16 @@ class AuditDetailState extends Equatable {
         auditReviewList,
         auditReviewListLoadStatus,
         auditReviewCommentSaveStatus,
+        auditCompletedQuestionsWithFollowupsList,
+        actionItemsStats,
       ];
 
   bool isNextStepsAvailable(String userId) =>
+      auditReviewList.isEmpty ||
       auditReviewList.isNotEmpty &&
-      (auditReviewList.length > 1 ||
-          auditReviewList.length == 1 &&
-              userId != auditReviewList[0].reviewerId);
+          (auditReviewList.length > 1 ||
+              auditReviewList.length == 1 &&
+                  userId != auditReviewList[0].reviewerId);
 
   bool get isDeletable {
     if (auditSummary == null) {
@@ -119,6 +129,9 @@ class AuditDetailState extends Equatable {
     List<AuditReview>? auditReviewList,
     EntityStatus? auditReviewListLoadStatus,
     EntityStatus? auditReviewCommentSaveStatus,
+    List<AuditCompletedQuestionsWithFollowups>?
+        auditCompletedQuestionsWithFollowupsList,
+    ActionItemsStats? actionItemsStats,
   }) {
     return AuditDetailState(
       auditSummary: auditSummary ?? this.auditSummary,
@@ -144,6 +157,10 @@ class AuditDetailState extends Equatable {
           auditReviewListLoadStatus ?? this.auditReviewListLoadStatus,
       auditReviewCommentSaveStatus:
           auditReviewCommentSaveStatus ?? this.auditReviewCommentSaveStatus,
+      auditCompletedQuestionsWithFollowupsList:
+          auditCompletedQuestionsWithFollowupsList ??
+              this.auditCompletedQuestionsWithFollowupsList,
+      actionItemsStats: actionItemsStats ?? this.actionItemsStats,
     );
   }
 }

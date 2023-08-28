@@ -34,6 +34,37 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     on<AuditDetailReviewListLoaded>(_onAuditDetailReviewListLoaded);
     on<AuditDetailCommentChanged>(_onAuditDetailCommentChanged);
     on<AuditDetailCommentSaved>(_onAuditDetailCommentSaved);
+    on<AuditDetailAuditCompletedQuestionsWithFollowupsListLoaded>(
+        _onAuditDetailAuditCompletedQuestionsWithFollowupsListLoaded);
+    on<AuditDetailAuditActionItemsStatsLoaded>(
+        _onAuditDetailAuditActionItemsStatsLoaded);
+  }
+
+  Future<void> _onAuditDetailAuditActionItemsStatsLoaded(
+    AuditDetailAuditActionItemsStatsLoaded event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    try {
+      ActionItemsStats actionItemsStats =
+          await _auditsRepository.getActionItemsStats(auditId);
+
+      emit(state.copyWith(actionItemsStats: actionItemsStats));
+    } catch (e) {}
+  }
+
+  Future<void> _onAuditDetailAuditCompletedQuestionsWithFollowupsListLoaded(
+    AuditDetailAuditCompletedQuestionsWithFollowupsListLoaded event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    try {
+      List<AuditCompletedQuestionsWithFollowups>
+          auditCompletedQuestionsWithFollowupsList = await _auditsRepository
+              .getAuditCompletedQuestionsWithFollowups(auditId);
+
+      emit(state.copyWith(
+          auditCompletedQuestionsWithFollowupsList:
+              auditCompletedQuestionsWithFollowupsList));
+    } catch (e) {}
   }
 
   Future<void> _onAuditDetailCommentSaved(
@@ -85,7 +116,7 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         auditReviewList: auditReviewList,
       ));
     } catch (e) {
-      emit(state.copyWith(auditReviewListLoadStatus: EntityStatus.success));
+      emit(state.copyWith(auditReviewListLoadStatus: EntityStatus.failure));
     }
   }
 

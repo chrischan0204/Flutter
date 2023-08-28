@@ -7,6 +7,7 @@ abstract class AddEditTemplateEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to change description
 class AddEditTemplateDescriptionChanged extends AddEditTemplateEvent {
   final String description;
   const AddEditTemplateDescriptionChanged({
@@ -17,6 +18,7 @@ class AddEditTemplateDescriptionChanged extends AddEditTemplateEvent {
   List<Object> get props => [description];
 }
 
+/// event to change date
 class AddEditTemplateDateChanged extends AddEditTemplateEvent {
   final DateTime date;
   const AddEditTemplateDateChanged({
@@ -27,6 +29,7 @@ class AddEditTemplateDateChanged extends AddEditTemplateEvent {
   List<Object> get props => [date];
 }
 
+/// event to add or edit template
 class AddEditTemplateTemplateAddEdited extends AddEditTemplateEvent {
   final String? templateId;
   const AddEditTemplateTemplateAddEdited({this.templateId});
@@ -35,6 +38,7 @@ class AddEditTemplateTemplateAddEdited extends AddEditTemplateEvent {
   List<Object?> get props => [templateId];
 }
 
+/// event to load template detail by id
 class AddEditTemplateLoaded extends AddEditTemplateEvent {
   final String templateId;
   const AddEditTemplateLoaded({required this.templateId});

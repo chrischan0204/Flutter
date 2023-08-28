@@ -8,8 +8,10 @@ class ResponseScaleEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load response scale list
 class ResponseScaleListLoaded extends ResponseScaleEvent {}
 
+/// event to select response scale
 class ResponseScaleSelected extends ResponseScaleEvent {
   final String selectedResponseScaleId;
   const ResponseScaleSelected({
@@ -20,8 +22,10 @@ class ResponseScaleSelected extends ResponseScaleEvent {
   List<Object> get props => [selectedResponseScaleId];
 }
 
+/// event to add response scale
 class ResponseScaleAdded extends ResponseScaleEvent {}
 
+/// event to edit response scale
 class ResponseScaleEdited extends ResponseScaleEvent {
   final String responseScaleId;
   final String responseScaleName;
@@ -37,6 +41,7 @@ class ResponseScaleEdited extends ResponseScaleEvent {
       ];
 }
 
+/// event to delete resonse scale
 class ResponseScaleDeleted extends ResponseScaleEvent {
   final String responseScaleId;
   const ResponseScaleDeleted({
@@ -47,6 +52,7 @@ class ResponseScaleDeleted extends ResponseScaleEvent {
   List<Object> get props => [responseScaleId];
 }
 
+/// event to sort resonse scale list
 class ResponseScaleListSorted extends ResponseScaleEvent {
   final Key currentId;
   final Key newId;
@@ -63,6 +69,7 @@ class ResponseScaleListSorted extends ResponseScaleEvent {
       ];
 }
 
+/// event to change response scale to create
 class ResponseScaleNewResponseScaleChanged extends ResponseScaleEvent {
   final String responseScale;
   const ResponseScaleNewResponseScaleChanged({
@@ -72,6 +79,7 @@ class ResponseScaleNewResponseScaleChanged extends ResponseScaleEvent {
   List<Object> get props => [responseScale];
 }
 
+/// event to load response scale item list
 class ResponseScaleItemListLoaded extends ResponseScaleEvent {
   final String responseScaleId;
   const ResponseScaleItemListLoaded({
@@ -82,10 +90,13 @@ class ResponseScaleItemListLoaded extends ResponseScaleEvent {
   List<Object> get props => [responseScaleId];
 }
 
+/// event to add resonse scale item
 class ResponseScaleItemAdded extends ResponseScaleEvent {}
 
+/// event to save response scale item list
 class ResponseScaleItemListSaved extends ResponseScaleEvent {}
 
+/// event to change response scale item name at index position
 class ResponseScaleItemNameChanged extends ResponseScaleEvent {
   final int index;
   final String responseScaleItemName;
@@ -102,6 +113,7 @@ class ResponseScaleItemNameChanged extends ResponseScaleEvent {
       ];
 }
 
+/// event to change response scale item isRequired at index position
 class ResponseScaleItemIsRequiredChanged extends ResponseScaleEvent {
   final int index;
   final bool isRequired;
@@ -118,6 +130,7 @@ class ResponseScaleItemIsRequiredChanged extends ResponseScaleEvent {
       ];
 }
 
+/// event to change response scale item score at index position
 class ResponseScaleItemScoreChanged extends ResponseScaleEvent {
   final int index;
   final String score;
@@ -134,6 +147,7 @@ class ResponseScaleItemScoreChanged extends ResponseScaleEvent {
       ];
 }
 
+/// event to delete response scale item at index position
 class ResponseScaleItemDeleted extends ResponseScaleEvent {
   final int index;
   const ResponseScaleItemDeleted({
@@ -144,6 +158,7 @@ class ResponseScaleItemDeleted extends ResponseScaleEvent {
   List<Object> get props => [index];
 }
 
+/// event to sort response scale item list
 class ResponseScaleItemListSorted extends ResponseScaleEvent {
   final Key currentId;
   final Key newId;
@@ -160,6 +175,7 @@ class ResponseScaleItemListSorted extends ResponseScaleEvent {
       ];
 }
 
+/// event to validate if response scale can be deleted
 class ResponseScaleDeletionValidated extends ResponseScaleEvent {
   final String responseScaleId;
 

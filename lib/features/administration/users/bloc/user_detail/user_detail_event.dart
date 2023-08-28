@@ -7,6 +7,7 @@ abstract class UserDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load user detail by id
 class UserDetailUserLoadedById extends UserDetailEvent {
   final String userId;
   const UserDetailUserLoadedById({required this.userId});
@@ -15,6 +16,7 @@ class UserDetailUserLoadedById extends UserDetailEvent {
   List<Object> get props => [userId];
 }
 
+/// event to delete user by id
 class UserDetailUserDeleted extends UserDetailEvent {
   final String userId;
   const UserDetailUserDeleted({

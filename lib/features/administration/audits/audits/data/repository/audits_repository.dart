@@ -232,7 +232,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
-  /// get audit question list 
+  /// get audit question list
   Future<List<AuditQuestion>> getAuditQuestionListForExecute(
       QuestionsForViewOptionParameter option) async {
     Response response = await super.post(
@@ -378,6 +378,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get action item list
   Future<List<AuditActionItem>> getAuditActionItemList(
       String questionId) async {
     Response response =
@@ -392,6 +393,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get action item for audit
   Future<ActionItemDetail> getAuditActionItemById({
     required String questionId,
     required String actionItemId,
@@ -406,6 +408,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// add action item for audit
   Future<EntityResponse> addActionItemForAudit(
       ActionItemCreate actionItemCreate) async {
     Response response = await super.post(
@@ -423,6 +426,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// edit action item for audit
   Future<EntityResponse> editActionItemForAudit({
     required ActionItemCreate actionItemCreate,
     required String actionItemId,
@@ -441,6 +445,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete action item for audit
   Future<EntityResponse> deleteAuditActionItem({
     required String questionId,
     required String actionItemId,
@@ -458,6 +463,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get observation list for audit
   Future<List<ObservationDetail>> getAuditObservationList(
       String questionId) async {
     Response response =
@@ -472,6 +478,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get observation for audit
   Future<ObservationDetail> getAuditObservationById({
     required String questionId,
     required String observationId,
@@ -487,6 +494,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// add observation for audit
   Future<EntityResponse> addObservationForAudit(
       ObservationCreate observationCreate) async {
     Response response = await super.post(
@@ -506,6 +514,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// edit observation for audit
   Future<EntityResponse> editObservationForAudit({
     required ObservationCreate observationUpdate,
     required String observationId,
@@ -524,6 +533,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete observation for audit
   Future<EntityResponse> deleteAuditObservation({
     required String questionId,
     required String observationId,
@@ -541,6 +551,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get document list
   Future<List<Document>> getDocumentList(String questionId) async {
     Response response =
         await super.get('$url/sectionitems/$questionId/documents');
@@ -554,6 +565,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get document list for audit
   Future<List<Document>> getDocumentListForDetail(String auditId) async {
     Response response = await super.get('$url/$auditId/documents');
 
@@ -566,6 +578,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit observation list
   Future<List<ObservationDetail>> getAuditObservationListForDetail(
       String auditId) async {
     Response response = await super.get('$url/$auditId/observations');
@@ -579,6 +592,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit action item list
   Future<List<AuditActionItem>> getAuditActionItemListForDetail(
       String auditId) async {
     Response response = await super.get('$url/$auditId/actionitems');
@@ -592,6 +606,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get response scale list
   Future<List<ResponseScale>> getResponseScaleList() async {
     Response response = await super.get('$url/responsescales');
 
@@ -604,6 +619,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get response scale item list
   Future<List<TemplateResponseScaleItem>> getResponseScaleItemList(
       String responseScaleId) async {
     Response response =
@@ -616,6 +632,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// set status of audit
   Future<void> setAuditStatus(String auditId, String status) async {
     Response response = await super
         .post('$url/$auditId/status', queryParams: {'status': status});
@@ -627,6 +644,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// save reviewers for audit
   Future<void> saveAuditReviewers(
       AuditReviewersCreate auditReviewersCreate) async {
     Response response = await super.post(
@@ -640,6 +658,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get audit review list
   Future<List<AuditReview>> getAuditReviewList(String auditId) async {
     Response response = await super.get('$url/$auditId/reviews');
 
@@ -652,6 +671,7 @@ class AuditsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// update audit review
   Future<AuditReview> updateAuditReview(
       AuditReviewUpdate auditReviewUpdate) async {
     Response response = await super.put(
@@ -661,6 +681,31 @@ class AuditsRepository extends BaseRepository {
 
     if (response.statusCode == 200) {
       return AuditReview.fromJson(response.body);
+    }
+
+    throw Exception();
+  }
+
+  Future<List<AuditCompletedQuestionsWithFollowups>>
+      getAuditCompletedQuestionsWithFollowups(String auditId) async {
+    Response response =
+        await super.get('$url/$auditId/completedquestionswithfollowups');
+
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
+          .map((e) => AuditCompletedQuestionsWithFollowups.fromMap(e))
+          .toList();
+    }
+
+    throw Exception();
+  }
+
+  Future<ActionItemsStats> getActionItemsStats(String auditId) async {
+    Response response =
+        await super.get('/api/audits/$auditId/actionitems/stats');
+
+    if (response.statusCode == 200) {
+      return ActionItemsStats.fromJson(response.body);
     }
 
     throw Exception();

@@ -8,6 +8,8 @@ class ObservationTypesRepository extends BaseRepository {
     required super.token,
     required super.authBloc,
   }) : super(url: '/api/ObservationType');
+
+  /// get observation type list
   Future<List<ObservationType>> getObservationTypeList() async {
     Response response = await super.get(
       url,
@@ -25,6 +27,7 @@ class ObservationTypesRepository extends BaseRepository {
     return [];
   }
 
+  /// get observation type by id
   Future<ObservationType> getObservationTypeById(
       String observationTypeId) async {
     Response response = await super.get('$url/$observationTypeId');
@@ -35,6 +38,7 @@ class ObservationTypesRepository extends BaseRepository {
     throw Exception('');
   }
 
+  /// add observation type
   Future<EntityResponse> addObservationType(
       ObservationType observationType) async {
     Response response = await super.post(
@@ -48,6 +52,7 @@ class ObservationTypesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// edit observation type
   Future<EntityResponse> editObservationType(
       ObservationType observationType) async {
     Response response = await super.put(
@@ -61,6 +66,7 @@ class ObservationTypesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete observation type by id
   Future<EntityResponse> deleteObservationType(String observationTypeId) async {
     Response response = await super.delete('$url/$observationTypeId');
 
@@ -70,6 +76,7 @@ class ObservationTypesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get active observation type list
   Future<List<Entity>> getActiveObservationTypeList() async {
     Response response = await super.get('$url/items');
 

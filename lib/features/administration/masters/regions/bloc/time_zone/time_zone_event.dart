@@ -7,4 +7,5 @@ abstract class TimeZonesEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to load time zone list
 class TimeZoneListLoaded extends TimeZonesEvent {}

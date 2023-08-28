@@ -7,6 +7,7 @@ abstract class ActionItemListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load action item list
 class ActionItemListLoaded extends ActionItemListEvent {}
 
 class ActionItemListFiltered extends ActionItemListEvent {
@@ -19,6 +20,7 @@ class ActionItemListFiltered extends ActionItemListEvent {
   List<Object?> get props => [option];
 }
 
+/// event to load section item detail for side
 class ActionItemListActionItemForSideDetailLoaded
     extends ActionItemListEvent {
   final String actionItemId;

@@ -8,8 +8,10 @@ abstract class RegionsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load region list
 class AssignedRegionsLoaded extends RegionsEvent {}
 
+/// event to load region detail by id
 class UnassignedRegionsLoaded extends RegionsEvent {}
 
 class TimeZonesLoadedForRegion extends RegionsEvent {
@@ -23,6 +25,7 @@ class TimeZonesLoadedForRegion extends RegionsEvent {
       ];
 }
 
+/// event to select region for side detail
 class RegionSelected extends RegionsEvent {
   final Region? region;
   const RegionSelected({
@@ -34,6 +37,7 @@ class RegionSelected extends RegionsEvent {
       ];
 }
 
+/// event to load region detail by id
 class RegionSelectedById extends RegionsEvent {
   final String regionId;
   const RegionSelectedById({
@@ -45,6 +49,7 @@ class RegionSelectedById extends RegionsEvent {
       ];
 }
 
+/// event to  add new region
 class RegionAdded extends RegionsEvent {
   final Region region;
   const RegionAdded({
@@ -57,6 +62,7 @@ class RegionAdded extends RegionsEvent {
       ];
 }
 
+/// event to edit region
 class RegionEdited extends RegionsEvent {
   final Region region;
   const RegionEdited({
@@ -69,6 +75,7 @@ class RegionEdited extends RegionsEvent {
       ];
 }
 
+/// event to delete region by id
 class RegionDeleted extends RegionsEvent {
   final String regionId;
   const RegionDeleted({
@@ -81,8 +88,10 @@ class RegionDeleted extends RegionsEvent {
       ];
 }
 
+/// event to init status of region
 class RegionsStatusInited extends RegionsEvent {
   const RegionsStatusInited();
 }
 
+/// event to init time zone
 class RegionsTimeZonesInited extends RegionsEvent {}

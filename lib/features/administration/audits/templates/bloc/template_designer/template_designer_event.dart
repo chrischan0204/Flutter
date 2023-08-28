@@ -8,6 +8,7 @@ abstract class TemplateDesignerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load template section list
 class TemplateDesignerTemplateSectionListLoaded extends TemplateDesignerEvent {}
 
 class TemplateDesignerTemplateSectionListSorted extends TemplateDesignerEvent {
@@ -26,6 +27,7 @@ class TemplateDesignerTemplateSectionListSorted extends TemplateDesignerEvent {
       ];
 }
 
+/// event to add new template section
 class TemplateDesignerTemplateSectionAdded extends TemplateDesignerEvent {}
 
 class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
@@ -38,6 +40,7 @@ class TemplateDesignerNewSectionChanged extends TemplateDesignerEvent {
   List<Object> get props => [newSection];
 }
 
+/// event to update template section
 class TemplateDesignerSectionUpdated extends TemplateDesignerEvent {
   final String section;
   final String sectionId;
@@ -53,6 +56,7 @@ class TemplateDesignerSectionUpdated extends TemplateDesignerEvent {
       ];
 }
 
+/// event to delete template section
 class TemplateDesignerSectionDeleted extends TemplateDesignerEvent {
   final String sectionId;
   const TemplateDesignerSectionDeleted({required this.sectionId});
@@ -61,8 +65,10 @@ class TemplateDesignerSectionDeleted extends TemplateDesignerEvent {
   List<Object> get props => [sectionId];
 }
 
+/// event to load response scale list
 class TemplateDesignerResponseScaleListLoaded extends TemplateDesignerEvent {}
 
+/// event to selected template section
 class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
   final TemplateSectionListItem? templateSection;
   const TemplateDesignerTemplateSectionSelected({
@@ -75,6 +81,7 @@ class TemplateDesignerTemplateSectionSelected extends TemplateDesignerEvent {
       ];
 }
 
+/// event to load question list for section
 class TemplateDesignerTemplateSectionItemQuestionListLoaded
     extends TemplateDesignerEvent {
   final String templateSectionId;
@@ -89,6 +96,7 @@ class TemplateDesignerTemplateSectionItemQuestionListLoaded
       ];
 }
 
+/// event to  sort question list for section
 class TemplateDesignerTemplateSectionItemQuestionListSorted
     extends TemplateDesignerEvent {
   final Key currentQuestionId;
@@ -119,11 +127,14 @@ class TemplateDesignerResponseScaleItemListLoaded
   List<Object> get props => [responseScaleId];
 }
 
+/// event to click new question button
 class TemplateDesignerNewQuestionButtonClicked extends TemplateDesignerEvent {}
 
+/// event to click cancel button to create question
 class TemplateDesignerCancelCreateQuestionButtonClicked
     extends TemplateDesignerEvent {}
 
+/// event to change question
 class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
   final String question;
   final String templateSectionItemId;
@@ -139,6 +150,7 @@ class TemplateDesignerQuestionChanged extends TemplateDesignerEvent {
       ];
 }
 
+/// event to change comment required
 class TemplateDesignerCommentRequiredChanged extends TemplateDesignerEvent {
   final bool commentRequired;
   final String responseScaleItemId;
@@ -154,6 +166,7 @@ class TemplateDesignerCommentRequiredChanged extends TemplateDesignerEvent {
       ];
 }
 
+/// event to change action item
 class TemplateDesignerActionItemChanged extends TemplateDesignerEvent {
   final bool actionItemRequired;
   final String responseScaleItemId;
@@ -169,6 +182,7 @@ class TemplateDesignerActionItemChanged extends TemplateDesignerEvent {
       ];
 }
 
+/// event to change follow up required
 class TemplateDesignerFollowUpRequiredChanged extends TemplateDesignerEvent {
   final bool followUpRequired;
   final String responseScaleItemId;
@@ -184,6 +198,7 @@ class TemplateDesignerFollowUpRequiredChanged extends TemplateDesignerEvent {
       ];
 }
 
+/// event to change score
 class TemplateDesignerScoreChanged extends TemplateDesignerEvent {
   final double score;
   final String responseScaleItemId;
@@ -199,6 +214,7 @@ class TemplateDesignerScoreChanged extends TemplateDesignerEvent {
       ];
 }
 
+/// event to change included
 class TemplateDesignerIncludedChanged extends TemplateDesignerEvent {
   final bool include;
   final String responseScaleItemId;
@@ -214,6 +230,7 @@ class TemplateDesignerIncludedChanged extends TemplateDesignerEvent {
       ];
 }
 
+/// event to created section item
 class TemplateDesignerTemplateSectionItemCreated
     extends TemplateDesignerEvent {}
 
@@ -227,6 +244,7 @@ class TemplateDesignerAddNewQuestionViewShowed extends TemplateDesignerEvent {
   List<Object> get props => [showAddNewQuestionView];
 }
 
+/// event to change level of question
 class TemplateDesignerLevelChanged extends TemplateDesignerEvent {
   final int level;
   const TemplateDesignerLevelChanged({
@@ -237,6 +255,7 @@ class TemplateDesignerLevelChanged extends TemplateDesignerEvent {
   List<Object> get props => [level];
 }
 
+/// event to change current template section item
 class TemplateDesignerCurrentTemplateSectionItemChanged
     extends TemplateDesignerEvent {
   final TemplateResponseScaleItem responseScaleItem;
@@ -290,6 +309,7 @@ class TemplateDesignerFollowUpQuestionDetailLoaded
   List<Object?> get props => [id];
 }
 
+/// event to delete question by id
 class TemplateDesignerQuestionDeleted extends TemplateDesignerEvent {
   final String questionId;
   const TemplateDesignerQuestionDeleted({

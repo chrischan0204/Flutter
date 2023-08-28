@@ -8,14 +8,16 @@ abstract class ActionItemDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// event to load the actionItem detail
+/// event to load the action item detail
 class ActionItemDetailLoaded extends ActionItemDetailEvent {}
 
-/// event to delete actionItem
+/// event to delete action item
 class ActionItemDetailActionItemDeleted extends ActionItemDetailEvent {}
 
+/// event to load document list
 class ActionItemDetailDocumentListLoaded extends ActionItemDetailEvent {}
 
+/// event to delete document
 class ActionItemDetailDocumentDeleted extends ActionItemDetailEvent {
   final String documentId;
   const ActionItemDetailDocumentDeleted({

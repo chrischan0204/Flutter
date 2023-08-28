@@ -7,6 +7,7 @@ abstract class ProjectsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load project list
 class ProjectsLoaded extends ProjectsEvent {}
 
 class ProjectListFiltered extends ProjectsEvent {
@@ -17,6 +18,7 @@ class ProjectListFiltered extends ProjectsEvent {
   List<Object?> get props => [option];
 }
 
+/// event to select project
 class ProjectSelected extends ProjectsEvent {
   final Project? selectedProject;
   const ProjectSelected({
@@ -28,6 +30,7 @@ class ProjectSelected extends ProjectsEvent {
       ];
 }
 
+/// event to load project for detail
 class ProjectSelectedById extends ProjectsEvent {
   final String projectId;
   const ProjectSelectedById({
@@ -39,6 +42,7 @@ class ProjectSelectedById extends ProjectsEvent {
       ];
 }
 
+/// event to delete project by id
 class ProjectDeleted extends ProjectsEvent {
   final String projectId;
   const ProjectDeleted({
@@ -50,6 +54,7 @@ class ProjectDeleted extends ProjectsEvent {
       ];
 }
 
+/// event to sort project list
 class ProjectsSorted extends ProjectsEvent {
   final List<Project> projects;
   const ProjectsSorted({
@@ -62,6 +67,7 @@ class ProjectsSorted extends ProjectsEvent {
       ];
 }
 
+/// event to load assigned company list for project
 class AssignedCompanyProjectsLoaded extends ProjectsEvent {
   final String projectId;
   final String? name;
@@ -71,6 +77,7 @@ class AssignedCompanyProjectsLoaded extends ProjectsEvent {
   });
 }
 
+/// event to load unassigned company list for project
 class UnassignedCompanyProjectsLoaded extends ProjectsEvent {
   final String projectId;
   final String? name;
@@ -80,8 +87,10 @@ class UnassignedCompanyProjectsLoaded extends ProjectsEvent {
   });
 }
 
+/// event to init status of project
 class ProjectsStatusInited extends ProjectsEvent {}
 
+/// event to change filter text to filter unassigned company list
 class FilterTextForUnassignedCompanyChanged extends ProjectsEvent {
   final String filterText;
   const FilterTextForUnassignedCompanyChanged({
@@ -93,7 +102,7 @@ class FilterTextForUnassignedCompanyChanged extends ProjectsEvent {
         filterText,
       ];
 }
-
+/// event to change filter text to filter assigned company list
 class FilterTextForAssignedCompanyChanged extends ProjectsEvent {
   final String filterText;
   const FilterTextForAssignedCompanyChanged({
@@ -106,6 +115,7 @@ class FilterTextForAssignedCompanyChanged extends ProjectsEvent {
       ];
 }
 
+/// event to assign company to project
 class CompanyToProjectAssigned extends ProjectsEvent {
   final ProjectCompanyAssignment projectCompanyAssignment;
   const CompanyToProjectAssigned({
@@ -117,6 +127,7 @@ class CompanyToProjectAssigned extends ProjectsEvent {
       ];
 }
 
+/// event to unassign company from project
 class CompanyFromProjectUnassigned extends ProjectsEvent {
   final String projectCompanyAssignmentId;
   const CompanyFromProjectUnassigned({
@@ -128,6 +139,7 @@ class CompanyFromProjectUnassigned extends ProjectsEvent {
       ];
 }
 
+/// event to select role to assign company to project
 class UnAssignedCompanyProjectRoleSelected extends ProjectsEvent {
   final Role role;
   final int projectCompanyIndex;

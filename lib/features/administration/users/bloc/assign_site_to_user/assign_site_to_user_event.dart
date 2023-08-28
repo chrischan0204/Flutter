@@ -7,6 +7,7 @@ abstract class AssignSiteToUserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load assigned site list to user
 class AssignSiteToUserAssignedUserSiteListLoaded extends AssignSiteToUserEvent {
   final String userId;
   final String? name;
@@ -19,6 +20,7 @@ class AssignSiteToUserAssignedUserSiteListLoaded extends AssignSiteToUserEvent {
   List<Object?> get props => [userId];
 }
 
+/// event to load unassigned site list to user
 class AssignSiteToUserUnassignedUserSiteListLoaded
     extends AssignSiteToUserEvent {
   final String userId;
@@ -35,6 +37,7 @@ class AssignSiteToUserUnassignedUserSiteListLoaded
       ];
 }
 
+/// event to assign site to user
 class AssignSiteToUserSiteAssigned extends AssignSiteToUserEvent {
   final UserSiteAssignment userSiteAssignment;
   const AssignSiteToUserSiteAssigned({
@@ -44,6 +47,7 @@ class AssignSiteToUserSiteAssigned extends AssignSiteToUserEvent {
   @override
   List<Object?> get props => [userSiteAssignment];
 }
+
 
 class AssignSiteToUserSiteUnassigned extends AssignSiteToUserEvent {
   final String userSiteAssignmentId;

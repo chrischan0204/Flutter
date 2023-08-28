@@ -7,8 +7,10 @@ abstract class AwarenessGroupsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load awareness group list
 class AwarenessGroupsLoaded extends AwarenessGroupsEvent {}
 
+/// event to select awareness group
 class AwarenessGroupSelected extends AwarenessGroupsEvent {
   final AwarenessGroup? awarenessGroup;
   const AwarenessGroupSelected({
@@ -20,6 +22,7 @@ class AwarenessGroupSelected extends AwarenessGroupsEvent {
       ];
 }
 
+/// event to load awareness group detail
 class AwarenessGroupSelectedById extends AwarenessGroupsEvent {
   final String awarenessGroupId;
   const AwarenessGroupSelectedById({
@@ -31,6 +34,7 @@ class AwarenessGroupSelectedById extends AwarenessGroupsEvent {
       ];
 }
 
+/// event to delete awareness group by id
 class AwarenessGroupDeleted extends AwarenessGroupsEvent {
   final String awarenessGroupId;
   const AwarenessGroupDeleted({
@@ -43,6 +47,7 @@ class AwarenessGroupDeleted extends AwarenessGroupsEvent {
       ];
 }
 
+/// event to init status of awareness group
 class AwarenessGroupsStatusInited extends AwarenessGroupsEvent {
   const AwarenessGroupsStatusInited();
 }

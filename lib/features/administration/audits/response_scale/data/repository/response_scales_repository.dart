@@ -7,6 +7,7 @@ class ResponseScalesRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/responsescales');
 
+  /// get response scale list
   Future<List<ResponseScale>> getResponseScaleList() async {
     Response response = await super.get(url);
 
@@ -19,6 +20,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get response scale item list for response scale
   Future<List<ResponseScaleItem>> getResponseScaleItemList(
       String responseScaleId) async {
     Response response = await super.get('$url/$responseScaleId');
@@ -32,6 +34,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// update response scale item list for response scale
   Future<EntityResponse> updateResponseScaleItemList(String responseScaleId,
       List<ResponseScaleItem> responseScaleItemList) async {
     Response response = await super.put(
@@ -51,6 +54,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// add new response scale
   Future<EntityResponse> addResponseScale(String responseScaleName) async {
     Response response =
         await super.post(url, body: jsonEncode({'name': responseScaleName}));
@@ -66,6 +70,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// edit response scale by id
   Future<EntityResponse> editResponseScale(
       String responseScaleId, String responseScaleName) async {
     Response response = await super.put(url,
@@ -88,6 +93,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete response scale by id
   Future<EntityResponse> deleteResponseScale(String responseScaleId) async {
     Response response = await super.delete('$url/$responseScaleId');
 
@@ -101,6 +107,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// validate if response scale can be deleted
   Future<EntityResponse> validateResponseScaleDeletion(
       String responseScaleId) async {
     Response response =
@@ -120,6 +127,7 @@ class ResponseScalesRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// delete response scale item by id
   Future<EntityResponse> deleteResponseScaleItem(
       String responseScaleItemId) async {
     Response response =

@@ -7,6 +7,7 @@ abstract class AddEditPriorityLevelEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// event to add new priority level
 class AddEditPriorityLevelAdded extends AddEditPriorityLevelEvent {}
 
 class AddEditPriorityLevelEdited extends AddEditPriorityLevelEvent {
@@ -18,6 +19,7 @@ class AddEditPriorityLevelEdited extends AddEditPriorityLevelEvent {
   List<Object> get props => [id];
 }
 
+/// event to load priority level detail
 class AddEditPriorityLevelLoaded extends AddEditPriorityLevelEvent {
   /// priority level id to load
   final String id;
@@ -28,6 +30,7 @@ class AddEditPriorityLevelLoaded extends AddEditPriorityLevelEvent {
   List<Object> get props => [id];
 }
 
+/// change priority level name
 class AddEditPriorityLevelChanged extends AddEditPriorityLevelEvent {
   /// priority level to change
   final String priorityLevel;
@@ -40,6 +43,7 @@ class AddEditPriorityLevelChanged extends AddEditPriorityLevelEvent {
   List<Object> get props => [priorityLevel];
 }
 
+/// change priority level type
 class AddEditPriorityLevelTypeChanged extends AddEditPriorityLevelEvent {
   /// priority type to change
   final String priorityType;
@@ -52,6 +56,7 @@ class AddEditPriorityLevelTypeChanged extends AddEditPriorityLevelEvent {
   List<Object> get props => [priorityType];
 }
 
+/// change priority level color code
 class AddEditPriorityLevelColorCodeChanged extends AddEditPriorityLevelEvent {
   /// color code to change
   final Color colorCode;
@@ -64,6 +69,7 @@ class AddEditPriorityLevelColorCodeChanged extends AddEditPriorityLevelEvent {
   List<Object> get props => [colorCode];
 }
 
+/// change deactivated priority level
 class AddEditPriorityLevelDeactivatedChanged extends AddEditPriorityLevelEvent {
   /// deactivated to change
   final bool deactivated;

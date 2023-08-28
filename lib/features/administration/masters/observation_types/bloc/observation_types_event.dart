@@ -8,8 +8,10 @@ abstract class ObservationTypesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load observation type list
 class ObservationTypesLoaded extends ObservationTypesEvent {}
 
+/// event to select observation type
 class ObservationTypeSelected extends ObservationTypesEvent {
   final ObservationType? observationType;
   const ObservationTypeSelected({
@@ -21,6 +23,7 @@ class ObservationTypeSelected extends ObservationTypesEvent {
       ];
 }
 
+/// event to select observation type by id
 class ObservationTypeSelectedById extends ObservationTypesEvent {
   final String observationTypeId;
   const ObservationTypeSelectedById({
@@ -32,6 +35,7 @@ class ObservationTypeSelectedById extends ObservationTypesEvent {
       ];
 }
 
+/// event to add new observation type
 class ObservationTypeAdded extends ObservationTypesEvent {
   final ObservationType observationType;
   const ObservationTypeAdded({
@@ -44,6 +48,7 @@ class ObservationTypeAdded extends ObservationTypesEvent {
       ];
 }
 
+/// event to edit observation type
 class ObservationTypeEdited extends ObservationTypesEvent {
   final ObservationType observationType;
   const ObservationTypeEdited({
@@ -56,6 +61,7 @@ class ObservationTypeEdited extends ObservationTypesEvent {
       ];
 }
 
+/// event to delete observation type
 class ObservationTypeDeleted extends ObservationTypesEvent {
   final String observationTypeId;
   const ObservationTypeDeleted({
@@ -68,6 +74,7 @@ class ObservationTypeDeleted extends ObservationTypesEvent {
       ];
 }
 
+/// event to init status of observation type
 class ObservationTypesStatusInited extends ObservationTypesEvent {
   const ObservationTypesStatusInited();
 }

@@ -100,3 +100,8 @@ class AuditDetailCommentChanged extends AuditDetailEvent {
 }
 
 class AuditDetailCommentSaved extends AuditDetailEvent {}
+
+class AuditDetailAuditCompletedQuestionsWithFollowupsListLoaded
+    extends AuditDetailEvent {}
+
+class AuditDetailAuditActionItemsStatsLoaded extends AuditDetailEvent {}

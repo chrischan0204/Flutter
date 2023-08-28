@@ -6,6 +6,7 @@ class SectionsRepository extends BaseRepository {
     required super.authBloc,
   }) : super(url: '/api/audits/templates/sections');
 
+  /// get template section item list 
   Future<List<TemplateSectionQuestion>> getSectionItemList(
       String sectionId) async {
     Response response = await super.get('$url/$sectionId/items');
@@ -19,6 +20,7 @@ class SectionsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// add new template section item
   Future<EntityResponse> createTemplateSectionItem(
       TemplateSectionItem templateSectionItem) async {
     Response response =
@@ -38,6 +40,7 @@ class SectionsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// update template section item
   Future<EntityResponse> editTemplateSectionItem(
       TemplateSectionItem templateSectionItem) async {
     Response response =
@@ -57,6 +60,7 @@ class SectionsRepository extends BaseRepository {
     throw Exception();
   }
 
+  /// get question detail
   Future<QuestionDetail> getQuestionDetail(String id, int itemType) async {
     Response response = await super
         .get('$url/$id/itemdetails', {'itemType': itemType.toString()});

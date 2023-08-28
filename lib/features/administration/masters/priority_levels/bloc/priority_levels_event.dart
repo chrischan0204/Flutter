@@ -7,8 +7,10 @@ abstract class PriorityLevelsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// event to load priority level list
 class PriorityLevelsLoaded extends PriorityLevelsEvent {}
 
+/// event to select priority level
 class PriorityLevelSelected extends PriorityLevelsEvent {
   final PriorityLevel? priorityLevel;
   const PriorityLevelSelected({
@@ -20,6 +22,7 @@ class PriorityLevelSelected extends PriorityLevelsEvent {
       ];
 }
 
+/// load priority level by id
 class PriorityLevelSelectedById extends PriorityLevelsEvent {
   final String priorityLevelId;
   const PriorityLevelSelectedById({
@@ -31,6 +34,7 @@ class PriorityLevelSelectedById extends PriorityLevelsEvent {
       ];
 }
 
+/// create new priority level
 class PriorityLevelAdded extends PriorityLevelsEvent {
   final PriorityLevel priorityLevel;
   const PriorityLevelAdded({
@@ -43,6 +47,7 @@ class PriorityLevelAdded extends PriorityLevelsEvent {
       ];
 }
 
+/// edit prioirity level
 class PriorityLevelEdited extends PriorityLevelsEvent {
   final PriorityLevel priorityLevel;
   const PriorityLevelEdited({
@@ -55,6 +60,7 @@ class PriorityLevelEdited extends PriorityLevelsEvent {
       ];
 }
 
+/// delete priority level by id
 class PriorityLevelDeleted extends PriorityLevelsEvent {
   final String priorityLevelId;
   const PriorityLevelDeleted({
@@ -67,6 +73,7 @@ class PriorityLevelDeleted extends PriorityLevelsEvent {
       ];
 }
 
+/// to event to init priority level status
 class PriorityLevelsStatusInited extends PriorityLevelsEvent {
   const PriorityLevelsStatusInited();
 }
