@@ -119,17 +119,15 @@ class _ItemState extends State<ViewSettingItem> {
   }
 
   Widget _buildDragHandle(ReorderableItemState state) {
-    return state != ReorderableItemState.normal
-        ? Container(
-            width: 30,
-            alignment: Alignment.center,
-            color: const Color(0x08000000),
-            child: Center(
-              child: Icon(PhosphorIcons.regular.dotsSixVertical,
-                  color: const Color(0xFF888888)),
-            ),
-          )
-        : Container(width: 30);
+    return Container(
+      width: 30,
+      alignment: Alignment.center,
+      color: const Color(0x08000000),
+      child: Center(
+        child: Icon(PhosphorIcons.regular.dotsSixVertical,
+            color: const Color(0xFF888888)),
+      ),
+    );
   }
 
   IconButton _buildDeleteButton() {

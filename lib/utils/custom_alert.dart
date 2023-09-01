@@ -23,9 +23,10 @@ class CustomAlert {
     this.body,
   });
   Future<dynamic> show() {
+    final width = MediaQuery.of(context).size.width;
     return AwesomeDialog(
       context: context,
-      width: width,
+      width: width > minDesktopWidth ? width / 4 : width / 2.5,
       dialogType: dialogType,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
@@ -44,10 +45,11 @@ class CustomAlert {
   }
 
   static checkFormDirty(VoidCallback function, BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     if (context.read<FormDirtyBloc>().state.isDirty) {
       AwesomeDialog(
         context: context,
-        width: MediaQuery.of(context).size.width / 4,
+        width: width > minDesktopWidth ? width / 4 : width / 2.5,
         dialogType: DialogType.question,
         headerAnimationLoop: false,
         animType: AnimType.bottomSlide,
@@ -71,6 +73,4 @@ class CustomAlert {
       function();
     }
   }
-
-  
 }

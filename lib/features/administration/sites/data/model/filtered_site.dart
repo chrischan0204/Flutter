@@ -64,7 +64,7 @@ class FilteredSite extends FilteredEntity {
       referenceCode: referenceCode,
       timeZone: timeZone,
       region: region,
-      siteType: siteType,
+      siteTypeName: siteType,
       active: active,
       createdByUserName: createdBy,
       createdOn: createdOn,

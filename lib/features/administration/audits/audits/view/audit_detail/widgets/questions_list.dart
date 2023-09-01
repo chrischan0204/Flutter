@@ -103,7 +103,9 @@ class AuditQuestionDataSource extends DataGridSource {
                 ),
                 DataGridCell(
                   columnName: columns[3],
-                  value: auditQuestion.questionStatusName,
+                  value: auditQuestion.questionIncluded
+                      ? auditQuestion.questionStatusName
+                      : 'Excluded',
                 )
               ],
             ))
@@ -122,7 +124,9 @@ class AuditQuestionDataSource extends DataGridSource {
             ? successColor
             : value == 'Unanswered'
                 ? warnColor
-                : primaryColor,
+                : value == 'Excluded'
+                    ? Colors.red
+                    : primaryColor,
       );
     }
     return Text(value.toString());

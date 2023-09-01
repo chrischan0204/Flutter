@@ -105,21 +105,12 @@ class _ActionItemsViewState extends State<ActionItemsView> {
                 assignee: 'Assignee',
                 isTitle: true,
               ),
-              const ActionItemView(
-                status: 'Done',
-                task: 'Inspect the staircase after cleaning',
-                assignee: 'Hugh Tulley',
-              ),
-              const ActionItemView(
-                status: 'Due soon',
-                task: 'Call contractor to hide wire',
-                assignee: 'Hugh Tulley',
-              ),
-              const ActionItemView(
-                status: 'Overdue',
-                task: 'Change the outlet in basement',
-                assignee: 'Hugh Tulley',
-              ),
+              // for (final actionItem in state.actionItemList)
+              //   ActionItemView(
+              //     status: actionItem.status ?? '',
+              //     task: actionItem.description ?? '',
+              //     assignee: actionItem.assigneeName ?? '',
+              //   ),
             ],
           );
         },
@@ -185,7 +176,7 @@ class ActionItemView extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 80,
+            width: 120,
             child: Text(
               assignee,
               style:

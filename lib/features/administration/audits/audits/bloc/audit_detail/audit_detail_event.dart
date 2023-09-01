@@ -45,6 +45,7 @@ class AuditDetailObservationListLoaded extends AuditDetailEvent {}
 /// event to load action item list
 class AuditDetailActionItemListLoaded extends AuditDetailEvent {}
 
+/// event to select method for completion
 class AuditDetailMethodSelected extends AuditDetailEvent {
   final String method;
   const AuditDetailMethodSelected({
@@ -55,6 +56,7 @@ class AuditDetailMethodSelected extends AuditDetailEvent {
   List<Object> get props => [method];
 }
 
+/// event to add new reviewer to save
 class AuditDetailReviewerItemIncreased extends AuditDetailEvent {
   final int index;
   const AuditDetailReviewerItemIncreased({
@@ -65,6 +67,7 @@ class AuditDetailReviewerItemIncreased extends AuditDetailEvent {
   List<Object> get props => [index];
 }
 
+/// event to select reviewer for dropdown at index position
 class AuditDetailReviewerSelected extends AuditDetailEvent {
   final int index;
   final User reviewer;
@@ -77,18 +80,25 @@ class AuditDetailReviewerSelected extends AuditDetailEvent {
   List<Object> get props => [index, reviewer];
 }
 
+/// event to load reviewer list
 class AuditDetailReviewerListLoaded extends AuditDetailEvent {}
 
+/// event to mark audit completed
 class AuditDetailAuditMarkCompleted extends AuditDetailEvent {}
 
+/// event to mark audit closed
 class AuditDetailAuditMarkClosed extends AuditDetailEvent {}
 
+/// event to mark audit in review
 class AuditDetailAuditMarkInReview extends AuditDetailEvent {}
 
+/// event to save reviewers
 class AuditDetailReviewersSaved extends AuditDetailEvent {}
 
+/// event to load review list for audit
 class AuditDetailReviewListLoaded extends AuditDetailEvent {}
 
+/// event to change comment to leave
 class AuditDetailCommentChanged extends AuditDetailEvent {
   final String comment;
   const AuditDetailCommentChanged({
@@ -99,9 +109,23 @@ class AuditDetailCommentChanged extends AuditDetailEvent {
   List<Object> get props => [comment];
 }
 
+/// event to save comment
 class AuditDetailCommentSaved extends AuditDetailEvent {}
 
+/// event to load completed question with follow ups
 class AuditDetailAuditCompletedQuestionsWithFollowupsListLoaded
     extends AuditDetailEvent {}
 
+/// event to load audit action item stats
 class AuditDetailAuditActionItemsStatsLoaded extends AuditDetailEvent {}
+
+/// event to load comment list for audit question
+class AuditDetailQuestionCommentListLoaded extends AuditDetailEvent {
+  final String questionId;
+  const AuditDetailQuestionCommentListLoaded({
+    required this.questionId,
+  });
+
+@override
+  List<Object> get props => [questionId];
+}

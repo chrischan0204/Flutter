@@ -101,15 +101,15 @@ class _AddEditTemplateFormViewState extends State<AddEditTemplateFormView> {
   Widget _buildSiteTypeField() {
     return BlocBuilder<AddEditSiteBloc, AddEditSiteState>(
       builder: (context, state) {
-        Map<String, String> siteTypes = {};
-        siteTypes.addEntries(
-            state.siteTypeList.map((e) => MapEntry(e.name, e.name)));
+        Map<String, SiteType> siteTypes = {};
+        siteTypes
+            .addEntries(state.siteTypeList.map((e) => MapEntry(e.name, e)));
         return FormItem(
           label: 'Site Type (*)',
           content: CustomSingleSelect(
             items: siteTypes,
             hint: 'Select Type',
-            selectedValue: state.siteType,
+            selectedValue: state.siteType?.name,
             onChanged: (siteType) {
               addEditSiteBloc
                   .add(AddEditSiteTypeChanged(siteType: siteType.value));

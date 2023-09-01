@@ -136,6 +136,8 @@ class AddEditAuditBloc extends Bloc<AddEditAuditEvent, AddEditAuditState> {
             status: EntityStatus.success,
           ));
 
+          add(AddEditAuditLoaded(id: event.id));
+
           _formDirtyBloc.add(FormDirtyChanged(isDirty: state.formDirty));
         } else {
           if (response.message.contains('already') == true) {

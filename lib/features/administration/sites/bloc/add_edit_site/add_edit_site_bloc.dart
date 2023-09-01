@@ -217,7 +217,10 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
           id: site.regionId,
         ),
         initialSiteCode: site.siteCode,
-        initialSiteType: site.siteType,
+        initialSiteType: SiteType(
+          id: site.siteTypeId,
+          name: site.siteTypeName,
+        ),
         initialTimeZone: TimeZone(
           id: site.timeZoneId,
           name: site.timeZone,
@@ -229,7 +232,10 @@ class AddEditSiteBloc extends Bloc<AddEditSiteEvent, AddEditSiteState> {
           id: site.regionId,
         ),
         siteCode: site.siteCode,
-        siteType: site.siteType,
+        siteType: SiteType(
+          id: site.siteTypeId,
+          name: site.siteTypeName,
+        ),
         timeZone: TimeZone(
           id: site.timeZoneId,
           name: site.timeZone,

@@ -72,11 +72,6 @@ class ReviewsView extends StatelessWidget {
                       ),
                     );
                   } else {
-                    List<AuditReview> reviewList = state.auditReviewList
-                        .where((element) =>
-                            element.reviewComments != null &&
-                            element.reviewComments?.isNotEmpty == true)
-                        .toList();
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -87,11 +82,19 @@ class ReviewsView extends StatelessWidget {
                             style: textSemiBold16,
                           ),
                         ),
-                        if (reviewList.isNotEmpty)
-                          for (final review in reviewList)
+                        const ReviewItemView(
+                          review: 'Comments',
+                          reviewer: 'Reviewer',
+                          reviewedOn: 'Reviewed On',
+                          isTitle: true,
+                        ),
+                        if (state.auditReviewList.isNotEmpty)
+                          for (final review in state.auditReviewList)
                             ReviewItemView(
-                              review: review.reviewComments ?? '',
+                              review:
+                                  review.reviewComments ?? 'Not Reviewed Yet',
                               reviewer: review.reviewerName ?? '',
+                              reviewedOn: review.formatedReviewDate,
                             )
                         else
                           Center(
@@ -115,10 +118,17 @@ class ReviewsView extends StatelessWidget {
                           style: textSemiBold16,
                         ),
                       ),
+                      const ReviewItemView(
+                        review: 'Comments',
+                        reviewer: 'Reviewer',
+                        reviewedOn: 'Reviewed On',
+                        isTitle: true,
+                      ),
                       for (final review in state.auditReviewList)
                         ReviewItemView(
-                          review: review.reviewComments ?? '',
+                          review: review.reviewComments ?? 'Not Reviewed Yet',
                           reviewer: review.reviewerName ?? '',
+                          reviewedOn: review.formatedReviewDate,
                         ),
                     ],
                   );
@@ -136,20 +146,41 @@ class ReviewsView extends StatelessWidget {
 class ReviewItemView extends StatelessWidget {
   final String review;
   final String reviewer;
+  final String reviewedOn;
+  final bool isTitle;
   const ReviewItemView({
     super.key,
     required this.review,
     required this.reviewer,
+    required this.reviewedOn,
+    this.isTitle = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return CustomBottomBorderContainer(
       padding: insetx20y10,
       child: Row(
         children: [
-          Expanded(child: Text(review)),
-          Expanded(child: Text('- $reviewer')),
+          Expanded(
+            flex: 4,
+            child: Text(
+              review,
+              style: isTitle ? textSemiBold14 : null,
+            ),
+          ),
+          Expanded(
+              flex: 2,
+              child: Text(
+                reviewer,
+                style: isTitle ? textSemiBold14 : null,
+              )),
+          Expanded(
+              flex: 1,
+              child: Text(
+                reviewedOn,
+                style: isTitle ? textSemiBold14 : null,
+              )),
         ],
       ),
     );

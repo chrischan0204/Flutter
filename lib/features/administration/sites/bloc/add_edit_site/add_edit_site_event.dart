@@ -79,7 +79,7 @@ class AddEditSiteTimeZoneChanged extends AddEditSiteEvent {
 /// event to change the site type
 class AddEditSiteTypeChanged extends AddEditSiteEvent {
   /// site type to change
-  final String siteType;
+  final SiteType siteType;
   const AddEditSiteTypeChanged({required this.siteType});
 
   @override

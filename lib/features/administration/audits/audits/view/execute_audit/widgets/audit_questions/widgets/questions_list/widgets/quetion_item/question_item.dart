@@ -198,25 +198,18 @@ class _QuestionItemBodyViewState extends State<QuestionItemBodyView> {
     bool success = false;
 
     if (isDirty) {
-      await AwesomeDialog(
+      await CustomAlert(
         context: context,
         width: MediaQuery.of(context).size.width / 4,
         dialogType: DialogType.question,
-        headerAnimationLoop: false,
-        animType: AnimType.bottomSlide,
         title: 'Confirm',
-        dialogBorderRadius: BorderRadius.circular(5),
-        desc: 'Data that was entered will be lost ..... Proceed?',
-        buttonsTextStyle: const TextStyle(color: Colors.white),
-        showCloseIcon: true,
+        description: 'Data that was entered will be lost ..... Proceed?',
         btnCancelOnPress: () => success = false,
         btnOkOnPress: () {
           success = true;
           // context.read<FormDirtyBloc>().add(FormDirtyChanged(isDirty: isDirty));
         },
         btnOkText: 'Proceed',
-        buttonsBorderRadius: BorderRadius.circular(3),
-        padding: const EdgeInsets.all(10),
       ).show();
     } else {
       success = true;

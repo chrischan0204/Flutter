@@ -26,7 +26,7 @@ class AddEditSiteState extends Equatable {
   final TimeZone? timeZone;
 
   /// site type
-  final String? siteType;
+  final SiteType? siteType;
 
   /// site code
   final String siteCode;
@@ -44,7 +44,7 @@ class AddEditSiteState extends Equatable {
   final TimeZone? initialTimeZone;
 
   /// initial site type for check dirty
-  final String? initialSiteType;
+  final SiteType? initialSiteType;
 
   /// initial site code for check dirty
   final String initialSiteCode;
@@ -146,7 +146,7 @@ class AddEditSiteState extends Equatable {
         name: siteName,
         regionId: region!.id!,
         timeZoneId: timeZone!.id!,
-        siteType: siteType!,
+        siteTypeId: siteType!.id,
         siteCode: siteCode,
         referenceCode: referenceCode,
       );
@@ -160,13 +160,13 @@ class AddEditSiteState extends Equatable {
     String? siteName,
     Region? region,
     TimeZone? timeZone,
-    String? siteType,
+    SiteType? siteType,
     String? siteCode,
     String? referenceCode,
     String? initialSiteName,
     Region? initialRegion,
     TimeZone? initialTimeZone,
-    String? initialSiteType,
+    SiteType? initialSiteType,
     String? initialSiteCode,
     String? initialReferenceCode,
     String? siteNameValidationMessage,

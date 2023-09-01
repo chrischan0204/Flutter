@@ -38,6 +38,27 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         _onAuditDetailAuditCompletedQuestionsWithFollowupsListLoaded);
     on<AuditDetailAuditActionItemsStatsLoaded>(
         _onAuditDetailAuditActionItemsStatsLoaded);
+    on<AuditDetailQuestionCommentListLoaded>(
+        _onAuditDetailQuestionCommentListLoaded);
+  }
+
+  Future<void> _onAuditDetailQuestionCommentListLoaded(
+    AuditDetailQuestionCommentListLoaded event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(commentListLoadStatus: EntityStatus.loading));
+
+    try {
+      List<AuditComment> commentList =
+          await _auditsRepository.getAuditCommentList(event.questionId);
+
+      emit(state.copyWith(
+        commentList: commentList,
+        commentListLoadStatus: EntityStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(commentListLoadStatus: EntityStatus.failure));
+    }
   }
 
   Future<void> _onAuditDetailAuditActionItemsStatsLoaded(

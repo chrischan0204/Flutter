@@ -32,8 +32,7 @@ class _InspectorsTextFieldState extends State<InspectorsTextField> {
         _textController.text = state.loadedAudit!.inspectors;
       },
       listenWhen: (previous, current) =>
-          previous.loadedAudit != current.loadedAudit &&
-          previous.loadedAudit == null,
+          previous.loadedAudit != current.loadedAudit,
       builder: (context, state) {
         return CustomTextField(
           controller: _textController,

@@ -85,9 +85,9 @@ class _AuditDetailViewState extends State<AuditDetailWidget> {
               ? const Center(child: Loader())
               : state.isEditable
                   ? AuditDetailForNotCompletedView(
-                      auditNumber: state.auditSummary?.name ?? '')
+                      auditNumber: state.auditSummary?.auditNumber ?? '')
                   : AuditDetailForCompletedView(
-                      auditNumber: state.auditSummary?.name ?? ''),
+                      auditNumber: state.auditSummary?.auditNumber ?? ''),
           showSecondaryButton: state.isEditable,
           isEditable: state.isEditable,
           secondaryButtonOnClick: () =>

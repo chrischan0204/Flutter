@@ -1,4 +1,5 @@
 import '../../../../../../../common_libraries.dart';
+import 'comment_list.dart';
 
 class QuestionsAndAnswersView extends StatefulWidget {
   const QuestionsAndAnswersView({super.key});
@@ -19,7 +20,18 @@ class _QuestionsAndAnswersViewState extends State<QuestionsAndAnswersView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuditDetailBloc, AuditDetailState>(
+    return BlocConsumer<AuditDetailBloc, AuditDetailState>(
+      listener: (context, state) async {
+        await showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) =>
+              AuditDetailCommentListView(commentList: state.commentList),
+        );
+      },
+      listenWhen: (previous, current) =>
+          previous.commentListLoadStatus != current.commentListLoadStatus &&
+          current.commentListLoadStatus.isSuccess,
       builder: (context, state) {
         return Card(
           elevation: 3,
@@ -46,6 +58,16 @@ class _QuestionsAndAnswersViewState extends State<QuestionsAndAnswersView> {
                   answer: question.response ?? '',
                   score: question.score.toString(),
                   isSubQuestion: question.parentId != null,
+                  iconButton: IconButton(
+                      onPressed: question.parentId == null
+                          ? () => context.read<AuditDetailBloc>().add(
+                              AuditDetailQuestionCommentListLoaded(
+                                  questionId: question.sectionItemId))
+                          : null,
+                      icon: PhosphorIcon(
+                        PhosphorIcons.regular.chatCircleDots,
+                        color: primaryColor,
+                      )),
                 ),
             ],
           ),
@@ -61,6 +83,7 @@ class QuestionItemView extends StatelessWidget {
   final String score;
   final bool isSubQuestion;
   final bool isTitle;
+  final Widget? iconButton;
   const QuestionItemView({
     super.key,
     required this.question,
@@ -68,6 +91,7 @@ class QuestionItemView extends StatelessWidget {
     required this.answer,
     this.isSubQuestion = false,
     this.isTitle = false,
+    this.iconButton,
   });
 
   @override
@@ -77,6 +101,7 @@ class QuestionItemView extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
+            flex: 5,
             child: Text(
               question,
               style: isSubQuestion
@@ -87,8 +112,7 @@ class QuestionItemView extends StatelessWidget {
             ),
           ),
           spacerx10,
-          SizedBox(
-            width: 150,
+          Expanded(
             child: Text(
               answer,
               style:
@@ -97,13 +121,18 @@ class QuestionItemView extends StatelessWidget {
           ),
           spacerx10,
           SizedBox(
-            width: 60,
+            width: 70,
             child: Text(
               score,
               style:
                   isTitle ? const TextStyle(fontWeight: FontWeight.w600) : null,
             ),
           ),
+          spacerx10,
+          SizedBox(
+            width: 80,
+            child: isTitle || isSubQuestion ? Container() : iconButton,
+          )
         ],
       ),
     );

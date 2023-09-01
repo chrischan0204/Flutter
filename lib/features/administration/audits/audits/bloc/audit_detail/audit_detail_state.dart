@@ -32,6 +32,9 @@ class AuditDetailState extends Equatable {
 
   final ActionItemsStats? actionItemsStats;
 
+  final List<AuditComment> commentList;
+  final EntityStatus commentListLoadStatus;
+
   final String message;
   const AuditDetailState({
     this.auditSummary,
@@ -53,6 +56,8 @@ class AuditDetailState extends Equatable {
     this.auditReviewCommentSaveStatus = EntityStatus.initial,
     this.auditCompletedQuestionsWithFollowupsList = const [],
     this.actionItemsStats,
+    this.commentList = const [],
+    this.commentListLoadStatus = EntityStatus.initial,
     this.message = '',
   });
 
@@ -78,14 +83,18 @@ class AuditDetailState extends Equatable {
         auditReviewCommentSaveStatus,
         auditCompletedQuestionsWithFollowupsList,
         actionItemsStats,
+        commentList,
+        commentListLoadStatus,
       ];
 
-  bool isNextStepsAvailable(String userId) =>
-      auditReviewList.isEmpty ||
-      auditReviewList.isNotEmpty &&
-          (auditReviewList.length > 1 ||
-              auditReviewList.length == 1 &&
-                  userId != auditReviewList[0].reviewerId);
+  bool isNextStepsAvailable(AuthState user) =>
+      (auditReviewList.isEmpty ||
+          auditReviewList.isNotEmpty &&
+              (auditReviewList.length > 1 ||
+                  auditReviewList.length == 1 &&
+                      user.userId != auditReviewList[0].reviewerId)) &&
+      (user.authUser?.roleName != 'Observer' ||
+          user.userId == auditSummary?.ownerId);
 
   bool get isDeletable {
     if (auditSummary == null) {
@@ -132,6 +141,8 @@ class AuditDetailState extends Equatable {
     List<AuditCompletedQuestionsWithFollowups>?
         auditCompletedQuestionsWithFollowupsList,
     ActionItemsStats? actionItemsStats,
+    List<AuditComment>? commentList,
+    EntityStatus? commentListLoadStatus,
   }) {
     return AuditDetailState(
       auditSummary: auditSummary ?? this.auditSummary,
@@ -161,6 +172,9 @@ class AuditDetailState extends Equatable {
           auditCompletedQuestionsWithFollowupsList ??
               this.auditCompletedQuestionsWithFollowupsList,
       actionItemsStats: actionItemsStats ?? this.actionItemsStats,
+      commentList: commentList ?? this.commentList,
+      commentListLoadStatus:
+          commentListLoadStatus ?? this.commentListLoadStatus,
     );
   }
 }

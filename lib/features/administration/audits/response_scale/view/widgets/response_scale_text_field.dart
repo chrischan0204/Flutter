@@ -24,7 +24,13 @@ class _AddNewResponseScaleFieldState extends State<AddNewResponseScaleField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ResponseScaleBloc, ResponseScaleState>(
+    return BlocConsumer<ResponseScaleBloc, ResponseScaleState>(
+      listener: (context, state) {
+        sectionController.clear();
+      },
+      listenWhen: (previous, current) =>
+          previous.responseScaleAddStatus != current.responseScaleAddStatus &&
+          current.responseScaleAddStatus.isSuccess,
       builder: (context, state) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: CustomTextFieldWithIcon(

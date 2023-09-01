@@ -238,22 +238,15 @@ class _SidebarItemState extends State<SidebarItem>
         context.read<FormDirtyBloc>().state.isDirty &&
         !widget.path.contains('logout')) {
       try {
-        await AwesomeDialog(
+        await CustomAlert(
           context: widget.context,
           width: MediaQuery.of(widget.context).size.width / 4,
           dialogType: DialogType.question,
-          headerAnimationLoop: false,
-          animType: AnimType.bottomSlide,
           title: 'Confirm',
-          dialogBorderRadius: BorderRadius.circular(5),
-          desc: 'Data that was entered will be lost ..... Proceed?',
-          buttonsTextStyle: const TextStyle(color: Colors.white),
-          showCloseIcon: true,
+          description: 'Data that was entered will be lost ..... Proceed?',
           btnCancelOnPress: () {},
           btnOkOnPress: () => _navigate(),
           btnOkText: 'Proceed',
-          buttonsBorderRadius: BorderRadius.circular(3),
-          padding: const EdgeInsets.all(10),
         ).show();
       } catch (e) {}
     } else {
@@ -265,7 +258,7 @@ class _SidebarItemState extends State<SidebarItem>
     if (widget.path.contains('logout')) {
       CustomAlert(
         context: widget.context,
-        width: MediaQuery.of(context).size.width / 4,
+        width: MediaQuery.of(widget.context).size.width / 4,
         title: 'Confirm',
         description: 'Do you really want to logout?',
         btnOkText: 'Logout',

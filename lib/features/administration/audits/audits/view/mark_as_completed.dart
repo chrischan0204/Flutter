@@ -115,7 +115,7 @@ class _MarkAsCompletedAuditViewState extends State<MarkAsCompletedAuditWidget> {
                               }),
                           spacerx10,
                           Text(
-                            'Confirm delete and proceed',
+                            'Confirm completion and proceed',
                             style: textNormal14,
                           )
                         ],

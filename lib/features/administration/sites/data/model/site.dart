@@ -4,7 +4,8 @@ import '/data/model/model.dart';
 
 class Site extends Entity {
   final String siteCode;
-  final String siteType;
+  final String siteTypeId;
+  final String siteTypeName;
   final String referenceCode;
   final String region;
   final String regionId;
@@ -17,7 +18,8 @@ class Site extends Entity {
     super.id,
     super.name,
     this.siteCode = '',
-    this.siteType = '',
+    this.siteTypeId = '',
+    this.siteTypeName = '',
     this.referenceCode = '',
     this.region = '',
     this.regionId = '',
@@ -41,7 +43,8 @@ class Site extends Entity {
   List<Object?> get props => [
         ...super.props,
         siteCode,
-        siteType,
+        siteTypeId,
+        siteTypeName,
         referenceCode,
         region,
         timeZone,
@@ -58,7 +61,7 @@ class Site extends Entity {
       'Name': name,
       'Site Code': siteCode,
       'Reference Code': referenceCode,
-      'Site Type': siteType,
+      'Site Type': siteTypeName,
       'Region': region,
       'Timezone': timeZone,
       'Active': active,
@@ -102,7 +105,8 @@ class Site extends Entity {
     String? id,
     String? name,
     String? siteCode,
-    String? siteType,
+    String? siteTypeId,
+    String? siteTypeName,
     String? referenceCode,
     String? region,
     String? regionId,
@@ -125,7 +129,8 @@ class Site extends Entity {
       id: id ?? this.id,
       name: name ?? this.name,
       siteCode: siteCode ?? this.siteCode,
-      siteType: siteType ?? this.siteType,
+      siteTypeId: siteTypeId ?? this.siteTypeId,
+      siteTypeName: siteTypeName ?? this.siteTypeName,
       referenceCode: referenceCode ?? this.referenceCode,
       region: region ?? this.region,
       regionId: regionId ?? this.regionId,
@@ -155,7 +160,7 @@ class Site extends Entity {
       'referenceCode': referenceCode,
       'regionId': regionId,
       'timeZoneId': timeZoneId,
-      'siteType': siteType,
+      'siteTypeId': siteTypeId,
     };
 
     if (id != null) {
@@ -171,7 +176,9 @@ class Site extends Entity {
       id: entity.id,
       name: entity.name,
       siteCode: map['siteCode'],
-      siteType: map['siteType'] == null ? '' : map['siteType'] as String,
+      siteTypeId: map['siteTypeId'] == null ? '' : map['siteTypeId'] as String,
+      siteTypeName:
+          map['siteTypeName'] == null ? '' : map['siteTypeName'] as String,
       referenceCode: map['referenceCode'],
       region: map['regionName'],
       regionId: map['regionId'] ?? '',

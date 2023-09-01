@@ -150,7 +150,7 @@ class _ResponseScaleItemListViewState extends State<ResponseScaleItemListView> {
                                     SizedBox(
                                       width: 160,
                                       child: Text(
-                                        'Mandatory Items',
+                                        'Mandatory',
                                         style: textSemiBold16,
                                       ),
                                     ),

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '/common_libraries.dart';
 
 class AuditReview extends Equatable {
@@ -34,6 +36,9 @@ class AuditReview extends Equatable {
       reviewerId: reviewerId ?? this.reviewerId,
     );
   }
+
+  String get formatedReviewDate =>
+      reviewDate == null ? '--' : DateFormat('MM/dd/yyyy').format(reviewDate!);
 
   AuditReviewUpdate get reviewUpate => AuditReviewUpdate(
         id: id,

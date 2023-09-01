@@ -45,18 +45,7 @@ class AuditDetailForCompletedView extends StatelessWidget {
           ),
         ),
         const ReviewsView(),
-        const IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 2,
-                child: QuestionsAndAnswersView(),
-              ),
-              Expanded(child: ActionItemsView()),
-            ],
-          ),
-        )
+        const QuestionsAndAnswersView()
       ],
     );
   }

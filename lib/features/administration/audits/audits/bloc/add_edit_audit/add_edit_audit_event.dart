@@ -149,7 +149,7 @@ class AddEditAuditAreaChanged extends AddEditAuditEvent {
   List<Object> get props => [area];
 }
 
-// event to change the inspectors
+/// event to change the inspectors
 class AddEditAuditInspectorsChanged extends AddEditAuditEvent {
   /// inspectors to change
   final String inspectors;
@@ -161,6 +161,7 @@ class AddEditAuditInspectorsChanged extends AddEditAuditEvent {
   List<Object> get props => [inspectors];
 }
 
+/// event to change confirmation view
 class AddEditIsWithConfirmationChanged extends AddEditAuditEvent {
   final bool isWithConfirmation;
   const AddEditIsWithConfirmationChanged({

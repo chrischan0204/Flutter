@@ -34,7 +34,7 @@ class _AuditDetail3CompletedViewState extends State<AuditDetail3CompletedView> {
                     label: 'Status',
                     content: audit.auditStatusName ?? '--',
                   ),
-                  if (state.isNextStepsAvailable(authState.userId!))
+                  if (state.isNextStepsAvailable(authState))
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -192,12 +192,23 @@ class _AuditDetail3CompletedViewState extends State<AuditDetail3CompletedView> {
                                     ],
                                   ),
                                 ),
-                                for (final reviewer in state.auditReviewList)
-                                  ReviewerListItemView(
-                                    reviewer: reviewer.reviewerName ?? '',
-                                    addedOn:
-                                        reviewer.reviewDate ?? DateTime.now(),
-                                  )
+                                SizedBox(
+                                  height: 160,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        for (final reviewer
+                                            in state.auditReviewList)
+                                          ReviewerListItemView(
+                                            reviewer:
+                                                reviewer.reviewerName ?? '',
+                                            addedOn: reviewer.reviewDate ??
+                                                DateTime.now(),
+                                          )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                       ],
