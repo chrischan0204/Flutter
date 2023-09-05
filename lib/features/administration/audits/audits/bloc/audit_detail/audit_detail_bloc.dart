@@ -25,6 +25,7 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     on<AuditDetailActionItemListLoaded>(_onAuditDetailActionItemListLoaded);
     on<AuditDetailMethodSelected>(_onAuditDetailMethodSelected);
     on<AuditDetailReviewerItemIncreased>(_onAuditDetailReviewerItemIncreased);
+    on<AuditDetailReviewerItemRemoved>(_onAuditDetailReviewerItemRemoved);
     on<AuditDetailReviewerSelected>(_onAuditDetailReviewerSelected);
     on<AuditDetailReviewerListLoaded>(_onAuditDetailReviewerListLoaded);
     on<AuditDetailAuditMarkCompleted>(_onAuditDetailAuditMarkCompleted);
@@ -40,6 +41,15 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         _onAuditDetailAuditActionItemsStatsLoaded);
     on<AuditDetailQuestionCommentListLoaded>(
         _onAuditDetailQuestionCommentListLoaded);
+    on<AuditDetailIsEditingCommentChanged>(
+        _onAuditDetailIsEditingCommentChanged);
+  }
+
+  Future<void> _onAuditDetailIsEditingCommentChanged(
+    AuditDetailIsEditingCommentChanged event,
+    Emitter<AuditDetailState> emit,
+  ) async {
+    emit(state.copyWith(isCommentEditing: event.isCommentEditing));
   }
 
   Future<void> _onAuditDetailQuestionCommentListLoaded(
@@ -101,7 +111,10 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         emit(state.copyWith(
           auditReviewCommentSaveStatus: EntityStatus.success,
           message: 'Comment saved successfully.',
+          isCommentEditing: false,
         ));
+
+        add(AuditDetailReviewListLoaded());
       } catch (e) {
         emit(
             state.copyWith(auditReviewCommentSaveStatus: EntityStatus.failure));
@@ -159,6 +172,11 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
           )));
       add(AuditDetailAuditMarkInReview());
       add(AuditDetailReviewListLoaded());
+
+      emit(state.copyWith(
+        selectedMethod: const Nullable.value(null),
+        selectedReviewerList: [],
+      ));
     } catch (e) {
       emit(state.copyWith(auditReviewersSaveStatus: EntityStatus.failure));
     }
@@ -213,20 +231,39 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     Emitter<AuditDetailState> emit,
   ) async {
     try {
-      final List<Entity> reviewerList =
+      final List<User> userList =
           await _sitesRepository.getUserListForSite(state.auditSummary!.siteId);
+
+      final List<User> reviewerList = userList
+          .where((element) =>
+              element.roleName != 'Observer' && element.roleName != 'Auditor')
+          .toList();
 
       reviewerList
           .removeWhere((element) => element.id == state.auditSummary!.ownerId);
 
-      emit(state.copyWith(
-          reviewerList: reviewerList
-              .map((e) => User(
-                  id: e.id,
-                  firstName: e.name!.split(' ')[0],
-                  lastName: e.name!.split(' ')[1]))
-              .toList()));
-    } catch (e) {}
+      for (final auditReviewer in state.auditReviewList) {
+        reviewerList
+            .removeWhere((element) => element.id == auditReviewer.reviewerId);
+      }
+
+      if (reviewerList.isEmpty) {
+        // ignore: use_build_context_synchronously
+        CustomNotification(
+          context: context,
+          notifyType: NotifyType.info,
+          content: 'There is no reviewer to add.',
+        ).showNotification();
+
+        emit(state.copyWith(selectedMethod: const Nullable.value(null)));
+      } else {
+        emit(state.copyWith(selectedReviewerList: [null]));
+      }
+
+      emit(state.copyWith(reviewerList: reviewerList));
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _onAuditDetailReviewerSelected(
@@ -254,6 +291,18 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     ));
   }
 
+  void _onAuditDetailReviewerItemRemoved(
+    AuditDetailReviewerItemRemoved event,
+    Emitter<AuditDetailState> emit,
+  ) {
+    final List<User?> selectedReviewerList =
+        List.from(state.selectedReviewerList);
+
+    selectedReviewerList.removeAt(event.index);
+
+    emit(state.copyWith(selectedReviewerList: selectedReviewerList));
+  }
+
   void _onAuditDetailReviewerItemIncreased(
     AuditDetailReviewerItemIncreased event,
     Emitter<AuditDetailState> emit,
@@ -271,9 +320,11 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     Emitter<AuditDetailState> emit,
   ) {
     if (event.method == 'Close Audit') {
-      emit(state.copyWith(selectedMethod: event.method));
+      emit(state.copyWith(selectedMethod: Nullable.value(event.method)));
     } else {
-      emit(state.copyWith(selectedMethod: event.method));
+      emit(state.copyWith(selectedMethod: Nullable.value(event.method)));
+
+      add(AuditDetailReviewerListLoaded());
     }
   }
 
@@ -352,9 +403,9 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
         add(AuditDetailReviewListLoaded());
       }
 
-      if (!state.isEditable) {
-        add(AuditDetailReviewerListLoaded());
-      }
+      // if (!state.isEditable) {
+      //   add(AuditDetailReviewerListLoaded());
+      // }
     } catch (e) {
       emit(state.copyWith(auditLoadStatus: EntityStatus.loading));
     }
@@ -384,13 +435,16 @@ class AuditDetailBloc extends Bloc<AuditDetailEvent, AuditDetailState> {
     AuditDetailAuditSectionListLoaded event,
     Emitter<AuditDetailState> emit,
   ) async {
-    final auditSectionAndQuestion =
+    final auditSectionAndQuestionList =
         await _auditsRepository.getAuditSectionAndQuestionList(auditId);
 
+    auditSectionAndQuestionList.sort((first, second) =>
+        first.auditSectionName.compareTo(second.auditSectionName));
+
     emit(state.copyWith(
-      auditSectionAndQuestionList: auditSectionAndQuestion,
-      selectedAuditSection: auditSectionAndQuestion.isNotEmpty
-          ? auditSectionAndQuestion.first
+      auditSectionAndQuestionList: auditSectionAndQuestionList,
+      selectedAuditSection: auditSectionAndQuestionList.isNotEmpty
+          ? auditSectionAndQuestionList.first
           : null,
     ));
   }

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '/utils/custom_notification.dart';
 import '/global_widgets/global_widget.dart';
 import '/data/bloc/bloc.dart';
-import 'widgets/audit_template_list.dart';
+import 'widgets/widgets.dart';
 
 class SiteShowView extends StatelessWidget {
   final String siteId;
@@ -46,6 +46,8 @@ class _SiteShowWidgetState extends State<SiteShowWidget> {
   Map<String, Widget> get tabItems {
     return {
       'Audit Templates': AuditTemplateListView(siteId: widget.siteId),
+      'Projects': ProjectListView(siteId: widget.siteId),
+      'Companies': CompanyListView(siteId: widget.siteId),
       'Site kiosks': Container(),
     };
   }

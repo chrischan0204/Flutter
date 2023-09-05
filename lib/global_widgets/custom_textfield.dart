@@ -92,6 +92,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
               color: Colors.blue,
             ),
           ),
+          disabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
+            ),
+            borderSide: BorderSide(
+              color: Colors.grey,
+            ),
+          ),
           filled: true,
           fillColor: Colors.white,
           focusColor: Colors.white,

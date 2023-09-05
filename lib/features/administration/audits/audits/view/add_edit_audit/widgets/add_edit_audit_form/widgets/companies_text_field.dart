@@ -49,9 +49,13 @@ class _CompaniesTextFieldState extends State<CompaniesTextField> {
             String text = _textController.text;
             if (text.contains('\n')) {
               int offset = _textController.selection.base.offset;
+
+              int count = text.split('\n').length;
+
               _textController.text = text.replaceAll('\n', '');
+
               _textController.selection =
-                  TextSelection.collapsed(offset: offset - 1);
+                  TextSelection.collapsed(offset: offset - count + 1);
             }
             context.read<AddEditAuditBloc>().add(
                   AddEditAuditCompaniesChanged(companies: _textController.text),

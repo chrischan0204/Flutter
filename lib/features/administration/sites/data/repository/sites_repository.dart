@@ -178,12 +178,12 @@ class SitesRepository extends BaseRepository {
     throw Exception();
   }
 
-  Future<List<Entity>> getUserListForSite(String siteId) async {
+  Future<List<User>> getUserListForSite(String siteId) async {
     Response response = await super.get('$url/$siteId/users');
 
     if (response.statusCode == 200) {
       return List.from(json.decode(response.body))
-          .map((e) => Entity.fromMap(e))
+          .map((e) => User.fromMap(e))
           .toList();
     }
 

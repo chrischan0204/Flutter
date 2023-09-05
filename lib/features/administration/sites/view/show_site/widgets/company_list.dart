@@ -1,28 +1,28 @@
 import '/common_libraries.dart';
 
-class AuditTemplateListView extends StatefulWidget {
+class CompanyListView extends StatefulWidget {
   final String siteId;
-  const AuditTemplateListView({
+  const CompanyListView({
     super.key,
     required this.siteId,
   });
 
   static const List<String> columns = [
-    'Template Name',
+    'Name',
+    'Added By',
     'Created By',
-    'Last Revised On'
   ];
 
   @override
-  State<AuditTemplateListView> createState() => _AuditTemplateListViewState();
+  State<CompanyListView> createState() => _CompanyListViewState();
 }
 
-class _AuditTemplateListViewState extends State<AuditTemplateListView> {
+class _CompanyListViewState extends State<CompanyListView> {
   @override
   void initState() {
     context
         .read<ShowSiteBloc>()
-        .add(ShowSiteAssignedAutitTemplateListLoaded(id: widget.siteId));
+        .add(ShowSiteAssignedAutitCompanyListLoaded(id: widget.siteId));
     super.initState();
   }
 
@@ -34,7 +34,7 @@ class _AuditTemplateListViewState extends State<AuditTemplateListView> {
         Padding(
           padding: insetx20,
           child: const Text(
-            'The following templates are associated with this site. Edit site to associate/ remove templates from this site.',
+            'The following companies are associated with this site.',
             style: TextStyle(
               fontSize: 14,
               fontFamily: 'OpenSans',
@@ -50,16 +50,14 @@ class _AuditTemplateListViewState extends State<AuditTemplateListView> {
                 child: Loader(),
               );
             }
-
             return TableView(
-              height: MediaQuery.of(context).size.height - 460,
-              columns: AuditTemplateListView.columns,
-              rows: state.auditTemplateList
-                  .map((auditTemplate) => [
-                        CustomDataCell(data: auditTemplate.name),
-                        CustomDataCell(data: auditTemplate.createdByUserName),
-                        CustomDataCell(
-                            data: auditTemplate.formatedRevisionDate),
+              height: MediaQuery.of(context).size.height - 260,
+              columns: CompanyListView.columns,
+              rows: state.companyList
+                  .map((company) => [
+                        CustomDataCell(data: company.name),
+                        CustomDataCell(data: company.createdByUserName),
+                        CustomDataCell(data: company.createdOn),
                       ])
                   .toList(),
             );

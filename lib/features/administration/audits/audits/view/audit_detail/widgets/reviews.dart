@@ -37,6 +37,7 @@ class ReviewsView extends StatelessWidget {
                           spacery12,
                           CustomTextField(
                             key: ValueKey(state.auditReviewList[0].id),
+                            isDisabled: !state.isCommentEditing,
                             initialValue:
                                 state.auditReviewList[0].reviewComments,
                             contentPadding: inset10,
@@ -48,25 +49,72 @@ class ReviewsView extends StatelessWidget {
                             height: null,
                           ),
                           spacery10,
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: CustomButton(
-                              onClick: () => context
-                                  .read<AuditDetailBloc>()
-                                  .add(AuditDetailCommentSaved()),
-                              backgroundColor: successColor,
-                              hoverBackgroundColor: successHoverColor,
-                              body: state.auditReviewCommentSaveStatus.isLoading
-                                  ? LoadingAnimationWidget.prograssiveDots(
-                                      color: Colors.white,
-                                      size: 22,
-                                    )
-                                  : Text(
-                                      'Save',
-                                      style: textNormal14.copyWith(
-                                          color: Colors.white),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              if (!state.isCommentEditing)
+                                Padding(
+                                  padding: insetx20,
+                                  child: Text(
+                                      'Reviewed on ${state.auditReviewList[0].formatedReviewDate}'),
+                                )
+                              else
+                                const Spacer(),
+                              Row(
+                                children: [
+                                  CustomButton(
+                                    onClick: () {
+                                      if (state.isCommentEditing) {
+                                        context
+                                            .read<AuditDetailBloc>()
+                                            .add(AuditDetailCommentSaved());
+                                      } else {
+                                        context.read<AuditDetailBloc>().add(
+                                            AuditDetailIsEditingCommentChanged(
+                                                isCommentEditing:
+                                                    !state.isCommentEditing));
+                                      }
+                                    },
+                                    backgroundColor: successColor,
+                                    hoverBackgroundColor: successHoverColor,
+                                    body: state.auditReviewCommentSaveStatus
+                                            .isLoading
+                                        ? LoadingAnimationWidget
+                                            .prograssiveDots(
+                                            color: Colors.white,
+                                            size: 22,
+                                          )
+                                        : state.isCommentEditing
+                                            ? Text(
+                                                'Save',
+                                                style: textNormal14.copyWith(
+                                                    color: Colors.white),
+                                              )
+                                            : Text(
+                                                'Edit',
+                                                style: textNormal14.copyWith(
+                                                    color: Colors.white),
+                                              ),
+                                  ),
+                                  if (state.isCommentEditing) spacerx20,
+                                  if (state.isCommentEditing)
+                                    CustomButton(
+                                      onClick: () => context
+                                          .read<AuditDetailBloc>()
+                                          .add(
+                                              const AuditDetailIsEditingCommentChanged(
+                                                  isCommentEditing: false)),
+                                      backgroundColor: Colors.grey,
+                                      hoverBackgroundColor: Colors.grey,
+                                      body: Text(
+                                        'Cancel',
+                                        style: textNormal14.copyWith(
+                                            color: Colors.white),
+                                      ),
                                     ),
-                            ),
+                                ],
+                              ),
+                            ],
                           )
                         ],
                       ),

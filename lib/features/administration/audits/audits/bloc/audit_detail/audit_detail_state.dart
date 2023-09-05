@@ -35,6 +35,8 @@ class AuditDetailState extends Equatable {
   final List<AuditComment> commentList;
   final EntityStatus commentListLoadStatus;
 
+  final bool isCommentEditing;
+
   final String message;
   const AuditDetailState({
     this.auditSummary,
@@ -46,7 +48,7 @@ class AuditDetailState extends Equatable {
     this.actionItemList = const [],
     this.observationList = const [],
     this.reviewerList = const [],
-    this.selectedReviewerList = const [null],
+    this.selectedReviewerList = const [],
     this.selectedAuditSection,
     this.selectedMethod,
     this.auditStatusChangeStatus = EntityStatus.initial,
@@ -59,6 +61,7 @@ class AuditDetailState extends Equatable {
     this.commentList = const [],
     this.commentListLoadStatus = EntityStatus.initial,
     this.message = '',
+    this.isCommentEditing = false,
   });
 
   @override
@@ -85,6 +88,7 @@ class AuditDetailState extends Equatable {
         actionItemsStats,
         commentList,
         commentListLoadStatus,
+        isCommentEditing,
       ];
 
   bool isNextStepsAvailable(AuthState user) =>
@@ -131,7 +135,7 @@ class AuditDetailState extends Equatable {
     List<User?>? selectedReviewerList,
     List<User>? reviewerList,
     EntityStatus? status,
-    String? selectedMethod,
+    Nullable<String?>? selectedMethod,
     String? message,
     EntityStatus? auditStatusChangeStatus,
     EntityStatus? auditReviewersSaveStatus,
@@ -143,6 +147,7 @@ class AuditDetailState extends Equatable {
     ActionItemsStats? actionItemsStats,
     List<AuditComment>? commentList,
     EntityStatus? commentListLoadStatus,
+    bool? isCommentEditing,
   }) {
     return AuditDetailState(
       auditSummary: auditSummary ?? this.auditSummary,
@@ -155,7 +160,8 @@ class AuditDetailState extends Equatable {
       actionItemList: actionItemList ?? this.actionItemList,
       observationList: observationList ?? this.observationList,
       status: status ?? this.status,
-      selectedMethod: selectedMethod ?? this.selectedMethod,
+      selectedMethod:
+          selectedMethod != null ? selectedMethod.value : this.selectedMethod,
       reviewerList: reviewerList ?? this.reviewerList,
       selectedReviewerList: selectedReviewerList ?? this.selectedReviewerList,
       auditStatusChangeStatus:
@@ -175,6 +181,7 @@ class AuditDetailState extends Equatable {
       commentList: commentList ?? this.commentList,
       commentListLoadStatus:
           commentListLoadStatus ?? this.commentListLoadStatus,
+      isCommentEditing: isCommentEditing ?? this.isCommentEditing,
     );
   }
 }

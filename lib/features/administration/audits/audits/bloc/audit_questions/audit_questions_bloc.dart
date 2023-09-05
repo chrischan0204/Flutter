@@ -49,6 +49,8 @@ class AuditQuestionsBloc
     final auditSectionList =
         await auditsRepository.getAuditSectionList(auditId);
 
+    auditSectionList.sort((first, second) => first.name.compareTo(second.name));
+
     emit(state.copyWith(
       auditSectionList: auditSectionList,
       selectedAuditSectionId:

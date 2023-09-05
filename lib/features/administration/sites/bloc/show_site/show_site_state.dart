@@ -11,8 +11,13 @@ class ShowSiteState extends Equatable {
   /// audit template list
   final List<Template> auditTemplateList;
 
+  /// project list
+  final List<Project> projectList;
+
+  final List<Company> companyList;
+
   /// audit template list load status
-  final EntityStatus auditTemplateListLoadStatus;
+  final EntityStatus listLoadStatus;
 
   /// site delete status
   final EntityStatus deleteStatus;
@@ -24,7 +29,9 @@ class ShowSiteState extends Equatable {
     this.site,
     this.siteLoadStatus = EntityStatus.initial,
     this.auditTemplateList = const [],
-    this.auditTemplateListLoadStatus = EntityStatus.initial,
+    this.projectList = const [],
+    this.companyList = const [],
+    this.listLoadStatus = EntityStatus.initial,
     this.deleteStatus = EntityStatus.initial,
     this.message = '',
   });
@@ -34,7 +41,9 @@ class ShowSiteState extends Equatable {
         site,
         siteLoadStatus,
         auditTemplateList,
-        auditTemplateListLoadStatus,
+        projectList,
+        companyList,
+        listLoadStatus,
         deleteStatus,
         message,
       ];
@@ -43,7 +52,9 @@ class ShowSiteState extends Equatable {
     Site? site,
     EntityStatus? siteLoadStatus,
     List<Template>? auditTemplateList,
-    EntityStatus? auditTemplateListLoadStatus,
+    List<Project>? projectList,
+    List<Company>? companyList,
+    EntityStatus? listLoadStatus,
     EntityStatus? deleteStatus,
     String? message,
   }) {
@@ -51,8 +62,10 @@ class ShowSiteState extends Equatable {
       site: site ?? this.site,
       siteLoadStatus: siteLoadStatus ?? this.siteLoadStatus,
       auditTemplateList: auditTemplateList ?? this.auditTemplateList,
-      auditTemplateListLoadStatus:
-          auditTemplateListLoadStatus ?? this.auditTemplateListLoadStatus,
+      projectList: projectList ?? this.projectList,
+      companyList: companyList ?? this.companyList,
+      listLoadStatus:
+          listLoadStatus ?? this.listLoadStatus,
       deleteStatus: deleteStatus ?? this.deleteStatus,
       message: message ?? this.message,
     );

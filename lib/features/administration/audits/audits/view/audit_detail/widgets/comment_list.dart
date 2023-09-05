@@ -38,29 +38,31 @@ class AuditDetailCommentListView extends StatelessWidget {
               ),
             ),
             if (commentList.isNotEmpty)
-              Column(
-                children: [
-                  const AuditDetailCommentListItemView(
-                    title: 'Comment',
-                    content: 'Added On',
-                    isBold: true,
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (final comment in commentList)
-                            AuditDetailCommentListItemView(
-                              title: comment.commentText ?? '--',
-                              content: DateFormat('MM/dd/yyyy')
-                                  .format(comment.createdOn),
-                            )
-                        ],
-                      ),
+              Expanded(
+                child: Column(
+                  children: [
+                    const AuditDetailCommentListItemView(
+                      title: 'Comment',
+                      content: 'Added On',
+                      isBold: true,
                     ),
-                  )
-                ],
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (final comment in commentList)
+                              AuditDetailCommentListItemView(
+                                title: comment.commentText ?? '--',
+                                content: DateFormat('MM/dd/yyyy')
+                                    .format(comment.createdOn),
+                              )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               )
             else
               Padding(

@@ -178,8 +178,8 @@ class User extends Entity {
     Entity entity = Entity.fromMap(map);
     return User(
       id: entity.id,
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
+      firstName: map['firstName'] ?? entity.name?.split(' ')[0] ?? '',
+      lastName: map['lastName'] ?? entity.name?.split(' ')[1] ?? '',
       email: map['email'] ?? '',
       mobileNumber: map['mobileNumber'] ?? '',
       inviteSent: map['inviteSent'] ?? false,

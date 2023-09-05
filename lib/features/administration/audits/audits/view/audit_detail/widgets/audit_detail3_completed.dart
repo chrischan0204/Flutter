@@ -113,58 +113,62 @@ class _AuditDetail3CompletedViewState extends State<AuditDetail3CompletedView> {
                                     reviewerList: state.reviewerList,
                                     canAddReviewer: state.canAddReviewer,
                                   ),
-                                Padding(
-                                  padding: inset10,
-                                  child: BlocConsumer<AuditDetailBloc,
-                                      AuditDetailState>(
-                                    listener: (context, state) =>
-                                        CustomNotification(
-                                      context: context,
-                                      notifyType: NotifyType.success,
-                                      content: 'Reviewers saved successfully.',
-                                    ).showNotification(),
-                                    listenWhen: (previous, current) =>
-                                        previous.auditReviewersSaveStatus !=
-                                            current.auditReviewersSaveStatus &&
-                                        current
-                                            .auditReviewersSaveStatus.isSuccess,
-                                    builder: (context, state) {
-                                      return CustomButton(
-                                        onClick: () {
-                                          if (state.selectedReviewerList
-                                              .where(
-                                                  (element) => element == null)
-                                              .isNotEmpty) {
-                                            CustomNotification(
-                                              context: context,
-                                              notifyType: NotifyType.info,
-                                              content:
-                                                  'Please select reviewers',
-                                            ).showNotification();
-                                          } else {
-                                            context.read<AuditDetailBloc>().add(
-                                                AuditDetailReviewersSaved());
-                                          }
-                                        },
-                                        backgroundColor: successColor,
-                                        hoverBackgroundColor: successHoverColor,
-                                        body: state.auditReviewersSaveStatus
-                                                .isLoading
-                                            ? LoadingAnimationWidget
-                                                .prograssiveDots(
-                                                color: Colors.white,
-                                                size: 22,
-                                              )
-                                            : Text(
-                                                'Send for review',
-                                                style: textNormal14.copyWith(
+                                if (state.selectedReviewerList.isNotEmpty)
+                                  Padding(
+                                    padding: inset10,
+                                    child: BlocConsumer<AuditDetailBloc,
+                                        AuditDetailState>(
+                                      listener: (context, state) =>
+                                          CustomNotification(
+                                        context: context,
+                                        notifyType: NotifyType.success,
+                                        content:
+                                            'Reviewers saved successfully.',
+                                      ).showNotification(),
+                                      listenWhen: (previous, current) =>
+                                          previous.auditReviewersSaveStatus !=
+                                              current
+                                                  .auditReviewersSaveStatus &&
+                                          current.auditReviewersSaveStatus
+                                              .isSuccess,
+                                      builder: (context, state) {
+                                        return CustomButton(
+                                          onClick: () {
+                                            if (state.selectedReviewerList
+                                                .where((element) =>
+                                                    element == null)
+                                                .isNotEmpty) {
+                                              CustomNotification(
+                                                context: context,
+                                                notifyType: NotifyType.info,
+                                                content:
+                                                    'Please select reviewers',
+                                              ).showNotification();
+                                            } else {
+                                              context.read<AuditDetailBloc>().add(
+                                                  AuditDetailReviewersSaved());
+                                            }
+                                          },
+                                          backgroundColor: successColor,
+                                          hoverBackgroundColor:
+                                              successHoverColor,
+                                          body: state.auditReviewersSaveStatus
+                                                  .isLoading
+                                              ? LoadingAnimationWidget
+                                                  .prograssiveDots(
                                                   color: Colors.white,
+                                                  size: 22,
+                                                )
+                                              : Text(
+                                                  'Send for review',
+                                                  style: textNormal14.copyWith(
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
                               ],
                             ),
                         if (state.auditSummary?.auditStatusName == 'In Review')
@@ -282,6 +286,25 @@ class ReviewerItemView extends StatelessWidget {
       padding: inset10,
       child: Row(
         children: [
+          IconButton(
+            onPressed: () {
+              if (index > 0) {
+                context
+                    .read<AuditDetailBloc>()
+                    .add(AuditDetailReviewerItemRemoved(index: index));
+              } else {
+                CustomNotification(
+                  context: context,
+                  notifyType: NotifyType.info,
+                  content: 'At least one column is required',
+                ).showNotification();
+              }
+            },
+            icon: PhosphorIcon(
+              PhosphorIcons.regular.x,
+              color: Colors.red,
+            ),
+          ),
           Expanded(
             child: CustomSingleSelect(
               hint: 'Select Reviewer',

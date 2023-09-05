@@ -67,6 +67,17 @@ class AuditDetailReviewerItemIncreased extends AuditDetailEvent {
   List<Object> get props => [index];
 }
 
+/// event to remove reviewer to save
+class AuditDetailReviewerItemRemoved extends AuditDetailEvent {
+  final int index;
+  const AuditDetailReviewerItemRemoved({
+    required this.index,
+  });
+
+  @override
+  List<Object> get props => [index];
+}
+
 /// event to select reviewer for dropdown at index position
 class AuditDetailReviewerSelected extends AuditDetailEvent {
   final int index;
@@ -112,6 +123,17 @@ class AuditDetailCommentChanged extends AuditDetailEvent {
 /// event to save comment
 class AuditDetailCommentSaved extends AuditDetailEvent {}
 
+/// event to change isCommentEditing
+class AuditDetailIsEditingCommentChanged extends AuditDetailEvent {
+  final bool isCommentEditing;
+  const AuditDetailIsEditingCommentChanged({
+    required this.isCommentEditing,
+  });
+
+  @override
+  List<Object> get props => [isCommentEditing];
+}
+
 /// event to load completed question with follow ups
 class AuditDetailAuditCompletedQuestionsWithFollowupsListLoaded
     extends AuditDetailEvent {}
@@ -126,6 +148,6 @@ class AuditDetailQuestionCommentListLoaded extends AuditDetailEvent {
     required this.questionId,
   });
 
-@override
+  @override
   List<Object> get props => [questionId];
 }

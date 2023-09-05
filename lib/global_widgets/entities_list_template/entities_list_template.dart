@@ -93,7 +93,10 @@ class _CrudState extends State<EntityListTemplate> {
   @override
   void didChangeDependencies() {
     positionRightForViewSettingsSlider = positionRightForDetailsSlider =
-        -MediaQuery.of(context).size.width / 4 - 10;
+        -(MediaQuery.of(context).size.width > minDesktopWidth
+                ? MediaQuery.of(context).size.width / 4
+                : MediaQuery.of(context).size.width / 3) -
+            10;
     super.didChangeDependencies();
   }
 
@@ -502,7 +505,9 @@ class _CrudState extends State<EntityListTemplate> {
       child: Card(
         elevation: 3,
         child: Container(
-          width: MediaQuery.of(context).size.width / 4,
+          width: (MediaQuery.of(context).size.width > minDesktopWidth
+              ? MediaQuery.of(context).size.width / 4
+              : MediaQuery.of(context).size.width / 3),
           constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height - topbarHeight),
           padding: const EdgeInsets.symmetric(
@@ -606,7 +611,9 @@ class _CrudState extends State<EntityListTemplate> {
       child: Card(
         elevation: 3,
         child: Container(
-          width: MediaQuery.of(context).size.width / 4,
+          width: (MediaQuery.of(context).size.width > minDesktopWidth
+              ? MediaQuery.of(context).size.width / 4
+              : MediaQuery.of(context).size.width / 3),
           height: MediaQuery.of(context).size.height - topbarHeight,
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
@@ -729,7 +736,10 @@ class _CrudState extends State<EntityListTemplate> {
   void _hideViewSettingsSlider() {
     setState(() {
       positionRightForViewSettingsSlider =
-          -MediaQuery.of(context).size.width / 4 - 10;
+          -(MediaQuery.of(context).size.width > minDesktopWidth
+                  ? MediaQuery.of(context).size.width / 4
+                  : MediaQuery.of(context).size.width / 3) -
+              10;
     });
   }
 
@@ -749,14 +759,20 @@ class _CrudState extends State<EntityListTemplate> {
     setState(() {
       positionRightForDetailsSlider = 0;
       positionRightForViewSettingsSlider =
-          -MediaQuery.of(context).size.width / 4 - 10;
+          -(MediaQuery.of(context).size.width > minDesktopWidth
+                  ? MediaQuery.of(context).size.width / 4
+                  : MediaQuery.of(context).size.width / 3) -
+              10;
     });
   }
 
   void _hideDetailsSlider() {
     setState(() {
       positionRightForDetailsSlider =
-          -MediaQuery.of(context).size.width / 4 - 10;
+          -(MediaQuery.of(context).size.width > minDesktopWidth
+                  ? MediaQuery.of(context).size.width / 4
+                  : MediaQuery.of(context).size.width / 3) -
+              10;
     });
   }
 }

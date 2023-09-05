@@ -34,6 +34,32 @@ class ShowSiteAssignedAutitTemplateListLoaded extends ShowSiteEvent {
   List<Object> get props => [id];
 }
 
+/// event to load audit project list for site
+class ShowSiteAssignedAutitProjectListLoaded extends ShowSiteEvent {
+  /// site id to load projects list
+  final String id;
+
+  const ShowSiteAssignedAutitProjectListLoaded({
+    required this.id,
+  });
+
+  @override
+  List<Object> get props => [id];
+}
+
+/// event to load audit company list for site
+class ShowSiteAssignedAutitCompanyListLoaded extends ShowSiteEvent {
+  /// site id to load projects list
+  final String id;
+
+  const ShowSiteAssignedAutitCompanyListLoaded({
+    required this.id,
+  });
+
+  @override
+  List<Object> get props => [id];
+}
+
 /// event to delete site
 class ShowSiteDeleted extends ShowSiteEvent {
   /// site id to delete
