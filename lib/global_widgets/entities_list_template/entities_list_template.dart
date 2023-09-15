@@ -109,7 +109,7 @@ class _CrudState extends State<EntityListTemplate> {
           previous.authUser?.token != current.authUser?.token,
       builder: (context, state) {
         token = state.authUser?.token ?? '';
-        return Container(
+        return Container( 
           constraints: BoxConstraints(
               minHeight:
                   MediaQuery.of(context).size.height - topbarHeight - 20),
